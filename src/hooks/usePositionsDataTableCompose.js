@@ -203,6 +203,17 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose pair element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderPair(dataIndex) {
+    const position = positions[dataIndex];
+    return <>{position.short}</>;
+  }
+
+  /**
    * Compose leverage element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -859,8 +870,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.price.entry",
@@ -1016,8 +1027,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.price.entry",
@@ -1166,8 +1177,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.price.entry",
@@ -1287,8 +1298,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.price.entry",
@@ -1407,8 +1418,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.leverage",
@@ -1462,8 +1473,8 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       },
       {
         columnId: "col.pair",
-        propertyName: "short",
-        renderFunction: null,
+        propertyName: "pair",
+        renderFunction: renderPair,
       },
       {
         columnId: "col.unrealizedplpercentage",
