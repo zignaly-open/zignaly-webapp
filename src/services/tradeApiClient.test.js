@@ -308,6 +308,7 @@ describe("Consume tradeApiClient service", () => {
       token: accessToken,
       providerId: "5ee26419928896519668b62b",
       version: 2,
+      exchangeInternalId: "Binance1578301457_5e12f811deda4",
     };
 
     const provider = await client.providerGet(payload);
