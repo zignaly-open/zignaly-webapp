@@ -16,6 +16,8 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ConnectExchange from "../../Modal/ConnectExchange";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
+import TradingViewContext from "./TradingViewContext";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {any} TVWidget
@@ -52,6 +54,7 @@ const TradingView = () => {
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
   const dispatch = useDispatch();
+  const tradingViewContext = useTradingViewContext();
 
   const getMarketData = async () => {
     const marketDataPayload = {
@@ -258,7 +261,7 @@ const TradingView = () => {
   });
 
   return (
-    <>
+    <TradingViewContext.Provider value={tradingViewContext}>
       <FormProvider {...methods}>
         <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
           {!isLoading && (
@@ -296,7 +299,7 @@ const TradingView = () => {
           </Box>
         </Box>
       </FormProvider>
-    </>
+    </TradingViewContext.Provider>
   );
 };
 

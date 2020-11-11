@@ -1,5 +1,5 @@
-import React from "react";
-import { size, isBoolean } from "lodash";
+import React, { useContext, useEffect, useState } from "react";
+import { size } from "lodash";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
@@ -9,6 +9,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { setTerminalProvider, setTerminalPair } from "../../../store/actions/settings";
 import { useDispatch } from "react-redux";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
+import TradingViewContext from "./TradingViewContext";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
@@ -28,14 +29,33 @@ import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
  */
 const TradingViewHeader = (props) => {
   const { symbolsList, handleSymbolChange, selectedSymbol } = props;
-  const { control, register, watch } = useFormContext();
-  const symbolsOptionsAll = symbolsList.map((symbolItem) => {
-    return symbolItem.short;
-  });
+  const { control, watch } = useFormContext();
   const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
+  const { providerService, setProviderService } = useContext(TradingViewContext);
+  const providerId = watch("providerService");
+  const selectedExchange = storeSettings.selectedExchange;
+
+  // Filter provider symbols options
+  const filterSymbols = () => {
+    return symbolsList.reduce((result, symbol) => {
+      if (
+        providerService &&
+        providerId &&
+        providerId !== "1" &&
+        selectedExchange.exchangeName.toLowerCase() !== "bitmex"
+      ) {
+        const { providerQuote } = providerService;
+        if (providerQuote === true || symbol.short.includes("/" + providerQuote)) {
+          result.push(symbol.short);
+        }
+      }
+      return result;
+    }, []);
+  };
+  const [symbolsOptions, setSymbolsOptions] = useState(filterSymbols());
 
   const providerOptions = ownCopyTraderProviders.map((provider) => {
     return {
@@ -45,26 +65,38 @@ const TradingViewHeader = (props) => {
   });
 
   // Select saved provider or default to first option
-  const selectedProviderValue = providerOptions.find(
+  const initialProviderId = providerOptions.find(
     (o) => o.val === storeSettings.tradingTerminal.provider,
   )
     ? storeSettings.tradingTerminal.provider
     : providerOptions[0]
     ? providerOptions[0].val
     : "";
-  const providerId = watch("providerService");
-  const providerService = ownCopyTraderProviders.find(
-    (provider) => provider.providerId === providerId,
-  ) || {
-    providerPayableBalance: 0,
-    providerConsumedBalance: 0,
-    providerConsumedBalancePercentage: 0,
-    providerName: formatMessage({
-      id: "terminal.provider.manual",
-    }),
-    providerQuote: "",
-    providerId: "1",
-  };
+
+  useEffect(() => {
+    const newProviderService = ownCopyTraderProviders.find(
+      (provider) => provider.providerId === providerId,
+    ) || {
+      providerPayableBalance: 0,
+      providerConsumedBalance: 0,
+      providerConsumedBalancePercentage: 0,
+      providerName: formatMessage({
+        id: "terminal.provider.manual",
+      }),
+      providerQuote: "",
+      providerId: "1",
+    };
+    // Update context
+    setProviderService(newProviderService);
+
+    // Save provider settings
+    dispatch(setTerminalProvider(providerId));
+  }, [providerId]);
+
+  useEffect(() => {
+    // Update symbols matching provider
+    setSymbolsOptions(filterSymbols());
+  }, [providerId, selectedExchange]);
 
   // Save filters to store when changed
   const saveSelectedSymbol = () => {
@@ -76,29 +108,6 @@ const TradingViewHeader = (props) => {
     );
   };
   useEffectSkipFirst(saveSelectedSymbol, [selectedSymbol]);
-
-  const saveSelectedProvider = (/** @type {string} **/ value) => {
-    dispatch(setTerminalProvider(value));
-  };
-
-  // Filter signal provider symbols options when is selected.
-  const symbolsOptions = symbolsOptionsAll.filter((symbol) => {
-    if (
-      providerService &&
-      providerId &&
-      providerId !== "1" &&
-      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex"
-    ) {
-      const { providerQuote } = providerService;
-      if (isBoolean(providerQuote)) {
-        return providerQuote === true;
-      }
-
-      return symbol.includes("/" + providerQuote);
-    }
-
-    return true;
-  });
 
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
@@ -126,43 +135,18 @@ const TradingViewHeader = (props) => {
           </Typography>
           <Controller
             control={control}
-            defaultValue={selectedProviderValue}
+            defaultValue={initialProviderId}
             name="providerService"
             render={({ onChange, value }) => (
               <CustomSelect
                 label=""
                 onChange={(/** @type {string} **/ v) => {
-                  saveSelectedProvider(v);
                   onChange(v);
                 }}
                 options={providerOptions}
                 value={value}
               />
             )}
-          />
-          <input
-            name="providerPayableBalance"
-            ref={register}
-            type="hidden"
-            value={providerService.providerPayableBalance}
-          />
-          <input
-            name="providerConsumedBalance"
-            ref={register}
-            type="hidden"
-            value={providerService.providerConsumedBalance || 0}
-          />
-          <input
-            name="providerConsumedBalancePercentage"
-            ref={register}
-            type="hidden"
-            value={providerService.providerConsumedBalancePercentage || 0}
-          />
-          <input
-            name="providerName"
-            ref={register}
-            type="hidden"
-            value={providerService.providerName}
           />
         </Box>
       )}

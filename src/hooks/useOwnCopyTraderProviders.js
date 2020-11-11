@@ -4,10 +4,10 @@ import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../store/actions/ui";
+import { showErrorAlert } from "store/actions/ui";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").CopyTradersProvidersOption} CopyTradersProvidersOption
+ * @typedef {import("services/tradeApiClient.types").CopyTradersProvidersOption} CopyTradersProvidersOption
  */
 
 /**
@@ -65,7 +65,6 @@ const useOwnCopyTraderProviders = () => {
 
   useEffect(loadOwnCopyTradersProviders, [
     storeSettings.selectedExchange.internalId,
-    storeSettings.languageCode,
     storeSession.tradeApi.accessToken,
   ]);
 
