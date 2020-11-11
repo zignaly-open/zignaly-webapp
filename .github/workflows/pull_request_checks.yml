@@ -10,7 +10,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
       - name: Dependencies
         run: npm ci
       - name: Check Style Lint
