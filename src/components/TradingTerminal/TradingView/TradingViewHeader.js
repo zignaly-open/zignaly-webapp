@@ -83,7 +83,12 @@ const TradingViewHeader = (props) => {
 
   // Filter signal provider symbols options when is selected.
   const symbolsOptions = symbolsOptionsAll.filter((symbol) => {
-    if (providerService && providerId && providerId !== "1") {
+    if (
+      providerService &&
+      providerId &&
+      providerId !== "1" &&
+      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex"
+    ) {
       const { providerQuote } = providerService;
       if (isBoolean(providerQuote)) {
         return providerQuote === true;

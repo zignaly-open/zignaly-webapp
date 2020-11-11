@@ -48,8 +48,8 @@ const StrategyPanel = (props) => {
   const storeSettings = useStoreSettingsSelector();
   const [modalVisible, setModalVisible] = useState(false);
   const { balance, loading } = useAvailableBalance();
-  const baseBalance = (balance && balance[symbolData.base]) || 0;
-  const quoteBalance = (balance && balance[symbolData.quote]) || 0;
+  const baseBalance = (balance && balance[symbolData.unitsAmount]) || 0;
+  const quoteBalance = (balance && balance[symbolData.unitsInvestment]) || 0;
 
   const {
     positionSizeChange,
