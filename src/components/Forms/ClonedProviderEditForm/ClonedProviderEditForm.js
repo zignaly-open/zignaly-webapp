@@ -53,12 +53,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     tradeApi
       .clonedProviderEdit(payload)
       .then(() => {
-        const payload2 = {
+        const providerPayload = {
           token: payload.token,
           providerId: payload.providerId,
           version: 2,
+          exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        dispatch(setProvider(payload2));
+        dispatch(setProvider(providerPayload));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
       })
       .catch((e) => {

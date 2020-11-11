@@ -1,4 +1,4 @@
-import fetch from "cross-fetch";
+import "whatwg-fetch";
 import cache from "memory-cache";
 import { createHash } from "crypto";
 import { navigateLogin } from "./navigation";
@@ -199,12 +199,12 @@ class TradeApiClient {
    * we prevent that piled up request process concurrently.
    *
    * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
-   * @param {number} [timeout=20000] Lock time to live in millisecs.
+   * @param {number} [timeout=40000] Lock time to live in millisecs.
    * @returns {boolean} True when lock was acquired, false when existing lock is in place.
    *
    * @memberof TradeApiClient
    */
-  getRequestLock(cacheId, timeout = 20000) {
+  getRequestLock(cacheId, timeout = 40000) {
     if (this.requestLock[cacheId]) {
       return false;
     }
@@ -457,7 +457,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getClosedPositions";
+    const endpointPath = "/fe/api.php?action=getSoldPositions";
     const responseData = await this.doRequest(
       endpointPath,
       {
@@ -646,7 +646,7 @@ class TradeApiClient {
    */
   async positionGet(payload) {
     const endpointPath = "/fe/api.php?action=getPosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 }, "GET");
 
     return positionItemTransform(responseData);
   }

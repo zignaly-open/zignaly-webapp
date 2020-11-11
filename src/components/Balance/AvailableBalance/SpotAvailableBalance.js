@@ -20,7 +20,7 @@ import TotalEquityBar from "../../TotalEquityBar";
  */
 
 const SpotAvailableBalance = ({ balance, selectedExchange }) => {
-  const color = balance && balance.pnlBTC >= 0 ? "green" : "red";
+  const color = balance && balance.totalPnlBTC >= 0 ? "green" : "red";
 
   return (
     <div className="availableBalance">
@@ -67,16 +67,16 @@ const SpotAvailableBalance = ({ balance, selectedExchange }) => {
           />
           <span className="operator">+</span>
           <EquityPart
-            info={<>= USDT {formatFloat(balance.pnlUSDT)}</>}
+            info={<>= USDT {formatFloat(balance.totalPnlUSDT)}</>}
             name="balance.profit"
             value={
               <>
                 <Typography className={`number1 ${color}`}>
-                  BTC {formatFloat(balance.pnlBTC)}
+                  BTC {formatFloat(balance.totalPnlBTC)}
                 </Typography>
                 <Typography className={`number1 pnlPercent ${color}`}>
-                  {balance.pnlBTC && balance.totalLockedBTC
-                    ? formatFloat2Dec((balance.pnlBTC * 100) / balance.totalLockedBTC)
+                  {balance.totalPnlBTC && balance.totalLockedBTC
+                    ? formatFloat2Dec((balance.totalPnlBTC * 100) / balance.totalLockedBTC)
                     : 0}
                   %
                 </Typography>

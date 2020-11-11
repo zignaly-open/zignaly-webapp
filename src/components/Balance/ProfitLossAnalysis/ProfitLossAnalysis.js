@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./ProfitLossAnalysis.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { createEmptyUserEquityEntity } from "../../../services/tradeApiClient.types";
 import { formatNumber } from "../../../utils/formatters";
 
 /**
@@ -30,9 +29,6 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
 
   const prepareData = () => {
     let data = { ...inittialValues };
-    const currentEquity = dailyBalance.balances.length
-      ? dailyBalance.balances[dailyBalance.balances.length - 1]
-      : createEmptyUserEquityEntity();
     dailyBalance.balances.forEach((item) => {
       if (item.pnlUSDT > 0) {
         data.totalProfit += item.pnlUSDT;
@@ -45,7 +41,7 @@ const ProfitLossAnalysis = ({ dailyBalance }) => {
       }
     });
     data.winRate = (data.winDays / dailyBalance.balances.length) * 100;
-    data.netProfitLoss = currentEquity.sumPnlUSDT;
+    data.netProfitLoss = data.totalProfit + data.totalLoss;
     setProfitLossData(data);
   };
 

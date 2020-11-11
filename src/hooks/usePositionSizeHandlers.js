@@ -30,6 +30,7 @@ import { useIntl } from "react-intl";
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits, contractType } = selectedSymbol;
+  const multiplier = selectedSymbol.multiplier || 1;
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
@@ -75,17 +76,11 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const limitsAmount = contractType === "inverse" ? limits.cost : limits.amount;
 
     if (limitsAmount.min && value < limitsAmount.min) {
-      return formatMessage(
-        { id: "terminal.positionunits.limit.min" },
-        { value: limits.amount.min },
-      );
+      return formatMessage({ id: "terminal.positionunits.limit.min" }, { value: limitsAmount.min });
     }
 
     if (limitsAmount.max && value > limitsAmount.max) {
-      return formatMessage(
-        { id: "terminal.positionunits.limit.max" },
-        { value: limits.amount.max },
-      );
+      return formatMessage({ id: "terminal.positionunits.limit.max" }, { value: limitsAmount.max });
     }
 
     if (isNaN(units)) {
@@ -119,6 +114,18 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
+  /**
+   * @param {number} positionSize positionSize
+   * @param {number} price price
+   * @returns {number} units
+   */
+  const calculateUnits = (positionSize, price) => {
+    if (contractType === "inverse") {
+      return (price * positionSize) / multiplier;
+    }
+    return positionSize / (price * multiplier);
+  };
+
   const realInvestmentChange = useCallback(() => {
     if (errors.realInvestment) return;
 
@@ -127,12 +134,13 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("positionSize", positionSize);
     trigger("positionSize").then((isValid) => {
       if (isValid) {
-        const units = positionSize / currentPrice;
+        const units = calculateUnits(positionSize, currentPrice);
+
         setValue("units", units.toFixed(8));
         trigger("units");
       }
     });
-  }, [errors, currentPrice, leverage, getValues]);
+  }, [errors, currentPrice, leverage, getValues, multiplier]);
 
   const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;
@@ -140,7 +148,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
 
-    const units = positionSize / currentPrice;
+    const units = calculateUnits(positionSize, currentPrice);
     setValue("units", units.toFixed(8));
     trigger("units").then((isValid) => {
       if (isValid) {
@@ -148,7 +156,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, setValue, trigger, leverage]);
+  }, [errors, currentPrice, getValues, setValue, trigger, leverage, multiplier]);
 
   const positionSizePercentageChange = useCallback(() => {
     if (errors.positionSizePercentage) return;

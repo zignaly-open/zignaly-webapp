@@ -57,17 +57,21 @@ const SpotBalance = ({ balance, selectedExchange }) => {
         name={<FormattedMessage id="balance.profitlosses" />}
         value1={
           <Typography
-            className={`${balance.pnlBTC > 0 ? "green" : balance.pnlBTC < 0 ? "red" : ""} number1`}
+            className={`${
+              balance.totalPnlBTC > 0 ? "green" : balance.totalPnlBTC < 0 ? "red" : ""
+            } number1`}
           >
-            BTC {formatFloat(balance.pnlBTC)}
+            BTC {formatFloat(balance.totalPnlBTC)}
           </Typography>
         }
         value2={
           <Typography
-            className={`${balance.pnlBTC > 0 ? "green" : balance.pnlBTC < 0 ? "red" : ""} number3`}
+            className={`${
+              balance.totalPnlUSDT > 0 ? "green" : balance.totalPnlUSDT < 0 ? "red" : ""
+            } number3`}
             variant="subtitle2"
           >
-            USDT {formatFloat(balance.pnlUSDT)}
+            USDT {formatFloat(balance.totalPnlUSDT)}
           </Typography>
         }
       />

@@ -13,11 +13,28 @@
     "emitDeclarationOnly": false,
     "outDir": "types",
     "jsx": "react",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "removeComments": false,
     "pretty": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "test-utils": [
+        "utils/test/test-utils"
+      ]
+    },
+    "moduleResolution": "node",
   },
-  "include": ["./src/**/*", "types/global.d.ts", "static/widgets/dashly.js"],
-  "typeRoots": ["./src/types", "./node_modules/@types"]
+  "include": [
+    "./src/**/*",
+    "types/global.d.ts",
+    "static/widgets/dashly.js"
+  ],
+  "typeRoots": [
+    "./src/types",
+    "./node_modules/@types"
+  ]
 }

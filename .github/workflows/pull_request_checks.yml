@@ -10,20 +10,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 12
       - name: Dependencies
         run: npm ci
-    #   - name: Check Style Lint
-    #     run: npm run stylelint
-    #   - name: Check JS Lint
-    #     run: npm run jslint
-    #   - name: Check Types
-    #     run: npm run tscheck
-    #   - name: Test
-    #     env:
-    #       GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
-    #       GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
-    #       GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
-    #     run: npm test -- "tradeApiClient"
-    #   - name: Build
-    #     run: npm run build:test
+      - name: Check Style Lint
+        run: npm run stylelint
+      - name: Check JS Lint
+        run: npm run jslint
+      - name: Check Types
+        run: npm run tscheck
+      - name: Test
+        env:
+          GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
+          GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
+          GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
+        run: npm test

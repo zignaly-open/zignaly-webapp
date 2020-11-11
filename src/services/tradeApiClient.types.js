@@ -155,6 +155,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} token user's access token
  * @property {string} providerId Provider ID
  * @property {Number} version api endpoint version number.
+ * @property {String} exchangeInternalId internal Id of selected exchange.
  */
 
 /**
@@ -495,6 +496,10 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} liquidationPrice
  * @property {Number} markPrice
  * @property {string} markPriceStyle
+ * @property {string} unitsInvestment Units displayed for the investment.
+ * @property {string} unitsAmount Units displayed when bought.
+ * @property {string} short Short symbol name displayed in Zignaly.
+ * @property {string} tradeViewSymbol TradingView symbol.
  */
 
 /**
@@ -603,7 +608,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} longDesc
  * @property {string|boolean} fee
  * @property {number} price
- * @property {boolean} website
+ * @property {boolean|string} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
  * @property {boolean} disable False if user is copying
@@ -1373,6 +1378,7 @@ export function positionItemTransform(positionItem) {
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
     liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
     markPrice: safeParseFloat(positionItem.markPrice),
+    takeProfitTargetsCountSuccess: safeParseFloat(positionItem.takeProfitTargetsCountSuccess),
   });
 
   const risk = calculateRisk(positionEntity);
@@ -1618,6 +1624,10 @@ function createEmptyPositionEntity() {
     liquidationPrice: 0,
     markPrice: 0,
     markPriceStyle: "",
+    unitsInvestment: "",
+    unitsAmount: "",
+    short: "",
+    tradeViewSymbol: "",
   };
 }
 
@@ -1723,8 +1733,8 @@ export function createExchangeConnectionEmptyEntity() {
 
 /**
  * @typedef {Object} UserBalanceEntity
- * @property {Number} pnlBTC
- * @property {Number} pnlUSDT
+ * @property {Number} totalPnlUSDT
+ * @property {Number} totalPnlBTC
  * @property {Number} totalBTC
  * @property {Number} totalFreeBTC
  * @property {Number} totalFreeUSDT
@@ -1750,17 +1760,24 @@ export function createExchangeConnectionEmptyEntity() {
  * @returns {UserBalanceEntity} User balance entity.
  */
 export function userBalanceResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object with different propteries.");
-  }
-
-  return assign(createEmptyUserBalanceEntity(), response);
+  return assign(createEmptyUserBalanceEntity(), response, {
+    totalUSDT: response["1USDT"] || response.totalUSDT || 0,
+    totalBTC: response["1BTC"] || response.totalBTC || 0,
+    totalAvailableBTC:
+      response.totalMarginBTC && response.totalCurrentMarginBTC
+        ? response.totalMarginBTC - response.totalCurrentMarginBTC
+        : 0,
+    totalAvailableUSDT:
+      response.totalMarginUSDT && response.totalCurrentMarginUSDT
+        ? response.totalMarginUSDT - response.totalCurrentMarginUSDT
+        : 0,
+  });
 }
 
 export function createEmptyUserBalanceEntity() {
   return {
-    pnlBTC: 0,
-    pnlUSDT: 0,
+    totalPnlBTC: 0,
+    totalPnlUSDT: 0,
     totalBTC: 0,
     totalFreeBTC: 0,
     totalFreeUSDT: 0,
@@ -2950,6 +2967,11 @@ export function providerFollowersListResponseTransform(response) {
  * @property {Boolean} realExchangeConnected
  * @property {Boolean} suspended
  * @property {String} lastTransactionId
+ * @property {Number} originalAllocated
+ * @property {String} profitsMode
+ * @property {Number} profitsShare
+ * @property {Number} retain
+ * @property {String} unit
  */
 
 /**
@@ -2965,6 +2987,9 @@ function providerFollowersListItemTransform(providerFollowersListItem) {
   return transformedResponse;
 }
 
+/**
+ * @returns {ProviderFollowersEntity} Provider follower entity.
+ */
 function createProviderFollowersListEmptyEntity() {
   return {
     active: false,
@@ -2972,13 +2997,18 @@ function createProviderFollowersListEmptyEntity() {
     cancelDate: "-",
     code: "-",
     connected: false,
-    email: "0",
+    email: "",
     lastTransactionId: "-",
     name: "",
     profitsFromClosedBalance: "",
     realExchangeConnected: false,
     suspended: false,
     userId: "",
+    originalAllocated: 0,
+    profitsMode: "",
+    profitsShare: 0,
+    retain: 0,
+    unit: "",
   };
 }
 
