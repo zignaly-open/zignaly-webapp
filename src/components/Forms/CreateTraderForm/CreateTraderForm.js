@@ -285,7 +285,7 @@ const CreateTraderForm = () => {
                       name="minAllocatedBalance"
                       render={(props) => (
                         <TextField
-                          className="customInput"
+                          className="customInput minAllocatedBalance"
                           error={!!errors.minAllocatedBalance}
                           fullWidth
                           onChange={(e) => {
