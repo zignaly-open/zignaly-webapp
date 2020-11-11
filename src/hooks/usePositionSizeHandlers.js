@@ -30,6 +30,7 @@ import { useIntl } from "react-intl";
  */
 const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { limits, contractType } = selectedSymbol;
+  const multiplier = selectedSymbol.multiplier || 1;
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
@@ -116,10 +117,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   /**
    * @param {number} positionSize positionSize
    * @param {number} price price
-   * @param {number} multiplier multiplier
    * @returns {number} units
    */
-  const calculateUnits = (positionSize, price, multiplier = 1) => {
+  const calculateUnits = (positionSize, price) => {
     if (contractType === "inverse") {
       return (price * positionSize) / multiplier;
     }
@@ -140,7 +140,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         trigger("units");
       }
     });
-  }, [errors, currentPrice, leverage, getValues]);
+  }, [errors, currentPrice, leverage, getValues, multiplier]);
 
   const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;
@@ -148,7 +148,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
 
-    const units = calculateUnits(positionSize, currentPrice, selectedSymbol.multiplier);
+    const units = calculateUnits(positionSize, currentPrice);
     setValue("units", units.toFixed(8));
     trigger("units").then((isValid) => {
       if (isValid) {
@@ -156,7 +156,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, setValue, trigger, leverage]);
+  }, [errors, currentPrice, getValues, setValue, trigger, leverage, multiplier]);
 
   const positionSizePercentageChange = useCallback(() => {
     if (errors.positionSizePercentage) return;
