@@ -2,6 +2,7 @@ import { useEffect, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -34,7 +35,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
-  const lastPrice = watch("lastPrice");
+  const { lastPrice } = useTradingViewContext();
   const strategyPrice = watch("price");
   const providerAllocatedBalance = watch("providerPayableBalance");
   const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);

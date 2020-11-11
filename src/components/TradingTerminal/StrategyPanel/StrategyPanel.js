@@ -23,6 +23,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -62,13 +63,12 @@ const StrategyPanel = (props) => {
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
-  const lastPrice = watch("lastPrice");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
-  const providerService = watch("providerService");
+  const { providerService, lastPrice } = useTradingViewContext();
   const providerConsumedBalance = watch("providerConsumedBalance");
   const providerConsumedBalancePercentage = watch("providerConsumedBalancePercentage");
-  const isCopyProvider = providerService && providerService !== "1";
+  const isCopyProvider = providerService && providerService.providerId !== "1";
 
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },

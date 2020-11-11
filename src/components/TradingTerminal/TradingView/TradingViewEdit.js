@@ -23,6 +23,8 @@ import {
   createExchangeConnectionEmptyEntity,
   createMarketSymbolEmptyValueObject,
 } from "../../../services/tradeApiClient.types";
+import useTradingViewContext from "hooks/useTradingViewContext";
+import TradingViewContext from "./TradingViewContext";
 
 /**
  * @typedef {any} TVWidget
@@ -74,6 +76,7 @@ const TradingViewEdit = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
+  const tradingViewContext = useTradingViewContext();
 
   /**
    * Initialize state variables that depend on loaded position.
@@ -300,55 +303,57 @@ const TradingViewEdit = (props) => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-        {!isLoading && (
-          <PositionsTable
-            notifyPositionsUpdate={processPositionsUpdate}
-            positionEntity={positionEntity}
-            type={getPositionStatusType()}
-          />
-        )}
-        <Box
-          bgcolor="grid.content"
-          className="tradingViewContainer"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          width={1}
-        >
-          {isLoading && (
-            <Box
-              className="loadProgress"
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <CircularProgress disableShrink />
+    <TradingViewContext.Provider value={tradingViewContext}>
+      <FormProvider {...methods}>
+        <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+          {!isLoading && (
+            <PositionsTable
+              notifyPositionsUpdate={processPositionsUpdate}
+              positionEntity={positionEntity}
+              type={getPositionStatusType()}
+            />
+          )}
+          <Box
+            bgcolor="grid.content"
+            className="tradingViewContainer"
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            width={1}
+          >
+            {isLoading && (
+              <Box
+                className="loadProgress"
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+              >
+                <CircularProgress disableShrink />
+              </Box>
+            )}
+            <Box className="tradingViewChart" id="trading_view_chart" />
+            {!isLoading && lastPrice && (
+              <>
+                <input name="updatedAt" ref={methods.register} type="hidden" />
+                <StrategyForm
+                  lastPrice={lastPrice}
+                  notifyPositionUpdate={notifyPositionUpdate}
+                  positionEntity={positionEntity}
+                  selectedSymbol={symbolData}
+                  tradingViewWidget={tradingViewWidget}
+                />
+              </>
+            )}
+          </Box>
+          {positionRawData && (
+            <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
+              <Typography variant="h6">Debug</Typography>
+              <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
             </Box>
           )}
-          <Box className="tradingViewChart" id="trading_view_chart" />
-          {!isLoading && lastPrice && (
-            <>
-              <input name="updatedAt" ref={methods.register} type="hidden" />
-              <StrategyForm
-                lastPrice={lastPrice}
-                notifyPositionUpdate={notifyPositionUpdate}
-                positionEntity={positionEntity}
-                selectedSymbol={symbolData}
-                tradingViewWidget={tradingViewWidget}
-              />
-            </>
-          )}
         </Box>
-        {positionRawData && (
-          <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
-            <Typography variant="h6">Debug</Typography>
-            <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
-          </Box>
-        )}
-      </Box>
-    </FormProvider>
+      </FormProvider>
+    </TradingViewContext.Provider>
   );
 };
 

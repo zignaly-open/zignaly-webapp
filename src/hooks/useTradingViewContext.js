@@ -11,10 +11,16 @@ import { useState } from "react";
  */
 const useTradingViewContext = () => {
   const [providerService, setProviderService] = useState(null);
+  const [updatedAt, setUpdatedAt] = useState(null);
+  const [lastPrice, setLastPrice] = useState(null);
 
   return {
     providerService,
     setProviderService,
+    updatedAt,
+    setUpdatedAt,
+    lastPrice,
+    setLastPrice,
   };
 };
 

@@ -13,6 +13,7 @@ import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
 import { CircularProgress } from "@material-ui/core";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -49,8 +50,8 @@ const IncreaseStrategyPanel = (props) => {
   const { loading: loadingProviders } = useOwnCopyTraderProviders();
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
+  const entryStrategy = watch("entryStrategy");
   const providerService = watch("providerService");
-
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerConsumedBalancePercentage = providerService
@@ -74,10 +75,7 @@ const IncreaseStrategyPanel = (props) => {
     { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
 
-  // Watched inputs that affect components.
-  const entryStrategy = watch("entryStrategy");
-  const lastPrice = watch("lastPrice");
-  const updatedAt = watch("updatedAt");
+  const { lastPrice, updatedAt } = useTradingViewContext();
 
   // Close panel on position update
   useEffect(() => {
@@ -121,7 +119,6 @@ const IncreaseStrategyPanel = (props) => {
         <Typography variant="h5">
           <FormattedMessage id="terminal.increasestrategy" />
         </Typography>
-        <input name="lastPrice" ref={register} type="hidden" />
       </Box>
       {expand && (
         <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
