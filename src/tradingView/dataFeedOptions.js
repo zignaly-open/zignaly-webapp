@@ -72,15 +72,33 @@ export function mapExchangeConnectionToTradingViewId(exchangeName) {
 }
 
 /**
+ * Generate trading view symbol with exchange id
+ *
+ * @export
+ * @param {string} tradeViewSymbol Symbol
+ * @param {ExchangeConnectionEntity} exchangeConnection Exchange connection entity.
+ * @returns {string} TradingView Symbol with exchange id
+ */
+export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection) {
+  const symbolSuffix =
+    exchangeConnection.exchangeName.toLowerCase() !== "bitmex" &&
+    exchangeConnection.exchangeType === "futures"
+      ? "PERP"
+      : "";
+  const symbolCode = tradeViewSymbol + symbolSuffix;
+  const exchangeId = mapExchangeConnectionToTradingViewId(exchangeConnection.exchangeName);
+  return `${exchangeId}:${symbolCode}`;
+}
+
+/**
  * Create Trading View data feed configuration.
  *
- * @param {string} exchangeName Exchange name.
  * @param {string} symbol Crypto currency symbol.
  * @param {boolean} darkStyle Dark style flag.
  *
  * @returns {Object<string, any>} Data feed options.
  */
-export function createWidgetOptions(exchangeName, symbol, darkStyle) {
+export function createWidgetOptions(symbol, darkStyle) {
   return {
     // datafeed: dataFeed,
     // library_path: process.env.GATSBY_BASE_PATH + "/charting_library/",
@@ -100,7 +118,7 @@ export function createWidgetOptions(exchangeName, symbol, darkStyle) {
     interval: "30",
     locale: "en",
     studies_overrides: {},
-    symbol: symbol.replace("/", ""),
+    symbol,
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
   };

@@ -3,7 +3,7 @@ import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
-  mapExchangeConnectionToTradingViewId,
+  getTradingViewExchangeSymbol,
 } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
@@ -199,11 +199,11 @@ const TradingViewEdit = (props) => {
       return () => {};
     }
 
-    const widgetOptions = createWidgetOptions(
-      resolveExchangeName(),
-      selectedSymbol,
-      storeSettings.darkStyle,
+    const symbol = getTradingViewExchangeSymbol(
+      symbolData.tradeViewSymbol,
+      storeSettings.selectedExchange,
     );
+    const widgetOptions = createWidgetOptions(symbol, storeSettings.darkStyle);
 
     const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
@@ -215,31 +215,31 @@ const TradingViewEdit = (props) => {
   useEffect(bootstrapWidget, [libraryReady, positionEntity, tradingViewWidget]);
 
   // Force initial price notification.
-  const initDataFeedSymbol = () => {
-    const checkExist = setInterval(() => {
-      if (
-        tradingViewWidget &&
-        tradingViewWidget.iframe &&
-        tradingViewWidget.iframe.contentWindow &&
-        symbolData
-      ) {
-        const symbolSuffix =
-          storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-          storeSettings.selectedExchange.exchangeType === "futures"
-            ? "PERP"
-            : "";
-        const symbolCode = symbolData.tradeViewSymbol + symbolSuffix;
-        const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
+  // const initDataFeedSymbol = () => {
+  //   const checkExist = setInterval(() => {
+  //     if (
+  //       tradingViewWidget &&
+  //       tradingViewWidget.iframe &&
+  //       tradingViewWidget.iframe.contentWindow &&
+  //       symbolData
+  //     ) {
+  //       const symbolSuffix =
+  //         storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
+  //         storeSettings.selectedExchange.exchangeType === "futures"
+  //           ? "PERP"
+  //           : "";
+  //       const symbolCode = symbolData.tradeViewSymbol + symbolSuffix;
+  //       const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
 
-        tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
-          "*",
-        );
-        clearInterval(checkExist);
-      }
-    }, 100);
-  };
-  useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  //       tradingViewWidget.iframe.contentWindow.postMessage(
+  //         { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
+  //         "*",
+  //       );
+  //       clearInterval(checkExist);
+  //     }
+  //   }, 100);
+  // };
+  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   const methods = useForm({
     mode: "onChange",

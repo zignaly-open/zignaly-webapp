@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import {
   createWidgetOptions,
-  mapExchangeConnectionToTradingViewId,
+  getTradingViewExchangeSymbol,
 } from "../../../tradingView/dataFeedOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -164,13 +164,20 @@ const TradingView = () => {
       return () => {};
     }
 
-    const widgetOptions = createWidgetOptions(
-      exchangeName,
-      selectedSymbol.short,
-      storeSettings.darkStyle,
+    const symbol = getTradingViewExchangeSymbol(
+      selectedSymbol.tradeViewSymbol,
+      storeSettings.selectedExchange,
     );
+    const widgetOptions = createWidgetOptions(symbol, storeSettings.darkStyle);
 
     const cleanupWidget = instantiateWidget(widgetOptions);
+
+    // setTimeout(() => {
+    //   tradingViewWidget.iframe.contentWindow.postMessage(
+    //     { name: "set-symbol", data: { symbol } },
+    //     "*",
+    //   );
+    // }, 10000);
     return () => {
       cleanupWidget();
     };
@@ -199,21 +206,21 @@ const TradingView = () => {
   };
   useEffect(changeTheme, [storeSettings.darkStyle]);
 
-  // Force initial price notification.
-  const initDataFeedSymbol = () => {
-    const checkExist = setInterval(() => {
-      if (
-        tradingViewWidget &&
-        tradingViewWidget.iframe &&
-        tradingViewWidget.iframe.contentWindow &&
-        selectedSymbol
-      ) {
-        handleSymbolChange(selectedSymbol.short);
-        clearInterval(checkExist);
-      }
-    }, 100);
-  };
-  useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  // // Force initial price notification.
+  // const initDataFeedSymbol = () => {
+  //   const checkExist = setInterval(() => {
+  //     if (
+  //       tradingViewWidget &&
+  //       tradingViewWidget.iframe &&
+  //       tradingViewWidget.iframe.contentWindow &&
+  //       selectedSymbol
+  //     ) {
+  //       handleSymbolChange(selectedSymbol.short);
+  //       clearInterval(checkExist);
+  //     }
+  //   }, 100);
+  // };
+  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   /**
    * @typedef {Object} OptionValue
@@ -230,17 +237,15 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-    const symbolSuffix =
-      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-      storeSettings.selectedExchange.exchangeType === "futures"
-        ? "PERP"
-        : "";
-    const symbolCode = newSymbol.tradeViewSymbol + symbolSuffix;
-    const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
+
+    const symbol = getTradingViewExchangeSymbol(
+      selectedSymbol.tradeViewSymbol,
+      storeSettings.selectedExchange,
+    );
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
+        { name: "set-symbol", data: { symbol } },
         "*",
       );
     }

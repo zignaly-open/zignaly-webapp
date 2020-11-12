@@ -30,7 +30,7 @@ function usePositionEntry(positionEntity) {
   const units = watch("units");
   const positionSize = watch("positionSize");
   const priceDifference = watch("priceDifference");
-  const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
+  const currentPrice = parseFloat(strategyPrice) || lastPrice;
 
   /**
    * Resolve position entry price for new or existing position.
