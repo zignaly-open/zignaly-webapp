@@ -24,6 +24,7 @@ import {
   createMarketSymbolEmptyValueObject,
 } from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {any} TVWidget
@@ -50,7 +51,9 @@ import TradingViewContext from "./TradingViewContext";
 const TradingViewEdit = (props) => {
   const { positionId } = props;
   const [libraryReady, setLibraryReady] = useState(false);
-  const { instantiateWidget, lastPrice, tradingViewWidget } = useTradingTerminal();
+  const tradingViewContext = useTradingViewContext();
+  const { setLastPrice, lastPrice } = tradingViewContext;
+  const { instantiateWidget, tradingViewWidget } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -75,7 +78,6 @@ const TradingViewEdit = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const tradingViewContext = useContext(TradingViewContext);
 
   /**
    * Initialize state variables that depend on loaded position.
@@ -189,11 +191,7 @@ const TradingViewEdit = (props) => {
       return () => {};
     }
 
-    const symbol = getTradingViewExchangeSymbol(
-      symbolData.tradeViewSymbol,
-      storeSettings.selectedExchange,
-    );
-    const widgetOptions = createWidgetOptions(symbol, storeSettings.darkStyle);
+    const widgetOptions = createWidgetOptions(symbolData.tradeViewSymbol, storeSettings.darkStyle);
 
     const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
