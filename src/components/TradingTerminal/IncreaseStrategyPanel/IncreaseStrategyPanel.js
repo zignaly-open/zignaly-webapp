@@ -52,6 +52,7 @@ const IncreaseStrategyPanel = (props) => {
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const entryStrategy = watch("entryStrategy");
   const { lastPrice, updatedAt, providerService } = useContext(TradingViewContext);
+  console.log(providerService);
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerConsumedBalancePercentage = providerService

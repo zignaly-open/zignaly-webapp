@@ -25,6 +25,7 @@ import {
 } from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
+import useOwnCopyTraderProviders from "hooks/useOwnCopyTraderProviders";
 
 /**
  * @typedef {any} TVWidget
@@ -52,7 +53,7 @@ const TradingViewEdit = (props) => {
   const { positionId } = props;
   const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
-  const { setLastPrice, lastPrice } = tradingViewContext;
+  const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
   const { instantiateWidget, tradingViewWidget } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
@@ -78,6 +79,7 @@ const TradingViewEdit = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
+  const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
 
   /**
    * Initialize state variables that depend on loaded position.
@@ -211,10 +213,7 @@ const TradingViewEdit = (props) => {
         tradingViewWidget.iframe.contentWindow &&
         symbolData
       ) {
-        const symbol = getTradingViewExchangeSymbol(
-          symbolData.tradeViewSymbol,
-          storeSettings.selectedExchange,
-        );
+        const symbol = getTradingViewExchangeSymbol(symbolData.tradeViewSymbol, exchange);
         tradingViewWidget.iframe.contentWindow.postMessage(
           { name: "set-symbol", data: { symbol } },
           "*",
@@ -224,6 +223,15 @@ const TradingViewEdit = (props) => {
     }, 100);
   };
   useEffect(initDataFeedSymbol, [tradingViewWidget]);
+
+  const providerId = positionEntity ? positionEntity.providerId : null;
+  useEffect(() => {
+    // Update current provider service to context
+    if (!ownCopyTraderProviders || !providerId) return;
+
+    const provider = ownCopyTraderProviders.find((p) => p.providerId === providerId);
+    setProviderService(provider);
+  }, [ownCopyTraderProviders, providerId]);
 
   const methods = useForm({
     mode: "onChange",

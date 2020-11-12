@@ -78,15 +78,12 @@ const TradingViewHeader = (props) => {
     : providerOptions[0]
     ? providerOptions[0].val
     : "";
-  console.log();
 
   useEffect(() => {
     // Update current provider service to context
     if (!ownCopyTraderProviders) return;
 
-    const newProviderService = ownCopyTraderProviders.find(
-      (provider) => provider.providerId === providerId,
-    ) || {
+    const provider = ownCopyTraderProviders.find((p) => p.providerId === providerId) || {
       providerPayableBalance: 0,
       providerConsumedBalance: 0,
       providerConsumedBalancePercentage: 0,
@@ -96,7 +93,7 @@ const TradingViewHeader = (props) => {
       providerQuote: "",
       providerId: "1",
     };
-    setProviderService(newProviderService);
+    setProviderService(provider);
   }, [providerId, ownCopyTraderProviders]);
 
   useEffect(() => {
