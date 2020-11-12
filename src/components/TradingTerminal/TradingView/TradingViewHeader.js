@@ -36,9 +36,17 @@ const TradingViewHeader = (props) => {
   const dispatch = useDispatch();
   const { providerService, setProviderService } = useContext(TradingViewContext);
   const providerId = watch("providerService");
+  const [symbolsOptions, setSymbolsOptions] = useState(null);
   const selectedExchange = storeSettings.selectedExchange;
 
-  // Filter provider symbols options
+  const providerOptions = ownCopyTraderProviders.map((provider) => {
+    return {
+      label: provider.providerName,
+      val: String(provider.providerId),
+    };
+  });
+
+  // Filter valid symbols
   const filterSymbols = () => {
     return symbolsList.reduce((result, symbol) => {
       let valid = true;
@@ -61,14 +69,6 @@ const TradingViewHeader = (props) => {
       return result;
     }, []);
   };
-  const [symbolsOptions, setSymbolsOptions] = useState(filterSymbols());
-
-  const providerOptions = ownCopyTraderProviders.map((provider) => {
-    return {
-      label: provider.providerName,
-      val: String(provider.providerId),
-    };
-  });
 
   // Select saved provider or default to first option
   const initialProviderId = providerOptions.find(
@@ -78,8 +78,12 @@ const TradingViewHeader = (props) => {
     : providerOptions[0]
     ? providerOptions[0].val
     : "";
+  console.log();
 
   useEffect(() => {
+    // Update current provider service to context
+    if (!ownCopyTraderProviders) return;
+
     const newProviderService = ownCopyTraderProviders.find(
       (provider) => provider.providerId === providerId,
     ) || {
@@ -92,17 +96,15 @@ const TradingViewHeader = (props) => {
       providerQuote: "",
       providerId: "1",
     };
-    // Update context
     setProviderService(newProviderService);
-
-    // Save provider settings
-    dispatch(setTerminalProvider(providerId));
-  }, [providerId]);
+  }, [providerId, ownCopyTraderProviders]);
 
   useEffect(() => {
-    // Update symbols matching provider
-    setSymbolsOptions(filterSymbols());
-  }, [providerId, selectedExchange]);
+    // Filter symbols matching provider
+    if (symbolsList) {
+      setSymbolsOptions(filterSymbols());
+    }
+  }, [providerId]);
 
   // Save filters to store when changed
   const saveSelectedSymbol = () => {
@@ -117,44 +119,55 @@ const TradingViewHeader = (props) => {
 
   return (
     <Box bgcolor="grid.content" className="controlsBar" display="flex" flexDirection="row">
-      <Box alignContent="left" className="symbolsSelector" display="flex" flexDirection="column">
-        <Typography variant="body1">
-          <FormattedMessage id="terminal.browsecoins" />
-        </Typography>
-        <CustomSelect
-          label=""
-          onChange={handleSymbolChange}
-          options={symbolsOptions}
-          search={true}
-          value={selectedSymbol}
-        />
-      </Box>
-      {size(ownCopyTraderProviders) > 1 && (
-        <Box
-          alignContent="left"
-          className="providersSelector"
-          display="flex"
-          flexDirection="column"
-        >
-          <Typography variant="body1">
-            <FormattedMessage id="terminal.providers" />
-          </Typography>
-          <Controller
-            control={control}
-            defaultValue={initialProviderId}
-            name="providerService"
-            render={({ onChange, value }) => (
-              <CustomSelect
-                label=""
-                onChange={(/** @type {string} **/ v) => {
-                  onChange(v);
-                }}
-                options={providerOptions}
-                value={value}
+      {providerService && symbolsOptions && (
+        <>
+          <Box
+            alignContent="left"
+            className="symbolsSelector"
+            display="flex"
+            flexDirection="column"
+          >
+            <Typography variant="body1">
+              <FormattedMessage id="terminal.browsecoins" />
+            </Typography>
+            <CustomSelect
+              label=""
+              onChange={handleSymbolChange}
+              options={symbolsOptions}
+              search={true}
+              value={selectedSymbol}
+            />
+          </Box>
+          {size(ownCopyTraderProviders) > 1 && (
+            <Box
+              alignContent="left"
+              className="providersSelector"
+              display="flex"
+              flexDirection="column"
+            >
+              <Typography variant="body1">
+                <FormattedMessage id="terminal.providers" />
+              </Typography>
+              <Controller
+                control={control}
+                defaultValue={initialProviderId}
+                name="providerService"
+                render={({ onChange, value }) => (
+                  <CustomSelect
+                    label=""
+                    onChange={(/** @type {string} **/ v) => {
+                      // Save provider settings
+                      dispatch(setTerminalProvider(v));
+                      onChange(v);
+                    }}
+                    options={providerOptions}
+                    value={value}
+                  />
+                )}
               />
-            )}
-          />
-        </Box>
+            </Box>
+          )}
+        </>
       )}
     </Box>
   );
