@@ -5,8 +5,6 @@ import { formatPrice } from "../utils/formatters";
 /**
  * @typedef {Object} TradingTerminalHook
  * @property {function} instantiateWidget
- * @property {number} lastPrice
- * @property {function} setLastPrice
  * @property {function} setTradingViewWidget
  * @property {any} tradingViewWidget
  */
@@ -22,11 +20,11 @@ import { formatPrice } from "../utils/formatters";
  * private repository that have publication restrictions incompatible with open
  * source.
  *
+ * @param {function} setLastPrice Update last price callback.
  * @returns {TradingTerminalHook} Trading View hook object.
  */
-const useTradingTerminal = () => {
+const useTradingTerminal = (setLastPrice) => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
-  const [lastPrice, setLastPrice] = useState(null);
 
   /**
    * Instantiate trading view widget and initialize price.
@@ -89,8 +87,6 @@ const useTradingTerminal = () => {
 
   return {
     instantiateWidget,
-    lastPrice,
-    setLastPrice,
     setTradingViewWidget,
     tradingViewWidget,
   };

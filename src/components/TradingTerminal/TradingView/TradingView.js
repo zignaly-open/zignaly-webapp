@@ -42,19 +42,16 @@ const defaultExchangeSymbol = {
  * @returns {JSX.Element} Trading terminal element.
  */
 const TradingView = () => {
+  const tradingViewContext = useTradingViewContext();
+  const { lastPrice, setLastPrice } = tradingViewContext;
   const [libraryReady, setLibraryReady] = useState(false);
-  const {
-    instantiateWidget,
-    lastPrice,
+  const { instantiateWidget, setTradingViewWidget, tradingViewWidget } = useTradingTerminal(
     setLastPrice,
-    setTradingViewWidget,
-    tradingViewWidget,
-  } = useTradingTerminal();
+  );
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
   const dispatch = useDispatch();
-  const tradingViewContext = useTradingViewContext();
 
   const getMarketData = async () => {
     const marketDataPayload = {
@@ -164,20 +161,13 @@ const TradingView = () => {
       return () => {};
     }
 
-    const symbol = getTradingViewExchangeSymbol(
+    const widgetOptions = createWidgetOptions(
       selectedSymbol.tradeViewSymbol,
-      storeSettings.selectedExchange,
+      storeSettings.darkStyle,
     );
-    const widgetOptions = createWidgetOptions(symbol, storeSettings.darkStyle);
 
     const cleanupWidget = instantiateWidget(widgetOptions);
 
-    // setTimeout(() => {
-    //   tradingViewWidget.iframe.contentWindow.postMessage(
-    //     { name: "set-symbol", data: { symbol } },
-    //     "*",
-    //   );
-    // }, 10000);
     return () => {
       cleanupWidget();
     };
@@ -206,21 +196,21 @@ const TradingView = () => {
   };
   useEffect(changeTheme, [storeSettings.darkStyle]);
 
-  // // Force initial price notification.
-  // const initDataFeedSymbol = () => {
-  //   const checkExist = setInterval(() => {
-  //     if (
-  //       tradingViewWidget &&
-  //       tradingViewWidget.iframe &&
-  //       tradingViewWidget.iframe.contentWindow &&
-  //       selectedSymbol
-  //     ) {
-  //       handleSymbolChange(selectedSymbol.short);
-  //       clearInterval(checkExist);
-  //     }
-  //   }, 100);
-  // };
-  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  // Force initial price notification.
+  const initDataFeedSymbol = () => {
+    const checkExist = setInterval(() => {
+      if (
+        tradingViewWidget &&
+        tradingViewWidget.iframe &&
+        tradingViewWidget.iframe.contentWindow &&
+        selectedSymbol
+      ) {
+        handleSymbolChange(selectedSymbol.short);
+        clearInterval(checkExist);
+      }
+    }, 100);
+  };
+  useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   /**
    * @typedef {Object} OptionValue
@@ -238,12 +228,11 @@ const TradingView = () => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
 
-    const symbol = getTradingViewExchangeSymbol(
-      selectedSymbol.tradeViewSymbol,
-      storeSettings.selectedExchange,
-    );
-
     if (tradingViewWidget && tradingViewWidget.iframe) {
+      const symbol = getTradingViewExchangeSymbol(
+        selectedSymbol.tradeViewSymbol,
+        storeSettings.selectedExchange,
+      );
       tradingViewWidget.iframe.contentWindow.postMessage(
         { name: "set-symbol", data: { symbol } },
         "*",

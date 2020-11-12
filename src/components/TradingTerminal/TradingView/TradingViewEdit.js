@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -23,7 +23,6 @@ import {
   createExchangeConnectionEmptyEntity,
   createMarketSymbolEmptyValueObject,
 } from "../../../services/tradeApiClient.types";
-import useTradingViewContext from "hooks/useTradingViewContext";
 import TradingViewContext from "./TradingViewContext";
 
 /**
@@ -76,7 +75,7 @@ const TradingViewEdit = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const tradingViewContext = useTradingViewContext();
+  const tradingViewContext = useContext(TradingViewContext);
 
   /**
    * Initialize state variables that depend on loaded position.
@@ -184,15 +183,6 @@ const TradingViewEdit = (props) => {
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
 
-  /**
-   * Resolve exchange name from selected exchange.
-   *
-   * @returns {string} Exchange name.
-   */
-  const resolveExchangeName = () => {
-    return exchange.exchangeName || exchange.name;
-  };
-
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
     if (!libraryReady || !positionEntity || tradingViewWidget) {
@@ -215,31 +205,27 @@ const TradingViewEdit = (props) => {
   useEffect(bootstrapWidget, [libraryReady, positionEntity, tradingViewWidget]);
 
   // Force initial price notification.
-  // const initDataFeedSymbol = () => {
-  //   const checkExist = setInterval(() => {
-  //     if (
-  //       tradingViewWidget &&
-  //       tradingViewWidget.iframe &&
-  //       tradingViewWidget.iframe.contentWindow &&
-  //       symbolData
-  //     ) {
-  //       const symbolSuffix =
-  //         storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-  //         storeSettings.selectedExchange.exchangeType === "futures"
-  //           ? "PERP"
-  //           : "";
-  //       const symbolCode = symbolData.tradeViewSymbol + symbolSuffix;
-  //       const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
-
-  //       tradingViewWidget.iframe.contentWindow.postMessage(
-  //         { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
-  //         "*",
-  //       );
-  //       clearInterval(checkExist);
-  //     }
-  //   }, 100);
-  // };
-  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  const initDataFeedSymbol = () => {
+    const checkExist = setInterval(() => {
+      if (
+        tradingViewWidget &&
+        tradingViewWidget.iframe &&
+        tradingViewWidget.iframe.contentWindow &&
+        symbolData
+      ) {
+        const symbol = getTradingViewExchangeSymbol(
+          symbolData.tradeViewSymbol,
+          storeSettings.selectedExchange,
+        );
+        tradingViewWidget.iframe.contentWindow.postMessage(
+          { name: "set-symbol", data: { symbol } },
+          "*",
+        );
+        clearInterval(checkExist);
+      }
+    }, 100);
+  };
+  useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   const methods = useForm({
     mode: "onChange",

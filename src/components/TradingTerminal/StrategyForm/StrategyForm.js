@@ -423,13 +423,6 @@ const StrategyForm = (props) => {
     }
   };
 
-  // @ts-ignore
-  const updatePriceField = () => {
-    // todo: remove?
-    setValue("price", lastPrice);
-  };
-  useEffect(updatePriceField, [lastPrice]);
-
   // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");
   const entryPrice = positionEntity ? positionEntity.buyPrice : parseFloat(strategyPrice);

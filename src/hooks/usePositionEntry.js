@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
-import useTradingViewContext from "hooks/useTradingViewContext";
+import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -25,7 +26,7 @@ import useTradingViewContext from "hooks/useTradingViewContext";
  */
 function usePositionEntry(positionEntity) {
   const { watch } = useFormContext();
-  const { lastPrice } = useTradingViewContext();
+  const { lastPrice } = useContext(TradingViewContext);
   const strategyPrice = watch("price");
   const units = watch("units");
   const positionSize = watch("positionSize");

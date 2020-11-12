@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -13,7 +13,7 @@ import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
 import { CircularProgress } from "@material-ui/core";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
-import useTradingViewContext from "hooks/useTradingViewContext";
+import TradingViewContext from "../TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -51,7 +51,7 @@ const IncreaseStrategyPanel = (props) => {
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const entryStrategy = watch("entryStrategy");
-  const providerService = watch("providerService");
+  const { lastPrice, updatedAt, providerService } = useContext(TradingViewContext);
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerConsumedBalancePercentage = providerService
@@ -74,8 +74,6 @@ const IncreaseStrategyPanel = (props) => {
     { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
     { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
-
-  const { lastPrice, updatedAt } = useTradingViewContext();
 
   // Close panel on position update
   useEffect(() => {

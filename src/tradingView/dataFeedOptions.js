@@ -86,7 +86,9 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
       ? "PERP"
       : "";
   const symbolCode = tradeViewSymbol + symbolSuffix;
-  const exchangeId = mapExchangeConnectionToTradingViewId(exchangeConnection.exchangeName);
+  const exchangeId = mapExchangeConnectionToTradingViewId(
+    exchangeConnection.exchangeName || exchangeConnection.name,
+  );
   return `${exchangeId}:${symbolCode}`;
 }
 

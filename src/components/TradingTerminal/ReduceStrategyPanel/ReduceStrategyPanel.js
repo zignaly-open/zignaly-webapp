@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -18,6 +18,7 @@ import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { formatPrice } from "../../../utils/formatters";
 import useValidation from "../../../hooks/useValidation";
 import { Alert } from "@material-ui/lab";
+import TradingViewContext from "../TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -46,6 +47,7 @@ const ReduceStrategyPanel = (props) => {
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
   const { validPercentage } = useValidation();
+  const { updatedAt } = useContext(TradingViewContext);
 
   /**
    * Handle toggle switch action.
@@ -90,7 +92,6 @@ const ReduceStrategyPanel = (props) => {
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
-  const updatedAt = watch("updatedAt");
 
   // Close panel on position update
   useEffect(() => {
