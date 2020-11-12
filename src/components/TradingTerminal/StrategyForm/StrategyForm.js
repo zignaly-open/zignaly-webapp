@@ -58,7 +58,7 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
 
-  const { errors, handleSubmit, setValue, reset, watch } = useFormContext();
+  const { errors, handleSubmit, reset, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();

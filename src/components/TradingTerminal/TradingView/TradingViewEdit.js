@@ -184,7 +184,6 @@ const TradingViewEdit = (props) => {
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
-  console.log(tradingViewWidget, positionEntity, libraryReady, symbolData);
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
