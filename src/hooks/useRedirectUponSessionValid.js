@@ -23,7 +23,7 @@ const useRedirectUponSessionValid = () => {
       const params = new URLSearchParams(
         typeof window !== "undefined" ? window.location.search : "",
       );
-      const path = params.get("ret") || "/dashboard";
+      const path = params.get("ret") || "/copyTraders";
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
