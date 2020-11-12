@@ -111,7 +111,6 @@ const IncreaseStrategyPanel = (props) => {
     if (!ownCopyTraderProviders) return;
 
     const provider = ownCopyTraderProviders.find((p) => p.providerId === positionEntity.providerId);
-    console.log(provider, ownCopyTraderProviders, positionEntity.providerId);
     setProviderService(provider);
   }, [ownCopyTraderProviders]);
 
@@ -255,8 +254,8 @@ const IncreaseStrategyPanel = (props) => {
                 <Box display="flex" flexDirection="row">
                   <OutlinedInput
                     className="outlineInput"
-                    error={!!errors.positionSizePercentage}
                     disabled={isReadOnly}
+                    error={!!errors.positionSizePercentage}
                     inputRef={register({
                       required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                       validate: (value) =>
