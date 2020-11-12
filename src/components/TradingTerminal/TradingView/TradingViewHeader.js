@@ -41,6 +41,8 @@ const TradingViewHeader = (props) => {
   // Filter provider symbols options
   const filterSymbols = () => {
     return symbolsList.reduce((result, symbol) => {
+      let valid = true;
+      // Check if symbol can be used for selected provider
       if (
         providerService &&
         providerId &&
@@ -48,9 +50,13 @@ const TradingViewHeader = (props) => {
         selectedExchange.exchangeName.toLowerCase() !== "bitmex"
       ) {
         const { providerQuote } = providerService;
-        if (providerQuote === true || symbol.short.includes("/" + providerQuote)) {
-          result.push(symbol.short);
+        if (!providerQuote && !symbol.short.includes("/" + providerQuote)) {
+          valid = false;
         }
+      }
+
+      if (valid) {
+        result.push(symbol.short);
       }
       return result;
     }, []);
