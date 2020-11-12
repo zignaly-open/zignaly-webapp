@@ -35,9 +35,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
-  const { lastPrice } = useContext(TradingViewContext);
+  const { lastPrice, providerService } = useContext(TradingViewContext);
   const strategyPrice = watch("price");
-  const providerAllocatedBalance = watch("providerPayableBalance");
+  const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const currentPrice = parseFloat(strategyPrice) || lastPrice;
   const { formatMessage } = useIntl();
 
