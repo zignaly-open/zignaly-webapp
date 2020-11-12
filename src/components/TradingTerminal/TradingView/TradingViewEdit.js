@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -25,7 +25,6 @@ import {
 } from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
-import useOwnCopyTraderProviders from "hooks/useOwnCopyTraderProviders";
 
 /**
  * @typedef {any} TVWidget
@@ -79,7 +78,6 @@ const TradingViewEdit = (props) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const { ownCopyTraderProviders } = useOwnCopyTraderProviders();
 
   /**
    * Initialize state variables that depend on loaded position.
@@ -186,6 +184,7 @@ const TradingViewEdit = (props) => {
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
+  console.log(tradingViewWidget, positionEntity, libraryReady, symbolData);
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
@@ -223,15 +222,6 @@ const TradingViewEdit = (props) => {
     }, 100);
   };
   useEffect(initDataFeedSymbol, [tradingViewWidget]);
-
-  const providerId = positionEntity ? positionEntity.providerId : null;
-  useEffect(() => {
-    // Update current provider service to context
-    if (!ownCopyTraderProviders || !providerId) return;
-
-    const provider = ownCopyTraderProviders.find((p) => p.providerId === providerId);
-    setProviderService(provider);
-  }, [ownCopyTraderProviders, providerId]);
 
   const methods = useForm({
     mode: "onChange",

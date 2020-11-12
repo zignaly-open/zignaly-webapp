@@ -19,9 +19,10 @@ import { showErrorAlert } from "store/actions/ui";
 /**
  * Provides list of copy trader providers.
  *
+ * @param {string} [exchangeInternalId] exchangeInternalId
  * @returns {HookData} Balance.
  */
-const useOwnCopyTraderProviders = () => {
+const useOwnCopyTraderProviders = (exchangeInternalId) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
@@ -32,7 +33,7 @@ const useOwnCopyTraderProviders = () => {
   const loadOwnCopyTradersProviders = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: exchangeInternalId || storeSettings.selectedExchange.internalId,
     };
 
     setLoading(true);

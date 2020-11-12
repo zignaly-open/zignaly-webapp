@@ -14,7 +14,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 import { CircularProgress } from "@material-ui/core";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "../TradingView/TradingViewContext";
-
+import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -45,14 +45,22 @@ const IncreaseStrategyPanel = (props) => {
     realInvestmentChange,
     unitsChange,
     validatePositionSize,
+    positionSizePercentageChange,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
   const { balance, loading } = useAvailableBalance();
-  const { loading: loadingProviders } = useOwnCopyTraderProviders();
+  const exchangeConnections = useStoreUserExchangeConnections();
+  const exchange = exchangeConnections.find(
+    (item) => item.internalId === positionEntity.internalExchangeId,
+  );
+  const { loading: loadingProviders, ownCopyTraderProviders } = useOwnCopyTraderProviders(
+    exchange.internalId,
+  );
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const entryStrategy = watch("entryStrategy");
-  const { lastPrice, updatedAt, providerService } = useContext(TradingViewContext);
-  console.log(providerService);
+  const { lastPrice, updatedAt, providerService, setProviderService } = useContext(
+    TradingViewContext,
+  );
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerConsumedBalancePercentage = providerService
@@ -97,6 +105,15 @@ const IncreaseStrategyPanel = (props) => {
     }
   };
   useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
+
+  useEffect(() => {
+    // Update current provider service to context
+    if (!ownCopyTraderProviders) return;
+
+    const provider = ownCopyTraderProviders.find((p) => p.providerId === positionEntity.providerId);
+    console.log(provider, ownCopyTraderProviders, positionEntity.providerId);
+    setProviderService(provider);
+  }, [ownCopyTraderProviders]);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
@@ -229,26 +246,39 @@ const IncreaseStrategyPanel = (props) => {
             </FormControl>
           )}
           {isCopyTrader && (
-            <FormControl>
+            <>
               <HelperLabel
                 descriptionId="terminal.position.sizepercentage.help"
                 labelId="terminal.position.sizepercentage"
               />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={isReadOnly}
-                  error={!!errors.positionSizePercentage}
-                  inputRef={register({
-                    required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
-                    validate: (value) =>
-                      (value > 0 && value <= 100) ||
-                      formatMessage({ id: "terminal.positionsize.valid.percentage" }),
-                  })}
-                  name="positionSizePercentage"
-                  placeholder={"0"}
-                />
-                <div className="currencyBox">%</div>
+              <Box className="positionSizePercentage" display="flex" flexDirection="row">
+                <Box display="flex" flexDirection="row">
+                  <OutlinedInput
+                    className="outlineInput"
+                    error={!!errors.positionSizePercentage}
+                    disabled={isReadOnly}
+                    inputRef={register({
+                      required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
+                      validate: (value) =>
+                        (value > 0 && value <= 100) ||
+                        formatMessage({ id: "terminal.positionsize.valid.percentage" }),
+                    })}
+                    name="positionSizePercentage"
+                    onChange={positionSizePercentageChange}
+                    placeholder={"0"}
+                  />
+                  <div className="currencyBox">%</div>
+                </Box>
+                <Box display="flex" flexDirection="row">
+                  <OutlinedInput
+                    className="outlineInput"
+                    inputRef={register}
+                    name="positionSizeAllocated"
+                    placeholder={"0"}
+                    readOnly={true}
+                  />
+                  <div className="currencyBox">{symbolData.unitsInvestment}</div>
+                </Box>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.provider.allocated" />{" "}
@@ -271,7 +301,7 @@ const IncreaseStrategyPanel = (props) => {
               {errors.positionSizePercentage && (
                 <span className="errorText">{errors.positionSizePercentage.message}</span>
               )}
-            </FormControl>
+            </>
           )}
           {!isCopyTrader && (
             <FormControl>
