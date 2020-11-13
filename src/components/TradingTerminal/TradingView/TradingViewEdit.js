@@ -3,7 +3,7 @@ import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
-  mapExchangeConnectionToTradingViewId,
+  getTradingViewExchangeSymbol,
 } from "../../../tradingView/dataFeedOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
@@ -23,6 +23,8 @@ import {
   createExchangeConnectionEmptyEntity,
   createMarketSymbolEmptyValueObject,
 } from "../../../services/tradeApiClient.types";
+import TradingViewContext from "./TradingViewContext";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {any} TVWidget
@@ -49,7 +51,9 @@ import {
 const TradingViewEdit = (props) => {
   const { positionId } = props;
   const [libraryReady, setLibraryReady] = useState(false);
-  const { instantiateWidget, lastPrice, tradingViewWidget } = useTradingTerminal();
+  const tradingViewContext = useTradingViewContext();
+  const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
+  const { instantiateWidget, tradingViewWidget } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -181,26 +185,13 @@ const TradingViewEdit = (props) => {
 
   const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
 
-  /**
-   * Resolve exchange name from selected exchange.
-   *
-   * @returns {string} Exchange name.
-   */
-  const resolveExchangeName = () => {
-    return exchange.exchangeName || exchange.name;
-  };
-
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
     if (!libraryReady || !positionEntity || tradingViewWidget) {
       return () => {};
     }
 
-    const widgetOptions = createWidgetOptions(
-      resolveExchangeName(),
-      selectedSymbol,
-      storeSettings.darkStyle,
-    );
+    const widgetOptions = createWidgetOptions(symbolData.tradeViewSymbol, storeSettings.darkStyle);
 
     const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
@@ -220,16 +211,9 @@ const TradingViewEdit = (props) => {
         tradingViewWidget.iframe.contentWindow &&
         symbolData
       ) {
-        const symbolSuffix =
-          storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-          storeSettings.selectedExchange.exchangeType === "futures"
-            ? "PERP"
-            : "";
-        const symbolCode = symbolData.tradeViewSymbol + symbolSuffix;
-        const exchangeId = mapExchangeConnectionToTradingViewId(resolveExchangeName());
-
+        const symbol = getTradingViewExchangeSymbol(symbolData.tradeViewSymbol, exchange);
         tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
+          { name: "set-symbol", data: { symbol } },
           "*",
         );
         clearInterval(checkExist);
@@ -300,55 +284,57 @@ const TradingViewEdit = (props) => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-        {!isLoading && (
-          <PositionsTable
-            notifyPositionsUpdate={processPositionsUpdate}
-            positionEntity={positionEntity}
-            type={getPositionStatusType()}
-          />
-        )}
-        <Box
-          bgcolor="grid.content"
-          className="tradingViewContainer"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          width={1}
-        >
-          {isLoading && (
-            <Box
-              className="loadProgress"
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <CircularProgress disableShrink />
+    <TradingViewContext.Provider value={tradingViewContext}>
+      <FormProvider {...methods}>
+        <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
+          {!isLoading && (
+            <PositionsTable
+              notifyPositionsUpdate={processPositionsUpdate}
+              positionEntity={positionEntity}
+              type={getPositionStatusType()}
+            />
+          )}
+          <Box
+            bgcolor="grid.content"
+            className="tradingViewContainer"
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            width={1}
+          >
+            {isLoading && (
+              <Box
+                className="loadProgress"
+                display="flex"
+                flexDirection="row"
+                justifyContent="center"
+              >
+                <CircularProgress disableShrink />
+              </Box>
+            )}
+            <Box className="tradingViewChart" id="trading_view_chart" />
+            {!isLoading && lastPrice && (
+              <>
+                <input name="updatedAt" ref={methods.register} type="hidden" />
+                <StrategyForm
+                  lastPrice={lastPrice}
+                  notifyPositionUpdate={notifyPositionUpdate}
+                  positionEntity={positionEntity}
+                  selectedSymbol={symbolData}
+                  tradingViewWidget={tradingViewWidget}
+                />
+              </>
+            )}
+          </Box>
+          {positionRawData && (
+            <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
+              <Typography variant="h6">Debug</Typography>
+              <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
             </Box>
           )}
-          <Box className="tradingViewChart" id="trading_view_chart" />
-          {!isLoading && lastPrice && (
-            <>
-              <input name="updatedAt" ref={methods.register} type="hidden" />
-              <StrategyForm
-                lastPrice={lastPrice}
-                notifyPositionUpdate={notifyPositionUpdate}
-                positionEntity={positionEntity}
-                selectedSymbol={symbolData}
-                tradingViewWidget={tradingViewWidget}
-              />
-            </>
-          )}
         </Box>
-        {positionRawData && (
-          <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
-            <Typography variant="h6">Debug</Typography>
-            <pre>{JSON.stringify(positionRawData, null, 2)}</pre>
-          </Box>
-        )}
-      </Box>
-    </FormProvider>
+      </FormProvider>
+    </TradingViewContext.Provider>
   );
 };
 

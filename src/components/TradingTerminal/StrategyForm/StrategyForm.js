@@ -58,7 +58,7 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
 
-  const { errors, handleSubmit, setValue, reset, register, watch } = useFormContext();
+  const { errors, handleSubmit, reset, watch } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
@@ -423,15 +423,6 @@ const StrategyForm = (props) => {
     }
   };
 
-  // @ts-ignore
-  const updatePriceField = () => {
-    setValue("price", lastPrice);
-    // Hidden price input used when strategy panels is collapsed due to the fact
-    // that unmounted input value is removed from form state.
-    setValue("lastPrice", lastPrice);
-  };
-  useEffect(updatePriceField, [lastPrice]);
-
   // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");
   const entryPrice = positionEntity ? positionEntity.buyPrice : parseFloat(strategyPrice);
@@ -527,7 +518,6 @@ const StrategyForm = (props) => {
   return (
     <Box bgcolor="grid.content" className="strategyForm" textAlign="center">
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <input name="lastPrice" ref={register} type="hidden" />
         {isPositionView ? (
           <SidebarEditPanels
             isReadOnly={isReadOnly}

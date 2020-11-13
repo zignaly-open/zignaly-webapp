@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useContext } from "react";
 import { range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
@@ -14,6 +14,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import useValidation from "../../../hooks/useValidation";
 import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
+import TradingViewContext from "../TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -76,9 +77,10 @@ const TakeProfitPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyUnits = watch("units");
-  const providerService = watch("providerService");
+  const { providerService } = useContext(TradingViewContext);
   const isCopyProvider =
-    (providerService && providerService !== "1") || (positionEntity && positionEntity.isCopyTrader);
+    (providerService && providerService.providerId !== "1") ||
+    (positionEntity && positionEntity.isCopyTrader);
 
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;

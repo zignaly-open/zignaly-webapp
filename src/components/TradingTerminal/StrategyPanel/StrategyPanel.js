@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
@@ -23,6 +23,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
+import TradingViewContext from "../TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -62,13 +63,14 @@ const StrategyPanel = (props) => {
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
-  const lastPrice = watch("lastPrice");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
-  const providerService = watch("providerService");
-  const providerConsumedBalance = watch("providerConsumedBalance");
-  const providerConsumedBalancePercentage = watch("providerConsumedBalancePercentage");
-  const isCopyProvider = providerService && providerService !== "1";
+  const { providerService, lastPrice } = useContext(TradingViewContext);
+  const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
+  const providerConsumedBalancePercentage = providerService
+    ? providerService.providerConsumedBalancePercentage
+    : 0;
+  const isCopyProvider = providerService && providerService.providerId !== "1";
 
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
