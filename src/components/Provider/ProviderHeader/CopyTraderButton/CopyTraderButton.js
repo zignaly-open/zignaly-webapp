@@ -37,6 +37,7 @@ const CopyTraderButton = ({ provider }) => {
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
+  const { profitSharing } = provider;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const followingFrom =
     exchangeConnections &&
@@ -131,45 +132,62 @@ const CopyTraderButton = ({ provider }) => {
         executeActionCallback={cancelDisconnect}
         setConfirmConfig={setConfirmConfig}
       />
-      {disabled && !disconnecting && (
-        <CustomButton className="submitButton" onClick={startCopying}>
-          <FormattedMessage id="copyt.copythistrader" />
-        </CustomButton>
-      )}
-      {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
-        <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-          <FormattedMessage id="copyt.stopcopyingtrader" />
-        </CustomButton>
-      )}
-      {!disabled && !disconnecting && !sameSelectedExchange && (
-        <Box
-          alignItems="center"
-          className="actionHelpBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
-          <Typography variant="h4">
-            <FormattedMessage id="copyt.followingfrom" />
-          </Typography>
-          <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
-            <Box>
-              <ExchangeIcon
-                exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
-                size="mediumLarge"
-              />
+      {profitSharing ? (
+        <>
+          {disabled && !disconnecting && (
+            <CustomButton className="submitButton" onClick={startCopying}>
+              <FormattedMessage id="copyt.copythistrader" />
+            </CustomButton>
+          )}
+          {!disabled && !disconnecting && (
+            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+              <FormattedMessage id="copyt.stopcopyingtrader" />
+            </CustomButton>
+          )}
+          {!disabled && disconnecting && (
+            <CustomButton
+              className="loadMoreButton"
+              loading={cancelDisconnectLoader}
+              onClick={confirmCancel}
+            >
+              <FormattedMessage id="copyt.canceldisconnecting" />
+            </CustomButton>
+          )}
+        </>
+      ) : (
+        <>
+          {disabled && !disconnecting && (
+            <CustomButton className="submitButton" onClick={startCopying}>
+              <FormattedMessage id="copyt.copythistrader" />
+            </CustomButton>
+          )}
+          {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
+            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+              <FormattedMessage id="copyt.stopcopyingtrader" />
+            </CustomButton>
+          )}
+          {!disabled && !disconnecting && !sameSelectedExchange && (
+            <Box
+              alignItems="center"
+              className="actionHelpBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-start"
+            >
+              <Typography variant="h4">
+                <FormattedMessage id="copyt.followingfrom" />
+              </Typography>
+              <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
+                <Box>
+                  <ExchangeIcon
+                    exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                    size="mediumLarge"
+                  />
+                </Box>
+              </Tooltip>
             </Box>
-          </Tooltip>
-        </Box>
-      )}
-      {!disabled && disconnecting && (
-        <CustomButton
-          className="loadMoreButton"
-          loading={cancelDisconnectLoader}
-          onClick={confirmCancel}
-        >
-          <FormattedMessage id="copyt.canceldisconnecting" />
-        </CustomButton>
+          )}
+        </>
       )}
       <Modal
         onClose={handleStopCopyingModalClose}

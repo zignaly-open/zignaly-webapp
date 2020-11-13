@@ -8,13 +8,13 @@ import { Box, MenuItem, Grow } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "../../../store/actions/session";
-import { navigate } from "gatsby";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
+import { navigateLogin } from "../../../services/navigation";
 
 /**
  *
@@ -33,7 +33,7 @@ const UserMenu = ({ onClose }) => {
 
   const logout = () => {
     dispatch(endTradeApiSession());
-    navigate("/login");
+    navigateLogin();
     onClose();
   };
 
