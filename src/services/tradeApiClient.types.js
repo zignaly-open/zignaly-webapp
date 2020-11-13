@@ -2633,7 +2633,7 @@ function createEmptyProviderGetEntity() {
     connected: false,
     copyTradingQuote: "",
     description: "",
-    disable: false,
+    disable: true,
     exchangeInternalId: "",
     exchangeType: "",
     exchanges: [""],
