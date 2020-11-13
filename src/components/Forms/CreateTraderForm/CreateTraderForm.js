@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CreateTraderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
+import { Box, Typography, OutlinedInput, CircularProgress, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -32,6 +32,7 @@ const MODEL_MONHTLY_FEE = 1;
  */
 const CreateTraderForm = () => {
   const [loading, setLoading] = useState(false);
+  const [allocated, setAllocated] = useState("");
   const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
@@ -279,18 +280,29 @@ const CreateTraderForm = () => {
                         <FormattedMessage id="srv.edit.minbalance" />
                       </Typography>
                     </label>
-                    <OutlinedInput
-                      className="customInput minAllocatedBalance"
-                      error={!!errors.minAllocatedBalance}
-                      inputProps={{
-                        min: 0,
-                      }}
-                      inputRef={register({
-                        required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
-                        min: 0,
-                      })}
+                    <Controller
+                      control={control}
                       name="minAllocatedBalance"
-                      type="number"
+                      render={(props) => (
+                        <TextField
+                          className="customInput minAllocatedBalance"
+                          error={!!errors.minAllocatedBalance}
+                          fullWidth
+                          onChange={(e) => {
+                            let data = e.target.value;
+                            if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
+                              data = data.replace(",", ".");
+                              setAllocated(data);
+                              props.onChange(data);
+                            }
+                          }}
+                          value={allocated}
+                          variant="outlined"
+                        />
+                      )}
+                      rules={{
+                        required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
+                      }}
                     />
                     {errors.minAllocatedBalance && (
                       <span className="errorText">{errors.minAllocatedBalance.message}</span>
