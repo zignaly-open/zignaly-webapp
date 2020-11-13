@@ -48,7 +48,6 @@ const CopyTraders = (props) => {
   const loadProvider = () => {
     if (providerId && providerId.length === 24) {
       dispatch(unsetProvider());
-      dispatch(showProviderProfileLoader(true));
       const payload = {
         token: tradeApi.accessToken,
         providerId: providerId,
