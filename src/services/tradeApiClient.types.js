@@ -1763,14 +1763,8 @@ export function userBalanceResponseTransform(response) {
   return assign(createEmptyUserBalanceEntity(), response, {
     totalUSDT: response["1USDT"] || response.totalUSDT || 0,
     totalBTC: response["1BTC"] || response.totalBTC || 0,
-    totalAvailableBTC:
-      response.totalMarginBTC && response.totalCurrentMarginBTC
-        ? response.totalMarginBTC - response.totalCurrentMarginBTC
-        : 0,
-    totalAvailableUSDT:
-      response.totalMarginUSDT && response.totalCurrentMarginUSDT
-        ? response.totalMarginUSDT - response.totalCurrentMarginUSDT
-        : 0,
+    totalAvailableBTC: response.totalMarginBTC - response.totalCurrentMarginBTC || 0,
+    totalAvailableUSDT: response.totalMarginUSDT - response.totalCurrentMarginUSDT || 0,
   });
 }
 
