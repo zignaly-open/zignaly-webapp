@@ -598,7 +598,7 @@ const initialState = {
       connected: false,
       copyTradingQuote: "",
       description: "",
-      disable: false,
+      disable: true,
       exchangeInternalId: "",
       exchangeType: "",
       exchanges: [""],
