@@ -9,7 +9,7 @@ import Positions from "./positions";
 import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider, unsetProvider } from "../../store/actions/views";
+import { setProvider, showProviderProfileLoader, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -48,6 +48,7 @@ const CopyTraders = (props) => {
   const loadProvider = () => {
     if (providerId && providerId.length === 24) {
       dispatch(unsetProvider());
+      dispatch(showProviderProfileLoader(true));
       const payload = {
         token: tradeApi.accessToken,
         providerId: providerId,
@@ -62,7 +63,6 @@ const CopyTraders = (props) => {
 
   const refreshProvider = () => {
     if (providerId && providerId.length === 24 && provider.profitSharing) {
-      dispatch(unsetProvider());
       const payload = {
         token: tradeApi.accessToken,
         providerId: providerId,
