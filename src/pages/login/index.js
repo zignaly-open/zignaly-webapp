@@ -11,7 +11,7 @@ import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid
 
 const LoginPage = () => {
   const intl = useIntl();
-  useRedirectUponSessionValid();
+  useRedirectUponSessionValid("/dashboard");
 
   return (
     <>
