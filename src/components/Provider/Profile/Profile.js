@@ -125,7 +125,7 @@ const Profile = ({ provider }) => {
           <CloneProviderButton provider={provider} />
         </Box>
       )}
-      {provider.isAdmin && provider.isClone && (
+      {!provider.profitSharing && provider.isAdmin && provider.isClone && (
         <Box className="cloneBox">
           <CloneDeleteButton provider={provider} />
         </Box>
