@@ -58,7 +58,7 @@ const StrategyForm = (props) => {
 
   const isPositionView = isObject(positionEntity);
 
-  const { errors, handleSubmit, reset, watch } = useFormContext();
+  const { errors, handleSubmit, reset, watch, setValue } = useFormContext();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
@@ -422,6 +422,12 @@ const StrategyForm = (props) => {
       createPosition(payload);
     }
   };
+
+  const updatePriceField = () => {
+    // Update price (selected symbol changed)
+    setValue("price", lastPrice);
+  };
+  useEffect(updatePriceField, [lastPrice]);
 
   // Use position buyPrice for edit or strategy price for create position.
   const strategyPrice = watch("price");
