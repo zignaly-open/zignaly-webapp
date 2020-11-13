@@ -4,7 +4,7 @@ import { navigate } from "gatsby";
 import { verifySessionData } from "../utils/auth";
 import { globalHistory } from "@reach/router";
 
-const useRedirectUponSessionValid = (newUserPath = "/copyTraders") => {
+const useRedirectUponSessionValid = (newUserPath = "") => {
   const storeSession = useStoreSessionSelector();
   const forced = useRef(globalHistory.location.state && globalHistory.location.state.forced);
 
