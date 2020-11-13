@@ -20,7 +20,6 @@ export const SHOW_PROFILE_LOADER = "SHOW_PROFILE_LOADER_ACTION";
 export const setProvider = (payload) => {
   return async (dispatch) => {
     try {
-      dispatch(showProviderProfileLoader(true));
       const responseData = await tradeApi.providerGet(payload);
       const action = {
         type: GET_PROVIDER,
