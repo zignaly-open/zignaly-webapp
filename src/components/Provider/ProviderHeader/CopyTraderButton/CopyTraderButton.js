@@ -7,10 +7,7 @@ import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
-import {
-  useStoreUserData,
-  useStoreUserExchangeConnections,
-} from "../../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -33,7 +30,6 @@ import { ConfirmDialog } from "../../../Dialogs";
 const CopyTraderButton = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
