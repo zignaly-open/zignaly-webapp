@@ -119,6 +119,14 @@ const CopyTraderButton = ({ provider }) => {
       });
   };
 
+  const getTooltip = () => {
+    return (
+      <Typography variant="body1">
+        <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
+      </Typography>
+    );
+  };
+
   return (
     <Box
       alignItems="center"
@@ -140,9 +148,17 @@ const CopyTraderButton = ({ provider }) => {
             </CustomButton>
           )}
           {!disabled && !disconnecting && (
-            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-              <FormattedMessage id="copyt.stopcopyingtrader" />
-            </CustomButton>
+            <Tooltip placement="top" title={getTooltip()}>
+              <span>
+                <CustomButton
+                  className="loadMoreButton"
+                  disabled={provider.isAdmin}
+                  onClick={() => showStopCopyingModal(true)}
+                >
+                  <FormattedMessage id="copyt.stopcopyingtrader" />
+                </CustomButton>
+              </span>
+            </Tooltip>
           )}
           {!disabled && disconnecting && (
             <CustomButton
