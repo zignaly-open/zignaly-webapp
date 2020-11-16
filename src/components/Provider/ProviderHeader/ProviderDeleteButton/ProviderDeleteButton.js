@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ProviderDeleteButton.scss";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -92,7 +92,14 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
 
   const getTooltip = () => {
     if (disabled) {
-      if (provider.isCopyTrading) {
+      if (provider.isCopyTrading && provider.profitSharing) {
+        return (
+          <Typography variant="body1">
+            <FormattedMessage id="copyt.ps.deletedisabled.tooltip" />
+          </Typography>
+        );
+      }
+      if (provider.isCopyTrading && !provider.profitSharing) {
         return (
           <Box>
             <ul>
@@ -109,6 +116,7 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
           </Box>
         );
       }
+
       return (
         <Box>
           <ul>

@@ -58,17 +58,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [logoUrl, setLogoUrl] = useState(provider.logoUrl);
   const [positions, setPositions] = useState([]);
   const dispatch = useDispatch();
-  // @ts-ignore
   const [aboutTab, setAboutTab] = useState("write");
-  // @ts-ignore
   const [strategyTab, setStrategyTab] = useState("write");
-
   const listSwitch = watch("list", provider.list);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
   const loadPositions = () => {
-    if (provider.id) {
+    if (provider.id && !provider.profitSharing) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
@@ -325,6 +322,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const checkIfCanBeDeleted = () => {
+    if (provider.profitSharing) {
+      return false;
+    }
     if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
       return true;
     }
@@ -792,9 +792,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
-            {!provider.profitSharing && (
-              <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
-            )}
+            <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
 
             <CustomButton
               className={"full submitButton"}
