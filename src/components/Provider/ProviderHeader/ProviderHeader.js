@@ -25,7 +25,7 @@ const ProviderHeader = () => {
       : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
     setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider.id, storeSettings.selectedExchange.internalId]);
+  }, [provider, storeSettings.selectedExchange.internalId]);
 
   const checkAccess = () => {
     // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
