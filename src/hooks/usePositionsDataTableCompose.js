@@ -356,7 +356,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
-   * Compose exit price element for a given position.
+   * Compose margin element for a given position.
    *
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
