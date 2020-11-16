@@ -1,0 +1,25 @@
+.marginModal {
+  .amountInput {
+    margin: 30px 20px 15px;
+  }
+
+  .customInput {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    width: 200px;
+  }
+
+  .currencyBox {
+    background-color: $mediumDarkGrey;
+    border: 1px solid $darkLightGrey;
+    border-bottom-right-radius: 3px;
+    border-left: 0;
+    border-top-right-radius: 3px;
+    padding: 5px;
+    width: 70px;
+  }
+
+  .customButton {
+    margin: 15px 20px;
+  }
+}

@@ -11,6 +11,7 @@ import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
 import { useIntl } from "react-intl";
 import moment from "moment";
+import EditIcon from "images/ct/edit.svg";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -53,9 +54,10 @@ import moment from "moment";
  *
  * @param {UserPositionsCollection} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @param {function} openMarginModal Open margin modal callback.
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
-export function usePositionDataTableCompose(positions, confirmActionHandler) {
+export function usePositionDataTableCompose(positions, confirmActionHandler, openMarginModal) {
   const storeUserData = useStoreUserData();
   const { formatMessage } = useIntl();
 
@@ -363,11 +365,21 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
    */
   function renderMargin(dataIndex) {
     const position = positions[dataIndex];
+    const { unitsInvestment, margin, isCopyTrading, isCopyTrader } = position;
+    const readOnly = isCopyTrading && !isCopyTrader;
     return (
-      <>
-        <span className="symbol">{position.unitsInvestment}</span>
-        <span>{formatPrice(position.margin)}</span>
-      </>
+      <Box alignItems="center" display="flex">
+        <span className="symbol">{unitsInvestment}</span>
+        <span>{formatPrice(margin)}</span>
+        {!readOnly && (
+          <img
+            alt="Edit Margin"
+            className="editIcon"
+            onClick={() => openMarginModal(position)}
+            src={EditIcon}
+          />
+        )}
+      </Box>
     );
   }
 
