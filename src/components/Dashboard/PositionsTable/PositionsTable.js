@@ -243,6 +243,7 @@ const PositionsTable = (props) => {
     let dataTable;
     const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
     const isZignaly = selectedExchange.exchangeName.toLowerCase() === "zignaly";
+    const isBitmex = selectedExchange.exchangeName.toLowerCase() === "bitmex";
     const isDemo = selectedExchange.paperTrading;
     const isTestnet = selectedExchange.isTestnet;
 
@@ -257,6 +258,9 @@ const PositionsTable = (props) => {
       if (isDemo || isTestnet || !isFutures) {
         dataTable = excludeDataTableColumn(dataTable, "col.price.market");
         dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+      }
+      if (!isBitmex) {
+        dataTable = excludeDataTableColumn(dataTable, "col.margin");
       }
       configureCounts("open", positionsAll.length);
     } else if (type === "profileOpen") {

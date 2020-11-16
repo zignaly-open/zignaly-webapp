@@ -356,6 +356,22 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
   }
 
   /**
+   * Compose exit price element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderMargin(dataIndex) {
+    const position = positions[dataIndex];
+    return (
+      <>
+        <span className="symbol">{position.unitsInvestment}</span>
+        <span>{formatPrice(position.margin)}</span>
+      </>
+    );
+  }
+
+  /**
    * Compose price difference element for a given position.
    *
    * @param {number} dataIndex Data entity index.
@@ -892,6 +908,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.price.liquid",
         propertyName: "liquidationPrice",
         renderFunction: renderLiquidPrice,
+      },
+      {
+        columnId: "col.margin",
+        propertyName: "margin",
+        renderFunction: renderMargin,
       },
       {
         columnId: "col.plnumber",
