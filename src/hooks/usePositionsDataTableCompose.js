@@ -742,23 +742,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       !isManualPosition && position.providerOwnerUserId === storeUserData.userId;
 
     if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return (
-          <div className="actions">
-            {!closed && (
-              <button
-                data-action={"cancel"}
-                data-position-id={positionId}
-                onClick={confirmActionHandler}
-                title="cancel"
-                type="button"
-              >
-                <XCircle color={colors.purpleLight} />
-              </button>
-            )}
-          </div>
-        );
-      }
       return null;
     }
 
