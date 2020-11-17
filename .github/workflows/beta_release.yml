@@ -61,8 +61,8 @@ jobs:
           SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
       - name: Prepare Deploy Variables
         run: |
-          echo ::set-env name=WEBAPP_VERSION::$(cat .semvernext)
-          echo ::set-env name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz
+          echo "name=WEBAPP_VERSION::$(cat .semvernext)" >> $GITHUB_ENV
+          echo "name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
           echo $WEBAPP_PACKAGE
       - name: Deploy Release
         run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
