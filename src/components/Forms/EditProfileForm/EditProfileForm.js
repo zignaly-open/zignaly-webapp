@@ -30,6 +30,7 @@ import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 import userOptions from "../../../utils/userOptions.json";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
+import { formatFloat } from "utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -109,7 +110,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const onSubmit = (data) => {
     if (validatePaymentFields(data)) {
       if (data.ipnSecret === "**********") {
-        if (provider.internalPaymentInfo.price !== data.price) {
+        if (formatFloat(provider.internalPaymentInfo.price) !== formatFloat(data.price)) {
           setPaymentBoxAlert(true);
           return;
         }

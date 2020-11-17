@@ -2470,7 +2470,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaulProviderInternalPaymentObject
  * @property {Boolean} isPremium
  * @property {String} merchantId
- * @property {String} price
+ * @property {Number} price
  * @property {Number} trial
  * @property {String} ipnSecret
  */
