@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CustomButton from "../../../CustomButton";
 import tradeApiClient from "services/tradeApiClient";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -31,10 +32,10 @@ const MarginModal = ({ position, onClose }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const intl = useIntl();
   const { register, handleSubmit, errors } = useForm();
-  const maxMargin = 0;
-  const balance = useBalance();
+  const balance = useBalance(storeSettings.selectedExchange.internalId);
 
   /**
    * @param {React.ChangeEvent} event .
@@ -55,11 +56,10 @@ const MarginModal = ({ position, onClose }) => {
    * @returns {void}
    */
   const onSubmit = (data) => {
-    return console.log(data);
     const { amount } = data;
     const payload = {
       internalExchangeId: storeSettings.selectedExchange.internalId,
-      positionId,
+      positionId: position.positionId,
       amount: parseFloat(amount) * (mode === "ADD" ? 1 : -1),
       token: storeSession.tradeApi.accessToken,
     };
@@ -80,40 +80,54 @@ const MarginModal = ({ position, onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="marginModal">
-      <Tabs value={mode} onChange={handleModeChange} aria-label="Margin Tabs">
+    <form className="marginModal" onSubmit={handleSubmit(onSubmit)}>
+      <Tabs aria-label="Margin Tabs" onChange={handleModeChange} value={mode}>
         <Tab label={intl.formatMessage({ id: "margin.add" })} value="ADD" />
         <Tab label={intl.formatMessage({ id: "margin.remove" })} value="REMOVE" />
       </Tabs>
-      <Box>
-        <Box display="flex" flexDirection="row" className="amountInput">
+      <Box className="marginBox">
+        <Box className="amountInput" display="flex" flexDirection="row">
           <OutlinedInput
-            placeholder={intl.formatMessage({ id: "withdraw.amount" })}
             className="customInput"
-            inputRef={register({
-              min: 0,
-              max: balance.totalAvailableBTC,
-            })}
-            name="amount"
             error={Boolean(errors.amount)}
+            inputProps={{
+              min: 0,
+              step: "any",
+            }}
+            inputRef={register({
+              validate: (value) =>
+                !isNaN(value) &&
+                parseFloat(value) >= 0 &&
+                parseFloat(value) < balance.totalAvailableBTC,
+            })}
+            // doesn't work with mui for some reason?
+            // inputRef={register({
+            //   validate: {
+            //     required: true,
+            //     min: (val) => parseFloat(val) >= 0,
+            //     max: (val) => parseFloat(val) <= balance.totalAvailableBTC,
+            //   },
+            // })}
+            name="amount"
+            placeholder={intl.formatMessage({ id: "withdraw.amount" })}
+            type="number"
           />
           <div className="currencyBox">XBT</div>
         </Box>
-        <Box display="flex">
-          <Typography>
-            <FormattedMessage id="margin.current" />
+        <Box className="line" display="flex">
+          <Typography className="callout1">
+            <FormattedMessage id="margin.current" />: {formatNumber(position.margin)}XBT
           </Typography>
-          <Typography>{formatNumber(position.margin)}</Typography>
         </Box>
-        <Box display="flex">
-          <Typography>
-            <FormattedMessage id="deposit.available" />
+        <Box className="line" display="flex">
+          <Typography className="callout1">
+            <FormattedMessage id="deposit.available" />: {formatNumber(balance.totalAvailableBTC)}
+            XBT
           </Typography>
-          <Typography>{formatNumber(balance.totalAvailableBTC)}</Typography>
         </Box>
       </Box>
 
-      <CustomButton type="submit" loading={loading} className="submitButton">
+      <CustomButton className="submitButton" loading={loading} type="submit">
         <FormattedMessage id="confirm.accept" />
       </CustomButton>
     </form>

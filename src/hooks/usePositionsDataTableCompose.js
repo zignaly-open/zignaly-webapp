@@ -54,7 +54,7 @@ import EditIcon from "images/ct/edit.svg";
  *
  * @param {UserPositionsCollection} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
- * @param {function} openMarginModal Open margin modal callback.
+ * @param {function} [openMarginModal] Open margin modal callback.
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
 export function usePositionDataTableCompose(positions, confirmActionHandler, openMarginModal) {
@@ -365,13 +365,13 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderMargin(dataIndex) {
     const position = positions[dataIndex];
-    const { unitsInvestment, margin, isCopyTrading, isCopyTrader } = position;
+    const { unitsInvestment, margin, isCopyTrading, isCopyTrader, exchange } = position;
     const readOnly = isCopyTrading && !isCopyTrader;
     return (
       <Box alignItems="center" display="flex">
         <span className="symbol">{unitsInvestment}</span>
         <span>{formatPrice(margin)}</span>
-        {!readOnly && (
+        {openMarginModal && !readOnly && exchange.toLowerCase() === "bitmex" && (
           <img
             alt="Edit Margin"
             className="editIcon"

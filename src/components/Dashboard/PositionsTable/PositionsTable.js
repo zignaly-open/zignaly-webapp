@@ -341,7 +341,6 @@ const PositionsTable = (props) => {
 
   const tableClass = positionEntity ? "positionTable" : "positionsTable";
 
-  console.log(Boolean(marginPosition), marginPosition);
   return (
     <>
       <ConfirmDialog
