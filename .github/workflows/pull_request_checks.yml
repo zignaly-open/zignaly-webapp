@@ -5,6 +5,11 @@ jobs:
     name: Webapp Pull Request Quality Checks
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare Deploy Variables
+        run: |
+          echo "name=WEBAPP_VERSION::$(cat .semvernext)" >> $GITHUB_ENV
+          echo "name=WEBAPP_PACKAGE::zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
+          echo "$WEBAPP_PACKAGE"
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
