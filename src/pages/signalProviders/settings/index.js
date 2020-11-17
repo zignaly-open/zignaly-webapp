@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
-import useSelectedExchangeQuotes from "../../../hooks/useSelectedExchangeQuotes";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView";
@@ -18,9 +17,11 @@ const SignalProvidersSettings = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
+  const quotes = { BTC: "BTC" };
   const [settingsView, setSettingsView] = useState(false);
   const intl = useIntl();
 
@@ -29,6 +30,7 @@ const SignalProvidersSettings = () => {
       storeViews.provider.id &&
       storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId
     ) {
+      setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: storeViews.provider.id,
@@ -42,6 +44,9 @@ const SignalProvidersSettings = () => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
@@ -57,10 +62,6 @@ const SignalProvidersSettings = () => {
   };
 
   useEffect(matchExchange, [storeSettings.selectedExchange.internalId]);
-
-  const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
-
-  const loading = !Object.keys(quotes).length;
 
   return (
     <Box className="profileSettingsPage">
