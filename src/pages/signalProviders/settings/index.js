@@ -60,7 +60,7 @@ const SignalProvidersSettings = () => {
 
   const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
 
-  const loading = !quotes;
+  const loading = !Object.keys(quotes).length;
 
   return (
     <Box className="profileSettingsPage">
