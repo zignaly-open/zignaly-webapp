@@ -229,12 +229,12 @@ const TradingView = () => {
     setSelectedSymbol(newSymbol);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
-      const symbol = getTradingViewExchangeSymbol(
-        selectedSymbol.tradeViewSymbol,
+      const symbolTV = getTradingViewExchangeSymbol(
+        newSymbol.tradeViewSymbol,
         storeSettings.selectedExchange,
       );
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol } },
+        { name: "set-symbol", data: { symbol: symbolTV } },
         "*",
       );
     }
