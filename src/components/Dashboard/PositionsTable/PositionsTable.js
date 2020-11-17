@@ -66,6 +66,8 @@ const PositionsTable = (props) => {
     sides,
     modifiedFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
+  // eslint-disable-next-line no-console
+  console.log(positionsAll, type);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
   const [marginPosition, setMarginPosition] = useState(null);
