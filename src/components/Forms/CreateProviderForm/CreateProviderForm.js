@@ -41,6 +41,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
   const methods = useForm();
   const { errors, handleSubmit, control, register, watch, setValue } = methods;
   const exchange = watch("exchange", "binance");
+  const exchangeType = watch("exchangeType", "binance");
   const exchanges = useExchangeList();
 
   const selectedExchange = exchanges
@@ -48,7 +49,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     : null;
   const exchangeOptions = exchanges
     ? exchanges
-        .filter((e) => e.enabled)
+        .filter((e) => e.enabled && (exchangeType === "all" || e.type.includes(exchangeType)))
         .map((e) => ({
           val: e.name.toLowerCase(),
           label: e.name,
