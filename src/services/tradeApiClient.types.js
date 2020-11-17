@@ -2654,7 +2654,7 @@ function createEmptyProviderGetEntity() {
     internalPaymentInfo: {
       isPremium: true,
       merchantId: "",
-      price: 0,
+      price: "",
       trial: 0,
       ipnSecret: "",
     },
