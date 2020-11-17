@@ -5,8 +5,15 @@ jobs:
     name: Webapp Pull Request Quality Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Debug1
+        run: |
+          echo "WEBAPP_PACKAGE=test" >> $GITHUB_ENV
+          echo $WEBAPP_PACKAGE
+      - name: Debug2
+        run: |
+          echo $WEBAPP_PACKAGE
+        # uses: actions/checkout@v1
+      # - name: Checkout
       # - name: Setup Node.js
       #   uses: actions/setup-node@v1
       #   with:
