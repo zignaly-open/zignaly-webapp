@@ -67,6 +67,7 @@ const StrategyPanel = (props) => {
   const entryStrategy = watch("entryStrategy");
   const { providerService, lastPrice } = useContext(TradingViewContext);
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
+  const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalancePercentage = providerService
     ? providerService.providerConsumedBalancePercentage
     : 0;
@@ -252,6 +253,8 @@ const StrategyPanel = (props) => {
               </Box>
             </Box>
             <FormHelperText>
+              <FormattedMessage id="terminal.provider.allocated" />{" "}
+              <span>{formatPrice(providerAllocatedBalance)}, </span>
               <FormattedMessage id="terminal.provider.consumed" />{" "}
               <span>{formatPrice(providerConsumedBalance)}, </span>
               <FormattedMessage id="terminal.provider.available" />{" "}
