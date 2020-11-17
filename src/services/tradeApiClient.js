@@ -143,6 +143,7 @@ import {
  * @typedef {import('./tradeApiClient.types').AddReplyPayload} AddReplyPayload
  * @typedef {import('./tradeApiClient.types').GetProfitSharingBalanceHistoryPayload} GetProfitSharingBalanceHistoryPayload
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
+ * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  */
 
 /**
@@ -1878,6 +1879,21 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
     const responseData = await this.doRequest(endpointPath, payload);
     return profitSharingBalanceHistoryResponseTransform(responseData);
+  }
+
+  /**
+   * Adjust position margin
+   *
+   * @param {AdjustMarginPayload} payload Payload
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async transferMargin(payload) {
+    const endpointPath = "/fe/api.php?action=transferMargin";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
   }
 }
 

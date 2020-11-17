@@ -22,7 +22,6 @@ import { findIndex } from "lodash";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersEntity} ProviderFollowersEntity
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import("../../../../hooks/usePositionsDataTableCompose").DataTableDataColumns} DataTableDataColumns
  */
 
 /**

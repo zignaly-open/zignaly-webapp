@@ -921,6 +921,11 @@ terminal.provider.allocated: "Current allocated:"
 terminal.provider.available: "Available:"
 terminal.provider.consumed: "Using:"
 
+margin.add: "Add Margin"
+margin.current: "Current Margin"
+margin.remove: "Remove Margin"
+margin.success: "Margin Adjusted Successfully"
+
 # EXCHANGE ACCOUNTS
 accounts.title: "My Exchange Accounts"
 accounts.real: "Real accounts"

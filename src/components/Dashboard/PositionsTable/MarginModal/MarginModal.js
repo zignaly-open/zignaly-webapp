@@ -1,0 +1,135 @@
+import React, { useState } from "react";
+import CustomButton from "../../../CustomButton";
+import tradeApiClient from "services/tradeApiClient";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
+import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
+import { useDispatch } from "react-redux";
+import { useIntl, FormattedMessage } from "react-intl";
+import { Tabs, Tab, Box, OutlinedInput, Typography } from "@material-ui/core";
+import { useForm } from "react-hook-form";
+import "./MarginModal.scss";
+import { formatNumber } from "utils/formatters";
+import useBalance from "hooks/useBalance";
+
+/**
+ * @typedef {import("services/tradeApiClient.types").PositionEntity} PositionEntity
+ */
+
+/**
+ * @typedef {Object} MarginModalProps
+ * @property {PositionEntity} position
+ * @property {function} onClose
+ */
+/**
+ * Display modal to adjust position margin.
+ *
+ * @param {MarginModalProps} props Component properties.
+ * @returns {JSX.Element} JSX.
+ */
+const MarginModal = ({ position, onClose }) => {
+  const [mode, setMode] = useState("ADD");
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
+  const intl = useIntl();
+  const { register, handleSubmit, errors } = useForm();
+  const balance = useBalance(storeSettings.selectedExchange.internalId);
+
+  /**
+   * @param {React.ChangeEvent} event .
+   * @param {string} newValue .
+   * @returns {void}
+   */
+  const handleModeChange = (event, newValue) => {
+    setMode(newValue);
+  };
+
+  /**
+   * @typedef {Object} FormData
+   * @prop {string} amount
+   */
+
+  /**
+   * @param {FormData} data .
+   * @returns {void}
+   */
+  const onSubmit = (data) => {
+    const { amount } = data;
+    const payload = {
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+      positionId: position.positionId,
+      amount: parseFloat(amount) * (mode === "ADD" ? 1 : -1),
+      token: storeSession.tradeApi.accessToken,
+    };
+    setLoading(true);
+
+    tradeApiClient
+      .transferMargin(payload)
+      .then(() => {
+        dispatch(showSuccessAlert("", intl.formatMessage({ id: "margin.success" })));
+        onClose();
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return (
+    <form className="marginModal" onSubmit={handleSubmit(onSubmit)}>
+      <Tabs aria-label="Margin Tabs" onChange={handleModeChange} value={mode}>
+        <Tab label={intl.formatMessage({ id: "margin.add" })} value="ADD" />
+        <Tab label={intl.formatMessage({ id: "margin.remove" })} value="REMOVE" />
+      </Tabs>
+      <Box className="marginBox">
+        <Box className="amountInput" display="flex" flexDirection="row">
+          <OutlinedInput
+            className="customInput"
+            error={Boolean(errors.amount)}
+            inputProps={{
+              min: 0,
+              step: "any",
+            }}
+            inputRef={register({
+              validate: (value) =>
+                !isNaN(value) &&
+                parseFloat(value) >= 0 &&
+                parseFloat(value) < balance.totalAvailableBTC,
+            })}
+            // doesn't work with mui for some reason?
+            // inputRef={register({
+            //   required: true,
+            //   min: 0,
+            //   max: balance.totalAvailableBTC,
+            // })}
+            name="amount"
+            placeholder={intl.formatMessage({ id: "withdraw.amount" })}
+            type="number"
+          />
+          <div className="currencyBox">XBT</div>
+        </Box>
+        <Box className="line" display="flex">
+          <Typography className="callout1">
+            <FormattedMessage id="margin.current" />: {formatNumber(position.margin)}XBT
+          </Typography>
+        </Box>
+        <Box className="line" display="flex">
+          <Typography className="callout1">
+            <FormattedMessage id="deposit.available" />: {formatNumber(balance.totalAvailableBTC)}
+            XBT
+          </Typography>
+        </Box>
+      </Box>
+
+      <CustomButton className="submitButton" loading={loading} type="submit">
+        <FormattedMessage id="confirm.accept" />
+      </CustomButton>
+    </form>
+  );
+};
+
+export default MarginModal;
