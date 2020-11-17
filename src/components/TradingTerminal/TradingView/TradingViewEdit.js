@@ -314,16 +314,13 @@ const TradingViewEdit = (props) => {
             )}
             <Box className="tradingViewChart" id="trading_view_chart" />
             {!isLoading && lastPrice && (
-              <>
-                <input name="updatedAt" ref={methods.register} type="hidden" />
-                <StrategyForm
-                  lastPrice={lastPrice}
-                  notifyPositionUpdate={notifyPositionUpdate}
-                  positionEntity={positionEntity}
-                  selectedSymbol={symbolData}
-                  tradingViewWidget={tradingViewWidget}
-                />
-              </>
+              <StrategyForm
+                lastPrice={lastPrice}
+                notifyPositionUpdate={notifyPositionUpdate}
+                positionEntity={positionEntity}
+                selectedSymbol={symbolData}
+                tradingViewWidget={tradingViewWidget}
+              />
             )}
           </Box>
           {positionRawData && (

@@ -73,7 +73,6 @@ const usePositionsList = (
   positionEntity = null,
   notifyPositionsUpdate = null,
   persistKey,
-  // eslint-disable-next-line max-params
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
@@ -336,6 +335,8 @@ const usePositionsList = (
             }
 
             setPositions(newPositions);
+            // eslint-disable-next-line no-console
+            console.log(newPositions, type, filters);
             if (isFunction(notifyPositionsUpdate)) {
               notifyPositionsUpdate(newPositions[type]);
             }
