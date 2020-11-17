@@ -23,7 +23,10 @@ const SignalProvidersSettings = () => {
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
   const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
-  const quotes = selectedExchange.name.toLowerCase() === "bitmex" ? { BTC: "BTC" } : quoteAssets;
+  const quotes =
+    selectedExchange.name.toLowerCase() === "bitmex"
+      ? { BTC: { quote: "BTC", minNotional: 0 } }
+      : quoteAssets;
   const [settingsView, setSettingsView] = useState(false);
   const intl = useIntl();
 
