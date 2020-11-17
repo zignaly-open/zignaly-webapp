@@ -9,6 +9,7 @@ import {
   Checkbox,
   InputAdornment,
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -29,6 +30,7 @@ import breaks from "remark-breaks";
 import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteButton";
 import userOptions from "../../../utils/userOptions.json";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
+import { formatFloat } from "utils/format";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -45,6 +47,7 @@ import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affil
 
 const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
+  const [paymentBoxAlert, setPaymentBoxAlert] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
@@ -106,10 +109,15 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    */
   const onSubmit = (data) => {
     if (validatePaymentFields(data)) {
-      setLoading(true);
       if (data.ipnSecret === "**********") {
+        if (formatFloat(provider.internalPaymentInfo.price) !== formatFloat(data.price)) {
+          setPaymentBoxAlert(true);
+          return;
+        }
         data.ipnSecret = "";
       }
+      setLoading(true);
+      setPaymentBoxAlert(false);
       const payload = {
         ...data,
         social: prepareSocialData(),
@@ -619,6 +627,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   >
                     <FormattedMessage id="srv.payment.docs" />
                   </a>
+                  {Boolean(paymentBoxAlert) && (
+                    <Alert className="alert" severity="error">
+                      <Typography variant="body1">
+                        <FormattedMessage id="srv.edit.ipn.alert" />
+                      </Typography>
+                    </Alert>
+                  )}
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className="customLabel">
                       <FormattedMessage id="srv.edit.merchantid" />
@@ -647,7 +662,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     />
                     {errors.merchantId && (
                       <span className="errorText">
-                        Merchant ID is required and should only contains letetrs and numbers.
+                        <FormattedMessage id="srv.edit.merchantid.error" />
                       </span>
                     )}
                   </Box>

@@ -12,6 +12,7 @@
     position: absolute;
     right: 15px;
     top: 10px;
+    z-index: 1;
   }
 
   &:not(.fullscreen) {

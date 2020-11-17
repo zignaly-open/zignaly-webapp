@@ -33,6 +33,7 @@ import useTradingViewContext from "hooks/useTradingViewContext";
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
+ * @typedef {import('services/tradeApiClient.types').MarketSymbol} MarketSymbol
  */
 
 /**
@@ -57,21 +58,7 @@ const TradingViewEdit = (props) => {
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
-  const [selectedSymbol, setSelectedSymbol] = useState(null);
-  const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
-  let symbolData = symbols ? symbols.find((d) => d.short === selectedSymbol) : null;
-  if (positionEntity && !symbolData) {
-    symbolData = assign(createMarketSymbolEmptyValueObject(), {
-      id: positionEntity.symbol,
-      base: positionEntity.base,
-      baseId: positionEntity.base,
-      quote: positionEntity.quote,
-      quoteId: positionEntity.quote,
-      short: positionEntity.short,
-      tradeViewSymbol: positionEntity.tradeViewSymbol,
-      limits: {},
-    });
-  }
+  const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -86,7 +73,6 @@ const TradingViewEdit = (props) => {
    * @returns {Void} None.
    */
   const initializePosition = (responseData) => {
-    setSelectedSymbol(responseData.symbol);
     setPositionEntity(responseData);
   };
 
@@ -105,16 +91,29 @@ const TradingViewEdit = (props) => {
       exchangeType: positionData.exchangeType,
     };
 
-    // When position is closed avoid get market data and rely on position symbol data.
     if (!positionData.closed) {
       tradeApi
         .exchangeConnectionMarketDataGet(marketDataPayload)
         .then((data) => {
-          setSymbols(data);
+          const symbolData = data.find((d) => d.short === positionData.short);
+          setSelectedSymbol(symbolData);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
         });
+    } else {
+      // When position is closed avoid get market data and rely on position symbol data.
+      const symbolData = assign(createMarketSymbolEmptyValueObject(), {
+        id: positionEntity.symbol,
+        base: positionEntity.base,
+        baseId: positionEntity.base,
+        quote: positionEntity.quote,
+        quoteId: positionEntity.quote,
+        short: positionEntity.short,
+        tradeViewSymbol: positionEntity.tradeViewSymbol,
+        limits: {},
+      });
+      setSelectedSymbol(symbolData);
     }
   };
 
@@ -183,7 +182,8 @@ const TradingViewEdit = (props) => {
     methods.setValue("updatedAt", new Date());
   };
 
-  const isLoading = tradingViewWidget === null || !positionEntity || !libraryReady || !symbolData;
+  const isLoading =
+    tradingViewWidget === null || !positionEntity || !libraryReady || !selectedSymbol;
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
@@ -191,7 +191,10 @@ const TradingViewEdit = (props) => {
       return () => {};
     }
 
-    const widgetOptions = createWidgetOptions(symbolData.tradeViewSymbol, storeSettings.darkStyle);
+    const widgetOptions = createWidgetOptions(
+      positionEntity.tradeViewSymbol,
+      storeSettings.darkStyle,
+    );
 
     const cleanupWidget = instantiateWidget(widgetOptions);
     return () => {
@@ -209,9 +212,9 @@ const TradingViewEdit = (props) => {
         tradingViewWidget &&
         tradingViewWidget.iframe &&
         tradingViewWidget.iframe.contentWindow &&
-        symbolData
+        selectedSymbol
       ) {
-        const symbol = getTradingViewExchangeSymbol(symbolData.tradeViewSymbol, exchange);
+        const symbol = getTradingViewExchangeSymbol(selectedSymbol.tradeViewSymbol, exchange);
         tradingViewWidget.iframe.contentWindow.postMessage(
           { name: "set-symbol", data: { symbol } },
           "*",
@@ -318,7 +321,7 @@ const TradingViewEdit = (props) => {
                 lastPrice={lastPrice}
                 notifyPositionUpdate={notifyPositionUpdate}
                 positionEntity={positionEntity}
-                selectedSymbol={symbolData}
+                selectedSymbol={selectedSymbol}
                 tradingViewWidget={tradingViewWidget}
               />
             )}

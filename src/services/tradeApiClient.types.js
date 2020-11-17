@@ -1001,6 +1001,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} AdjustMarginPayload
+ * @property {string} positionId
+ * @property {string} internalExchangeId
+ * @property {number} amount
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export
@@ -2647,7 +2654,7 @@ function createEmptyProviderGetEntity() {
     internalPaymentInfo: {
       isPremium: true,
       merchantId: "",
-      price: 0,
+      price: "",
       trial: 0,
       ipnSecret: "",
     },
