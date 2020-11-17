@@ -16,6 +16,8 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
 import { useIntl } from "react-intl";
 import PositionsContext from "../PositionsContext";
+import Modal from "../../Modal";
+import MarginModal from "./MarginModal";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -66,6 +68,7 @@ const PositionsTable = (props) => {
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
+  const [marginPosition, setMarginPosition] = useState(null);
 
   const toggleFilters = () => {
     setFiltersVisibility(!filtersVisibility);
@@ -189,6 +192,14 @@ const PositionsTable = (props) => {
     }
   };
 
+  /**
+   * @param {string} positionId .
+   * @returns {void}
+   */
+  const openMarginModal = (positionId) => {
+    setMarginPosition(positionId);
+  };
+
   const {
     composeClosePositionsDataTable,
     composeLogPositionsDataTable,
@@ -196,7 +207,7 @@ const PositionsTable = (props) => {
     composeOpenPositionsForProvider,
     composeClosedPositionsForProvider,
     excludeDataTableColumn,
-  } = usePositionDataTableCompose(positionsFiltered, confirmAction);
+  } = usePositionDataTableCompose(positionsFiltered, confirmAction, openMarginModal);
 
   /**
    *
@@ -337,6 +348,16 @@ const PositionsTable = (props) => {
         executeActionCallback={executeAction}
         setConfirmConfig={setConfirmConfig}
       />
+      <Modal
+        onClose={() => setMarginPosition(null)}
+        persist={false}
+        size="small"
+        state={Boolean(marginPosition)}
+      >
+        {marginPosition && (
+          <MarginModal onClose={() => setMarginPosition(null)} position={marginPosition} />
+        )}
+      </Modal>
 
       {loading && (
         <Box
