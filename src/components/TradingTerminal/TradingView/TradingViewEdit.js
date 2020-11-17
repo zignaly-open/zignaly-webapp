@@ -104,13 +104,13 @@ const TradingViewEdit = (props) => {
     } else {
       // When position is closed avoid get market data and rely on position symbol data.
       const symbolData = assign(createMarketSymbolEmptyValueObject(), {
-        id: positionEntity.symbol,
-        base: positionEntity.base,
-        baseId: positionEntity.base,
-        quote: positionEntity.quote,
-        quoteId: positionEntity.quote,
-        short: positionEntity.short,
-        tradeViewSymbol: positionEntity.tradeViewSymbol,
+        id: positionData.symbol,
+        base: positionData.base,
+        baseId: positionData.base,
+        quote: positionData.quote,
+        quoteId: positionData.quote,
+        short: positionData.short,
+        tradeViewSymbol: positionData.tradeViewSymbol,
         limits: {},
       });
       setSelectedSymbol(symbolData);
