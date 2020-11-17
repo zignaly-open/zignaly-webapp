@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-            - name: Package & Release
+      - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
           GITHUB_AUTHOR_EMAIL: ${{ secrets.GITHUB_AUTHOR_EMAIL }}
