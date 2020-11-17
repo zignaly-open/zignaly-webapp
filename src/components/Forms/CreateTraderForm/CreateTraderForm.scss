@@ -98,6 +98,14 @@
 
   .inputBox {
     margin-bottom: 32px;
+
+    .quotesLoading {
+      align-items: flex-end;
+      display: flex;
+      justify-content: center;
+      min-height: 60px;
+      min-width: 150px;
+    }
   }
 
   .step2 {

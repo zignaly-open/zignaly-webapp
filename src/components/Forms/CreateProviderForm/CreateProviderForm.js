@@ -71,7 +71,7 @@ const CreateProviderForm = ({ isCopyTrading }) => {
     });
   }
 
-  const quoteAssets = useExchangeQuotes({
+  const { quoteAssets } = useExchangeQuotes({
     exchangeId: selectedExchange ? selectedExchange.id : "",
     exchangeType: selectedExchange ? selectedExchange.type[0] : "",
   });
