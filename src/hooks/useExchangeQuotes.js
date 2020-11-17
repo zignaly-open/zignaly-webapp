@@ -12,18 +12,26 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 
 /**
+ * @typedef {Object} ExchangeQuotesHookData
+ * @property {QuoteAssetsDict} quoteAssets
+ * @property {Boolean} quotesLoading
+ */
+
+/**
  * Provides quotes assets.
  * @param {ExchangeData} exchangeData Exchange internal id.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
- * @returns {QuoteAssetsDict} Quote Assets.
+ * @returns {ExchangeQuotesHookData} Quote Assets.
  */
 const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
-  const [quotes, setQuotes] = useState({});
+  const [quoteAssets, setQuotes] = useState({});
+  const [quotesLoading, setLoading] = useState(false);
 
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const loadData = () => {
     if (shouldExecute && exchangeData.exchangeId && exchangeData.exchangeType) {
+      setLoading(true);
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
@@ -39,6 +47,9 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
@@ -50,7 +61,10 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
     shouldExecute,
   ]);
 
-  return quotes;
+  return {
+    quoteAssets: quoteAssets,
+    quotesLoading: quotesLoading,
+  };
 };
 
 export default useExchangeQuotes;

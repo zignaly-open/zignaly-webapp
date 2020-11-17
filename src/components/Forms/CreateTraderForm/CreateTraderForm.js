@@ -70,7 +70,7 @@ const CreateTraderForm = () => {
     }
   }, [exchanges]);
 
-  const quoteAssets = useExchangeQuotes({
+  const { quoteAssets, quotesLoading } = useExchangeQuotes({
     exchangeId: exchange ? exchange.id : "",
     exchangeType: exchange ? exchange.type[0] : "",
   });
@@ -243,29 +243,38 @@ const CreateTraderForm = () => {
                 flexDirection="row"
               >
                 <Box className="inputBox" mr={2}>
-                  <Controller
-                    control={control}
-                    defaultValue={quotes[0]}
-                    name="quote"
-                    render={({ onChange, value }) => (
-                      <CustomSelect
-                        label={intl.formatMessage({
-                          id: "fil.quote",
-                        })}
-                        labelPlacement="top"
-                        onChange={onChange}
-                        options={quotes}
-                        search={true}
-                        value={value}
+                  {quotesLoading && (
+                    <Box className="quotesLoading">
+                      <CircularProgress color="primary" size={30} />
+                    </Box>
+                  )}
+                  {!quotesLoading && (
+                    <>
+                      <Controller
+                        control={control}
+                        defaultValue={quotes[0]}
+                        name="quote"
+                        render={({ onChange, value }) => (
+                          <CustomSelect
+                            label={intl.formatMessage({
+                              id: "fil.quote",
+                            })}
+                            labelPlacement="top"
+                            onChange={onChange}
+                            options={quotes}
+                            search={true}
+                            value={value}
+                          />
+                        )}
+                        rules={
+                          {
+                            //   required: intl.formatMessage({ id: "form.error.quote" }),
+                          }
+                        }
                       />
-                    )}
-                    rules={
-                      {
-                        //   required: intl.formatMessage({ id: "form.error.quote" }),
-                      }
-                    }
-                  />
-                  {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                      {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                    </>
+                  )}
                 </Box>
                 {selectedModel === MODEL_MONHTLY_FEE && (
                   <Box
