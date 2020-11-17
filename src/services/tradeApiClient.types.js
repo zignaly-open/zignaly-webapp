@@ -2470,7 +2470,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaulProviderInternalPaymentObject
  * @property {Boolean} isPremium
  * @property {String} merchantId
- * @property {Number} price
+ * @property {String} price
  * @property {Number} trial
  * @property {String} ipnSecret
  */
@@ -2654,7 +2654,7 @@ function createEmptyProviderGetEntity() {
     internalPaymentInfo: {
       isPremium: true,
       merchantId: "",
-      price: 0,
+      price: "",
       trial: 0,
       ipnSecret: "",
     },
