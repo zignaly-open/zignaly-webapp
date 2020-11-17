@@ -102,11 +102,9 @@ const MarginModal = ({ position, onClose }) => {
             })}
             // doesn't work with mui for some reason?
             // inputRef={register({
-            //   validate: {
-            //     required: true,
-            //     min: (val) => parseFloat(val) >= 0,
-            //     max: (val) => parseFloat(val) <= balance.totalAvailableBTC,
-            //   },
+            //   required: true,
+            //   min: 0,
+            //   max: balance.totalAvailableBTC,
             // })}
             name="amount"
             placeholder={intl.formatMessage({ id: "withdraw.amount" })}
