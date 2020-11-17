@@ -19,11 +19,9 @@ const SignalProvidersSettings = () => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
   const [settingsView, setSettingsView] = useState(false);
-  const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const intl = useIntl();
 
   const loadSettings = () => {
@@ -31,7 +29,6 @@ const SignalProvidersSettings = () => {
       storeViews.provider.id &&
       storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId
     ) {
-      setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: storeViews.provider.id,
@@ -45,9 +42,6 @@ const SignalProvidersSettings = () => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
         });
     }
   };
@@ -63,6 +57,10 @@ const SignalProvidersSettings = () => {
   };
 
   useEffect(matchExchange, [storeSettings.selectedExchange.internalId]);
+
+  const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+
+  const loading = !quotes;
 
   return (
     <Box className="profileSettingsPage">
