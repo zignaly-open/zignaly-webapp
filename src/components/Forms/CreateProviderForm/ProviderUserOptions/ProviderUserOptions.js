@@ -78,7 +78,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
                       <FormControlLabel
                         control={
                           <Checkbox
-                            defaultChecked={true}
+                            defaultChecked={false}
                             onChange={() =>
                               typeof o.val === "string" && props.onChange(toggleExchange(o.val))
                             }

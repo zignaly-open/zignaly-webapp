@@ -72,7 +72,7 @@ const withProvidersLayout = (Component) => {
           size="medium"
           state={storeModal.createProvider}
         >
-          <CreateProviderForm isCopyTrading={isCopyTrading} />
+          <CreateProviderForm />
         </Modal>
         <Modal
           onClose={() => dispatch(showCreateTrader(false))}
