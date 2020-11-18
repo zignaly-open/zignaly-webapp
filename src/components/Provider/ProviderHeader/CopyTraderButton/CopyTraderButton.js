@@ -132,13 +132,7 @@ const CopyTraderButton = ({ provider }) => {
   };
 
   const checkIfCanBeDisconnected = () => {
-    if (userData.isAdmin) {
-      return true;
-    }
-    if (provider.isAdmin) {
-      return false;
-    }
-    return true;
+    return userData.isAdmin || !provider.isAdmin;
   };
 
   return (
