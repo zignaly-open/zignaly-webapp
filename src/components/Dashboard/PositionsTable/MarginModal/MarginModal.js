@@ -112,16 +112,26 @@ const MarginModal = ({ position, onClose }) => {
           />
           <div className="currencyBox">XBT</div>
         </Box>
-        <Box className="line" display="flex">
+        <Box className="line" display="flex" justifyContent="center">
           <Typography className="callout1">
-            <FormattedMessage id="margin.current" />: {formatNumber(position.margin)}XBT
+            <FormattedMessage id="margin.current" />: {formatNumber(position.margin)} XBT
           </Typography>
         </Box>
-        <Box className="line" display="flex">
-          <Typography className="callout1">
-            <FormattedMessage id="deposit.available" />: {formatNumber(balance.totalAvailableBTC)}
-            XBT
-          </Typography>
+        <Box className="line" display="flex" justifyContent="center">
+          {mode === "ADD" ? (
+            <Typography className="callout1">
+              <FormattedMessage id="deposit.available" />: {formatNumber(balance.totalAvailableBTC)}{" "}
+              XBT
+            </Typography>
+          ) : (
+            <Typography className="callout1">
+              <FormattedMessage id="margin.maxremoveable" />:{" "}
+              {formatNumber(
+                position.positionSizeQuote + position.unrealizedProfitLosses + position.profit,
+              )}{" "}
+              XBT
+            </Typography>
+          )}
         </Box>
       </Box>
 

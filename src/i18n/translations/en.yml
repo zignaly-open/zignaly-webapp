@@ -925,6 +925,7 @@ terminal.provider.consumed: "Using:"
 
 margin.add: "Add Margin"
 margin.current: "Current Margin"
+margin.maxremoveable: "Max Removeable Margin"
 margin.remove: "Remove Margin"
 margin.success: "Margin Adjusted Successfully"
 

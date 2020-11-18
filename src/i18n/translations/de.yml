@@ -1174,6 +1174,13 @@ terminal.warning.exiting: "Verlassen"
 terminal.warning.updating: "Aktualisierung"
 terminal.provider.allocated: "Aktuell zugewiesen:"
 terminal.provider.consumed: "Verwendet:"
+
+margin.add: "Add Margin"
+margin.current: "Current Margin"
+margin.maxremoveable: "Max Removeable Margin"
+margin.remove: "Remove Margin"
+margin.success: "Margin Adjusted Successfully"
+
 accounts.connect.button: "Verbinden Sie die Exchange"
 accounts.connect.ready: "Bereit zum Verbinden!"
 accounts.connect.go: "Gehen Sie zu Meine Exchange-Konten"
