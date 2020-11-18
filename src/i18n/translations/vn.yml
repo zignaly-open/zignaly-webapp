@@ -1233,6 +1233,13 @@ terminal.warning.exiting: "Đang thoát"
 terminal.warning.updating: "Đang cập nhập"
 terminal.provider.allocated: "Phân bổ hiện tại:"
 terminal.provider.consumed: "Sử dụng:"
+
+margin.add: "Add Margin"
+margin.current: "Current Margin"
+margin.maxremoveable: "Max Removeable Margin"
+margin.remove: "Remove Margin"
+margin.success: "Margin Adjusted Successfully"
+
 accounts.connect.button: "Kết nối sàn"
 accounts.connect.ready: "Kết nối đã sẵn sàng"
 accounts.connect.go: "Tới Tài Khoản Giao Dịch Của Tôi"

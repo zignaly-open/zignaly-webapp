@@ -44,17 +44,19 @@ export default userPilotApi;
 export const userPilotLogin = (userData) => {
   const { userpilot } = userPilotApi();
 
-  userpilot.identify(userData.userId, {
-    name: userData.firstName,
-    email: userData.email,
-    /* eslint-disable */
-    created_at: userData.createdAt,
-    exchange_connected: userData.binanceConnected,
-    provider_enabled: userData.providerEnable,
-    buys_count: userData.buysCount,
-    sells_count: userData.sellsCount,
-    /* eslint-enable */
-  });
+  if (userpilot) {
+    userpilot.identify(userData.userId, {
+      name: userData.firstName,
+      email: userData.email,
+      /* eslint-disable */
+      created_at: userData.createdAt,
+      exchange_connected: userData.binanceConnected,
+      provider_enabled: userData.providerEnable,
+      buys_count: userData.buysCount,
+      sells_count: userData.sellsCount,
+      /* eslint-enable */
+    });
+  }
 };
 
 /**
@@ -64,11 +66,13 @@ export const userPilotLogin = (userData) => {
 export const userPilotExchangeConnected = (exchangeType) => {
   const { userpilot } = userPilotApi();
 
-  userpilot.track("Exchange Connected", {
-    /* eslint-disable */
-    exchange_type: exchangeType,
-    /* eslint-enable */
-  });
+  if (userpilot) {
+    userpilot.track("Exchange Connected", {
+      /* eslint-disable */
+      exchange_type: exchangeType,
+      /* eslint-enable */
+    });
+  }
 };
 
 export const userPilotProviderEnabled = () => {

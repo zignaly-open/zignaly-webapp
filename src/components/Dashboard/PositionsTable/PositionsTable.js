@@ -353,7 +353,7 @@ const PositionsTable = (props) => {
       <Modal
         onClose={() => setMarginPosition(null)}
         persist={false}
-        size="small"
+        size="mini"
         state={Boolean(marginPosition)}
       >
         {marginPosition && (

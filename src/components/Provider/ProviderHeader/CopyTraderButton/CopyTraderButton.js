@@ -7,7 +7,10 @@ import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
-import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
+import {
+  useStoreUserData,
+  useStoreUserExchangeConnections,
+} from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
@@ -30,6 +33,7 @@ import { ConfirmDialog } from "../../../Dialogs";
 const CopyTraderButton = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
+  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
@@ -127,6 +131,10 @@ const CopyTraderButton = ({ provider }) => {
     );
   };
 
+  const checkIfCanBeDisconnected = () => {
+    return userData.isAdmin || !provider.isAdmin;
+  };
+
   return (
     <Box
       alignItems="center"
@@ -152,7 +160,7 @@ const CopyTraderButton = ({ provider }) => {
               <span>
                 <CustomButton
                   className="loadMoreButton"
-                  disabled={provider.isAdmin}
+                  disabled={!checkIfCanBeDisconnected()}
                   onClick={() => showStopCopyingModal(true)}
                 >
                   <FormattedMessage id="copyt.stopcopyingtrader" />

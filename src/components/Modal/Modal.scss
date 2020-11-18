@@ -10,7 +10,7 @@
   .closeIcon {
     cursor: pointer;
     position: absolute;
-    right: 15px;
+    right: 10px;
     top: 10px;
     z-index: 1;
   }
@@ -18,6 +18,10 @@
   &:not(.fullscreen) {
     height: fit-content;
     // max-height: 700px;
+  }
+
+  &.mini {
+    width: 380px;
   }
 
   &.small {

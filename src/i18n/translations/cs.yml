@@ -918,6 +918,12 @@ terminal.provider.allocated: "CH-Current allocated:"
 terminal.provider.available: "CH-Available:"
 terminal.provider.consumed: "CH-Using:"
 
+margin.add: "CH-Add Margin"
+margin.current: "CH-Current Margin"
+margin.maxremoveable: "CH-Max Removeable Margin"
+margin.remove: "CH-Remove Margin"
+margin.success: "CH-Margin Adjusted Successfully"
+
 # EXCHANGE ACCOUNTS
 accounts.title: "CH-My Exchange Accounts"
 accounts.real: "CH-Real accounts"
