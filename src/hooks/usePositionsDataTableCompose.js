@@ -365,13 +365,14 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderMargin(dataIndex) {
     const position = positions[dataIndex];
-    const { unitsInvestment, margin, isCopyTrading, isCopyTrader, exchange } = position;
-    const readOnly = isCopyTrading && !isCopyTrader;
+    const { unitsInvestment, margin, exchange, providerId } = position;
+    const isManual = providerId === "1";
+
     return (
       <Box alignItems="center" display="flex">
         <span className="symbol">{unitsInvestment}</span>
         <span>{formatPrice(margin)}</span>
-        {openMarginModal && !readOnly && exchange.toLowerCase() === "bitmex" && (
+        {openMarginModal && isManual && exchange.toLowerCase() === "bitmex" && (
           <img
             alt="Edit Margin"
             className="editIcon"
