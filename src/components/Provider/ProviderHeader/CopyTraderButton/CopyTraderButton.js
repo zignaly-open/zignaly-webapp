@@ -138,6 +138,7 @@ const CopyTraderButton = ({ provider }) => {
     if (provider.isAdmin) {
       return false;
     }
+    return true;
   };
 
   return (
