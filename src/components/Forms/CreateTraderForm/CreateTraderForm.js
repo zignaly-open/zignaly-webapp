@@ -72,7 +72,7 @@ const CreateTraderForm = () => {
 
   const { quoteAssets, quotesLoading } = useExchangeQuotes({
     exchangeId: exchange ? exchange.id : "",
-    exchangeType: exchange ? exchange.type[0] : "",
+    exchangeType: exchangeType ? exchangeType : "",
   });
   const quotes =
     exchange && exchange.name.toLowerCase() === "bitmex" ? ["BTC"] : Object.keys(quoteAssets);
