@@ -6,7 +6,7 @@ import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Tabs, Tab, Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Tabs, Tab, Box, OutlinedInput, Typography, InputAdornment } from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import "./MarginModal.scss";
 import { formatNumber } from "utils/formatters";
@@ -81,14 +81,29 @@ const MarginModal = ({ position, onClose }) => {
 
   return (
     <form className="marginModal" onSubmit={handleSubmit(onSubmit)}>
-      <Tabs aria-label="Margin Tabs" onChange={handleModeChange} value={mode}>
-        <Tab label={intl.formatMessage({ id: "margin.add" })} value="ADD" />
-        <Tab label={intl.formatMessage({ id: "margin.remove" })} value="REMOVE" />
+      <Tabs
+        aria-label="Margin Tabs"
+        className="tabs"
+        classes={{ flexContainer: "marginTabsContainer" }}
+        onChange={handleModeChange}
+        value={mode}
+      >
+        <Tab
+          classes={{ selected: "selected" }}
+          label={intl.formatMessage({ id: "margin.add" })}
+          value="ADD"
+        />
+        <Tab
+          classes={{ selected: "selected" }}
+          label={intl.formatMessage({ id: "margin.remove" })}
+          value="REMOVE"
+        />
       </Tabs>
       <Box className="marginBox">
         <Box className="amountInput" display="flex" flexDirection="row">
           <OutlinedInput
             className="customInput"
+            endAdornment={<InputAdornment position="end">XBT</InputAdornment>}
             error={Boolean(errors.amount)}
             inputProps={{
               min: 0,
@@ -110,7 +125,6 @@ const MarginModal = ({ position, onClose }) => {
             placeholder={intl.formatMessage({ id: "withdraw.amount" })}
             type="number"
           />
-          <div className="currencyBox">XBT</div>
         </Box>
         <Box className="line" display="flex" justifyContent="center">
           <Typography className="callout1">
