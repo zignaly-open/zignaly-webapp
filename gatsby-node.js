@@ -38,6 +38,7 @@ exports.onCreatePage = ({ page, actions }) => {
   }
 };
 
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const cssRegex = /\.css$/;
@@ -120,6 +121,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   }
 
   config.plugins.push(new CaseSensitivePathsPlugin());
+  config.resolve.plugins.push(new TsconfigPathsPlugin({ extensions: [".js", ".ts", ".tsx"] }));
   // eslint-disable-next-line no-console
   console.log("Webpack build config updated");
   //   console.log(JSON.stringify(config.module.rules, null, 2));

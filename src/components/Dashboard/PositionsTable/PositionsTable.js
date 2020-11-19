@@ -16,6 +16,8 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./PositionsTable.scss";
 import { useIntl } from "react-intl";
 import PositionsContext from "../PositionsContext";
+import Modal from "../../Modal";
+import MarginModal from "./MarginModal";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -64,8 +66,11 @@ const PositionsTable = (props) => {
     sides,
     modifiedFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
+  // eslint-disable-next-line no-console
+  console.log(positionsAll, type);
   const showTypesFilter = type === "log";
   const { formatMessage } = useIntl();
+  const [marginPosition, setMarginPosition] = useState(null);
 
   const toggleFilters = () => {
     setFiltersVisibility(!filtersVisibility);
@@ -189,6 +194,14 @@ const PositionsTable = (props) => {
     }
   };
 
+  /**
+   * @param {string} positionId .
+   * @returns {void}
+   */
+  const openMarginModal = (positionId) => {
+    setMarginPosition(positionId);
+  };
+
   const {
     composeClosePositionsDataTable,
     composeLogPositionsDataTable,
@@ -196,7 +209,7 @@ const PositionsTable = (props) => {
     composeOpenPositionsForProvider,
     composeClosedPositionsForProvider,
     excludeDataTableColumn,
-  } = usePositionDataTableCompose(positionsFiltered, confirmAction);
+  } = usePositionDataTableCompose(positionsFiltered, confirmAction, openMarginModal);
 
   /**
    *
@@ -243,6 +256,7 @@ const PositionsTable = (props) => {
     let dataTable;
     const isFutures = selectedExchange.exchangeType.toLowerCase() === "futures";
     const isZignaly = selectedExchange.exchangeName.toLowerCase() === "zignaly";
+    const isBitmex = selectedExchange.exchangeName.toLowerCase() === "bitmex";
     const isDemo = selectedExchange.paperTrading;
     const isTestnet = selectedExchange.isTestnet;
 
@@ -257,6 +271,9 @@ const PositionsTable = (props) => {
       if (isDemo || isTestnet || !isFutures) {
         dataTable = excludeDataTableColumn(dataTable, "col.price.market");
         dataTable = excludeDataTableColumn(dataTable, "col.price.liquid");
+      }
+      if (!isBitmex) {
+        dataTable = excludeDataTableColumn(dataTable, "col.margin");
       }
       configureCounts("open", positionsAll.length);
     } else if (type === "profileOpen") {
@@ -333,6 +350,16 @@ const PositionsTable = (props) => {
         executeActionCallback={executeAction}
         setConfirmConfig={setConfirmConfig}
       />
+      <Modal
+        onClose={() => setMarginPosition(null)}
+        persist={false}
+        size="mini"
+        state={Boolean(marginPosition)}
+      >
+        {marginPosition && (
+          <MarginModal onClose={() => setMarginPosition(null)} position={marginPosition} />
+        )}
+      </Modal>
 
       {loading && (
         <Box

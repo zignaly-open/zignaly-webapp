@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import {
   createWidgetOptions,
-  mapExchangeConnectionToTradingViewId,
+  getTradingViewExchangeSymbol,
 } from "../../../tradingView/dataFeedOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
@@ -16,6 +16,8 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import ConnectExchange from "../../Modal/ConnectExchange";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
+import TradingViewContext from "./TradingViewContext";
+import useTradingViewContext from "hooks/useTradingViewContext";
 
 /**
  * @typedef {any} TVWidget
@@ -40,14 +42,12 @@ const defaultExchangeSymbol = {
  * @returns {JSX.Element} Trading terminal element.
  */
 const TradingView = () => {
+  const tradingViewContext = useTradingViewContext();
+  const { lastPrice, setLastPrice } = tradingViewContext;
   const [libraryReady, setLibraryReady] = useState(false);
-  const {
-    instantiateWidget,
-    lastPrice,
+  const { instantiateWidget, setTradingViewWidget, tradingViewWidget } = useTradingTerminal(
     setLastPrice,
-    setTradingViewWidget,
-    tradingViewWidget,
-  } = useTradingTerminal();
+  );
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
@@ -162,12 +162,12 @@ const TradingView = () => {
     }
 
     const widgetOptions = createWidgetOptions(
-      exchangeName,
-      selectedSymbol.short,
+      selectedSymbol.tradeViewSymbol,
       storeSettings.darkStyle,
     );
 
     const cleanupWidget = instantiateWidget(widgetOptions);
+
     return () => {
       cleanupWidget();
     };
@@ -227,17 +227,14 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-    const symbolSuffix =
-      storeSettings.selectedExchange.exchangeName.toLowerCase() !== "bitmex" &&
-      storeSettings.selectedExchange.exchangeType === "futures"
-        ? "PERP"
-        : "";
-    const symbolCode = newSymbol.tradeViewSymbol + symbolSuffix;
-    const exchangeId = mapExchangeConnectionToTradingViewId(exchangeName);
 
     if (tradingViewWidget && tradingViewWidget.iframe) {
+      const symbolTV = getTradingViewExchangeSymbol(
+        newSymbol.tradeViewSymbol,
+        storeSettings.selectedExchange,
+      );
       tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: `${exchangeId}:${symbolCode}` } },
+        { name: "set-symbol", data: { symbol: symbolTV } },
         "*",
       );
     }
@@ -258,7 +255,7 @@ const TradingView = () => {
   });
 
   return (
-    <>
+    <TradingViewContext.Provider value={tradingViewContext}>
       <FormProvider {...methods}>
         <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
           {!isLoading && (
@@ -296,7 +293,7 @@ const TradingView = () => {
           </Box>
         </Box>
       </FormProvider>
-    </>
+    </TradingViewContext.Provider>
   );
 };
 

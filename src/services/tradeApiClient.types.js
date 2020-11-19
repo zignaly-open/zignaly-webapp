@@ -495,6 +495,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
  * @property {Number} liquidationPrice
  * @property {Number} markPrice
+ * @property {Number} margin
  * @property {string} markPriceStyle
  * @property {string} unitsInvestment Units displayed for the investment.
  * @property {string} unitsAmount Units displayed when bought.
@@ -1000,6 +1001,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} AdjustMarginPayload
+ * @property {string} positionId
+ * @property {string} internalExchangeId
+ * @property {number} amount
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export
@@ -1378,6 +1386,7 @@ export function positionItemTransform(positionItem) {
     currentAllocatedBalance: safeParseFloat(positionItem.currentAllocatedBalance),
     liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
     markPrice: safeParseFloat(positionItem.markPrice),
+    margin: safeParseFloat(positionItem.margin),
     takeProfitTargetsCountSuccess: safeParseFloat(positionItem.takeProfitTargetsCountSuccess),
   });
 
@@ -1624,6 +1633,7 @@ function createEmptyPositionEntity() {
     liquidationPrice: 0,
     markPrice: 0,
     markPriceStyle: "",
+    margin: 0,
     unitsInvestment: "",
     unitsAmount: "",
     short: "",
@@ -2644,7 +2654,7 @@ function createEmptyProviderGetEntity() {
     internalPaymentInfo: {
       isPremium: true,
       merchantId: "",
-      price: 0,
+      price: "",
       trial: 0,
       ipnSecret: "",
     },

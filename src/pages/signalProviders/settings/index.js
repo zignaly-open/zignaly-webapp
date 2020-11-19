@@ -15,27 +15,31 @@ import { useIntl } from "react-intl";
 import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView";
 
 const SignalProvidersSettings = () => {
-  const storeSettings = useStoreSettingsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
   const [settings, setSettings] = useState(emptySettings);
+  const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
+  const quotes =
+    selectedExchange.name.toLowerCase() === "bitmex"
+      ? { BTC: { quote: "BTC", minNotional: 0 } }
+      : quoteAssets;
   const [settingsView, setSettingsView] = useState(false);
-  const quotes = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const intl = useIntl();
 
   const loadSettings = () => {
     if (
       storeViews.provider.id &&
-      storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId
+      storeViews.provider.exchangeInternalId === selectedExchange.internalId
     ) {
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: storeViews.provider.id,
-        internalExchangeId: storeSettings.selectedExchange.internalId,
+        internalExchangeId: selectedExchange.internalId,
         version: 2,
       };
       tradeApi
@@ -52,17 +56,17 @@ const SignalProvidersSettings = () => {
     }
   };
 
-  useEffect(loadSettings, [storeSettings.selectedExchange.internalId, storeViews.provider.id]);
+  useEffect(loadSettings, [selectedExchange.internalId, storeViews.provider.id]);
 
   const matchExchange = () => {
-    if (storeViews.provider.exchangeInternalId === storeSettings.selectedExchange.internalId) {
+    if (storeViews.provider.exchangeInternalId === selectedExchange.internalId) {
       setSettingsView(true);
     } else {
       setSettingsView(false);
     }
   };
 
-  useEffect(matchExchange, [storeSettings.selectedExchange.internalId]);
+  useEffect(matchExchange, [selectedExchange.internalId]);
 
   return (
     <Box className="profileSettingsPage">

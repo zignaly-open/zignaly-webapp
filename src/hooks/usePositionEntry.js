@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
+import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -24,12 +26,12 @@ import { useFormContext } from "react-hook-form";
  */
 function usePositionEntry(positionEntity) {
   const { watch } = useFormContext();
-  const lastPrice = watch("lastPrice");
+  const { lastPrice } = useContext(TradingViewContext);
   const strategyPrice = watch("price");
   const units = watch("units");
   const positionSize = watch("positionSize");
   const priceDifference = watch("priceDifference");
-  const currentPrice = parseFloat(strategyPrice) || parseFloat(lastPrice);
+  const currentPrice = parseFloat(strategyPrice) || lastPrice;
 
   /**
    * Resolve position entry price for new or existing position.

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CreateTraderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
+import { Box, Typography, OutlinedInput, CircularProgress, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -32,6 +32,7 @@ const MODEL_MONHTLY_FEE = 1;
  */
 const CreateTraderForm = () => {
   const [loading, setLoading] = useState(false);
+  const [allocated, setAllocated] = useState("");
   const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
   const [selectedModel, setSelectedModel] = useState(
     profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
@@ -69,9 +70,9 @@ const CreateTraderForm = () => {
     }
   }, [exchanges]);
 
-  const quoteAssets = useExchangeQuotes({
+  const { quoteAssets, quotesLoading } = useExchangeQuotes({
     exchangeId: exchange ? exchange.id : "",
-    exchangeType: exchange ? exchange.type[0] : "",
+    exchangeType: exchangeType ? exchangeType : "",
   });
   const quotes =
     exchange && exchange.name.toLowerCase() === "bitmex" ? ["BTC"] : Object.keys(quoteAssets);
@@ -242,29 +243,38 @@ const CreateTraderForm = () => {
                 flexDirection="row"
               >
                 <Box className="inputBox" mr={2}>
-                  <Controller
-                    control={control}
-                    defaultValue={quotes[0]}
-                    name="quote"
-                    render={({ onChange, value }) => (
-                      <CustomSelect
-                        label={intl.formatMessage({
-                          id: "fil.quote",
-                        })}
-                        labelPlacement="top"
-                        onChange={onChange}
-                        options={quotes}
-                        search={true}
-                        value={value}
+                  {quotesLoading && (
+                    <Box className="quotesLoading">
+                      <CircularProgress color="primary" size={30} />
+                    </Box>
+                  )}
+                  {!quotesLoading && (
+                    <>
+                      <Controller
+                        control={control}
+                        defaultValue={quotes[0]}
+                        name="quote"
+                        render={({ onChange, value }) => (
+                          <CustomSelect
+                            label={intl.formatMessage({
+                              id: "fil.quote",
+                            })}
+                            labelPlacement="top"
+                            onChange={onChange}
+                            options={quotes}
+                            search={true}
+                            value={value}
+                          />
+                        )}
+                        rules={
+                          {
+                            //   required: intl.formatMessage({ id: "form.error.quote" }),
+                          }
+                        }
                       />
-                    )}
-                    rules={
-                      {
-                        //   required: intl.formatMessage({ id: "form.error.quote" }),
-                      }
-                    }
-                  />
-                  {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                      {errors.quote && <span className="errorText">{errors.quote.message}</span>}
+                    </>
+                  )}
                 </Box>
                 {selectedModel === MODEL_MONHTLY_FEE && (
                   <Box
@@ -279,18 +289,29 @@ const CreateTraderForm = () => {
                         <FormattedMessage id="srv.edit.minbalance" />
                       </Typography>
                     </label>
-                    <OutlinedInput
-                      className="customInput minAllocatedBalance"
-                      error={!!errors.minAllocatedBalance}
-                      inputProps={{
-                        min: 0,
-                      }}
-                      inputRef={register({
-                        required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
-                        min: 0,
-                      })}
+                    <Controller
+                      control={control}
                       name="minAllocatedBalance"
-                      type="number"
+                      render={(props) => (
+                        <TextField
+                          className="customInput minAllocatedBalance"
+                          error={!!errors.minAllocatedBalance}
+                          fullWidth
+                          onChange={(e) => {
+                            let data = e.target.value;
+                            if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
+                              data = data.replace(",", ".");
+                              setAllocated(data);
+                              props.onChange(data);
+                            }
+                          }}
+                          value={allocated}
+                          variant="outlined"
+                        />
+                      )}
+                      rules={{
+                        required: intl.formatMessage({ id: "form.error.minAllocatedBalance" }),
+                      }}
                     />
                     {errors.minAllocatedBalance && (
                       <span className="errorText">{errors.minAllocatedBalance.message}</span>

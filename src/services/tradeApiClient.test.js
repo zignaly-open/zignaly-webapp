@@ -435,7 +435,7 @@ describe("Consume tradeApiClient service", () => {
       const exitPosition = await client.positionExit(positionActionPayload);
       assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
     }
-  }, 25000);
+  }, 60000);
 
   it("should get position by ID", async () => {
     const payload = {

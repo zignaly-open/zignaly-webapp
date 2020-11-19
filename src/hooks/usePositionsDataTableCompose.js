@@ -11,6 +11,7 @@ import { useStoreUserData } from "./useStoreUserSelector";
 import { Box } from "@material-ui/core";
 import { useIntl } from "react-intl";
 import moment from "moment";
+import EditIcon from "images/ct/edit.svg";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -53,9 +54,10 @@ import moment from "moment";
  *
  * @param {UserPositionsCollection} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
+ * @param {function} [openMarginModal] Open margin modal callback.
  * @returns {PositionDataTableComposeHook} Position data table compose hook.
  */
-export function usePositionDataTableCompose(positions, confirmActionHandler) {
+export function usePositionDataTableCompose(positions, confirmActionHandler, openMarginModal) {
   const storeUserData = useStoreUserData();
   const { formatMessage } = useIntl();
 
@@ -352,6 +354,33 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         <span className="symbol">{position.quote}</span>
         <span>{formatPrice(position.liquidationPrice)}</span>
       </>
+    );
+  }
+
+  /**
+   * Compose margin element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderMargin(dataIndex) {
+    const position = positions[dataIndex];
+    const { unitsInvestment, margin, exchange, providerId } = position;
+    const isManual = providerId === "1";
+
+    return (
+      <Box alignItems="center" display="flex">
+        <span className="symbol">{unitsInvestment}</span>
+        <span>{formatPrice(margin)}</span>
+        {openMarginModal && isManual && exchange.toLowerCase() === "bitmex" && (
+          <img
+            alt="Edit Margin"
+            className="editIcon"
+            onClick={() => openMarginModal(position)}
+            src={EditIcon}
+          />
+        )}
+      </Box>
     );
   }
 
@@ -742,23 +771,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
       !isManualPosition && position.providerOwnerUserId === storeUserData.userId;
 
     if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return (
-          <div className="actions">
-            {!closed && (
-              <button
-                data-action={"cancel"}
-                data-position-id={positionId}
-                onClick={confirmActionHandler}
-                title="cancel"
-                type="button"
-              >
-                <XCircle color={colors.purpleLight} />
-              </button>
-            )}
-          </div>
-        );
-      }
       return null;
     }
 
@@ -892,6 +904,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler) {
         columnId: "col.price.liquid",
         propertyName: "liquidationPrice",
         renderFunction: renderLiquidPrice,
+      },
+      {
+        columnId: "col.margin",
+        propertyName: "margin",
+        renderFunction: renderMargin,
       },
       {
         columnId: "col.plnumber",

@@ -1,0 +1,39 @@
+.marginModal {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+
+  .amountInput {
+    margin: 30px 0 15px;
+  }
+
+  .customInput {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    width: 200px;
+  }
+
+  .currencyBox {
+    background-color: $mediumDarkGrey;
+    border: 1px solid $darkLightGrey;
+    border-bottom-right-radius: 3px;
+    border-left: 0;
+    border-top-right-radius: 3px;
+    padding: 5px;
+    width: 70px;
+  }
+
+  .customButton {
+    margin: 25px 20px;
+  }
+
+  .marginBox {
+    margin: 0 20px;
+  }
+
+  .line + .line {
+    margin-top: 4px;
+  }
+}
