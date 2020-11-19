@@ -335,8 +335,6 @@ const usePositionsList = (
             }
 
             setPositions(newPositions);
-            // eslint-disable-next-line no-console
-            console.log(newPositions, type, filters);
             if (isFunction(notifyPositionsUpdate)) {
               notifyPositionsUpdate(newPositions[type]);
             }
@@ -390,16 +388,23 @@ const usePositionsList = (
       return false;
     }
 
-    const newPositions = prepareNewPositionsState(initiatorExchangeInternalId);
     tradeApi
       .positionGet(payload)
       .then((data) => {
-        newPositions[type] = [data];
+        const newPositions = {
+          ...prepareNewPositionsState(initiatorExchangeInternalId),
+          [type]: [data],
+        };
+        // If current position status type changes we need to update where its stored
+        if (["open", "log", "closed"].includes(data.type) && data.type !== type) {
+          // @ts-ignore
+          newPositions[data.type] = [data];
+        }
         setPositions(newPositions);
 
-        if (type === "open") {
-          newPositions[type] = mutateUpdatingPositions(newPositions[type]);
-        }
+        // if (type === "open") {
+        //   newPositions[type] = mutateUpdatingPositions(newPositions[type]);
+        // }
 
         if (isFunction(notifyPositionsUpdate)) {
           notifyPositionsUpdate(newPositions[type]);
