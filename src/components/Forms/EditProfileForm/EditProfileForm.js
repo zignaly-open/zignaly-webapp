@@ -64,6 +64,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [aboutTab, setAboutTab] = useState("write");
   const [strategyTab, setStrategyTab] = useState("write");
   const listSwitch = watch("list", provider.list);
+  const publicSwitch = watch("public", provider.public);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
@@ -299,9 +300,19 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setSocialError(value);
   };
 
-  const disableList = () => {
+  const disableListingSwitch = () => {
     if (!storeUserData.isAdmin) {
       if (listSwitch) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
+  const disablePulicSwitch = () => {
+    if (!storeUserData.isAdmin) {
+      if (provider.followers <= 1) {
         return false;
       }
       return true;
@@ -771,7 +782,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   defaultValue={provider.public}
                   name="public"
                   render={({ onChange, value }) => (
-                    <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
+                    <Switch
+                      checked={value}
+                      disabled={disablePulicSwitch()}
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
                   )}
                 />
               </Box>
@@ -796,7 +811,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   render={({ onChange, onBlur, value }) => (
                     <Switch
                       checked={value}
-                      disabled={disableList()}
+                      disabled={disableListingSwitch()}
                       onBlur={onBlur}
                       onChange={(e) => onChange(e.target.checked)}
                     />
