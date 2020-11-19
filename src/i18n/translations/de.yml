@@ -1034,6 +1034,7 @@ error.81: "Exchange Typ Futures kann nur mit einem Anbieter oder Copy-Trader ver
 error.82: "Sie benötigen eine Beschreibung und ein Logo, bevor Sie aufgelistet werden"
 error.83: "Sie können nicht auf dem Marktplatz gelistet werden, wenn Sie den Dienst mit einem Demo-Konto verwalten oder noch keine Verbindung zu Ihrem Dienst hergestellt haben"
 error.84: "Der Dienst muss öffentlich sein, bevor er auf dem Marktplatz gelistet wird."
+error.97: "The selected exchange account is not connected to the service"
 error.1003: "Kauf Sie nicht platziert wegen TTL"
 error.1005: "Aktueller Preis unter dem Mindestpreis"
 error.1012: "Kein Mindestbetrag"

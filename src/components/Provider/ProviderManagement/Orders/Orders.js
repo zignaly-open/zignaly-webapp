@@ -72,6 +72,7 @@ const Orders = ({ provider }) => {
             list={list}
             loadData={loadData}
             persistKey="providerOrders"
+            provider={provider}
             selectedAccount={selectedExchange}
             title=""
           />
