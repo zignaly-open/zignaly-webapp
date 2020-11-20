@@ -124,6 +124,10 @@ const CopyTraderButton = ({ provider }) => {
   };
 
   const getTooltip = () => {
+    if (userData.isAdmin || !provider.isAdmin) {
+      return "";
+    }
+
     return (
       <Typography variant="body1">
         <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
