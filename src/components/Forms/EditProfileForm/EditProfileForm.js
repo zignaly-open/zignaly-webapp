@@ -68,7 +68,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
   const loadPositions = () => {
-    if (provider.id && !provider.profitSharing) {
+    if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
@@ -345,6 +345,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     }
     if (provider.profitSharing) {
       return false;
+    }
+    if (!provider.isCopyTrading) {
+      return true;
     }
     if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
       return true;
