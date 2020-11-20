@@ -121,6 +121,7 @@ const TradingView = () => {
   );
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const isLoading = tradingViewWidget === null || selectedSymbol === null;
+  console.log(tradingViewWidget, selectedSymbol);
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
@@ -282,7 +283,7 @@ const TradingView = () => {
                 <CircularProgress disableShrink />
               </Box>
             )}
-            <Box className="tradingViewChart" id="trading_view_chart" />
+            <div className="tradingViewChart" id="trading_view_chart" />
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}

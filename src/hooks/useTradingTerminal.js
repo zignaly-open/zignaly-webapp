@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
+import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library";
+import datafeed from "tradingView/datafeed.vcce";
 
 /**
  * @typedef {Object} TradingTerminalHook
@@ -25,6 +27,9 @@ import { formatPrice } from "../utils/formatters";
  */
 const useTradingTerminal = (setLastPrice) => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
+  const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
+  // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
   /**
    * Instantiate trading view widget and initialize price.
@@ -35,7 +40,8 @@ const useTradingTerminal = (setLastPrice) => {
   const instantiateWidget = (widgetOptions) => {
     // @ts-ignore
     // eslint-disable-next-line new-cap
-    const externalWidget = new window.TradingView.widget(widgetOptions);
+    const externalWidget = new TradingViewWidget(widgetOptions);
+    console.log(TradingViewWidget, externalWidget);
     let eventSymbol = "";
 
     // @ts-ignore
