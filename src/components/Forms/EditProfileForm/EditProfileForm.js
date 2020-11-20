@@ -299,9 +299,19 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setSocialError(value);
   };
 
-  const disableList = () => {
+  const disableListingSwitch = () => {
     if (!storeUserData.isAdmin) {
       if (listSwitch) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
+  const disablePulicSwitch = () => {
+    if (!storeUserData.isAdmin) {
+      if (provider.followers <= 1) {
         return false;
       }
       return true;
@@ -771,7 +781,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   defaultValue={provider.public}
                   name="public"
                   render={({ onChange, value }) => (
-                    <Switch checked={value} onChange={(e) => onChange(e.target.checked)} />
+                    <Switch
+                      checked={value}
+                      disabled={disablePulicSwitch()}
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
                   )}
                 />
               </Box>
@@ -796,7 +810,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   render={({ onChange, onBlur, value }) => (
                     <Switch
                       checked={value}
-                      disabled={disableList()}
+                      disabled={disableListingSwitch()}
                       onBlur={onBlur}
                       onChange={(e) => onChange(e.target.checked)}
                     />
