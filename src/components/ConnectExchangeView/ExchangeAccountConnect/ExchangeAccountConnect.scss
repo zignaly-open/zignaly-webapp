@@ -48,6 +48,11 @@
       cursor: pointer;
       height: 60px;
       width: 60px;
+
+      &.vcce {
+        width: 80px;
+        height: 80px;
+      }
     }
   }
 

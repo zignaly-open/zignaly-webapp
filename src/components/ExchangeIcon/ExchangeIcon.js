@@ -4,6 +4,7 @@ import BinanceIcon from "../../images/exchanges/binance.svg";
 import ZignalyIcon from "../../images/exchanges/zignaly.svg";
 import KucoinIcon from "../../images/exchanges/kucoin.svg";
 import BitmexIcon from "../../images/exchanges/bitmex.svg";
+import VCCEIcon from "../../images/exchanges/vcce.png";
 
 /**
  * @typedef {Object} ExchangeIconPropTypes
@@ -35,6 +36,9 @@ const ExchangeIcon = (props) => {
       break;
     case "kucoin":
       icon = KucoinIcon;
+      break;
+    case "vcce":
+      icon = VCCEIcon;
       break;
     default:
       break;
