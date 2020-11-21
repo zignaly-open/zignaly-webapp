@@ -3,6 +3,7 @@ import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library";
 import datafeed from "tradingView/datafeed.vcce";
+import { createChart } from "lightweight-charts";
 
 /**
  * @typedef {Object} TradingTerminalHook
@@ -27,9 +28,9 @@ import datafeed from "tradingView/datafeed.vcce";
  */
 const useTradingTerminal = (setLastPrice) => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
-  const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
+  // const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
-  const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
+  // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
   /**
    * Instantiate trading view widget and initialize price.
@@ -40,12 +41,47 @@ const useTradingTerminal = (setLastPrice) => {
   const instantiateWidget = (widgetOptions) => {
     // @ts-ignore
     // eslint-disable-next-line new-cap
-    const externalWidget = new TradingViewWidget(widgetOptions);
-    console.log(TradingViewWidget, externalWidget);
+    // const externalWidget = new TradingViewWidget(widgetOptions);
+    // console.log(TradingViewWidget, externalWidget);
     let eventSymbol = "";
+
+    const chartProperties = {
+      width: 1500,
+      height: 600,
+      timeScale: {
+        timeVisible: true,
+        secondsVisible: false,
+      },
+    };
+
+    const domElement = document.getElementById("trading_view_chart");
+    const chart = createChart(domElement, chartProperties);
+    const candleSeries = chart.addCandlestickSeries();
+
+    fetch(
+      `https://api.allorigins.win/get?url=${encodeURIComponent(
+        "https://api.vcc.exchange/v3/chart/bars?lang=en&coin=btc&currency=usdt&resolution=60000&from=1605692765&to=1605779225",
+      )}`,
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const cdata = JSON.parse(data.contents).map((d) => {
+          return {
+            time: d.closing_time / 1000,
+            open: d.open,
+            high: d.high,
+            low: d.low,
+            close: d.close,
+          };
+        });
+        console.log(cdata);
+        candleSeries.setData(cdata);
+      })
+      .catch((err) => console.log(err));
 
     // @ts-ignore
     const handleWidgetReady = (event) => {
+      console.log(event);
       if (isString(event.data)) {
         try {
           const dataRaw = /** @type {Object<string, any>} */ event.data;
