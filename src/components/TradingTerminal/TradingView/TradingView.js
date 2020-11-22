@@ -5,7 +5,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import {
   createWidgetOptions,
   getTradingViewExchangeSymbol,
-} from "../../../tradingView/dataFeedOptions";
+} from "../../../tradingView/tradingViewOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
@@ -18,6 +18,7 @@ import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
+import VcceDataFeed from "services/vcceDataFeed";
 
 /**
  * @typedef {any} TVWidget
@@ -121,7 +122,6 @@ const TradingView = () => {
   );
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const isLoading = tradingViewWidget === null || selectedSymbol === null;
-  console.log(tradingViewWidget, selectedSymbol);
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
@@ -158,11 +158,24 @@ const TradingView = () => {
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library/symbol not ready.
-    if (tradingViewWidget || !libraryReady || !selectedSymbol) {
+    if (tradingViewWidget || !selectedSymbol) {
       return () => {};
     }
 
+    const options = {
+      exchange: exchangeName,
+      // exchangeKey,
+      // internalExchangeId: storeSettings.selectedExchange.internalId,
+      symbol: selectedSymbol,
+      symbolsData: symbols,
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      // coinRayToken: coinRayToken,
+      // regenerateAccessToken: getCoinrayToken,
+    };
+    const dataFeed = new VcceDataFeed(options);
+
     const widgetOptions = createWidgetOptions(
+      dataFeed,
       selectedSymbol.tradeViewSymbol,
       storeSettings.darkStyle,
     );

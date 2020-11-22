@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   createWidgetOptions,
   getTradingViewExchangeSymbol,
-} from "../../../tradingView/dataFeedOptions";
+} from "../../../tradingView/tradingViewOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress, Typography } from "@material-ui/core";

@@ -100,12 +100,12 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
  *
  * @returns {Object<string, any>} Data feed options.
  */
-export function createWidgetOptions(symbol, darkStyle) {
+export function createWidgetOptions(dataFeed, symbol, darkStyle) {
   return {
-    // ...(dataFeed && {
-    //   datafeed: dataFeed,
-    //   library_path: process.env.GATSBY_BASE_PATH + "/charting_library/",
-    // }),
+    ...(dataFeed && {
+      datafeed: dataFeed,
+      library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
+    }),
     autosize: true,
     charts_storage_api_version: "1.1",
     charts_storage_url: "https://saveload.tradingview.com",

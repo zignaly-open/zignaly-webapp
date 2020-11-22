@@ -2,8 +2,6 @@ import { useState } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library";
-import datafeed from "tradingView/datafeed.vcce";
-import { createChart } from "lightweight-charts";
 
 /**
  * @typedef {Object} TradingTerminalHook
@@ -28,7 +26,7 @@ import { createChart } from "lightweight-charts";
  */
 const useTradingTerminal = (setLastPrice) => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
-  // const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
+  const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
 
@@ -41,90 +39,74 @@ const useTradingTerminal = (setLastPrice) => {
   const instantiateWidget = (widgetOptions) => {
     // @ts-ignore
     // eslint-disable-next-line new-cap
-    // const externalWidget = new TradingViewWidget(widgetOptions);
-    // console.log(TradingViewWidget, externalWidget);
     let eventSymbol = "";
 
-    const chartProperties = {
-      width: 1500,
-      height: 600,
-      timeScale: {
-        timeVisible: true,
-        secondsVisible: false,
-      },
-    };
-
-    const domElement = document.getElementById("trading_view_chart");
-    const chart = createChart(domElement, chartProperties);
-    const candleSeries = chart.addCandlestickSeries();
-
-    fetch(
-      `https://api.allorigins.win/get?url=${encodeURIComponent(
-        "https://api.vcc.exchange/v3/chart/bars?lang=en&coin=btc&currency=usdt&resolution=60000&from=1605692765&to=1605779225",
-      )}`,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const cdata = JSON.parse(data.contents).map((d) => {
-          return {
-            time: d.closing_time / 1000,
-            open: d.open,
-            high: d.high,
-            low: d.low,
-            close: d.close,
-          };
-        });
-        console.log(cdata);
-        candleSeries.setData(cdata);
-      })
-      .catch((err) => console.log(err));
-
     // @ts-ignore
-    const handleWidgetReady = (event) => {
-      console.log(event);
-      if (isString(event.data)) {
-        try {
-          const dataRaw = /** @type {Object<string, any>} */ event.data;
-          const dataParsed = JSON.parse(dataRaw);
+    // const handleWidgetReady = (event) => {
+    //   console.log(event);
+    //   if (isString(event.data)) {
+    //     try {
+    //       const dataRaw = /** @type {Object<string, any>} */ event.data;
+    //       const dataParsed = JSON.parse(dataRaw);
 
-          // @ts-ignore
-          if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-            setTradingViewWidget(externalWidget);
-          }
+    //       // @ts-ignore
+    //       if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
+    //         setTradingViewWidget(externalWidget);
+    //       }
 
-          if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
-            if (eventSymbol !== dataParsed.data.original_name) {
-              const receivedPrice = isNumber(dataParsed.data.last_price)
-                ? formatPrice(dataParsed.data.last_price, "", "")
-                : dataParsed.data.last_price;
-              setLastPrice(receivedPrice);
-              eventSymbol = dataParsed.data.original_name;
-            }
-          }
-        } catch (e) {
-          // Not a valid JSON, skip event.
-          return;
-        }
-      }
+    //       if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
+    //         if (eventSymbol !== dataParsed.data.original_name) {
+    //           const receivedPrice = isNumber(dataParsed.data.last_price)
+    //             ? formatPrice(dataParsed.data.last_price, "", "")
+    //             : dataParsed.data.last_price;
+    //           setLastPrice(receivedPrice);
+    //           eventSymbol = dataParsed.data.original_name;
+    //         }
+    //       }
+    //     } catch (e) {
+    //       // Not a valid JSON, skip event.
+    //       return;
+    //     }
+    //   }
 
-      // Symbol data not found by Trading View widget.
-      if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
-        setTradingViewWidget(externalWidget);
-        setLastPrice(null);
-      }
-    };
+    //   // Symbol data not found by Trading View widget.
+    //   if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
+    //     setTradingViewWidget(externalWidget);
+    //     setLastPrice(null);
+    //   }
+    // };
 
-    window.addEventListener("message", handleWidgetReady);
+    if (true) {
+      const widgetInstance = new PrivateTradingViewWidget(widgetOptions);
+      window.externalWidget = widgetInstance;
+      // Store to state only when chart is ready so prices are resolved.
+      widgetInstance.onChartReady(() => {
+        setTradingViewWidget(widgetInstance);
+        // todo: update price
+        // @ts-ignore
+        // const priceCandle = dataFeed.getLastCandle();
+        // setLastPrice(priceCandle);
+      });
+    }
 
-    const cleanupWidget = () => {
+    return () => {
       if (tradingViewWidget) {
         tradingViewWidget.remove();
         setTradingViewWidget(null);
-        window.removeEventListener("message", handleWidgetReady);
       }
     };
 
-    return cleanupWidget;
+    // window.addEventListener("message", handleWidgetReady);
+
+    // const cleanupWidget = () => {
+    //   if (tradingViewWidget) {
+    //     tradingViewWidget.remove();
+    //     setTradingViewWidget(null);
+    //     window.removeEventListener("message", handleWidgetReady);
+    //   }
+    // };
+
+    // return cleanupWidget;
   };
 
   return {
