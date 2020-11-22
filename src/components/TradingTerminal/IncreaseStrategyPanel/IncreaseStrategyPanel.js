@@ -53,7 +53,7 @@ const IncreaseStrategyPanel = (props) => {
     (item) => item.internalId === positionEntity.internalExchangeId,
   );
   const { loading: loadingProviders, ownCopyTraderProviders } = useOwnCopyTraderProviders(
-    exchange.internalId,
+    exchange ? exchange.internalId : "",
   );
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
