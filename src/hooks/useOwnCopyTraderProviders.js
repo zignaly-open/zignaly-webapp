@@ -31,37 +31,39 @@ const useOwnCopyTraderProviders = (exchangeInternalId) => {
   const dispatch = useDispatch();
 
   const loadOwnCopyTradersProviders = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalExchangeId: exchangeInternalId || storeSettings.selectedExchange.internalId,
-    };
+    if (exchangeInternalId) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        internalExchangeId: exchangeInternalId || storeSettings.selectedExchange.internalId,
+      };
 
-    setLoading(true);
-    tradeApi
-      .ownedCopyTradersProvidersOptions(payload)
-      .then((data) => {
-        if (Array.isArray(data)) {
-          // Digest providers data to handle translation.
-          const digestedProviders = data.map((provider) => {
-            if (provider.providerId === 1) {
-              return {
-                ...provider,
-                providerName: formatMessage({ id: "terminal.provider.manual" }),
-              };
-            }
+      setLoading(true);
+      tradeApi
+        .ownedCopyTradersProvidersOptions(payload)
+        .then((data) => {
+          if (Array.isArray(data)) {
+            // Digest providers data to handle translation.
+            const digestedProviders = data.map((provider) => {
+              if (provider.providerId === 1) {
+                return {
+                  ...provider,
+                  providerName: formatMessage({ id: "terminal.provider.manual" }),
+                };
+              }
 
-            return provider;
-          });
+              return provider;
+            });
 
-          setOwnCopyTradersProviders(digestedProviders);
-        }
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+            setOwnCopyTradersProviders(digestedProviders);
+          }
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   useEffect(loadOwnCopyTradersProviders, [
