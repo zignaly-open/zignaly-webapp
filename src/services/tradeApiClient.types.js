@@ -3049,6 +3049,7 @@ function createProviderFollowersListEmptyEntity() {
  * @property {string} balanceTotalUSDT
  * @property {string} balanceTotalExchCoin
  * @property {string} exchCoin
+ * @property {string} maxWithdrawAmount
  * @property {Array<CoinNetwork>} networks
  */
 
@@ -3104,6 +3105,7 @@ function createExchangeAssetsEmptyEntity() {
     balanceLockedUSDT: "0.000000000000",
     balanceTotalUSDT: "0.000000000000",
     balanceTotalExchCoin: "0.000000000000",
+    maxWithdrawAmount: "0.000000000000",
     exchCoin: "",
     networks: [],
   };
