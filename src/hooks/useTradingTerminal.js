@@ -3,6 +3,8 @@ import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library/";
 import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+// import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.min";
 
 /**
  *
@@ -13,9 +15,10 @@ import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
 /**
  * @typedef {Object} TradingTerminalHook
  * @property {function} instantiateWidget
- * @property {function} setTradingViewWidget
  * @property {function} changeSymbol
+ * @property {function} removeWidget
  * @property {any} tradingViewWidget
+ * @property {boolean} isSelfHosted
  */
 
 /**
@@ -29,8 +32,15 @@ import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
  * @returns {TradingTerminalHook} Trading View hook object.
  */
 const useTradingTerminal = (setLastPrice) => {
-  const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
-  const [dataFeed, setDataFeed] = useState(/** @type {IBasicDataFeed} */ null);
+  // const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
+  // const [dataFeed, setDataFeed] = useState(/** @type {IBasicDataFeed} */ null);
+  const storeSettings = useStoreSettingsSelector();
+  const [tradingView, setTradingView] = useState({
+    widget: null,
+    // /** @type {IBasicDataFeed} */ dataFeed: null,
+    options: null,
+    isSelfHosted: false,
+  });
 
   /**
    * Instantiate trading view widget and initialize price.
@@ -39,80 +49,98 @@ const useTradingTerminal = (setLastPrice) => {
    * @return {void}
    */
   const instantiateWidget = (widgetOptions) => {
-    const TradingViewWidget = widgetOptions.exc
-      ? PrivateTradingViewWidget
-      : window.TradingView.widget;
-    let eventSymbol = "";
+    const isSelfHosted = Boolean(widgetOptions.datafeed);
 
-    // @ts-ignore
-    const handleWidgetReady = (event) => {
-      if (isString(event.data)) {
-        try {
-          const dataRaw = /** @type {Object<string, any>} */ event.data;
-          const dataParsed = JSON.parse(dataRaw);
-
-          // @ts-ignore
-          if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-            setTradingViewWidget(externalWidget);
-          }
-
-          if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
-            if (eventSymbol !== dataParsed.data.original_name) {
-              const receivedPrice = isNumber(dataParsed.data.last_price)
-                ? formatPrice(dataParsed.data.last_price, "", "")
-                : dataParsed.data.last_price;
-              setLastPrice(receivedPrice);
-              eventSymbol = dataParsed.data.original_name;
-            }
-          }
-        } catch (e) {
-          // Not a valid JSON, skip event.
-          return;
-        }
-      }
-
-      // Symbol data not found by Trading View widget.
-      if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
-        setTradingViewWidget(externalWidget);
-        setLastPrice(null);
-      }
-    };
-    window.addEventListener("message", handleWidgetReady);
-
-    if (true) {
+    if (isSelfHosted) {
+      // @ts-ignore
       const widgetInstance = new PrivateTradingViewWidget(widgetOptions);
-      window.externalWidget = widgetInstance;
+      // window.externalWidget = widgetInstance;
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
-        setTradingViewWidget(widgetInstance);
-        setDataFeed(widgetOptions.datafeed);
-        // todo: update price
+        // setTradingViewWidget(widgetInstance);
+        // setDataFeed(widgetOptions.datafeed);
+        setTradingView({
+          widget: widgetInstance,
+          options: widgetOptions,
+          isSelfHosted: true,
+        });
         // @ts-ignore
-        // const priceCandle = dataFeed.getLastCandle();
-        // setLastPrice(priceCandle);
+        const price = widgetOptions.dataFeed.getLastPrice();
+        setLastPrice(price);
       });
+    } else {
+      // eslint-disable-next-line new-cap
+      const externalWidget = new window.TradingView.widget(widgetOptions);
+
+      let eventSymbol = "";
+      // @ts-ignore
+      const handleWidgetReady = (event) => {
+        if (isString(event.data)) {
+          try {
+            const dataParsed = JSON.parse(event.data);
+
+            // @ts-ignore
+            if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
+              setTradingView({
+                widget: externalWidget,
+                options: widgetOptions,
+                isSelfHosted: false,
+              });
+            }
+
+            if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
+              if (eventSymbol !== dataParsed.data.original_name) {
+                const receivedPrice = isNumber(dataParsed.data.last_price)
+                  ? formatPrice(dataParsed.data.last_price, "", "")
+                  : dataParsed.data.last_price;
+                setLastPrice(receivedPrice);
+                eventSymbol = dataParsed.data.original_name;
+              }
+            }
+          } catch (e) {
+            // Not a valid JSON, skip event.
+            return;
+          }
+        }
+
+        // Symbol data not found by Trading View widget.
+        if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
+          setTradingView({
+            widget: externalWidget,
+            options: widgetOptions,
+            isSelfHosted: false,
+          });
+          setLastPrice(null);
+        }
+      };
+      window.addEventListener("message", handleWidgetReady);
     }
   };
 
-  const changeSymbol = (newSymbol) => {
-    if (tradingViewWidget) {
-      if (tradingViewWidget.iframe) {
-        const symbolTV = getTradingViewExchangeSymbol(
-          newSymbol.tradeViewSymbol,
-          storeSettings.selectedExchange,
-        );
-        tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol: symbolTV } },
-          "*",
-        );
-      } else {
-        const chart = tradingViewWidget.chart();
-        chart.setSymbol(newSymbol.tradeViewSymbol, () => {
-          // @ts-ignore
-          const price = dataFeed.getLastPrice();
-          setLastPrice(price);
-        });
-      }
+  /**
+   * Update TradingView selected symbol
+   * @param {string} symbol
+   * @returns {void}
+   */
+  const changeSymbol = (symbol) => {
+    if (!tradingView.widget || (!tradingView.isSelfHosted && !tradingView.widget.iframe)) {
+      // eslint-disable-next-line no-console
+      return console.error("LOG: tradingViewWidget wasn't initialized before symbol change");
+    }
+
+    if (tradingView.widget.iframe) {
+      const symbolTV = getTradingViewExchangeSymbol(symbol, storeSettings.selectedExchange);
+      tradingView.widget.iframe.contentWindow.postMessage(
+        { name: "set-symbol", data: { symbol: symbolTV } },
+        "*",
+      );
+    } else {
+      const chart = tradingView.widget.chart();
+      chart.setSymbol(symbol, () => {
+        // @ts-ignore
+        const price = tradingView.options.datafeed.getLastPrice();
+        setLastPrice(price);
+      });
     }
   };
 
@@ -127,11 +155,17 @@ const useTradingTerminal = (setLastPrice) => {
     return cleanupWidget;
   }, []);
 
+  const removeWidget = () => {
+    tradingView.widget.remove();
+    setTradingView((tv) => ({ ...tv, widget: null }));
+  };
+
   return {
     instantiateWidget,
-    setTradingViewWidget,
-    tradingViewWidget,
+    tradingViewWidget: tradingView.widget,
     changeSymbol,
+    removeWidget,
+    isSelfHosted: tradingView.isSelfHosted,
   };
 };
 

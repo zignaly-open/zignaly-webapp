@@ -113,12 +113,15 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
  * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
 export function createWidgetOptions(dataFeedOptions, symbol, darkStyle) {
-  const dataFeed = new VcceDataFeed(dataFeedOptions);
+  let dataFeed = null;
+
+  if (dataFeedOptions.exchange === "vcce") {
+    dataFeed = new VcceDataFeed(dataFeedOptions);
+  }
 
   return {
     ...(dataFeed && {
       datafeed: dataFeed,
-      // datafeed: new UDFCompatibleDatafeed("https://api.vcc.exchange/v3/chart"),
       library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
     }),
     autosize: true,
