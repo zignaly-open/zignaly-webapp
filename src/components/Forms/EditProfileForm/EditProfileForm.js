@@ -340,6 +340,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const checkIfCanBeDeleted = () => {
+    if (storeUserData.isAdmin) {
+      return true;
+    }
     if (provider.profitSharing) {
       return false;
     }
