@@ -112,15 +112,18 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
  *
  * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
-export function createWidgetOptions(dataFeedOptions, symbol, darkStyle) {
+export function createWidgetOptions(exchange, dataFeedOptions, symbol, darkStyle) {
   let dataFeed = null;
 
   if (dataFeedOptions.exchange === "vcce") {
     dataFeed = new VcceDataFeed(dataFeedOptions);
   }
+  const isSelfHosted = Boolean(dataFeed);
+
+  const symbolTV = getTradingViewExchangeSymbol(symbol, exchange);
 
   return {
-    ...(dataFeed && {
+    ...(isSelfHosted && {
       datafeed: dataFeed,
       library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
     }),
@@ -140,7 +143,10 @@ export function createWidgetOptions(dataFeedOptions, symbol, darkStyle) {
     interval: "30",
     locale: "en",
     studies_overrides: {},
-    symbol,
+    // Don't prefix symbol with exchenge name when using the external library
+    // It's a workaround to get the quoteUpdate events, which are not sent otherwise
+    // We need them to get the last price with the external library.
+    symbol: isSelfHosted ? symbolTV : symbol,
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

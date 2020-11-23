@@ -207,6 +207,8 @@ const TradingViewEdit = (props) => {
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
+    if (isSelfHosted) return;
+
     const checkExist = setInterval(() => {
       if (
         tradingViewWidget &&
@@ -215,10 +217,7 @@ const TradingViewEdit = (props) => {
         selectedSymbol
       ) {
         const symbol = getTradingViewExchangeSymbol(selectedSymbol.tradeViewSymbol, exchange);
-        tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol } },
-          "*",
-        );
+        changeSymbol(symbol.tradeViewSymbol);
         clearInterval(checkExist);
       }
     }, 100);

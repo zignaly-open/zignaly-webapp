@@ -168,6 +168,7 @@ const TradingView = () => {
     };
 
     const widgetOptions = createWidgetOptions(
+      storeSettings.selectedExchange,
       dataFeedOptions,
       selectedSymbol.tradeViewSymbol,
       storeSettings.darkStyle,
@@ -189,7 +190,7 @@ const TradingView = () => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        handleSymbolChange(selectedSymbol.short);
+        changeSymbol(selectedSymbol.tradeViewSymbol);
         clearInterval(checkExist);
       }
     }, 100);

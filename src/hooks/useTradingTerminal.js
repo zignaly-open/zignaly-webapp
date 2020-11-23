@@ -58,8 +58,6 @@ const useTradingTerminal = (setLastPrice) => {
       // window.externalWidget = widgetInstance;
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
-        // setTradingViewWidget(widgetInstance);
-        // setDataFeed(widgetOptions.datafeed);
         setTradingView({
           widget: widgetInstance,
           options: widgetOptions,
@@ -70,6 +68,7 @@ const useTradingTerminal = (setLastPrice) => {
         setLastPrice(price);
       });
     } else {
+      // @ts-ignore
       // eslint-disable-next-line new-cap
       const externalWidget = new window.TradingView.widget(widgetOptions);
 
@@ -79,9 +78,8 @@ const useTradingTerminal = (setLastPrice) => {
         if (isString(event.data)) {
           try {
             const dataParsed = JSON.parse(event.data);
-
             // @ts-ignore
-            if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
+            if (dataParsed.name === "widgetReady") {
               setTradingView({
                 widget: externalWidget,
                 options: widgetOptions,
@@ -131,6 +129,7 @@ const useTradingTerminal = (setLastPrice) => {
     }
 
     if (tradingView.widget.iframe) {
+      // todo: I don't think we should use storeSettings.selectedExchange for edit
       const symbolTV = getTradingViewExchangeSymbol(symbol, storeSettings.selectedExchange);
       tradingView.widget.iframe.contentWindow.postMessage(
         { name: "set-symbol", data: { symbol: symbolTV } },
@@ -148,10 +147,12 @@ const useTradingTerminal = (setLastPrice) => {
 
   useEffect(() => {
     const cleanupWidget = () => {
+      if (readyCallback.current) {
+        window.removeEventListener("message", readyCallback.current);
+      }
       if (tradingView.widget) {
         removeWidget();
       }
-      window.removeEventListener("message", readyCallback.current);
     };
     return cleanupWidget;
   }, []);
