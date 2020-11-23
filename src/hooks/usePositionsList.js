@@ -341,6 +341,7 @@ const usePositionsList = (
           }
         })
         .catch((e) => {
+          console.log(e);
           if (isOriginalInitiator()) {
             if (e.code === 18 || e.code === 12) {
               newPositions[type] = [];
