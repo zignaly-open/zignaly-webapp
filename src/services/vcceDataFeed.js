@@ -7,7 +7,7 @@
  */
 
 /* eslint-disable camelcase */
-import Coinray from "coinrayjs/dist/coinray";
+import dayjs from "dayjs";
 import tradeApi from "./tradeApiClient";
 import { isEmpty, last } from "lodash";
 import { minToMillisec } from "utils/timeConvert";
@@ -81,7 +81,7 @@ class VcceDataFeed {
    * @memberof CoinRayDataFeed
    */
   onReady(callback) {
-    const resolutions = ["1", "3", "5", "15", "30", "60", "120", "240", "1D", "3D", "1W", "1M"];
+    const resolutions = ["1", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W"];
 
     setTimeout(() => {
       // Notify to Trading View which options are supported.
@@ -203,7 +203,7 @@ class VcceDataFeed {
    *
    * @param {string} base Symbol base currency.
    * @param {string} quote Symbol quote currency.
-   * @param {string} resolution Data resolution.
+   * @param {string|number} resolution Data resolution.
    * @param {number} startTime Get data since.
    * @param {number} endTime Get data to.
    * @returns {Promise<CoinRayCandle>} Promise that resolve candle data.
@@ -229,8 +229,15 @@ class VcceDataFeed {
     return [];
   }
 
-  resolutionToMilliseconds(resolution) {
-    return minToMillisec(resolution);
+  parseOHLCV(candle) {
+    return {
+      time: parseFloat(candle.time),
+      open: parseFloat(candle.open),
+      high: parseFloat(candle.high),
+      low: parseFloat(candle.low),
+      close: parseFloat(candle.close),
+      volume: parseFloat(candle.volume),
+    };
   }
 
   /**
@@ -246,7 +253,15 @@ class VcceDataFeed {
    * @memberof CoinRayDataFeed
    */
   // eslint-disable-next-line max-params
-  getBars(symbolData, resolution, startDate, endDate, onResultCallback, onErrorCallback) {
+  getBars(
+    symbolData,
+    resolution,
+    startDate,
+    endDate,
+    onResultCallback,
+    onErrorCallback,
+    firstDataRequest,
+  ) {
     this.allCandles = [];
 
     /**
@@ -266,31 +281,24 @@ class VcceDataFeed {
     };
 
     console.log(resolution, symbolData);
+    if (firstDataRequest) {
+      this.startDate = startDate;
+    }
 
     this.getCandlesData(
       // @ts-ignore
       symbolData.base.toLowerCase(),
       // @ts-ignore
       symbolData.quote.toLowerCase(),
-      this.resolutionToMilliseconds(resolution),
-      Math.round(startDate),
-      // endDate is a .99999 float for some reasons
-      Math.round(endDate),
+      minToMillisec(parseInt(resolution)),
+      startDate,
+      endDate,
     )
       .then((newCandles) => {
         // Accumulate candles.
         this.allCandles = this.allCandles.concat(newCandles);
 
-        const formattedCandles = this.allCandles.map((candle) => {
-          return {
-            time: parseFloat(candle.closing_time) / 1000,
-            open: parseFloat(candle.open),
-            high: parseFloat(candle.high),
-            low: parseFloat(candle.low),
-            close: parseFloat(candle.close),
-          };
-        });
-
+        const formattedCandles = this.allCandles.map(this.parseOHLCV);
         notifyPricesData(formattedCandles);
       })
       .catch((e) => {
@@ -303,67 +311,63 @@ class VcceDataFeed {
    *
    * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Prices data resolution.
-   * @param {SubscribeBarsCallback} onTick Notify tick to chart.
+   * @param {SubscribeBarsCallback} onRealtimeCallback Notify tick to chart.
    * @returns {Void} None.
    *
    * @memberof CoinRayDataFeed
    */
   // eslint-disable-next-line max-params
-  // subscribeBars(symbolData, resolution, onTick) {
-  //   const exchangeCode = this.exchangeKey;
-  //   // @ts-ignore
-  //   const symbolForCoinray = `${exchangeCode}_${symbolData.coinrayQuote}_${symbolData.coinrayBase}`;
+  subscribeBars(symbolData, resolution, onRealtimeCallback) {
+    /**
+     * Update last candle data
+     *
+     * @return {Void}
+     */
+    const refreshCandle = () => {
+      // const {
+      //   coinraySymbol,
+      //   resolution: candleResolution,
+      //   candle: { time, open, low, high, close, baseVolume },
+      // } = data;
+      // if (coinraySymbol === symbolForCoinray && resolution === candleResolution) {
+      this.getCandlesData(
+        // @ts-ignore
+        symbolData.base.toLowerCase(),
+        // @ts-ignore
+        symbolData.quote.toLowerCase(),
+        minToMillisec(parseInt(resolution)),
+        this.startDate,
+        dayjs().unix(),
+      )
+        .then((candles) => {
+          if (candles.length) {
+            const lastCandle = candles[candles.length - 1];
+            onRealtimeCallback(this.parseOHLCV(lastCandle));
+          }
+        })
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.error(`ERROR: ${e.message}`);
+        });
+      // }
+    };
+    this.candleSubscription = setInterval(refreshCandle, 10000);
 
-  //   /**
-  //    * Process CoinRay price tick, format and notify to Trading View chart.
-  //    *
-  //    * @param {any} data Price tick data.
-  //    * @return {Void} None.
-  //    */
-  //   const processTick = (data) => {
-  //     const {
-  //       coinraySymbol,
-  //       resolution: candleResolution,
-  //       candle: { time, open, low, high, close, baseVolume },
-  //     } = data;
-  //     if (coinraySymbol === symbolForCoinray && resolution === candleResolution) {
-  //       onTick({
-  //         time: time.getTime(),
-  //         open: open.toNumber(),
-  //         low: low.toNumber(),
-  //         high: high.toNumber(),
-  //         close: close.toNumber(),
-  //         volume: baseVolume.toNumber(),
-  //       });
-  //     }
-  //   };
+    // this.candleSubscription = {
+    //   channel: { coinraySymbol: symbolForCoinray, resolution: resolution },
+    //   callback: processTick,
+    // };
+  }
 
-  //   try {
-  //     this.coinray.subscribeCandles({ coinraySymbol: symbolForCoinray, resolution }, processTick);
-
-  //     this.candleSubscription = {
-  //       channel: { coinraySymbol: symbolForCoinray, resolution: resolution },
-  //       callback: processTick,
-  //     };
-  //   } catch (error) {
-  //     alert(`ERROR: CoinRay symbol data subscription failure: ${error.message}`);
-  //   }
-  // }
-
-  // /**
-  //  * Unsubscribe from CoinRay symbol real time websocket.
-  //  *
-  //  * @returns {Void} None.
-  //  * @memberof CoinRayDataFeed
-  //  */
-  // unsubscribeBars() {
-  //   if (this.candleSubscription) {
-  //     this.coinray.unsubscribeCandles(
-  //       this.candleSubscription.channel,
-  //       this.candleSubscription.callback,
-  //     );
-  //   }
-  // }
+  /**
+   * Unsubscribe from CoinRay symbol real time websocket.
+   *
+   * @returns {Void} None.
+   * @memberof CoinRayDataFeed
+   */
+  unsubscribeBars() {
+    clearInterval(this.candleSubscription);
+  }
 
   /**
    * Get symbols data.

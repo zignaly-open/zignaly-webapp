@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+// import { UDFCompatibleDatafeed } from "../../static/charting_library/datafeeds/udf/lib/udf-compatible-datafeed";
+
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
@@ -104,6 +106,7 @@ export function createWidgetOptions(dataFeed, symbol, darkStyle) {
   return {
     ...(dataFeed && {
       datafeed: dataFeed,
+      // datafeed: new UDFCompatibleDatafeed("https://api.vcc.exchange/v3/chart"),
       library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
     }),
     autosize: true,

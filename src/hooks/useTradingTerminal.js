@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
-import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library";
+import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library/";
 
 /**
  * @typedef {Object} TradingTerminalHook
