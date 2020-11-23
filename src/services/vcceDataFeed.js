@@ -18,7 +18,6 @@ import { minToMillisec } from "utils/timeConvert";
 
 /**
  *
- * @typedef {import("./tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
  * @typedef {import("../tradingView/datafeed-api").ServerTimeCallback} ServerTimeCallback
@@ -29,18 +28,6 @@ import { minToMillisec } from "utils/timeConvert";
  * @typedef {import("../tradingView/datafeed-api").Bar} Bar
  * @typedef {import("../tradingView/datafeed-api").SubscribeBarsCallback} SubscribeBarsCallback
  * @typedef {import("../tradingView/datafeed-api").LibrarySymbolInfo} LibrarySymbolInfo
- */
-
-/**
- * @typedef {Object} DataFeedOptions
- * @property {String} symbol symbol key to get data for.
- * @property {String} tradeApiToken Trade API access token.
- * @property {String} coinRayToken Coinray access token.
- * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
- * @property {function(): Promise<string>} regenerateAccessToken Callback to regenerate access token when expires.
- * @property {String} exchange Exchange name.
- * @property {String} exchangeKey CoinRay exchange ID.
- * @property {String} internalExchangeId Internal exchange connection ID.
  */
 
 /**

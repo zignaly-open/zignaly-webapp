@@ -4,6 +4,15 @@ import VcceDataFeed from "services/vcceDataFeed";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("tradingView/charting_library/charting_library.min").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("services//tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ */
+
+/**
+ * @typedef {Object} DataFeedOptions
+ * @property {String} tradeApiToken Trade API access token.
+ * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
+ * @property {String} exchange Exchange name.
  */
 
 /**
@@ -97,10 +106,11 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
 /**
  * Create Trading View data feed configuration.
  *
+ * @param {DataFeedOptions} dataFeedOptions DataFeed options.
  * @param {string} symbol Crypto currency symbol.
  * @param {boolean} darkStyle Dark style flag.
  *
- * @returns {Object<string, any>} Data feed options.
+ * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
 export function createWidgetOptions(dataFeedOptions, symbol, darkStyle) {
   const dataFeed = new VcceDataFeed(dataFeedOptions);

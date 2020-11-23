@@ -111,6 +111,7 @@ const TradingView = () => {
   };
   const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
   useEffect(() => {
+    // Load default symbol when symbols are ready
     if (symbols) {
       setSelectedSymbol(defaultSelectedSymbol());
     }
