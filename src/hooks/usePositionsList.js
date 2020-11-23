@@ -341,6 +341,7 @@ const usePositionsList = (
           }
         })
         .catch((e) => {
+          // eslint-disable-next-line no-console
           console.log(e);
           if (isOriginalInitiator()) {
             if (e.code === 18 || e.code === 12) {
