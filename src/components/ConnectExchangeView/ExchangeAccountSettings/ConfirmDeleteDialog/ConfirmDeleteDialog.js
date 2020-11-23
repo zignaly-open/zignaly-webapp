@@ -49,7 +49,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const storeExchanegeConnections = useStoreUserExchangeConnections();
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
-  const balance = useBalance(selectedAccount.internalId);
+  const { balance } = useBalance(selectedAccount.internalId);
   const profitSharingServices = useProfitSharingServices(selectedAccount.internalId);
   const dispatch = useDispatch();
 
