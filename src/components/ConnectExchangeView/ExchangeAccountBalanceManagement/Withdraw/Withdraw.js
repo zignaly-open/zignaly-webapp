@@ -227,7 +227,7 @@ const Withdraw = () => {
                             </label>
                             <Typography
                               className={`callout2 ${
-                                parseFloat(selectedAsset.balanceFree) >=
+                                parseFloat(selectedAsset.maxWithdrawAmount) >=
                                 parseFloat(selectedNetwork.withdrawMin)
                                   ? "green"
                                   : "red"
@@ -237,7 +237,7 @@ const Withdraw = () => {
                                 <FormattedMessage id="deposit.available" />
                               </span>
                               <b>
-                                {selectedAssetName} {formatFloat(selectedAsset.balanceFree)}
+                                {selectedAssetName} {formatFloat(selectedAsset.maxWithdrawAmount)}
                               </b>
                             </Typography>
                           </Box>
@@ -253,7 +253,7 @@ const Withdraw = () => {
                                   value >= parseFloat(selectedNetwork.withdrawMin) ||
                                   intl.formatMessage({ id: "form.error.withdraw.min" }),
                                 max: (value) =>
-                                  value <= parseFloat(selectedAsset.balanceFree) ||
+                                  value <= parseFloat(selectedAsset.maxWithdrawAmount) ||
                                   intl.formatMessage({ id: "form.error.withdraw.max" }),
                                 step: (value) => {
                                   const maxDecimals = precisionNumberToDecimals(
