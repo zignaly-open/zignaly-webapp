@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library/";
-
+import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
 /**
  * @typedef {Object} TradingTerminalHook
  * @property {function} instantiateWidget
@@ -26,6 +26,7 @@ import { widget as PrivateTradingViewWidget } from "../../static/charting_librar
  */
 const useTradingTerminal = (setLastPrice) => {
   const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
+  const [dataFeed, setDataFeed] = useState(/** @type {TVWidget} */ null);
   const TradingViewWidget = true ? PrivateTradingViewWidget : window.TradingView.widget;
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
@@ -82,37 +83,54 @@ const useTradingTerminal = (setLastPrice) => {
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
         setTradingViewWidget(widgetInstance);
+        setDataFeed(widgetOptions.datafeed);
         // todo: update price
         // @ts-ignore
         // const priceCandle = dataFeed.getLastCandle();
         // setLastPrice(priceCandle);
       });
     }
+    // window.addEventListener("message", handleWidgetReady);
+  };
 
-    return () => {
+  const changeSymbol = (newSymbol) => {
+    if (tradingViewWidget) {
+      if (tradingViewWidget.iframe) {
+        const symbolTV = getTradingViewExchangeSymbol(
+          newSymbol.tradeViewSymbol,
+          storeSettings.selectedExchange,
+        );
+        tradingViewWidget.iframe.contentWindow.postMessage(
+          { name: "set-symbol", data: { symbol: symbolTV } },
+          "*",
+        );
+      } else {
+        const chart = tradingViewWidget.chart();
+        chart.setSymbol(newSymbol.tradeViewSymbol, () => {
+          // @ts-ignore
+          const price = dataFeed.getLastPrice();
+          setLastPrice(price);
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const cleanupWidget = () => {
       if (tradingViewWidget) {
         tradingViewWidget.remove();
         setTradingViewWidget(null);
+        window.removeEventListener("message", handleWidgetReady);
       }
     };
-
-    // window.addEventListener("message", handleWidgetReady);
-
-    // const cleanupWidget = () => {
-    //   if (tradingViewWidget) {
-    //     tradingViewWidget.remove();
-    //     setTradingViewWidget(null);
-    //     window.removeEventListener("message", handleWidgetReady);
-    //   }
-    // };
-
-    // return cleanupWidget;
-  };
+    return cleanupWidget;
+  }, []);
 
   return {
     instantiateWidget,
     setTradingViewWidget,
     tradingViewWidget,
+    changeSymbol,
   };
 };
 

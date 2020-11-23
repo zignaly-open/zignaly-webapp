@@ -56,7 +56,7 @@ class VcceDataFeed {
    * @memberof CoinRayDataFeed
    */
   constructor(options) {
-    this.symbol = options.symbol || "";
+    // this.symbol = options.symbol || "";
     this.symbolsData = options.symbolsData || null;
     // this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
@@ -183,7 +183,7 @@ class VcceDataFeed {
           session: "24x7",
           data_status: "streaming",
           ticker: symbolBaseQuote,
-          timezone: "Etc/UTC",
+          // timezone: "Etc/UTC",
           type: "spot",
         };
 
@@ -280,7 +280,6 @@ class VcceDataFeed {
       }
     };
 
-    console.log(resolution, symbolData);
     if (firstDataRequest) {
       this.startDate = startDate;
     }
@@ -318,18 +317,7 @@ class VcceDataFeed {
    */
   // eslint-disable-next-line max-params
   subscribeBars(symbolData, resolution, onRealtimeCallback) {
-    /**
-     * Update last candle data
-     *
-     * @return {Void}
-     */
     const refreshCandle = () => {
-      // const {
-      //   coinraySymbol,
-      //   resolution: candleResolution,
-      //   candle: { time, open, low, high, close, baseVolume },
-      // } = data;
-      // if (coinraySymbol === symbolForCoinray && resolution === candleResolution) {
       this.getCandlesData(
         // @ts-ignore
         symbolData.base.toLowerCase(),
@@ -349,14 +337,8 @@ class VcceDataFeed {
           // eslint-disable-next-line no-console
           console.error(`ERROR: ${e.message}`);
         });
-      // }
     };
     this.candleSubscription = setInterval(refreshCandle, 10000);
-
-    // this.candleSubscription = {
-    //   channel: { coinraySymbol: symbolForCoinray, resolution: resolution },
-    //   callback: processTick,
-    // };
   }
 
   /**
@@ -370,27 +352,17 @@ class VcceDataFeed {
   }
 
   /**
-   * Get symbols data.
+   * Get last price.
    *
-   * @returns {MarketSymbolsCollection} Market symbols collection.
+   * @returns {number} Price.
    * @memberof CoinRayDataFeed
    */
-  getSymbolsData() {
-    return this.symbolsData || [];
-  }
-
-  /**
-   * Get last price candle.
-   *
-   * @returns {CoinRayCandle|null} Price candle.
-   * @memberof CoinRayDataFeed
-   */
-  getLastCandle() {
+  getLastPrice() {
     if (isEmpty(this.allCandles)) {
       return null;
     }
 
-    return last(this.allCandles);
+    return last(this.allCandles).close;
   }
 }
 

@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  createWidgetOptions,
-  getTradingViewExchangeSymbol,
-} from "../../../tradingView/tradingViewOptions";
+import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
@@ -18,7 +15,6 @@ import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
-import VcceDataFeed from "services/vcceDataFeed";
 
 /**
  * @typedef {any} TVWidget
@@ -46,9 +42,12 @@ const TradingView = () => {
   const tradingViewContext = useTradingViewContext();
   const { lastPrice, setLastPrice } = tradingViewContext;
   const [libraryReady, setLibraryReady] = useState(false);
-  const { instantiateWidget, setTradingViewWidget, tradingViewWidget } = useTradingTerminal(
-    setLastPrice,
-  );
+  const {
+    instantiateWidget,
+    setTradingViewWidget,
+    tradingViewWidget,
+    changeSymbol,
+  } = useTradingTerminal(setLastPrice);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
@@ -157,34 +156,24 @@ const TradingView = () => {
   useEffect(loadDependencies, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
-    // Skip if TV widget already exists or TV library/symbol not ready.
+    // Initialize widget when symbols loaded or when instance removed
     if (tradingViewWidget || !selectedSymbol) {
       return () => {};
     }
 
-    const options = {
+    const dataFeedOptions = {
       exchange: exchangeName,
-      // exchangeKey,
       // internalExchangeId: storeSettings.selectedExchange.internalId,
-      symbol: selectedSymbol,
       symbolsData: symbols,
       tradeApiToken: storeSession.tradeApi.accessToken,
-      // coinRayToken: coinRayToken,
-      // regenerateAccessToken: getCoinrayToken,
     };
-    const dataFeed = new VcceDataFeed(options);
 
     const widgetOptions = createWidgetOptions(
-      dataFeed,
+      dataFeedOptions,
       selectedSymbol.tradeViewSymbol,
       storeSettings.darkStyle,
     );
-
-    const cleanupWidget = instantiateWidget(widgetOptions);
-
-    return () => {
-      cleanupWidget();
-    };
+    instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.
@@ -241,17 +230,7 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-
-    if (tradingViewWidget && tradingViewWidget.iframe) {
-      const symbolTV = getTradingViewExchangeSymbol(
-        newSymbol.tradeViewSymbol,
-        storeSettings.selectedExchange,
-      );
-      tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: symbolTV } },
-        "*",
-      );
-    }
+    changeSymbol(newSymbol);
   };
 
   const methods = useForm({

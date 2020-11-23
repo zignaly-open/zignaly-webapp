@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-// import { UDFCompatibleDatafeed } from "../../static/charting_library/datafeeds/udf/lib/udf-compatible-datafeed";
+import VcceDataFeed from "services/vcceDataFeed";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -102,7 +102,9 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection
  *
  * @returns {Object<string, any>} Data feed options.
  */
-export function createWidgetOptions(dataFeed, symbol, darkStyle) {
+export function createWidgetOptions(dataFeedOptions, symbol, darkStyle) {
+  const dataFeed = new VcceDataFeed(dataFeedOptions);
+
   return {
     ...(dataFeed && {
       datafeed: dataFeed,
@@ -128,5 +130,6 @@ export function createWidgetOptions(dataFeed, symbol, darkStyle) {
     symbol,
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
