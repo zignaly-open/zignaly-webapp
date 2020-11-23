@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
 import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library/";
@@ -41,6 +41,7 @@ const useTradingTerminal = (setLastPrice) => {
     options: null,
     isSelfHosted: false,
   });
+  const readyCallback = useRef(null);
 
   /**
    * Instantiate trading view widget and initialize price.
@@ -113,13 +114,14 @@ const useTradingTerminal = (setLastPrice) => {
           setLastPrice(null);
         }
       };
+      readyCallback.current = handleWidgetReady;
       window.addEventListener("message", handleWidgetReady);
     }
   };
 
   /**
    * Update TradingView selected symbol
-   * @param {string} symbol
+   * @param {string} symbol .
    * @returns {void}
    */
   const changeSymbol = (symbol) => {
@@ -146,11 +148,10 @@ const useTradingTerminal = (setLastPrice) => {
 
   useEffect(() => {
     const cleanupWidget = () => {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        window.removeEventListener("message", handleWidgetReady);
+      if (tradingView.widget) {
+        removeWidget();
       }
+      window.removeEventListener("message", readyCallback.current);
     };
     return cleanupWidget;
   }, []);
