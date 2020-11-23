@@ -1,7 +1,14 @@
 .marginModal {
-  padding: 20px 40px;
+  padding: 20px 30px;
+
+  .loadingBox {
+    height: 100px;
+    min-height: 100px;
+    width: 100%;
+  }
 
   .tabs {
+    margin-bottom: 20px;
     width: 100%;
 
     button {
@@ -9,7 +16,7 @@
       font-weight: 600;
       margin-right: 0;
       max-width: 50%;
-      min-height: 70px;
+      min-height: 60px;
       min-width: 50%;
       opacity: 0.6;
       padding: 0;
