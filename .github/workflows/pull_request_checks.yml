@@ -13,12 +13,12 @@ jobs:
           node-version: 12
       - name: Dependencies
         run: npm ci
-      - name: Check Style Lint
-        run: npm run stylelint
-      - name: Check JS Lint
-        run: npm run jslint
-      - name: Check Types
-        run: npm run tscheck
+      # - name: Check Style Lint
+      #   run: npm run stylelint
+      # - name: Check JS Lint
+      #   run: npm run jslint
+      # - name: Check Types
+      #   run: npm run tscheck
       - name: Test
         env:
           GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
