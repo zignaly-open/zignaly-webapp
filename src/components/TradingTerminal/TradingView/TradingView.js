@@ -130,34 +130,19 @@ const TradingView = () => {
     setSelectedSymbol(null);
     getMarketData();
 
-    // Reset widget
-    // if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
-    //   if (tradingViewWidget) {
-    //     removeWidget();
-    //     setLastPrice(null);
-    //     setSelectedSymbol(defaultSelectedSymbol());
-    //     bootstrapWidget();
-    //   }
-
-    //   if (!isSelfHosted) {
-    //     const checkExist = setInterval(() => {
-    //       // @ts-ignore
-    //       if (window.TradingView && window.TradingView.widget) {
-    //         setLibraryReady(true);
-    //         clearInterval(checkExist);
-    //       }
-    //     }, 100);
-    //   }
-
-    //   setSelectedExchangeId(storeSettings.selectedExchange.internalId);
-    // }
+    // Reload widget on exchange change
+    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
+      setLastPrice(null);
+      removeWidget();
+      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
+    }
   };
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
     // Initialize widget when symbols loaded or when instance removed
     if (!selectedSymbol || tradingViewWidget) {
-      return () => {};
+      return;
     }
 
     const options = {
@@ -173,7 +158,7 @@ const TradingView = () => {
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, tradingViewWidget, selectedSymbol]);
+  useEffect(bootstrapWidget, [tradingViewWidget, selectedSymbol]);
 
   useEffect(() => {
     if (isSelfHosted || !tradingViewWidget) return;
@@ -186,7 +171,7 @@ const TradingView = () => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        changeSymbol(selectedSymbol.tradeViewSymbol);
+        changeSymbol(selectedSymbol.tradeViewSymbol, storeSettings.selectedExchange);
         clearInterval(checkExist);
       }
     }, 100);

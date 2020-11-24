@@ -53,7 +53,7 @@ const TradingViewEdit = (props) => {
   const { positionId } = props;
   const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
-  const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
+  const { setLastPrice, lastPrice, setProviderService, setUpdatedAt } = tradingViewContext;
   const { instantiateWidget, tradingViewWidget, isSelfHosted, changeSymbol } = useTradingTerminal(
     setLastPrice,
   );
@@ -181,7 +181,7 @@ const TradingViewEdit = (props) => {
    */
   const notifyPositionUpdate = () => {
     fetchPosition();
-    methods.setValue("updatedAt", new Date());
+    setUpdatedAt(new Date());
   };
 
   const isLoading = tradingViewWidget === null || !positionEntity || !selectedSymbol;
@@ -205,7 +205,7 @@ const TradingViewEdit = (props) => {
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, selectedSymbol, tradingViewWidget]);
+  useEffect(bootstrapWidget, [selectedSymbol, tradingViewWidget]);
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {

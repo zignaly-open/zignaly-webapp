@@ -52,8 +52,10 @@ const IncreaseStrategyPanel = (props) => {
   const exchange = exchangeConnections.find(
     (item) => item.internalId === positionEntity.internalExchangeId,
   );
+  // temp fix: if user logs out then exchange is null
+  const internalId = exchange ? exchange.internalId : null;
   const { loading: loadingProviders, ownCopyTraderProviders } = useOwnCopyTraderProviders(
-    exchange.internalId,
+    internalId,
   );
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
