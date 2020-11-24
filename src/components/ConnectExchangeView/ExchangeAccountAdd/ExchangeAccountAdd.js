@@ -46,7 +46,7 @@ const ExchangeAccountAdd = ({ demo }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const exchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
 
   // Initialize selected exchange
   let exchangeName = !demo ? "zignaly" : watch("exchangeName", "binance");
