@@ -108,6 +108,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
+    // eslint-disable-next-line no-console
+    console.log(data);
     if (validatePaymentFields(data)) {
       if (data.ipnSecret === "**********") {
         if (formatFloat(provider.internalPaymentInfo.price) !== formatFloat(data.price)) {
