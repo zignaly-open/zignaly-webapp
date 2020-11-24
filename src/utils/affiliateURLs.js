@@ -16,3 +16,4 @@ export const howToGetMerchantIDUrl =
 export const bitmexAPIKeysUrl = "https://www.bitmex.com/app/apiKeys";
 export const binanceUrl = "https://accounts.binance.com/";
 export const kucoinUrl = "https://www.kucoin.com/";
+export const vcceUrl = "https://vcc.exchange/";
