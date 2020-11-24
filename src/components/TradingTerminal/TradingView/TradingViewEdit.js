@@ -51,12 +51,15 @@ import useTradingViewContext from "hooks/useTradingViewContext";
  */
 const TradingViewEdit = (props) => {
   const { positionId } = props;
-  const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
   const { setLastPrice, lastPrice, setProviderService, setUpdatedAt } = tradingViewContext;
-  const { instantiateWidget, tradingViewWidget, isSelfHosted, changeSymbol } = useTradingTerminal(
-    setLastPrice,
-  );
+  const {
+    instantiateWidget,
+    tradingViewWidget,
+    isSelfHosted,
+    changeSymbol,
+    removeWidget,
+  } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -162,17 +165,15 @@ const TradingViewEdit = (props) => {
     }
   };
 
-  const loadDependencies = () => {
+  useEffect(() => {
     fetchPosition();
-    // const checkExist = setInterval(() => {
-    //   // @ts-ignore
-    //   if (window.TradingView && window.TradingView.widget) {
-    //     setLibraryReady(true);
-    //     clearInterval(checkExist);
-    //   }
-    // }, 100);
-  };
-  useEffect(loadDependencies, []);
+  }, []);
+
+  useEffect(() => {
+    // Reload widget on theme change
+    removeWidget();
+    bootstrapWidget();
+  }, [storeSettings.darkStyle]);
 
   /**
    * Callback that to be notified when position updates are performed.
@@ -188,9 +189,7 @@ const TradingViewEdit = (props) => {
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    if (!selectedSymbol || tradingViewWidget) {
-      return () => {};
-    }
+    if (!selectedSymbol || tradingViewWidget) return;
 
     const options = {
       exchange: storeSettings.selectedExchange,

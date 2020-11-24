@@ -173,7 +173,9 @@ const useTradingTerminal = (setLastPrice) => {
   }, []);
 
   const removeWidget = () => {
-    tradingView.widget.remove();
+    if (tradingView && tradingView.widget) {
+      tradingView.widget.remove();
+    }
     setTradingView((tv) => ({ ...tv, widget: null }));
   };
 

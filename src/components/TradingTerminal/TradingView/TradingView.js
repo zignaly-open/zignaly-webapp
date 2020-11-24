@@ -41,7 +41,6 @@ const defaultExchangeSymbol = {
 const TradingView = () => {
   const tradingViewContext = useTradingViewContext();
   const { lastPrice, setLastPrice } = tradingViewContext;
-  const [libraryReady, setLibraryReady] = useState(false);
   const {
     instantiateWidget,
     tradingViewWidget,
@@ -139,6 +138,12 @@ const TradingView = () => {
   };
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
+  useEffect(() => {
+    // Reload widget on theme change
+    removeWidget();
+    bootstrapWidget();
+  }, [storeSettings.darkStyle]);
+
   const bootstrapWidget = () => {
     // Initialize widget when symbols loaded or when instance removed
     if (!selectedSymbol || tradingViewWidget) {
@@ -177,25 +182,6 @@ const TradingView = () => {
     }, 100);
   }, [tradingViewWidget]);
 
-  const changeTheme = () => {
-    console.log("update theme");
-    const reloadWidget = () => {
-      removeWidget();
-      bootstrapWidget();
-    };
-
-    if (tradingViewWidget) {
-      const options = tradingViewWidget.options;
-      if (
-        (storeSettings.darkStyle && options.theme !== "dark") ||
-        (!storeSettings.darkStyle && options.theme !== "light")
-      ) {
-        reloadWidget();
-      }
-    }
-  };
-  // useEffect(changeTheme, [storeSettings.darkStyle]);
-
   /**
    * @typedef {Object} OptionValue
    * @property {string} label
@@ -209,9 +195,10 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    // const newSymbol = resolveSymbolData(selectedOption);
-    // setSelectedSymbol(newSymbol);
-    // changeSymbol(newSymbol.tradeViewSymbol);
+    console.log("c");
+    const newSymbol = resolveSymbolData(selectedOption);
+    setSelectedSymbol(newSymbol);
+    changeSymbol(newSymbol.tradeViewSymbol);
   };
 
   const methods = useForm({
