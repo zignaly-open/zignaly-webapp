@@ -15,7 +15,7 @@ import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
-import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl } from "../../../utils/affiliateURLs";
+import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl, vcceUrl } from "../../../utils/affiliateURLs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -149,6 +149,9 @@ const ExchangeAccountConnect = () => {
         break;
       case "bitmex":
         url = bitmexAPIKeysUrl;
+        break;
+      case "vcce":
+        url = vcceUrl;
         break;
       default:
         url = binanceUrl;
