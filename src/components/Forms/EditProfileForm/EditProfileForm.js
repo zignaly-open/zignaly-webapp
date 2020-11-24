@@ -442,7 +442,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <Controller
                       control={control}
                       // @ts-ignore
-                      defaultValue={provider.options[o.id]}
+                      defaultValue={provider.options[o.id] ? provider.options[o.id] : false}
                       name={o.id}
                       render={({ onChange, onBlur, value }) => (
                         <Checkbox
