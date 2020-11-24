@@ -65,6 +65,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [aboutTab, setAboutTab] = useState("write");
   const [strategyTab, setStrategyTab] = useState("write");
   const listSwitch = watch("list", provider.list);
+  const publicSwitch = watch("public", provider.public);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
@@ -300,18 +301,21 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const disableListingSwitch = () => {
-    if (!storeUserData.isAdmin) {
-      if (listSwitch) {
-        return false;
-      }
-      return true;
+    if (storeUserData.isAdmin) {
+      return false;
     }
-    return false;
+    if (listSwitch) {
+      return false;
+    }
+    return true;
   };
 
   const disablePulicSwitch = () => {
-    if (!storeUserData.isAdmin) {
-      if (provider.followers <= 1) {
+    if (storeUserData.isAdmin) {
+      return false;
+    }
+    if (provider.followers > 1) {
+      if (!publicSwitch) {
         return false;
       }
       return true;
