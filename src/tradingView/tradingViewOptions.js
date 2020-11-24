@@ -115,7 +115,7 @@ export function createWidgetOptions(options) {
 
   // if (exchange.exchangeName === "vcce") {
   const dataFeedOptions = {
-    exchange: exchange.exchangeName,
+    exchange,
     symbolsData,
     tradeApiToken,
   };
@@ -149,7 +149,7 @@ export function createWidgetOptions(options) {
     // Don't prefix symbol with exchenge name when using the external library
     // It's a workaround to get the quoteUpdate events, which are not sent otherwise
     // We need them to get the last price with the external library.
-    symbol: isSelfHosted ? symbol : symbolTV,
+    symbol,
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

@@ -54,7 +54,7 @@ const TradingViewEdit = (props) => {
   const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
   const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
-  const { instantiateWidget, tradingViewWidget } = useTradingTerminal(setLastPrice);
+  const { instantiateWidget, tradingViewWidget, isSelfHosted } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -160,7 +160,6 @@ const TradingViewEdit = (props) => {
     }
   };
 
-  console.log(window.TradingView.widget);
   const loadDependencies = () => {
     fetchPosition();
     // const checkExist = setInterval(() => {
@@ -188,20 +187,26 @@ const TradingViewEdit = (props) => {
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    if (!libraryReady || !positionEntity || tradingViewWidget) {
+    console.log(selectedSymbol, tradingViewWidget);
+    if (!selectedSymbol || tradingViewWidget) {
       return () => {};
     }
 
-    const widgetOptions = createWidgetOptions(
-      positionEntity.tradeViewSymbol,
-      storeSettings.darkStyle,
-    );
+    const options = {
+      exchange: storeSettings.selectedExchange,
+      symbolsData: [selectedSymbol],
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      symbol: positionEntity.tradeViewSymbol,
+      darkStyle: storeSettings.darkStyle,
+    };
 
+    const widgetOptions = createWidgetOptions(options);
+    console.log(widgetOptions);
     instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, positionEntity, tradingViewWidget]);
+  useEffect(bootstrapWidget, [libraryReady, selectedSymbol, tradingViewWidget]);
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
@@ -220,7 +225,7 @@ const TradingViewEdit = (props) => {
       }
     }, 100);
   };
-  useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   const methods = useForm({
     mode: "onChange",

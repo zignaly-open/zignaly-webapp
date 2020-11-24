@@ -193,6 +193,7 @@ const TradingView = () => {
   }, [tradingViewWidget]);
 
   const changeTheme = () => {
+    console.log("update theme");
     const reloadWidget = () => {
       removeWidget();
       bootstrapWidget();
@@ -200,16 +201,15 @@ const TradingView = () => {
 
     if (tradingViewWidget) {
       const options = tradingViewWidget.options;
-      if (storeSettings.darkStyle && options.theme !== "dark") {
-        reloadWidget();
-      }
-
-      if (!storeSettings.darkStyle && options.theme !== "light") {
+      if (
+        (storeSettings.darkStyle && options.theme !== "dark") ||
+        (!storeSettings.darkStyle && options.theme !== "light")
+      ) {
         reloadWidget();
       }
     }
   };
-  useEffect(changeTheme, [storeSettings.darkStyle]);
+  // useEffect(changeTheme, [storeSettings.darkStyle]);
 
   /**
    * @typedef {Object} OptionValue

@@ -18,6 +18,7 @@ import { minToMillisec } from "utils/timeConvert";
 /**
  *
  * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
+ * @typedef {import("./tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
  * @typedef {import("../tradingView/datafeed-api").ServerTimeCallback} ServerTimeCallback
@@ -32,7 +33,7 @@ import { minToMillisec } from "utils/timeConvert";
 
 /**
  * @typedef {Object} DataFeedOptions
- * @property {string} exchange
+ * @property {ExchangeConnectionEntity} exchange
  * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
  * @property {string} tradeApiToken
  */
@@ -54,13 +55,13 @@ class VcceDataFeed {
     this.symbolsData = options.symbolsData || null;
     // this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
-    this.exchange = options.exchange || "";
+    this.exchange = options.exchange.exchangeName || "";
     // this.internalExchangeId = options.internalExchangeId || "";
     // this.coinray = new Coinray(options.coinRayToken);
     // this.coinray.onTokenExpired(options.regenerateAccessToken);
     // this.exchangeKey = options.exchangeKey || "";
-    // this.baseUrl = "https://api.vcc.exchange/v3/chart";
-    this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
+    this.baseUrl = "https://api.vcc.exchange/v3/chart";
+    // this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
 
     /**
      * @type CoinRayCandle[]
@@ -79,6 +80,7 @@ class VcceDataFeed {
     const resolutions = ["1", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W"];
 
     setTimeout(() => {
+      console.log("readyy");
       // Notify to Trading View which options are supported.
       callback({
         supports_marks: false,
@@ -151,6 +153,7 @@ class VcceDataFeed {
    * @memberof CoinRayDataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
+    console.log(symbolData, symbol);
     for (let symbolData of this.symbolsData) {
       const symbolBaseQuote = symbolData.base + symbolData.quote;
       const pricescale = Math.round(1 / symbolData.limits.price.min);
@@ -183,10 +186,12 @@ class VcceDataFeed {
         };
 
         setTimeout(() => {
+          console.log(symbolFound);
           onSymbolResolvedCallback(symbolFound);
         }, 0);
       }
     }
+    console.log("no");
 
     setTimeout(() => {
       onResolveErrorCallback("not found");
@@ -207,19 +212,18 @@ class VcceDataFeed {
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
     const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
-    const requestUrl = this.baseUrl + endpointPath;
-    // const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-    //   this.baseUrl + endpointPath,
-    // )}`;
+    // const requestUrl = this.baseUrl + endpointPath;
+    console.log("aaaaaaaaaa");
+    const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
+      this.baseUrl + endpointPath,
+    )}`;
 
     try {
       const response = await fetch(requestUrl /** { mode: "no-cors" } */);
-      console.log(response);
-
       const candles = await response.json();
 
-      return candles;
-      // return JSON.parse(candles.contents);
+      // return candles;
+      return JSON.parse(candles.contents);
     } catch (error) {
       alert(`Get candles data error: ${error.message}`);
     }
@@ -260,6 +264,7 @@ class VcceDataFeed {
     onErrorCallback,
     firstDataRequest,
   ) {
+    console.log("qqqqqqqqqqqqq");
     this.allCandles = [];
 
     /**
