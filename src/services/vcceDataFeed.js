@@ -221,7 +221,8 @@ class VcceDataFeed {
       // return candles;
       return JSON.parse(candles.contents);
     } catch (error) {
-      alert(`Get candles data error: ${error.message}`);
+      // eslint-disable-next-line no-console
+      console.error(`Get candles data error: ${error.message}`);
     }
 
     return [];

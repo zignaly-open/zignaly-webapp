@@ -218,8 +218,7 @@ const TradingViewEdit = (props) => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        const symbol = getTradingViewExchangeSymbol(selectedSymbol.tradeViewSymbol, exchange);
-        changeSymbol(symbol);
+        changeSymbol(selectedSymbol.tradeViewSymbol, exchange);
         clearInterval(checkExist);
       }
     }, 100);

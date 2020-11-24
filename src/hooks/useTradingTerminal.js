@@ -10,6 +10,7 @@ import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
  *
  * @typedef {import("tradingView/charting_library/charting_library.min").IBasicDataFeed} IBasicDataFeed
  * @typedef {import("tradingView/charting_library/charting_library.min").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -120,17 +121,17 @@ const useTradingTerminal = (setLastPrice) => {
   /**
    * Update TradingView selected symbol
    * @param {string} symbol .
+   * @param {ExchangeConnectionEntity} exchange Exchange connection entity.
    * @returns {void}
    */
-  const changeSymbol = (symbol) => {
+  const changeSymbol = (symbol, exchange) => {
     if (!tradingView.widget || (!tradingView.isSelfHosted && !tradingView.widget.iframe)) {
       // eslint-disable-next-line no-console
       return console.error("LOG: tradingViewWidget wasn't initialized before symbol change");
     }
 
     if (tradingView.widget.iframe) {
-      // todo: I don't think we should use storeSettings.selectedExchange for edit
-      const symbolTV = getTradingViewExchangeSymbol(symbol, storeSettings.selectedExchange);
+      const symbolTV = getTradingViewExchangeSymbol(symbol, exchange);
       tradingView.widget.iframe.contentWindow.postMessage(
         { name: "set-symbol", data: { symbol: symbolTV } },
         "*",

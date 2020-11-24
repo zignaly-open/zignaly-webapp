@@ -113,20 +113,20 @@ export function createWidgetOptions(options) {
   let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  // if (exchange.exchangeName === "vcce") {
-  const dataFeedOptions = {
-    exchange,
-    symbolsData,
-    tradeApiToken,
-  };
-  dataFeed = new VcceDataFeed(dataFeedOptions);
-  // }
+  if (exchange.exchangeName === "vcce") {
+    // For VCCE we use a custom datafeed
+    const dataFeedOptions = {
+      exchange,
+      symbolsData,
+      tradeApiToken,
+    };
+    dataFeed = new VcceDataFeed(dataFeedOptions);
+  }
   const isSelfHosted = Boolean(dataFeed);
-
-  const symbolTV = getTradingViewExchangeSymbol(symbol, exchange);
 
   return {
     ...(isSelfHosted && {
+      // Load market data to the self hosted charting library
       datafeed: dataFeed,
       library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
     }),
@@ -146,12 +146,13 @@ export function createWidgetOptions(options) {
     interval: "30",
     locale: "en",
     studies_overrides: {},
-    // Don't prefix symbol with exchenge name when using the external library
-    // It's a workaround to get the quoteUpdate events, which are not sent otherwise
-    // We need them to get the last price with the external library.
+    // For external hosted widget, we should prefix the symbol with the exchange using getTradingViewExchangeSymbol
+    // However for some reason we won't receive the quoteUpdate events, so we have to update the symbol after init.
     symbol,
+    // @ts-ignore
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
+    // @ts-ignore
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
