@@ -131,31 +131,32 @@ const TradingView = () => {
     getMarketData();
 
     // Reset widget
-    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
-      if (tradingViewWidget) {
-        removeWidget();
-        setLastPrice(null);
-        setSelectedSymbol(defaultSelectedSymbol());
-        bootstrapWidget();
-      }
+    // if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
+    //   if (tradingViewWidget) {
+    //     removeWidget();
+    //     setLastPrice(null);
+    //     setSelectedSymbol(defaultSelectedSymbol());
+    //     bootstrapWidget();
+    //   }
 
-      if (!isSelfHosted) {
-        const checkExist = setInterval(() => {
-          // @ts-ignore
-          if (window.TradingView && window.TradingView.widget) {
-            setLibraryReady(true);
-            clearInterval(checkExist);
-          }
-        }, 100);
-      }
+    //   if (!isSelfHosted) {
+    //     const checkExist = setInterval(() => {
+    //       // @ts-ignore
+    //       if (window.TradingView && window.TradingView.widget) {
+    //         setLibraryReady(true);
+    //         clearInterval(checkExist);
+    //       }
+    //     }, 100);
+    //   }
 
-      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
-    }
+    //   setSelectedExchangeId(storeSettings.selectedExchange.internalId);
+    // }
   };
   useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
   const bootstrapWidget = () => {
     // Initialize widget when symbols loaded or when instance removed
+    console.log(tradingViewWidget, selectedSymbol);
     if (tradingViewWidget || !selectedSymbol) {
       return () => {};
     }
@@ -169,28 +170,29 @@ const TradingView = () => {
     };
 
     const widgetOptions = createWidgetOptions(options);
+    console.log("init");
     instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.
   useEffect(bootstrapWidget, [libraryReady, tradingViewWidget, selectedSymbol]);
 
-  useEffect(() => {
-    if (isSelfHosted) return;
+  // useEffect(() => {
+  //   if (isSelfHosted) return;
 
-    // Force initial price notification.
-    const checkExist = setInterval(() => {
-      if (
-        tradingViewWidget &&
-        tradingViewWidget.iframe &&
-        tradingViewWidget.iframe.contentWindow &&
-        selectedSymbol
-      ) {
-        changeSymbol(selectedSymbol.tradeViewSymbol);
-        clearInterval(checkExist);
-      }
-    }, 100);
-  }, [tradingViewWidget]);
+  //   // Force initial price notification.
+  //   const checkExist = setInterval(() => {
+  //     if (
+  //       tradingViewWidget &&
+  //       tradingViewWidget.iframe &&
+  //       tradingViewWidget.iframe.contentWindow &&
+  //       selectedSymbol
+  //     ) {
+  //       changeSymbol(selectedSymbol.tradeViewSymbol);
+  //       clearInterval(checkExist);
+  //     }
+  //   }, 100);
+  // }, [tradingViewWidget]);
 
   const changeTheme = () => {
     console.log("update theme");
@@ -224,9 +226,9 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    const newSymbol = resolveSymbolData(selectedOption);
-    setSelectedSymbol(newSymbol);
-    changeSymbol(newSymbol.tradeViewSymbol);
+    // const newSymbol = resolveSymbolData(selectedOption);
+    // setSelectedSymbol(newSymbol);
+    // changeSymbol(newSymbol.tradeViewSymbol);
   };
 
   const methods = useForm({

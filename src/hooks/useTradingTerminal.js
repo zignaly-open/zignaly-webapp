@@ -166,6 +166,7 @@ const useTradingTerminal = (setLastPrice) => {
     setTradingView((tv) => ({ ...tv, widget: null }));
   };
 
+  console.log("hook", tradingView);
   return {
     instantiateWidget,
     tradingViewWidget: tradingView.widget,
