@@ -80,7 +80,6 @@ class VcceDataFeed {
     const resolutions = ["1", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W"];
 
     setTimeout(() => {
-      console.log("readyy");
       // Notify to Trading View which options are supported.
       callback({
         supports_marks: false,
@@ -185,12 +184,11 @@ class VcceDataFeed {
         };
 
         setTimeout(() => {
-          console.log(symbolFound);
           onSymbolResolvedCallback(symbolFound);
         }, 0);
+        return;
       }
     }
-    console.log("no");
 
     setTimeout(() => {
       onResolveErrorCallback("not found");

@@ -182,12 +182,10 @@ const TradingViewEdit = (props) => {
     methods.setValue("updatedAt", new Date());
   };
 
-  const isLoading =
-    tradingViewWidget === null || !positionEntity || !libraryReady || !selectedSymbol;
+  const isLoading = tradingViewWidget === null || !positionEntity || !selectedSymbol;
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    console.log(selectedSymbol, tradingViewWidget);
     if (!selectedSymbol || tradingViewWidget) {
       return () => {};
     }
@@ -201,7 +199,6 @@ const TradingViewEdit = (props) => {
     };
 
     const widgetOptions = createWidgetOptions(options);
-    console.log(widgetOptions);
     instantiateWidget(widgetOptions);
   };
 
