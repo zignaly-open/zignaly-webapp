@@ -31,6 +31,7 @@ import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteBu
 import userOptions from "../../../utils/userOptions.json";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 import { formatFloat } from "utils/format";
+import initialState from "store/initialState";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -182,8 +183,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {DefaultProviderOptions} Provider options.
    */
   const preparePayloadOptions = (data) => {
-    let options = provider.options;
-
+    let options = initialState.views.provider.options;
     userOptions.forEach((item) => {
       // @ts-ignore
       options[item.id] = data[item.id];
