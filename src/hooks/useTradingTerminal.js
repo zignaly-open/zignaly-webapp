@@ -58,7 +58,7 @@ const useTradingTerminal = (setLastPrice) => {
       // window.externalWidget = widgetInstance;
       // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
-        console.log("ready");
+        console.log("ready", widgetOptions);
         setTradingView({
           widget: widgetInstance,
           options: widgetOptions,
