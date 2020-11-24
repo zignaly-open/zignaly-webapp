@@ -54,7 +54,9 @@ const TradingViewEdit = (props) => {
   const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
   const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
-  const { instantiateWidget, tradingViewWidget, isSelfHosted } = useTradingTerminal(setLastPrice);
+  const { instantiateWidget, tradingViewWidget, isSelfHosted, changeSymbol } = useTradingTerminal(
+    setLastPrice,
+  );
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -207,7 +209,7 @@ const TradingViewEdit = (props) => {
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
-    if (isSelfHosted) return;
+    if (isSelfHosted || !tradingViewWidget) return;
 
     const checkExist = setInterval(() => {
       if (
@@ -217,12 +219,12 @@ const TradingViewEdit = (props) => {
         selectedSymbol
       ) {
         const symbol = getTradingViewExchangeSymbol(selectedSymbol.tradeViewSymbol, exchange);
-        changeSymbol(symbol.tradeViewSymbol);
+        changeSymbol(symbol);
         clearInterval(checkExist);
       }
     }, 100);
   };
-  // useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  useEffect(initDataFeedSymbol, [tradingViewWidget]);
 
   const methods = useForm({
     mode: "onChange",

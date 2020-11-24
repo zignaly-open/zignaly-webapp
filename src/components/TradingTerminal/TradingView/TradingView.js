@@ -175,22 +175,22 @@ const TradingView = () => {
   // Create Trading View widget when TV external library is ready.
   useEffect(bootstrapWidget, [libraryReady, tradingViewWidget, selectedSymbol]);
 
-  // useEffect(() => {
-  //   if (isSelfHosted) return;
+  useEffect(() => {
+    if (isSelfHosted || !tradingViewWidget) return;
 
-  //   // Force initial price notification.
-  //   const checkExist = setInterval(() => {
-  //     if (
-  //       tradingViewWidget &&
-  //       tradingViewWidget.iframe &&
-  //       tradingViewWidget.iframe.contentWindow &&
-  //       selectedSymbol
-  //     ) {
-  //       changeSymbol(selectedSymbol.tradeViewSymbol);
-  //       clearInterval(checkExist);
-  //     }
-  //   }, 100);
-  // }, [tradingViewWidget]);
+    // Force initial price notification.
+    const checkExist = setInterval(() => {
+      if (
+        tradingViewWidget &&
+        tradingViewWidget.iframe &&
+        tradingViewWidget.iframe.contentWindow &&
+        selectedSymbol
+      ) {
+        changeSymbol(selectedSymbol.tradeViewSymbol);
+        clearInterval(checkExist);
+      }
+    }, 100);
+  }, [tradingViewWidget]);
 
   const changeTheme = () => {
     console.log("update theme");
