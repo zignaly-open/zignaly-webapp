@@ -153,7 +153,6 @@ class VcceDataFeed {
    * @memberof CoinRayDataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
-    console.log(symbolData, symbol);
     for (let symbolData of this.symbolsData) {
       const symbolBaseQuote = symbolData.base + symbolData.quote;
       const pricescale = Math.round(1 / symbolData.limits.price.min);
@@ -213,7 +212,6 @@ class VcceDataFeed {
   async getCandlesData(base, quote, resolution, startTime, endTime) {
     const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
     // const requestUrl = this.baseUrl + endpointPath;
-    console.log("aaaaaaaaaa");
     const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
       this.baseUrl + endpointPath,
     )}`;
@@ -264,7 +262,6 @@ class VcceDataFeed {
     onErrorCallback,
     firstDataRequest,
   ) {
-    console.log("qqqqqqqqqqqqq");
     this.allCandles = [];
 
     /**

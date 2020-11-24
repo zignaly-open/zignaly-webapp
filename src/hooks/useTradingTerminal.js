@@ -56,29 +56,25 @@ const useTradingTerminal = (setLastPrice) => {
       // @ts-ignore
       const widgetInstance = new PrivateTradingViewWidget(widgetOptions);
       // window.externalWidget = widgetInstance;
-      // Store to state only when chart is ready so prices are resolved.
       widgetInstance.onChartReady(() => {
-        console.log("ready", widgetOptions);
         setTradingView({
           widget: widgetInstance,
           options: widgetOptions,
           isSelfHosted: true,
         });
+        // Update price
         // @ts-ignore
-        // const price = widgetOptions.dataFeed.getLastPrice();
-        // setLastPrice(price);
+        const price = widgetOptions.datafeed.getLastPrice();
+        setLastPrice(price);
       });
     } else {
       // @ts-ignore
       // eslint-disable-next-line new-cap
       const externalWidget = new window.TradingView.widget(widgetOptions);
 
-      console.log("1");
       let eventSymbol = "";
       // @ts-ignore
       const handleWidgetReady = (event) => {
-        console.log(event);
-
         if (isString(event.data)) {
           try {
             const dataParsed = JSON.parse(event.data);
@@ -166,7 +162,6 @@ const useTradingTerminal = (setLastPrice) => {
     setTradingView((tv) => ({ ...tv, widget: null }));
   };
 
-  console.log("hook", tradingView);
   return {
     instantiateWidget,
     tradingViewWidget: tradingView.widget,

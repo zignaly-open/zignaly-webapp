@@ -156,8 +156,7 @@ const TradingView = () => {
 
   const bootstrapWidget = () => {
     // Initialize widget when symbols loaded or when instance removed
-    console.log(tradingViewWidget, selectedSymbol);
-    if (tradingViewWidget || !selectedSymbol) {
+    if (!selectedSymbol || tradingViewWidget) {
       return () => {};
     }
 
@@ -170,7 +169,6 @@ const TradingView = () => {
     };
 
     const widgetOptions = createWidgetOptions(options);
-    console.log("init");
     instantiateWidget(widgetOptions);
   };
 
