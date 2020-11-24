@@ -9,10 +9,12 @@ import VcceDataFeed from "services/vcceDataFeed";
  */
 
 /**
- * @typedef {Object} DataFeedOptions
+ * @typedef {Object} WidgetOptions
  * @property {String} tradeApiToken Trade API access token.
  * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
- * @property {String} exchange Exchange name.
+ * @property {string} symbol Crypto currency symbol.
+ * @property {boolean} darkStyle Dark style flag.
+ * @property {ExchangeConnectionEntity} exchange Exchange connection entity.
  */
 
 /**
@@ -87,37 +89,38 @@ export function mapExchangeConnectionToTradingViewId(exchangeName) {
  *
  * @export
  * @param {string} tradeViewSymbol Symbol
- * @param {ExchangeConnectionEntity} exchangeConnection Exchange connection entity.
+ * @param {ExchangeConnectionEntity} exchange Exchange connection entity.
  * @returns {string} TradingView Symbol with exchange id
  */
-export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection) {
+export function getTradingViewExchangeSymbol(tradeViewSymbol, exchange) {
   const symbolSuffix =
-    exchangeConnection.exchangeName.toLowerCase() !== "bitmex" &&
-    exchangeConnection.exchangeType === "futures"
+    exchange.exchangeName.toLowerCase() !== "bitmex" && exchange.exchangeType === "futures"
       ? "PERP"
       : "";
   const symbolCode = tradeViewSymbol + symbolSuffix;
-  const exchangeId = mapExchangeConnectionToTradingViewId(
-    exchangeConnection.exchangeName || exchangeConnection.name,
-  );
+  const exchangeId = mapExchangeConnectionToTradingViewId(exchange.exchangeName || exchange.name);
   return `${exchangeId}:${symbolCode}`;
 }
 
 /**
  * Create Trading View data feed configuration.
  *
- * @param {DataFeedOptions} dataFeedOptions DataFeed options.
- * @param {string} symbol Crypto currency symbol.
- * @param {boolean} darkStyle Dark style flag.
+ * @param {WidgetOptions} options Configuration to create Trading View widget options
  *
  * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
-export function createWidgetOptions(exchange, dataFeedOptions, symbol, darkStyle) {
+export function createWidgetOptions(options) {
   let dataFeed = null;
+  const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  if (dataFeedOptions.exchange === "vcce") {
-    dataFeed = new VcceDataFeed(dataFeedOptions);
-  }
+  // if (exchange.exchangeName === "vcce") {
+  const dataFeedOptions = {
+    exchange: exchange.exchangeName,
+    symbolsData,
+    tradeApiToken,
+  };
+  dataFeed = new VcceDataFeed(dataFeedOptions);
+  // }
   const isSelfHosted = Boolean(dataFeed);
 
   const symbolTV = getTradingViewExchangeSymbol(symbol, exchange);
@@ -146,7 +149,7 @@ export function createWidgetOptions(exchange, dataFeedOptions, symbol, darkStyle
     // Don't prefix symbol with exchenge name when using the external library
     // It's a workaround to get the quoteUpdate events, which are not sent otherwise
     // We need them to get the last price with the external library.
-    symbol: isSelfHosted ? symbolTV : symbol,
+    symbol: isSelfHosted ? symbol : symbolTV,
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

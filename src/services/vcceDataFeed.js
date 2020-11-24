@@ -1,5 +1,4 @@
 /**
- * Creating a mock of the datafeed
  * Tutorial: https://github.com/tradingview/charting-library-tutorial/blob/master/documentation/integration.md
  * Full implementation: https://github.com/tradingview/charting_library/wiki/JS-Api#how-to-start
  * Tutorial implementation: https://github.com/tradingview/charting-library-tutorial/blob/master/documentation/datafeed-implementation.md
@@ -19,6 +18,7 @@ import { minToMillisec } from "utils/timeConvert";
 /**
  *
  * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
+ * @typedef {import("/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
  * @typedef {import("../tradingView/datafeed-api").ServerTimeCallback} ServerTimeCallback
  * @typedef {import("../tradingView/datafeed-api").SearchSymbolsCallback} SearchSymbolsCallback
@@ -28,6 +28,13 @@ import { minToMillisec } from "utils/timeConvert";
  * @typedef {import("../tradingView/datafeed-api").Bar} Bar
  * @typedef {import("../tradingView/datafeed-api").SubscribeBarsCallback} SubscribeBarsCallback
  * @typedef {import("../tradingView/datafeed-api").LibrarySymbolInfo} LibrarySymbolInfo
+ */
+
+/**
+ * @typedef {Object} DataFeedOptions
+ * @property {string} exchange
+ * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
+ * @property {string} tradeApiToken
  */
 
 /**
@@ -52,7 +59,8 @@ class VcceDataFeed {
     // this.coinray = new Coinray(options.coinRayToken);
     // this.coinray.onTokenExpired(options.regenerateAccessToken);
     // this.exchangeKey = options.exchangeKey || "";
-    this.baseUrl = "https://api.vcc.exchange/v3/chart";
+    // this.baseUrl = "https://api.vcc.exchange/v3/chart";
+    this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
 
     /**
      * @type CoinRayCandle[]
@@ -199,16 +207,19 @@ class VcceDataFeed {
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
     const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
-    // const requestUrl = this.baseUrl + endpointPath;
-    const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      this.baseUrl + endpointPath,
-    )}`;
+    const requestUrl = this.baseUrl + endpointPath;
+    // const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
+    //   this.baseUrl + endpointPath,
+    // )}`;
 
     try {
-      const response = await fetch(requestUrl);
+      const response = await fetch(requestUrl /** { mode: "no-cors" } */);
+      console.log(response);
+
       const candles = await response.json();
 
-      return JSON.parse(candles.contents);
+      return candles;
+      // return JSON.parse(candles.contents);
     } catch (error) {
       alert(`Get candles data error: ${error.message}`);
     }

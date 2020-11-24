@@ -160,19 +160,15 @@ const TradingView = () => {
       return () => {};
     }
 
-    const dataFeedOptions = {
-      exchange: exchangeName,
-      // internalExchangeId: storeSettings.selectedExchange.internalId,
+    const options = {
+      exchange: storeSettings.selectedExchange,
       symbolsData: symbols,
       tradeApiToken: storeSession.tradeApi.accessToken,
+      symbol: selectedSymbol.tradeViewSymbol,
+      darkStyle: storeSettings.darkStyle,
     };
 
-    const widgetOptions = createWidgetOptions(
-      storeSettings.selectedExchange,
-      dataFeedOptions,
-      selectedSymbol.tradeViewSymbol,
-      storeSettings.darkStyle,
-    );
+    const widgetOptions = createWidgetOptions(options);
     instantiateWidget(widgetOptions);
   };
 

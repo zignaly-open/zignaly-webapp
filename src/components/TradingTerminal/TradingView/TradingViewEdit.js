@@ -160,15 +160,16 @@ const TradingViewEdit = (props) => {
     }
   };
 
+  console.log(window.TradingView.widget);
   const loadDependencies = () => {
     fetchPosition();
-    const checkExist = setInterval(() => {
-      // @ts-ignore
-      if (window.TradingView && window.TradingView.widget) {
-        setLibraryReady(true);
-        clearInterval(checkExist);
-      }
-    }, 100);
+    // const checkExist = setInterval(() => {
+    //   // @ts-ignore
+    //   if (window.TradingView && window.TradingView.widget) {
+    //     setLibraryReady(true);
+    //     clearInterval(checkExist);
+    //   }
+    // }, 100);
   };
   useEffect(loadDependencies, []);
 
@@ -196,10 +197,7 @@ const TradingViewEdit = (props) => {
       storeSettings.darkStyle,
     );
 
-    const cleanupWidget = instantiateWidget(widgetOptions);
-    return () => {
-      cleanupWidget();
-    };
+    instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.

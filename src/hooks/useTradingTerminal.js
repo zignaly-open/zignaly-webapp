@@ -64,8 +64,8 @@ const useTradingTerminal = (setLastPrice) => {
           isSelfHosted: true,
         });
         // @ts-ignore
-        const price = widgetOptions.dataFeed.getLastPrice();
-        setLastPrice(price);
+        // const price = widgetOptions.dataFeed.getLastPrice();
+        // setLastPrice(price);
       });
     } else {
       // @ts-ignore
