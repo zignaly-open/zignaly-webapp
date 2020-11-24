@@ -55,6 +55,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
+    process.env.NODE_ENV !== "production" &&
     demo &&
     exchangeType === "futures" &&
     ["binance", "bitmex"].includes(exchangeName.toLowerCase());
