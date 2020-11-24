@@ -191,6 +191,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       options[item.id] = data[item.id];
       delete data[item.id];
     });
+    // eslint-disable-next-line no-console
+    console.log(options);
     return options;
   };
 
