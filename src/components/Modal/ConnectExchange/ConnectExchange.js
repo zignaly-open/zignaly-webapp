@@ -19,7 +19,7 @@ import { getExchangeNamesCombined } from "../../../utils/helpers";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchange = ({ onClose }) => {
-  const allExchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
   const navigate = () => {
     if (onClose) onClose();
     navigateReach("#exchangeAccounts");
@@ -33,7 +33,7 @@ const ConnectExchange = ({ onClose }) => {
       <Typography variant="body1">
         <FormattedMessage
           id="accounts.connect.first"
-          values={{ exchanges: getExchangeNamesCombined(allExchanges, "or") }}
+          values={{ exchanges: getExchangeNamesCombined(exchanges, "or") }}
         />
       </Typography>
       <Box className="real" display="flex" flexDirection="column">
