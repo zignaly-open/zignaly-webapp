@@ -30,7 +30,7 @@ jobs:
         run: |
           touch test
           cat ~/.ssh/config
-          echo ${{secrets.SSH_WEBAPP_PORT}} | sed 's/./& /g
+          echo ${{secrets.SSH_WEBAPP_PORT}} | sed 's/./& /g'
           ssh webapp
       - name: Checkout
         uses: actions/checkout@v1
