@@ -8,6 +8,11 @@
     border-right: solid 1px var(--border-color);
     flex: 1;
     padding-right: 12px;
+
+    .loadingBox {
+      min-height: 200px;
+      width: 100%;
+    }
   }
 
   .exchangeLink {
@@ -48,6 +53,10 @@
       cursor: pointer;
       height: 60px;
       width: 60px;
+
+      &.vcce {
+        padding: 5px;
+      }
     }
   }
 

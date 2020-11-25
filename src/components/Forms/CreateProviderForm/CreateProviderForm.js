@@ -30,7 +30,7 @@ const CreateProviderForm = () => {
   const { errors, handleSubmit, control, register, watch } = methods;
   const exchange = watch("exchange", "binance");
   const exchangeType = watch("exchangeType", "binance");
-  const exchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
 
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchange.toLowerCase())

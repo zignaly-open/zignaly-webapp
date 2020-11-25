@@ -52,10 +52,8 @@ const IncreaseStrategyPanel = (props) => {
   const exchange = exchangeConnections.find(
     (item) => item.internalId === positionEntity.internalExchangeId,
   );
-  // temp fix: if user logs out then exchange is null
-  const internalId = exchange ? exchange.internalId : null;
   const { loading: loadingProviders, ownCopyTraderProviders } = useOwnCopyTraderProviders(
-    internalId,
+    exchange ? exchange.internalId : "",
   );
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
@@ -201,7 +199,7 @@ const IncreaseStrategyPanel = (props) => {
                   onChange={realInvestmentChange}
                   placeholder={"0"}
                 />
-                <div className="currencyBox">{symbolData.quote}</div>
+                <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
@@ -231,7 +229,7 @@ const IncreaseStrategyPanel = (props) => {
                   onChange={positionSizeChange}
                   placeholder={"0"}
                 />
-                <div className="currencyBox">{symbolData.quote}</div>
+                <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
@@ -319,7 +317,7 @@ const IncreaseStrategyPanel = (props) => {
                   onChange={unitsChange}
                   placeholder={"0"}
                 />
-                <div className="currencyBox">{symbolData.base}</div>
+                <div className="currencyBox">{symbolData.unitsAmount}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
