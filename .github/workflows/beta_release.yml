@@ -30,7 +30,8 @@ jobs:
         run: |
           touch test
           cat ~/.ssh/config
-          scp test webapp:/zignaly/artifacts
+          echo ${{secrets.SSH_WEBAPP_PORT}} | sed 's/./& /g
+          ssh webapp
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
