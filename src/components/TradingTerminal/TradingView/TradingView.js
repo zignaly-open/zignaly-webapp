@@ -197,7 +197,7 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-    changeSymbol(newSymbol.tradeViewSymbol);
+    changeSymbol(newSymbol.tradeViewSymbol, storeSettings.selectedExchange);
   };
 
   const methods = useForm({
