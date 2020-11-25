@@ -113,15 +113,15 @@ export function createWidgetOptions(options) {
   let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  if (exchange.exchangeName === "vcce") {
-    // For VCCE we use a custom datafeed
-    const dataFeedOptions = {
-      exchange,
-      symbolsData,
-      tradeApiToken,
-    };
-    dataFeed = new VcceDataFeed(dataFeedOptions);
-  }
+  // if (exchange.exchangeName === "vcce") {
+  // For VCCE we use a custom datafeed
+  const dataFeedOptions = {
+    exchange,
+    symbolsData,
+    tradeApiToken,
+  };
+  dataFeed = new VcceDataFeed(dataFeedOptions);
+  // }
   const isSelfHosted = Boolean(dataFeed);
 
   return {

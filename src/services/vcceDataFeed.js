@@ -3,6 +3,7 @@
  * Full implementation: https://github.com/tradingview/charting_library/wiki/JS-Api#how-to-start
  * Tutorial implementation: https://github.com/tradingview/charting-library-tutorial/blob/master/documentation/datafeed-implementation.md
  * Stream implementation: https://github.com/tradingview/charting-library-tutorial/blob/master/documentation/streaming-implementation.md
+ * TradingView JS API Binance Example: https://github.com/marcius-studio/tradingview-jsapi-binance/blob/master/client/src/components/api/index.js
  */
 
 /* eslint-disable camelcase */
@@ -12,14 +13,14 @@ import { isEmpty, last } from "lodash";
 import { minToMillisec } from "utils/timeConvert";
 
 /**
- * @typedef {Array<string>} CoinRayCandle
+ * @typedef {Array<string>} Candle
  */
 
 /**
  *
  * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("./tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import("/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import("./tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
  * @typedef {import("../tradingView/datafeed-api").ServerTimeCallback} ServerTimeCallback
  * @typedef {import("../tradingView/datafeed-api").SearchSymbolsCallback} SearchSymbolsCallback
@@ -46,25 +47,18 @@ import { minToMillisec } from "utils/timeConvert";
  */
 class VcceDataFeed {
   /**
-   * Creates an instance of CoinRayDataFeed.
+   * Creates an instance of VcceDataFeed.
    * @param {DataFeedOptions} options Construct options.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   constructor(options) {
-    // this.symbol = options.symbol || "";
     this.symbolsData = options.symbolsData || null;
-    // this.coinRayToken = options.coinRayToken;
     this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange.exchangeName || "";
-    // this.internalExchangeId = options.internalExchangeId || "";
-    // this.coinray = new Coinray(options.coinRayToken);
-    // this.coinray.onTokenExpired(options.regenerateAccessToken);
-    // this.exchangeKey = options.exchangeKey || "";
-    this.baseUrl = "https://api.vcc.exchange/v3/chart";
-    // this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
+    this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
 
     /**
-     * @type CoinRayCandle[]
+     * @type Candle
      */
     this.allCandles = [];
   }
@@ -74,7 +68,7 @@ class VcceDataFeed {
    *
    * @param {OnReadyCallback} callback On ready callback.
    * @returns {Void} None.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   onReady(callback) {
     const resolutions = ["1", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W"];
@@ -95,7 +89,7 @@ class VcceDataFeed {
    *
    * @param {ServerTimeCallback} callback Server time callback.
    * @returns {Void} None.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   getServerTime(callback) {
     tradeApi
@@ -110,16 +104,16 @@ class VcceDataFeed {
       });
   }
 
-  /**
-   * Search market symbol data by widget search input value.
-   *
-   * @param {String} userInput Input value typed by user.
-   * @param {String} exchange Exchange name.
-   * @param {String} symbolType Symbol type.
-   * @param {SearchSymbolsCallback} onResultReadyCallback Callback to resolve symbol match.
-   * @returns {Void} None.
-   * @memberof CoinRayDataFeed
-   */
+  // /**
+  //  * Search market symbol data by widget search input value.
+  //  *
+  //  * @param {String} userInput Input value typed by user.
+  //  * @param {String} exchange Exchange name.
+  //  * @param {String} symbolType Symbol type.
+  //  * @param {SearchSymbolsCallback} onResultReadyCallback Callback to resolve symbol match.
+  //  * @returns {Void} None.
+  //  * @memberof VcceDataFeed
+  //  */
   // eslint-disable-next-line max-params
   // searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
   //   userInput = userInput.toUpperCase();
@@ -149,7 +143,7 @@ class VcceDataFeed {
    * @param {ResolveCallback} onSymbolResolvedCallback Notify symbol resolved.
    * @param {ErrorCallback} onResolveErrorCallback Notify symbol resolve error.
    * @returns {Void} None.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
     for (let symbolData of this.symbolsData) {
@@ -203,23 +197,20 @@ class VcceDataFeed {
    * @param {string|number} resolution Data resolution.
    * @param {number} startTime Get data since.
    * @param {number} endTime Get data to.
-   * @returns {Promise<CoinRayCandle>} Promise that resolve candle data.
-   * @memberof CoinRayDataFeed
+   * @returns {Promise<Candle>} Promise that resolve candle data.
+   * @memberof VcceDataFeed
    */
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
     const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
-    // const requestUrl = this.baseUrl + endpointPath;
-    const requestUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      this.baseUrl + endpointPath,
-    )}`;
+    const requestUrl = this.baseUrl + endpointPath;
 
     try {
-      const response = await fetch(requestUrl /** { mode: "no-cors" } */);
+      const response = await fetch(requestUrl);
       const candles = await response.json();
 
-      // return candles;
-      return JSON.parse(candles.contents);
+      return candles;
+      // return JSON.parse(candles.contents);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`Get candles data error: ${error.message}`);
@@ -228,6 +219,11 @@ class VcceDataFeed {
     return [];
   }
 
+  /**
+   * Parse api candle bars
+   * @param {*} candle VCCE Candle
+   * @returns {*} New candle
+   */
   parseOHLCV(candle) {
     return {
       time: parseFloat(candle.time),
@@ -248,8 +244,9 @@ class VcceDataFeed {
    * @param {number} endDate Get data to.
    * @param {HistoryCallback} onResultCallback Notify data.
    * @param {ErrorCallback} onErrorCallback Notify error.
+   * @param {boolean} firstDataRequest First request boolean.
    * @returns {Void} None.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   // eslint-disable-next-line max-params
   getBars(
@@ -280,6 +277,8 @@ class VcceDataFeed {
     };
 
     if (firstDataRequest) {
+      // Store date, this will be used for the interval requests to get live candle.
+      // We need it for performance reasons because the reply will be cached.
       this.startDate = startDate;
     }
 
@@ -305,14 +304,14 @@ class VcceDataFeed {
   }
 
   /**
-   * Subscribe Trading View to real time data websocket.
+   * Interval requests to get live data
    *
    * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Prices data resolution.
    * @param {SubscribeBarsCallback} onRealtimeCallback Notify tick to chart.
    * @returns {Void} None.
    *
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   // eslint-disable-next-line max-params
   subscribeBars(symbolData, resolution, onRealtimeCallback) {
@@ -337,14 +336,14 @@ class VcceDataFeed {
           console.error(`ERROR: ${e.message}`);
         });
     };
-    this.candleSubscription = setInterval(refreshCandle, 10000);
+    this.candleSubscription = setInterval(refreshCandle, 15000);
   }
 
   /**
-   * Unsubscribe from CoinRay symbol real time websocket.
+   * Unsubscribe from interval request
    *
    * @returns {Void} None.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   unsubscribeBars() {
     clearInterval(this.candleSubscription);
@@ -354,13 +353,14 @@ class VcceDataFeed {
    * Get last price.
    *
    * @returns {number} Price.
-   * @memberof CoinRayDataFeed
+   * @memberof VcceDataFeed
    */
   getLastPrice() {
     if (isEmpty(this.allCandles)) {
       return null;
     }
 
+    // @ts-ignore
     return last(this.allCandles).close;
   }
 }
