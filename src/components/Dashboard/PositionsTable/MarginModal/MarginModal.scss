@@ -1,36 +1,67 @@
 .marginModal {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
+  padding: 20px 30px;
+
+  .loadingBox {
+    height: 100px;
+    min-height: 100px;
+    width: 100%;
+  }
+
+  .tabs {
+    margin-bottom: 20px;
+    width: 100%;
+
+    button {
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 0;
+      max-width: 50%;
+      min-height: 60px;
+      min-width: 50%;
+      opacity: 0.6;
+      padding: 0;
+      text-transform: capitalize;
+
+      &:focus {
+        outline: none;
+      }
+
+      &.selected {
+        color: var(--purple);
+        opacity: 1;
+      }
+    }
+
+    .marginTabsContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      width: 100%;
+    }
+  }
+
+  .marginBox {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
 
   .amountInput {
-    margin: 30px 0 15px;
+    margin: 30px 0;
+    width: 100%;
   }
 
   .customInput {
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
-    width: 200px;
-  }
-
-  .currencyBox {
-    background-color: $mediumDarkGrey;
-    border: 1px solid $darkLightGrey;
-    border-bottom-right-radius: 3px;
-    border-left: 0;
-    border-top-right-radius: 3px;
-    padding: 5px;
-    width: 70px;
+    width: 100%;
   }
 
   .customButton {
-    margin: 25px 20px;
-  }
-
-  .marginBox {
-    margin: 0 20px;
+    margin: 25px 0;
+    width: 100%;
   }
 
   .line + .line {

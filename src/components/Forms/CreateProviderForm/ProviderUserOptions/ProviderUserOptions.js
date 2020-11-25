@@ -55,7 +55,7 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
 
   return (
     <div className="providerUserOptions">
-      <ExpansionPanel classes={{ root: "accordion" }}>
+      <ExpansionPanel classes={{ root: "accordion" }} defaultExpanded={true}>
         <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
             <FormattedMessage id="signalp.general" />

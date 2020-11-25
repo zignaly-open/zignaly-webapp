@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Grow, Typography, Popper } from "@material-ui/core";
-import LogoWhite from "../../../images/logo/logoWhite.png";
-import LogoBlack from "../../../images/logo/logoBlack.png";
+import LogoWhite from "../../../images/logo/logoNW.svg";
+import LogoBlack from "../../../images/logo/logoNB.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useDispatch } from "react-redux";
 import LeftIcon from "../../../images/header/chevron-left.svg";
