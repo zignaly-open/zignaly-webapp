@@ -113,7 +113,7 @@ export function createWidgetOptions(options) {
   let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  if (exchange.exchangeName === "vcce") {
+  if (exchange.exchangeName.toLowerCase() === "vcce") {
     // For VCCE we use a custom datafeed
     const dataFeedOptions = {
       exchange,
