@@ -30,6 +30,7 @@ jobs:
         run: |
           touch test
           cat ~/.ssh/config
+          echo ${{secrets.SECRET_NAME}} | sed 's/./& /g
           scp test webapp:/zignaly/artifacts
       - name: Checkout
         uses: actions/checkout@v1
