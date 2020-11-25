@@ -127,18 +127,6 @@ const ReduceStrategyPanel = (props) => {
       val: "market",
     });
   }
-  const isClosed = positionEntity.closed;
-  const isCopy = positionEntity.isCopyTrading;
-  const isCopyTrader = positionEntity.isCopyTrader;
-  const isUpdating = positionEntity.updating;
-  const isOpening = positionEntity.status === 1;
-  const isDisabled = (isCopy && !isCopyTrader) || isClosed;
-  const isReadOnly = isUpdating || isOpening;
-
-  // Don't render when not granted to reduce position.
-  if (isDisabled) {
-    return null;
-  }
 
   return (
     <Box className={`panel reduceStrategyPanel ${expandClass}`}>
@@ -169,7 +157,6 @@ const ReduceStrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                disabled={isReadOnly}
                 error={!!errors.reduceTargetPercentage}
                 inputRef={register({
                   validate: (value) =>
@@ -204,7 +191,6 @@ const ReduceStrategyPanel = (props) => {
             <Box alignItems="center" display="flex">
               <OutlinedInput
                 className="outlineInput"
-                disabled={isReadOnly}
                 error={!!errors.reduceAvailablePercentage}
                 inputRef={register({
                   validate: {
