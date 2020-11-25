@@ -195,7 +195,6 @@ const TradingView = () => {
    * @returns {Void} None.
    */
   const handleSymbolChange = (selectedOption) => {
-    console.log("c");
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
     changeSymbol(newSymbol.tradeViewSymbol);

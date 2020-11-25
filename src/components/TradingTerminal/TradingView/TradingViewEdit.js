@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  createWidgetOptions,
-  getTradingViewExchangeSymbol,
-} from "../../../tradingView/tradingViewOptions";
+import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress, Typography } from "@material-ui/core";

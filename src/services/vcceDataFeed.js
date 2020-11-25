@@ -21,15 +21,15 @@ import { minToMillisec } from "utils/timeConvert";
  * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("./tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("./tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
- * @typedef {import("../tradingView/datafeed-api").OnReadyCallback} OnReadyCallback
- * @typedef {import("../tradingView/datafeed-api").ServerTimeCallback} ServerTimeCallback
- * @typedef {import("../tradingView/datafeed-api").SearchSymbolsCallback} SearchSymbolsCallback
- * @typedef {import("../tradingView/datafeed-api").ResolveCallback} ResolveCallback
- * @typedef {import("../tradingView/datafeed-api").ErrorCallback} ErrorCallback
- * @typedef {import("../tradingView/datafeed-api").HistoryCallback} HistoryCallback
- * @typedef {import("../tradingView/datafeed-api").Bar} Bar
- * @typedef {import("../tradingView/datafeed-api").SubscribeBarsCallback} SubscribeBarsCallback
- * @typedef {import("../tradingView/datafeed-api").LibrarySymbolInfo} LibrarySymbolInfo
+ * @typedef {import("tradingView/charting_library/charting_library").OnReadyCallback} OnReadyCallback
+ * @typedef {import("tradingView/charting_library/charting_library").ServerTimeCallback} ServerTimeCallback
+ * @typedef {import("tradingView/charting_library/charting_library").SearchSymbolsCallback} SearchSymbolsCallback
+ * @typedef {import("tradingView/charting_library/charting_library").ResolveCallback} ResolveCallback
+ * @typedef {import("tradingView/charting_library/charting_library").ErrorCallback} ErrorCallback
+ * @typedef {import("tradingView/charting_library/charting_library").HistoryCallback} HistoryCallback
+ * @typedef {import("tradingView/charting_library/charting_library").Bar} Bar
+ * @typedef {import("tradingView/charting_library/charting_library").SubscribeBarsCallback} SubscribeBarsCallback
+ * @typedef {import("tradingView/charting_library/charting_library").LibrarySymbolInfo} LibrarySymbolInfo
  */
 
 /**
@@ -79,6 +79,7 @@ class VcceDataFeed {
         supports_marks: false,
         supports_timescale_marks: false,
         supports_time: true,
+        // @ts-ignore
         supported_resolutions: resolutions,
       });
     }, 0);

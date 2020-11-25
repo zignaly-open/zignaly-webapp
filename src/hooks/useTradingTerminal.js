@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
-import { widget as PrivateTradingViewWidget } from "../../static/charting_library/charting_library/";
+import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.esm";
 import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
-// import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.min";
 
 /**
  *
- * @typedef {import("tradingView/charting_library/charting_library.min").IBasicDataFeed} IBasicDataFeed
- * @typedef {import("tradingView/charting_library/charting_library.min").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("tradingView/charting_library/charting_library").IBasicDataFeed} IBasicDataFeed
+ * @typedef {import("tradingView/charting_library/charting_library").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
@@ -141,7 +140,8 @@ const useTradingTerminal = (setLastPrice) => {
   const changeSymbol = (symbol, exchange) => {
     if (!tradingView.widget || (!tradingView.isSelfHosted && !tradingView.widget.iframe)) {
       // eslint-disable-next-line no-console
-      return console.error("LOG: tradingViewWidget wasn't initialized before symbol change");
+      console.error("LOG: tradingViewWidget wasn't initialized before symbol change");
+      return;
     }
 
     if (tradingView.widget.iframe) {
@@ -164,6 +164,7 @@ const useTradingTerminal = (setLastPrice) => {
     const cleanupWidget = () => {
       if (readyCallback.current) {
         window.removeEventListener("message", readyCallback.current);
+        readyCallback.current = null;
       }
       if (tradingView.widget) {
         removeWidget();

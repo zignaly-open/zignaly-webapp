@@ -4,7 +4,7 @@ import VcceDataFeed from "services/vcceDataFeed";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import("tradingView/charting_library/charting_library.min").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("tradingView/charting_library/charting_library").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
  * @typedef {import("services//tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  */
 
@@ -113,15 +113,15 @@ export function createWidgetOptions(options) {
   let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  // if (exchange.exchangeName === "vcce") {
-  // For VCCE we use a custom datafeed
-  const dataFeedOptions = {
-    exchange,
-    symbolsData,
-    tradeApiToken,
-  };
-  dataFeed = new VcceDataFeed(dataFeedOptions);
-  // }
+  if (exchange.exchangeName === "vcce") {
+    // For VCCE we use a custom datafeed
+    const dataFeedOptions = {
+      exchange,
+      symbolsData,
+      tradeApiToken,
+    };
+    dataFeed = new VcceDataFeed(dataFeedOptions);
+  }
   const isSelfHosted = Boolean(dataFeed);
 
   return {
@@ -143,6 +143,7 @@ export function createWidgetOptions(options) {
     ],
     fullscreen: false,
     hide_side_toolbar: false,
+    // @ts-ignore
     interval: "30",
     locale: "en",
     studies_overrides: {},
