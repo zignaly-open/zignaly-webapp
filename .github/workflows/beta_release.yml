@@ -33,6 +33,8 @@ jobs:
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         #run: npm test -- "tradeApiClient"
         run: echo "skipping tests"
+      - name: Install submodules
+        run: git submodule update --init
       - name: Build
         run: npm run build:test
       - name: Package & Release
