@@ -17,6 +17,8 @@ jobs:
       - uses: webfactory/ssh-agent@v0.4.1
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Test
+        run: git clone git@github.com:tradingview/charting_library.git
       - name: Install Dependencies
         run: npm ci
       - name: Check Style Lint
