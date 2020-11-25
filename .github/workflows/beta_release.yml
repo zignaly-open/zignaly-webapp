@@ -51,15 +51,25 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/buildbot.key
           chmod 600 ~/.ssh/buildbot.key
-          echo "Host webapp
+          echo "$SSH_TV_KEY" > ~/.ssh/github.key
+          chmod 600 ~/.ssh/github.key
+          cat >>~/.ssh/config <<END
+          Host webapp
             HostName $SSH_HOST
             User $SSH_USER
             Port $SSH_PORT
             IdentityFile ~/.ssh/buildbot.key
             StrictHostKeyChecking no
-          " >> ~/.ssh/config
+          Host github.com
+            HostName $SSH_HOST
+            User $SSH_USER
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/github.key
+            StrictHostKeyChecking no
+          END
         env:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_TV_KEY: ${{ secrets.SSH_PRIVATE_TV_KEY }}
           SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
           SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
           SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
