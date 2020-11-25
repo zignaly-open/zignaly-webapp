@@ -33,6 +33,10 @@
     "types/global.d.ts",
     "static/widgets/dashly.js"
   ],
+  "exclude": [
+    "node_modules",
+    "static/charting_library"
+  ],
   "typeRoots": [
     "./src/types",
     "./node_modules/@types"

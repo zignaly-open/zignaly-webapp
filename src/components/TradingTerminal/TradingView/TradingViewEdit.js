@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { isArray, isEqual, pick, assign } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  createWidgetOptions,
-  getTradingViewExchangeSymbol,
-} from "../../../tradingView/dataFeedOptions";
+import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
@@ -51,10 +48,15 @@ import useTradingViewContext from "hooks/useTradingViewContext";
  */
 const TradingViewEdit = (props) => {
   const { positionId } = props;
-  const [libraryReady, setLibraryReady] = useState(false);
   const tradingViewContext = useTradingViewContext();
-  const { setLastPrice, lastPrice, setProviderService } = tradingViewContext;
-  const { instantiateWidget, tradingViewWidget } = useTradingTerminal(setLastPrice);
+  const { setLastPrice, lastPrice, setProviderService, setUpdatedAt } = tradingViewContext;
+  const {
+    instantiateWidget,
+    tradingViewWidget,
+    isSelfHosted,
+    changeSymbol,
+    removeWidget,
+  } = useTradingTerminal(setLastPrice);
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -160,17 +162,15 @@ const TradingViewEdit = (props) => {
     }
   };
 
-  const loadDependencies = () => {
+  useEffect(() => {
     fetchPosition();
-    const checkExist = setInterval(() => {
-      // @ts-ignore
-      if (window.TradingView && window.TradingView.widget) {
-        setLibraryReady(true);
-        clearInterval(checkExist);
-      }
-    }, 100);
-  };
-  useEffect(loadDependencies, []);
+  }, []);
+
+  useEffect(() => {
+    // Reload widget on theme change
+    removeWidget();
+    bootstrapWidget();
+  }, [storeSettings.darkStyle]);
 
   /**
    * Callback that to be notified when position updates are performed.
@@ -179,34 +179,34 @@ const TradingViewEdit = (props) => {
    */
   const notifyPositionUpdate = () => {
     fetchPosition();
-    methods.setValue("updatedAt", new Date());
+    setUpdatedAt(new Date());
   };
 
-  const isLoading =
-    tradingViewWidget === null || !positionEntity || !libraryReady || !selectedSymbol;
+  const isLoading = tradingViewWidget === null || !positionEntity || !selectedSymbol;
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
-    if (!libraryReady || !positionEntity || tradingViewWidget) {
-      return () => {};
-    }
+    if (!selectedSymbol || tradingViewWidget) return;
 
-    const widgetOptions = createWidgetOptions(
-      positionEntity.tradeViewSymbol,
-      storeSettings.darkStyle,
-    );
-
-    const cleanupWidget = instantiateWidget(widgetOptions);
-    return () => {
-      cleanupWidget();
+    const options = {
+      exchange: storeSettings.selectedExchange,
+      symbolsData: [selectedSymbol],
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      symbol: positionEntity.tradeViewSymbol,
+      darkStyle: storeSettings.darkStyle,
     };
+
+    const widgetOptions = createWidgetOptions(options);
+    instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, positionEntity, tradingViewWidget]);
+  useEffect(bootstrapWidget, [selectedSymbol, tradingViewWidget]);
 
   // Force initial price notification.
   const initDataFeedSymbol = () => {
+    if (isSelfHosted || !tradingViewWidget) return;
+
     const checkExist = setInterval(() => {
       if (
         tradingViewWidget &&
@@ -214,11 +214,7 @@ const TradingViewEdit = (props) => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        const symbol = getTradingViewExchangeSymbol(selectedSymbol.tradeViewSymbol, exchange);
-        tradingViewWidget.iframe.contentWindow.postMessage(
-          { name: "set-symbol", data: { symbol } },
-          "*",
-        );
+        changeSymbol(selectedSymbol.tradeViewSymbol, exchange);
         clearInterval(checkExist);
       }
     }, 100);
