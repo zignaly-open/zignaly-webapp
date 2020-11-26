@@ -220,7 +220,7 @@ const ReduceStrategyPanel = (props) => {
             <Box alignItems="flex-start" display="flex" flexDirection="column">
               <Box display="flex" flexDirection="row">
                 <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetUnits} />
-                <div className="currencyBox">{symbolData.unitsInvestment}</div>
+                <div className="currencyBox">{symbolData.unitsAmount}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
