@@ -183,7 +183,7 @@ const ReduceStrategyPanel = (props) => {
             </Box>
             <Box alignItems="center" display="flex">
               <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
-              <div className="currencyBox">{symbolData.quote}</div>
+              <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
           </Box>
           {errors.reduceTargetPercentage && (
@@ -220,7 +220,7 @@ const ReduceStrategyPanel = (props) => {
             <Box alignItems="flex-start" display="flex" flexDirection="column">
               <Box display="flex" flexDirection="row">
                 <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetUnits} />
-                <div className="currencyBox">{symbolData.base}</div>
+                <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
               <FormHelperText>
                 <FormattedMessage id="terminal.available" />{" "}
