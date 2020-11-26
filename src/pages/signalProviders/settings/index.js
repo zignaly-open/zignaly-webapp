@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./settings.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
@@ -29,7 +29,8 @@ import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView
 const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const { provider } = useStoreViewsSelector();
-  const [settingsView, setSettingsView] = useState(false);
+  const [settingsView, setSettingsView] = useState(true);
+  const loading = Object.keys(quotes).length === 0;
   const intl = useIntl();
   const matchExchange = () => {
     if (provider.exchangeInternalId === selectedExchange.internalId) {
@@ -50,11 +51,23 @@ const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      {settingsView && (
+      {loading && (
+        <Box
+          alignItems="center"
+          bgcolor="grid.content"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      )}
+      {!loading && settingsView && (
         <ProviderSettingsForm onUpdate={loadData} quotes={quotes} settings={settings} />
       )}
 
-      {!settingsView && <NoSettingsView />}
+      {!loading && !settingsView && <NoSettingsView />}
     </Box>
   );
 };
