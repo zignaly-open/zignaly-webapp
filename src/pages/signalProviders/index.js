@@ -56,7 +56,7 @@ const SignalProviders = (props) => {
     selectedExchange.name.toLowerCase() === "bitmex"
       ? { BTC: { quote: "BTC", minNotional: 0 } }
       : quoteAssets;
-  const quotesAvailable = Object.keys(quotes).length > 0 ? "true" : "false";
+  const quotesAvailable = Object.keys(quotes).length > 0;
 
   useEffect(() => {
     const loadProvider = async () => {
@@ -79,12 +79,17 @@ const SignalProviders = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
 
+  /**
+   * Load exchange settings from backend.
+   *
+   * @returns {void}
+   */
   const loadSettings = () => {
     if (
       provider.id &&
       !provider.disable &&
       provider.exchangeInternalId === selectedExchange.internalId &&
-      quotesAvailable === "true"
+      quotesAvailable
     ) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -107,6 +112,8 @@ const SignalProviders = (props) => {
   useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
 
   /**
+   * Check if user has allocated balance to any quote inside settings.
+   *
    * @param {ProviderExchangeSettingsObject} settingsData Provider settings object.
    *
    * @returns {void}

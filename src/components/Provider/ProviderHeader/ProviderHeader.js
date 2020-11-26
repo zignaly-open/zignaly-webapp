@@ -8,6 +8,7 @@ import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import AppContext from "../../../appContext";
+import { FormattedMessage } from "react-intl";
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -28,8 +29,7 @@ const ProviderHeader = () => {
     if (!provider.isCopyTrading) {
       data.links.some((item) => {
         if (item.to.includes("settings")) {
-          item.alert = emptySettingsAlert;
-          item.alertMsg = "You haven't allocated any balance";
+          item.tooltip = emptySettingsAlert ? <FormattedMessage id="srv.settings.tooltip" /> : "";
           return true;
         }
         return false;

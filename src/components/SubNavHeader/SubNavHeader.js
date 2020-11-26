@@ -44,8 +44,8 @@ const SubNavHeader = ({ links, rightComponent }) => (
     {links.map((item, index) => (
       <GatsbyLink getProps={isPartiallyActive} key={index} to={item.to}>
         <FormattedMessage id={item.id} />
-        {item.alert && (
-          <Tooltip placement="top" title={item.alertMsg ? item.alertMsg : ""}>
+        {item.tooltip && (
+          <Tooltip placement="top" title={item.tooltip}>
             <span className="linkAlert" />
           </Tooltip>
         )}
