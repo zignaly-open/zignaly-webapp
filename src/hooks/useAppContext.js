@@ -5,9 +5,9 @@ import { useState } from "react";
  */
 
 /**
- * Handle the state management for the modal path data that is shared via context.
+ * Handle un-persisted state management for the different parts of app using React context.
  *
- * @returns {AppContextObject} Modal path state object.
+ * @returns {AppContextObject} App context object.
  */
 const usePositionsContext = () => {
   const [emptySettingsAlert, setEmptySettingsAlert] = useState(false);
