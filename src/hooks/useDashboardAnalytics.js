@@ -62,10 +62,6 @@ const useDashboardAnalytics = () => {
     val: "1",
     label: intl.formatMessage({ id: "fil.manual" }),
   });
-  providersOptions.unshift({
-    val: "all",
-    label: intl.formatMessage({ id: "fil.providers.all" }),
-  });
 
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
