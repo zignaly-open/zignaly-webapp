@@ -74,7 +74,7 @@ const SignalProviders = (props) => {
     }
 
     return () => {
-      setHasAllocated(false);
+      setHasAllocated(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
