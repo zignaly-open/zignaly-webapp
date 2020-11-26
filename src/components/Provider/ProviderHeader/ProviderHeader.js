@@ -32,6 +32,7 @@ const ProviderHeader = () => {
           item.alertMsg = "You haven't allocated any balance";
           return true;
         }
+        return false;
       });
     }
     setLinks(data ? data.links : []);
