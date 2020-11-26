@@ -51,7 +51,7 @@ const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      {loading && (
+      {(loading || !settings) && (
         <Box
           alignItems="center"
           bgcolor="grid.content"
@@ -63,7 +63,7 @@ const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
-      {!loading && settingsView && (
+      {!loading && settings && settingsView && (
         <ProviderSettingsForm onUpdate={loadData} quotes={quotes} settings={settings} />
       )}
 
