@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 import Edit from "./edit";
@@ -19,6 +19,7 @@ import AppContext from "../../appContext";
 import tradeApi from "../../services/tradeApiClient";
 import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
+import { creatEmptySettingsEntity } from "services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
@@ -47,7 +48,9 @@ const SignalProviders = (props) => {
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
+  const emptySettings = creatEmptySettingsEntity();
   const { setEmptySettingsAlert } = useContext(AppContext);
+  const [settings, setSettings] = useState(emptySettings);
   const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
   const quotes =
     selectedExchange.name.toLowerCase() === "bitmex"
@@ -79,6 +82,7 @@ const SignalProviders = (props) => {
   const loadSettings = () => {
     if (
       provider.id &&
+      !provider.disable &&
       provider.exchangeInternalId === selectedExchange.internalId &&
       quotesAvailable === "true"
     ) {
@@ -91,6 +95,7 @@ const SignalProviders = (props) => {
       tradeApi
         .providerExchangeSettingsGet(payload)
         .then((response) => {
+          setSettings(response);
           checkAllocated(response);
         })
         .catch((e) => {
@@ -102,15 +107,15 @@ const SignalProviders = (props) => {
   useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
 
   /**
-   * @param {ProviderExchangeSettingsObject} settings Provider settings object.
+   * @param {ProviderExchangeSettingsObject} settingsData Provider settings object.
    *
    * @returns {void}
    */
-  const checkAllocated = (settings) => {
+  const checkAllocated = (settingsData) => {
     const someValuesAllocated = Object.keys(quotes).some((item) => {
       const settingsKey = "positionSize" + item + "Value";
       // @ts-ignore
-      return settings[settingsKey] > 0;
+      return settingsData[settingsKey] > 0;
     });
     setEmptySettingsAlert(!someValuesAllocated);
   };
@@ -141,8 +146,11 @@ const SignalProviders = (props) => {
         {!provider.disable && provider.exchangeInternalId === selectedExchange.internalId && (
           <SignalProviderRoute
             component={Settings}
+            loadData={loadSettings}
             path={withPrefix("/signalProviders/:providerId/settings")}
             providerId={providerId}
+            quotes={quotes}
+            settings={settings}
           />
         )}
         <SignalProviderRoute
