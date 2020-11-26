@@ -1,65 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "./settings.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
-import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
-import useSelectedExchangeQuotes from "../../../hooks/useSelectedExchangeQuotes";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView";
 
-const SignalProvidersSettings = () => {
+/**
+ * @typedef {import("../../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import("../../../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+ */
+
+/**
+ * @typedef {Object} ProviderProps
+ * @property {QuoteAssetsDict} quotes quotes
+ * @property {ProviderExchangeSettingsObject} settings settings
+ * @property {Function} loadData load data method
+ */
+
+/**
+ * Position detail page component.
+ *
+ * @param {ProviderProps} props Component properties.
+ * @returns {JSX.Element} Position page element.
+ */
+const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
   const { selectedExchange } = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
-  const storeViews = useStoreViewsSelector();
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  const emptySettings = creatEmptySettingsEntity();
-  const [settings, setSettings] = useState(emptySettings);
-  const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
-  const quotes =
-    selectedExchange.name.toLowerCase() === "bitmex"
-      ? { BTC: { quote: "BTC", minNotional: 0 } }
-      : quoteAssets;
-  const [settingsView, setSettingsView] = useState(false);
+  const { provider } = useStoreViewsSelector();
+  const [settingsView, setSettingsView] = useState(true);
+  const loading = Object.keys(quotes).length === 0;
   const intl = useIntl();
-
-  const loadSettings = () => {
-    if (
-      storeViews.provider.id &&
-      storeViews.provider.exchangeInternalId === selectedExchange.internalId
-    ) {
-      setLoading(true);
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: storeViews.provider.id,
-        internalExchangeId: selectedExchange.internalId,
-        version: 2,
-      };
-      tradeApi
-        .providerExchangeSettingsGet(payload)
-        .then((response) => {
-          setSettings(response);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  };
-
-  useEffect(loadSettings, [selectedExchange.internalId, storeViews.provider.id]);
-
   const matchExchange = () => {
-    if (storeViews.provider.exchangeInternalId === selectedExchange.internalId) {
+    if (provider.exchangeInternalId === selectedExchange.internalId) {
       setSettingsView(true);
     } else {
       setSettingsView(false);
@@ -72,12 +46,12 @@ const SignalProvidersSettings = () => {
     <Box className="profileSettingsPage">
       <Helmet>
         <title>
-          {`${storeViews.provider.name} - ${intl.formatMessage({
+          {`${provider.name} - ${intl.formatMessage({
             id: "srv.settings",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      {loading && (
+      {(loading || !settings) && (
         <Box
           alignItems="center"
           bgcolor="grid.content"
@@ -89,8 +63,8 @@ const SignalProvidersSettings = () => {
           <CircularProgress color="primary" size={40} />
         </Box>
       )}
-      {!loading && settingsView && (
-        <ProviderSettingsForm onUpdate={loadSettings} quotes={quotes} settings={settings} />
+      {!loading && settings && settingsView && (
+        <ProviderSettingsForm onUpdate={loadData} quotes={quotes} settings={settings} />
       )}
 
       {!loading && !settingsView && <NoSettingsView />}

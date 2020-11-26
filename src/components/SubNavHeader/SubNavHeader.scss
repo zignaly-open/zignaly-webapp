@@ -18,6 +18,8 @@
     box-sizing: border-box;
     color: inherit;
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
     font-size: 21px;
     font-weight: 400;
     margin: 0 66px 0 0;
@@ -46,6 +48,16 @@
 
     &:hover {
       opacity: 1;
+    }
+
+    .linkAlert {
+      background: $red;
+      border-radius: 100%;
+      display: block;
+      height: 12px;
+      margin-left: 5px;
+      text-align: center;
+      width: 12px;
     }
   }
 }

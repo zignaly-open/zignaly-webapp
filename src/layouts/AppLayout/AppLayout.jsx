@@ -5,13 +5,14 @@ import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import withPageContext from "../../pageContext/withPageContext";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
 import userPilotApi from "../../utils/userPilotApi";
+import { IntlProvider } from "react-intl";
+import translations from "../../i18n/translations";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -34,6 +35,15 @@ const AppLayout = (props) => {
   const ref = useRef(null);
   useScript(withPrefix("widgets/externalWidgets.js"));
   const { userpilot } = userPilotApi();
+
+  // Merged english messages with selected by user locale messages
+  // In this case all english data would be overridden to user selected locale, but untranslated
+  // (missed in object keys) just stay in english
+  const mergedMessages = Object.assign(
+    {},
+    translations.en,
+    translations[storeSettings.languageCode],
+  );
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
@@ -69,16 +79,18 @@ const AppLayout = (props) => {
   }, [pathname]);
 
   return (
-    <StylesProvider injectFirst>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ErrorAlert />
-        <SuccessAlert />
-        {storeLoader && <Loader />}
-        {children}
-      </ThemeProvider>
-    </StylesProvider>
+    <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
+      <StylesProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ErrorAlert />
+          <SuccessAlert />
+          {storeLoader && <Loader />}
+          {children}
+        </ThemeProvider>
+      </StylesProvider>
+    </IntlProvider>
   );
 };
 
-export default withPageContext(AppLayout);
+export default AppLayout;
