@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 import Edit from "./edit";
@@ -15,9 +15,13 @@ import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
 import BrowsePage from "./browse";
+import AppContext from "../../appContext";
+import tradeApi from "../../services/tradeApiClient";
+import { showErrorAlert } from "store/actions/ui";
+import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 
 /**
- *
+ * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {Object} LocationObject
  * @property {String} pathname
  */
@@ -43,6 +47,13 @@ const SignalProviders = (props) => {
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
+  const { setEmptySettingsAlert } = useContext(AppContext);
+  const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
+  const quotes =
+    selectedExchange.name.toLowerCase() === "bitmex"
+      ? { BTC: { quote: "BTC", minNotional: 0 } }
+      : quoteAssets;
+  const quotesAvailable = Object.keys(quotes).length > 0 ? "true" : "false";
 
   useEffect(() => {
     const loadProvider = async () => {
@@ -58,8 +69,51 @@ const SignalProviders = (props) => {
     if (providerId && providerId.length === 24) {
       loadProvider();
     }
+
+    return () => {
+      setEmptySettingsAlert(false);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
+
+  const loadSettings = () => {
+    if (
+      provider.id &&
+      provider.exchangeInternalId === selectedExchange.internalId &&
+      quotesAvailable === "true"
+    ) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        internalExchangeId: selectedExchange.internalId,
+        version: 2,
+      };
+      tradeApi
+        .providerExchangeSettingsGet(payload)
+        .then((response) => {
+          checkAllocated(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
+  };
+
+  useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
+
+  /**
+   * @param {ProviderExchangeSettingsObject} settings Provider settings object.
+   *
+   * @returns {void}
+   */
+  const checkAllocated = (settings) => {
+    const someValuesAllocated = Object.keys(quotes).some((item) => {
+      const settingsKey = "positionSize" + item + "Value";
+      // @ts-ignore
+      return settings[settingsKey] > 0;
+    });
+    setEmptySettingsAlert(!someValuesAllocated);
+  };
 
   if (!providerId) {
     // Render Browse page

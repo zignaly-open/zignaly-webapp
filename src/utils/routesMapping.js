@@ -7,6 +7,8 @@
  * @typedef {Object} NavigationLink Navigation link object.
  * @property {string} id Link ID.
  * @property {string} to Link path.
+ * @property {boolean} [alert] Notification flag for user about something.
+ * @property {string} [alertMsg] Notification message for user about something.
  */
 
 /**
