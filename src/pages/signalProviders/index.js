@@ -19,7 +19,6 @@ import AppContext from "../../appContext";
 import tradeApi from "../../services/tradeApiClient";
 import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
-import { creatEmptySettingsEntity } from "services/tradeApiClient.types";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
@@ -48,9 +47,8 @@ const SignalProviders = (props) => {
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
-  const emptySettings = creatEmptySettingsEntity();
   const { setEmptySettingsAlert } = useContext(AppContext);
-  const [settings, setSettings] = useState(emptySettings);
+  const [settings, setSettings] = useState(null);
   const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
   const quotes =
     selectedExchange.name.toLowerCase() === "bitmex"
