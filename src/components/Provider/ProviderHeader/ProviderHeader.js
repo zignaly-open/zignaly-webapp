@@ -7,7 +7,7 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import AppContext from "../../../appContext";
+import ProviderContext from "../ProviderContext";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -20,7 +20,7 @@ const ProviderHeader = () => {
   const storeSettings = useStoreSettingsSelector();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
   const [links, setLinks] = useState([]);
-  const { emptySettingsAlert } = useContext(AppContext);
+  const { hasAllocated } = useContext(ProviderContext);
 
   useEffect(() => {
     const data = provider.isCopyTrading
@@ -29,7 +29,7 @@ const ProviderHeader = () => {
     if (!provider.isCopyTrading) {
       data.links.some((item) => {
         if (item.to.includes("settings")) {
-          item.tooltip = emptySettingsAlert ? <FormattedMessage id="srv.settings.tooltip" /> : "";
+          item.tooltip = !hasAllocated ? <FormattedMessage id="srv.settings.tooltip" /> : "";
           return true;
         }
         return false;
@@ -37,7 +37,7 @@ const ProviderHeader = () => {
     }
     setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, storeSettings.selectedExchange.internalId, emptySettingsAlert]);
+  }, [provider, storeSettings.selectedExchange.internalId, hasAllocated]);
 
   const checkAccess = () => {
     // Reset focus: https://github.com/ReactTraining/react-router/issues/5210

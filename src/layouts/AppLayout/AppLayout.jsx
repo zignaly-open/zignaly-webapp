@@ -13,8 +13,6 @@ import useScript from "../../hooks/useScript";
 import userPilotApi from "../../utils/userPilotApi";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
-import AppContext from "../../appContext";
-import useAppContext from "../../hooks/useAppContext";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -37,7 +35,6 @@ const AppLayout = (props) => {
   const ref = useRef(null);
   useScript(withPrefix("widgets/externalWidgets.js"));
   const { userpilot } = userPilotApi();
-  const context = useAppContext();
 
   // Merged english messages with selected by user locale messages
   // In this case all english data would be overridden to user selected locale, but untranslated
@@ -89,7 +86,7 @@ const AppLayout = (props) => {
           <ErrorAlert />
           <SuccessAlert />
           {storeLoader && <Loader />}
-          <AppContext.Provider value={context}>{children}</AppContext.Provider>
+          {children}
         </ThemeProvider>
       </StylesProvider>
     </IntlProvider>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 import Edit from "./edit";
@@ -15,10 +15,11 @@ import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
 import BrowsePage from "./browse";
-import AppContext from "../../appContext";
 import tradeApi from "../../services/tradeApiClient";
 import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
+import useProviderContext from "hooks/useProviderContext";
+import ProviderContext from "components/Provider/ProviderContext";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
@@ -47,7 +48,8 @@ const SignalProviders = (props) => {
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
-  const { setEmptySettingsAlert } = useContext(AppContext);
+  const providerContext = useProviderContext();
+  const { setHasAllocated } = providerContext;
   const [settings, setSettings] = useState(null);
   const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
   const quotes =
@@ -72,7 +74,7 @@ const SignalProviders = (props) => {
     }
 
     return () => {
-      setEmptySettingsAlert(false);
+      setHasAllocated(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
@@ -122,7 +124,7 @@ const SignalProviders = (props) => {
       // @ts-ignore
       return settingsData[settingsKey] > 0;
     });
-    setEmptySettingsAlert(!someValuesAllocated);
+    setHasAllocated(someValuesAllocated);
   };
 
   if (!providerId) {
@@ -133,50 +135,52 @@ const SignalProviders = (props) => {
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
 
   return (
-    <ProviderLayout>
-      <Router>
-        <SignalProviderRoute
-          component={Profile}
-          default
-          path={withPrefix("/signalProviders/:providerId")}
-          providerId={providerId}
-        />
-        {allowAdminRoutes && (
+    <ProviderContext.Provider value={providerContext}>
+      <ProviderLayout>
+        <Router>
           <SignalProviderRoute
-            component={Edit}
-            path={withPrefix("/signalProviders/:providerId/edit")}
+            component={Profile}
+            default
+            path={withPrefix("/signalProviders/:providerId")}
             providerId={providerId}
           />
-        )}
-        {!provider.disable && provider.exchangeInternalId === selectedExchange.internalId && (
+          {allowAdminRoutes && (
+            <SignalProviderRoute
+              component={Edit}
+              path={withPrefix("/signalProviders/:providerId/edit")}
+              providerId={providerId}
+            />
+          )}
+          {!provider.disable && provider.exchangeInternalId === selectedExchange.internalId && (
+            <SignalProviderRoute
+              component={Settings}
+              loadData={loadSettings}
+              path={withPrefix("/signalProviders/:providerId/settings")}
+              providerId={providerId}
+              quotes={quotes}
+              settings={settings}
+            />
+          )}
           <SignalProviderRoute
-            component={Settings}
-            loadData={loadSettings}
-            path={withPrefix("/signalProviders/:providerId/settings")}
+            component={Analytics}
+            path={withPrefix("/signalProviders/:providerId/analytics")}
             providerId={providerId}
-            quotes={quotes}
-            settings={settings}
           />
-        )}
-        <SignalProviderRoute
-          component={Analytics}
-          path={withPrefix("/signalProviders/:providerId/analytics")}
-          providerId={providerId}
-        />
-        {allowAdminRoutes && (
+          {allowAdminRoutes && (
+            <SignalProviderRoute
+              component={Users}
+              path={withPrefix("/signalProviders/:providerId/users")}
+              providerId={providerId}
+            />
+          )}
           <SignalProviderRoute
-            component={Users}
-            path={withPrefix("/signalProviders/:providerId/users")}
+            component={News}
+            path={withPrefix("/signalProviders/:providerId/feed")}
             providerId={providerId}
           />
-        )}
-        <SignalProviderRoute
-          component={News}
-          path={withPrefix("/signalProviders/:providerId/feed")}
-          providerId={providerId}
-        />
-      </Router>
-    </ProviderLayout>
+        </Router>
+      </ProviderLayout>
+    </ProviderContext.Provider>
   );
 };
 
