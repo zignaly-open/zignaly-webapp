@@ -30,7 +30,7 @@ const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const { provider } = useStoreViewsSelector();
   const [settingsView, setSettingsView] = useState(true);
-  const loading = Object.keys(quotes).length === 0;
+  const loading = !quotes || Object.keys(quotes).length === 0;
   const intl = useIntl();
   const matchExchange = () => {
     if (provider.exchangeInternalId === selectedExchange.internalId) {
