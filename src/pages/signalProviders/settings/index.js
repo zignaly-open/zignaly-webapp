@@ -17,7 +17,7 @@ import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView
 const SignalProvidersSettings = () => {
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const storeViews = useStoreViewsSelector();
+  const { provider } = useStoreViewsSelector();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
@@ -29,16 +29,18 @@ const SignalProvidersSettings = () => {
       : quoteAssets;
   const [settingsView, setSettingsView] = useState(false);
   const intl = useIntl();
+  const quotesAvailable = Object.keys(quotes).length > 0;
 
   const loadSettings = () => {
     if (
-      storeViews.provider.id &&
-      storeViews.provider.exchangeInternalId === selectedExchange.internalId
+      provider.id &&
+      provider.exchangeInternalId === selectedExchange.internalId &&
+      quotesAvailable
     ) {
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
-        providerId: storeViews.provider.id,
+        providerId: provider.id,
         internalExchangeId: selectedExchange.internalId,
         version: 2,
       };
@@ -56,10 +58,10 @@ const SignalProvidersSettings = () => {
     }
   };
 
-  useEffect(loadSettings, [selectedExchange.internalId, storeViews.provider.id]);
+  useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
 
   const matchExchange = () => {
-    if (storeViews.provider.exchangeInternalId === selectedExchange.internalId) {
+    if (provider.exchangeInternalId === selectedExchange.internalId) {
       setSettingsView(true);
     } else {
       setSettingsView(false);
@@ -72,7 +74,7 @@ const SignalProvidersSettings = () => {
     <Box className="profileSettingsPage">
       <Helmet>
         <title>
-          {`${storeViews.provider.name} - ${intl.formatMessage({
+          {`${provider.name} - ${intl.formatMessage({
             id: "srv.settings",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>

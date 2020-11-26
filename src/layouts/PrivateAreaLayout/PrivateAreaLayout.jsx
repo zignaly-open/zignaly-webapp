@@ -7,7 +7,6 @@ import MobileAppbar from "../../components/Navigation/MobileAppbar";
 import Sidebar from "../../components/Navigation/Sidebar";
 import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
-import withPageContext from "../../pageContext/withPageContext";
 import SettingsView from "../../components/SettingsView";
 import { useDispatch } from "react-redux";
 import { loadAppUserData, refreshSessionData } from "../../store/actions/session";
@@ -77,4 +76,4 @@ const PrivateAreaLayout = (props) => {
   );
 };
 
-export default withPageContext(PrivateAreaLayout);
+export default PrivateAreaLayout;
