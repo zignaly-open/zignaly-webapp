@@ -8,38 +8,17 @@ jobs:
     name: Webapp Beta Release
     runs-on: ubuntu-18.04
     steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/buildbot.key
-          chmod 600 ~/.ssh/buildbot.key
-          cat >>~/.ssh/config <<END
-          Host webapp
-            HostName $SSH_HOST
-            User $SSH_USER
-            Port $SSH_PORT
-            IdentityFile ~/.ssh/buildbot.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
-          SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
-          SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
-      - name: test
-        run: |
-          ssh webapp
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      # - uses: webfactory/ssh-agent@v0.4.1
-      #   with:
-      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      # - name: Test
-      #   run: git clone git@github.com:tradingview/charting_library.git
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_TV_KEY }}
+      - name: Install submodules
+        run: git submodule update --init
       - name: Install Dependencies
         run: npm ci
       - name: Check Style Lint
@@ -85,8 +64,6 @@ jobs:
           SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
           SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
           SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
-      - name: Install submodules
-        run: git submodule update --init
       - name: Prepare Deploy Variables
         run: |
           echo "WEBAPP_VERSION=$(cat .semvernext)" >> $GITHUB_ENV
