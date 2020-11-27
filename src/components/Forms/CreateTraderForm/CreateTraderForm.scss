@@ -27,11 +27,6 @@
       min-height: 65px;
       min-width: 65px;
       padding: 3px;
-
-      img {
-        background: $black;
-        border-radius: 100%;
-      }
     }
   }
 
@@ -57,8 +52,10 @@
 
     &.fee {
       img {
+        background: $black;
+        border-radius: 100%;
+        padding: 2px;
         height: 100%;
-        padding: 4px;
         width: 100%;
       }
     }
