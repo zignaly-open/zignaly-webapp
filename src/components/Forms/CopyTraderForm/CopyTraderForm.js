@@ -98,11 +98,9 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
             dashlyProviderEnabled();
             userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
+            onClose();
             if (provider.profitSharing) {
-              onClose();
               onSuccess();
-            } else {
-              onClose();
             }
           })
           .catch((e) => {

@@ -55,7 +55,7 @@ const useDashboardAnalytics = (providerId) => {
   const [providerQuotes, setProviderQuotes] = useState([]);
 
   const { providers, providersLoading } = useHasBeenUsedProviders();
-  let providersOptions = [...providers].map((item) => ({
+  let providersOptions = providers.map((item) => ({
     val: item.id,
     label: item.name,
   }));
