@@ -21,6 +21,7 @@ import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  * @property {Function} onClose
+ * @property {Function} onSuccess
  *
  */
 /**
@@ -29,7 +30,7 @@ import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const CopyTraderForm = ({ provider, onClose }) => {
+const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
@@ -97,7 +98,12 @@ const CopyTraderForm = ({ provider, onClose }) => {
             dashlyProviderEnabled();
             userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
-            onClose();
+            if (provider.profitSharing) {
+              onClose();
+              onSuccess();
+            } else {
+              onClose();
+            }
           })
           .catch((e) => {
             dispatch(showErrorAlert(e));
