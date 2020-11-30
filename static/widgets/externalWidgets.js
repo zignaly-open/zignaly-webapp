@@ -14,6 +14,12 @@ window.zESettings = {
 
 window.userpilotSettings = { token: "55mi72q1" };
 
+window.zE("webWidget", "hide");
+
+window.zE("webWidget:on", "close", () => {
+  window.zE("webWidget", "hide");
+});
+
 let script = document.createElement("script");
 script.type = "text/javascript";
 script.src = "https://static.zdassets.com/ekr/snippet.js?key=374628c3-7648-4afb-96c4-c13bc6408a8f";
