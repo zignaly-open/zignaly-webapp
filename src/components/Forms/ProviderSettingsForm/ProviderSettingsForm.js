@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./ProviderSettingsForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -17,6 +17,8 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ToggleTextarea from "./ToggleTextarea";
+import ProviderContext from "../../Provider/ProviderContext";
+import { checkAllocated } from "utils/helpers";
 
 /**
  *
@@ -28,7 +30,7 @@ import ToggleTextarea from "./ToggleTextarea";
  * @typedef {Object} DefaultProps
  * @property {ProviderExchangeSettingsObject} settings
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
- * @property {Function} onUpdate
+ * @property {Function} onUpdate Callback to trigger when settings have updated.
  */
 /**
  * Provides the navigation bar for the dashboard.
@@ -48,6 +50,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
   const { handleSubmit } = formMethods;
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
+  const { setHasAllocated } = useContext(ProviderContext);
 
   const initTargets = () => {
     setProfitTargets(settings.takeProfitTargets);
@@ -114,7 +117,8 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
     });
     tradeApi
       .providerExchangeSettingsUpdate(payload)
-      .then(() => {
+      .then((response) => {
+        checkAllocated(quotes, response, setHasAllocated);
         onUpdate();
       })
       .catch((e) => {

@@ -10,7 +10,7 @@ import { useState } from "react";
  * @returns {ProviderContextObject} App context object.
  */
 const useProviderContext = () => {
-  const [hasAllocated, setHasAllocated] = useState(false);
+  const [hasAllocated, setHasAllocated] = useState(true);
 
   return {
     hasAllocated,
