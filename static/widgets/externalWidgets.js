@@ -14,11 +14,16 @@ window.zESettings = {
 
 window.userpilotSettings = { token: "55mi72q1" };
 
-window.zE("webWidget", "hide");
+const interval = setInterval(() => {
+  if (typeof window !== "undefined" && window.zE) {
+    window.zE("webWidget", "hide");
 
-window.zE("webWidget:on", "close", () => {
-  window.zE("webWidget", "hide");
-});
+    window.zE("webWidget:on", "close", () => {
+      window.zE("webWidget", "hide");
+    });
+    clearInterval(interval);
+  }
+}, 100);
 
 let script = document.createElement("script");
 script.type = "text/javascript";
