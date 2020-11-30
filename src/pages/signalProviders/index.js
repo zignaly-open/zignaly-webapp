@@ -20,9 +20,12 @@ import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 import useProviderContext from "hooks/useProviderContext";
 import ProviderContext from "components/Provider/ProviderContext";
+import { checkAllocated } from "../../utils/helpers";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import("../../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+
  * @typedef {Object} LocationObject
  * @property {String} pathname
  */
@@ -101,7 +104,7 @@ const SignalProviders = (props) => {
         .providerExchangeSettingsGet(payload)
         .then((response) => {
           setSettings(response);
-          checkAllocated(response);
+          checkAllocated(quotes, response, setHasAllocated);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -110,22 +113,6 @@ const SignalProviders = (props) => {
   };
 
   useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
-
-  /**
-   * Check if user has allocated balance to any quote inside settings.
-   *
-   * @param {ProviderExchangeSettingsObject} settingsData Provider settings object.
-   *
-   * @returns {void}
-   */
-  const checkAllocated = (settingsData) => {
-    const someValuesAllocated = Object.keys(quotes).some((item) => {
-      const settingsKey = "positionSize" + item + "Value";
-      // @ts-ignore
-      return settingsData[settingsKey] > 0;
-    });
-    setHasAllocated(someValuesAllocated);
-  };
 
   if (!providerId) {
     // Render Browse page
