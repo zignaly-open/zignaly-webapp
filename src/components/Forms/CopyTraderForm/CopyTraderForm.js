@@ -57,7 +57,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    *
    * @typedef {Object} SubmitObject
    * @property {String} allocatedBalance
-   * @property {String} locked
+   * @property {String} transfer
    */
 
   /**
@@ -66,7 +66,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (!data.locked || data.locked.toLowerCase() === "locked") {
+    if (!data.transfer || data.transfer.toLowerCase() === "transfer") {
       if (
         validateExchange() &&
         validateAllocated(data.allocatedBalance) &&
@@ -107,7 +107,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           });
       }
     } else {
-      setError("locked", { type: "patter", message: "" });
+      setError("transfer", { type: "patter", message: "" });
     }
   };
 
@@ -272,9 +272,9 @@ const CopyTraderForm = ({ provider, onClose }) => {
         <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
           <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
         </Typography>
-        <Typography className="para" variant="body1">
+        {/* <Typography className="para" variant="body1">
           <FormattedMessage id="trader.everymove" />
-        </Typography>
+        </Typography> */}
         <Box
           alignItems="center"
           className="fieldBox"
@@ -359,7 +359,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               </span>
             </Box>
 
-            <label className={"customLabel " + (errors.locked ? "red" : "")}>
+            <label className={"customLabel " + (errors.transfer ? "red" : "")}>
               <FormattedMessage id="trader.copy.confirm" />
             </label>
 
@@ -373,11 +373,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
               <Controller
                 control={control}
                 defaultValue=""
-                name="locked"
+                name="transfer"
                 render={(props) => (
                   <TextField
                     className="customTextarea"
-                    error={!!errors.locked}
+                    error={!!errors.transfer}
                     fullWidth
                     multiline
                     onChange={(e) => {
@@ -402,7 +402,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            <FormattedMessage id="trader.start" />
+            {provider.profitSharing ? (
+              <FormattedMessage id="trader.transferfunds" />
+            ) : (
+              <FormattedMessage id="trader.start" />
+            )}
           </CustomButton>
         </Box>
       </Box>
