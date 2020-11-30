@@ -59,7 +59,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           version: 2,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload));
+        dispatch(setProvider(providerPayload, false));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
       })
       .catch((e) => {

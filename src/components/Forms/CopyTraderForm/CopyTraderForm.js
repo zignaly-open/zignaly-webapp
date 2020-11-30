@@ -93,7 +93,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               version: 2,
               exchangeInternalId: selectedExchange.internalId,
             };
-            dispatch(setProvider(payload2));
+            dispatch(setProvider(payload2, !provider.profitSharing));
             dashlyProviderEnabled();
             userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));

@@ -54,7 +54,7 @@ const CopyTraders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload));
+      dispatch(setProvider(payload, true));
     }
   };
 
@@ -68,7 +68,7 @@ const CopyTraders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload));
+      dispatch(setProvider(payload, true));
     }
   };
 

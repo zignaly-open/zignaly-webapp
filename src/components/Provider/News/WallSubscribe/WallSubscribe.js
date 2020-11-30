@@ -46,7 +46,7 @@ const WallSubscribe = ({ subscribed, providerId }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2));
+          dispatch(setProvider(payload2, true));
         }
       })
       .catch((e) => {

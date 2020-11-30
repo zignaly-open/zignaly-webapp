@@ -67,7 +67,7 @@ const SignalProviders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload));
+      dispatch(setProvider(payload, true));
     };
     if (providerId && providerId.length === 24) {
       loadProvider();

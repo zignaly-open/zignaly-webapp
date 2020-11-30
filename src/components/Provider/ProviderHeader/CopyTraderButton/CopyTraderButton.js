@@ -110,7 +110,7 @@ const CopyTraderButton = ({ provider }) => {
           version: 2,
           exchangeInternalId: selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload));
+        dispatch(setProvider(providerPayload, true));
         dispatch(
           showSuccessAlert("srv.canceldisconnect.alert.title", "srv.canceldisconnect.alert.body"),
         );
