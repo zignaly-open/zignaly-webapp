@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./ProviderHeader.scss";
 import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
@@ -7,6 +7,8 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import ProviderContext from "../ProviderContext";
+import { FormattedMessage } from "react-intl";
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -18,14 +20,24 @@ const ProviderHeader = () => {
   const storeSettings = useStoreSettingsSelector();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
   const [links, setLinks] = useState([]);
+  const { hasAllocated } = useContext(ProviderContext);
 
   useEffect(() => {
     const data = provider.isCopyTrading
       ? createTraderRoutes(providerId, provider)
       : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
+    if (!provider.isCopyTrading) {
+      data.links.some((item) => {
+        if (item.to.includes("settings")) {
+          item.tooltip = !hasAllocated ? <FormattedMessage id="srv.settings.tooltip" /> : "";
+          return true;
+        }
+        return false;
+      });
+    }
     setLinks(data ? data.links : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider, storeSettings.selectedExchange.internalId]);
+  }, [provider, storeSettings.selectedExchange.internalId, hasAllocated]);
 
   const checkAccess = () => {
     // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
