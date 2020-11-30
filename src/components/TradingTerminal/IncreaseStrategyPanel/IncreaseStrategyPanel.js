@@ -114,18 +114,7 @@ const IncreaseStrategyPanel = (props) => {
     setProviderService(provider);
   }, [ownCopyTraderProviders]);
 
-  const isClosed = positionEntity ? positionEntity.closed : false;
-  const isCopy = positionEntity ? positionEntity.isCopyTrading : false;
   const isCopyTrader = positionEntity ? positionEntity.isCopyTrader : false;
-  const isUpdating = positionEntity ? positionEntity.updating : false;
-  const isOpening = positionEntity ? positionEntity.status === 1 : false;
-  const isDisabled = (isCopy && !isCopyTrader) || isClosed;
-  const isReadOnly = isUpdating || isOpening;
-
-  // Don't render when not granted to increase position.
-  if (isDisabled) {
-    return null;
-  }
 
   return (
     <Box className={`panel strategyPanel ${expandClass}`}>
@@ -153,12 +142,7 @@ const IncreaseStrategyPanel = (props) => {
             <FormControl>
               <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={isReadOnly}
-                  inputRef={register}
-                  name="stopPrice"
-                />
+                <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </FormControl>
@@ -170,7 +154,6 @@ const IncreaseStrategyPanel = (props) => {
                 <OutlinedInput
                   className="outlineInput"
                   defaultValue={lastPrice}
-                  disabled={isReadOnly}
                   error={!!errors.price}
                   inputRef={register({
                     validate: (value) => !isNaN(value) && parseFloat(value) > 0,
@@ -191,7 +174,6 @@ const IncreaseStrategyPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
-                  disabled={isReadOnly}
                   inputRef={register({
                     validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
                   })}
@@ -220,7 +202,6 @@ const IncreaseStrategyPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
-                  disabled={isReadOnly}
                   error={!!errors.positionSize}
                   inputRef={register({
                     validate: validatePositionSize,
@@ -254,7 +235,6 @@ const IncreaseStrategyPanel = (props) => {
                 <Box display="flex" flexDirection="row">
                   <OutlinedInput
                     className="outlineInput"
-                    disabled={isReadOnly}
                     error={!!errors.positionSizePercentage}
                     inputRef={register({
                       required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
@@ -308,7 +288,6 @@ const IncreaseStrategyPanel = (props) => {
               <Box alignItems="center" display="flex">
                 <OutlinedInput
                   className="outlineInput"
-                  disabled={isReadOnly}
                   error={!!errors.units}
                   inputRef={register({
                     validate: validateUnits,
