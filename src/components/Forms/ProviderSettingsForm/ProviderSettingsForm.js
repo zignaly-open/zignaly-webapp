@@ -30,7 +30,7 @@ import { checkAllocated } from "utils/helpers";
  * @typedef {Object} DefaultProps
  * @property {ProviderExchangeSettingsObject} settings
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
- * @property {Function} onUpdate
+ * @property {Function} onUpdate Callback to trigger when settings have updated.
  */
 /**
  * Provides the navigation bar for the dashboard.

@@ -31,7 +31,7 @@ export const getExchangeNamesCombined = (allExchanges, seperator) => {
  *
  * @param {QuoteAssetsDict} quotesList Exchange quotes.
  * @param {ProviderExchangeSettingsObject} settingsData Provider settings object.
- * @param {React.SetStateAction<*>} callback callback.
+ * @param {React.SetStateAction<*>} callback callback to trigger.
  *
  * @returns {void}
  */
