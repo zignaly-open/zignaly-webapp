@@ -36,14 +36,16 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 /**
  * Hook to generate the profile profit stats fetching and filtering.
  *
+ * @param {String} providerId Provider ID
+ *
  * @returns {ProviderStatsData} Profile profit stats and filtering objects.
  */
-const useDashboardAnalytics = () => {
+const useDashboardAnalytics = (providerId) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const intl = useIntl();
 
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
@@ -52,8 +54,8 @@ const useDashboardAnalytics = () => {
   const allQuotes = Object.keys(quoteAssets);
   const [providerQuotes, setProviderQuotes] = useState([]);
 
-  let providers = useHasBeenUsedProviders();
-  let providersOptions = providers.map((item) => ({
+  const { providers, providersLoading } = useHasBeenUsedProviders();
+  let providersOptions = [...providers].map((item) => ({
     val: item.id,
     label: item.name,
   }));
@@ -62,13 +64,17 @@ const useDashboardAnalytics = () => {
     val: "1",
     label: intl.formatMessage({ id: "fil.manual" }),
   });
+  const filteredProvider = providerId
+    ? providersOptions.find((item) => item.val === providerId)
+    : "";
+  const defaultProviderOption = filteredProvider || providersOptions[0];
 
   const page = "dashboardAnalytics";
   const storeFilters = storeSettings.filters[page];
   const defaultFilters = {
     timeFrame: "7",
     quote: "USDT",
-    provider: providersOptions[0],
+    provider: defaultProviderOption,
   };
 
   const optionsFilters = {
@@ -102,33 +108,35 @@ const useDashboardAnalytics = () => {
   useEffect(adjustProviderQuotes, [filters.provider]);
 
   const loadDashboardStats = () => {
-    setLoading(true);
-    const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      ro: true,
-      quote: filters.quote,
-      timeFrame: !timeFrmaeFormatList.includes(filters.timeFrame)
-        ? toNumber(filters.timeFrame)
-        : false,
-      includeOpenPositions: true,
-      providerId: filters.provider.val,
-      timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
-        ? filters.timeFrame
-        : "lastXDays",
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-    };
-    tradeApi
-      .profitStatsGet(payload)
-      .then((responseData) => {
-        setStats(responseData);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (!providersLoading) {
+      setLoading(true);
+      const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        ro: true,
+        quote: filters.quote,
+        timeFrame: !timeFrmaeFormatList.includes(filters.timeFrame)
+          ? toNumber(filters.timeFrame)
+          : false,
+        includeOpenPositions: true,
+        providerId: filters.provider.val,
+        timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
+          ? filters.timeFrame
+          : "lastXDays",
+        internalExchangeId: storeSettings.selectedExchange.internalId,
+      };
+      tradeApi
+        .profitStatsGet(payload)
+        .then((responseData) => {
+          setStats(responseData);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   // Load stats at init and on filters change
@@ -138,6 +146,7 @@ const useDashboardAnalytics = () => {
     filters.timeFrame,
     storeSettings.selectedExchange.internalId,
     storeSession.tradeApi.accessToken,
+    providersLoading,
   ]);
 
   return {

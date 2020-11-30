@@ -9,7 +9,7 @@ import Positions from "./positions";
 import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider, showProviderProfileLoader, unsetProvider } from "../../store/actions/views";
+import { setProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -34,7 +34,6 @@ import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
  * @param {ProviderProps} props Component properties.
  * @returns {JSX.Element} Position page element.
  */
-
 const CopyTraders = (props) => {
   const { location } = props;
   const { tradeApi } = useStoreSessionSelector();
