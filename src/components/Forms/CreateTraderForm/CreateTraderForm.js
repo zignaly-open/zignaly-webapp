@@ -171,6 +171,7 @@ const CreateTraderForm = () => {
                   className="model"
                   display="flex"
                   flexDirection="row"
+                  justifyContent="space-between"
                   onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
                 >
                   <Box

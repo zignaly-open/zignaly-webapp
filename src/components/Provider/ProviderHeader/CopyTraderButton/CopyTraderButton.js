@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { ConfirmDialog } from "../../../Dialogs";
+import SuccessBox from "./SuccessBox";
 
 /**
  * @typedef {Object} DefaultProps
@@ -39,6 +40,7 @@ const CopyTraderButton = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
+  const [copySuccessModal, showCopySuccessModal] = useState(true);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
   const { profitSharing } = provider;
@@ -86,6 +88,14 @@ const CopyTraderButton = ({ provider }) => {
     showCopyModal(false);
   };
 
+  const handleCopySuccessModalOpen = () => {
+    showCopySuccessModal(true);
+  };
+
+  const handleCopySuccessModalClose = () => {
+    showCopySuccessModal(false);
+  };
+
   const handleConnectModalClose = () => {
     showConnectModal(false);
   };
@@ -110,7 +120,7 @@ const CopyTraderButton = ({ provider }) => {
           version: 2,
           exchangeInternalId: selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload));
+        dispatch(setProvider(providerPayload, true));
         dispatch(
           showSuccessAlert("srv.canceldisconnect.alert.title", "srv.canceldisconnect.alert.body"),
         );
@@ -226,7 +236,19 @@ const CopyTraderButton = ({ provider }) => {
         <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
+        <CopyTraderForm
+          onClose={handleCopyModalClose}
+          onSuccess={handleCopySuccessModalOpen}
+          provider={provider}
+        />
+      </Modal>
+      <Modal
+        onClose={handleCopySuccessModalClose}
+        persist={false}
+        size="small"
+        state={copySuccessModal}
+      >
+        <SuccessBox provider={provider} />
       </Modal>
       <Modal onClose={handleConnectModalClose} size="small" state={connectModal}>
         <ConnectExchange onClose={handleConnectModalClose} />

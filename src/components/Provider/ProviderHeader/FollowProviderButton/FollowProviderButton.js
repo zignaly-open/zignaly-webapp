@@ -55,7 +55,7 @@ const FollowProviderButton = ({ provider }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2));
+          dispatch(setProvider(payload2, true));
           dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
         })
         .catch((e) => {

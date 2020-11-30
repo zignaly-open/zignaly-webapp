@@ -46,7 +46,7 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
       version: 2,
       exchangeInternalId: selectedExchange.internalId,
     };
-    dispatch(setProvider(getProviderPayload));
+    dispatch(setProvider(getProviderPayload, true));
   };
 
   const disable = () => {
