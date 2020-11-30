@@ -113,6 +113,8 @@
     "babel-preset-gatsby": "^0.5.9",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chai": "^4.2.0",
+    "cypress": "^6.0.1",
+    "cypress-dark": "^1.7.14",
     "dotenv": "^8.2.0",
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",

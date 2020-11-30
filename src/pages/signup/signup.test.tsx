@@ -1,0 +1,24 @@
+import React from "react";
+import Signup from "index.js";
+import { render, screen, waitForElementToBeRemoved } from "test-utils";
+import { makeServer } from "utils/test/mirage";
+import type { Server } from "miragejs/server";
+
+let server: Server;
+
+beforeEach(() => {
+  server = makeServer();
+});
+
+afterEach(() => {
+  server.shutdown();
+});
+
+it("renders copy traders correctly", async () => {
+  const tree = render(<CopyTradersBrowse path="/copyTraders" />);
+
+  //   await screen.findAllByText("srv.trades");
+  await waitForElementToBeRemoved(() => screen.getByRole("progressbar"));
+
+  // expect(tree).toMatchSnapshot();
+});
