@@ -14,6 +14,17 @@ window.zESettings = {
 
 window.userpilotSettings = { token: "55mi72q1" };
 
+const interval = setInterval(() => {
+  if (typeof window !== "undefined" && window.zE) {
+    window.zE("webWidget", "hide");
+
+    window.zE("webWidget:on", "close", () => {
+      window.zE("webWidget", "hide");
+    });
+    clearInterval(interval);
+  }
+}, 100);
+
 let script = document.createElement("script");
 script.type = "text/javascript";
 script.src = "https://static.zdassets.com/ekr/snippet.js?key=374628c3-7648-4afb-96c4-c13bc6408a8f";
