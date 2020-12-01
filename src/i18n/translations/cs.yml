@@ -556,6 +556,7 @@ srv.deletedisabled.tooltip.point.2: "CH-Owner of the service should be disconnec
 copyt.ps.deletedisabled.tooltip: "CH-To Delete a Profit Sharing service, you need to contact support and share the link of Profit Sharing service you want to delete"
 srv.deleteprovider.alert.title: "CH-Clone Deleted!"
 srv.deleteprovider.alert.body: "CH-Successfully deleted Clone."
+srv.settings.update.alert: "CH-Youe settings have been updated successfully!"
 srv.cloneform.title: "CH-Clone Edit Form"
 srv.payment.success.title: "CH-Payment Completed!"
 srv.payment.success.message: "CH-Your transaction has completed. It will take around an hour until your payment is reflected in profile!"
