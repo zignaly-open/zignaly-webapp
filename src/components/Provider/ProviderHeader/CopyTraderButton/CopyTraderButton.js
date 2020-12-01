@@ -40,7 +40,7 @@ const CopyTraderButton = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
-  const [copySuccessModal, showCopySuccessModal] = useState(true);
+  const [copySuccessModal, showCopySuccessModal] = useState(false);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
   const { profitSharing } = provider;
