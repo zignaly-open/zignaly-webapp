@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isArray, isEqual, pick, assign } from "lodash";
+import { isArray, isEqual, pick } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import tradeApi from "../../../services/tradeApiClient";
@@ -16,10 +16,7 @@ import {
 } from "../../../hooks/useStoreUserSelector";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
-import {
-  createExchangeConnectionEmptyEntity,
-  createMarketSymbolEmptyValueObject,
-} from "../../../services/tradeApiClient.types";
+import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
 
