@@ -28,12 +28,7 @@ const SuccessAlert = () => {
       open={storeAlerts.success.open}
     >
       <Alert onClose={handleClose} severity="success">
-        {storeAlerts.success.title && (
-          <AlertTitle>
-            {/* <FormattedMessage id={storeAlerts.success.title} /> */}
-            Success
-          </AlertTitle>
-        )}
+        {storeAlerts.success.title && <AlertTitle>Success</AlertTitle>}
         {storeAlerts.success.body && <FormattedMessage id={storeAlerts.success.body} />}
       </Alert>
     </Snackbar>
