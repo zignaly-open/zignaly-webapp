@@ -211,16 +211,16 @@ describe("Consume tradeApiClient service", () => {
     assert.isNumber(serverTime.dbTime, "Server time 'dbTime' is not a number.");
   }, 25000);
 
-  it("should get coinray token", async () => {
-    const payload = {
-      token: accessToken,
-    };
+  // it("should get coinray token", async () => {
+  //   const payload = {
+  //     token: accessToken,
+  //   };
 
-    const coinRayToken = await client.coinRayTokenGet(payload);
-    assert.isObject(coinRayToken, "Coinray token is not an object.");
-    assert.isString(coinRayToken.jwt, "Coinray token 'jwt' is not a string.");
-    assert.isAtLeast(coinRayToken.jwt.length, 200, "Token seems to be invalid.");
-  }, 25000);
+  //   const coinRayToken = await client.coinRayTokenGet(payload);
+  //   assert.isObject(coinRayToken, "Coinray token is not an object.");
+  //   assert.isString(coinRayToken.jwt, "Coinray token 'jwt' is not a string.");
+  //   assert.isAtLeast(coinRayToken.jwt.length, 200, "Token seems to be invalid.");
+  // }, 25000);
 
   it("should get bases assets", async () => {
     const payload = {

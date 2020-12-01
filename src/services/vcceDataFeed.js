@@ -7,10 +7,9 @@
  */
 
 /* eslint-disable camelcase */
-import dayjs from "dayjs";
 import tradeApi from "./tradeApiClient";
 import { isEmpty, last } from "lodash";
-import { minToMillisec } from "utils/timeConvert";
+import { resolutionToMilliseconds } from "utils/timeConvert";
 
 /**
  * @typedef {Array<string>} Candle
@@ -55,7 +54,7 @@ class VcceDataFeed {
     this.symbolsData = options.symbolsData || null;
     this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange.exchangeName || "";
-    this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
+    this.baseUrl = process.env.GATSBY_TRADEAPI_URL.replace("/api", "");
 
     /**
      * @type Candle
@@ -151,7 +150,7 @@ class VcceDataFeed {
       const symbolBaseQuote = symbolData.base + symbolData.quote;
       const pricescale = Math.round(1 / symbolData.limits.price.min);
 
-      if (symbolData.tradeViewSymbol === symbol) {
+      if (symbolData.tradeViewSymbol.toLowerCase() === symbol.toLowerCase()) {
         /**
          * @type LibrarySymbolInfo
          */
@@ -197,13 +196,16 @@ class VcceDataFeed {
    * @param {string} quote Symbol quote currency.
    * @param {string|number} resolution Data resolution.
    * @param {number} startTime Get data since.
-   * @param {number} endTime Get data to.
+   * @param {number} [endTime] Get data to.
    * @returns {Promise<Candle>} Promise that resolve candle data.
    * @memberof VcceDataFeed
    */
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
-    const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
+    let endpointPath = `/tradingview?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}`;
+    if (endTime) {
+      endpointPath += `&to=${endTime}`;
+    }
     const requestUrl = this.baseUrl + endpointPath;
 
     try {
@@ -288,7 +290,7 @@ class VcceDataFeed {
       symbolData.base.toLowerCase(),
       // @ts-ignore
       symbolData.quote.toLowerCase(),
-      minToMillisec(parseInt(resolution)),
+      resolutionToMilliseconds(resolution),
       startDate,
       endDate,
     )
@@ -322,9 +324,8 @@ class VcceDataFeed {
         symbolData.base.toLowerCase(),
         // @ts-ignore
         symbolData.quote.toLowerCase(),
-        minToMillisec(parseInt(resolution)),
+        resolutionToMilliseconds(resolution),
         this.startDate,
-        dayjs().unix(),
       )
         .then((candles) => {
           if (candles.length) {
