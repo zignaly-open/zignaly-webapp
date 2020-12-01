@@ -274,11 +274,17 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
           </Alert>
         )}
         <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
-          <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+          {provider.profitSharing ? (
+            <FormattedMessage id="trader.howmuch.1" values={{ quote: provider.copyTradingQuote }} />
+          ) : (
+            <FormattedMessage id="trader.howmuch.2" values={{ quote: provider.copyTradingQuote }} />
+          )}
         </Typography>
-        {/* <Typography className="para" variant="body1">
-          <FormattedMessage id="trader.everymove" />
-        </Typography> */}
+        {!provider.profitSharing && (
+          <Typography className="para" variant="body1">
+            <FormattedMessage id="trader.everymove" />
+          </Typography>
+        )}
         <Box
           alignItems="center"
           className="fieldBox"
@@ -314,7 +320,11 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
                       props.onChange(data);
                     }
                   }}
-                  placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
+                  placeholder={intl.formatMessage({
+                    id: provider.profitSharing
+                      ? "trader.amount.placeholder.1"
+                      : "trader.amount.placeholder.2",
+                  })}
                   value={allocated}
                   variant="outlined"
                 />
