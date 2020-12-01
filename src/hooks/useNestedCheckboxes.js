@@ -41,6 +41,7 @@ const useNestedCheckboxes = (parentName, childrenNames, formMethods, options) =>
     } else if (allUnchecked()) {
       // Check first child when parent checked and all children unchecked
       setValue(childrenNames[0], true);
+      setValue(parentName, true);
     }
   }, [parent]);
 };

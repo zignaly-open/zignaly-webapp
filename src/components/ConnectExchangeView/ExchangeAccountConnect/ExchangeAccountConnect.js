@@ -15,7 +15,7 @@ import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
-import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl } from "../../../utils/affiliateURLs";
+import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl, vcceUrl } from "../../../utils/affiliateURLs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -47,7 +47,7 @@ const ExchangeAccountConnect = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let exchanges = useExchangeList();
+  let { exchanges, exchangesLoading } = useExchangeList();
   const [exchangeName, setExchangeName] = useState("");
   const [step, setStep] = useState(1);
   const [tipsExpanded, setTipsExpanded] = useState(false);
@@ -150,6 +150,9 @@ const ExchangeAccountConnect = () => {
       case "bitmex":
         url = bitmexAPIKeysUrl;
         break;
+      case "vcce":
+        url = vcceUrl;
+        break;
       default:
         url = binanceUrl;
         break;
@@ -164,33 +167,48 @@ const ExchangeAccountConnect = () => {
   return (
     <form className="exchangeAccountConnect" method="post" onSubmit={handleSubmit(submitForm)}>
       <Box className="step1">
-        <Typography className="body1 bold" variant="h3">
-          <FormattedMessage id="accounts.exchange.choose" />
-        </Typography>
-        <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
-          {exchanges.map((e) => (
-            <Box className={`iconBox ${exchangeName === e.name ? "selected" : ""}`} key={e.id}>
-              <ExchangeIcon exchange={e.name} onClick={() => setExchangeName(e.name)} />
-            </Box>
-          ))}
-        </Box>
-        <div className="name">
-          <CustomInput
-            inputRef={register({
-              required: intl.formatMessage({ id: "form.error.name" }),
-            })}
-            label="accounts.exchange.customname"
-            name="internalName"
-          />
-        </div>
-        {step === 1 && (
-          <CustomButton
-            className="bgPurple bold"
-            disabled={!internalName || !exchangeName}
-            onClick={() => setStep(2)}
+        {exchangesLoading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
           >
-            <FormattedMessage id="accounts.next" />
-          </CustomButton>
+            <CircularProgress color="primary" size={45} />
+          </Box>
+        )}
+        {!exchangesLoading && (
+          <>
+            <Typography className="body1 bold" variant="h3">
+              <FormattedMessage id="accounts.exchange.choose" />
+            </Typography>
+            <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
+              {exchanges.map((e) => (
+                <Box className={`iconBox ${exchangeName === e.name ? "selected" : ""}`} key={e.id}>
+                  <ExchangeIcon exchange={e.name} onClick={() => setExchangeName(e.name)} />
+                </Box>
+              ))}
+            </Box>
+            <div className="name">
+              <CustomInput
+                inputRef={register({
+                  required: intl.formatMessage({ id: "form.error.name" }),
+                })}
+                label="accounts.exchange.customname"
+                name="internalName"
+              />
+            </div>
+            {step === 1 && (
+              <CustomButton
+                className="bgPurple bold"
+                disabled={!internalName || !exchangeName}
+                onClick={() => setStep(2)}
+              >
+                <FormattedMessage id="accounts.next" />
+              </CustomButton>
+            )}
+          </>
         )}
       </Box>
       <Box className="step2">

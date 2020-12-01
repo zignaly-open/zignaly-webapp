@@ -43,7 +43,7 @@ const CreateTraderForm = () => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
-  let exchanges = useExchangeList();
+  let { exchanges } = useExchangeList();
 
   const {
     errors,

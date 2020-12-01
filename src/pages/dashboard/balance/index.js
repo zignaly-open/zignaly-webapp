@@ -19,7 +19,7 @@ import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
   const { selectedExchange } = useStoreSettingsSelector();
-  const balance = useBalance(selectedExchange.internalId);
+  const { balance } = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 
   return (

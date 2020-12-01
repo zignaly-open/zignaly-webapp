@@ -12,8 +12,8 @@ import useExchangeList from "./useExchangeList";
  */
 const useExchangesOptions = (allOption) => {
   const intl = useIntl();
-  const data = useExchangeList();
-  let exchanges = allOption
+  const { exchanges } = useExchangeList();
+  let exchangeOptions = allOption
     ? [
         {
           val: "ALL",
@@ -22,9 +22,9 @@ const useExchangesOptions = (allOption) => {
       ]
     : [];
 
-  exchanges = exchanges.concat(
-    data &&
-      data.map(
+  exchangeOptions = exchangeOptions.concat(
+    exchanges &&
+      exchanges.map(
         (item) =>
           item.enabled && {
             val: item.name.toLowerCase(),
@@ -33,7 +33,7 @@ const useExchangesOptions = (allOption) => {
       ),
   );
 
-  return exchanges;
+  return exchangeOptions;
 };
 
 export default useExchangesOptions;

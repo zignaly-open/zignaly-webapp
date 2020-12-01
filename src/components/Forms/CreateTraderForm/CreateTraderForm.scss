@@ -16,7 +16,11 @@
 
   .model {
     cursor: pointer;
-    margin-left: 12px;
+    margin-right: 20px;
+
+    .iconButton {
+      margin: 15px 5px 15px 0;
+    }
   }
 
   .iconButton {
@@ -27,12 +31,12 @@
     flex-direction: row;
     height: 65px;
     justify-content: center;
-    margin-right: 20px;
+    margin: 15px 15px 15px 0;
     padding: 4px;
     width: 65px;
 
     &:last-child {
-      margin-right: 0;
+      margin: 15px 0;
     }
 
     &.selected {

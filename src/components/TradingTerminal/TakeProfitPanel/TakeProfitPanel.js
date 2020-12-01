@@ -491,7 +491,7 @@ const TakeProfitPanel = (props) => {
                         name={composeTargetPropertyName("exitUnits", targetId)}
                         onChange={exitUnitsChange}
                       />
-                      <div className="currencyBox">{symbolData.base}</div>
+                      <div className="currencyBox">{symbolData.unitsAmount}</div>
                     </Box>
                   </>
                 )}

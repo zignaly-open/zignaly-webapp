@@ -13,7 +13,7 @@ import { getExchangeNamesCombined } from "../../../../utils/helpers";
  * @returns {JSX.Element} Component JSX.
  */
 const NoDemoAccount = () => {
-  const allExchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
   const { navigateToPath } = useContext(ModalPathContext);
 
   return (
@@ -34,7 +34,7 @@ const NoDemoAccount = () => {
         <Typography className="body1 connectDesc" variant="h4">
           <FormattedMessage
             id="accounts.connect.first"
-            values={{ exchanges: getExchangeNamesCombined(allExchanges, "or") }}
+            values={{ exchanges: getExchangeNamesCombined(exchanges, "or") }}
           />
         </Typography>
       </Box>

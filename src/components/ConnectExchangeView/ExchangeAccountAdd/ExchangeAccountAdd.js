@@ -46,7 +46,7 @@ const ExchangeAccountAdd = ({ demo }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const exchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
 
   // Initialize selected exchange
   let exchangeName = !demo ? "zignaly" : watch("exchangeName", "binance");
@@ -55,6 +55,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
+    process.env.NODE_ENV !== "production" &&
     demo &&
     exchangeType === "futures" &&
     ["binance", "bitmex"].includes(exchangeName.toLowerCase());

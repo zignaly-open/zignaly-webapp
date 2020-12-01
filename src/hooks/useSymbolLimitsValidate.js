@@ -19,7 +19,7 @@ import { useIntl } from "react-intl";
  * @returns {SymbolLimitsValidateHook} Symbol limits hook.
  */
 const useSymbolLimitsValidate = (symbolData) => {
-  const { limits } = symbolData;
+  const { limits, contractType } = symbolData;
   const { formatMessage } = useIntl();
 
   /**
@@ -54,17 +54,19 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validateUnitsLimits = (amount, errorMessageGroup) => {
+    const limitsAmount = contractType === "inverse" ? limits.cost : limits.amount;
+
     // Skip validation when data not available.
-    if (!limits.amount) {
+    if (!limitsAmount) {
       return true;
     }
 
-    if (limits.amount.min && amount < limits.amount.min) {
-      return formatMessage({ id: errorMessageGroup + ".minunits" }, { value: limits.amount.min });
+    if (limitsAmount.min && amount < limitsAmount.min) {
+      return formatMessage({ id: errorMessageGroup + ".minunits" }, { value: limitsAmount.min });
     }
 
-    if (limits.amount.max && amount > limits.amount.max) {
-      return formatMessage({ id: errorMessageGroup + ".maxunits" }, { value: limits.amount.max });
+    if (limitsAmount.max && amount > limitsAmount.max) {
+      return formatMessage({ id: errorMessageGroup + ".maxunits" }, { value: limitsAmount.max });
     }
 
     return true;
@@ -78,17 +80,19 @@ const useSymbolLimitsValidate = (symbolData) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validateCostLimits = (cost, errorMessageGroup) => {
+    const limitsCost = contractType === "inverse" ? limits.amount : limits.cost;
+
     // Skip validation when data not available.
-    if (!limits.cost) {
+    if (!limitsCost) {
       return true;
     }
 
-    if (limits.cost.min && cost < limits.cost.min) {
-      return formatMessage({ id: errorMessageGroup + ".mincost" }, { value: limits.cost.min });
+    if (limitsCost.min && cost < limitsCost.min) {
+      return formatMessage({ id: errorMessageGroup + ".mincost" }, { value: limitsCost.min });
     }
 
-    if (limits.cost.max && cost > limits.cost.max) {
-      return formatMessage({ id: errorMessageGroup + ".maxcost" }, { value: limits.cost.max });
+    if (limitsCost.max && cost > limitsCost.max) {
+      return formatMessage({ id: errorMessageGroup + ".maxcost" }, { value: limitsCost.max });
     }
 
     return true;

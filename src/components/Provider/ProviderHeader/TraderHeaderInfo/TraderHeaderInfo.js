@@ -10,6 +10,7 @@ import { formatFloat } from "../../../../utils/format";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -24,7 +25,12 @@ import BaseCurrency from "../BaseCurrency";
  * @returns {JSX.Element} JSX Element JSX.
  */
 const TraderHeaderInfo = ({ provider }) => {
+  const { selectedExchange } = useStoreSettingsSelector();
   const [copyModal, showCopyModal] = useState(false);
+  const selectedExchangeProviderData = provider.exchangeInternalIds
+    ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
+    : undefined;
+  const profitsMode = selectedExchangeProviderData ? selectedExchangeProviderData.profitsMode : "";
 
   const handleCopyModalClose = () => {
     showCopyModal(false);
@@ -155,7 +161,7 @@ const TraderHeaderInfo = ({ provider }) => {
             ) : (
               <FormattedMessage id="copyt.copytrading" />
             )}
-            {provider.profitSharing && ` / ${provider.profitsMode}`}
+            {provider.profitSharing && profitsMode && ` / ${profitsMode}`}
           </b>
         </Typography>
       )}

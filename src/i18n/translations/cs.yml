@@ -969,21 +969,28 @@ accounts.exchange.api.tip.binance: "- Open {url}\n
   - Give the API key a label at the top of the screen\n
   - Click create\n
   - Follow authentication instructions\n
-  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
   - Done"
 accounts.exchange.api.tip.kucoin: "- Open {url}\n
   - Log in to your account\n
   - In the dropdown menu, click “API Management“\n
   - Enable the two security protection methods\n
   - Click create API > Name Your Key> Enter passphrase (It's a password for the API key. Note it as you cannot add API to Zignaly without it)\n
-  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
   - Done"
 accounts.exchange.api.tip.bitmex: "- Open {url}\n
   - Log in to Bitmex\n
   - Give the API key a name\n
   - Set the key permissions as “Order“ \n
   - Click create API key\n
-  - When done, copy the API keys of the newly created API back into the corresping input fields above\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
+  - Done"
+accounts.exchange.api.tip.vcce: "- Open {url}\n
+  - Log in to VCCE\n
+  - Go to API management\n
+  - Give the API key a name and fill other necessary details (If any)\n
+  - Click create API key\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
   - Done"
 accounts.exchange.choose: "CH-Choose Exchange"
 accounts.exchange.customname: "CH-Custom name for this account"

@@ -45,7 +45,7 @@ const ExchangeAccountSettings = () => {
     setError,
     formState: { dirtyFields },
   } = useFormContext();
-  const exchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
   const accountExchange = exchanges
     ? exchanges.find((e) => e.id === selectedAccount.exchangeId)
     : null;

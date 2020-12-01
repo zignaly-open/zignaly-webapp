@@ -24,14 +24,14 @@ import useExchangeList from "../../../../../hooks/useExchangeList";
  * @returns {JSX.Element} JSX Component.
  */
 const StatsFilter = ({ list, onChange }) => {
-  const baseExchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
   const [exchange, setExchange] = useState("ALL");
   const [quote, setQuote] = useState("ALL");
   const intl = useIntl();
-  const exchanges = useExchangesOptions(true);
+  const exchangeOptions = useExchangesOptions(true);
   const selectedBaseExchange =
-    baseExchanges &&
-    baseExchanges.find(
+    exchanges &&
+    exchanges.find(
       (item) => item.name.toLowerCase() === (exchange === "ALL" ? "binance" : exchange),
     );
   const { quoteAssets } = useExchangeQuotes({
@@ -66,7 +66,7 @@ const StatsFilter = ({ list, onChange }) => {
     <Box alignItems="center" className="statsFilter" display="flex" flexDirection="row">
       <CustomSelect
         onChange={(/** @type {string} */ v) => setExchange(v)}
-        options={exchanges}
+        options={exchangeOptions}
         value={exchange}
       />
       <CustomSelect

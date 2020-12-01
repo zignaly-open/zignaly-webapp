@@ -32,8 +32,8 @@ const ExchangeAccountList = ({ demo }) => {
   } = useContext(ModalPathContext);
 
   const storeUser = useStoreUserSelector();
-  const allExchanges = useExchangeList();
-  const exchanges = storeUser.exchangeConnections.filter((e) =>
+  const { exchanges } = useExchangeList();
+  const userExchanges = storeUser.exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
 
@@ -60,7 +60,7 @@ const ExchangeAccountList = ({ demo }) => {
   return (
     <Box className="exchangeAccountList">
       <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
-      {!exchanges.length ? (
+      {!userExchanges.length ? (
         !demo ? (
           <NoRealAccount />
         ) : (
@@ -68,7 +68,7 @@ const ExchangeAccountList = ({ demo }) => {
         )
       ) : (
         <Box className={`exchangeAccountContainer ${currentPath}`}>
-          {exchanges.map((account) => (
+          {userExchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
               <LazyLoad height={400} overflow={true} scrollContainer=".modal">
                 <ExchangeAccountTopBar account={account} />
@@ -98,7 +98,7 @@ const ExchangeAccountList = ({ demo }) => {
                 </CustomButton>
                 <Box className="exchangeSubtitle">
                   {/* <FormattedMessage id="accounts.exchanges" /> */}
-                  {getExchangeNamesCombined(allExchanges, "or")}
+                  {getExchangeNamesCombined(exchanges, "or")}
                 </Box>
               </Box>
             </Box>

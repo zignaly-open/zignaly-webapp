@@ -13,7 +13,7 @@ import { getExchangeNamesCombined } from "../../../../utils/helpers";
  * @returns {JSX.Element} Component JSX.
  */
 const NoRealAccount = () => {
-  const allExchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
   const { navigateToPath } = useContext(ModalPathContext);
 
   return (
@@ -25,7 +25,7 @@ const NoRealAccount = () => {
         <Typography className="body1 connectDesc" variant="h4">
           <FormattedMessage
             id="accounts.connect.first"
-            values={{ exchanges: getExchangeNamesCombined(allExchanges, "or") }}
+            values={{ exchanges: getExchangeNamesCombined(exchanges, "or") }}
           />
         </Typography>
       </Box>
@@ -59,7 +59,7 @@ const NoRealAccount = () => {
           >
             <FormattedMessage id="accounts.connect.existing" />
           </CustomButton>
-          <Box className="exchangeSubtitle">{getExchangeNamesCombined(allExchanges, "or")}</Box>
+          <Box className="exchangeSubtitle">{getExchangeNamesCombined(exchanges, "or")}</Box>
         </Box>
         <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">

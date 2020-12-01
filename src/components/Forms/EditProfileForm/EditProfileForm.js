@@ -31,6 +31,7 @@ import ProviderDeleteButton from "../../Provider/ProviderHeader/ProviderDeleteBu
 import userOptions from "../../../utils/userOptions.json";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 import { formatFloat } from "utils/format";
+import initialState from "store/initialState";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -64,11 +65,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [aboutTab, setAboutTab] = useState("write");
   const [strategyTab, setStrategyTab] = useState("write");
   const listSwitch = watch("list", provider.list);
+  const publicSwitch = watch("public", provider.public);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
 
   const loadPositions = () => {
-    if (provider.id && !provider.profitSharing) {
+    if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
@@ -182,8 +184,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {DefaultProviderOptions} Provider options.
    */
   const preparePayloadOptions = (data) => {
-    let options = provider.options;
-
+    let options = initialState.views.provider.options;
     userOptions.forEach((item) => {
       // @ts-ignore
       options[item.id] = data[item.id];
@@ -300,18 +301,21 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const disableListingSwitch = () => {
-    if (!storeUserData.isAdmin) {
-      if (listSwitch) {
-        return false;
-      }
-      return true;
+    if (storeUserData.isAdmin) {
+      return false;
     }
-    return false;
+    if (listSwitch) {
+      return false;
+    }
+    return true;
   };
 
   const disablePulicSwitch = () => {
-    if (!storeUserData.isAdmin) {
-      if (provider.followers <= 1) {
+    if (storeUserData.isAdmin) {
+      return false;
+    }
+    if (provider.followers > 1) {
+      if (!publicSwitch) {
         return false;
       }
       return true;
@@ -340,8 +344,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const checkIfCanBeDeleted = () => {
+    if (storeUserData.isAdmin) {
+      return true;
+    }
     if (provider.profitSharing) {
       return false;
+    }
+    if (!provider.isCopyTrading) {
+      return true;
     }
     if (!provider.public && !provider.list && provider.disable && positions.length === 0) {
       return true;
@@ -436,7 +446,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <Controller
                       control={control}
                       // @ts-ignore
-                      defaultValue={provider.options[o.id]}
+                      defaultValue={provider.options[o.id] ? provider.options[o.id] : false}
                       name={o.id}
                       render={({ onChange, onBlur, value }) => (
                         <Checkbox

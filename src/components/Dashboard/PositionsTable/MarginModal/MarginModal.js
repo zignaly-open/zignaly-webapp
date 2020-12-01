@@ -6,7 +6,15 @@ import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Tabs, Tab, Box, OutlinedInput, Typography } from "@material-ui/core";
+import {
+  Tabs,
+  Tab,
+  Box,
+  OutlinedInput,
+  Typography,
+  InputAdornment,
+  CircularProgress,
+} from "@material-ui/core";
 import { useForm } from "react-hook-form";
 import "./MarginModal.scss";
 import { formatNumber } from "utils/formatters";
@@ -35,7 +43,10 @@ const MarginModal = ({ position, onClose }) => {
   const storeSession = useStoreSessionSelector();
   const intl = useIntl();
   const { register, handleSubmit, errors } = useForm();
-  const balance = useBalance(storeSettings.selectedExchange.internalId);
+  const { balance, balanceLoading } = useBalance(storeSettings.selectedExchange.internalId);
+  const maxRemoveableMargin =
+    position.margin -
+    (position.positionSizeQuote + position.unrealizedProfitLosses + position.profit);
 
   /**
    * @param {React.ChangeEvent} event .
@@ -81,61 +92,91 @@ const MarginModal = ({ position, onClose }) => {
 
   return (
     <form className="marginModal" onSubmit={handleSubmit(onSubmit)}>
-      <Tabs aria-label="Margin Tabs" onChange={handleModeChange} value={mode}>
-        <Tab label={intl.formatMessage({ id: "margin.add" })} value="ADD" />
-        <Tab label={intl.formatMessage({ id: "margin.remove" })} value="REMOVE" />
+      <Tabs
+        aria-label="Margin Tabs"
+        className="tabs"
+        classes={{ flexContainer: "marginTabsContainer" }}
+        onChange={handleModeChange}
+        value={mode}
+      >
+        <Tab
+          classes={{ selected: "selected" }}
+          label={intl.formatMessage({ id: "margin.add" })}
+          value="ADD"
+        />
+        <Tab
+          classes={{ selected: "selected" }}
+          label={intl.formatMessage({ id: "margin.remove" })}
+          value="REMOVE"
+        />
       </Tabs>
-      <Box className="marginBox">
-        <Box className="amountInput" display="flex" flexDirection="row">
-          <OutlinedInput
-            className="customInput"
-            error={Boolean(errors.amount)}
-            inputProps={{
-              min: 0,
-              step: "any",
-            }}
-            inputRef={register({
-              validate: (value) =>
-                !isNaN(value) &&
-                parseFloat(value) >= 0 &&
-                parseFloat(value) < balance.totalAvailableBTC,
-            })}
-            // doesn't work with mui for some reason?
-            // inputRef={register({
-            //   required: true,
-            //   min: 0,
-            //   max: balance.totalAvailableBTC,
-            // })}
-            name="amount"
-            placeholder={intl.formatMessage({ id: "withdraw.amount" })}
-            type="number"
-          />
-          <div className="currencyBox">XBT</div>
-        </Box>
-        <Box className="line" display="flex" justifyContent="center">
-          <Typography className="callout1">
-            <FormattedMessage id="margin.current" />: {formatNumber(position.margin)} XBT
-          </Typography>
-        </Box>
-        <Box className="line" display="flex" justifyContent="center">
-          {mode === "ADD" ? (
-            <Typography className="callout1">
-              <FormattedMessage id="deposit.available" />: {formatNumber(balance.totalAvailableBTC)}{" "}
-              XBT
-            </Typography>
-          ) : (
-            <Typography className="callout1">
-              <FormattedMessage id="margin.maxremoveable" />:{" "}
-              {formatNumber(
-                position.positionSizeQuote + position.unrealizedProfitLosses + position.profit,
-              )}{" "}
-              XBT
-            </Typography>
-          )}
-        </Box>
-      </Box>
 
-      <CustomButton className="submitButton" loading={loading} type="submit">
+      {balanceLoading && (
+        <Box
+          alignItems="center"
+          className="loadingBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <CircularProgress color="primary" size={35} />
+        </Box>
+      )}
+      {!balanceLoading && (
+        <Box className="marginBox">
+          <Box className="amountInput" display="flex" flexDirection="row">
+            <OutlinedInput
+              className="customInput"
+              endAdornment={<InputAdornment position="end">XBT</InputAdornment>}
+              error={Boolean(errors.amount)}
+              inputProps={{
+                min: 0,
+                step: "any",
+              }}
+              inputRef={register({
+                validate: (value) =>
+                  !isNaN(value) &&
+                  parseFloat(value) >= 0 &&
+                  parseFloat(value) < balance.totalAvailableBTC,
+              })}
+              // doesn't work with mui for some reason?
+              // inputRef={register({
+              //   required: true,
+              //   min: 0,
+              //   max: balance.totalAvailableBTC,
+              // })}
+              name="amount"
+              placeholder={intl.formatMessage({ id: "withdraw.amount" })}
+              type="number"
+            />
+          </Box>
+          <Box className="line" display="flex" justifyContent="center">
+            <Typography className="callout1">
+              <FormattedMessage id="margin.current" />: {formatNumber(position.margin)} XBT
+            </Typography>
+          </Box>
+          <Box className="line" display="flex" justifyContent="center">
+            {mode === "ADD" ? (
+              <Typography className="callout1">
+                <FormattedMessage id="deposit.available" />:{" "}
+                {formatNumber(balance.totalAvailableBTC)} XBT
+              </Typography>
+            ) : (
+              <Typography className="callout1">
+                <FormattedMessage id="margin.maxremoveable" />: {formatNumber(maxRemoveableMargin)}
+                XBT
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      )}
+
+      <CustomButton
+        className="submitButton"
+        disabled={balanceLoading || loading}
+        loading={loading}
+        type="submit"
+      >
         <FormattedMessage id="confirm.accept" />
       </CustomButton>
     </form>

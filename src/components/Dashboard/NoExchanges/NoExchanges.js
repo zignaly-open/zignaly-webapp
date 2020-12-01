@@ -8,7 +8,7 @@ import useExchangeList from "../../../hooks/useExchangeList";
 import { getExchangeNamesCombined } from "../../../utils/helpers";
 
 const NoExchanges = () => {
-  const allExchanges = useExchangeList();
+  const { exchanges } = useExchangeList();
 
   const handleClickEvent = () => {
     navigateReach("#exchangeAccounts");
@@ -34,11 +34,11 @@ const NoExchanges = () => {
       <span className="subtitle">
         <FormattedMessage id="dashboard.connectexchange.subtitle" />
         <br />
-        <span>{getExchangeNamesCombined(allExchanges, "or")}</span>
+        <span>{getExchangeNamesCombined(exchanges, "or")}</span>
       </span>
       <Box display="flex" flexDirection="row" justifyContent="flex-start">
-        {allExchanges &&
-          allExchanges.map(
+        {exchanges &&
+          exchanges.map(
             (item, index) =>
               item.enabled &&
               item.name.toLowerCase() !== "zignaly" && (
