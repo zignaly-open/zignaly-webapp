@@ -87,7 +87,7 @@ const FollowProviderButton = ({ provider }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2, true));
+          dispatch(setProvider(payload2));
           userPilotProviderEnabled();
           dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         })
