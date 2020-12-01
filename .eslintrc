@@ -29,7 +29,8 @@
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:cypress/recommended"
     ],
     "rules": {
         "formatjs/no-offset": "error",

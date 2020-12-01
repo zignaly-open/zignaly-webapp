@@ -41,7 +41,7 @@ export function makeServer({ environment = "test" } = {}) {
     //   }),
     // },
 
-    seeds() {
+    seeds(server) {
       server.loadFixtures();
       //   server.create("user", { name: "Bob" });
       //   server.create("user", { name: "Alice" });
@@ -78,6 +78,11 @@ export function makeServer({ environment = "test" } = {}) {
         // Return response and force status 200
         return new Response(200, {}, response);
       });
+
+      this.urlPrefix = "/";
+      this.namespace = "/";
+      // Allow unhandled requests on the current domain to pass through
+      this.passthrough();
     },
   });
 

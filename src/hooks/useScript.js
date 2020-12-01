@@ -18,6 +18,8 @@ const useScript = (sourceUrl) => {
   });
 
   const loadScript = () => {
+    if (!sourceUrl) return () => {};
+
     if (cachedScripts.includes(sourceUrl)) {
       setState({
         loaded: true,
