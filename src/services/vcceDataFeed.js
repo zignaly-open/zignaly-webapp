@@ -197,13 +197,16 @@ class VcceDataFeed {
    * @param {string} quote Symbol quote currency.
    * @param {string|number} resolution Data resolution.
    * @param {number} startTime Get data since.
-   * @param {number} endTime Get data to.
+   * @param {number} [endTime] Get data to.
    * @returns {Promise<Candle>} Promise that resolve candle data.
    * @memberof VcceDataFeed
    */
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
-    const endpointPath = `/tradingview?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
+    let endpointPath = `/tradingview?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}`;
+    if (endTime) {
+      endpointPath += `&to=${endTime}`;
+    }
     const requestUrl = this.baseUrl + endpointPath;
 
     try {
@@ -324,7 +327,6 @@ class VcceDataFeed {
         symbolData.quote.toLowerCase(),
         minToMillisec(parseInt(resolution)),
         this.startDate,
-        dayjs().unix(),
       )
         .then((candles) => {
           if (candles.length) {
