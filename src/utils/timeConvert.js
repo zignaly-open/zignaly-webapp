@@ -26,6 +26,25 @@ export const minToSeconds = (minutes) => minutes * 60;
 export const minToMillisec = (minutes) => minutes * 60 * 1000;
 
 /**
+ * Convert Trading View resolution to milliseconds.
+ *
+ * @param {string} resolution Trading View resolution (1, 30, D, W, etc)
+ *
+ * @returns {number} Milliseconds.
+ */
+export const resolutionToMilliseconds = (resolution) => {
+  const minutes = {
+    D: 1440,
+    W: 10080,
+  };
+  let e = parseInt(resolution);
+  // @ts-ignore
+  if (isNaN(e)) e = minutes[resolution];
+
+  return minToMillisec(e);
+};
+
+/**
  * Convert hours to seconds.
  *
  * @param {number} hours Seconds to convert.

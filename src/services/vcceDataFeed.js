@@ -7,10 +7,9 @@
  */
 
 /* eslint-disable camelcase */
-import dayjs from "dayjs";
 import tradeApi from "./tradeApiClient";
 import { isEmpty, last } from "lodash";
-import { minToMillisec } from "utils/timeConvert";
+import { resolutionToMilliseconds } from "utils/timeConvert";
 
 /**
  * @typedef {Array<string>} Candle
@@ -147,11 +146,12 @@ class VcceDataFeed {
    * @memberof VcceDataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
+    let found = false;
     for (let symbolData of this.symbolsData) {
       const symbolBaseQuote = symbolData.base + symbolData.quote;
       const pricescale = Math.round(1 / symbolData.limits.price.min);
 
-      if (symbolData.tradeViewSymbol === symbol) {
+      if (symbolData.tradeViewSymbol.toLowerCase() === symbol.toLowerCase()) {
         /**
          * @type LibrarySymbolInfo
          */
@@ -291,7 +291,7 @@ class VcceDataFeed {
       symbolData.base.toLowerCase(),
       // @ts-ignore
       symbolData.quote.toLowerCase(),
-      minToMillisec(parseInt(resolution)),
+      resolutionToMilliseconds(resolution),
       startDate,
       endDate,
     )
@@ -325,7 +325,7 @@ class VcceDataFeed {
         symbolData.base.toLowerCase(),
         // @ts-ignore
         symbolData.quote.toLowerCase(),
-        minToMillisec(parseInt(resolution)),
+        resolutionToMilliseconds(resolution),
         this.startDate,
       )
         .then((candles) => {
