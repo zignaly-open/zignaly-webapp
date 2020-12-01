@@ -16,14 +16,24 @@ window.zESettings = {
 
 window.userpilotSettings = { token: "55mi72q1" };
 
-const interval = setInterval(() => {
+const zenedeskDetection = setInterval(() => {
   if (typeof window !== "undefined" && window.zE) {
     window.zE("webWidget", "hide");
 
     window.zE("webWidget:on", "close", () => {
       window.zE("webWidget", "hide");
     });
-    clearInterval(interval);
+    clearInterval(zenedeskDetection);
+  }
+}, 100);
+
+const userReportDetection = setInterval(() => {
+  let iframe = document.getElementById("crowd-shortcut");
+  if (typeof window !== "undefined" && window._urq && iframe) {
+    let parent = iframe.parentElement;
+    iframe.style.display = "none";
+    parent.style.display = "none";
+    clearInterval(userReportDetection);
   }
 }, 100);
 
