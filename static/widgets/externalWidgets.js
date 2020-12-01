@@ -31,8 +31,10 @@ const userReportDetection = setInterval(() => {
   let iframe = document.getElementById("crowd-shortcut");
   if (typeof window !== "undefined" && window._urq && iframe) {
     let parent = iframe.parentElement;
+    if (parent) {
+      parent.style.display = "none";
+    }
     iframe.style.display = "none";
-    parent.style.display = "none";
     clearInterval(userReportDetection);
   }
 }, 100);
