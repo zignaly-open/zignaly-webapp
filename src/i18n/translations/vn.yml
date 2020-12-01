@@ -1219,6 +1219,7 @@ alert.management.cancelall.body: "Your request to cancel these positions has bee
 alert.management.exitall.title: "Exited Successfully!"
 alert.management.exitall.body: "Your request to exit these positions has been submitted successfully."
 srv.deleteprovider.alert.title: "Đã xóa bản sao"
+srv.settings.update.alert: "Youe settings have been updated successfully!"
 srv.deleteprovider.alert.body: "Bản sao đã xóa thành công"
 signalp.option.disclaimer: "Để sử dụng nhà cung cấp này, bạn cần chấp nhận {disclaimer}!"
 signalp.option.disclaimer.error: "Bạn cần chấp nhận từ chối trách nhiệm từ nhà cung cấp này"
