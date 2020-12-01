@@ -93,30 +93,30 @@ const TradingViewEdit = (props) => {
       exchangeType: positionData.exchangeType,
     };
 
-    if (!positionData.closed) {
-      tradeApi
-        .exchangeConnectionMarketDataGet(marketDataPayload)
-        .then((data) => {
-          const symbolData = data.find((d) => d.short === positionData.short);
-          setSelectedSymbol(symbolData);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    } else {
-      // When position is closed avoid get market data and rely on position symbol data.
-      const symbolData = assign(createMarketSymbolEmptyValueObject(), {
-        id: positionData.symbol,
-        base: positionData.base,
-        baseId: positionData.base,
-        quote: positionData.quote,
-        quoteId: positionData.quote,
-        short: positionData.short,
-        tradeViewSymbol: positionData.tradeViewSymbol,
-        limits: {},
+    tradeApi
+      .exchangeConnectionMarketDataGet(marketDataPayload)
+      .then((data) => {
+        const symbolData = data.find((d) => d.short === positionData.short);
+        setSelectedSymbol(symbolData);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
       });
-      setSelectedSymbol(symbolData);
-    }
+    // if (!positionData.closed) {
+    // } else {
+    //   // When position is closed avoid get market data and rely on position symbol data.
+    //   const symbolData = assign(createMarketSymbolEmptyValueObject(), {
+    //     id: positionData.symbol,
+    //     base: positionData.base,
+    //     baseId: positionData.base,
+    //     quote: positionData.quote,
+    //     quoteId: positionData.quote,
+    //     short: positionData.short,
+    //     tradeViewSymbol: positionData.tradeViewSymbol,
+    //     limits: {},
+    //   });
+    //   setSelectedSymbol(symbolData);
+    // }
   };
 
   /**
