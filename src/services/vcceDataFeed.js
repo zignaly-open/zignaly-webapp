@@ -146,7 +146,6 @@ class VcceDataFeed {
    * @memberof VcceDataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
-    let found = false;
     for (let symbolData of this.symbolsData) {
       const symbolBaseQuote = symbolData.base + symbolData.quote;
       const pricescale = Math.round(1 / symbolData.limits.price.min);
