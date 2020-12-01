@@ -55,7 +55,7 @@ class VcceDataFeed {
     this.symbolsData = options.symbolsData || null;
     this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange.exchangeName || "";
-    this.baseUrl = "http://www.magarzon.com:6081/v3/chart";
+    this.baseUrl = process.env.GATSBY_TRADEAPI_URL.replace("/api", "");
 
     /**
      * @type Candle
@@ -203,7 +203,7 @@ class VcceDataFeed {
    */
   // eslint-disable-next-line max-params
   async getCandlesData(base, quote, resolution, startTime, endTime) {
-    const endpointPath = `/bars?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
+    const endpointPath = `/tradingview?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}&to=${endTime}`;
     const requestUrl = this.baseUrl + endpointPath;
 
     try {
