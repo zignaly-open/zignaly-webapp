@@ -1153,6 +1153,7 @@ copyt.copy.error5: "You do not have enough {quote} to increase your allocated ba
 srv.deletetrader: "Löschen Sie diesen Trader"
 srv.deleteprovider: "Löschen Sie diesen Provider"
 srv.deleteprovider.alert.title: "Klon gelöscht!"
+srv.settings.update.alert: "Youe settings have been updated successfully!"
 srv.deleteprovider.alert.body: "Klon erfolgreich gelöscht."
 signalp.option.disclaimer: "Um diesen Provider zu nutzen müssen Sie dessen {disclaimer} akzeptieren!"
 signalp.option.disclaimer.error: "Sie müssen den Haftungsausschluss dieses Providers akzeptieren."
