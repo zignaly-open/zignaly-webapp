@@ -1,11 +1,10 @@
 import { makeServer } from "utils/test/mirage";
 import type { Server } from "miragejs/server";
 
-describe("My First Test", () => {
+describe("Login", () => {
   let server: Server;
 
   beforeEach(() => {
-    // cy.visit("http://localhost:3000/");
     server = makeServer({ environment: "test" });
     cy.visit("/");
   });
@@ -14,13 +13,23 @@ describe("My First Test", () => {
     server.shutdown();
   });
 
-  it("Does not do much!", () => {
-    expect(true).to.equal(true);
+  it("requires password", () => {
+    cy.get("[name=email]").type("joe@example.com{enter}");
+    cy.get(".errorText").should("contain", "Password cannot be empty");
   });
 
   it("requires valid username/password", () => {
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("invalid{enter}");
-    cy.get(".errorText").should("contain", "invalid");
+    cy.get(".errorAlert").should("contain", "Wrong credentials");
+  });
+
+  it("redirects if correct login", () => {
+    server.create("user", { id: 1, email: "joe@example.com" });
+
+    cy.get("[name=email]").type("joe@example.com");
+    cy.get("[name=password]").type("password123");
+    cy.get("form").contains("Login").click();
+    cy.hash().should("eq", "/dashboard");
   });
 });

@@ -5,6 +5,12 @@ import userExchanges from "./fixtures/userExchanges";
 import userData from "./fixtures/userData";
 import pairs from "./fixtures/pairs";
 
+let TRADEAPI_URL = process.env.GATSBY_TRADEAPI_URL;
+
+if (typeof Cypress !== "undefined") {
+  TRADEAPI_URL = Cypress.env("GATSBY_TRADEAPI_URL");
+}
+
 let ApplicationSerializer = RestSerializer.extend({
   root: false,
   embed: true,
@@ -43,18 +49,29 @@ export function makeServer({ environment = "test" } = {}) {
 
     seeds(server) {
       server.loadFixtures();
-      //   server.create("user", { name: "Bob" });
+      server.create("user", { name: "Bob" });
       //   server.create("user", { name: "Alice" });
       //   server.createList("provider", 5);
     },
 
     routes() {
-      this.urlPrefix = process.env.GATSBY_TRADEAPI_URL;
+      this.urlPrefix = TRADEAPI_URL;
       this.namespace = "/fe";
 
       this.post("/api.php", (schema, request) => {
         let response = {};
+        let status = 200;
         switch (request.queryParams.action) {
+          case "login":
+            let attrs = JSON.parse(request.requestBody);
+            const { email, password } = attrs;
+            if (password === "password123") {
+              response = schema.db.users.findBy({ email });
+            } else {
+              status = 400;
+              response = { error: { code: 8 } };
+            }
+            break;
           case "getQuoteAssets":
             response = ["USDT", "BTC", "USD", "BNB"];
             break;
@@ -75,13 +92,13 @@ export function makeServer({ environment = "test" } = {}) {
           default:
             break;
         }
-        // Return response and force status 200
-        return new Response(200, {}, response);
+
+        return new Response(status, {}, response);
       });
 
+      // Allow unhandled requests on the current domain to pass through
       this.urlPrefix = "/";
       this.namespace = "/";
-      // Allow unhandled requests on the current domain to pass through
       this.passthrough();
     },
   });

@@ -115,6 +115,7 @@
     "chai": "^4.2.0",
     "cypress": "^6.0.1",
     "cypress-dark": "^1.7.14",
+    "cypress-dotenv": "^1.2.2",
     "dotenv": "^8.2.0",
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",
@@ -185,6 +186,10 @@
     "test": "STAGE=test jest -- tradeApiClient; npm run test:ui",
     "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
     "test:coverage": "npm run test:ui -- --coverage",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:e2e": "start-server-and-test develop http://localhost:3000 cy:open",
+    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
     "semantic-release": "semantic-release"
   }
 }
