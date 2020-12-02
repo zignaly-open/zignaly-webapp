@@ -6,6 +6,7 @@ describe("Login", () => {
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
+    server.logging = true;
     cy.visit("/");
   });
 
@@ -25,11 +26,11 @@ describe("Login", () => {
   });
 
   it("redirects if correct login", () => {
-    server.create("user", { id: 1, email: "joe@example.com" });
+    server.create("user", { email: "joe@example.com" });
 
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("password123");
     cy.get("form").contains("Login").click();
-    cy.hash().should("eq", "/dashboard");
+    cy.url().should("eq", Cypress.env("baseUrl") + "/dashboard");
   });
 });

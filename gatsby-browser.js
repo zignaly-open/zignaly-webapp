@@ -36,6 +36,7 @@ if (window.Cypress) {
       }
 
       // All other requests on the current domain will still pass through
+      // Currently used to serve gatsby files
       this.passthrough();
 
       // If your central server has any calls to passthrough(), you'll need to duplicate them here

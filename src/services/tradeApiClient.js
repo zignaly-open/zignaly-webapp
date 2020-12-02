@@ -1558,7 +1558,7 @@ class TradeApiClient {
   }
 
   /**
-   * Function to clone a provider.
+   * Get sesstion state.
    *
    * @param {AuthorizationPayload} payload Clone provider payload.
    *
