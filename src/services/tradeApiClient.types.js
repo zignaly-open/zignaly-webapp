@@ -345,6 +345,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UserBalancePayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {Boolean} [force] Flag to sync balance with exchange.
+ */
+
+/**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.

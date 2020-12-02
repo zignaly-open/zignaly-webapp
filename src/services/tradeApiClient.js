@@ -51,6 +51,7 @@ import {
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
+ * @typedef {import('./tradeApiClient.types').UserBalancePayload} UserBalancePayload
  * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
@@ -541,7 +542,7 @@ class TradeApiClient {
   /**
    * Get user's quick balance summary.
    *
-   * @param {UserEquityPayload} payload Get user balance summary payload.
+   * @param {UserBalancePayload} payload Get user balance summary payload.
    * @returns {Promise<UserBalanceEntity>} Promise that resolves user balance entity.
    * @memberof TradeApiClient
    */
