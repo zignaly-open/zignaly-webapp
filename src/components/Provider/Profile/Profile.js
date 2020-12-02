@@ -120,11 +120,14 @@ const Profile = ({ provider }) => {
             </Box>
           )}
       </Box>
-      {!provider.disable && !provider.isClone && provider.options.allowClones && (
-        <Box className="cloneBox">
-          <CloneProviderButton provider={provider} />
-        </Box>
-      )}
+      {!provider.profitSharing &&
+        !provider.disable &&
+        !provider.isClone &&
+        provider.options.allowClones && (
+          <Box className="cloneBox">
+            <CloneProviderButton provider={provider} />
+          </Box>
+        )}
       {!provider.profitSharing && provider.isAdmin && provider.isClone && (
         <Box className="cloneBox">
           <CloneDeleteButton provider={provider} />
