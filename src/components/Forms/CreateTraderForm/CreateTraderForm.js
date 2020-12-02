@@ -234,7 +234,7 @@ const CreateTraderForm = () => {
             <>
               <ToggleButtonsExchangeType
                 exchangeType={exchangeType}
-                exchangeTypes={selectedModel !== MODEL_PROFIT_SHARING ? exchange.type : ["futures"]}
+                exchangeTypes={exchange.type}
                 setExchangeType={setExchangeType}
               />
               <Box
