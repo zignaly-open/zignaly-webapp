@@ -6,11 +6,17 @@ import AnalyticsChart from "../AnalyticsChart";
 import ProfitSharingAnalytics from "../ProfitSharingAnalytics";
 
 /**
- * Dashboard analytics component.
- *
- * @returns {JSX.Element} Component JSX.
+ * @typedef {Object} ProviderProps
+ * @property {String} providerId position ID dynamic route path parameter.
  */
-const Analytics = () => {
+
+/**
+ * Dashboard Analaytics component.
+ *
+ * @param {ProviderProps} props Component properties.
+ * @returns {JSX.Element} Position page element.
+ */
+const Analytics = ({ providerId }) => {
   const {
     stats,
     timeFrames,
@@ -21,7 +27,7 @@ const Analytics = () => {
     loading,
     setFilters,
     filters,
-  } = useDashboardAnalytics();
+  } = useDashboardAnalytics(providerId);
 
   const selectedProvider = providers.find((p) => p.id === filters.provider.val);
   const profitSharing = selectedProvider && selectedProvider.profitSharing;

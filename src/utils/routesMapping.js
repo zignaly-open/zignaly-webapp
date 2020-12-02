@@ -7,6 +7,7 @@
  * @typedef {Object} NavigationLink Navigation link object.
  * @property {string} id Link ID.
  * @property {string} to Link path.
+ * @property {string|JSX.Element} [tooltip] Notification flag for user about something.
  */
 
 /**

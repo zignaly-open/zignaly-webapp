@@ -113,7 +113,7 @@ const ProviderOptionsForm = ({ provider }) => {
                 exchangeInternalId: storeSettings.selectedExchange.internalId,
               };
 
-              dispatch(setProvider(payload2));
+              dispatch(setProvider(payload2, true));
             }
           })
           .catch((e) => {

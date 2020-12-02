@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Router } from "@reach/router";
 import Profile from "./profile";
 import Edit from "./edit";
@@ -15,9 +15,17 @@ import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
 import BrowsePage from "./browse";
+import tradeApi from "../../services/tradeApiClient";
+import { showErrorAlert } from "store/actions/ui";
+import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
+import useProviderContext from "hooks/useProviderContext";
+import ProviderContext from "components/Provider/ProviderContext";
+import { checkAllocated } from "../../utils/helpers";
 
 /**
- *
+ * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import("../../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+
  * @typedef {Object} LocationObject
  * @property {String} pathname
  */
@@ -43,6 +51,15 @@ const SignalProviders = (props) => {
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
   const dispatch = useDispatch();
+  const providerContext = useProviderContext();
+  const { setHasAllocated } = providerContext;
+  const [settings, setSettings] = useState(null);
+  const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
+  const quotes =
+    selectedExchange.name.toLowerCase() === "bitmex"
+      ? { BTC: { quote: "BTC", minNotional: 0 } }
+      : quoteAssets;
+  const quotesAvailable = Object.keys(quotes).length > 0;
 
   useEffect(() => {
     const loadProvider = async () => {
@@ -53,13 +70,49 @@ const SignalProviders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload));
+      dispatch(setProvider(payload, true));
     };
     if (providerId && providerId.length === 24) {
       loadProvider();
     }
+
+    return () => {
+      setHasAllocated(true);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
+
+  /**
+   * Load exchange settings from backend.
+   *
+   * @returns {void}
+   */
+  const loadSettings = () => {
+    if (
+      provider.id &&
+      !provider.disable &&
+      provider.exchangeInternalId === selectedExchange.internalId &&
+      quotesAvailable
+    ) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+        internalExchangeId: selectedExchange.internalId,
+        version: 2,
+      };
+      tradeApi
+        .providerExchangeSettingsGet(payload)
+        .then((response) => {
+          setSettings(response);
+          checkAllocated(quotes, response, setHasAllocated);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
+  };
+
+  useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
 
   if (!providerId) {
     // Render Browse page
@@ -69,47 +122,52 @@ const SignalProviders = (props) => {
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
 
   return (
-    <ProviderLayout>
-      <Router>
-        <SignalProviderRoute
-          component={Profile}
-          default
-          path={withPrefix("/signalProviders/:providerId")}
-          providerId={providerId}
-        />
-        {allowAdminRoutes && (
+    <ProviderContext.Provider value={providerContext}>
+      <ProviderLayout>
+        <Router>
           <SignalProviderRoute
-            component={Edit}
-            path={withPrefix("/signalProviders/:providerId/edit")}
+            component={Profile}
+            default
+            path={withPrefix("/signalProviders/:providerId")}
             providerId={providerId}
           />
-        )}
-        {!provider.disable && provider.exchangeInternalId === selectedExchange.internalId && (
+          {allowAdminRoutes && (
+            <SignalProviderRoute
+              component={Edit}
+              path={withPrefix("/signalProviders/:providerId/edit")}
+              providerId={providerId}
+            />
+          )}
+          {!provider.disable && provider.exchangeInternalId === selectedExchange.internalId && (
+            <SignalProviderRoute
+              component={Settings}
+              loadData={loadSettings}
+              path={withPrefix("/signalProviders/:providerId/settings")}
+              providerId={providerId}
+              quotes={quotes}
+              settings={settings}
+            />
+          )}
           <SignalProviderRoute
-            component={Settings}
-            path={withPrefix("/signalProviders/:providerId/settings")}
+            component={Analytics}
+            path={withPrefix("/signalProviders/:providerId/analytics")}
             providerId={providerId}
           />
-        )}
-        <SignalProviderRoute
-          component={Analytics}
-          path={withPrefix("/signalProviders/:providerId/analytics")}
-          providerId={providerId}
-        />
-        {allowAdminRoutes && (
+          {allowAdminRoutes && (
+            <SignalProviderRoute
+              component={Users}
+              path={withPrefix("/signalProviders/:providerId/users")}
+              providerId={providerId}
+            />
+          )}
           <SignalProviderRoute
-            component={Users}
-            path={withPrefix("/signalProviders/:providerId/users")}
+            component={News}
+            path={withPrefix("/signalProviders/:providerId/feed")}
             providerId={providerId}
           />
-        )}
-        <SignalProviderRoute
-          component={News}
-          path={withPrefix("/signalProviders/:providerId/feed")}
-          providerId={providerId}
-        />
-      </Router>
-    </ProviderLayout>
+        </Router>
+      </ProviderLayout>
+    </ProviderContext.Provider>
   );
 };
 

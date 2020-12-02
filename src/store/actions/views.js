@@ -14,13 +14,16 @@ export const SHOW_PROFILE_LOADER = "SHOW_PROFILE_LOADER_ACTION";
  * Get user balance store thunk action.
  *
  * @param {GetProviderPayload} payload Trade API user authorization.
+ * @param {Boolean} [showLoader] Trade API user authorization.
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const setProvider = (payload) => {
+export const setProvider = (payload, showLoader) => {
   return async (dispatch) => {
     try {
-      dispatch(showProviderProfileLoader(true));
+      if (showLoader) {
+        dispatch(showProviderProfileLoader(true));
+      }
       const responseData = await tradeApi.providerGet(payload);
       const action = {
         type: GET_PROVIDER,

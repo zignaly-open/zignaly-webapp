@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { isNumber, isString, isObject } from "lodash";
 import { formatPrice } from "../utils/formatters";
+import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.esm";
+import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
+
+/**
+ *
+ * @typedef {import("tradingView/charting_library/charting_library").IBasicDataFeed} IBasicDataFeed
+ * @typedef {import("tradingView/charting_library/charting_library").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ */
 
 /**
  * @typedef {Object} TradingTerminalHook
  * @property {function} instantiateWidget
- * @property {function} setTradingViewWidget
+ * @property {function} changeSymbol
+ * @property {function} removeWidget
  * @property {any} tradingViewWidget
+ * @property {boolean} isSelfHosted
  */
 
 /**
@@ -16,38 +27,41 @@ import { formatPrice } from "../utils/formatters";
 /**
  * Trading terminal handlers and state control hook.
  *
- * We skip the definition of Trading View types due to the typedefs are part of
- * private repository that have publication restrictions incompatible with open
- * source.
- *
  * @param {function} setLastPrice Update last price callback.
  * @returns {TradingTerminalHook} Trading View hook object.
  */
 const useTradingTerminal = (setLastPrice) => {
-  const [tradingViewWidget, setTradingViewWidget] = useState(/** @type {TVWidget} */ null);
+  const [tradingView, setTradingView] = useState({
+    widget: null,
+    options: null,
+    isSelfHosted: false,
+  });
+  const readyCallback = useRef(null);
 
   /**
-   * Instantiate trading view widget and initialize price.
+   * Instantiate external trading view library
    *
-   * @param {any} widgetOptions Trading view widget options.
-   * @return {Function} Widget cleanup function.
+   * @param {ChartingLibraryWidgetOptions} widgetOptions Trading view widget options.
+   * @return {void}
    */
-  const instantiateWidget = (widgetOptions) => {
+  const instantiateExternalLibrary = (widgetOptions) => {
     // @ts-ignore
     // eslint-disable-next-line new-cap
     const externalWidget = new window.TradingView.widget(widgetOptions);
-    let eventSymbol = "";
 
+    let eventSymbol = "";
     // @ts-ignore
     const handleWidgetReady = (event) => {
       if (isString(event.data)) {
         try {
-          const dataRaw = /** @type {Object<string, any>} */ event.data;
-          const dataParsed = JSON.parse(dataRaw);
-
+          const dataParsed = JSON.parse(event.data);
           // @ts-ignore
-          if (dataParsed.name === "widgetReady" && externalWidget.postMessage) {
-            setTradingViewWidget(externalWidget);
+          if (dataParsed.name === "widgetReady") {
+            setTradingView({
+              widget: externalWidget,
+              options: widgetOptions,
+              isSelfHosted: false,
+            });
           }
 
           if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
@@ -67,28 +81,111 @@ const useTradingTerminal = (setLastPrice) => {
 
       // Symbol data not found by Trading View widget.
       if (isObject(event.data) && event.data.name === "tv-widget-no-data") {
-        setTradingViewWidget(externalWidget);
+        setTradingView({
+          widget: externalWidget,
+          options: widgetOptions,
+          isSelfHosted: false,
+        });
         setLastPrice(null);
       }
     };
-
+    readyCallback.current = handleWidgetReady;
     window.addEventListener("message", handleWidgetReady);
+  };
 
+  /**
+   * Instantiate trading view widget and initialize price.
+   *
+   * @param {ChartingLibraryWidgetOptions} widgetOptions Trading view widget options.
+   * @return {void}
+   */
+  const instantiateWidget = (widgetOptions) => {
+    const isSelfHosted = Boolean(widgetOptions.datafeed);
+
+    if (isSelfHosted) {
+      // @ts-ignore
+      const widgetInstance = new PrivateTradingViewWidget(widgetOptions);
+      // window.externalWidget = widgetInstance;
+      widgetInstance.onChartReady(() => {
+        setTradingView({
+          widget: widgetInstance,
+          options: widgetOptions,
+          isSelfHosted: true,
+        });
+        // Update price
+        // @ts-ignore
+        const price = widgetOptions.datafeed.getLastPrice();
+        setLastPrice(price);
+      });
+    } else {
+      // @ts-ignore
+      const isLibraryLoaded = () => Boolean(window.TradingView && window.TradingView.widget);
+
+      const checkExist = setInterval(() => {
+        // Wait until external library is loaded before initializing
+        if (isLibraryLoaded()) {
+          instantiateExternalLibrary(widgetOptions);
+          clearInterval(checkExist);
+        }
+      }, 100);
+    }
+  };
+
+  /**
+   * Update TradingView selected symbol
+   * @param {string} symbol .
+   * @param {ExchangeConnectionEntity} exchange Exchange connection entity.
+   * @returns {void}
+   */
+  const changeSymbol = (symbol, exchange) => {
+    if (!tradingView.widget || (!tradingView.isSelfHosted && !tradingView.widget.iframe)) {
+      // eslint-disable-next-line no-console
+      console.error("LOG: tradingViewWidget wasn't initialized before symbol change");
+      return;
+    }
+
+    if (tradingView.widget.iframe) {
+      const symbolTV = getTradingViewExchangeSymbol(symbol, exchange);
+      tradingView.widget.iframe.contentWindow.postMessage(
+        { name: "set-symbol", data: { symbol: symbolTV } },
+        "*",
+      );
+    } else {
+      const chart = tradingView.widget.chart();
+      chart.setSymbol(symbol, () => {
+        // @ts-ignore
+        const price = tradingView.options.datafeed.getLastPrice();
+        setLastPrice(price);
+      });
+    }
+  };
+
+  useEffect(() => {
     const cleanupWidget = () => {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        window.removeEventListener("message", handleWidgetReady);
+      if (readyCallback.current) {
+        window.removeEventListener("message", readyCallback.current);
+        readyCallback.current = null;
+      }
+      if (tradingView.widget) {
+        removeWidget();
       }
     };
-
     return cleanupWidget;
+  }, []);
+
+  const removeWidget = () => {
+    if (tradingView && tradingView.widget) {
+      tradingView.widget.remove();
+    }
+    setTradingView((tv) => ({ ...tv, widget: null }));
   };
 
   return {
     instantiateWidget,
-    setTradingViewWidget,
-    tradingViewWidget,
+    tradingViewWidget: tradingView.widget,
+    changeSymbol,
+    removeWidget,
+    isSelfHosted: tradingView.isSelfHosted,
   };
 };
 

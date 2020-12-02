@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import {
-  createWidgetOptions,
-  getTradingViewExchangeSymbol,
-} from "../../../tradingView/dataFeedOptions";
+import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
@@ -44,10 +41,13 @@ const defaultExchangeSymbol = {
 const TradingView = () => {
   const tradingViewContext = useTradingViewContext();
   const { lastPrice, setLastPrice } = tradingViewContext;
-  const [libraryReady, setLibraryReady] = useState(false);
-  const { instantiateWidget, setTradingViewWidget, tradingViewWidget } = useTradingTerminal(
-    setLastPrice,
-  );
+  const {
+    instantiateWidget,
+    tradingViewWidget,
+    changeSymbol,
+    removeWidget,
+    isSelfHosted,
+  } = useTradingTerminal(setLastPrice);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
@@ -111,6 +111,7 @@ const TradingView = () => {
   };
   const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
   useEffect(() => {
+    // Load default symbol when symbols are ready
     if (symbols) {
       setSelectedSymbol(defaultSelectedSymbol());
     }
@@ -119,85 +120,55 @@ const TradingView = () => {
   const [selectedExchangeId, setSelectedExchangeId] = useState(
     storeSettings.selectedExchange.internalId,
   );
-  // const dataFeed = useCoinRayDataFeedFactory(selectedSymbol);
   const isLoading = tradingViewWidget === null || selectedSymbol === null;
   const isLastPriceLoading = lastPrice === null;
 
   const onExchangeChange = () => {
-    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
-      if (tradingViewWidget) {
-        tradingViewWidget.remove();
-        setTradingViewWidget(null);
-        setLastPrice(null);
-        setSelectedSymbol(defaultSelectedSymbol());
-        bootstrapWidget();
-      }
-
-      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
-    }
-  };
-
-  useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
-
-  const loadDependencies = () => {
+    // Load dependencies
     setSymbols(null);
     setSelectedSymbol(null);
     getMarketData();
 
-    const checkExist = setInterval(() => {
-      // @ts-ignore
-      if (window.TradingView && window.TradingView.widget) {
-        setLibraryReady(true);
-        clearInterval(checkExist);
-      }
-    }, 100);
+    // Reload widget on exchange change
+    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
+      setLastPrice(null);
+      removeWidget();
+      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
+    }
   };
+  useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
 
-  useEffect(loadDependencies, [storeSettings.selectedExchange.internalId]);
+  useEffect(() => {
+    // Reload widget on theme change
+    removeWidget();
+    bootstrapWidget();
+  }, [storeSettings.darkStyle]);
 
   const bootstrapWidget = () => {
-    // Skip if TV widget already exists or TV library/symbol not ready.
-    if (tradingViewWidget || !libraryReady || !selectedSymbol) {
-      return () => {};
+    // Initialize widget when symbols loaded or when instance removed
+    if (!selectedSymbol || tradingViewWidget) {
+      return;
     }
 
-    const widgetOptions = createWidgetOptions(
-      selectedSymbol.tradeViewSymbol,
-      storeSettings.darkStyle,
-    );
-
-    const cleanupWidget = instantiateWidget(widgetOptions);
-
-    return () => {
-      cleanupWidget();
+    const options = {
+      exchange: storeSettings.selectedExchange,
+      symbolsData: symbols,
+      tradeApiToken: storeSession.tradeApi.accessToken,
+      symbol: selectedSymbol.tradeViewSymbol,
+      darkStyle: storeSettings.darkStyle,
     };
+
+    const widgetOptions = createWidgetOptions(options);
+    instantiateWidget(widgetOptions);
   };
 
   // Create Trading View widget when TV external library is ready.
-  useEffect(bootstrapWidget, [libraryReady, tradingViewWidget, selectedSymbol]);
+  useEffect(bootstrapWidget, [tradingViewWidget, selectedSymbol]);
 
-  const changeTheme = () => {
-    const reloadWidget = () => {
-      tradingViewWidget.remove();
-      setTradingViewWidget(null);
-      bootstrapWidget();
-    };
+  useEffect(() => {
+    if (isSelfHosted || !tradingViewWidget) return;
 
-    if (tradingViewWidget) {
-      const options = tradingViewWidget.options;
-      if (storeSettings.darkStyle && options.theme !== "dark") {
-        reloadWidget();
-      }
-
-      if (!storeSettings.darkStyle && options.theme !== "light") {
-        reloadWidget();
-      }
-    }
-  };
-  useEffect(changeTheme, [storeSettings.darkStyle]);
-
-  // Force initial price notification.
-  const initDataFeedSymbol = () => {
+    // Force initial price notification.
     const checkExist = setInterval(() => {
       if (
         tradingViewWidget &&
@@ -205,12 +176,11 @@ const TradingView = () => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        handleSymbolChange(selectedSymbol.short);
+        changeSymbol(selectedSymbol.tradeViewSymbol, storeSettings.selectedExchange);
         clearInterval(checkExist);
       }
     }, 100);
-  };
-  useEffect(initDataFeedSymbol, [tradingViewWidget]);
+  }, [tradingViewWidget]);
 
   /**
    * @typedef {Object} OptionValue
@@ -227,17 +197,7 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-
-    if (tradingViewWidget && tradingViewWidget.iframe) {
-      const symbolTV = getTradingViewExchangeSymbol(
-        newSymbol.tradeViewSymbol,
-        storeSettings.selectedExchange,
-      );
-      tradingViewWidget.iframe.contentWindow.postMessage(
-        { name: "set-symbol", data: { symbol: symbolTV } },
-        "*",
-      );
-    }
+    changeSymbol(newSymbol.tradeViewSymbol, storeSettings.selectedExchange);
   };
 
   const methods = useForm({
@@ -282,7 +242,7 @@ const TradingView = () => {
                 <CircularProgress disableShrink />
               </Box>
             )}
-            <Box className="tradingViewChart" id="trading_view_chart" />
+            <div className="tradingViewChart" id="trading_view_chart" />
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}

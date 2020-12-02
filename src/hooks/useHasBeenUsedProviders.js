@@ -7,15 +7,19 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {Object} HookData
+ * @property {ProvidersCollection} providers
+ * @property {Boolean} providersLoading
  */
 
 /**
  * Provides provider list.
  *
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
- * @returns {ProvidersCollection} Provider list.
+ * @returns {HookData} Provider list.
  */
 const useReadOnlyProviders = (shouldExecute = true) => {
+  const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
@@ -23,6 +27,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
 
   const loadData = () => {
     if (shouldExecute) {
+      setProvidersLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
@@ -35,6 +40,9 @@ const useReadOnlyProviders = (shouldExecute = true) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setProvidersLoading(false);
         });
     }
   };
@@ -58,7 +66,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
     shouldExecute,
   ]);
 
-  return list;
+  return { providers: list, providersLoading: providersLoading };
 };
 
 export default useReadOnlyProviders;

@@ -7,12 +7,13 @@ import Analytics from "../../../components/DashboardAnalytics/Analytics";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 
 /**
- * Provides analytics of signal providers.
+ * Dashboard Analytics page component.
  *
- * @returns {JSX.Element} Component JSX.
+ * @returns {JSX.Element} Position page element.
  */
 const DashboardAnalytics = () => {
   const intl = useIntl();
+  const providerId = typeof window !== "undefined" ? window.location.href.split("#")[1] : "";
 
   return (
     <Box className="ctAnalyticsPage">
@@ -25,7 +26,7 @@ const DashboardAnalytics = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Analytics />
+      <Analytics providerId={providerId} />
     </Box>
   );
 };
