@@ -7,7 +7,6 @@
  */
 
 /* eslint-disable camelcase */
-import tradeApi from "./tradeApiClient";
 import { isEmpty, last } from "lodash";
 import { resolutionToMilliseconds } from "utils/timeConvert";
 

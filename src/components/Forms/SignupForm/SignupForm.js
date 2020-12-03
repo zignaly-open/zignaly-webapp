@@ -60,7 +60,7 @@ const SignupForm = () => {
   };
 
   return (
-    <form method="post" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
       <Box
         alignItems="center"
         className="signupForm"
