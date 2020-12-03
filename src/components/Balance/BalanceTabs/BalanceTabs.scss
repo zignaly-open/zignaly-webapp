@@ -6,6 +6,10 @@
   .tabsBox {
     border-bottom: solid 1px var(--border-color);
 
+    .topBox {
+      width: 100%;
+    }
+
     .tabPanel {
       padding: 0 10px;
       width: 100%;
