@@ -104,7 +104,7 @@ describe("Consume tradeApiClient service", () => {
 
     const positionsCollection = await client.logPositionsGet(payload);
     assert.isArray(positionsCollection, "Positions collection is not an array.");
-    assert.isAtLeast(positionsCollection.length, 10, "Less than expected total positions.");
+    assert.isAtLeast(positionsCollection.length, 8, "Less than expected total positions.");
     assert.isObject(positionsCollection[0], "First collection position item is not an object.");
     assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
     positionEntityStructureAssertions(positionsCollection[0]);
