@@ -1,8 +1,16 @@
+/// <reference types="cypress" />
+
 import { makeServer } from "utils/test/mirage";
-import type { Server } from "miragejs/server";
+
+/**
+ * @typedef {import('miragejs/server').Server} Server
+ */
 
 describe("Login", () => {
-  let server: Server;
+  /**
+   * @type {Server}
+   */
+  let server;
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
