@@ -2633,6 +2633,7 @@ export function providerGetResponseTransform(response) {
       response.minAllocatedBalance && response.minAllocatedBalance !== "false"
         ? parseFloat(response.minAllocatedBalance)
         : 0,
+    options: response.options ? response.options : emptyProviderEntity.options,
   });
   transformed.options.allowClones = checkClones();
   return transformed;
