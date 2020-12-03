@@ -77,32 +77,33 @@ class VcceDataFeed {
       callback({
         supports_marks: false,
         supports_timescale_marks: false,
-        supports_time: true,
+        // Countdown in the price scale, require current server time endpoint
+        supports_time: false,
         // @ts-ignore
         supported_resolutions: resolutions,
       });
     }, 0);
   }
 
-  /**
-   * Get server time used to align timeserie in time axes.
-   *
-   * @param {ServerTimeCallback} callback Server time callback.
-   * @returns {Void} None.
-   * @memberof VcceDataFeed
-   */
-  getServerTime(callback) {
-    tradeApi
-      .serverTimeGet({
-        token: this.tradeApiToken,
-      })
-      .then((data) => {
-        callback(Math.floor(data.serverTime / 1000));
-      })
-      .catch(() => {
-        callback(Math.floor(+new Date() / 1000));
-      });
-  }
+  // /**
+  //  * Get server time used to align timeserie in time axes.
+  //  *
+  //  * @param {ServerTimeCallback} callback Server time callback.
+  //  * @returns {Void} None.
+  //  * @memberof VcceDataFeed
+  //  */
+  // getServerTime(callback) {
+  //   tradeApi
+  //     .serverTimeGet({
+  //       token: this.tradeApiToken,
+  //     })
+  //     .then((data) => {
+  //       callback(Math.floor(data.serverTime / 1000));
+  //     })
+  //     .catch(() => {
+  //       callback(Math.floor(+new Date() / 1000));
+  //     });
+  // }
 
   // /**
   //  * Search market symbol data by widget search input value.

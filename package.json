@@ -184,7 +184,7 @@
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
-    "test": "STAGE=test jest -- tradeApiClient; npm run test:ui",
+    "test": "STAGE=test jest -- tradeApiClient",
     "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
     "test:coverage": "npm run test:ui -- --coverage",
     "cy:open": "cypress open",

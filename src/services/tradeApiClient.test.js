@@ -69,7 +69,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get new v2 user open positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "KuCoin1577351230_5e04783e55368",
     };
 
     const positionsCollection = await client.openPositionsGet(payload);
@@ -84,7 +84,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user closed positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "KuCoin1577351230_5e04783e55368",
     };
 
     const positionsCollection = await client.closedPositionsGet(payload);
@@ -99,7 +99,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user log positions", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "KuCoin1577351230_5e04783e55368",
     };
 
     const positionsCollection = await client.logPositionsGet(payload);
@@ -152,7 +152,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user balance", async () => {
     const getBalancePayload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "KuCoin1577351230_5e04783e55368",
     };
 
     const userBalance = await client.userBalanceGet(getBalancePayload);
@@ -162,7 +162,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user's daily balance", async () => {
     const payload = {
       token: accessToken,
-      exchangeInternalId: "Binance1578301457_5e12f811deda4",
+      exchangeInternalId: "KuCoin1577351230_5e04783e55368",
     };
 
     const equity = await client.userEquityGet(payload);
@@ -199,17 +199,17 @@ describe("Consume tradeApiClient service", () => {
     assert.isObject(quoteAssets, "Quote assets is not an object.");
   }, 25000);
 
-  it("should get server time", async () => {
-    const payload = {
-      token: accessToken,
-    };
+  // it("should get server time", async () => {
+  //   const payload = {
+  //     token: accessToken,
+  //   };
 
-    const serverTime = await client.serverTimeGet(payload);
-    assert.isObject(serverTime, "Server time is not an object.");
-    assert.isNumber(serverTime.serverTime, "Server time 'serverTime' is not a number.");
-    assert.isAtLeast(serverTime.serverTime, 100000, "Time seems to be invalid.");
-    assert.isNumber(serverTime.dbTime, "Server time 'dbTime' is not a number.");
-  }, 25000);
+  //   const serverTime = await client.serverTimeGet(payload);
+  //   assert.isObject(serverTime, "Server time is not an object.");
+  //   assert.isNumber(serverTime.serverTime, "Server time 'serverTime' is not a number.");
+  //   assert.isAtLeast(serverTime.serverTime, 100000, "Time seems to be invalid.");
+  //   assert.isNumber(serverTime.dbTime, "Server time 'dbTime' is not a number.");
+  // }, 25000);
 
   // it("should get coinray token", async () => {
   //   const payload = {
@@ -279,7 +279,7 @@ describe("Consume tradeApiClient service", () => {
   it("should get user owned copy traders options list", async () => {
     const payload = {
       token: accessToken,
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
+      internalExchangeId: "KuCoin1577351230_5e04783e55368",
     };
 
     const copyTradersOptions = await client.ownedCopyTradersProvidersOptions(payload);
