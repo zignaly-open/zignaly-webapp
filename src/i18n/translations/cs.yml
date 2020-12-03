@@ -1383,6 +1383,8 @@ error.1038: "CH-The buying notional value is below minimal order value"
 error.1039: "CH-The selling target amount would be minimum than the allowed minimum order value."
 error.1040: "CH-Exchange connection error"
 error.1041: "CH-Exchange operation failed"
+error.1042: "CH-Insufficient balance"
+error.1043: "CH-Maximum number of requests reached (within 24 hours)"
 
 month.jan: "CH-Jan"
 month.feb: "CH-Feb"
