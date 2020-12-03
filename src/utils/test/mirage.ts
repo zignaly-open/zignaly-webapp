@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 // so the env variables are passed to the cypress config object
 const TRADEAPI_URL =
   // @ts-ignore
-  typeof window?.Cypress !== "undefined"
+  typeof window !== "undefined" && typeof Cypress !== "undefined"
     ? // @ts-ignore
       Cypress.env("GATSBY_TRADEAPI_URL")
     : process.env.GATSBY_TRADEAPI_URL;
