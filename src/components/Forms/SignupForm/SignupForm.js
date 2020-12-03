@@ -8,7 +8,7 @@ import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
 
 const SignupForm = () => {
@@ -20,6 +20,7 @@ const SignupForm = () => {
   const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
+  const intl = useIntl();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -43,27 +44,23 @@ const SignupForm = () => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (data.password === data.repeatPassword) {
-      setLoading(true);
-      const payload = {
-        projectId: projectId,
-        firstName: data.firstName,
-        email: data.email,
-        password: data.password,
-        subscribe: data.subscribe,
-        ref: ref,
-        array: true,
-        gRecaptchaResponse: gRecaptchaResponse,
-        terms: data.terms,
-      };
-      dispatch(registerUser(payload, setLoading));
-    } else {
-      setError("repeatPassword", { type: "notMatch", message: "Passwords do not match!" });
-    }
+    setLoading(true);
+    const payload = {
+      projectId: projectId,
+      firstName: data.firstName,
+      email: data.email,
+      password: data.password,
+      subscribe: data.subscribe,
+      ref: ref,
+      array: true,
+      gRecaptchaResponse: gRecaptchaResponse,
+      terms: data.terms,
+    };
+    dispatch(registerUser(payload, setLoading));
   };
 
   return (
-    <form method="post" onSubmit={handleSubmit(onSubmit)}>
+    <form method="post" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Box
         alignItems="center"
         className="signupForm"
@@ -85,21 +82,18 @@ const SignupForm = () => {
             className="customInput"
             error={!!errors.firstName}
             fullWidth
-            inputRef={register({ required: true, minLength: 3 })}
+            inputRef={register({
+              required: intl.formatMessage({ id: "form.error.firstname" }),
+              minLength: {
+                value: 3,
+                message: intl.formatMessage({ id: "form.error.firstname.length" }),
+              },
+            })}
             name="firstName"
             type="text"
             variant="outlined"
           />
-          {errors.firstName && errors.firstName.type === "required" && (
-            <span className="errorText">
-              <FormattedMessage id="form.error.firstname" />
-            </span>
-          )}
-          {errors.firstName && errors.firstName.type === "minLength" && (
-            <span className="errorText">
-              <FormattedMessage id="form.error.firstname.length" />
-            </span>
-          )}
+          {errors.firstName && <span className="errorText">{errors.firstName.message}</span>}
         </Box>
         <Box
           alignItems="start"
@@ -116,23 +110,17 @@ const SignupForm = () => {
             error={!!errors.email}
             fullWidth
             inputRef={register({
-              required: true,
-              pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+              required: intl.formatMessage({ id: "security.email.error.empty" }),
+              pattern: {
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                message: intl.formatMessage({ id: "security.email.error.invalid" }),
+              },
             })}
             name="email"
             type="email"
             variant="outlined"
           />
-          {errors.email && errors.email.type === "required" && (
-            <span className="errorText">
-              <FormattedMessage id="security.email.error.empty" />
-            </span>
-          )}
-          {errors.email && errors.email.type === "pattern" && (
-            <span className="errorText">
-              <FormattedMessage id="security.email.error.invalid" />
-            </span>
-          )}
+          {errors.email && <span className="errorText">{errors.email.message}</span>}
         </Box>
 
         <Passwords edit={false} formMethods={formMethods} />

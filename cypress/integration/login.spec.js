@@ -1,12 +1,12 @@
 /// <reference types="cypress" />
 
-import { makeServer } from "utils/test/mirage";
+import { makeServer } from "utils/mirage/server";
 
 /**
  * @typedef {import('miragejs/server').Server} Server
  */
 
-describe("Signup", () => {
+describe("Login", () => {
   /**
    * @type {Server}
    */
@@ -19,11 +19,6 @@ describe("Signup", () => {
 
   afterEach(() => {
     server.shutdown();
-  });
-
-  it("requires email", () => {
-    cy.get("[name=email]").type("joe@example.com{enter}");
-    cy.get(".errorText").should("contain", "Password cannot be empty");
   });
 
   it("requires password", () => {

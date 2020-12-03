@@ -6,8 +6,8 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import initialState from "store/initialState";
 import rootReducer from "reducers/rootReducer";
-import userExchanges from "utils/test/fixtures/userExchanges";
-import userData from "utils/test/fixtures/userData";
+import userExchanges from "utils/mirage/fixtures/userExchanges";
+import userData from "utils/mirage/fixtures/userData";
 
 /**
  * Render ui with logged in user store

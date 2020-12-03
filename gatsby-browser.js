@@ -10,7 +10,7 @@ import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
 import "whatwg-fetch";
-import { makeServer } from "utils/test/mirage";
+import { makeServer } from "utils/mirage/server";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
