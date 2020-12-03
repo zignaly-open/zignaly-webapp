@@ -16,7 +16,7 @@ import { getDailyUserBalance } from "store/actions/user";
  * @property {ExchangeConnectionEntity} selectedExchange
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * Component to sync balance with exchange.
  *
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
