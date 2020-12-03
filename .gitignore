@@ -71,3 +71,7 @@ yarn-lock
 zignaly-webapp2-*.tar.gz
 release.tar.gz
 .semvernext
+
+# Cypress
+cypress/videos
+cypress/screenshots

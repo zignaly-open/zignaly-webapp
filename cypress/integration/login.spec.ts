@@ -31,6 +31,6 @@ describe("Login", () => {
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("password123");
     cy.get("form").contains("Login").click();
-    cy.url().should("eq", Cypress.env("baseUrl") + "/dashboard");
+    cy.url().should("eq", Cypress.config("baseUrl") + "/dashboard");
   });
 });

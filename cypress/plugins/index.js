@@ -24,5 +24,8 @@ module.exports = (on, config) => {
   // Assign env variables to cypress config
   config = dotenvPlugin(config, { path: ".env.dev" }, true);
 
+  // Skip examples
+  config.ignoreTestFiles = "**/examples/*.spec.js";
+
   return config;
 };

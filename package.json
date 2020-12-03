@@ -139,6 +139,7 @@
     "semantic-release": "^17.2.1",
     "semantic-release-jira-releases": "^0.7.2",
     "semantic-release-slack-bot": "^1.6.2",
+    "start-server-and-test": "^1.11.6",
     "style-loader": "^1.2.1",
     "stylelint": "^13.7.1",
     "stylelint-config-sass-guidelines": "^7.1.0",
@@ -187,9 +188,9 @@
     "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
     "test:coverage": "npm run test:ui -- --coverage",
     "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "test:e2e": "start-server-and-test develop http://localhost:3000 cy:open",
-    "test:e2e:ci": "start-server-and-test develop http://localhost:8000 cy:run",
+    "cy:run": "cypress run --record --key=c6eac74f-5095-4c82-979c-5f97c8ebcdd9",
+    "cy:test": "start-server-and-test develop http://localhost:3000 cy:open",
+    "cy:ci": "start-server-and-test develop http://localhost:3000 cy:run",
     "semantic-release": "semantic-release"
   }
 }

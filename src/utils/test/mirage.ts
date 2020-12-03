@@ -96,11 +96,11 @@ export function makeServer({ environment = "test" } = {}) {
       }),
     },
 
-    seeds(server) {
-      server.loadFixtures();
-      //   server.create("user", { name: "Alice" });
-      //   server.createList("provider", 5);
-    },
+    // seeds(server) {
+    //   server.loadFixtures();
+    //   //   server.create("user", { name: "Alice" });
+    //   //   server.createList("provider", 5);
+    // },
 
     routes() {
       this.urlPrefix = TRADEAPI_URL;
@@ -154,6 +154,8 @@ export function makeServer({ environment = "test" } = {}) {
       this.passthrough();
     },
   });
+
+  server.loadFixtures();
 
   return server;
 }
