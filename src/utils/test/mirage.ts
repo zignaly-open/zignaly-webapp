@@ -11,10 +11,7 @@ import dayjs from "dayjs";
 // so the env variables are passed to the cypress config object
 const TRADEAPI_URL =
   // @ts-ignore
-  typeof window !== "undefined" && typeof Cypress !== "undefined"
-    ? // @ts-ignore
-      Cypress.env("GATSBY_TRADEAPI_URL")
-    : process.env.GATSBY_TRADEAPI_URL;
+  window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL") : process.env.GATSBY_TRADEAPI_URL;
 
 // Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
@@ -160,8 +157,12 @@ export function makeServer({ environment = "test" } = {}) {
     },
   });
 
-  // Force load fixtures (disabled by default for test environment)
-  server.loadFixtures();
+  if (environment === "test") {
+    // Force load fixtures (disabled by default for test environment)
+    server.loadFixtures();
+    // Log network requests (disabled by default for test environment)
+    // server.logging = true;
+  }
 
   return server;
 }

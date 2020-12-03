@@ -6,7 +6,7 @@ import { makeServer } from "utils/test/mirage";
  * @typedef {import('miragejs/server').Server} Server
  */
 
-describe("Login", () => {
+describe("Signup", () => {
   /**
    * @type {Server}
    */
@@ -14,12 +14,16 @@ describe("Login", () => {
 
   beforeEach(() => {
     server = makeServer({ environment: "test" });
-    server.logging = true;
     cy.visit("/");
   });
 
   afterEach(() => {
     server.shutdown();
+  });
+
+  it("requires email", () => {
+    cy.get("[name=email]").type("joe@example.com{enter}");
+    cy.get(".errorText").should("contain", "Password cannot be empty");
   });
 
   it("requires password", () => {
