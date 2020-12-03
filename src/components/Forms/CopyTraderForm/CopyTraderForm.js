@@ -21,6 +21,7 @@ import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  * @property {Function} onClose
+ * @property {Function} onSuccess
  *
  */
 /**
@@ -29,7 +30,7 @@ import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const CopyTraderForm = ({ provider, onClose }) => {
+const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
@@ -57,7 +58,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    *
    * @typedef {Object} SubmitObject
    * @property {String} allocatedBalance
-   * @property {String} locked
+   * @property {String} transfer
    */
 
   /**
@@ -66,7 +67,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    if (!data.locked || data.locked.toLowerCase() === "locked") {
+    if (!data.transfer || data.transfer.toLowerCase() === "transfer") {
       if (
         validateExchange() &&
         validateAllocated(data.allocatedBalance) &&
@@ -93,11 +94,14 @@ const CopyTraderForm = ({ provider, onClose }) => {
               version: 2,
               exchangeInternalId: selectedExchange.internalId,
             };
-            dispatch(setProvider(payload2));
+            dispatch(setProvider(payload2, !provider.profitSharing));
             dashlyProviderEnabled();
             userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
             onClose();
+            if (provider.profitSharing) {
+              onSuccess();
+            }
           })
           .catch((e) => {
             dispatch(showErrorAlert(e));
@@ -107,7 +111,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
           });
       }
     } else {
-      setError("locked", { type: "patter", message: "" });
+      setError("transfer", { type: "patter", message: "" });
     }
   };
 
@@ -270,11 +274,17 @@ const CopyTraderForm = ({ provider, onClose }) => {
           </Alert>
         )}
         <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
-          <FormattedMessage id="trader.howmuch" values={{ quote: provider.copyTradingQuote }} />
+          {provider.profitSharing ? (
+            <FormattedMessage id="trader.howmuch.1" values={{ quote: provider.copyTradingQuote }} />
+          ) : (
+            <FormattedMessage id="trader.howmuch.2" values={{ quote: provider.copyTradingQuote }} />
+          )}
         </Typography>
-        <Typography className="para" variant="body1">
-          <FormattedMessage id="trader.everymove" />
-        </Typography>
+        {!provider.profitSharing && (
+          <Typography className="para" variant="body1">
+            <FormattedMessage id="trader.everymove" />
+          </Typography>
+        )}
         <Box
           alignItems="center"
           className="fieldBox"
@@ -310,7 +320,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
                       props.onChange(data);
                     }
                   }}
-                  placeholder={intl.formatMessage({ id: "trader.amount.placeholder" })}
+                  placeholder={intl.formatMessage({
+                    id: provider.profitSharing
+                      ? "trader.amount.placeholder.1"
+                      : "trader.amount.placeholder.2",
+                  })}
                   value={allocated}
                   variant="outlined"
                 />
@@ -359,7 +373,7 @@ const CopyTraderForm = ({ provider, onClose }) => {
               </span>
             </Box>
 
-            <label className={"customLabel " + (errors.locked ? "red" : "")}>
+            <label className={"customLabel " + (errors.transfer ? "red" : "")}>
               <FormattedMessage id="trader.copy.confirm" />
             </label>
 
@@ -373,11 +387,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
               <Controller
                 control={control}
                 defaultValue=""
-                name="locked"
+                name="transfer"
                 render={(props) => (
                   <TextField
                     className="customTextarea"
-                    error={!!errors.locked}
+                    error={!!errors.transfer}
                     fullWidth
                     multiline
                     onChange={(e) => {
@@ -402,7 +416,11 @@ const CopyTraderForm = ({ provider, onClose }) => {
             onClick={handleSubmitClick}
             type="submit"
           >
-            <FormattedMessage id="trader.start" />
+            {provider.profitSharing ? (
+              <FormattedMessage id="trader.transferfunds" />
+            ) : (
+              <FormattedMessage id="trader.start" />
+            )}
           </CustomButton>
         </Box>
       </Box>

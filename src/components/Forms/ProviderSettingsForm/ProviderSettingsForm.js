@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ToggleInput from "./ToggleInput";
 import ToggleDoubleInput from "./ToggleDoubleInput";
@@ -120,6 +120,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
       .then((response) => {
         checkAllocated(quotes, response, setHasAllocated);
         onUpdate();
+        dispatch(showSuccessAlert("", "srv.settings.update.alert"));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -193,7 +194,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
                   /* @ts-ignore */
                   value1={settings[getFieldName(item, 1)]}
                   /* @ts-ignore */
-                  value2={settings[getFieldName(item, 2)]}
+                  value2={settings[getFieldName(item, 2)] ? settings[getFieldName(item, 2)] : "#"}
                 />
               ))}
           </Box>

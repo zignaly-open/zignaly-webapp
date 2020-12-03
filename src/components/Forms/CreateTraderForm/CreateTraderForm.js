@@ -171,6 +171,7 @@ const CreateTraderForm = () => {
                   className="model"
                   display="flex"
                   flexDirection="row"
+                  justifyContent="space-between"
                   onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
                 >
                   <Box
@@ -233,7 +234,7 @@ const CreateTraderForm = () => {
             <>
               <ToggleButtonsExchangeType
                 exchangeType={exchangeType}
-                exchangeTypes={selectedModel !== MODEL_PROFIT_SHARING ? exchange.type : ["futures"]}
+                exchangeTypes={exchange.type}
                 setExchangeType={setExchangeType}
               />
               <Box
