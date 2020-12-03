@@ -6,12 +6,17 @@ import userData from "./fixtures/userData";
 import pairs from "./fixtures/pairs";
 import dayjs from "dayjs";
 
-let TRADEAPI_URL = process.env.GATSBY_TRADEAPI_URL;
+// Use proper TRADEAPI_URL value.
+// When this file is imported from cypress context we can't access process.env
+// so the env variables are passed to the cypress config object
+const TRADEAPI_URL =
+  // @ts-ignore
+  typeof window?.Cypress !== "undefined"
+    ? // @ts-ignore
+      Cypress.env("GATSBY_TRADEAPI_URL")
+    : process.env.GATSBY_TRADEAPI_URL;
 
-if (typeof Cypress !== "undefined") {
-  TRADEAPI_URL = Cypress.env("GATSBY_TRADEAPI_URL");
-}
-
+// Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
   root: false,
   embed: true,
@@ -155,6 +160,7 @@ export function makeServer({ environment = "test" } = {}) {
     },
   });
 
+  // Force load fixtures (disabled by default for test environment)
   server.loadFixtures();
 
   return server;
