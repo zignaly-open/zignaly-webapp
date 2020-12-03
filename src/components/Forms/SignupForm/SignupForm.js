@@ -17,7 +17,7 @@ const SignupForm = () => {
   const [ref] = useState("");
   const recaptchaRef = useRef(null);
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearErrors, setError, control } = formMethods;
+  const { errors, handleSubmit, register, clearErrors, control } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
