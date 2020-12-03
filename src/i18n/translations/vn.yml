@@ -87,6 +87,7 @@ dashboard.balance.available: "Khả dụng"
 dashboard.balance.invested: "Đã Đầu Tư"
 dashboard.balance.profit: "Lợi nhuận"
 dashboard.balance.historical: "Lịch sử"
+dashboard.balance.sync: "Sync Balance"
 dashboard.traders.copying: "Nhà giao dịch tôi đang sao chép:"
 dashboard.providers.following: "Nhà cung cấp tín hiệu Tôi đang theo dõi:"
 # CONFIRMATION DIALOGS
@@ -560,6 +561,7 @@ alert.forgotpassword.step1.body: "Một email hướng dẫn đã được gửi
 alert.forgotpassword.step3.body: "Mật khẩu của bạn đã được thiết lập lại. Bây giờ bạn có thể đăng nhập bằng mật khẩu mới!"
 srv.canceldisconnect.alert.title: "Success"
 srv.canceldisconnect.alert.body: "Your disconnection has been cancelled!"
+dashboard.balance.sync.alert: "Your balance has been successfully synchronized with exchange"
 copyt.canceldisconnect.title: "Cancel Disconnection"
 copyt.canceldisconnect.body: "Are you sure you want cancel your disconnection and resume copying this service?"
 # SIGNAL PROVIDER OPTIONS
