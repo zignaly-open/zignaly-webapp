@@ -191,7 +191,7 @@
     "cy:run": "cypress run --record --key=c6eac74f-5095-4c82-979c-5f97c8ebcdd9",
     "cy:test": "start-server-and-test develop http://localhost:3000 cy:open",
     "cy:ci": "start-server-and-test develop http://localhost:3000 cy:run",
-    "cy:ci:build": "start-server-and-test serve http://localhost:9000 cy:run",
+    "cy:ci:build": "CYPRESS_baseUrl=http://localhost:9000 start-server-and-test serve http://localhost:9000 cy:run",
     "semantic-release": "semantic-release"
   }
 }
