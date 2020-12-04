@@ -20,18 +20,12 @@ import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 import useProviderContext from "hooks/useProviderContext";
 import ProviderContext from "components/Provider/ProviderContext";
-<<<<<<< HEAD
-
-/**
- * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
-=======
 import { checkAllocated } from "../../utils/helpers";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
  * @typedef {import("../../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
 
->>>>>>> 707647eafdd6ac9b67011e5fce6b412fb98d73e4
  * @typedef {Object} LocationObject
  * @property {String} pathname
  */
@@ -83,11 +77,7 @@ const SignalProviders = (props) => {
     }
 
     return () => {
-<<<<<<< HEAD
-      setHasAllocated(false);
-=======
       setHasAllocated(true);
->>>>>>> 707647eafdd6ac9b67011e5fce6b412fb98d73e4
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
