@@ -21,8 +21,17 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
+  // Detect proper env file but it currently only works with dev env
+  const appStage = process.env.STAGE || "dev";
+
   // Assign env variables to cypress config
-  config = dotenvPlugin(config, { path: ".env.dev" }, true);
+  config = dotenvPlugin(
+    config,
+    {
+      path: `.env.${appStage}`,
+    },
+    true,
+  );
 
   // Skip examples
   config.ignoreTestFiles = "**/examples/*.spec.js";

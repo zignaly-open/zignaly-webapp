@@ -164,6 +164,10 @@ export function makeServer({ environment = "test" } = {}) {
         return new Response(status, {}, response);
       });
 
+      // this.post("/tz.php", () => {
+      //   return new Response(200);
+      // });
+
       // Allow unhandled requests on the current domain to pass through
       // Currently used to serve gatsby files
       this.urlPrefix = "/";
