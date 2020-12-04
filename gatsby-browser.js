@@ -10,12 +10,13 @@ import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
 import "whatwg-fetch";
-// import { makeServer } from "utils/mirage/server";
+import { makeServer } from "utils/mirage/server";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
 import { createServer, Response } from "miragejs";
 
+// Handle Mirage server
 if (window.Cypress) {
   // If your app makes requests to domains other than / (the current domain), add them
   // here so that they are also proxied from your app to the handleFromCypress function.
