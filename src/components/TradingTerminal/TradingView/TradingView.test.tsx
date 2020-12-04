@@ -22,6 +22,7 @@ class TradingViewMock {
 
 it("renders trading terminal correctly", async () => {
   // Mocked TradingView library attached to window object
+  // @ts-ignore
   window.TradingView = { widget: TradingViewMock };
 
   await act(async () => {

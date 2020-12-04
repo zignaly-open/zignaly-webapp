@@ -14,6 +14,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_TV_KEY }}
       - name: Install Dependencies
         run: npm ci
       - name: Check Style Lint
@@ -28,6 +31,8 @@ jobs:
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         #run: npm test -- "tradeApiClient"
         run: echo "skipping tests"
+      - name: Install submodules
+        run: git submodule update --init
       - name: Build
         run: npm run build:prod
       - name: Package & Release

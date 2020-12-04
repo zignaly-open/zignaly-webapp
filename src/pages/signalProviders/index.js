@@ -20,9 +20,18 @@ import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 import useProviderContext from "hooks/useProviderContext";
 import ProviderContext from "components/Provider/ProviderContext";
+<<<<<<< HEAD
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+=======
+import { checkAllocated } from "../../utils/helpers";
+
+/**
+ * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
+ * @typedef {import("../../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
+
+>>>>>>> 707647eafdd6ac9b67011e5fce6b412fb98d73e4
  * @typedef {Object} LocationObject
  * @property {String} pathname
  */
@@ -67,14 +76,18 @@ const SignalProviders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload));
+      dispatch(setProvider(payload, true));
     };
     if (providerId && providerId.length === 24) {
       loadProvider();
     }
 
     return () => {
+<<<<<<< HEAD
       setHasAllocated(false);
+=======
+      setHasAllocated(true);
+>>>>>>> 707647eafdd6ac9b67011e5fce6b412fb98d73e4
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId]);
@@ -101,7 +114,7 @@ const SignalProviders = (props) => {
         .providerExchangeSettingsGet(payload)
         .then((response) => {
           setSettings(response);
-          checkAllocated(response);
+          checkAllocated(quotes, response, setHasAllocated);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -110,22 +123,6 @@ const SignalProviders = (props) => {
   };
 
   useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
-
-  /**
-   * Check if user has allocated balance to any quote inside settings.
-   *
-   * @param {ProviderExchangeSettingsObject} settingsData Provider settings object.
-   *
-   * @returns {void}
-   */
-  const checkAllocated = (settingsData) => {
-    const someValuesAllocated = Object.keys(quotes).some((item) => {
-      const settingsKey = "positionSize" + item + "Value";
-      // @ts-ignore
-      return settingsData[settingsKey] > 0;
-    });
-    setHasAllocated(someValuesAllocated);
-  };
 
   if (!providerId) {
     // Render Browse page

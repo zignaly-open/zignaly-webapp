@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./ProviderSettingsForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ToggleInput from "./ToggleInput";
 import ToggleDoubleInput from "./ToggleDoubleInput";
@@ -17,6 +17,8 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ToggleTextarea from "./ToggleTextarea";
+import ProviderContext from "../../Provider/ProviderContext";
+import { checkAllocated } from "utils/helpers";
 
 /**
  *
@@ -28,7 +30,7 @@ import ToggleTextarea from "./ToggleTextarea";
  * @typedef {Object} DefaultProps
  * @property {ProviderExchangeSettingsObject} settings
  * @property {import('../../../services/tradeApiClient.types').QuoteAssetsDict} quotes
- * @property {Function} onUpdate
+ * @property {Function} onUpdate Callback to trigger when settings have updated.
  */
 /**
  * Provides the navigation bar for the dashboard.
@@ -48,6 +50,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
   const { handleSubmit } = formMethods;
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
+  const { setHasAllocated } = useContext(ProviderContext);
 
   const initTargets = () => {
     setProfitTargets(settings.takeProfitTargets);
@@ -114,8 +117,10 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
     });
     tradeApi
       .providerExchangeSettingsUpdate(payload)
-      .then(() => {
+      .then((response) => {
+        checkAllocated(quotes, response, setHasAllocated);
         onUpdate();
+        dispatch(showSuccessAlert("", "srv.settings.update.alert"));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -189,7 +194,7 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
                   /* @ts-ignore */
                   value1={settings[getFieldName(item, 1)]}
                   /* @ts-ignore */
-                  value2={settings[getFieldName(item, 2)]}
+                  value2={settings[getFieldName(item, 2)] ? settings[getFieldName(item, 2)] : "#"}
                 />
               ))}
           </Box>

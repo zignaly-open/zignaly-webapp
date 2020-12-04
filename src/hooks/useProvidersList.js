@@ -14,6 +14,7 @@ import {
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
+import { forceCheck } from "react-lazyload";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -250,6 +251,10 @@ const useProvidersList = (options) => {
   useEffect(() => {
     if (providers.list) {
       filterProviders(providers.list);
+      // Triger lazyloading check
+      setTimeout(() => {
+        forceCheck();
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);

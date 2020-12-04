@@ -11,6 +11,7 @@ import PaymentButton from "../PaymentButton";
 import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import SuccessBox from "../CopyTraderButton/SuccessBox";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -27,6 +28,7 @@ import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 const TraderHeaderInfo = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const [copyModal, showCopyModal] = useState(false);
+  const [copySuccessModal, showCopySuccessModal] = useState(false);
   const selectedExchangeProviderData = provider.exchangeInternalIds
     ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
     : undefined;
@@ -34,6 +36,14 @@ const TraderHeaderInfo = ({ provider }) => {
 
   const handleCopyModalClose = () => {
     showCopyModal(false);
+  };
+
+  const handleCopySuccessModalOpen = () => {
+    showCopySuccessModal(true);
+  };
+
+  const handleCopySuccessModalClose = () => {
+    showCopySuccessModal(false);
   };
 
   return (
@@ -172,7 +182,19 @@ const TraderHeaderInfo = ({ provider }) => {
         )}
       </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm onClose={handleCopyModalClose} provider={provider} />
+        <CopyTraderForm
+          onClose={handleCopyModalClose}
+          onSuccess={handleCopySuccessModalOpen}
+          provider={provider}
+        />
+      </Modal>
+      <Modal
+        onClose={handleCopySuccessModalClose}
+        persist={false}
+        size="small"
+        state={copySuccessModal}
+      >
+        <SuccessBox provider={provider} />
       </Modal>
     </Box>
   );

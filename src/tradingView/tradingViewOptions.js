@@ -1,7 +1,20 @@
 /* eslint-disable camelcase */
 
+import VcceDataFeed from "services/vcceDataFeed";
+
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("tradingView/charting_library/charting_library").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("services//tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ */
+
+/**
+ * @typedef {Object} WidgetOptions
+ * @property {String} tradeApiToken Trade API access token.
+ * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
+ * @property {string} symbol Crypto currency symbol.
+ * @property {boolean} darkStyle Dark style flag.
+ * @property {ExchangeConnectionEntity} exchange Exchange connection entity.
  */
 
 /**
@@ -76,34 +89,47 @@ export function mapExchangeConnectionToTradingViewId(exchangeName) {
  *
  * @export
  * @param {string} tradeViewSymbol Symbol
- * @param {ExchangeConnectionEntity} exchangeConnection Exchange connection entity.
+ * @param {ExchangeConnectionEntity} exchange Exchange connection entity.
  * @returns {string} TradingView Symbol with exchange id
  */
-export function getTradingViewExchangeSymbol(tradeViewSymbol, exchangeConnection) {
+export function getTradingViewExchangeSymbol(tradeViewSymbol, exchange) {
   const symbolSuffix =
-    exchangeConnection.exchangeName.toLowerCase() !== "bitmex" &&
-    exchangeConnection.exchangeType === "futures"
+    exchange.exchangeName.toLowerCase() !== "bitmex" && exchange.exchangeType === "futures"
       ? "PERP"
       : "";
   const symbolCode = tradeViewSymbol + symbolSuffix;
-  const exchangeId = mapExchangeConnectionToTradingViewId(
-    exchangeConnection.exchangeName || exchangeConnection.name,
-  );
+  const exchangeId = mapExchangeConnectionToTradingViewId(exchange.exchangeName || exchange.name);
   return `${exchangeId}:${symbolCode}`;
 }
 
 /**
  * Create Trading View data feed configuration.
  *
- * @param {string} symbol Crypto currency symbol.
- * @param {boolean} darkStyle Dark style flag.
+ * @param {WidgetOptions} options Configuration to create Trading View widget options
  *
- * @returns {Object<string, any>} Data feed options.
+ * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
-export function createWidgetOptions(symbol, darkStyle) {
+export function createWidgetOptions(options) {
+  let dataFeed = null;
+  const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
+
+  if (exchange.exchangeName.toLowerCase() === "vcce") {
+    // For VCCE we use a custom datafeed
+    const dataFeedOptions = {
+      exchange,
+      symbolsData,
+      tradeApiToken,
+    };
+    dataFeed = new VcceDataFeed(dataFeedOptions);
+  }
+  const isSelfHosted = Boolean(dataFeed);
+
   return {
-    // datafeed: dataFeed,
-    // library_path: process.env.GATSBY_BASE_PATH + "/charting_library/",
+    ...(isSelfHosted && {
+      // Load market data to the self hosted charting library
+      datafeed: dataFeed,
+      library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
+    }),
     autosize: true,
     charts_storage_api_version: "1.1",
     charts_storage_url: "https://saveload.tradingview.com",
@@ -117,11 +143,17 @@ export function createWidgetOptions(symbol, darkStyle) {
     ],
     fullscreen: false,
     hide_side_toolbar: false,
+    // @ts-ignore
     interval: "30",
     locale: "en",
     studies_overrides: {},
+    // For external hosted widget, we should prefix the symbol with the exchange using getTradingViewExchangeSymbol
+    // However for some reason we won't receive the quoteUpdate events, so we have to update the symbol after init.
     symbol,
+    // @ts-ignore
     theme: darkStyle ? "dark" : "light",
     user_id: "public_user_id",
+    // @ts-ignore
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
