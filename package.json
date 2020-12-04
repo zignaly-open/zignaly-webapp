@@ -93,7 +93,7 @@
     "moment": "2.24.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.7",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@semantic-release/exec": "^5.0.0",
@@ -113,10 +113,14 @@
     "babel-preset-gatsby": "^0.5.9",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chai": "^4.2.0",
+    "cypress": "^6.0.1",
+    "cypress-dark": "^1.7.14",
+    "cypress-dotenv": "^1.2.2",
     "dotenv": "^8.2.0",
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-formatjs": "^2.9.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -135,13 +139,14 @@
     "semantic-release": "^17.2.1",
     "semantic-release-jira-releases": "^0.7.2",
     "semantic-release-slack-bot": "^1.6.2",
+    "start-server-and-test": "^1.11.6",
     "style-loader": "^1.2.1",
     "stylelint": "^13.7.1",
     "stylelint-config-sass-guidelines": "^7.1.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "tsconfig-paths-webpack-plugin": "^3.3.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.1.2"
   },
   "commitlint": {
     "extends": [
@@ -179,9 +184,14 @@
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve",
-    "test": "STAGE=test jest -- tradeApiClient; npm run test:ui",
+    "test": "STAGE=test jest -- tradeApiClient",
     "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
     "test:coverage": "npm run test:ui -- --coverage",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run --record --key=c6eac74f-5095-4c82-979c-5f97c8ebcdd9",
+    "cy:test": "start-server-and-test develop http://localhost:3000 cy:open",
+    "cy:ci": "start-server-and-test develop http://localhost:3000 cy:run",
+    "cy:ci:build": "start-server-and-test serve http://localhost:9000 cy:run",
     "semantic-release": "semantic-release"
   }
 }

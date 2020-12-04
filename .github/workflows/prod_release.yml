@@ -35,6 +35,8 @@ jobs:
         run: git submodule update --init
       - name: Build
         run: npm run build:prod
+      - name: Integration Tests
+        run: npm run cy:ci:build
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}

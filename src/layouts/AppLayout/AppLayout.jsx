@@ -33,7 +33,7 @@ const AppLayout = (props) => {
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
-  useScript(withPrefix("widgets/externalWidgets.js"));
+  useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
   const { userpilot } = userPilotApi();
 
   // Merged english messages with selected by user locale messages
