@@ -15,6 +15,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {Function} onClose
  */
 /**
  * About us compoennt for CT profile.
@@ -23,7 +24,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
  * @returns {JSX.Element} Component JSX.
  */
 
-const CopyTraderEditProfileForm = ({ provider }) => {
+const CopyTraderEditProfileForm = ({ provider, onClose }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
@@ -59,8 +60,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           version: 2,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload, false));
+        dispatch(setProvider(providerPayload, true));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
+        onClose();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

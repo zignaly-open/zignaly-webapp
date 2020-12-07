@@ -78,9 +78,9 @@ const Passwords = ({ formMethods, edit }) => {
           error={!!errors.password}
           inputRef={(e) => {
             register(e, {
-              required: true,
+              required: intl.formatMessage({ id: "form.error.password" }),
               validate: () =>
-                strength >= 4 ? true : intl.formatMessage({ id: "form.error.password.weak" }),
+                strength >= 4 || intl.formatMessage({ id: "form.error.password.weak" }),
             });
             anchorEl.current = e;
           }}
