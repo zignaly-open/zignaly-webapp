@@ -11,7 +11,6 @@ import { useStoreUserData } from "../../hooks/useStoreUserSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
-import userPilotApi from "../../utils/userPilotApi";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
 
