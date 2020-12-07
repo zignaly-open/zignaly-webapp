@@ -34,7 +34,6 @@ import {
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
-  userExchangeAssetsResponseTransform,
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
   exchangeContractsResponseTransform,
@@ -77,6 +76,7 @@ import {
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsPayload} ExchangeAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ProviderAssetsPayload} ProviderAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
@@ -112,7 +112,6 @@ import {
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('./tradeApiClient.types').CloneActionResponseObject} CloneActionResponseObject
- * @typedef {import('./tradeApiClient.types').UserExchangeAssetObject} UserExchangeAssetObject
  * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
@@ -779,6 +778,20 @@ class TradeApiClient {
    */
   async exchangeAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeAssetsResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider exchange assets.
+   *
+   * @param {ProviderAssetsPayload} payload Get Provider Exchange Assets Payload.
+   * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+  async providerAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssetsForService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeAssetsResponseTransform(responseData);
@@ -1524,22 +1537,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return cloneProviderResponseTransform(responseData);
-  }
-
-  /**
-   * Get user exchange assets.
-   *
-   * @param {UserExchangeAssetsPayload} payload Get user exchange assets payload.
-   *
-   * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise that resolved list of user exchange assets.
-   *
-   * @memberof TradeApiClient
-   */
-  async userExchangeAssetsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getExchangeAssets";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userExchangeAssetsResponseTransform(responseData);
   }
 
   /**

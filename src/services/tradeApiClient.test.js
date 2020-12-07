@@ -602,16 +602,6 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(response, "Response is not an array of copiers entities.");
   }, 25000);
 
-  it("should get user's exchange assets.", async () => {
-    const payload = {
-      token: accessToken,
-      internalId: "Zignaly1586867845_5e95ae85e21ea",
-    };
-
-    const response = await client.userExchangeAssetsGet(payload);
-    assert.isArray(response, "Response is not an array of user exchange assets entities.");
-  }, 25000);
-
   //   it("should get create a post.", async () => {
   //     const payload = {
   //       token: accessToken,

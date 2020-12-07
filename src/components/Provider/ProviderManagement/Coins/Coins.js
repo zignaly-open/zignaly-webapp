@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./Coins.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import CoinsTable from "./CoinsTable";
-import useUserExchangeAssets from "../../../hooks/useUserExchangeAssets";
-import CoinsFilter from "./CoinsFilter";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import CoinsTable from "../../../Balance/Coins/CoinsTable";
+import CoinsFilter from "../../../Balance/Coins/CoinsFilter";
+import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useProviderAssets from "hooks/useProviderAssets";
 
 /**
  *
- * @typedef {import("../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ */
+/**
+ * @typedef {Object} DefaultProps
+ * @property {DefaultProviderGetObject} provider Provider object.
  */
 
-const Coins = () => {
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const Coins = ({ provider }) => {
   const [list, setList] = useState([]);
   const storeSettings = useStoreSettingsSelector();
-  const assets = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const assets = useProviderAssets(storeSettings.selectedExchange.internalId, provider.id);
   const data = Object.values(assets);
   const loading = data.length === 0;
 
@@ -50,7 +59,7 @@ const Coins = () => {
       {!loading && (
         <Box
           alignItems="flex-start"
-          className="coins"
+          className="providerCoins"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"

@@ -1030,6 +1030,7 @@ accounts.exchangedisconnected: "Exchange Disconnected"
 management.positions: "Positions"
 management.orders: "Orders"
 management.contracts: "Contracts"
+management.coins: "Coins"
 
 accounts.options.blacklist: "Global Blacklist"
 accounts.options.blacklist.help: "It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

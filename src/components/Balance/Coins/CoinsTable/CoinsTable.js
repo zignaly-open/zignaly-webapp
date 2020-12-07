@@ -10,7 +10,7 @@ import Table from "../../../Table";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
- * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
  * @typedef {import("@material-ui/core/styles").Theme} Theme
  */
@@ -21,7 +21,7 @@ import Table from "../../../Table";
  * @typedef {Object} DefaultProps
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
- * @property {Array<UserExchangeAssetObject>} list
+ * @property {Array<ExchangeAsset>} list
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
