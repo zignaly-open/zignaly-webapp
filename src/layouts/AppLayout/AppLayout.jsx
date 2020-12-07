@@ -36,7 +36,6 @@ const AppLayout = (props) => {
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
-  const { userpilot } = userPilotApi();
 
   // Merged english messages with selected by user locale messages
   // In this case all english data would be overridden to user selected locale, but untranslated
@@ -62,26 +61,19 @@ const AppLayout = (props) => {
     }
   }, []);
 
-  const hash = typeof window !== "undefined" ? window.location.hash : "";
-  const location = typeof window !== "undefined" ? window.location : null;
-  const pathname = location ? location.pathname : "";
+  const href = typeof window !== "undefined" ? window.location.href : "";
   useEffect(() => {
-    // Internal tracking for hash navigation
-    if (hash && location && location !== ref.current) {
+    // Internal tracking for navigation
+    if (href !== ref.current) {
       // userId can be undefined at login
       if (storeUserData.userId) {
+        const location = typeof window !== "undefined" ? window.location : null;
         triggerTz(location, ref.current);
         // Save prev location
-        ref.current = location;
+        ref.current = href;
       }
     }
-  }, [hash, storeUserData.userId]);
-
-  useEffect(() => {
-    if (userpilot) {
-      userpilot.reload();
-    }
-  }, [pathname]);
+  }, [href, storeUserData.userId]);
 
   return (
     <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>

@@ -4,13 +4,12 @@ import { Helmet } from "react-helmet";
 import { PersistGate } from "redux-persist/integration/react";
 import { store } from "./src/store/store.js";
 import { persistor } from "./src/store/store.js";
-import { triggerTz } from "./src/services/tz";
 import { navigateLogin } from "./src/services/navigation";
 import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
 import "whatwg-fetch";
-import { makeServer } from "utils/mirage/server";
+// import { makeServer } from "utils/mirage/server";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
@@ -125,9 +124,4 @@ export const onInitialClientRender = () => {
   // setInterval(() => {
   //   store.dispatch(showLoader(false));
   // }, 500);
-};
-
-export const onRouteUpdate = ({ location, prevLocation }) => {
-  // Triger internal tracking event
-  triggerTz(location, prevLocation);
 };
