@@ -405,6 +405,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ProviderAssetsPayload
+ * @property {string} exchangeInternalId
+ * @property {string} providerId
+ */
+
+/**
  *
  * @typedef {Object} PositionEntityTotals
  * @property {Number} openPositions
@@ -3062,6 +3068,7 @@ function createProviderFollowersListEmptyEntity() {
  * @property {string} exchCoin
  * @property {string} maxWithdrawAmount
  * @property {Array<CoinNetwork>} networks
+ * @property {string} coin
  */
 
 /**
@@ -3082,7 +3089,7 @@ export function exchangeAssetsResponseTransform(response) {
   return Object.entries(response).reduce(
     (res, [key, val]) => ({
       ...res,
-      [key]: exchangeAssetsItemTransform(val),
+      [key]: exchangeAssetsItemTransform(key, val),
     }),
     {},
   );
@@ -3090,12 +3097,15 @@ export function exchangeAssetsResponseTransform(response) {
 
 /**
  *
+ * @param {*} coin Exchange assets coin.
  * @param {*} exchangeAssetItem Exchange assets list response item.
  * @returns {ExchangeAssetsDict} Exchange assets.
  */
-function exchangeAssetsItemTransform(exchangeAssetItem) {
+function exchangeAssetsItemTransform(coin, exchangeAssetItem) {
   const emptyExchangeAssetsEntity = createExchangeAssetsEmptyEntity();
-  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem);
+  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem, {
+    coin: coin,
+  });
 
   return transformedResponse;
 }
@@ -3119,6 +3129,7 @@ function createExchangeAssetsEmptyEntity() {
     maxWithdrawAmount: "0.000000000000",
     exchCoin: "",
     networks: [],
+    coin: "",
   };
 }
 

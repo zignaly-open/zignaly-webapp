@@ -4,13 +4,13 @@ import { Box, Checkbox } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  */
 
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<UserExchangeAssetObject>} list
+ * @property {Array<ExchangeAsset>} list
  * @property {Function} onChange
  */
 
@@ -40,7 +40,7 @@ const CoinsFilter = ({ list, onChange }) => {
    * Filter Daily balance data
    *
    * @param {Boolean} value
-   * @returns {Array<UserExchangeAssetObject>}
+   * @returns {Array<ExchangeAsset>}
    */
 
   const filterData = (value) => {

@@ -2,25 +2,36 @@ import React, { useState, useEffect } from "react";
 import "./Coins.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import CoinsTable from "../../../Balance/Coins/CoinsTable";
-import useUserExchangeAssets from "../../../../hooks/useUserExchangeAssets";
 import CoinsFilter from "../../../Balance/Coins/CoinsFilter";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useProviderAssets from "hooks/useProviderAssets";
 
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ */
+/**
+ * @typedef {Object} DefaultProps
+ * @property {DefaultProviderGetObject} provider Provider object.
  */
 
-const Coins = () => {
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const Coins = ({ provider }) => {
   const [list, setList] = useState([]);
   const storeSettings = useStoreSettingsSelector();
-  const { loading, data } = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const assets = useProviderAssets(storeSettings.selectedExchange.internalId, provider.id);
+  const data = Object.values(assets);
+  const loading = data.length === 0;
 
   const initData = () => {
     setList(data);
   };
 
-  useEffect(initData, [data]);
+  useEffect(initData, [data.length]);
 
   /**
    * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.

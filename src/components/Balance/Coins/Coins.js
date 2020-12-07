@@ -14,13 +14,15 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 const Coins = () => {
   const [list, setList] = useState([]);
   const storeSettings = useStoreSettingsSelector();
-  const { loading, data } = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const assets = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const data = Object.values(assets);
+  const loading = data.length === 0;
 
   const initData = () => {
     setList(data);
   };
 
-  useEffect(initData, [data]);
+  useEffect(initData, [data.length]);
 
   /**
    * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
