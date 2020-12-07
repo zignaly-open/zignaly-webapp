@@ -78,5 +78,7 @@ export const userPilotExchangeConnected = (exchangeType) => {
 export const userPilotProviderEnabled = () => {
   const { userpilot } = userPilotApi();
 
-  userpilot.track("Provider Enabled", {});
+  if (userpilot) {
+    userpilot.track("Provider Enabled", {});
+  }
 };
