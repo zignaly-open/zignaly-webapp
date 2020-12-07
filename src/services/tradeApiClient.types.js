@@ -3893,68 +3893,6 @@ export function cloneProviderResponseTransform(response) {
 }
 
 /**
- * @typedef {Object} UserExchangeAssetObject
- * @property {String} balanceFree
- * @property {String} balanceFreeBTC
- * @property {String} balanceFreeUSDT
- * @property {String} balanceLocked
- * @property {String} balanceLockedBTC
- * @property {String} balanceLockedUSDT
- * @property {String} balanceTotal
- * @property {String} balanceTotalBTC
- * @property {String} balanceTotalExchCoin
- * @property {String} balanceTotalUSDT
- * @property {String} exchCoin
- * @property {String} name
- * @property {Array<*>} networks
- * @property {String} coin
- */
-
-/**
- * Transform User's exchange assets response.
- *
- * @param {*} response User's exchange assets response.
- * @returns {Array<UserExchangeAssetObject>} Transformed user exchange assets.
- */
-export function userExchangeAssetsResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object of user exchange assets mapping");
-  }
-
-  let transformedResponse = Object.values(response).map((item, index) => {
-    let emptyEntity = createEmptyUserExchangeAssetsEntity();
-    emptyEntity.coin = Object.keys(response)[index];
-    let transformedEntity = assign(emptyEntity, item);
-    return transformedEntity;
-  });
-
-  return transformedResponse;
-}
-
-/**
- * Create an empty user exchnage assets entity.
- * @returns {UserExchangeAssetObject} User exchange assets entity.
- */
-const createEmptyUserExchangeAssetsEntity = () => {
-  return {
-    balanceFree: "0",
-    balanceFreeBTC: "0",
-    balanceFreeUSDT: "0",
-    balanceLocked: "0",
-    balanceLockedBTC: "0",
-    balanceLockedUSDT: "0",
-    balanceTotal: "0",
-    balanceTotalBTC: "0",
-    balanceTotalExchCoin: "0",
-    balanceTotalUSDT: "0",
-    exchCoin: "",
-    name: "",
-    networks: [],
-    coin: "",
-  };
-};
-
-/**
  * @typedef {Object} UserAvailableBalanceObject
  * @property {Number} BNB
  * @property {Number} BNT

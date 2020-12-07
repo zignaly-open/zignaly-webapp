@@ -34,7 +34,6 @@ import {
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
-  userExchangeAssetsResponseTransform,
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
   exchangeContractsResponseTransform,
