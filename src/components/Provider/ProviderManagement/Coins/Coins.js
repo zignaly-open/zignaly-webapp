@@ -8,7 +8,7 @@ import useProviderAssets from "hooks/useProviderAssets";
 
 /**
  *
- * @typedef {import("../../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  */
 /**
@@ -34,7 +34,7 @@ const Coins = ({ provider }) => {
   useEffect(initData, [data.length]);
 
   /**
-   * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
+   * @param {Array<ExchangeAsset>} filtered Filtered equity data.
    * @returns {void}
    */
   const handleChange = (filtered) => {

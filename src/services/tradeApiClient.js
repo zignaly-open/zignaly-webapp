@@ -112,7 +112,6 @@ import {
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('./tradeApiClient.types').CloneActionResponseObject} CloneActionResponseObject
- * @typedef {import('./tradeApiClient.types').UserExchangeAssetObject} UserExchangeAssetObject
  * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity

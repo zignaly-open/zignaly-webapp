@@ -8,7 +8,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  *
- * @typedef {import("../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  */
 
 const Coins = () => {
@@ -25,7 +25,7 @@ const Coins = () => {
   useEffect(initData, [data.length]);
 
   /**
-   * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
+   * @param {Array<ExchangeAsset>} filtered Filtered equity data.
    * @returns {void}
    */
   const handleChange = (filtered) => {
