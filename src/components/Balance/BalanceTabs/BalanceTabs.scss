@@ -4,10 +4,13 @@
   width: 100%;
 
   .tabsBox {
-    border-bottom: solid 1px var(--border-color);
-
     .topBox {
       width: 100%;
+      border-bottom: solid 1px var(--border-color);
+    }
+
+    .tabsMenu {
+      border: none;
     }
 
     .tabPanel {
