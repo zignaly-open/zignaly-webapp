@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./Convert.scss";
 import { FormattedMessage } from "react-intl";
@@ -6,26 +6,33 @@ import BalanceManagement from "../BalanceManagement";
 import CustomButton from "../../../CustomButton";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
-import useExchangeAssets from "../../../../hooks/useExchangeAssets";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import ConvertTable from "./ConvertTable";
-import ModalPathContext from "../../ModalPathContext";
 import { isEmpty } from "lodash";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAssetsDict} ExchangeAssetsDict
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("./ConvertTable/ConvertTable").ExchangeAssetsWithName} ExchangeAssetsWithName
  */
 
-const Convert = () => {
-  const {
-    pathParams: { selectedAccount },
-  } = useContext(ModalPathContext);
+/**
+ * @typedef {Object} DefaultProps
+ * @property {ExchangeAssetsDict} assets Exchange assets
+ * @property {ExchangeConnectionEntity} selectedAccount Exchange assets
+ * @property {Function} loadData Exchange assets
+ * @property {Boolean} showHeader Boolean to hide/show tabs
+ */
+
+/**
+ * @param {DefaultProps} props Default props.
+ * @returns {JSX.Element} Component JSX.
+ */
+const Convert = ({ assets, loadData, selectedAccount, showHeader }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [updatedAt, setUpdatedAt] = useState(null);
   const [rowsSelected, setRowsSelected] = useState([]);
-  const assets = useExchangeAssets(selectedAccount.internalId, updatedAt);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
@@ -62,7 +69,7 @@ const Convert = () => {
       .then(() => {
         dispatch(showSuccessAlert("Success", "convert.success"));
         // Update coins table
-        setUpdatedAt(new Date());
+        loadData();
         // Reset selection
         setRowsSelected([]);
       })
@@ -85,44 +92,87 @@ const Convert = () => {
   };
 
   return (
-    <BalanceManagement>
-      <Box className="exchangeAccountConvert">
-        <Typography className="desc" variant="h3">
-          <FormattedMessage id="convert.description" />
-        </Typography>
-        <Typography variant="body1">
-          <FormattedMessage id="convert.note" />
-        </Typography>
-        <Box
-          alignItems="center"
-          className="convertAction"
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          <Typography variant="body1">
-            <FormattedMessage id="convert.selected" /> <b>{rowsSelected.length}</b>{" "}
-            <FormattedMessage id="convert.converto" />
-            <b> {totalSelectedBNB} BNB </b>
-            <FormattedMessage id="convert.net" />
-          </Typography>
-          <CustomButton
-            className="bgPurple"
-            disabled={!rowsSelected.length || isLoading}
-            loading={isLoading}
-            onClick={handleSubmit}
-          >
-            <FormattedMessage id="accounts.convert" />
-          </CustomButton>
-        </Box>
-        <ConvertTable
-          assets={convertAssets}
-          loading={isEmpty(assets)}
-          onSelect={onSelect}
-          rowsSelected={rowsSelected}
-        />
-      </Box>
-    </BalanceManagement>
+    <>
+      {showHeader ? (
+        <BalanceManagement>
+          <Box className="exchangeAccountConvert">
+            <Typography className="desc" variant="h3">
+              <FormattedMessage id="convert.description" />
+            </Typography>
+            <Typography variant="body1">
+              <FormattedMessage id="convert.note" />
+            </Typography>
+            <Box
+              alignItems="center"
+              className="convertAction"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <Typography variant="body1">
+                <FormattedMessage id="convert.selected" /> <b>{rowsSelected.length}</b>{" "}
+                <FormattedMessage id="convert.converto" />
+                <b> {totalSelectedBNB} BNB </b>
+                <FormattedMessage id="convert.net" />
+              </Typography>
+              <CustomButton
+                className="bgPurple"
+                disabled={!rowsSelected.length || isLoading}
+                loading={isLoading}
+                onClick={handleSubmit}
+              >
+                <FormattedMessage id="accounts.convert" />
+              </CustomButton>
+            </Box>
+            <ConvertTable
+              assets={convertAssets}
+              loading={isEmpty(assets)}
+              onSelect={onSelect}
+              rowsSelected={rowsSelected}
+            />
+          </Box>
+        </BalanceManagement>
+      ) : (
+        <>
+          <Box className="exchangeAccountConvert">
+            <Typography className="desc" variant="h3">
+              <FormattedMessage id="convert.description" />
+            </Typography>
+            <Typography variant="body1">
+              <FormattedMessage id="convert.note" />
+            </Typography>
+            <Box
+              alignItems="center"
+              className="convertAction"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-between"
+            >
+              <Typography variant="body1">
+                <FormattedMessage id="convert.selected" /> <b>{rowsSelected.length}</b>{" "}
+                <FormattedMessage id="convert.converto" />
+                <b> {totalSelectedBNB} BNB </b>
+                <FormattedMessage id="convert.net" />
+              </Typography>
+              <CustomButton
+                className="bgPurple"
+                disabled={!rowsSelected.length || isLoading}
+                loading={isLoading}
+                onClick={handleSubmit}
+              >
+                <FormattedMessage id="accounts.convert" />
+              </CustomButton>
+            </Box>
+            <ConvertTable
+              assets={convertAssets}
+              loading={isEmpty(assets)}
+              onSelect={onSelect}
+              rowsSelected={rowsSelected}
+            />
+          </Box>
+        </>
+      )}
+    </>
   );
 };
 

@@ -3,11 +3,11 @@ import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import Deposit from "../ExchangeAccountBalanceManagement/Deposit";
 import Withdraw from "../ExchangeAccountBalanceManagement/Withdraw";
-import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import ExchangeAccountConnect from "../ExchangeAccountConnect";
 import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 import ExchangeOrders from "../ExchangeOrders";
+import { ConvertWrapper } from "../ExchangeAccountBalanceManagement/Convert";
 
 /**
  * Render the content the account exchanges modal depending on the current path.
@@ -34,7 +34,7 @@ const ConnectExchangeViewContent = () => {
     case "withdraw":
       return <Withdraw />;
     case "convert":
-      return <Convert />;
+      return <ConvertWrapper />;
     case "orders":
       return <ExchangeOrders />;
   }
