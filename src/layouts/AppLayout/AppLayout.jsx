@@ -7,6 +7,7 @@ import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import { useStoreUserData } from "../../hooks/useStoreUserSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
@@ -28,6 +29,7 @@ import translations from "../../i18n/translations";
 const AppLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
+  const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
@@ -65,12 +67,15 @@ const AppLayout = (props) => {
   const pathname = location ? location.pathname : "";
   useEffect(() => {
     // Internal tracking for hash navigation
-    if (hash && location) {
-      triggerTz(location, ref.current);
-      // Save prev location
-      ref.current = location;
+    if (hash && location && location !== ref.current) {
+      // userId can be undefined at login
+      if (storeUserData.userId) {
+        triggerTz(location, ref.current);
+        // Save prev location
+        ref.current = location;
+      }
     }
-  }, [hash]);
+  }, [hash, storeUserData.userId]);
 
   useEffect(() => {
     if (userpilot) {
