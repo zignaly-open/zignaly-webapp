@@ -48,7 +48,7 @@ const Coins = () => {
       {!loading && (
         <Box
           alignItems="flex-start"
-          className="history"
+          className="coins"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"

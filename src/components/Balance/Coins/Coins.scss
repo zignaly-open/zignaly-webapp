@@ -1,9 +1,13 @@
-.history {
+.coins {
   width: 100%;
 
   .customTable {
     > div {
       box-shadow: none;
+    }
+
+    div[class*="MuiToolbar-root"] {
+      padding: 0;
     }
   }
 }
