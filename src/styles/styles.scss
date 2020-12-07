@@ -20,10 +20,8 @@ body {
 [data-os="win"] {
   /* Custom scrollbar for Windows */
   ::-webkit-scrollbar {
-    background-color: rgba(0, 0, 0, 0);
-    border-radius: 100px;
-    height: 8px;
-    width: 8px;
+    height: 16px;
+    width: 16px;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.09);
@@ -32,22 +30,42 @@ body {
 
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
+    border: 5px solid var(--background-color);
     border-radius: 100px;
 
-    &:active {
-      background: rgba(0, 0, 0, 0.61);
-      border-radius: 100px;
-    }
-  }
-
-  /* add vertical min-height & horizontal min-width */
-  ::-webkit-scrollbar-thumb {
     &:vertical {
-      min-height: 10px;
+      min-height: 30px;
     }
 
     &:horizontal {
-      min-width: 10px;
+      min-width: 30px;
+    }
+
+    &:hover {
+      // same color as scrollbar hover background
+      border: 5px solid #e8e8e8;
+    }
+
+    &:active {
+      background: rgba(0, 0, 0, 0.61);
+    }
+  }
+}
+
+[data-theme="dark"] {
+  &[data-os="win"] {
+    ::-webkit-scrollbar {
+      &:hover {
+        background-color: #353738;
+      }
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #909090;
+
+      &:hover {
+        border: 5px solid #353738;
+      }
     }
   }
 }
@@ -329,12 +347,6 @@ table {
   --ck-color-text: hsl(0, 0%, 98%);
   --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
   --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
-
-  &[data-os="win"] {
-    ::-webkit-scrollbar-thumb {
-      background: #909090;
-    }
-  }
 
   .iconPurple {
     filter: brightness(130%);
