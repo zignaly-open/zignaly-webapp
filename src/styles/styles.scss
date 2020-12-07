@@ -11,27 +11,62 @@ body {
 
 * {
   /* Hide scrollbar on Edge */
-  -ms-overflow-style: none;
+  // -ms-overflow-style: none;
+
   /* Force thin scrollbar on Firefox */
   scrollbar-width: 0;
 }
 
-::-webkit-scrollbar {
-  background: transparent;
-  width: 0;
-}
-
 [data-os="win"] {
-  /* Custom scrollbar for Windows (Chrome) */
+  /* Custom scrollbar for Windows */
   ::-webkit-scrollbar {
-    background: transparent;
-    height: 0;
-    width: 0;
+    height: 16px;
+    width: 16px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.09);
+    }
   }
 
   ::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 5px;
+    border: 5px solid var(--background-color);
+    border-radius: 100px;
+
+    &:vertical {
+      min-height: 30px;
+    }
+
+    &:horizontal {
+      min-width: 30px;
+    }
+
+    &:hover {
+      // same color as scrollbar hover background
+      border: 5px solid #e8e8e8;
+    }
+
+    &:active {
+      background: rgba(0, 0, 0, 0.61);
+    }
+  }
+}
+
+[data-theme="dark"] {
+  &[data-os="win"] {
+    ::-webkit-scrollbar {
+      &:hover {
+        background-color: #353738;
+      }
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #909090;
+
+      &:hover {
+        border: 5px solid #353738;
+      }
+    }
   }
 }
 
@@ -312,12 +347,6 @@ table {
   --ck-color-text: hsl(0, 0%, 98%);
   --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
   --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
-
-  &[data-os="win"] {
-    ::-webkit-scrollbar-thumb {
-      background: #909090;
-    }
-  }
 
   .iconPurple {
     filter: brightness(130%);
