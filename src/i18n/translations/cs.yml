@@ -1026,7 +1026,6 @@ management.positions: "Ch-Positions"
 management.orders: "Ch-Orders"
 management.contracts: "CH-Contracts"
 management.coins: "CH-Coins"
-management.convert: "CH-Convert"
 
 accounts.options.blacklist: "CH-Global Blacklist"
 accounts.options.blacklist.help: "CH-It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
