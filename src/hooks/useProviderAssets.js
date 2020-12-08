@@ -13,10 +13,9 @@ import { showErrorAlert } from "../store/actions/ui";
  *
  * @param {string} exchangeInternalId Exchange account internal id.
  * @param {string} providerId Provider id.
- * @param {Date} updatedAt Last updated date to force data refresh.
  * @returns {ExchangeAssetsDict} Exchange Assets.
  */
-const useProviderAssets = (exchangeInternalId, providerId, updatedAt = new Date()) => {
+const useProviderAssets = (exchangeInternalId, providerId) => {
   const [assets, setAssets] = useState({});
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
@@ -40,12 +39,7 @@ const useProviderAssets = (exchangeInternalId, providerId, updatedAt = new Date(
     }
   };
 
-  useEffect(loadData, [
-    exchangeInternalId,
-    providerId,
-    storeSession.tradeApi.accessToken,
-    updatedAt,
-  ]);
+  useEffect(loadData, [exchangeInternalId, providerId, storeSession.tradeApi.accessToken]);
 
   return assets;
 };

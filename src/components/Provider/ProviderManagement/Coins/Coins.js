@@ -23,8 +23,7 @@ import useProviderAssets from "hooks/useProviderAssets";
  */
 const Coins = ({ provider, selectedExchange }) => {
   const [list, setList] = useState([]);
-  const [updatedAt, setUpdatedAt] = useState(null);
-  const assets = useProviderAssets(selectedExchange.internalId, provider.id, updatedAt);
+  const assets = useProviderAssets(selectedExchange.internalId, provider.id);
   const data = Object.values(assets);
   const loading = data.length === 0;
 
@@ -65,12 +64,7 @@ const Coins = ({ provider, selectedExchange }) => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <CoinsTable
-            list={list}
-            loadData={() => setUpdatedAt(new Date())}
-            persistKey="exchangeAssets"
-            title={embedFilter}
-          />
+          <CoinsTable list={list} persistKey="exchangeAssets" title={embedFilter} />
         </Box>
       )}
     </>

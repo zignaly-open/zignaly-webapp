@@ -55,12 +55,7 @@ const Coins = () => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <CoinsTable
-            list={list}
-            loadData={() => {}}
-            persistKey="exchangeAssets"
-            title={embedFilter}
-          />
+          <CoinsTable list={list} persistKey="exchangeAssets" title={embedFilter} />
         </Box>
       )}
     </>

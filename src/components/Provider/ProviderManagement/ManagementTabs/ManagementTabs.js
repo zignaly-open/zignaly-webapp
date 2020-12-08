@@ -7,7 +7,6 @@ import { FormattedMessage } from "react-intl";
 import Contracts from "../Contracts";
 import Management from "../Management/Management";
 import Coins from "../Coins";
-import ConvertAssets from "../ConvertAssets";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
@@ -40,10 +39,6 @@ const ManagementTabs = ({ provider, selectedExchange }) => {
     {
       display: provider.profitSharing && provider.exchangeType.toLowerCase() === "spot",
       label: <FormattedMessage id="management.coins" />,
-    },
-    {
-      display: provider.profitSharing && provider.exchangeType.toLowerCase() === "spot",
-      label: <FormattedMessage id="management.convert" />,
     },
   ];
 
@@ -84,11 +79,6 @@ const ManagementTabs = ({ provider, selectedExchange }) => {
             {provider.exchangeType.toLowerCase() === "spot" && (
               <Coins provider={provider} selectedExchange={selectedExchange} />
             )}
-          </Box>
-        )}
-        {tabValue === 3 && (
-          <Box className="tabPanel">
-            <ConvertAssets provider={provider} selectedExchange={selectedExchange} />
           </Box>
         )}
       </Box>
