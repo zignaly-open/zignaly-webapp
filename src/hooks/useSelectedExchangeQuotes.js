@@ -20,12 +20,12 @@ const useSelectedExchangeQuotes = (exchangeInternalId, shouldExecute = true) => 
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const loadData = () => {
-    if (shouldExecute) {
+    if (shouldExecute && exchangeInternalId) {
       let payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
         version: 2,
-        ...(exchangeInternalId && { exchangeInternalId }),
+        exchangeInternalId: exchangeInternalId,
       };
 
       tradeApi
