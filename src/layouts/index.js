@@ -27,7 +27,7 @@ import AppLayout from "./AppLayout";
 const wrapRootWithLayout = (props) => {
   const { children, location } = props;
   const currentPath = location.pathname || "";
-  const PublicPage = () => <AppLayout>{children}</AppLayout>;
+  const PublicPage = () => <AppLayout forceLightTheme={true}>{children}</AppLayout>;
   const PrivatePage = () => (
     <AppLayout>
       <PrivateAreaLayout>{children}</PrivateAreaLayout>

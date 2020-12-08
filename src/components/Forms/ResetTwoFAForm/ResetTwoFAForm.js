@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
 import Modal from "../../Modal";
-import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -63,21 +62,20 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
       {loading && <CircularProgress color="primary" size={40} />}
       {!loading && (
         <>
-          <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
-            <Typography variant="h3">
-              <FormattedMessage id="security.2fa.title" />
-            </Typography>
+          <Typography variant="h3">2 Factor Authentication</Typography>
+          <Box
+            alignItems="center"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
             <label className="customLabel">
-              <Typography>
-                <FormattedMessage id="security.2fa.input" />
-              </Typography>
+              <Typography>Input Your Authentication Code</Typography>
             </label>
             {/* @ts-ignore */}
-            <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
+            <ReactCodeInput className="code-input" fields={6} onComplete={submitCode} />
           </Box>
-          <Typography className="link">
-            <FormattedMessage id="security.2fa.unavailable" />
-          </Typography>
         </>
       )}
     </Box>
