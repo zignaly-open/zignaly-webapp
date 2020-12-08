@@ -1067,6 +1067,7 @@ deposit.processing: "CH-Deposit processing time varies coin to coin and depends 
 deposit.transfer: "CH-Transfer Crypto"
 deposit.transfer.description: "CH-Deposit crypto to this account by withdrawing from any external wallet"
 deposit.waitingtime: "CH-Waiting time can take up to a few hours"
+deposit.time.alert: "CH-Please, take into consideration that once the status of the Deposit is “Ok”, It can take up to 3 hours to reflect in your Balance"
 
 withdraw.address: "CH-Recipient {coin} Address"
 withdraw.amount: "CH-Amount"

@@ -817,6 +817,7 @@ deposit.loss: "Gửi Coin hoặc token khác đến địa chỉ này có thể 
 deposit.memo.copied: "MEMO/tag sao chép."
 deposit.network: "Định Dạng Ví"
 deposit.note.onlysend: "Chỉ gửi {coin} đến địa chỉ này"
+deposit.time.alert: "Please, take into consideration that once the status of the Deposit is “Ok”, It can take up to 3 hours to reflect in your Balance"
 deposit.processing: "Thời gian sử lý tiền gửi giữa các đồng coin là khác nhau, và phụ thuộc chủ yếu vào hiệu suất của mạng lưới."
 deposit.transfer: "Chuyển Tiền Điện Tử"
 deposit.transfer.description: "Gửi tiền điện tử vào tài khoản này bằng cách rút tiền từ bất kỳ ví bên ngoài nào"

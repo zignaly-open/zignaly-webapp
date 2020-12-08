@@ -682,6 +682,7 @@ deposit.loss: "Wysłanie innej kryptowaluty lub tokena na ten adres może spowod
 deposit.memo.copied: "Skopiowano MEMO/Tag."
 deposit.network: "Wybierz sieć"
 deposit.note.onlysend: "Wysyłaj tylko {coin} na ten adres"
+deposit.time.alert: "Please, take into consideration that once the status of the Deposit is “Ok”, It can take up to 3 hours to reflect in your Balance"
 deposit.processing: "Czas przetwarzania depozytu różni się pomiędzy kryptowalutami i zależy głównie od wydajności sieci."
 deposit.transfer: "Transferuj Kryptowalutę"
 deposit.transfer.description: "Wpłać kryptowalutę na to konto, dokonując wypłaty z dowolnego zewnętrznego portfela"
