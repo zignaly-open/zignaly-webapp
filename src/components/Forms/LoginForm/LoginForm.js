@@ -50,6 +50,7 @@ const LoginForm = () => {
   const check2FA = (response) => {
     if (response.ask2FA) {
       showTwoFAModal(true);
+      setLoading(false);
     } else {
       dispatch(startTradeApiSession(response));
     }
@@ -81,9 +82,7 @@ const LoginForm = () => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        // setLoading(false);
+        setLoading(false);
       });
   };
 
