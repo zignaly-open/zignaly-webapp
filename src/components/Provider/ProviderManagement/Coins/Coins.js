@@ -3,27 +3,27 @@ import "./Coins.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import CoinsTable from "../../../Balance/Coins/CoinsTable";
 import CoinsFilter from "../../../Balance/Coins/CoinsFilter";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import useProviderAssets from "hooks/useProviderAssets";
 
 /**
  *
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 /**
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Provider object.
+ * @property {ExchangeConnectionEntity} selectedExchange Selected exchange account.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const Coins = ({ provider }) => {
+const Coins = ({ provider, selectedExchange }) => {
   const [list, setList] = useState([]);
-  const storeSettings = useStoreSettingsSelector();
-  const assets = useProviderAssets(storeSettings.selectedExchange.internalId, provider.id);
+  const assets = useProviderAssets(selectedExchange.internalId, provider.id);
   const data = Object.values(assets);
   const loading = data.length === 0;
 

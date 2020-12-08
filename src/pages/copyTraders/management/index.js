@@ -9,9 +9,11 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import ManagementTabs from "../../../components/Provider/ProviderManagement/ManagementTabs";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 const CopyTradersManagement = () => {
   const { provider } = useStoreViewsSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const intl = useIntl();
 
   return (
@@ -32,7 +34,7 @@ const CopyTradersManagement = () => {
       </Box>
 
       <Box className="tableBoxBox">
-        <ManagementTabs provider={provider} />
+        <ManagementTabs provider={provider} selectedExchange={selectedExchange} />
       </Box>
     </Box>
   );

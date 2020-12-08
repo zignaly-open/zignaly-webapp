@@ -10,15 +10,17 @@ import Coins from "../Coins";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Balance
+ * @property {ExchangeConnectionEntity} selectedExchange Selected exchange account.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementTabs = ({ provider }) => {
+const ManagementTabs = ({ provider, selectedExchange }) => {
   const [tabValue, setTabValue] = useState(0);
 
   const tabsList = [
@@ -74,7 +76,9 @@ const ManagementTabs = ({ provider }) => {
         {tabValue === 2 && (
           <Box className="tabPanel">
             {provider.exchangeType.toLowerCase() === "futures" && <Contracts provider={provider} />}
-            {provider.exchangeType.toLowerCase() === "spot" && <Coins provider={provider} />}
+            {provider.exchangeType.toLowerCase() === "spot" && (
+              <Coins provider={provider} selectedExchange={selectedExchange} />
+            )}
           </Box>
         )}
       </Box>

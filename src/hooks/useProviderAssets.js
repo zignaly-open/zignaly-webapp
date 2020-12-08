@@ -17,7 +17,6 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 const useProviderAssets = (exchangeInternalId, providerId) => {
   const [assets, setAssets] = useState({});
-
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
