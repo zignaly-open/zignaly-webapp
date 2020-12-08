@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import "./TwoFAForm.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import "./ResetTwoFAForm.scss";
+import { OutlinedInput, Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
-import Modal from "../../Modal";
+import { FormattedMessage, useIntl } from "react-intl";
+import CustomButton from "components/CustomButton";
+import { Alert } from "@material-ui/lab";
+import { useForm } from "react-hook-form";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -27,18 +30,20 @@ import Modal from "../../Modal";
 const ResetTwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
+  const { handleSubmit, register, errors, setError } = useForm();
 
   /**
    * Function to submit form.
    *
-   * @param {String} code verification code.
-   * @returns {void} None.
+   * @param {{key: string}} data Form data
+   * @returns {void}
    */
-  const submitCode = (code) => {
+  const onSubmit = (data) => {
     setLoading(true);
+    const { key } = data;
     const payload = {
-      code: code,
-      token: data.token,
+      key,
     };
     tradeApi
       .verify2FA(payload)
@@ -46,38 +51,52 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
         onSuccess();
       })
       .catch((e) => {
-        dispatch(showErrorAlert(e));
-        setLoading(false);
+        if (e.code === 72) {
+          setError("key", {
+            type: "manual",
+            message: intl.formatMessage({ id: "form.error.apikey.error" }),
+          });
+        } else {
+          dispatch(showErrorAlert(e));
+        }
       });
   };
 
   return (
     <Box
       alignItems="center"
-      className="twoFAForm"
+      className="resetTwoFAForm"
       display="flex"
       flexDirection="column"
       justifyContent="center"
     >
-      {loading && <CircularProgress color="primary" size={40} />}
-      {!loading && (
-        <>
-          <Typography variant="h3">2 Factor Authentication</Typography>
-          <Box
-            alignItems="center"
-            className="inputBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="start"
-          >
-            <label className="customLabel">
-              <Typography>Input Your Authentication Code</Typography>
-            </label>
-            {/* @ts-ignore */}
-            <ReactCodeInput className="code-input" fields={6} onComplete={submitCode} />
-          </Box>
-        </>
-      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
+          <Typography variant="h3">
+            <FormattedMessage id="security.2fa.disable" />
+          </Typography>
+          <Alert severity="info">
+            <FormattedMessage id="security.2fa.disable.desc" />
+          </Alert>
+          <label className="customLabel">
+            <Typography>
+              <FormattedMessage id="signalp.settings.apikey" />
+            </Typography>
+          </label>
+          <OutlinedInput
+            fullWidth={true}
+            inputRef={register({
+              required: intl.formatMessage({ id: "form.error.apikey" }),
+            })}
+            name="key"
+            className="customInput"
+          />
+          {errors.key && <span className="errorText">{errors.key.message}</span>}
+          <CustomButton className="submitButton" type="submit" loading={loading}>
+            <FormattedMessage id="security.2fa.disable" />
+          </CustomButton>
+        </Box>
+      </form>
     </Box>
   );
 };

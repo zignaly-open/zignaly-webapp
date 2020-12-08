@@ -7,6 +7,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
 import Modal from "../../Modal";
 import { FormattedMessage } from "react-intl";
+import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -25,8 +26,9 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const ResetTwoFAForm = ({ onSuccess, data }) => {
+const TwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
+  const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const dispatch = useDispatch();
 
   /**
@@ -60,6 +62,9 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
       flexDirection="column"
       justifyContent="center"
     >
+      <Modal onClose={() => showResetTwoFAModal(false)} size="small" state={resetTwoFAModal}>
+        <ResetTwoFAForm onSuccess={onSuccess} />
+      </Modal>
       {loading && <CircularProgress color="primary" size={40} />}
       {!loading && (
         <>
@@ -75,8 +80,10 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
             {/* @ts-ignore */}
             <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
           </Box>
-          <Typography className="link">
-            <FormattedMessage id="security.2fa.unavailable" />
+          <Typography>
+            <span className="link" onClick={() => showResetTwoFAModal(true)}>
+              <FormattedMessage id="security.2fa.unavailable" />
+            </span>
           </Typography>
         </>
       )}
@@ -84,4 +91,4 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
   );
 };
 
-export default ResetTwoFAForm;
+export default TwoFAForm;

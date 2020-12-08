@@ -1,5 +1,4 @@
-.twoFAForm {
-  background: $white;
+.resetTwoFAForm {
   padding: 60px 75px;
 
   h3 {
@@ -8,61 +7,17 @@
     margin-bottom: 40px;
   }
 
-  .inputBox {
-    margin-bottom: 40px;
-    width: fit-content;
-  }
-
-  .customInput {
-    input {
-      color: $lighterBlack;
-    }
-
-    svg {
-      color: $lightGrey;
-    }
-
-    &:hover {
-      fieldset {
-        border-color: $lightGrey;
-      }
-    }
-  }
-
   .customLabel {
-    color: $lighterBlack;
+    margin-top: 18px;
   }
 
-  .link {
-    font-size: 11px;
-    font-weight: 600;
-    margin-bottom: 40px;
-    text-transform: uppercase;
-  }
-
-  .codeInput {
-    text-align: center;
-    width: auto;
-  }
-
-  .customButton {
-    margin-top: 40px;
-
-    &[disabled] {
-      color: $white;
-    }
+  .submitButton {
+    margin-top: 18px;
   }
 }
 
 @include media("<=sm") {
-  .twoFAForm {
+  .resetTwoFAForm {
     padding: 60px 12px;
-
-    .codeInput {
-      input {
-        max-height: 46px;
-        max-width: 43px;
-      }
-    }
   }
 }
