@@ -22,6 +22,7 @@ import Table from "../../../Table";
  * @property {string | React.ReactNode} title Table title.
  * @property {string} persistKey Key to save display columns settings.
  * @property {Array<ExchangeAsset>} list
+ * @property {Function} loadData
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.

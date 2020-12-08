@@ -81,7 +81,9 @@ const ManagementTabs = ({ provider, selectedExchange }) => {
         {tabValue === 2 && (
           <Box className="tabPanel">
             {provider.exchangeType.toLowerCase() === "futures" && <Contracts provider={provider} />}
-            {provider.exchangeType.toLowerCase() === "spot" && <Coins provider={provider} />}
+            {provider.exchangeType.toLowerCase() === "spot" && (
+              <Coins provider={provider} selectedExchange={selectedExchange} />
+            )}
           </Box>
         )}
         {tabValue === 3 && (
