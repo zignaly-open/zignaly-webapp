@@ -72,6 +72,12 @@
       margin-right: 69px;
     }
   }
+
+  .transferBox {
+    .depositTimeAlert {
+      margin-top: 30px;
+    }
+  }
 }
 
 @include media("<=sm") {
