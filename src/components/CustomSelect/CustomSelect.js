@@ -61,7 +61,9 @@ const extractLabel = (option, options) => {
   } else if (options && options.length && typeof options[0] === "object") {
     // Find option object by val
     // @ts-ignore
-    return options.find((o) => o.val === option).label;
+    const found = options.find((o) => o.val === option);
+    // @ts-ignore
+    return found ? found.label : "";
   }
 
   return option.toString();

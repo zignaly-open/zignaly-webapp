@@ -8,22 +8,24 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  *
- * @typedef {import("../../../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
+ * @typedef {import("../../../services/tradeApiClient.types").ExchangeAsset} ExchangeAsset
  */
 
 const Coins = () => {
   const [list, setList] = useState([]);
   const storeSettings = useStoreSettingsSelector();
-  const { loading, data } = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const assets = useUserExchangeAssets(storeSettings.selectedExchange.internalId);
+  const data = Object.values(assets);
+  const loading = data.length === 0;
 
   const initData = () => {
     setList(data);
   };
 
-  useEffect(initData, [data]);
+  useEffect(initData, [data.length]);
 
   /**
-   * @param {Array<UserExchangeAssetObject>} filtered Filtered equity data.
+   * @param {Array<ExchangeAsset>} filtered Filtered equity data.
    * @returns {void}
    */
   const handleChange = (filtered) => {
@@ -48,7 +50,7 @@ const Coins = () => {
       {!loading && (
         <Box
           alignItems="flex-start"
-          className="history"
+          className="coins"
           display="flex"
           flexDirection="column"
           justifyContent="flex-start"

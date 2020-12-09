@@ -26,6 +26,11 @@ const LocalizationLanguages = [
     label: "Tiếng Việt",
     countryCode: "vn",
   },
+  {
+    locale: "pl",
+    label: "Polski",
+    countryCode: "pl",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {

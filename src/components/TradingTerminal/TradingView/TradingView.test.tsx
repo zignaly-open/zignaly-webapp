@@ -1,6 +1,6 @@
 import React from "react";
 import { renderLoggedIn, screen, waitForElementToBeRemoved, fireEvent, act } from "test-utils";
-import { makeServer } from "utils/test/mirage";
+import { makeServer } from "utils/mirage/server";
 import type { Server } from "miragejs/server";
 import TradingView from "./TradingView";
 

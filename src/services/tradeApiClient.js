@@ -34,7 +34,6 @@ import {
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
   providerCreateResponseTransform,
-  userExchangeAssetsResponseTransform,
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
   exchangeContractsResponseTransform,
@@ -51,6 +50,7 @@ import {
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
+ * @typedef {import('./tradeApiClient.types').UserBalancePayload} UserBalancePayload
  * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
@@ -76,6 +76,7 @@ import {
  * @typedef {import('./tradeApiClient.types').EditProvderPayload} EditProvderPayload
  * @typedef {import('./tradeApiClient.types').BaseAssetsPayload} BaseAssetsPayload
  * @typedef {import('./tradeApiClient.types').ExchangeAssetsPayload} ExchangeAssetsPayload
+ * @typedef {import('./tradeApiClient.types').ProviderAssetsPayload} ProviderAssetsPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfoPayload} ConnectedProviderUserInfoPayload
  * @typedef {import('./tradeApiClient.types').ConnectedProviderUserInfo} ConnectedProviderUserInfo
  * @typedef {import('./tradeApiClient.types').CoinRayToken} CoinRayToken
@@ -111,7 +112,6 @@ import {
  * @typedef {import('./tradeApiClient.types').UserExchangeAssetsPayload} UserExchangeAssetsPayload
  * @typedef {import('./tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('./tradeApiClient.types').CloneActionResponseObject} CloneActionResponseObject
- * @typedef {import('./tradeApiClient.types').UserExchangeAssetObject} UserExchangeAssetObject
  * @typedef {import('./tradeApiClient.types').SessionResponseObject} SessionResponseObject
  * @typedef {import('./tradeApiClient.types').ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import('./tradeApiClient.types').ProviderDataPointsEntity} ProviderDataPointsEntity
@@ -541,7 +541,7 @@ class TradeApiClient {
   /**
    * Get user's quick balance summary.
    *
-   * @param {UserEquityPayload} payload Get user balance summary payload.
+   * @param {UserBalancePayload} payload Get user balance summary payload.
    * @returns {Promise<UserBalanceEntity>} Promise that resolves user balance entity.
    * @memberof TradeApiClient
    */
@@ -778,6 +778,20 @@ class TradeApiClient {
    */
   async exchangeAssetsGet(payload) {
     const endpointPath = "/fe/api.php?action=getExchangeAssets";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return exchangeAssetsResponseTransform(responseData);
+  }
+
+  /**
+   * Get provider exchange assets.
+   *
+   * @param {ProviderAssetsPayload} payload Get Provider Exchange Assets Payload.
+   * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+  async providerAssetsGet(payload) {
+    const endpointPath = "/fe/api.php?action=getExchangeAssetsForService";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return exchangeAssetsResponseTransform(responseData);
@@ -1526,22 +1540,6 @@ class TradeApiClient {
   }
 
   /**
-   * Get user exchange assets.
-   *
-   * @param {UserExchangeAssetsPayload} payload Get user exchange assets payload.
-   *
-   * @returns {Promise<Array<UserExchangeAssetObject>>} Returns promise that resolved list of user exchange assets.
-   *
-   * @memberof TradeApiClient
-   */
-  async userExchangeAssetsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getExchangeAssets";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userExchangeAssetsResponseTransform(responseData);
-  }
-
-  /**
    * Get user exchange available balance.
    *
    * @param {UserEquityPayload} payload Get user balance payload.
@@ -1558,7 +1556,7 @@ class TradeApiClient {
   }
 
   /**
-   * Function to clone a provider.
+   * Get sesstion state.
    *
    * @param {AuthorizationPayload} payload Clone provider payload.
    *

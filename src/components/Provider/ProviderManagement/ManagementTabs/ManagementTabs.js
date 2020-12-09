@@ -6,18 +6,21 @@ import Orders from "../Orders/Orders";
 import { FormattedMessage } from "react-intl";
 import Contracts from "../Contracts";
 import Management from "../Management/Management";
+import Coins from "../Coins";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Balance
+ * @property {ExchangeConnectionEntity} selectedExchange Selected exchange account.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ManagementTabs = ({ provider }) => {
+const ManagementTabs = ({ provider, selectedExchange }) => {
   const [tabValue, setTabValue] = useState(0);
 
   const tabsList = [
@@ -30,8 +33,12 @@ const ManagementTabs = ({ provider }) => {
       label: <FormattedMessage id="management.orders" />,
     },
     {
-      display: provider.profitSharing,
+      display: provider.profitSharing && provider.exchangeType.toLowerCase() === "futures",
       label: <FormattedMessage id="management.contracts" />,
+    },
+    {
+      display: provider.profitSharing && provider.exchangeType.toLowerCase() === "spot",
+      label: <FormattedMessage id="management.coins" />,
     },
   ];
 
@@ -68,7 +75,10 @@ const ManagementTabs = ({ provider }) => {
         )}
         {tabValue === 2 && (
           <Box className="tabPanel">
-            <Contracts provider={provider} />
+            {provider.exchangeType.toLowerCase() === "futures" && <Contracts provider={provider} />}
+            {provider.exchangeType.toLowerCase() === "spot" && (
+              <Coins provider={provider} selectedExchange={selectedExchange} />
+            )}
           </Box>
         )}
       </Box>

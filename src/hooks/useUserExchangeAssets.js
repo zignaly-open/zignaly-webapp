@@ -5,54 +5,41 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").UserExchangeAssetObject} UserExchangeAssetObject
- */
-
-/**
- * @typedef {Object} HookData
- * @property {Array<UserExchangeAssetObject>} data
- * @property {Boolean} loading
+ * @typedef {import("../services/tradeApiClient.types").ExchangeAssetsDict} ExchangeAssetsDict
  */
 
 /**
  * Provides balance summary for exchange.
  *
  * @param {string} internalId ID of the exchange.
- * @returns {HookData} Balance.
+ * @returns {ExchangeAssetsDict} Balance.
  */
 const useUserExchangeAssets = (internalId) => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [assets, setAssets] = useState({});
 
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
-    setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
       internalId: internalId,
     };
 
     tradeApi
-      .userExchangeAssetsGet(payload)
+      .exchangeAssetsGet(payload)
       .then((response) => {
-        setData(response);
-        setLoading(false);
+        setAssets(response);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-        setLoading(false);
-        setData([]);
+        setAssets({});
       });
   };
 
   useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
 
-  return {
-    loading: loading,
-    data: data,
-  };
+  return assets;
 };
 
 export default useUserExchangeAssets;

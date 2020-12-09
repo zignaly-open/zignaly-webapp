@@ -345,6 +345,13 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} UserBalancePayload
+ * @property {string} token User access token.
+ * @property {String} exchangeInternalId Internal ID of exchange.
+ * @property {Boolean} [force] Flag to sync balance with exchange.
+ */
+
+/**
  * @typedef {Object} UserEquityPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
@@ -395,6 +402,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
 /**
  * @typedef {Object} ExchangeAssetsPayload
  * @property {string} internalId
+ */
+
+/**
+ * @typedef {Object} ProviderAssetsPayload
+ * @property {string} exchangeInternalId
+ * @property {string} providerId
  */
 
 /**
@@ -3055,6 +3068,7 @@ function createProviderFollowersListEmptyEntity() {
  * @property {string} exchCoin
  * @property {string} maxWithdrawAmount
  * @property {Array<CoinNetwork>} networks
+ * @property {string} coin
  */
 
 /**
@@ -3075,7 +3089,7 @@ export function exchangeAssetsResponseTransform(response) {
   return Object.entries(response).reduce(
     (res, [key, val]) => ({
       ...res,
-      [key]: exchangeAssetsItemTransform(val),
+      [key]: exchangeAssetsItemTransform(key, val),
     }),
     {},
   );
@@ -3083,12 +3097,15 @@ export function exchangeAssetsResponseTransform(response) {
 
 /**
  *
+ * @param {*} coin Exchange assets coin.
  * @param {*} exchangeAssetItem Exchange assets list response item.
  * @returns {ExchangeAssetsDict} Exchange assets.
  */
-function exchangeAssetsItemTransform(exchangeAssetItem) {
+function exchangeAssetsItemTransform(coin, exchangeAssetItem) {
   const emptyExchangeAssetsEntity = createExchangeAssetsEmptyEntity();
-  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem);
+  const transformedResponse = assign(emptyExchangeAssetsEntity, exchangeAssetItem, {
+    coin: coin,
+  });
 
   return transformedResponse;
 }
@@ -3112,6 +3129,7 @@ function createExchangeAssetsEmptyEntity() {
     maxWithdrawAmount: "0.000000000000",
     exchCoin: "",
     networks: [],
+    coin: "",
   };
 }
 
@@ -3873,68 +3891,6 @@ export function cloneProviderResponseTransform(response) {
 
   return { providerId: response };
 }
-
-/**
- * @typedef {Object} UserExchangeAssetObject
- * @property {String} balanceFree
- * @property {String} balanceFreeBTC
- * @property {String} balanceFreeUSDT
- * @property {String} balanceLocked
- * @property {String} balanceLockedBTC
- * @property {String} balanceLockedUSDT
- * @property {String} balanceTotal
- * @property {String} balanceTotalBTC
- * @property {String} balanceTotalExchCoin
- * @property {String} balanceTotalUSDT
- * @property {String} exchCoin
- * @property {String} name
- * @property {Array<*>} networks
- * @property {String} coin
- */
-
-/**
- * Transform User's exchange assets response.
- *
- * @param {*} response User's exchange assets response.
- * @returns {Array<UserExchangeAssetObject>} Transformed user exchange assets.
- */
-export function userExchangeAssetsResponseTransform(response) {
-  if (!isObject(response)) {
-    throw new Error("Response must be an object of user exchange assets mapping");
-  }
-
-  let transformedResponse = Object.values(response).map((item, index) => {
-    let emptyEntity = createEmptyUserExchangeAssetsEntity();
-    emptyEntity.coin = Object.keys(response)[index];
-    let transformedEntity = assign(emptyEntity, item);
-    return transformedEntity;
-  });
-
-  return transformedResponse;
-}
-
-/**
- * Create an empty user exchnage assets entity.
- * @returns {UserExchangeAssetObject} User exchange assets entity.
- */
-const createEmptyUserExchangeAssetsEntity = () => {
-  return {
-    balanceFree: "0",
-    balanceFreeBTC: "0",
-    balanceFreeUSDT: "0",
-    balanceLocked: "0",
-    balanceLockedBTC: "0",
-    balanceLockedUSDT: "0",
-    balanceTotal: "0",
-    balanceTotalBTC: "0",
-    balanceTotalExchCoin: "0",
-    balanceTotalUSDT: "0",
-    exchCoin: "",
-    name: "",
-    networks: [],
-    coin: "",
-  };
-};
 
 /**
  * @typedef {Object} UserAvailableBalanceObject

@@ -7,10 +7,10 @@ import SuccessAlert from "../../components/Alerts/SuccessAlert";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import Loader from "../../components/Loader";
 import useStoreUILoaderSelector from "../../hooks/useStoreUILoaderSelector";
+import { useStoreUserData } from "../../hooks/useStoreUserSelector";
 import { triggerTz } from "../../services/tz";
 import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
-import userPilotApi from "../../utils/userPilotApi";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
 
@@ -28,13 +28,13 @@ import translations from "../../i18n/translations";
 const AppLayout = (props) => {
   const { children } = props;
   const storeSettings = useStoreSettingsSelector();
+  const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
   const options = themeData(storeSettings.darkStyle);
   const createTheme = () => createMuiTheme(options);
   const theme = useMemo(createTheme, [storeSettings.darkStyle]);
   const ref = useRef(null);
-  useScript(withPrefix("widgets/externalWidgets.js"));
-  const { userpilot } = userPilotApi();
+  useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
   // Merged english messages with selected by user locale messages
   // In this case all english data would be overridden to user selected locale, but untranslated
@@ -60,23 +60,19 @@ const AppLayout = (props) => {
     }
   }, []);
 
-  const hash = typeof window !== "undefined" ? window.location.hash : "";
-  const location = typeof window !== "undefined" ? window.location : null;
-  const pathname = location ? location.pathname : "";
+  const href = typeof window !== "undefined" ? window.location.href : "";
   useEffect(() => {
-    // Internal tracking for hash navigation
-    if (hash && location) {
-      triggerTz(location, ref.current);
-      // Save prev location
-      ref.current = location;
+    // Internal tracking for navigation
+    if (href !== ref.current) {
+      // userId can be undefined at login
+      if (storeUserData.userId) {
+        const location = typeof window !== "undefined" ? window.location : null;
+        triggerTz(location, ref.current);
+        // Save prev location
+        ref.current = href;
+      }
     }
-  }, [hash]);
-
-  useEffect(() => {
-    if (userpilot) {
-      userpilot.reload();
-    }
-  }, [pathname]);
+  }, [href, storeUserData.userId]);
 
   return (
     <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
