@@ -112,7 +112,12 @@ const SignalProviders = (props) => {
     }
   };
 
-  useEffect(loadSettings, [selectedExchange.internalId, provider.id, quotesAvailable]);
+  useEffect(loadSettings, [
+    selectedExchange.internalId,
+    provider.id,
+    quotesAvailable,
+    provider.disable,
+  ]);
 
   if (!providerId) {
     // Render Browse page
