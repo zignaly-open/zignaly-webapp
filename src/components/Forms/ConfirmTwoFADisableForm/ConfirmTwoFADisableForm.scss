@@ -5,42 +5,7 @@
   width: 400px;
 
   h3 {
-    color: $lighterBlack;
     margin-bottom: 40px;
-  }
-
-  .inputBox {
-    margin-bottom: 40px;
-    width: 264px;
-
-    &:first-child {
-      margin-top: 40px;
-    }
-
-    .customLabel {
-      color: $lighterBlack;
-      margin-bottom: 12px;
-    }
-  }
-
-  .customInput {
-    input {
-      color: $lighterBlack;
-    }
-
-    svg {
-      color: $lightGrey;
-    }
-
-    &:hover {
-      fieldset {
-        border-color: $lightGrey;
-      }
-    }
-  }
-
-  .captchaBox {
-    margin-bottom: 35px;
   }
 
   .link {
@@ -48,10 +13,5 @@
     font-weight: 600;
     margin-bottom: 40px;
     text-transform: uppercase;
-  }
-
-  .errorText {
-    color: $red;
-    font-size: 11px;
   }
 }
