@@ -27,7 +27,7 @@ import AppLayout from "./AppLayout";
 const wrapRootWithLayout = (props) => {
   const { children, location } = props;
   const currentPath = location.pathname || "";
-  const PublicPage = () => <AppLayout>{children}</AppLayout>;
+  const PublicPage = () => <AppLayout forceLightTheme={true}>{children}</AppLayout>;
   const PrivatePage = () => (
     <AppLayout>
       <PrivateAreaLayout>{children}</PrivateAreaLayout>
@@ -48,6 +48,10 @@ const wrapRootWithLayout = (props) => {
   }
   // Recover don't use any layout.
   if (currentPath.match("/recover")) {
+    return PublicPage();
+  }
+  // Disable 2FA don't use any layout.
+  if (currentPath.match("/disable2fa")) {
     return PublicPage();
   }
 

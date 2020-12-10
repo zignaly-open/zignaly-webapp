@@ -5,6 +5,9 @@ import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
+import Modal from "../../Modal";
+import { FormattedMessage } from "react-intl";
+import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -25,6 +28,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
  */
 const TwoFAForm = ({ onSuccess, data }) => {
   const [loading, setLoading] = useState(false);
+  const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const dispatch = useDispatch();
 
   /**
@@ -58,23 +62,29 @@ const TwoFAForm = ({ onSuccess, data }) => {
       flexDirection="column"
       justifyContent="center"
     >
+      <Modal onClose={() => showResetTwoFAModal(false)} size="small" state={resetTwoFAModal}>
+        <ResetTwoFAForm token={data.token} />
+      </Modal>
       {loading && <CircularProgress color="primary" size={40} />}
       {!loading && (
         <>
-          <Typography variant="h3">2 Factor Authentication</Typography>
-          <Box
-            alignItems="center"
-            className="inputBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="start"
-          >
+          <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
+            <Typography variant="h3">
+              <FormattedMessage id="security.2fa.title" />
+            </Typography>
             <label className="customLabel">
-              <Typography>Input Your Authentication Code</Typography>
+              <Typography>
+                <FormattedMessage id="security.2fa.input" />
+              </Typography>
             </label>
             {/* @ts-ignore */}
-            <ReactCodeInput className="code-input" fields={6} onComplete={submitCode} />
+            <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
           </Box>
+          <Typography>
+            <span className="link" onClick={() => showResetTwoFAModal(true)}>
+              <FormattedMessage id="security.2fa.unavailable" />
+            </span>
+          </Typography>
         </>
       )}
     </Box>

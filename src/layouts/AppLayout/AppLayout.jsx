@@ -17,6 +17,7 @@ import translations from "../../i18n/translations";
 /**
  * @typedef {Object} PrivateAreaLayoutProps
  * @property {Object} children
+ * @property {Boolean} [forceLightTheme]
  */
 
 /**
@@ -26,13 +27,14 @@ import translations from "../../i18n/translations";
  * @returns {JSX.Element} Component.
  */
 const AppLayout = (props) => {
-  const { children } = props;
+  const { children, forceLightTheme } = props;
   const storeSettings = useStoreSettingsSelector();
   const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
-  const options = themeData(storeSettings.darkStyle);
+  const darkStyle = !forceLightTheme && storeSettings.darkStyle;
+  const options = themeData(darkStyle);
   const createTheme = () => createMuiTheme(options);
-  const theme = useMemo(createTheme, [storeSettings.darkStyle]);
+  const theme = useMemo(createTheme, [darkStyle]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -46,12 +48,12 @@ const AppLayout = (props) => {
   );
 
   useLayoutEffect(() => {
-    document.documentElement.setAttribute("data-theme", storeSettings.darkStyle ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", darkStyle ? "dark" : "light");
     // Avoid Chrome translation, this complements meta tag translation see:
     // https://github.com/facebook/react/issues/11538
     document.documentElement.setAttribute("class", "notranslate");
     document.documentElement.setAttribute("translate", "no");
-  }, [storeSettings.darkStyle]);
+  }, [darkStyle]);
 
   useLayoutEffect(() => {
     if (window.navigator.userAgent.includes("Windows")) {
