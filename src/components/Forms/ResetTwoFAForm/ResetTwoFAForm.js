@@ -1,27 +1,11 @@
 import React, { useState } from "react";
 import "./ResetTwoFAForm.scss";
-import {
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Box,
-  Typography,
-  CircularProgress,
-} from "@material-ui/core";
+import { Radio, RadioGroup, FormControlLabel, Box, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import CustomButton from "components/CustomButton";
-import { Alert } from "@material-ui/lab";
-import { useForm } from "react-hook-form";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
-
-/**
- * @typedef {import('react').ChangeEvent} ChangeEvent
- * @typedef {import('react').KeyboardEvent} KeyboardEvent
- * @typedef {import('../../../services/tradeApiClient.types').UserEntity} UserEntity
- */
 
 /**
  * @typedef {Object} DefaultProps
@@ -70,16 +54,16 @@ const ResetTwoFAForm = ({ token }) => {
           <FormattedMessage id="security.2fa.reset.question" />
         </Typography>
         <RadioGroup
-          className="answers"
           aria-label="answer"
+          className="answers"
           name="answer"
-          value={answer}
           onChange={(e) => setAnswer(e.target.value)}
+          value={answer}
         >
           <FormControlLabel
-            value="yes"
             control={<Radio />}
             label={<FormattedMessage id="general.yes" />}
+            value="yes"
           />
           {answer === "yes" &&
             (!success ? (
@@ -96,9 +80,9 @@ const ResetTwoFAForm = ({ token }) => {
               </Typography>
             ))}
           <FormControlLabel
-            value="no"
             control={<Radio />}
             label={<FormattedMessage id="general.no" />}
+            value="no"
           />
           {answer === "no" && (
             <Typography>

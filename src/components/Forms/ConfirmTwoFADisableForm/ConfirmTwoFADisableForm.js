@@ -86,16 +86,16 @@ const ConfirmTwoFADisableForm = ({ token, setVerified }) => {
           </Typography>
         </label>
         <OutlinedInput
+          className="customInput"
           fullWidth={true}
           inputRef={register({
             required: intl.formatMessage({ id: "form.error.apikey" }),
           })}
           name="apiKey"
           placeholder={intl.formatMessage({ id: "signalp.settings.apikey" })}
-          className="customInput"
         />
         {errors.apiKey && <span className="errorText">{errors.apiKey.message}</span>}
-        <CustomButton className="submitButton" type="submit" loading={loading}>
+        <CustomButton className="submitButton" loading={loading} type="submit">
           <FormattedMessage id="security.2fa.disable" />
         </CustomButton>
       </Box>
