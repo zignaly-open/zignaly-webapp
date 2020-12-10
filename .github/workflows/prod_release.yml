@@ -38,7 +38,7 @@ jobs:
       - name: Integration Tests
         # We can't test production build because it isn't built to use mirage
         # run: npm run cy:ci:prod
-        # run: npm run cy:ci
+        ## run: npm run cy:ci
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
