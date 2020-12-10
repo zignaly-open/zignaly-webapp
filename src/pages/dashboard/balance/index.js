@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./balance.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
