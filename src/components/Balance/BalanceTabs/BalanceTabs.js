@@ -5,7 +5,7 @@ import "./BalanceTabs.scss";
 import History from "../History";
 import Coins from "../Coins";
 import { FormattedMessage } from "react-intl";
-import ReloadBalanceButton from "../SyncBalanceButton";
+import SyncBalanceButton from "../SyncBalanceButton";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultDailyBalanceEntity} DefaultDailyBalanceEntity
@@ -13,13 +13,14 @@ import ReloadBalanceButton from "../SyncBalanceButton";
  * @typedef {Object} DefaultProps
  * @property {DefaultDailyBalanceEntity} dailyBalance Daily balance.
  * @property {ExchangeConnectionEntity} selectedExchange Daily balance.
+ * @property {Function} refreshBalance Function to refresh balance summary.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
+const BalanceTabs = ({ dailyBalance, selectedExchange, refreshBalance }) => {
   const [tabValue, setTabValue] = useState(0);
 
   /**
@@ -71,7 +72,7 @@ const BalanceTabs = ({ dailyBalance, selectedExchange }) => {
           justifyContent="space-between"
         >
           <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
-          <ReloadBalanceButton selectedExchange={selectedExchange} />
+          <SyncBalanceButton refreshBalance={refreshBalance} selectedExchange={selectedExchange} />
         </Box>
         {tabValue === 0 && (
           <Box className="tabPanel">

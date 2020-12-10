@@ -16,37 +16,38 @@ import { showErrorAlert } from "store/actions/ui";
  * Provides balance summary for exchange.
  *
  * @param {string} internalId Internal exchange id.
+ * @param {Date} [updatedAt] last refresh time.
  * @returns {BalanceHookData} Balance.
  */
-const useBalance = (internalId) => {
+const useBalance = (internalId, updatedAt = new Date()) => {
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
   const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();
 
-  useEffect(() => {
+  const loadData = () => {
     setLoading(true);
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: internalId,
-      };
 
-      tradeApi
-        .userBalanceGet(payload)
-        .then((data) => {
-          setBalance(data);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+
+    tradeApi
+      .userBalanceGet(payload)
+      .then((data) => {
+        setBalance(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
   return {
     balance: balance,
