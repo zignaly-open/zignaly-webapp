@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./balance.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
@@ -19,8 +19,7 @@ import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
   const { selectedExchange } = useStoreSettingsSelector();
-  const [updatedAt, setUpdatedAt] = useState(null);
-  const { balance, balanceLoading } = useBalance(selectedExchange.internalId, updatedAt);
+  const { balance, balanceLoading, refreshBalance } = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 
   return (
@@ -73,7 +72,7 @@ const Balance = () => {
         <Box className="historyBox">
           <BalanceTabs
             dailyBalance={dailyBalance}
-            refreshBalance={() => setUpdatedAt(new Date())}
+            refreshBalance={refreshBalance}
             selectedExchange={selectedExchange}
           />
         </Box>

@@ -10,21 +10,26 @@ import { showErrorAlert } from "store/actions/ui";
  * @typedef {Object} BalanceHookData
  * @property {UserBalanceEntity} balance
  * @property {Boolean} balanceLoading
+ * @property {Function} refreshBalance
  */
 
 /**
  * Provides balance summary for exchange.
  *
  * @param {string} internalId Internal exchange id.
- * @param {Date} [updatedAt] last refresh time.
  * @returns {BalanceHookData} Balance.
  */
-const useBalance = (internalId, updatedAt = new Date()) => {
+const useBalance = (internalId) => {
   const [loading, setLoading] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState(null);
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
   const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();
+
+  const refreshBalance = () => {
+    setUpdatedAt(new Date());
+  };
 
   const loadData = () => {
     setLoading(true);
@@ -52,6 +57,7 @@ const useBalance = (internalId, updatedAt = new Date()) => {
   return {
     balance: balance,
     balanceLoading: loading,
+    refreshBalance: refreshBalance,
   };
 };
 
