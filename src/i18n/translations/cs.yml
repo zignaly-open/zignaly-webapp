@@ -1140,6 +1140,7 @@ profile.photo: "CH-Profile Picture"
 profile.username: "CH-Username"
 profile.userid: "CH-User ID"
 profile.error.name: "CH-Name is reuired of min 5 and max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
+profile.changeemailtext: "CH-Click here to change your email!"
 
 # MONTHS
 m.jan: "CH-JAN"
@@ -1411,6 +1412,7 @@ action.reset: "CH-Reset Password"
 action.saveData: "CH-Save Data"
 action.saveSettings: "CH-Save Settings"
 action.forgot: "CH-Forgot Password"
+action.changeemail: "CH-Change Email"
 
 # FORM
 form.button.save: "CH-Save"

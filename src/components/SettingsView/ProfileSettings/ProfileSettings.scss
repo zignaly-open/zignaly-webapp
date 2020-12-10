@@ -4,6 +4,22 @@
     margin-top: 11px;
   }
 
+  .emailBox {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 11px;
+
+    .userId {
+      margin-top: 0;
+    }
+
+    .editEmailButton {
+      margin-left: 10px;
+    }
+  }
+
   .inputBox {
     @include media(">sm") {
       max-width: 250px;

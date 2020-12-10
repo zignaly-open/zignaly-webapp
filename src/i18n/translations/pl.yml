@@ -746,6 +746,7 @@ profile.email: "E-mail"
 profile.photo: "Zdjęcie profilowe"
 profile.username: "Nazwa Użytkownika"
 profile.userid: "Identyfikator użytkownika"
+profile.changeemailtext: "Click here to change your email!"
 # MONTHS
 m.jan: "STY"
 m.feb: "LUT"
@@ -974,6 +975,7 @@ action.reset: "Zresetuj hasło"
 action.saveData: "Zapisz dane"
 action.saveSettings: "Zapisz ustawienia"
 action.forgot: "Zapomniałem hasła"
+action.changeemail: "Change Email"
 # FORM
 form.error.quote: "Wybierz ofertę"
 # "valid" = available over here? I don't understand that "Amount should be valid" construction

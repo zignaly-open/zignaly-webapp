@@ -1153,6 +1153,7 @@ profile.photo: "Profile Picture"
 profile.username: "Username"
 profile.userid: "User ID"
 profile.error.name: "Name is reuired of min 5 and max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
+profile.changeemailtext: "Click here to change your email!"
 
 # MONTHS
 m.jan: "JAN"
@@ -1425,6 +1426,7 @@ action.reset: "Reset Password"
 action.saveData: "Save Data"
 action.saveSettings: "Save Settings"
 action.forgot: "Forgot Password"
+action.changeemail: "Change Email"
 
 # FORM
 form.button.save: "Save"
