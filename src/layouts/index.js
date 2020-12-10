@@ -50,6 +50,10 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/recover")) {
     return PublicPage();
   }
+  // Disable 2FA don't use any layout.
+  if (currentPath.match("/disable2fa")) {
+    return PublicPage();
+  }
 
   return PrivatePage();
 };

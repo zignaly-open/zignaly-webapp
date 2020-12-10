@@ -1536,7 +1536,7 @@ class TradeApiClient {
    */
   async disable2FAVisit(payload) {
     const endpointPath = "/fe/api.php?action=disable2FAVisit";
-    const responseData = await this.doRequest(endpointPath, { payload, reason: "2FA" });
+    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
 
     return responseData;
   }
@@ -1552,7 +1552,7 @@ class TradeApiClient {
    */
   async disable2FAConfirm(payload) {
     const endpointPath = "/fe/api.php?action=disable2FAConfirm";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
 
     return responseData;
   }

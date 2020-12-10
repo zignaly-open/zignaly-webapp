@@ -1,1 +1,1 @@
-export { default } from "./RequestResetTwoFAForm";
+export { default } from "./ConfirmTwoFADisableForm";
