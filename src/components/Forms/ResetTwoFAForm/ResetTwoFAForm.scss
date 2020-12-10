@@ -1,18 +1,18 @@
 .resetTwoFAForm {
-  padding: 60px 75px;
+  padding: 60px;
 
   h3 {
     color: $lighterBlack;
     font-size: 27px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
-  .customLabel {
+  .answers {
     margin-top: 18px;
   }
 
-  .submitButton {
-    margin-top: 18px;
+  .answerAction {
+    margin: 6px 18px 10px;
   }
 }
 

@@ -63,7 +63,7 @@ const TwoFAForm = ({ onSuccess, data }) => {
       justifyContent="center"
     >
       <Modal onClose={() => showResetTwoFAModal(false)} size="small" state={resetTwoFAModal}>
-        <ResetTwoFAForm onSuccess={onSuccess} />
+        <ResetTwoFAForm token={data.token} />
       </Modal>
       {loading && <CircularProgress color="primary" size={40} />}
       {!loading && (

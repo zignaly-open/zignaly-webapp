@@ -1021,6 +1021,11 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} Disable2FAConfirmPayload
+ * @property {string} apiKey An api key used to connect an exchange to zignaly
+ */
+
+/**
  * Transform user entity response to typed object.
  *
  * @export

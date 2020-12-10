@@ -144,6 +144,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetProfitSharingBalanceHistoryPayload} GetProfitSharingBalanceHistoryPayload
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
+ * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
  */
 
 /**
@@ -1503,6 +1504,54 @@ class TradeApiClient {
    */
   async forgotPasswordStep3(payload) {
     const endpointPath = "/fe/api.php?action=forgottenPassword3Step";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Request 2FA Disable
+   *
+   * @param {AuthorizationPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FARequest(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FARequest";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Visit 2FA reset link.
+   *
+   * @param {AuthorizationPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FAVisit(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FAVisit";
+    const responseData = await this.doRequest(endpointPath, { payload, reason: "2FA" });
+
+    return responseData;
+  }
+
+  /**
+   * Disable 2FA
+   *
+   * @param {Disable2FAConfirmPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FAConfirm(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FAConfirm";
     const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;

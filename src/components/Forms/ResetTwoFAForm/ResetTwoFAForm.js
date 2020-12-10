@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import "./ResetTwoFAForm.scss";
-import { OutlinedInput, Box, Typography, CircularProgress } from "@material-ui/core";
-import ReactCodeInput from "react-verification-code-input";
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
@@ -9,6 +15,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CustomButton from "components/CustomButton";
 import { Alert } from "@material-ui/lab";
 import { useForm } from "react-hook-form";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -18,8 +25,7 @@ import { useForm } from "react-hook-form";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {Function} onSuccess
- * @property {UserEntity} data
+ * @property {string} token
  */
 
 /**
@@ -27,38 +33,24 @@ import { useForm } from "react-hook-form";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const ResetTwoFAForm = ({ onSuccess, data }) => {
+const ResetTwoFAForm = ({ token }) => {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [answer, setAnswer] = useState("");
   const dispatch = useDispatch();
-  const intl = useIntl();
-  const { handleSubmit, register, errors, setError } = useForm();
 
-  /**
-   * Function to submit form.
-   *
-   * @param {{key: string}} data Form data
-   * @returns {void}
-   */
-  const onSubmit = (data) => {
+  const submit = () => {
     setLoading(true);
-    const { key } = data;
     const payload = {
-      key,
+      token,
     };
     tradeApi
-      .verify2FA(payload)
+      .disable2FARequest(payload)
       .then(() => {
-        onSuccess();
+        setSuccess(true);
       })
       .catch((e) => {
-        if (e.code === 72) {
-          setError("key", {
-            type: "manual",
-            message: intl.formatMessage({ id: "form.error.apikey.error" }),
-          });
-        } else {
-          dispatch(showErrorAlert(e));
-        }
+        dispatch(showErrorAlert(e));
       });
   };
 
@@ -70,33 +62,51 @@ const ResetTwoFAForm = ({ onSuccess, data }) => {
       flexDirection="column"
       justifyContent="center"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
-          <Typography variant="h3">
-            <FormattedMessage id="security.2fa.disable" />
-          </Typography>
-          <Alert severity="info">
-            <FormattedMessage id="security.2fa.disable.desc" />
-          </Alert>
-          <label className="customLabel">
-            <Typography>
-              <FormattedMessage id="signalp.settings.apikey" />
-            </Typography>
-          </label>
-          <OutlinedInput
-            fullWidth={true}
-            inputRef={register({
-              required: intl.formatMessage({ id: "form.error.apikey" }),
-            })}
-            name="key"
-            className="customInput"
+      <Box alignItems="start" display="flex" flexDirection="column">
+        <Typography variant="h3">
+          <FormattedMessage id="security.2fa.disable" />
+        </Typography>
+        <Typography>
+          <FormattedMessage id="security.2fa.reset.question" />
+        </Typography>
+        <RadioGroup
+          className="answers"
+          aria-label="answer"
+          name="answer"
+          value={answer}
+          onChange={(e) => setAnswer(e.target.value)}
+        >
+          <FormControlLabel
+            value="yes"
+            control={<Radio />}
+            label={<FormattedMessage id="general.yes" />}
           />
-          {errors.key && <span className="errorText">{errors.key.message}</span>}
-          <CustomButton className="submitButton" type="submit" loading={loading}>
-            <FormattedMessage id="security.2fa.disable" />
-          </CustomButton>
-        </Box>
-      </form>
+          {answer === "yes" &&
+            (!success ? (
+              <CustomButton
+                className="submitButton answerAction"
+                loading={loading}
+                onClick={submit}
+              >
+                <FormattedMessage id="security.2fa.reset.send" />
+              </CustomButton>
+            ) : (
+              <Typography className="callout1 answerAction">
+                <FormattedMessage id="security.2fa.reset.sent" />
+              </Typography>
+            ))}
+          <FormControlLabel
+            value="no"
+            control={<Radio />}
+            label={<FormattedMessage id="general.no" />}
+          />
+          {answer === "no" && (
+            <Typography>
+              <FormattedMessage id="security.2fa.reset.support" />
+            </Typography>
+          )}
+        </RadioGroup>
+      </Box>
     </Box>
   );
 };
