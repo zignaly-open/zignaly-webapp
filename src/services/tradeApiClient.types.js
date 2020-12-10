@@ -1266,6 +1266,8 @@ export function positionsResponseTransform(response) {
 export function positionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
+  const dateFormat =
+    positionItem.profitSharing && !positionItem.isCopyTrader ? "YYYY/MM/DD" : "YYYY/MM/DD HH:mm";
   const nowDate = moment();
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
@@ -1407,7 +1409,7 @@ export function positionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     ageSeconds: openDateMoment.diff(nowDate),
-    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format(dateFormat) : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
       positionEntity.buyPrice,
@@ -1420,7 +1422,7 @@ export function positionItemTransform(positionItem) {
     ),
     netProfitStyle: getValueType(positionEntity.netProfit),
     openDateMoment: openDateMoment,
-    openDateReadable: positionEntity.openDate ? openDateMoment.format("YYYY/MM/DD HH:mm") : "-",
+    openDateReadable: positionEntity.openDate ? openDateMoment.format(dateFormat) : "-",
     priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
     profitStyle: getValueType(positionEntity.profit),
     providerLink: composeProviderLink(),
