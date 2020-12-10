@@ -14,6 +14,7 @@ import { getDailyUserBalance } from "store/actions/user";
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} DefaultProps
  * @property {ExchangeConnectionEntity} selectedExchange
+ * @property {Function} refreshBalance Function to refresh balance summary.
  */
 /**
  * Component to sync balance with exchange.
@@ -21,7 +22,7 @@ import { getDailyUserBalance } from "store/actions/user";
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const SyncBalanceButton = ({ selectedExchange }) => {
+const SyncBalanceButton = ({ selectedExchange, refreshBalance }) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -38,12 +39,13 @@ const SyncBalanceButton = ({ selectedExchange }) => {
       tradeApi
         .userBalanceGet(payload)
         .then(() => {
-          dispatch(showSuccessAlert("", "dashboard.balance.sync.alert"));
           const historicalPayload = {
             token: storeSession.tradeApi.accessToken,
             exchangeInternalId: selectedExchange.internalId,
           };
+          refreshBalance();
           dispatch(getDailyUserBalance(historicalPayload));
+          dispatch(showSuccessAlert("", "dashboard.balance.sync.alert"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));

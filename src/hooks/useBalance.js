@@ -10,6 +10,7 @@ import { showErrorAlert } from "store/actions/ui";
  * @typedef {Object} BalanceHookData
  * @property {UserBalanceEntity} balance
  * @property {Boolean} balanceLoading
+ * @property {Function} refreshBalance
  */
 
 /**
@@ -20,37 +21,43 @@ import { showErrorAlert } from "store/actions/ui";
  */
 const useBalance = (internalId) => {
   const [loading, setLoading] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState(null);
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
   const dispatch = useDispatch();
 
   const storeSession = useStoreSessionSelector();
 
-  useEffect(() => {
-    setLoading(true);
-    const loadData = () => {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: internalId,
-      };
+  const refreshBalance = () => {
+    setUpdatedAt(new Date());
+  };
 
-      tradeApi
-        .userBalanceGet(payload)
-        .then((data) => {
-          setBalance(data);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+  const loadData = () => {
+    setLoading(true);
+
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      exchangeInternalId: internalId,
     };
-    loadData();
-  }, [internalId, storeSession.tradeApi.accessToken]);
+
+    tradeApi
+      .userBalanceGet(payload)
+      .then((data) => {
+        setBalance(data);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
 
   return {
     balance: balance,
     balanceLoading: loading,
+    refreshBalance: refreshBalance,
   };
 };
 

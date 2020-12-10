@@ -1,6 +1,6 @@
 import React from "react";
 import "./balance.scss";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";
@@ -19,7 +19,7 @@ import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
   const { selectedExchange } = useStoreSettingsSelector();
-  const { balance } = useBalance(selectedExchange.internalId);
+  const { balance, balanceLoading, refreshBalance } = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 
   return (
@@ -54,15 +54,27 @@ const Balance = () => {
             <CryptoComposition dailyBalance={dailyBalance} />
           )}
         </Box>
-        <Box className="balanceBox">
-          {selectedExchange.exchangeType === "futures" ? (
+        <Box
+          alignItems="center"
+          className="balanceBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          {balanceLoading ? (
+            <CircularProgress color="primary" size={40} />
+          ) : selectedExchange.exchangeType === "futures" ? (
             <FuturesAvailableBalance balance={balance} selectedExchange={selectedExchange} />
           ) : (
             <SpotAvailableBalance balance={balance} selectedExchange={selectedExchange} />
           )}
         </Box>
         <Box className="historyBox">
-          <BalanceTabs dailyBalance={dailyBalance} selectedExchange={selectedExchange} />
+          <BalanceTabs
+            dailyBalance={dailyBalance}
+            refreshBalance={refreshBalance}
+            selectedExchange={selectedExchange}
+          />
         </Box>
       </Box>
     </>
