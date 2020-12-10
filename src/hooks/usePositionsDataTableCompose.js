@@ -799,6 +799,9 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderViewActionButton(dataIndex) {
     const position = positions[dataIndex];
+    if (position.profitSharing && !position.isCopyTrader) {
+      return null;
+    }
     return (
       <div className="actions">
         <Link to={`/position/${position.positionId}`}>
