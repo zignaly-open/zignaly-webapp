@@ -32,6 +32,35 @@ import { Alert } from "@material-ui/lab";
  */
 
 /**
+ * @param {string} [multiSide] Side for multi order
+ * @returns {JSX.Element} JSX
+ */
+const PriceControl = ({ multiSide, lastPrice, priceChange, symbolData, entryStrategy }) => {
+  const { errors, register } = useFormContext();
+  const name = multiSide === "short" ? "limitPrice_short" : "price";
+  const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
+  return (
+    <FormControl>
+      <HelperLabel descriptionId="terminal.price.help" labelId={label} />
+      <Box alignItems="center" display="flex">
+        <OutlinedInput
+          className="outlineInput"
+          defaultValue={lastPrice}
+          error={!!errors[name]}
+          inputRef={register({
+            validate: (value) => !isNaN(value) && parseFloat(value) > 0,
+          })}
+          name={name}
+          onChange={priceChange}
+        />
+        <div className="currencyBox">{symbolData.quote}</div>
+      </Box>
+      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+    </FormControl>
+  );
+};
+
+/**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
  */
@@ -77,9 +106,12 @@ const StrategyPanel = (props) => {
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
     { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
-    { label: formatMessage({ id: "terminal.strategy.multi" }), val: "multi" },
     { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
+
+  if (selectedExchange.exchangeType === "futures") {
+    entryStrategy.push({ label: formatMessage({ id: "terminal.strategy.multi" }), val: "multi" });
+  }
 
   if (!isCopyProvider) {
     entryStrategyOptions.push({
@@ -87,33 +119,6 @@ const StrategyPanel = (props) => {
       val: "import",
     });
   }
-
-  /**
-   * @param {string} [multi] Side for multi order
-   * @returns {JSX.Element} JSX
-   */
-  const PriceControl = (multi) => {
-    const name = entryType === "multi" ? `multi${multi}` : "price";
-    return (
-      <FormControl>
-        <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
-        <Box alignItems="center" display="flex">
-          <OutlinedInput
-            className="outlineInput"
-            defaultValue={lastPrice}
-            error={!!errors[name]}
-            inputRef={register({
-              validate: (value) => !isNaN(value) && parseFloat(value) > 0,
-            })}
-            name={name}
-            onChange={priceChange}
-          />
-          <div className="currencyBox">{symbolData.quote}</div>
-        </Box>
-        {errors[name] && <span className="errorText">{errors[name].message}</span>}
-      </FormControl>
-    );
-  };
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -176,13 +181,29 @@ const StrategyPanel = (props) => {
           </Alert>
         )}
         {entryStrategy !== "market" ? (
-          entryType === "multi" ? (
+          entryStrategy === "multi" ? (
             <>
-              <PriceControl multi="long" />
-              <PriceControl multi="short" />
+              <PriceControl
+                multiSide="long"
+                lastPrice={lastPrice}
+                priceChange={priceChange}
+                symbolData={symbolData}
+                entryStrategy={entryStrategy}
+              />
+              <PriceControl
+                multiSide="short"
+                lastPrice={lastPrice}
+                symbolData={symbolData}
+                entryStrategy={entryStrategy}
+              />
             </>
           ) : (
-            <PriceControl />
+            <PriceControl
+              lastPrice={lastPrice}
+              priceChange={priceChange}
+              symbolData={symbolData}
+              entryStrategy={entryStrategy}
+            />
           )
         ) : (
           <input name="price" ref={register} type="hidden" />
