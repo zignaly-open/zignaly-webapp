@@ -24,6 +24,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import { Alert } from "@material-ui/lab";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -76,6 +77,7 @@ const StrategyPanel = (props) => {
   const entryStrategyOptions = [
     { label: formatMessage({ id: "terminal.strategy.limit" }), val: "limit" },
     { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
+    { label: formatMessage({ id: "terminal.strategy.multi" }), val: "multi" },
     { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
 
@@ -85,6 +87,33 @@ const StrategyPanel = (props) => {
       val: "import",
     });
   }
+
+  /**
+   * @param {string} [multi] Side for multi order
+   * @returns {JSX.Element} JSX
+   */
+  const PriceControl = (multi) => {
+    const name = entryType === "multi" ? `multi${multi}` : "price";
+    return (
+      <FormControl>
+        <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
+        <Box alignItems="center" display="flex">
+          <OutlinedInput
+            className="outlineInput"
+            defaultValue={lastPrice}
+            error={!!errors[name]}
+            inputRef={register({
+              validate: (value) => !isNaN(value) && parseFloat(value) > 0,
+            })}
+            name={name}
+            onChange={priceChange}
+          />
+          <div className="currencyBox">{symbolData.quote}</div>
+        </Box>
+        {errors[name] && <span className="errorText">{errors[name].message}</span>}
+      </FormControl>
+    );
+  };
 
   return (
     <Box bgcolor="grid.main" className={"panel strategyPanel expanded"}>
@@ -102,7 +131,7 @@ const StrategyPanel = (props) => {
         </Box>
       </Box>
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
-        {selectedExchange.exchangeType === "futures" && (
+        {selectedExchange.exchangeType === "futures" && entryStrategy !== "multi" && (
           <FormControl className="entryType">
             <Controller
               as={
@@ -141,24 +170,20 @@ const StrategyPanel = (props) => {
             </Box>
           </FormControl>
         )}
+        {entryStrategy === "multi" && (
+          <Alert severity="info">
+            <FormattedMessage id="terminal.strategy.multi.info" />
+          </Alert>
+        )}
         {entryStrategy !== "market" ? (
-          <FormControl>
-            <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                defaultValue={lastPrice}
-                error={!!errors.price}
-                inputRef={register({
-                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
-                })}
-                name="price"
-                onChange={priceChange}
-              />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-            {errors.price && <span className="errorText">{errors.price.message}</span>}
-          </FormControl>
+          entryType === "multi" ? (
+            <>
+              <PriceControl multi="long" />
+              <PriceControl multi="short" />
+            </>
+          ) : (
+            <PriceControl />
+          )
         ) : (
           <input name="price" ref={register} type="hidden" />
         )}
