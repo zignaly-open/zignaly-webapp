@@ -108,7 +108,7 @@ export const onInitialClientRender = () => {
   const sessionValid = verifySessionData(token, sessionData);
   // Root page handles the correct redirection manually.
   if (path !== "/") {
-    const isPrivateArea = !path.match(/login|signup|recover|disable2fa/g);
+    const isPrivateArea = !path.match(/login|signup|recover|disable2fa|changeEmail/g);
     if (isPrivateArea) {
       // Redirect to login when navigating private pages with expired session.
       if (!sessionValid) {

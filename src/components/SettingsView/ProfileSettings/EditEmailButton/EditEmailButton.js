@@ -40,7 +40,7 @@ const EditEmailButton = () => {
       justifyContent="flex-start"
     >
       {loading ? (
-        <CircularProgress color="primary" size={35} />
+        <CircularProgress color="primary" size={29} />
       ) : (
         <Tooltip placement="top" title={<FormattedMessage id="profile.changeemailtext" />}>
           <span>

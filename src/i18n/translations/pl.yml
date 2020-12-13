@@ -21,6 +21,7 @@ menu.positionview: "Zobacz pozycję"
 login.title: "Logowanie"
 signup.title: "Rejestracja"
 recover.title: "Odzyskaj hasło"
+changeemail.title: "Change Email"
 recover.error: "Link wygasł! Rozpocznij proces ponownie ze strony logowania!"
 # BALANCE
 balance.available: "Dostępne środki"
