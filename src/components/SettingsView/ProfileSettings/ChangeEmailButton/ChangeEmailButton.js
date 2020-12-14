@@ -9,11 +9,36 @@ import EditIcon from "@material-ui/icons/Edit";
 import { FormattedMessage } from "react-intl";
 import { endTradeApiSession } from "store/actions/session";
 import { navigateLogin } from "services/navigation";
+import { ConfirmDialog } from "../../../Dialogs";
 
 const ChangeEmailButton = () => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  /**
+   * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
+   * @type {ConfirmDialogConfig} initConfirmConfig
+   */
+  const initConfirmConfig = {
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  };
+
+  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+
+  /**
+   *
+   * @returns {void} None.
+   */
+  const confirmChange = () => {
+    setConfirmConfig({
+      titleTranslationId: "changeemail.confirm.title",
+      messageTranslationId: "changeemail.confirm.body",
+      visible: true,
+    });
+  };
 
   const startChangeEmailProcess = () => {
     setLoading(true);
@@ -43,12 +68,17 @@ const ChangeEmailButton = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={startChangeEmailProcess}
+        setConfirmConfig={setConfirmConfig}
+      />
       {loading ? (
         <CircularProgress color="primary" size={29} />
       ) : (
         <Tooltip placement="top" title={<FormattedMessage id="profile.changeemailtext" />}>
           <span>
-            <EditIcon className="emailEditIcon" color="primary" onClick={startChangeEmailProcess} />
+            <EditIcon className="emailEditIcon" color="primary" onClick={confirmChange} />
           </span>
         </Tooltip>
       )}
