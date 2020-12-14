@@ -560,6 +560,8 @@ signalp.settings.blacklist.help: "Sẽ không mở bất kỳ vị thế nào ch
 signalp.settings.whitelist.help: "Chỉ mở các vị thế có trong danh sách này. Chèn mã được phân tách bằng dấu phẩy. (ví dụ: XRPBNB, BTCUSDT...), các mã riêng lẻ sẽ không có hiệu lực (ví dụ: XRP,BTC..)"
 signalp.settings.amounts.help: "Giá trị tối thiểu cho {quote} là {notional}, nhưng nếu bạn muốn sử dụng lệnh dừng lỗ hoặc chia lợi nhuận của bạn thành nhiều mục tiêu, mỗi mục tiêu phải cao hơn số tiền tối thiểu này, bao gồm cả mức dừng lỗ. Bạn có thể chọn một giá trị cố định hoặc % của tổng giá trị Đồng Coin này mà bạn có (bao gồm cả các vị thế đang mở). Nếu bạn không muốn giao dịch với {quote}, chỉ cần để giá trị ở mức 0."
 signalp.settings.amounts: "{quote} độ lớn vị thế"
+signalp.settings.allowedside: "Allowed Side"
+signalp.settings.allowedside.help: "Choose to receive LONG, SHORT or BOTH types of signals"
 alert.profileedit.title: "Chỉnh sửa hồ sơ"
 alert.profileedit.body: "Thông tin hồ sơ của bạn đã được cập nhật thành công!"
 alert.forgotpassword.step1.title: "Yêu cầu xử lý"

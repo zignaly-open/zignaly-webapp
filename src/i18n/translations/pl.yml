@@ -466,6 +466,8 @@ signalp.settings.blacklist.help: "Nie otworzy żadnej pozycji dla symboli zawart
 signalp.settings.whitelist.help: "Otworzy pozycje tylko dla symboli zawartych tutaj dla tego Providera. Wstaw symbole oddzielone przecinkami. Dozwolone są tylko symbole (przykład: XRPBNB), pojedyncze waluty nie będą brane pod uwagę."
 signalp.settings.amounts.help: "Minimalna wartość dla {quote} to {notional}, ale jeśli chcesz użyć zlecenia Stop Loss lub podzielić swoje zlecenia Take Profit na kilka różnych poziomów, każdy z tych poziomów musi przekraczać tę minimalną kwotę, w tym Stop Loss. Możesz wybrać stałą wartość lub procent całkowitej wartości tej waluty (w tym konwersja z otwartych pozycji). Jeśli nie chcesz trade'ować na {quote}, po prostu zostaw wartość na 0."
 signalp.settings.amounts: "{quote} Wielkość pozycji"
+signalp.settings.allowedside: "Allowed Side"
+signalp.settings.allowedside.help: "Choose to receive LONG, SHORT or BOTH types of signals"
 alert.profileedit.title: "Profil edytowany"
 alert.profileedit.body: "Twój profil został pomyślnie zaktualizowany!"
 alert.forgotpassword.step1.title: "Żądanie przetworzone"
