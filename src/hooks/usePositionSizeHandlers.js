@@ -145,7 +145,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         trigger("units");
       }
     });
-  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy]);
+  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
 
   /**
    * @param {number} positionSize .
@@ -174,7 +174,17 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, setValue, trigger, leverage, multiplier, entryStrategy]);
+  }, [
+    errors,
+    currentPrice,
+    getValues,
+    setValue,
+    trigger,
+    leverage,
+    multiplier,
+    entryStrategy,
+    currentPriceShort,
+  ]);
 
   const positionSizePercentageChange = useCallback(() => {
     if (errors.positionSizePercentage) return;
@@ -210,9 +220,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     });
   };
 
-  const priceChange = (multiShort = false) => {
-    // validatePrice(strategyPrice);
-    console.log("priceChange");
+  const priceChange = () => {
     const draftPosition = getValues();
     if (parseFloat(draftPosition.positionSize) > 0) {
       simulateInputChangeEvent("positionSize");

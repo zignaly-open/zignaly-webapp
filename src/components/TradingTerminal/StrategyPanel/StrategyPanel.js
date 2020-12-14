@@ -38,14 +38,14 @@ import { Alert } from "@material-ui/lab";
  * @param {MarketSymbol} props.symbolData symbolData
  * @returns {JSX.Element} JSX
  */
-const PriceControl = ({ multiSide, priceChange, symbolData }) => {
+const PriceControl = ({ multiSide, symbolData }) => {
   const { errors, register, watch } = useFormContext();
   const entryStrategy = watch("entryStrategy");
   const { lastPrice } = useContext(TradingViewContext);
 
-  const { validatePrice } = usePositionSizeHandlers(symbolData);
+  const { validatePrice, priceChange } = usePositionSizeHandlers(symbolData);
 
-  const name = multiSide === "short" ? "limitPriceShort" : "price";
+  const name = multiSide === "short" ? "priceShort" : "price";
   const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
   return (
     <FormControl>
