@@ -12,7 +12,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { getUserData } from "../../../store/actions/user";
 import tradeApi from "../../../services/tradeApiClient";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
-import EditEmailButton from "./EditEmailButton";
+import ChangeEmailButton from "./ChangeEmailButton";
 
 const ProfileSettings = () => {
   const storeUserData = useStoreUserData();
@@ -82,7 +82,7 @@ const ProfileSettings = () => {
             <Typography className="userId" variant="body1">
               {storeUserData.email}
             </Typography>
-            <EditEmailButton />
+            <ChangeEmailButton />
           </Box>
         </label>
         <Box className="inputBox" display="flex" flexDirection="column">

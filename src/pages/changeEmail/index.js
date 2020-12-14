@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./changeEmail.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
 import Logo from "../../images/logo/logoWhite.png";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
@@ -9,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import Link from "../../components/LocalizedLink";
+import ChangeEmailForm from "components/Forms/ChangeEmailForm";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -27,15 +27,13 @@ const ChangeEmail = ({ token }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  console.log(token);
-
   const verifyCode = () => {
     setLoading(true);
     const payload = {
       token: token,
     };
     tradeApi
-      .forgotPasswordStep2(payload)
+      .changeEmailVisit(payload)
       .then(() => {
         setVerified(true);
         setLoading(false);
@@ -69,7 +67,7 @@ const ChangeEmail = ({ token }) => {
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ResetPasswordForm setVerified={setVerified} token={token} />
+            <ChangeEmailForm setVerified={setVerified} token={token} />
           </>
         ) : (
           <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
