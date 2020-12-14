@@ -78,7 +78,7 @@ const ProfileSettings = () => {
           <Typography variant="body1">
             <FormattedMessage id="profile.email" />
           </Typography>
-          <Box className="emailBox">
+          <Box alignItems="center" className="emailBox" display="flex">
             <Typography className="userId" variant="body1">
               {storeUserData.email}
             </Typography>

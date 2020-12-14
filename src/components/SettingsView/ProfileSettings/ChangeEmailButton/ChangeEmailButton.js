@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import EditIcon from "@material-ui/icons/Edit";
 import { FormattedMessage } from "react-intl";
+import { endTradeApiSession } from "store/actions/session";
+import { navigateLogin } from "services/navigation";
 
 const ChangeEmailButton = () => {
   const storeSession = useStoreSessionSelector();
@@ -22,6 +24,8 @@ const ChangeEmailButton = () => {
       .changeEmailRequest(payload)
       .then(() => {
         dispatch(showSuccessAlert("", "user.changeemail.alert"));
+        dispatch(endTradeApiSession());
+        navigateLogin();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
