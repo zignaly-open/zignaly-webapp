@@ -34,7 +34,6 @@ import { Alert } from "@material-ui/lab";
 /**
  * @param {Object} props Props
  * @param {string} [props.multiSide] Side for multi order
- * @param {function(*): *} [props.priceChange] priceChange callback
  * @param {MarketSymbol} props.symbolData symbolData
  * @returns {JSX.Element} JSX
  */
@@ -76,16 +75,9 @@ const PriceControl = ({ multiSide, symbolData }) => {
  * @param {number} props.baseBalance Balance
  * @returns {JSX.Element} JSX
  */
-const UnitsControl = ({
-  multiSide,
-  symbolData,
-  loading,
-  baseBalance,
-  unitsChange,
-  validateUnits,
-}) => {
+const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
   const { errors, register, watch } = useFormContext();
-  // const { unitsChange, validateUnits } = usePositionSizeHandlers(symbolData);
+  const { unitsChange, validateUnits } = usePositionSizeHandlers(symbolData);
   const entryStrategy = watch("entryStrategy");
   const name = multiSide === "short" ? "unitsShort" : "units";
   const label = entryStrategy === "multi" ? `terminal.units.${multiSide}` : "terminal.units";
@@ -142,12 +134,9 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
-    priceChange,
     realInvestmentChange,
     validatePositionSize,
     positionSizePercentageChange,
-    unitsChange,
-    validateUnits,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -246,11 +235,11 @@ const StrategyPanel = (props) => {
         {entryStrategy !== "market" ? (
           entryStrategy === "multi" ? (
             <>
-              <PriceControl multiSide="long" priceChange={priceChange} symbolData={symbolData} />
+              <PriceControl multiSide="long" symbolData={symbolData} />
               <PriceControl multiSide="short" symbolData={symbolData} />
             </>
           ) : (
-            <PriceControl priceChange={priceChange} symbolData={symbolData} />
+            <PriceControl symbolData={symbolData} />
           )
         ) : (
           <input name="price" ref={register} type="hidden" />
@@ -362,28 +351,20 @@ const StrategyPanel = (props) => {
           (entryStrategy === "multi" ? (
             <>
               <UnitsControl
-                multiSide="long"
-                validateUnits={validateUnits}
-                symbolData={symbolData}
                 baseBalance={baseBalance}
                 loading={loading}
+                multiSide="long"
+                symbolData={symbolData}
               />
               <UnitsControl
-                multiSide="short"
-                symbolData={symbolData}
                 baseBalance={baseBalance}
                 loading={loading}
-                validateUnits={validateUnits}
+                multiSide="short"
+                symbolData={symbolData}
               />
             </>
           ) : (
-            <UnitsControl
-              symbolData={symbolData}
-              validateUnits={validateUnits}
-              unitsChange={unitsChange}
-              baseBalance={baseBalance}
-              loading={loading}
-            />
+            <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
           ))}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box

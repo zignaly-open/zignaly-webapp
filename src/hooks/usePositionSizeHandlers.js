@@ -38,13 +38,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const entryStrategy = watch("entryStrategy");
   const { lastPrice, providerService } = useContext(TradingViewContext);
   const strategyPrice = watch("price");
+  const currentPrice = parseFloat(strategyPrice) || lastPrice;
+  // Short price for 'multi' strategy
   let currentPriceShort = 0;
   if (entryStrategy === "multi") {
     const strategyPriceShort = watch("priceShort");
     currentPriceShort = parseFloat(strategyPriceShort) || lastPrice;
   }
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
-  const currentPrice = parseFloat(strategyPrice) || lastPrice;
   const { formatMessage } = useIntl();
 
   /**
