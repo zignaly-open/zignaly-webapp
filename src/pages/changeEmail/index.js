@@ -64,7 +64,7 @@ const ChangeEmail = ({ token }) => {
       >
         {loading ? (
           <CircularProgress color="primary" size={50} />
-        ) : !verified ? (
+        ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
             <ChangeEmailForm setVerified={setVerified} token={token} />
