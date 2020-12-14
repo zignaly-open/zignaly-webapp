@@ -186,6 +186,8 @@ const StrategyPanel = (props) => {
         {entryStrategy === "multi" && (
           <Alert severity="info">
             <FormattedMessage id="terminal.strategy.multi.info" />
+            <br />
+            <FormattedMessage id="terminal.strategy.multi.strategy" />
           </Alert>
         )}
         {entryStrategy !== "market" ? (

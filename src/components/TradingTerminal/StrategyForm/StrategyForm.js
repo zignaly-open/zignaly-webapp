@@ -263,14 +263,12 @@ const StrategyForm = (props) => {
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       ...(draftPosition.entryStrategy === "multi"
         ? {
-            // eslint-disable-next-line camelcase
+            /* eslint-disable camelcase */
             limitPrice_long: draftPosition.price,
-            // eslint-disable-next-line camelcase
             limitPrice_short: draftPosition.limitPriceShort,
-            // eslint-disable-next-line camelcase
             orderType_long: "limit",
-            // eslint-disable-next-line camelcase
             orderType_short: "limit",
+            /* eslint-enable camelcase */
           }
         : { limitPrice: draftPosition.price || lastPrice }),
     };
