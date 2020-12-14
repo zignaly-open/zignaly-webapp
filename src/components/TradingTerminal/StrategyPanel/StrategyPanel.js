@@ -42,6 +42,9 @@ const PriceControl = ({ multiSide, priceChange, symbolData }) => {
   const { errors, register, watch } = useFormContext();
   const entryStrategy = watch("entryStrategy");
   const { lastPrice } = useContext(TradingViewContext);
+
+  const { validatePrice } = usePositionSizeHandlers(symbolData);
+
   const name = multiSide === "short" ? "limitPriceShort" : "price";
   const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
   return (
@@ -53,13 +56,63 @@ const PriceControl = ({ multiSide, priceChange, symbolData }) => {
           defaultValue={lastPrice}
           error={!!errors[name]}
           inputRef={register({
-            validate: (value) => !isNaN(value) && parseFloat(value) > 0,
+            validate: validatePrice,
           })}
           name={name}
           onChange={priceChange}
         />
         <div className="currencyBox">{symbolData.quote}</div>
       </Box>
+      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+    </FormControl>
+  );
+};
+
+/**
+ * @param {Object} props Props
+ * @param {string} [props.multiSide] Side for multi order
+ * @param {MarketSymbol} props.symbolData symbolData
+ * @param {boolean} props.loading Balance loading
+ * @param {number} props.baseBalance Balance
+ * @returns {JSX.Element} JSX
+ */
+const UnitsControl = ({
+  multiSide,
+  symbolData,
+  loading,
+  baseBalance,
+  unitsChange,
+  validateUnits,
+}) => {
+  const { errors, register, watch } = useFormContext();
+  // const { unitsChange, validateUnits } = usePositionSizeHandlers(symbolData);
+  const entryStrategy = watch("entryStrategy");
+  const name = multiSide === "short" ? "unitsShort" : "units";
+  const label = entryStrategy === "multi" ? `terminal.units.${multiSide}` : "terminal.units";
+  return (
+    <FormControl>
+      <HelperLabel descriptionId="terminal.units.help" labelId={label} />
+      <Box alignItems="center" display="flex">
+        <OutlinedInput
+          className="outlineInput"
+          inputRef={register({
+            validate: validateUnits,
+          })}
+          name={name}
+          onChange={unitsChange}
+          placeholder={"0"}
+          readOnly={entryStrategy === "multi"}
+        />
+        <div className="currencyBox">{symbolData.unitsAmount}</div>
+      </Box>
+      <FormHelperText>
+        <FormattedMessage id="terminal.available" />{" "}
+        {loading ? (
+          <CircularProgress color="primary" size={15} />
+        ) : (
+          <span className="balance">{formatPrice(baseBalance)}</span>
+        )}
+      </FormHelperText>
       {errors[name] && <span className="errorText">{errors[name].message}</span>}
     </FormControl>
   );
@@ -91,10 +144,10 @@ const StrategyPanel = (props) => {
     positionSizeChange,
     priceChange,
     realInvestmentChange,
-    unitsChange,
     validatePositionSize,
-    validateUnits,
     positionSizePercentageChange,
+    unitsChange,
+    validateUnits,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
@@ -305,32 +358,33 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
         )}
-        {!isCopyProvider && (
-          <FormControl>
-            <HelperLabel descriptionId="terminal.units.help" labelId="terminal.units" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register({
-                  validate: validateUnits,
-                })}
-                name="units"
-                onChange={unitsChange}
-                placeholder={"0"}
+        {!isCopyProvider &&
+          (entryStrategy === "multi" ? (
+            <>
+              <UnitsControl
+                multiSide="long"
+                validateUnits={validateUnits}
+                symbolData={symbolData}
+                baseBalance={baseBalance}
+                loading={loading}
               />
-              <div className="currencyBox">{symbolData.unitsAmount}</div>
-            </Box>
-            <FormHelperText>
-              <FormattedMessage id="terminal.available" />{" "}
-              {loading ? (
-                <CircularProgress color="primary" size={15} />
-              ) : (
-                <span className="balance">{formatPrice(baseBalance)}</span>
-              )}
-            </FormHelperText>
-            {errors.units && <span className="errorText">{errors.units.message}</span>}
-          </FormControl>
-        )}
+              <UnitsControl
+                multiSide="short"
+                symbolData={symbolData}
+                baseBalance={baseBalance}
+                loading={loading}
+                validateUnits={validateUnits}
+              />
+            </>
+          ) : (
+            <UnitsControl
+              symbolData={symbolData}
+              validateUnits={validateUnits}
+              unitsChange={unitsChange}
+              baseBalance={baseBalance}
+              loading={loading}
+            />
+          ))}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"

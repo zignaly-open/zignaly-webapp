@@ -35,8 +35,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const { errors, getValues, setValue, watch, trigger } = useFormContext();
   const leverage = watch("leverage", defaultLeverage);
   const entryType = watch("entryType");
+  const entryStrategy = watch("entryStrategy");
   const { lastPrice, providerService } = useContext(TradingViewContext);
   const strategyPrice = watch("price");
+  let currentPriceShort = 0;
+  if (entryStrategy === "multi") {
+    const strategyPriceShort = watch("priceShort");
+    currentPriceShort = parseFloat(strategyPriceShort) || lastPrice;
+  }
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const currentPrice = parseFloat(strategyPrice) || lastPrice;
   const { formatMessage } = useIntl();
@@ -135,13 +141,25 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     setValue("positionSize", positionSize);
     trigger("positionSize").then((isValid) => {
       if (isValid) {
-        const units = calculateUnits(positionSize, currentPrice);
-
-        setValue("units", units.toFixed(8));
+        updateUnits(positionSize);
         trigger("units");
       }
     });
-  }, [errors, currentPrice, leverage, getValues, multiplier]);
+  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy]);
+
+  /**
+   * @param {number} positionSize .
+   * @returns {void}
+   */
+  const updateUnits = (positionSize) => {
+    const units = calculateUnits(positionSize, currentPrice);
+    setValue("units", units.toFixed(8));
+
+    if (entryStrategy === "multi") {
+      const unitsShort = calculateUnits(positionSize, currentPriceShort);
+      setValue("unitsShort", unitsShort.toFixed(8));
+    }
+  };
 
   const positionSizeChange = useCallback(() => {
     if (errors.positionSize) return;
@@ -149,15 +167,14 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
 
-    const units = calculateUnits(positionSize, currentPrice);
-    setValue("units", units.toFixed(8));
+    updateUnits(positionSize);
     trigger("units").then((isValid) => {
       if (isValid) {
         const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
         setValue("realInvestment", realInvestment.toFixed(8));
       }
     });
-  }, [errors, currentPrice, getValues, setValue, trigger, leverage, multiplier]);
+  }, [errors, currentPrice, getValues, setValue, trigger, leverage, multiplier, entryStrategy]);
 
   const positionSizePercentageChange = useCallback(() => {
     if (errors.positionSizePercentage) return;
@@ -193,8 +210,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     });
   };
 
-  const priceChange = () => {
-    validatePrice(strategyPrice);
+  const priceChange = (multiShort = false) => {
+    // validatePrice(strategyPrice);
+    console.log("priceChange");
     const draftPosition = getValues();
     if (parseFloat(draftPosition.positionSize) > 0) {
       simulateInputChangeEvent("positionSize");
