@@ -261,16 +261,15 @@ const StrategyForm = (props) => {
       positionSize,
       positionSizeQuote: selectedSymbol.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
-      ...(draftPosition.entryStrategy === "multi"
-        ? {
-            /* eslint-disable camelcase */
-            limitPrice_long: draftPosition.price,
-            limitPrice_short: draftPosition.limitPriceShort,
-            orderType_long: "limit",
-            orderType_short: "limit",
-            /* eslint-enable camelcase */
-          }
-        : { limitPrice: draftPosition.price || lastPrice }),
+      limitPrice: draftPosition.price || lastPrice,
+      ...(draftPosition.entryStrategy === "multi" && {
+        /* eslint-disable camelcase */
+        limitPrice_long: draftPosition.price,
+        limitPrice_short: draftPosition.priceShort,
+        orderType_long: "limit",
+        orderType_short: "limit",
+        /* eslint-enable camelcase */
+      }),
     };
 
     if (draftPosition.positionSizePercentage) {
