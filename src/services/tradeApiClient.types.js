@@ -903,6 +903,22 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ChangeEmailRequestPayload
+ * @property {String} token User session token
+ */
+
+/**
+ * @typedef {Object} ChangeEmailVisitPayload
+ * @property {String} token token received through the reset request.
+ */
+
+/**
+ * @typedef {Object} ChangeEmailConfirmPayload
+ * @property {String} token Token received through the reset request.
+ * @property {String} email New email of the user.
+ */
+
+/**
  * @typedef {Object} ForgotPasswordStep1Payload
  * @property {String} email User's email.
  * @property {Boolean} array Default backend param equal to "true".

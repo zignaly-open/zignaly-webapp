@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./recover.scss";
+import "./changeEmail.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
 import Logo from "../../images/logo/logoNW.svg";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
@@ -9,19 +8,20 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import Link from "../../components/LocalizedLink";
+import ChangeEmailForm from "components/Forms/ChangeEmailForm";
 
 /**
  * @typedef {Object} PositionPageProps
- * @property {string} token Token aquired by the recover request.
+ * @property {string} token Token aquired by the change email request.
  */
 
 /**
- * Recover Password page component.
+ * Change Email page component.
  *
  * @param {PositionPageProps} props Component properties.
- * @returns {JSX.Element} Recover Password element.
+ * @returns {JSX.Element} Change email element.
  */
-const RecoverPassword = ({ token }) => {
+const ChangeEmail = ({ token }) => {
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const RecoverPassword = ({ token }) => {
       token: token,
     };
     tradeApi
-      .forgotPasswordStep2(payload)
+      .changeEmailVisit(payload)
       .then(() => {
         setVerified(true);
         setLoading(false);
@@ -50,14 +50,14 @@ const RecoverPassword = ({ token }) => {
     <>
       <Helmet>
         <title>
-          {`${intl.formatMessage({ id: "recover.title" })} | ${intl.formatMessage({
+          {`${intl.formatMessage({ id: "changeemail.title" })} | ${intl.formatMessage({
             id: "product",
           })}`}
         </title>
       </Helmet>
       <Box
         alignItems="center"
-        className="recoverPasswordPage"
+        className="changeEmailPage"
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -67,15 +67,15 @@ const RecoverPassword = ({ token }) => {
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ResetPasswordForm setVerified={setVerified} token={token} />
+            <ChangeEmailForm setVerified={setVerified} token={token} />
           </>
         ) : (
           <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
             <Typography variant="h3">
-              <FormattedMessage id="recover.error" />
+              <FormattedMessage id="changeemail.error" />
             </Typography>
             <Link className="loginLink" to="/login">
-              Back to Login
+              <FormattedMessage id="backtologin.text" />
             </Link>
           </Box>
         )}
@@ -84,4 +84,4 @@ const RecoverPassword = ({ token }) => {
   );
 };
 
-export default RecoverPassword;
+export default ChangeEmail;
