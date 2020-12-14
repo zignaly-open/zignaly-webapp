@@ -32,12 +32,17 @@ import { Alert } from "@material-ui/lab";
  */
 
 /**
- * @param {string} [multiSide] Side for multi order
+ * @param {Object} props Props
+ * @param {string} [props.multiSide] Side for multi order
+ * @param {function(*): *} [props.priceChange] priceChange callback
+ * @param {MarketSymbol} props.symbolData symbolData
  * @returns {JSX.Element} JSX
  */
-const PriceControl = ({ multiSide, lastPrice, priceChange, symbolData, entryStrategy }) => {
-  const { errors, register } = useFormContext();
-  const name = multiSide === "short" ? "limitPrice_short" : "price";
+const PriceControl = ({ multiSide, priceChange, symbolData }) => {
+  const { errors, register, watch } = useFormContext();
+  const entryStrategy = watch("entryStrategy");
+  const { lastPrice } = useContext(TradingViewContext);
+  const name = multiSide === "short" ? "limitPriceShort" : "price";
   const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
   return (
     <FormControl>
@@ -95,7 +100,7 @@ const StrategyPanel = (props) => {
   const leverage = watch("leverage");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
-  const { providerService, lastPrice } = useContext(TradingViewContext);
+  const { providerService } = useContext(TradingViewContext);
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalancePercentage = providerService
@@ -110,7 +115,10 @@ const StrategyPanel = (props) => {
   ];
 
   if (selectedExchange.exchangeType === "futures") {
-    entryStrategy.push({ label: formatMessage({ id: "terminal.strategy.multi" }), val: "multi" });
+    entryStrategyOptions.push({
+      label: formatMessage({ id: "terminal.strategy.multi" }),
+      val: "multi",
+    });
   }
 
   if (!isCopyProvider) {
@@ -183,27 +191,11 @@ const StrategyPanel = (props) => {
         {entryStrategy !== "market" ? (
           entryStrategy === "multi" ? (
             <>
-              <PriceControl
-                multiSide="long"
-                lastPrice={lastPrice}
-                priceChange={priceChange}
-                symbolData={symbolData}
-                entryStrategy={entryStrategy}
-              />
-              <PriceControl
-                multiSide="short"
-                lastPrice={lastPrice}
-                symbolData={symbolData}
-                entryStrategy={entryStrategy}
-              />
+              <PriceControl multiSide="long" priceChange={priceChange} symbolData={symbolData} />
+              <PriceControl multiSide="short" symbolData={symbolData} />
             </>
           ) : (
-            <PriceControl
-              lastPrice={lastPrice}
-              priceChange={priceChange}
-              symbolData={symbolData}
-              entryStrategy={entryStrategy}
-            />
+            <PriceControl priceChange={priceChange} symbolData={symbolData} />
           )
         ) : (
           <input name="price" ref={register} type="hidden" />

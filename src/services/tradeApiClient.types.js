@@ -35,11 +35,16 @@ export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
 export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
+ * @type {('multi')}
+ */
+export const POSITION_ENTRY_TYPE_MULTI = "multi";
+
+/**
  * @typedef {('SHORT' | 'LONG')} PositionEntrySide
  */
 
 /**
- * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionOrderType
+ * @typedef {("market" | "limit" | "stop_loss_limit" | "import" | 'multi')} PositionOrderType
  */
 
 /**
@@ -1550,6 +1555,8 @@ export function mapEntryTypeToEnum(entryType) {
       return POSITION_ENTRY_TYPE_SLLIMIT;
     case "import":
       return POSITION_ENTRY_TYPE_IMPORT;
+    case "multi":
+      return POSITION_ENTRY_TYPE_MULTI;
     default:
       throw new Error(`${entryType} entry type is invalid.`);
   }
