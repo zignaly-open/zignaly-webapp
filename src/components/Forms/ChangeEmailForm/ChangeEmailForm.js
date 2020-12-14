@@ -114,6 +114,7 @@ const ChangeEmailForm = ({ token, setVerified }) => {
             })}
             name="newEmail"
             onBlur={() => setEmailsDoNotMatch(false)}
+            onPaste={(e) => e.preventDefault()}
             type="email"
             variant="outlined"
           />
@@ -144,6 +145,7 @@ const ChangeEmailForm = ({ token, setVerified }) => {
             })}
             name="confirmNewEmail"
             onBlur={() => setEmailsDoNotMatch(false)}
+            onPaste={(e) => e.preventDefault()}
             type="email"
             variant="outlined"
           />
