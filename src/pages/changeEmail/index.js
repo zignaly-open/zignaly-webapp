@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./changeEmail.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import Logo from "../../images/logo/logoWhite.png";
+import Logo from "../../images/logo/logoNW.svg";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
@@ -72,10 +72,10 @@ const ChangeEmail = ({ token }) => {
         ) : (
           <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
             <Typography variant="h3">
-              <FormattedMessage id="recover.error" />
+              <FormattedMessage id="changeemail.error" />
             </Typography>
             <Link className="loginLink" to="/login">
-              Back to Login
+              <FormattedMessage id="backtologin.text" />
             </Link>
           </Box>
         )}

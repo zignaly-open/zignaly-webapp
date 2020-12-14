@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./EditEmailButton.scss";
+import "./ChangeEmailButton.scss";
 import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";

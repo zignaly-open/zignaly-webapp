@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./recover.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
-import Logo from "../../images/logo/logoWhite.png";
+import Logo from "../../images/logo/logoNW.svg";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
