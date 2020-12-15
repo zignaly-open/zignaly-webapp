@@ -1505,6 +1505,7 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
       skipped: rebuyTarget.skipped || false,
       buyType: rebuyTarget.buyType || "",
       errorMSG: rebuyTarget.errorMSG || "",
+      postOnly: rebuyTarget.postOnly || false,
     };
   });
 }
@@ -1549,6 +1550,7 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       updating: profitTarget.updating || false,
       cancel: profitTarget.cancel || false,
       skipped: profitTarget.skipped || false,
+      postOnly: profitTarget.postOnly || false,
     };
   });
 }
