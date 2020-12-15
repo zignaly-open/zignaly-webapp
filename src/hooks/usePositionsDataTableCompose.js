@@ -405,7 +405,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
                 position.multiData.long.priceDifference,
                 2,
               )}%`
-            : `${formatNumber(position.priceDifference, 2)}}%`}
+            : `${formatNumber(position.priceDifference, 2)}%`}
         </span>
       </>
     );
