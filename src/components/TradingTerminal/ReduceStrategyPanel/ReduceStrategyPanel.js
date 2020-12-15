@@ -263,7 +263,7 @@ const ReduceStrategyPanel = (props) => {
               />
             }
           />
-          <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <PostOnlyControl name="reducePostOnly" />
           </Box>
         </Box>
