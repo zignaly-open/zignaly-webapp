@@ -499,7 +499,7 @@ const TakeProfitPanel = (props) => {
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
                 {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
-              <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+              <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
                 <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
               </Box>
             </Box>

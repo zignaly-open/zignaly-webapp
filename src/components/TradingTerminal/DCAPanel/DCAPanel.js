@@ -411,7 +411,7 @@ const DCAPanel = (props) => {
           </Box>
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
-        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
           <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
         </Box>
         {showRemove && (

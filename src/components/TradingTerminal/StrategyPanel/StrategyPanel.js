@@ -395,7 +395,7 @@ const StrategyPanel = (props) => {
             <input name="leverage" ref={register} type="hidden" />
           </Box>
         )}
-        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
           <PostOnlyControl />
         </Box>
       </Box>
