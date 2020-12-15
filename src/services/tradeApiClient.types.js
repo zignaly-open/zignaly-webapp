@@ -3440,6 +3440,7 @@ export function convertAssetResponseTransform(response) {
  * @property {String} trailingStop
  * @property {String} trailingStopTrigger
  * @property {Boolean} whitelist
+ * @property {String} allowedSide
  */
 
 /**
@@ -3529,6 +3530,7 @@ export function creatEmptySettingsEntity() {
     trailingStop: "",
     trailingStopTrigger: "",
     whitelist: false,
+    allowedSide: "both",
   };
 }
 

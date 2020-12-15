@@ -688,6 +688,8 @@ signalp.settings.blacklist.help: "It won't open any position for symbols include
 signalp.settings.whitelist.help: "It will open positions only for symbols include here for this provider. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."
 signalp.settings.amounts.help: "Minimum value for {quote} is {notional} , but if you want to use Stop Loss, or split your take profits into several targets, each target has to be above this minimum amount, including the stop loss. You can choose a fixed value, or a percentage value of your total value for this coin (including the conversion from opened positions). If you don't want to trade in {quote}, just leave the value at 0."
 signalp.settings.amounts: "{quote} Position Size"
+signalp.settings.allowedside: "Allowed Side"
+signalp.settings.allowedside.help: "Choose to receive LONG, SHORT or BOTH types of signals"
 
 alert.profileedit.title: "Profile Edited"
 alert.profileedit.body: "Your profile has been successfully updated!"
