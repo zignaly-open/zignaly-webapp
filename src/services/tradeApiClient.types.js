@@ -426,6 +426,15 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ *
+ * @typedef {Object} MultiSideData
+ * @property {Number} amount
+ * @property {string} price
+ * @property {Number} priceDifference
+ *
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
  * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
@@ -519,6 +528,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} unitsAmount Units displayed when bought.
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
+ * @property {{long: MultiSideData, short: MultiSideData}} multiData Price/Amount info for MULTI side position
  */
 
 /**
