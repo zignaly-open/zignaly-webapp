@@ -551,6 +551,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} skipped
  * @property {string} buyType
  * @property {string} errorMSG
+ * @property {boolean} postOnly
  */
 
 /**
@@ -578,6 +579,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {boolean} updating
+ * @property {boolean} postOnly
  */
 
 /**
