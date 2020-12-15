@@ -70,6 +70,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} exchangeName Exchange name.
  * @property {string} internalExchangeId Exchange connection ID.
  * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -77,6 +78,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -84,6 +86,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**

@@ -70,6 +70,17 @@
       text-align: left;
     }
 
+    .customCheckbox {
+      .help {
+        margin: 0;
+
+        /* stylelint-disable selector-max-compound-selectors*/
+        p {
+          margin: 0;
+        }
+      }
+    }
+
     .outlineInput {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
