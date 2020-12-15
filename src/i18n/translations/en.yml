@@ -853,6 +853,8 @@ terminal.positionsize.valid.percentage: "Position units percentage must be a num
 terminal.positionunits.limit.max: "Position units must be a number lower than {value}."
 terminal.positionunits.limit.min: "Position units must be a number greater than {value}."
 terminal.positionunits.limit.zero: "Position units must be a number greater than 0."
+terminal.postonly: "Post Only"
+terminal.postonly.help: "The order will be added to the order book and not match with a pre-existing order."
 terminal.price: "Price"
 terminal.price.long: "Price LONG"
 terminal.price.short: "Price SHORT"

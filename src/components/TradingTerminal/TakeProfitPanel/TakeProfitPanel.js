@@ -15,6 +15,7 @@ import useValidation from "../../../hooks/useValidation";
 import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -497,6 +498,9 @@ const TakeProfitPanel = (props) => {
                 )}
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
                 {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
+              </Box>
+              <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+                <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
               </Box>
             </Box>
           ))}

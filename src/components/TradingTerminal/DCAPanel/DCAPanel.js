@@ -15,6 +15,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -410,6 +411,9 @@ const DCAPanel = (props) => {
           </Box>
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
+        <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+          <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
+        </Box>
         {showRemove && (
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             <Button

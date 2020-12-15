@@ -184,12 +184,14 @@ const StrategyForm = (props) => {
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
+      const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
       if (targetPricePercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
           amountPercentage: parseFloat(targetExitUnitsPercentage),
+          postOnly,
         });
       }
     });
@@ -218,12 +220,14 @@ const StrategyForm = (props) => {
     const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+      const postOnly = draftPosition[`dcaPostOnly${targetId}`];
 
       if (targetPricePercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
           amountPercentage: parseFloat(targetRebuyPercentage),
+          postOnly,
         });
       }
     };
@@ -312,6 +316,7 @@ const StrategyForm = (props) => {
       providerName: "Manual Trading",
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
+      postOnly: draftPosition.postOnly,
     };
   };
 
