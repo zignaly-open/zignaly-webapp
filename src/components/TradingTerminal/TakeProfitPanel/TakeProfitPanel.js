@@ -109,6 +109,7 @@ const TakeProfitPanel = (props) => {
       fieldsDisabled[composeTargetPropertyName("exitUnits", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPrice", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("postOnly", index)] = disabled;
     });
 
     return fieldsDisabled;
@@ -500,7 +501,10 @@ const TakeProfitPanel = (props) => {
                 {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
               </Box>
               <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-                <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
+                <PostOnlyControl
+                  disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+                  name={composeTargetPropertyName("postOnly", targetId)}
+                />
               </Box>
             </Box>
           ))}

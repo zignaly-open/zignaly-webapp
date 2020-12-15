@@ -6,9 +6,10 @@ import HelperLabel from "../../HelperLabel/HelperLabel";
 /**
  * @param {Object} props Props
  * @param {string} [props.name] Control name
+ * @param {boolean} [props.disabled] Disabled
  * @returns {JSX.Element} JSX
  */
-const PostOnlyControl = ({ name = "postOnly" }) => {
+const PostOnlyControl = ({ name = "postOnly", disabled = false }) => {
   const { control } = useFormContext();
   return (
     <FormControlLabel
@@ -19,7 +20,11 @@ const PostOnlyControl = ({ name = "postOnly" }) => {
           defaultValue={false}
           name={name}
           render={({ onChange, value }) => (
-            <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
+            <Checkbox
+              checked={value}
+              disabled={disabled}
+              onChange={(e) => onChange(e.target.checked)}
+            />
           )}
         />
       }

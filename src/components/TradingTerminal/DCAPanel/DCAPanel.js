@@ -180,6 +180,7 @@ const DCAPanel = (props) => {
 
       fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("postOnly", index)] = disabled;
     });
 
     return fieldsDisabled;
@@ -412,7 +413,10 @@ const DCAPanel = (props) => {
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-          <PostOnlyControl name={composeTargetPropertyName("postOnly", targetId)} />
+          <PostOnlyControl
+            disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+            name={composeTargetPropertyName("postOnly", targetId)}
+          />
         </Box>
         {showRemove && (
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
