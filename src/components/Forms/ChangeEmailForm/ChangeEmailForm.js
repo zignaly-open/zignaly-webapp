@@ -12,7 +12,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionPageProps
  * @property {string} token Token aquired by the recover request.
- * @property {React.SetStateAction<*>} setVerified
  */
 
 /**
@@ -21,7 +20,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ChangeEmailForm = ({ token, setVerified }) => {
+const ChangeEmailForm = ({ token }) => {
   const [loading, setLoading] = useState(false);
   const [emailsDoNotMatch, setEmailsDoNotMatch] = useState(false);
   const intl = useIntl();
@@ -57,7 +56,6 @@ const ChangeEmailForm = ({ token, setVerified }) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
-          setVerified(false);
         })
         .finally(() => {
           setLoading(false);

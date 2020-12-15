@@ -67,7 +67,7 @@ const ChangeEmail = ({ token }) => {
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ChangeEmailForm setVerified={setVerified} token={token} />
+            <ChangeEmailForm token={token} />
           </>
         ) : (
           <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
