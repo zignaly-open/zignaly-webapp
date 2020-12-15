@@ -528,7 +528,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} unitsAmount Units displayed when bought.
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
- * @property {{long: MultiSideData, short: MultiSideData}} multiData Price/Amount info for MULTI side position
+ * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
  */
 
 /**
