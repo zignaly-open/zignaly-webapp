@@ -24,11 +24,91 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import { Alert } from "@material-ui/lab";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  */
+
+/**
+ * @param {Object} props Props
+ * @param {string} [props.multiSide] Side for multi order
+ * @param {MarketSymbol} props.symbolData symbolData
+ * @returns {JSX.Element} JSX
+ */
+const PriceControl = ({ multiSide, symbolData }) => {
+  const { errors, register, watch } = useFormContext();
+  const entryStrategy = watch("entryStrategy");
+  const { lastPrice } = useContext(TradingViewContext);
+
+  const { validatePrice, priceChange } = usePositionSizeHandlers(symbolData);
+
+  const name = multiSide === "short" ? "priceShort" : "price";
+  const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
+  return (
+    <FormControl>
+      <HelperLabel descriptionId="terminal.price.help" labelId={label} />
+      <Box alignItems="center" display="flex">
+        <OutlinedInput
+          className="outlineInput"
+          defaultValue={lastPrice}
+          error={!!errors[name]}
+          inputRef={register({
+            validate: validatePrice,
+          })}
+          name={name}
+          onChange={priceChange}
+        />
+        <div className="currencyBox">{symbolData.quote}</div>
+      </Box>
+      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+    </FormControl>
+  );
+};
+
+/**
+ * @param {Object} props Props
+ * @param {string} [props.multiSide] Side for multi order
+ * @param {MarketSymbol} props.symbolData symbolData
+ * @param {boolean} props.loading Balance loading
+ * @param {number} props.baseBalance Balance
+ * @returns {JSX.Element} JSX
+ */
+const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
+  const { errors, register, watch } = useFormContext();
+  const { unitsChange, validateUnits } = usePositionSizeHandlers(symbolData);
+  const entryStrategy = watch("entryStrategy");
+  const name = multiSide === "short" ? "unitsShort" : "units";
+  const label = entryStrategy === "multi" ? `terminal.units.${multiSide}` : "terminal.units";
+  return (
+    <FormControl>
+      <HelperLabel descriptionId="terminal.units.help" labelId={label} />
+      <Box alignItems="center" display="flex">
+        <OutlinedInput
+          className="outlineInput"
+          inputRef={register({
+            validate: validateUnits,
+          })}
+          name={name}
+          onChange={unitsChange}
+          placeholder={"0"}
+          readOnly={entryStrategy === "multi"}
+        />
+        <div className="currencyBox">{symbolData.unitsAmount}</div>
+      </Box>
+      <FormHelperText>
+        <FormattedMessage id="terminal.available" />{" "}
+        {loading ? (
+          <CircularProgress color="primary" size={15} />
+        ) : (
+          <span className="balance">{formatPrice(baseBalance)}</span>
+        )}
+      </FormHelperText>
+      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+    </FormControl>
+  );
+};
 
 /**
  * @typedef {Object} StrategyPanelProps
@@ -54,18 +134,15 @@ const StrategyPanel = (props) => {
 
   const {
     positionSizeChange,
-    priceChange,
     realInvestmentChange,
-    unitsChange,
     validatePositionSize,
-    validateUnits,
     positionSizePercentageChange,
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
-  const { providerService, lastPrice } = useContext(TradingViewContext);
+  const { providerService } = useContext(TradingViewContext);
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalancePercentage = providerService
@@ -78,6 +155,13 @@ const StrategyPanel = (props) => {
     { label: formatMessage({ id: "terminal.strategy.market" }), val: "market" },
     { label: formatMessage({ id: "terminal.strategy.stoplimit" }), val: "stop_limit" },
   ];
+
+  if (selectedExchange.exchangeType === "futures") {
+    entryStrategyOptions.push({
+      label: formatMessage({ id: "terminal.strategy.multi" }),
+      val: "multi",
+    });
+  }
 
   if (!isCopyProvider) {
     entryStrategyOptions.push({
@@ -102,7 +186,7 @@ const StrategyPanel = (props) => {
         </Box>
       </Box>
       <Box className="panelContent" display="flex" flexDirection="row" flexWrap="wrap">
-        {selectedExchange.exchangeType === "futures" && (
+        {selectedExchange.exchangeType === "futures" && entryStrategy !== "multi" && (
           <FormControl className="entryType">
             <Controller
               as={
@@ -141,24 +225,22 @@ const StrategyPanel = (props) => {
             </Box>
           </FormControl>
         )}
+        {entryStrategy === "multi" && (
+          <Alert severity="info">
+            <FormattedMessage id="terminal.strategy.multi.info" />
+            <br />
+            <FormattedMessage id="terminal.strategy.multi.strategy" />
+          </Alert>
+        )}
         {entryStrategy !== "market" ? (
-          <FormControl>
-            <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                defaultValue={lastPrice}
-                error={!!errors.price}
-                inputRef={register({
-                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
-                })}
-                name="price"
-                onChange={priceChange}
-              />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-            {errors.price && <span className="errorText">{errors.price.message}</span>}
-          </FormControl>
+          entryStrategy === "multi" ? (
+            <>
+              <PriceControl multiSide="long" symbolData={symbolData} />
+              <PriceControl multiSide="short" symbolData={symbolData} />
+            </>
+          ) : (
+            <PriceControl symbolData={symbolData} />
+          )
         ) : (
           <input name="price" ref={register} type="hidden" />
         )}
@@ -265,32 +347,25 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
         )}
-        {!isCopyProvider && (
-          <FormControl>
-            <HelperLabel descriptionId="terminal.units.help" labelId="terminal.units" />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register({
-                  validate: validateUnits,
-                })}
-                name="units"
-                onChange={unitsChange}
-                placeholder={"0"}
+        {!isCopyProvider &&
+          (entryStrategy === "multi" ? (
+            <>
+              <UnitsControl
+                baseBalance={baseBalance}
+                loading={loading}
+                multiSide="long"
+                symbolData={symbolData}
               />
-              <div className="currencyBox">{symbolData.unitsAmount}</div>
-            </Box>
-            <FormHelperText>
-              <FormattedMessage id="terminal.available" />{" "}
-              {loading ? (
-                <CircularProgress color="primary" size={15} />
-              ) : (
-                <span className="balance">{formatPrice(baseBalance)}</span>
-              )}
-            </FormHelperText>
-            {errors.units && <span className="errorText">{errors.units.message}</span>}
-          </FormControl>
-        )}
+              <UnitsControl
+                baseBalance={baseBalance}
+                loading={loading}
+                multiSide="short"
+                symbolData={symbolData}
+              />
+            </>
+          ) : (
+            <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
+          ))}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"

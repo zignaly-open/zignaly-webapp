@@ -238,9 +238,13 @@ const StrategyForm = (props) => {
    * @property {CreatePositionPayload['type']} type
    * @property {CreatePositionPayload['positionSize']} positionSize
    * @property {CreatePositionPayload['realInvestment']} realInvestment
-   * @property {CreatePositionPayload['limitPrice']} limitPrice
+   * @property {CreatePositionPayload['limitPrice']} [limitPrice]
    * @property {string} [providerId]
    * @property {string} [providerName]
+   * @property {string} [limitPrice_long]
+   * @property {string} [limitPrice_short]
+   * @property {string} [orderType_long]
+   * @property {string} [orderType_short]
    */
 
   /**
@@ -258,6 +262,14 @@ const StrategyForm = (props) => {
       positionSizeQuote: selectedSymbol.quote,
       realInvestment: parseFloat(draftPosition.realInvestment) || positionSize,
       limitPrice: draftPosition.price || lastPrice,
+      ...(draftPosition.entryStrategy === "multi" && {
+        /* eslint-disable camelcase */
+        limitPrice_long: draftPosition.price,
+        limitPrice_short: draftPosition.priceShort,
+        orderType_long: "limit",
+        orderType_short: "limit",
+        /* eslint-enable camelcase */
+      }),
     };
 
     if (draftPosition.positionSizePercentage) {
