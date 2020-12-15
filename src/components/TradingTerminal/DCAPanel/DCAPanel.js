@@ -268,6 +268,7 @@ const DCAPanel = (props) => {
         const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
         setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
+        setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
       });
     }
   };
