@@ -36,7 +36,7 @@ testimonials.title: "CH-Testimonials"
 testimonials.loadmore: "CH-Load More"
 changeemail.form.title: "CH-Change Email Form"
 changeemail.confirm.title: "CH-Cancel Contract"
-changeemail.confirm.body: "CH-Are you sure you want to change your email address?"
+changeemail.confirm.body: "CH-Are you sure you want to change your email address? You will be logged out when you confirm!"
 backtologin.text: "CH-Back to Login"
 
 # BALANCE
