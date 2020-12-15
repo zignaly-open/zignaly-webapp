@@ -1487,7 +1487,7 @@ srv.unfollow.alert.body: "CH-You are not Following this Provider anymore!"
 srv.canceldisconnect.alert.title: "CH-Success"
 srv.canceldisconnect.alert.body: "CH-Your disconnection has been cancelled!"
 dashboard.balance.sync.alert: "CH-Your balance has been successfully synchronized with exchange"
-user.changeemail.alert: "CH-An email has been sent to you current account with next steps to change your email."
+user.changeemail.alert: "CH-An email has been sent to your current account with next steps to change your email."
 
 # WALL
 wall.approve: "CH-Approve"
