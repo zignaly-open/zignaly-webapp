@@ -304,7 +304,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const position = positions[dataIndex];
     return (
       <>
-        <span className="symbol">{position.quote}</span> {formatPrice(position.buyPrice)}
+        <span className="symbol">{position.quote}</span>{" "}
+        {position.side === "MULTI"
+          ? `${formatPrice(position.multiData.short.price)} / ${formatPrice(
+              position.multiData.long.price,
+            )}`
+          : formatPrice(position.buyPrice)}
       </>
     );
   }
@@ -395,7 +400,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     return (
       <>
         <span className={position.priceDifferenceStyle}>
-          {formatNumber(position.priceDifference, 2)} %
+          {position.side === "MULTI"
+            ? `${formatNumber(position.multiData.short.priceDifference, 2)}% / ${formatNumber(
+                position.multiData.long.priceDifference,
+                2,
+              )}%`
+            : `${formatNumber(position.priceDifference, 2)}}%`}
         </span>
       </>
     );
