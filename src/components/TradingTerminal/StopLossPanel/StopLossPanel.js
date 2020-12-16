@@ -62,15 +62,16 @@ const StopLossPanel = (props) => {
   }
   const strategyPrice = watch("price");
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const hasReachedTp = positionEntity && positionEntity.takeProfitTargets.some((tp) => tp.done);
 
   const stopLossTypeOptions = [
     { label: formatMessage({ id: "terminal.stoploss.type.fixed" }), val: "fixed" },
     {
-      label: formatMessage({ id: "terminal.stoploss.type.stopLossFollowsTakeProfit" }),
+      label: formatMessage({ id: "terminal.stoploss.type.followtp" }),
       val: "stopLossFollowsTakeProfit",
     },
     {
-      label: formatMessage({ id: "terminal.strategy.type.stopLossToBreakEven" }),
+      label: formatMessage({ id: "terminal.stoploss.type.breakeven" }),
       val: "stopLossToBreakEven",
     },
   ];
@@ -87,6 +88,7 @@ const StopLossPanel = (props) => {
 
     fieldsDisabled.stopLossPrice = disabled;
     fieldsDisabled.stopLossPercentage = disabled;
+    fieldsDisabled.stopLossType = disabled || hasReachedTp;
 
     return fieldsDisabled;
   };
@@ -264,12 +266,19 @@ const StopLossPanel = (props) => {
             {displayFieldErrors("stopLossPercentage")}
             {displayFieldErrors("stopLossPrice")}
           </Box>
-          <Box alignItems="center" className="title" display="flex" flexDirection="row">
+          <Box mt="12px" alignItems="center" className="title" display="flex" flexDirection="row">
             <Typography variant="h5">
-              <FormattedMessage id="terminal.strategy" />
+              <FormattedMessage id="terminal.stoploss.type" />
             </Typography>
             <Controller
-              as={<CustomSelect label="" onChange={() => {}} options={stopLossTypeOptions} />}
+              as={
+                <CustomSelect
+                  disabled={fieldsDisabled.stopLossType}
+                  label=""
+                  onChange={() => {}}
+                  options={stopLossTypeOptions}
+                />
+              }
               control={control}
               defaultValue={type}
               name="stopLossType"

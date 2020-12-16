@@ -40,6 +40,7 @@ import "./CustomSelect.scss";
  * @property {boolean} [disableCloseOnSelect] Disable CloseOnSelect (multi options autocomplete).
  * @property {renderOption} [renderOption] Custom render option function for autocomplete.
  * @property {boolean} [multiple] Multiple options for autocomplete.
+ * @property {boolean} [disabled] Disabled.
  */
 
 /**
@@ -86,6 +87,7 @@ const CustomSelect = (props) => {
     disableCloseOnSelect,
     multiple,
     labelPlacement,
+    disabled = false,
   } = props;
 
   return (
@@ -111,6 +113,7 @@ const CustomSelect = (props) => {
             onChange={(e) => onChange(e.target.value)}
             value={value}
             variant="outlined"
+            disabled={disabled}
           >
             {options.map((option, index) => (
               <MenuItem key={index} value={extractVal(option)}>
@@ -125,6 +128,7 @@ const CustomSelect = (props) => {
               input: "searchInput",
               root: "searchRoot",
             }}
+            disabled={disabled}
             disableClearable={true}
             disableCloseOnSelect={disableCloseOnSelect}
             getOptionLabel={(option) => extractLabel(option, options)}
