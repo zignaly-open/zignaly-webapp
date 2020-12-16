@@ -12,8 +12,8 @@ import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { getUserExchanges } from "../../../store/actions/user";
-import { dashlyExchangeConnected } from "../../../utils/dashlyApi";
 import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
+import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -154,7 +154,7 @@ const ExchangeAccountAdd = ({ demo }) => {
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(getUserExchanges(exchangePayload));
-        dashlyExchangeConnected(payload.isPaperTrading ? "demo" : "real");
+        mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
       })
