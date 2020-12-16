@@ -13,6 +13,7 @@ import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
+import { mixpanelPageView } from "utils/mixpanelApi";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -75,6 +76,12 @@ const AppLayout = (props) => {
       }
     }
   }, [href, storeUserData.userId]);
+
+  useEffect(() => {
+    if (href) {
+      mixpanelPageView(href);
+    }
+  }, [href]);
 
   return (
     <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
