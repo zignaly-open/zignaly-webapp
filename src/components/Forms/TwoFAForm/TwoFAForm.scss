@@ -2,7 +2,6 @@
   padding: 60px 75px;
 
   h3 {
-    color: $lighterBlack;
     font-size: 27px;
     margin-bottom: 40px;
   }
@@ -10,26 +9,6 @@
   .inputBox {
     margin-bottom: 40px;
     width: fit-content;
-  }
-
-  .customInput {
-    input {
-      color: $lighterBlack;
-    }
-
-    svg {
-      color: $lightGrey;
-    }
-
-    &:hover {
-      fieldset {
-        border-color: $lightGrey;
-      }
-    }
-  }
-
-  .customLabel {
-    color: $lighterBlack;
   }
 
   .link {
@@ -42,14 +21,6 @@
   .codeInput {
     text-align: center;
     width: auto;
-  }
-
-  .customButton {
-    margin-top: 40px;
-
-    &[disabled] {
-      color: $white;
-    }
   }
 }
 
