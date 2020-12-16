@@ -104,6 +104,9 @@ import {
  * @typedef {import('./tradeApiClient.types').ConvertReply} ConvertReply
  * @typedef {import('./tradeApiClient.types').ProfileNotifications} ProfileNotifications
  * @typedef {import('./tradeApiClient.types').ProfileNotificationsPayload} ProfileNotificationsPayload
+ * @typedef {import('./tradeApiClient.types').ChangeEmailRequestPayload} ChangeEmailRequestPayload
+ * @typedef {import('./tradeApiClient.types').ChangeEmailVisitPayload} ChangeEmailVisitPayload
+ * @typedef {import('./tradeApiClient.types').ChangeEmailConfirmPayload} ChangeEmailConfirmPayload
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep1Payload} ForgotPasswordStep1Payload
  * @typedef {import('./tradeApiClient.types').ForgotPasswordStep3Payload} ForgotPasswordStep3Payload
  * @typedef {import('./tradeApiClient.types').ProviderCreatePayload} ProviderCreatePayload
@@ -144,6 +147,7 @@ import {
  * @typedef {import('./tradeApiClient.types').GetProfitSharingBalanceHistoryPayload} GetProfitSharingBalanceHistoryPayload
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
+ * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
  */
 
 /**
@@ -1504,6 +1508,102 @@ class TradeApiClient {
   async forgotPasswordStep3(payload) {
     const endpointPath = "/fe/api.php?action=forgottenPassword3Step";
     const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Function to request email change through email.
+   *
+   * @param {ChangeEmailRequestPayload} payload Request Email change request payload.
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async changeEmailRequest(payload) {
+    const endpointPath = "/fe/api.php?action=resetEmailRequest";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Function to verify token received by completing request of email change.
+   *
+   * @param {ChangeEmailVisitPayload} payload Request Email change visit payload.
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async changeEmailVisit(payload) {
+    const endpointPath = "/fe/api.php?action=resetEmailVisit";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Function to change email after verifying the token of email change.
+   *
+   * @param {ChangeEmailConfirmPayload} payload Request Email change confirm payload.
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async changeEmailConfirm(payload) {
+    const endpointPath = "/fe/api.php?action=resetEmailConfirm";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Request 2FA Disable
+   *
+   * @param {AuthorizationPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FARequest(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FARequest";
+    const responseData = await this.doRequest(endpointPath, payload);
+
+    return responseData;
+  }
+
+  /**
+   * Visit 2FA reset link.
+   *
+   * @param {AuthorizationPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FAVisit(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FAVisit";
+    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
+
+    return responseData;
+  }
+
+  /**
+   * Disable 2FA
+   *
+   * @param {Disable2FAConfirmPayload} payload Request Payload
+   *
+   * @returns {Promise<"OK">} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async disable2FAConfirm(payload) {
+    const endpointPath = "/fe/api.php?action=disable2FAConfirm";
+    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
 
     return responseData;
   }

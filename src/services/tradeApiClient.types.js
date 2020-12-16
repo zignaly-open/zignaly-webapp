@@ -35,11 +35,16 @@ export const POSITION_ENTRY_TYPE_SLLIMIT = "stop_loss_limit";
 export const POSITION_ENTRY_TYPE_IMPORT = "import";
 
 /**
+ * @type {('multi')}
+ */
+export const POSITION_ENTRY_TYPE_MULTI = "multi";
+
+/**
  * @typedef {('SHORT' | 'LONG')} PositionEntrySide
  */
 
 /**
- * @typedef {("market" | "limit" | "stop_loss_limit" | "import")} PositionOrderType
+ * @typedef {("market" | "limit" | "stop_loss_limit" | "import" | 'multi')} PositionOrderType
  */
 
 /**
@@ -421,6 +426,15 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ *
+ * @typedef {Object} MultiSideData
+ * @property {Number} amount
+ * @property {string} price
+ * @property {Number} priceDifference
+ *
+ */
+
+/**
  * @typedef {Object} PositionEntity
  * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
  * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
@@ -514,6 +528,7 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} unitsAmount Units displayed when bought.
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
+ * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
  */
 
 /**
@@ -903,6 +918,22 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  */
 
 /**
+ * @typedef {Object} ChangeEmailRequestPayload
+ * @property {String} token User session token
+ */
+
+/**
+ * @typedef {Object} ChangeEmailVisitPayload
+ * @property {String} token token received through the reset request.
+ */
+
+/**
+ * @typedef {Object} ChangeEmailConfirmPayload
+ * @property {String} token Token received through the reset request.
+ * @property {String} email New email of the user.
+ */
+
+/**
  * @typedef {Object} ForgotPasswordStep1Payload
  * @property {String} email User's email.
  * @property {Boolean} array Default backend param equal to "true".
@@ -1018,6 +1049,12 @@ export const POSITION_ENTRY_TYPE_IMPORT = "import";
  * @property {string} positionId
  * @property {string} internalExchangeId
  * @property {number} amount
+ */
+
+/**
+ * @typedef {Object} Disable2FAConfirmPayload
+ * @property {string} apiKey An api key used to connect an exchange to zignaly
+ * @property {string} token Reset link code
  */
 
 /**
@@ -1266,6 +1303,8 @@ export function positionsResponseTransform(response) {
 export function positionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
   const closeDateMoment = moment(Number(positionItem.closeDate));
+  const dateFormat =
+    positionItem.profitSharing && !positionItem.isCopyTrader ? "YYYY/MM/DD" : "YYYY/MM/DD HH:mm";
   const nowDate = moment();
   const composeProviderLink = () => {
     // Manual positions don't use a signal provider.
@@ -1407,7 +1446,7 @@ export function positionItemTransform(positionItem) {
   const augmentedEntity = assign(positionEntity, {
     age: openDateMoment.toNow(true),
     ageSeconds: openDateMoment.diff(nowDate),
-    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format("YYYY/MM/DD HH:mm") : "-",
+    closeDateReadable: positionEntity.closeDate ? closeDateMoment.format(dateFormat) : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
       positionEntity.buyPrice,
@@ -1420,7 +1459,7 @@ export function positionItemTransform(positionItem) {
     ),
     netProfitStyle: getValueType(positionEntity.netProfit),
     openDateMoment: openDateMoment,
-    openDateReadable: positionEntity.openDate ? openDateMoment.format("YYYY/MM/DD HH:mm") : "-",
+    openDateReadable: positionEntity.openDate ? openDateMoment.format(dateFormat) : "-",
     priceDifferenceStyle: getPriceColorType(positionEntity.priceDifference, 0, positionEntity.side),
     profitStyle: getValueType(positionEntity.profit),
     providerLink: composeProviderLink(),
@@ -1542,6 +1581,8 @@ export function mapEntryTypeToEnum(entryType) {
       return POSITION_ENTRY_TYPE_SLLIMIT;
     case "import":
       return POSITION_ENTRY_TYPE_IMPORT;
+    case "multi":
+      return POSITION_ENTRY_TYPE_MULTI;
     default:
       throw new Error(`${entryType} entry type is invalid.`);
   }
@@ -3399,6 +3440,7 @@ export function convertAssetResponseTransform(response) {
  * @property {String} trailingStop
  * @property {String} trailingStopTrigger
  * @property {Boolean} whitelist
+ * @property {String} allowedSide
  */
 
 /**
@@ -3488,6 +3530,7 @@ export function creatEmptySettingsEntity() {
     trailingStop: "",
     trailingStopTrigger: "",
     whitelist: false,
+    allowedSide: "both",
   };
 }
 

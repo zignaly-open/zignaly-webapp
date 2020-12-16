@@ -23,7 +23,7 @@ const useExchangeList = (shouldExecute = true) => {
   const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    if (shouldExecute) {
+    if (storeSession.tradeApi.accessToken && shouldExecute) {
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,

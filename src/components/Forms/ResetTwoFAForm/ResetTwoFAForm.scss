@@ -1,0 +1,23 @@
+.resetTwoFAForm {
+  padding: 60px;
+
+  h3 {
+    color: $lighterBlack;
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
+  .answers {
+    margin-top: 18px;
+  }
+
+  .answerAction {
+    margin: 6px 18px 10px;
+  }
+}
+
+@include media("<=sm") {
+  .resetTwoFAForm {
+    padding: 60px 12px;
+  }
+}

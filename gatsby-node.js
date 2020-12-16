@@ -24,6 +24,18 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
+  // Override disable2fa page route to support token argument.
+  if (page.path.match(/^\/disable2fa\/$/)) {
+    page.matchPath = "/disable2fa/:token";
+    createPage(page);
+    return;
+  }
+  // Override change email page route to support token argument.
+  if (page.path.match(/^\/changeEmail\/$/)) {
+    page.matchPath = "/changeEmail/:token";
+    createPage(page);
+    return;
+  }
   // Override position page route to support positionId argument.
   if (page.path.match(/^\/copyTraders\/$/)) {
     page.matchPath = "/copyTraders/*";

@@ -1,0 +1,44 @@
+.toggleInput {
+  margin-bottom: 20px;
+  width: 100%;
+
+  .labelBox {
+    width: 50%;
+
+    .customLabel {
+      margin-bottom: 0;
+    }
+  }
+
+  .customLabel {
+    margin-bottom: 0;
+    margin-right: 10px;
+    min-width: 200px;
+  }
+
+  .radioBox {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fieldInputBox {
+    width: 45%;
+  }
+}
+
+@include media("<=sm") {
+  .toggleInput {
+    flex-direction: column;
+
+    .labelBox {
+      margin-bottom: 5px;
+      width: 100%;
+    }
+
+    .fieldInputBox {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+}

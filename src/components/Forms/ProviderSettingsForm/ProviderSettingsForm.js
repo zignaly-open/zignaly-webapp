@@ -19,6 +19,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ToggleTextarea from "./ToggleTextarea";
 import ProviderContext from "../../Provider/ProviderContext";
 import { checkAllocated } from "utils/helpers";
+import ToggleRadioInput from "./ToggleRadioInput";
 
 /**
  *
@@ -51,6 +52,12 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
   const dispatch = useDispatch();
   const emptySettings = creatEmptySettingsEntity();
   const { setHasAllocated } = useContext(ProviderContext);
+
+  const allowedSideOptions = [
+    { label: "Long", value: "long" },
+    { label: "Short", value: "short" },
+    { label: "Both", value: "both" },
+  ];
 
   const initTargets = () => {
     setProfitTargets(settings.takeProfitTargets);
@@ -308,6 +315,15 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
               tooltip="signalp.settings.limitpositions.help"
               unit="#"
               value={settings.positionsPerMarket}
+            />
+
+            <ToggleRadioInput
+              formMethods={formMethods}
+              label="signalp.settings.allowedside"
+              name="allowedSide"
+              options={allowedSideOptions}
+              tooltip="signalp.settings.allowedside.help"
+              value={settings.allowedSide}
             />
 
             <ToggleInput
