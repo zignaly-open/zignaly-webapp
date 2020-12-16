@@ -532,6 +532,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
  * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
+ * @property {boolean} [stopLossFollowsTakeProfit] Stop Loss moves each time a take profit target is reached
+ * @property {boolean} [stopLossToBreakEven] Stop Loss moves to break even (entry price) when take profit target is reached.
  */
 
 /**
