@@ -17,7 +17,8 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {Function} onSuccess
+ * @property {Function} [onSuccess]
+ * @property {Function} [onComplete]
  * @property {UserEntity} data
  */
 
@@ -26,13 +27,27 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const TwoFAForm = ({ onSuccess, data }) => {
+const TwoFAForm = ({ onSuccess, data, onComplete }) => {
   const [loading, setLoading] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const dispatch = useDispatch();
 
   /**
-   * Function to submit form.
+   * Function to verify code.
+   *
+   * @param {String} code verification code.
+   * @returns {void} None.
+   */
+  const verifyCode = (code) => {
+    if (onComplete) {
+      onComplete(code);
+    } else {
+      submitCode(code);
+    }
+  };
+
+  /**
+   * Function to submit code to backend.
    *
    * @param {String} code verification code.
    * @returns {void} None.
@@ -78,7 +93,7 @@ const TwoFAForm = ({ onSuccess, data }) => {
               </Typography>
             </label>
             {/* @ts-ignore */}
-            <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
+            <ReactCodeInput className="inputBox" fields={6} onComplete={verifyCode} />
           </Box>
           <Typography>
             <span className="link" onClick={() => showResetTwoFAModal(true)}>

@@ -925,6 +925,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} ChangeEmailRequestPayload
  * @property {String} token User session token
+ * @property {String} [code] two FA code.
  */
 
 /**
