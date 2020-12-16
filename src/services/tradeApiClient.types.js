@@ -70,6 +70,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} exchangeName Exchange name.
  * @property {string} internalExchangeId Exchange connection ID.
  * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -77,6 +78,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -84,6 +86,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -548,6 +551,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} skipped
  * @property {string} buyType
  * @property {string} errorMSG
+ * @property {boolean} postOnly
  */
 
 /**
@@ -575,6 +579,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {boolean} updating
+ * @property {boolean} postOnly
  */
 
 /**
@@ -1498,6 +1503,7 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
       skipped: rebuyTarget.skipped || false,
       buyType: rebuyTarget.buyType || "",
       errorMSG: rebuyTarget.errorMSG || "",
+      postOnly: rebuyTarget.postOnly || false,
     };
   });
 }
@@ -1542,6 +1548,7 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       updating: profitTarget.updating || false,
       cancel: profitTarget.cancel || false,
       skipped: profitTarget.skipped || false,
+      postOnly: profitTarget.postOnly || false,
     };
   });
 }

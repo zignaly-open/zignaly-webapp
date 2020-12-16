@@ -329,7 +329,7 @@ describe("Consume tradeApiClient service", () => {
     const payload = {
       token: accessToken,
       type: POSITION_ENTRY_TYPE_LIMIT,
-      pair: "BTC USDT",
+      pair: "BTCUSDT",
       positionSize: 100,
       positionSizeQuote: "USDT",
       side: POSITION_SIDE_LONG,
@@ -350,7 +350,7 @@ describe("Consume tradeApiClient service", () => {
       reBuyTargets: [
         {
           targetId: 1,
-          priceTargetPercentage: 1.3,
+          priceTargetPercentage: -30,
           amountPercentage: 0.5,
         },
       ],
@@ -435,7 +435,7 @@ describe("Consume tradeApiClient service", () => {
       const exitPosition = await client.positionExit(positionActionPayload);
       assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
     }
-  }, 60000);
+  }, 70000);
 
   it("should get position by ID", async () => {
     const payload = {

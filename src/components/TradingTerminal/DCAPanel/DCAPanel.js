@@ -15,6 +15,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -179,6 +180,7 @@ const DCAPanel = (props) => {
 
       fieldsDisabled[composeTargetPropertyName("rebuyPercentage", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("postOnly", index)] = disabled;
     });
 
     return fieldsDisabled;
@@ -266,6 +268,7 @@ const DCAPanel = (props) => {
         const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
         setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
+        setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
       });
     }
   };
@@ -410,6 +413,12 @@ const DCAPanel = (props) => {
           </Box>
         </Box>
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+          <PostOnlyControl
+            disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+            name={composeTargetPropertyName("postOnly", targetId)}
+          />
+        </Box>
         {showRemove && (
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             <Button

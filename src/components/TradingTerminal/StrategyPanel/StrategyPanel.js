@@ -24,6 +24,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import { Alert } from "@material-ui/lab";
 
 /**
@@ -394,6 +395,9 @@ const StrategyPanel = (props) => {
             <input name="leverage" ref={register} type="hidden" />
           </Box>
         )}
+        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+          <PostOnlyControl />
+        </Box>
       </Box>
     </Box>
   );
