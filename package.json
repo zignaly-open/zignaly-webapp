@@ -59,6 +59,7 @@
     "lightweight-charts": "^3.2.0",
     "lodash": "^4.17.20",
     "memory-cache": "^0.2.0",
+    "mixpanel-browser": "^2.40.0",
     "moment": "^2.28.0",
     "mui-datatables": "^3.4.1",
     "node-jose": "^1.1.4",
