@@ -143,7 +143,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     trigger("positionSize").then((isValid) => {
       if (isValid) {
         updateUnits(positionSize);
-        trigger("units");
       }
     });
   }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
@@ -155,10 +154,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const updateUnits = (positionSize) => {
     const units = calculateUnits(positionSize, currentPrice);
     setValue("units", units.toFixed(8));
+    trigger("units");
 
     if (entryStrategy === "multi") {
       const unitsShort = calculateUnits(positionSize, currentPriceShort);
       setValue("unitsShort", unitsShort.toFixed(8));
+      trigger("unitsShort");
     }
   };
 
@@ -167,14 +168,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
-
     updateUnits(positionSize);
-    trigger("units").then((isValid) => {
-      if (isValid) {
-        const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
-        setValue("realInvestment", realInvestment.toFixed(8));
-      }
-    });
+
+    const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
+    setValue("realInvestment", realInvestment.toFixed(8));
   }, [
     errors,
     currentPrice,

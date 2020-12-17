@@ -95,6 +95,7 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
           onChange={unitsChange}
           placeholder={"0"}
           readOnly={entryStrategy === "multi"}
+          error={Boolean(errors[name])}
         />
         <div className="currencyBox">{symbolData.unitsAmount}</div>
       </Box>
