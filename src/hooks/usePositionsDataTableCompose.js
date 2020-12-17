@@ -919,6 +919,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
         renderFunction: renderLiquidPrice,
       },
       {
+        columnId: "col.isolated",
+        propertyName: "isolatedReadable",
+        renderFunction: null,
+      },
+      {
         columnId: "col.margin",
         propertyName: "margin",
         renderFunction: renderMargin,
