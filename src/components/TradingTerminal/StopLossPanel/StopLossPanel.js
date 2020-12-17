@@ -11,6 +11,7 @@ import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
 import CustomSelect from "../../CustomSelect";
+import { some } from "lodash";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -62,7 +63,7 @@ const StopLossPanel = (props) => {
   }
   const strategyPrice = watch("price");
   const isClosed = positionEntity ? positionEntity.closed : false;
-  const hasReachedTp = positionEntity && positionEntity.takeProfitTargets.some((tp) => tp.done);
+  const hasReachedTp = positionEntity && some(positionEntity.takeProfitTargets, (tp) => tp.done);
 
   const stopLossTypeOptions = [
     { label: formatMessage({ id: "terminal.stoploss.type.fixed" }), val: "fixed" },

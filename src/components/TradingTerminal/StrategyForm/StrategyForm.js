@@ -351,6 +351,8 @@ const StrategyForm = (props) => {
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
+        stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
         buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
         takeProfitTargets:
           !draftPosition.reduceTargetPercentage && composePositionTakeProfitTargets(draftPosition),
