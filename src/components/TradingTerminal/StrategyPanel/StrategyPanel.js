@@ -88,6 +88,7 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
       <Box alignItems="center" display="flex">
         <OutlinedInput
           className="outlineInput"
+          error={Boolean(errors[name])}
           inputRef={register({
             validate: validateUnits,
           })}
@@ -95,7 +96,6 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
           onChange={unitsChange}
           placeholder={"0"}
           readOnly={entryStrategy === "multi"}
-          error={Boolean(errors[name])}
         />
         <div className="currencyBox">{symbolData.unitsAmount}</div>
       </Box>
