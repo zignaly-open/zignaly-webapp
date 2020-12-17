@@ -445,6 +445,8 @@ const StrategyForm = (props) => {
   const updatePriceField = () => {
     // Update price (selected symbol changed)
     setValue("price", lastPrice);
+    // Multi order
+    setValue("priceShort", lastPrice);
   };
   useEffect(updatePriceField, [lastPrice]);
 
