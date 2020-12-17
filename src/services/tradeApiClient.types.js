@@ -534,6 +534,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
  * @property {boolean} [stopLossFollowsTakeProfit] Stop Loss moves each time a take profit target is reached
  * @property {boolean} [stopLossToBreakEven] Stop Loss moves to break even (entry price) when take profit target is reached.
+ * @property {boolean} isolated
  */
 
 /**
@@ -1447,6 +1448,7 @@ export function positionItemTransform(positionItem) {
     liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
     markPrice: safeParseFloat(positionItem.markPrice),
     margin: safeParseFloat(positionItem.margin),
+    isolated: positionItem.isolated,
     takeProfitTargetsCountSuccess: safeParseFloat(positionItem.takeProfitTargetsCountSuccess),
   });
 
