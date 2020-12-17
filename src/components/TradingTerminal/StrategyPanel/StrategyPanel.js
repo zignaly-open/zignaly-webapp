@@ -56,7 +56,7 @@ const PriceControl = ({ multiSide, symbolData }) => {
           defaultValue={lastPrice}
           error={!!errors[name]}
           inputRef={register({
-            validate: validatePrice,
+            validate: (price) => validatePrice(price, multiSide),
           })}
           name={name}
           onChange={priceChange}

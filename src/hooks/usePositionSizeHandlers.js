@@ -17,7 +17,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
- * @property {Validate} validatePrice
+ * @property {function(string, [string]): boolean} validatePrice
  * @property {Validate} validateUnits
  */
 
@@ -102,17 +102,31 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * Validate that price is within limits.
    *
    * @param {any} price Price value.
+   * @param {string} [multiSide] Side for multi order
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  function validatePrice(price) {
+  function validatePrice(price, multiSide) {
     const value = parseFloat(price);
 
-    if (limits.price.min && value < limits.price.min) {
-      return formatMessage({ id: "terminal.positionprice.limit.min" }, { value: limits.price.min });
+    let min = limits.price.min;
+    let max = limits.price.max;
+
+    if (multiSide) {
+      // Check that price is above or below current price, depending on side
+      // Disabled for now because we don't pass the live price to strategy panel
+      // if (multiSide === "LONG") {
+      //   min = lastPrice;
+      // } else {
+      //   max = lastPrice;
+      // }
     }
 
-    if (limits.price.max && value > limits.price.max) {
-      return formatMessage({ id: "terminal.positionprice.limit.max" }, { value: limits.price.max });
+    if (min && value < min) {
+      return formatMessage({ id: "terminal.positionprice.limit.min" }, { value: min });
+    }
+
+    if (max && value > max) {
+      return formatMessage({ id: "terminal.positionprice.limit.max" }, { value: max });
     }
 
     if (!(value > 0)) {
