@@ -109,11 +109,11 @@ const CustomSelect = (props) => {
             classes={{
               root: "callout1",
             }}
+            disabled={disabled}
             displayEmpty={true}
             onChange={(e) => onChange(e.target.value)}
             value={value}
             variant="outlined"
-            disabled={disabled}
           >
             {options.map((option, index) => (
               <MenuItem key={index} value={extractVal(option)}>
@@ -128,9 +128,9 @@ const CustomSelect = (props) => {
               input: "searchInput",
               root: "searchRoot",
             }}
-            disabled={disabled}
             disableClearable={true}
             disableCloseOnSelect={disableCloseOnSelect}
+            disabled={disabled}
             getOptionLabel={(option) => extractLabel(option, options)}
             getOptionSelected={(option, v) => {
               const optionVal = extractVal(option);
