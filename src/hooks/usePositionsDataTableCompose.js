@@ -370,14 +370,14 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderMargin(dataIndex) {
     const position = positions[dataIndex];
-    const { unitsInvestment, margin, exchange, providerId } = position;
+    const { unitsInvestment, margin, exchange, providerId, isolated } = position;
     const isManual = providerId === "1";
 
     return (
       <Box alignItems="center" display="flex">
         <span className="symbol">{unitsInvestment}</span>
         <span>{formatPrice(margin)}</span>
-        {openMarginModal && isManual && exchange.toLowerCase() === "bitmex" && (
+        {openMarginModal && isManual && exchange.toLowerCase() === "bitmex" && isolated && (
           <img
             alt="Edit Margin"
             className="editIcon"
@@ -917,6 +917,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
         columnId: "col.price.liquid",
         propertyName: "liquidationPrice",
         renderFunction: renderLiquidPrice,
+      },
+      {
+        columnId: "col.isolated",
+        propertyName: "isolatedReadable",
+        renderFunction: null,
       },
       {
         columnId: "col.margin",
