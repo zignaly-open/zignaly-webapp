@@ -267,7 +267,7 @@ const StopLossPanel = (props) => {
             {displayFieldErrors("stopLossPercentage")}
             {displayFieldErrors("stopLossPrice")}
           </Box>
-          <Box mt="12px" alignItems="center" className="title" display="flex" flexDirection="row">
+          <Box alignItems="center" className="title" display="flex" flexDirection="row" mt="12px">
             <Typography variant="h5">
               <FormattedMessage id="terminal.stoploss.type" />
             </Typography>
