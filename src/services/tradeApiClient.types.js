@@ -1706,6 +1706,7 @@ function createEmptyPositionEntity() {
     unitsAmount: "",
     short: "",
     tradeViewSymbol: "",
+    isolated: false,
   };
 }
 
