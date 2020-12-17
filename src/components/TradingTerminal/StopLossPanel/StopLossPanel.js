@@ -5,11 +5,13 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
+import CustomSelect from "../../CustomSelect";
+import { some } from "lodash";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -36,14 +38,44 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
-  const { clearErrors, errors, getValues, register, setValue, watch, trigger } = useFormContext();
+  const {
+    clearErrors,
+    errors,
+    getValues,
+    register,
+    setValue,
+    watch,
+    trigger,
+    control,
+  } = useFormContext();
   const { lessThan } = useValidation();
   const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
+  let type = "fixed";
+  if (positionEntity) {
+    if (positionEntity.stopLossFollowsTakeProfit) {
+      type = "stopLossFollowsTakeProfit";
+    } else if (positionEntity.stopLossToBreakEven) {
+      type = "stopLossToBreakEven";
+    }
+  }
   const strategyPrice = watch("price");
   const isClosed = positionEntity ? positionEntity.closed : false;
+  const hasReachedTp = positionEntity && some(positionEntity.takeProfitTargets, (tp) => tp.done);
+
+  const stopLossTypeOptions = [
+    { label: formatMessage({ id: "terminal.stoploss.type.fixed" }), val: "fixed" },
+    {
+      label: formatMessage({ id: "terminal.stoploss.type.followtp" }),
+      val: "stopLossFollowsTakeProfit",
+    },
+    {
+      label: formatMessage({ id: "terminal.stoploss.type.breakeven" }),
+      val: "stopLossToBreakEven",
+    },
+  ];
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -57,6 +89,7 @@ const StopLossPanel = (props) => {
 
     fieldsDisabled.stopLossPrice = disabled;
     fieldsDisabled.stopLossPercentage = disabled;
+    fieldsDisabled.stopLossType = disabled || hasReachedTp;
 
     return fieldsDisabled;
   };
@@ -233,6 +266,24 @@ const StopLossPanel = (props) => {
             </Box>
             {displayFieldErrors("stopLossPercentage")}
             {displayFieldErrors("stopLossPrice")}
+          </Box>
+          <Box mt="12px" alignItems="center" className="title" display="flex" flexDirection="row">
+            <Typography variant="h5">
+              <FormattedMessage id="terminal.stoploss.type" />
+            </Typography>
+            <Controller
+              as={
+                <CustomSelect
+                  disabled={fieldsDisabled.stopLossType}
+                  label=""
+                  onChange={() => {}}
+                  options={stopLossTypeOptions}
+                />
+              }
+              control={control}
+              defaultValue={type}
+              name="stopLossType"
+            />
           </Box>
         </Box>
       )}
