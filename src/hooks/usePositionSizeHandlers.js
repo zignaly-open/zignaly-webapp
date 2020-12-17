@@ -17,7 +17,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
- * @property {function(string, string?): boolean} validatePrice
+ * @property {function(string, string?): string|boolean} validatePrice
  * @property {Validate} validateUnits
  */
 
