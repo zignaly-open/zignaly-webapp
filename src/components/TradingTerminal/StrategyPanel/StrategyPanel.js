@@ -56,7 +56,7 @@ const PriceControl = ({ multiSide, symbolData }) => {
           defaultValue={lastPrice}
           error={!!errors[name]}
           inputRef={register({
-            validate: validatePrice,
+            validate: (price) => validatePrice(price, multiSide),
           })}
           name={name}
           onChange={priceChange}
@@ -88,6 +88,7 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
       <Box alignItems="center" display="flex">
         <OutlinedInput
           className="outlineInput"
+          error={Boolean(errors[name])}
           inputRef={register({
             validate: validateUnits,
           })}
