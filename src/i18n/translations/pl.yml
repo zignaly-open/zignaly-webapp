@@ -1313,7 +1313,7 @@ profitsharing.accounting: "Wyliczenia"
 profitsharing.initAllocated: "Początkowo przydzielone saldo"
 # What is this referring to?
 profitsharing.retain: "Zachowne"
-profitsharing.watermark: "Znak wodny"
+profitsharing.watermark: "High-Water Mark"
 profitsharing.types.all: "Wszystko"
 profitsharing.types.deposit: "Depozyt"
 profitsharing.types.pnl: "PnL"

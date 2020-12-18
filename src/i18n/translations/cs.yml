@@ -495,7 +495,7 @@ profitsharing.currentAllocated: "CH-Current Allocated"
 profitsharing.accounting: "CH-Accounting"
 profitsharing.initAllocated: "CH-Initial Allocated"
 profitsharing.retain: "CH-Retain"
-profitsharing.watermark: "CH-High Watermark"
+profitsharing.watermark: "CH-High-Water Mark"
 
 graph.others: "CH-Others"
 
