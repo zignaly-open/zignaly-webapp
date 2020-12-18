@@ -112,13 +112,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     let max = limits.price.max;
 
     if (multiSide) {
-      // Check that price is above or below current price, depending on side
-      // Disabled for now because we don't pass the live price to strategy panel
-      // if (multiSide === "LONG") {
-      //   min = lastPrice;
-      // } else {
-      //   max = lastPrice;
-      // }
+      // Check that LONG price is below SHORT and the opposite
+      if (multiSide === "long") {
+        max = currentPriceShort;
+      } else {
+        min = currentPrice;
+      }
     }
 
     if (min && value < min) {
