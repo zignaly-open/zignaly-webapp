@@ -96,7 +96,11 @@ export const mixPanelTrigger = (userData, type) => {
   const eventToTrigger = type === "login" ? "Login" : "Signup";
 
   if (mixPanel) {
-    mixpanel.identify(userData.userId);
+    if (type === "login") {
+      mixpanel.identify(userData.userId);
+    } else {
+      mixpanel.alias(userData.userId);
+    }
     /* eslint-disable */
     mixpanel.people.set({
       $email: userData.email || "",
