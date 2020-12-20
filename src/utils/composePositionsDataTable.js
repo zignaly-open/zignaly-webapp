@@ -182,7 +182,9 @@ function composeProfit(position) {
   return (
     <>
       {position.status === 1 ? (
-        <span>Still entering...</span>
+        <span>
+          <FormattedMessage id="dashboard.positions.entering" />
+        </span>
       ) : (
         <>
           <span className="symbol">{position.unitsInvestment}</span>
@@ -203,7 +205,9 @@ function composeProfitPercentage(position) {
   return (
     <>
       {position.status === 1 ? (
-        <span>Still entering...</span>
+        <span>
+          <FormattedMessage id="dashboard.positions.entering" />
+        </span>
       ) : (
         <span className={position.profitStyle}>{formatNumber(position.profitPercentage, 2)} %</span>
       )}
