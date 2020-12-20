@@ -10,6 +10,7 @@ import CustomButton from "../../CustomButton";
  * @property {number} min Minimum leverage limit.
  * @property {number} max Maximum leverage limit.
  * @property {number} leverage Current leverage.
+ * @property {string} marginMode Current margin mode.
  * @property {function} setValue Hook form setValue callback.
  * @property {function} onClose Hook form setValue callback.
  */
@@ -33,15 +34,16 @@ const LeverageForm = (props) => {
     { value: 125, label: "125" },
   ];
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
-  const leverageReadOnly = selectedExchange.exchangeName.toLowerCase() === "bitmex";
+  const leverageEditable =
+    mode !== "cross" || selectedExchange.exchangeName.toLowerCase() !== "bitmex";
 
   const handleCancel = () => {
     onClose();
   };
 
   const handleConfirm = () => {
-    setValue("leverage", val);
     setValue("marginMode", mode);
+    setValue("leverage", leverageEditable ? val : 1);
     onClose();
   };
 
@@ -89,6 +91,16 @@ const LeverageForm = (props) => {
     }
   };
 
+  /**
+   * Leverage mode change handler.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event Change event.
+   * @returns {void}
+   */
+  const handleModeChange = (event) => {
+    setMode(event.target.checked ? "cross" : "isolated");
+  };
+
   return (
     <Box
       className="leverageForm"
@@ -99,60 +111,62 @@ const LeverageForm = (props) => {
       <Typography className="title" id="range-slider" variant="h3">
         <FormattedMessage id="terminal.leverage.adjust" />
       </Typography>
-      <Box className="inputValue" display="flex" flexDirection="row" justifyContent="space-between">
-        <button
-          className={darkStyle ? "dark" : "light"}
-          onClick={() => decreaseValue()}
-          type="button"
-          disabled={!leverageReadOnly}
-        >
-          −
-        </button>
-        <input
-          className={darkStyle ? "dark" : "light"}
-          onBlur={protectLimits}
-          onChange={handleInputChange}
-          value={val}
-          disabled={!leverageReadOnly}
-        />
-        <button
-          className={darkStyle ? "dark" : "light"}
-          onClick={() => increaseValue()}
-          type="button"
-          disabled={!leverageReadOnly}
-        >
-          +
-        </button>
-      </Box>
-      <Slider
-        aria-labelledby="range-slider"
-        className="slider"
-        classes={{ mark: "mark", thumb: "thumb", track: "track", markLabel: "markLabel" }}
-        marks={marks}
-        max={max}
-        min={min}
-        onChange={handleSliderChange}
-        step={1}
-        value={val}
-        disabled={!leverageReadOnly}
-      />
-      {max > 25 && val >= 25 && (
-        <span className="errorText">
-          <FormattedMessage id="terminal.leverage.alert" />
-        </span>
-      )}
-      <Box className="mode" display="flex" flexDirection="row" alignItems="center">
+      <Box alignItems="center" className="mode" display="flex" flexDirection="row">
         <Typography>
           <FormattedMessage id="terminal.leverage.isolated" />
         </Typography>
-        <Switch
-          checked={mode === "cross"}
-          onChange={(e) => setMode(e.target.checked ? "cross" : "isolated")}
-        />
+        <Switch checked={mode === "cross"} onChange={handleModeChange} />
         <Typography>
           <FormattedMessage id="terminal.leverage.cross" />
         </Typography>
       </Box>
+      {leverageEditable && (
+        <>
+          <Box
+            className="inputValue"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <button
+              className={darkStyle ? "dark" : "light"}
+              onClick={() => decreaseValue()}
+              type="button"
+            >
+              −
+            </button>
+            <input
+              className={darkStyle ? "dark" : "light"}
+              onBlur={protectLimits}
+              onChange={handleInputChange}
+              value={val}
+            />
+            <button
+              className={darkStyle ? "dark" : "light"}
+              onClick={() => increaseValue()}
+              type="button"
+            >
+              +
+            </button>
+          </Box>
+          <Slider
+            aria-labelledby="range-slider"
+            className="slider"
+            classes={{ mark: "mark", thumb: "thumb", track: "track", markLabel: "markLabel" }}
+            marks={marks}
+            max={max}
+            min={min}
+            onChange={handleSliderChange}
+            step={1}
+            value={val}
+          />
+          {max > 25 && val >= 25 && (
+            <span className="errorText">
+              <FormattedMessage id="terminal.leverage.alert" />
+            </span>
+          )}
+        </>
+      )}
       <Box
         alignItems="center"
         className="formActions"

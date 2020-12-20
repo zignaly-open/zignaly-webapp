@@ -37,8 +37,12 @@
         border: $purple solid 1px;
         font-size: 15px;
         padding: 3px;
-        text-transform: lowercase;
+        text-transform: none;
       }
     }
+  }
+
+  .leverageButton {
+    white-space: nowrap;
   }
 }
