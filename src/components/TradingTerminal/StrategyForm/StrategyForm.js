@@ -331,6 +331,7 @@ const StrategyForm = (props) => {
   const composeCreatePositionPayload = (draftPosition) => {
     return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition), {
       leverage: parseInt(draftPosition.leverage) || 1,
+      marginMode: draftPosition.marginMode || "",
     });
   };
 

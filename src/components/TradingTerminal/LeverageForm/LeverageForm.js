@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Slider, Typography } from "@material-ui/core";
+import { Box, Slider, Typography, Switch } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import "./LeverageForm.scss";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -21,16 +21,19 @@ import CustomButton from "../../CustomButton";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max, leverage, setValue, onClose } = props;
+  const { min, max, leverage, setValue, mode: initMode, onClose } = props;
   const [val, setVal] = useState(leverage);
+  const [mode, setMode] = useState(initMode);
   const marks = [
+    { value: 1, label: "1" },
     { value: 25, label: "25" },
     { value: 50, label: "50" },
     { value: 75, label: "75" },
     { value: 100, label: "100" },
     { value: 125, label: "125" },
   ];
-  const { darkStyle } = useStoreSettingsSelector();
+  const { darkStyle, selectedExchange } = useStoreSettingsSelector();
+  const leverageReadOnly = selectedExchange.exchangeName.toLowerCase() === "bitmex";
 
   const handleCancel = () => {
     onClose();
@@ -38,6 +41,7 @@ const LeverageForm = (props) => {
 
   const handleConfirm = () => {
     setValue("leverage", val);
+    setValue("marginMode", mode);
     onClose();
   };
 
@@ -100,6 +104,7 @@ const LeverageForm = (props) => {
           className={darkStyle ? "dark" : "light"}
           onClick={() => decreaseValue()}
           type="button"
+          disabled={!leverageReadOnly}
         >
           −
         </button>
@@ -108,11 +113,13 @@ const LeverageForm = (props) => {
           onBlur={protectLimits}
           onChange={handleInputChange}
           value={val}
+          disabled={!leverageReadOnly}
         />
         <button
           className={darkStyle ? "dark" : "light"}
           onClick={() => increaseValue()}
           type="button"
+          disabled={!leverageReadOnly}
         >
           +
         </button>
@@ -127,12 +134,25 @@ const LeverageForm = (props) => {
         onChange={handleSliderChange}
         step={1}
         value={val}
+        disabled={!leverageReadOnly}
       />
       {max > 25 && val >= 25 && (
         <span className="errorText">
           <FormattedMessage id="terminal.leverage.alert" />
         </span>
       )}
+      <Box className="mode" display="flex" flexDirection="row" alignItems="center">
+        <Typography>
+          <FormattedMessage id="terminal.leverage.isolated" />
+        </Typography>
+        <Switch
+          checked={mode === "cross"}
+          onChange={(e) => setMode(e.target.checked ? "cross" : "isolated")}
+        />
+        <Typography>
+          <FormattedMessage id="terminal.leverage.cross" />
+        </Typography>
+      </Box>
       <Box
         alignItems="center"
         className="formActions"
