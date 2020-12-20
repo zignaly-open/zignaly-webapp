@@ -386,7 +386,7 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={symbolData.maxLeverage}
                 min={1}
-                mode={marginMode}
+                marginMode={marginMode}
                 onClose={() => {
                   setModalVisible(false);
                 }}

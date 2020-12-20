@@ -22,7 +22,7 @@ import CustomButton from "../../CustomButton";
  * @returns {JSX.Element} Leverage form element.
  */
 const LeverageForm = (props) => {
-  const { min, max, leverage, setValue, mode: initMode, onClose } = props;
+  const { min, max, leverage, setValue, marginMode: initMode, onClose } = props;
   const [val, setVal] = useState(leverage);
   const [mode, setMode] = useState(initMode);
   const marks = [
