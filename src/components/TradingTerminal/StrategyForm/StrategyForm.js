@@ -19,6 +19,7 @@ import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
+import { mixpanelPositionCreated } from "utils/mixpanelApi";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
@@ -378,6 +379,7 @@ const StrategyForm = (props) => {
       .then((positionId) => {
         reset();
         dispatch(showSuccessAlert("", formatMessage({ id: "terminal.open.success" })));
+        mixpanelPositionCreated();
         navigate(`/position/${positionId}`);
       })
       .catch((e) => {

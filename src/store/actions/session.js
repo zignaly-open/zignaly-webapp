@@ -4,9 +4,9 @@ import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
-import { dashlyTrigger } from "../../utils/dashlyApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 import { userPilotLogin } from "../../utils/userPilotApi";
+import { mixPanelTrigger } from "utils/mixpanelApi";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -46,7 +46,7 @@ export const startTradeApiSession = (response) => {
     if (gtmEvent) {
       gtmEvent.push(assign(eventType, response));
     }
-    dashlyTrigger(response, "login");
+    mixPanelTrigger(response, "login");
     userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
@@ -93,7 +93,7 @@ export const registerUser = (payload, setLoading) => {
         gtmEvent.push(assign(eventType, responseData));
       }
       startLiveSession(responseData);
-      dashlyTrigger(responseData, "signup");
+      mixPanelTrigger(responseData, "signup");
       userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
       setLoading(false);

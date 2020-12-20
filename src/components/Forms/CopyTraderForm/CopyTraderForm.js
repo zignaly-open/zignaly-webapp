@@ -15,7 +15,7 @@ import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSele
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
-import { dashlyProviderEnabled } from "../../../utils/dashlyApi";
+import { mixpanelProviderEnabled } from "utils/mixpanelApi";
 
 /**
  * @typedef {Object} DefaultProps
@@ -95,7 +95,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
               exchangeInternalId: selectedExchange.internalId,
             };
             dispatch(setProvider(payload2, !provider.profitSharing));
-            dashlyProviderEnabled();
+            mixpanelProviderEnabled();
             userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
             onClose();
