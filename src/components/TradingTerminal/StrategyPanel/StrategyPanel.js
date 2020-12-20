@@ -394,7 +394,7 @@ const StrategyPanel = (props) => {
               />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
-            <Button className="leverageButton" onClick={() => setModalVisible(true)}>
+            <Button onClick={() => setModalVisible(true)}>
               {marginMode === "cross"
                 ? selectedExchange.exchangeName.toLowerCase() === "bitmex"
                   ? "Cross"
