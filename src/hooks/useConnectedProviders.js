@@ -34,14 +34,16 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
       ...(internalExchangeId && { internalExchangeId }),
     };
 
-    tradeApi
-      .providersGet(payload)
-      .then((data) => {
-        setProviders(data);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (storeSession.tradeApi.accessToken) {
+      tradeApi
+        .providersGet(payload)
+        .then((data) => {
+          setProviders(data);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
   useEffect(loadData, [
     storeSession.tradeApi.accessToken,
