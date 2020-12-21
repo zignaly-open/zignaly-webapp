@@ -36,6 +36,7 @@ const LeverageForm = (props) => {
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const leverageEditable =
     mode !== "cross" || selectedExchange.exchangeName.toLowerCase() !== "bitmex";
+  const showCross = selectedExchange.exchangeName.toLowerCase() === "bitmex";
 
   const handleCancel = () => {
     onClose();
@@ -111,15 +112,17 @@ const LeverageForm = (props) => {
       <Typography className="title" id="range-slider" variant="h3">
         <FormattedMessage id="terminal.leverage.adjust" />
       </Typography>
-      <Box alignItems="center" className="mode" display="flex" flexDirection="row">
-        <Typography>
-          <FormattedMessage id="terminal.leverage.isolated" />
-        </Typography>
-        <Switch checked={mode === "cross"} onChange={handleModeChange} />
-        <Typography>
-          <FormattedMessage id="terminal.leverage.cross" />
-        </Typography>
-      </Box>
+      {showCross && (
+        <Box alignItems="center" className="mode" display="flex" flexDirection="row">
+          <Typography>
+            <FormattedMessage id="terminal.leverage.isolated" />
+          </Typography>
+          <Switch checked={mode === "cross"} onChange={handleModeChange} />
+          <Typography>
+            <FormattedMessage id="terminal.leverage.cross" />
+          </Typography>
+        </Box>
+      )}
       {leverageEditable && (
         <>
           <Box
