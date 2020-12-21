@@ -45,6 +45,7 @@ import {
   profitSharingBalanceHistoryResponseTransform,
   providerBalanceResponseTransform,
   providerFollowersCountResponseTransform,
+  managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -132,6 +133,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  * @typedef {import('./tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('./tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import('./tradeApiClient.types').ManagementBalanceAndPositionsEntity} ManagementBalanceAndPositionsEntity
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
@@ -1315,6 +1317,22 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload, "GET");
 
     return managementPositionsResponseTransform(responseData);
+  }
+
+  /**
+   * Function to get Management positions and Balance of provider.
+   *
+   * @param {GetProviderFollowersPayload} payload Management poistions payload.
+   *
+   * @returns {Promise<ManagementBalanceAndPositionsEntity>} Returns promise that resolved management positions entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerManagementBalanceAndPositions(payload) {
+    const endpointPath = "/fe/api.php?action=getBalanceAndPositionsForService";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return managementBalanceAndPositionsResponseTransform(responseData);
   }
 
   /**

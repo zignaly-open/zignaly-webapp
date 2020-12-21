@@ -3634,8 +3634,14 @@ export function creatProviderDataPointsEntity(response) {
  * @property {Number} totalWalletUSDT
  * @property {Number} totalCurrentMarginBTC
  * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalInvestedBTC
+ * @property {Number} totalInvestedUSDT
  * @property {Number} totalUnrealizedProfitBTC
  * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalPnlBTC
+ * @property {Number} totalPnlUSDT
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
  * @property {Number} totalMarginBTC
  * @property {Number} totalMarginUSDT
  * @property {Number} abstractPercentage
@@ -3663,8 +3669,14 @@ export function creatProviderBalanceEntity(response) {
     totalWalletUSDT: response ? formatValue(response.totalWalletUSDT) : 0,
     totalCurrentMarginBTC: response ? formatValue(response.totalCurrentMarginBTC) : 0,
     totalCurrentMarginUSDT: response ? formatValue(response.totalCurrentMarginUSDT) : 0,
+    totalInvestedBTC: response ? formatValue(response.totalInvestedBTC) : 0,
+    totalInvestedUSDT: response ? formatValue(response.totalInvestedUSDT) : 0,
     totalUnrealizedProfitBTC: response ? formatValue(response.totalUnrealizedProfitBTC) : 0,
     totalUnrealizedProfitUSDT: response ? formatValue(response.totalUnrealizedProfitUSDT) : 0,
+    totalPnlBTC: response ? formatValue(response.totalPnlBTC) : 0,
+    totalPnlUSDT: response ? formatValue(response.totalPnlUSDT) : 0,
+    totalFreeBTC: response ? formatValue(response.totalFreeBTC) : 0,
+    totalFreeUSDT: response ? formatValue(response.totalFreeUSDT) : 0,
     totalMarginBTC: response ? formatValue(response.totalMarginBTC) : 0,
     totalMarginUSDT: response ? response.totalMarginUSDT : 0,
     abstractPercentage: response ? formatValue(response.abstractPercentage) : 0,
@@ -3755,6 +3767,36 @@ function createEmptyManagementPositionsEntity() {
   return {
     position: createEmptyPositionEntity(),
     subPositions: [],
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ManagementBalanceAndPositionsEntity
+ * @property {Array<ManagementPositionsEntity>} positions
+ * @property {ProviderBalanceEntity} balance
+ */
+
+/**
+ * Transform management positions response to typed object mapping.
+ *
+ * @param {*} response Management balance and positions list response.
+ * @returns {ManagementBalanceAndPositionsEntity} Balance and Positions entities mapping with management ids.
+ */
+export function managementBalanceAndPositionsResponseTransform(response) {
+  let transformedResponse = createEmptyManagementBalanceAndPositionsEntity();
+  transformedResponse.positions = managementPositionsResponseTransform(response.positions);
+  transformedResponse.balance = providerBalanceResponseTransform(response.balance);
+  return transformedResponse;
+}
+
+/**
+ * @returns {ManagementBalanceAndPositionsEntity} Empty management positions entity.
+ */
+function createEmptyManagementBalanceAndPositionsEntity() {
+  return {
+    positions: [],
+    balance: null,
   };
 }
 
