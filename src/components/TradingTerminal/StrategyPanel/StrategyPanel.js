@@ -405,9 +405,11 @@ const StrategyPanel = (props) => {
             <input name="marginMode" ref={register} type="hidden" />
           </Box>
         )}
-        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-          <PostOnlyControl />
-        </Box>
+        {["limit", "multi"].includes(entryStrategy) && (
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl />
+          </Box>
+        )}
       </Box>
     </Box>
   );
