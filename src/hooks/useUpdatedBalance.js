@@ -33,7 +33,7 @@ const useUpdatedBalance = () => {
   useEffect(showLoader, [storeSettings.selectedExchange.internalId]);
 
   const loadData = () => {
-    if (storeSettings.selectedExchange.internalId) {
+    if (storeSession.tradeApi.accessToken && storeSettings.selectedExchange.internalId) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         exchangeInternalId: storeSettings.selectedExchange.internalId,

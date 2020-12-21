@@ -26,7 +26,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   const storeSettings = useStoreSettingsSelector();
 
   const loadData = () => {
-    if (shouldExecute) {
+    if (shouldExecute && storeSession.tradeApi.accessToken) {
       setProvidersLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,

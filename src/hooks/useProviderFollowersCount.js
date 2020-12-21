@@ -27,7 +27,7 @@ const useProviderFollowersCount = (providerId) => {
   const dispatch = useDispatch();
 
   const loadSummary = () => {
-    if (providerId) {
+    if (storeSession.tradeApi.accessToken && providerId) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         providerId: providerId,

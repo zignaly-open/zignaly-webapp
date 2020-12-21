@@ -25,7 +25,11 @@ const useAvailableBalance = () => {
 
   const loadData = () => {
     // Skip balance fetch for paper trading exchanges.
-    if (!storeSettings.selectedExchange.paperTrading) {
+    if (
+      storeSession.tradeApi.accessToken &&
+      storeSettings.selectedExchange.internalId &&
+      !storeSettings.selectedExchange.paperTrading
+    ) {
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
