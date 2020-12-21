@@ -1,7 +1,22 @@
 .preferences {
+  height: 100%;
   margin-top: 15px;
 
   .themeSwitcher {
     margin: 11px 0 49px;
+  }
+
+  .deleteButtonContainer {
+    margin-left: auto;
+    margin-top: auto;
+  }
+}
+
+@include media("<=sm") {
+  .preferences {
+    .deleteButtonContainer {
+      position: relative;
+      white-space: nowrap;
+    }
   }
 }
