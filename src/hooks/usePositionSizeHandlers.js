@@ -121,11 +121,15 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     }
 
     if (min && value < min) {
-      return formatMessage({ id: "terminal.positionprice.limit.min" }, { value: min });
+      return multiSide === "short"
+        ? formatMessage({ id: "terminal.positionprice.multi.short" })
+        : formatMessage({ id: "terminal.positionprice.limit.min" }, { value: min });
     }
 
     if (max && value > max) {
-      return formatMessage({ id: "terminal.positionprice.limit.max" }, { value: max });
+      return multiSide === "long"
+        ? formatMessage({ id: "terminal.positionprice.multi.long" })
+        : formatMessage({ id: "terminal.positionprice.limit.max" }, { value: max });
     }
 
     if (!(value > 0)) {
@@ -236,6 +240,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     if (parseFloat(draftPosition.positionSize) > 0) {
       simulateInputChangeEvent("positionSize");
     }
+
+    // Trigger the other price for multi order
+    trigger("price");
+    trigger("priceShort");
   };
 
   // Trigger position size recalculation on leverage/entryType change
