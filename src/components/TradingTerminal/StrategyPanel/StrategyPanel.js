@@ -350,24 +350,25 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
         )}
-        {entryStrategy === "multi" ? (
-          <>
-            <UnitsControl
-              baseBalance={baseBalance}
-              loading={loading}
-              multiSide="long"
-              symbolData={symbolData}
-            />
-            <UnitsControl
-              baseBalance={baseBalance}
-              loading={loading}
-              multiSide="short"
-              symbolData={symbolData}
-            />
-          </>
-        ) : (
-          <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
-        )}
+        {!isCopyProvider &&
+          (entryStrategy === "multi" ? (
+            <>
+              <UnitsControl
+                baseBalance={baseBalance}
+                loading={loading}
+                multiSide="long"
+                symbolData={symbolData}
+              />
+              <UnitsControl
+                baseBalance={baseBalance}
+                loading={loading}
+                multiSide="short"
+                symbolData={symbolData}
+              />
+            </>
+          ) : (
+            <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
+          ))}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"
