@@ -21,7 +21,7 @@ const useProviderAssets = (exchangeInternalId, providerId) => {
   const dispatch = useDispatch();
 
   const loadData = () => {
-    if (exchangeInternalId && providerId) {
+    if (storeSession.tradeApi.accessToken && exchangeInternalId && providerId) {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         exchangeInternalId: exchangeInternalId,

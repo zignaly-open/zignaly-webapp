@@ -30,7 +30,12 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const loadData = () => {
-    if (shouldExecute && exchangeData.exchangeId && exchangeData.exchangeType) {
+    if (
+      shouldExecute &&
+      storeSession.tradeApi.accessToken &&
+      exchangeData.exchangeId &&
+      exchangeData.exchangeType
+    ) {
       setLoading(true);
       let payload = {
         token: storeSession.tradeApi.accessToken,

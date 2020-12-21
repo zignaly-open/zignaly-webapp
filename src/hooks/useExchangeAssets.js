@@ -24,17 +24,19 @@ const useExchangeAssets = (internalId, updatedAt) => {
   const loadData = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalId,
+      internalId: internalId ? internalId : "",
     };
 
-    tradeApi
-      .exchangeAssetsGet(payload)
-      .then((data) => {
-        setAssets(data);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (storeSession.tradeApi.accessToken) {
+      tradeApi
+        .exchangeAssetsGet(payload)
+        .then((data) => {
+          setAssets(data);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
 
   useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);

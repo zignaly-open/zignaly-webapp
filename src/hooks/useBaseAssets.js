@@ -24,12 +24,14 @@ const useBaseAssets = (quote) => {
       quote,
     };
 
-    tradeApi
-      .baseAssetsGet(payload)
-      .then((data) => {
-        setBases(data);
-      })
-      .catch(() => {});
+    if (storeSession.tradeApi.accessToken) {
+      tradeApi
+        .baseAssetsGet(payload)
+        .then((data) => {
+          setBases(data);
+        })
+        .catch(() => {});
+    }
   };
 
   useEffect(loadData, [quote, storeSession.tradeApi.accessToken]);
