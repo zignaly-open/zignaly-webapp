@@ -88,7 +88,18 @@ const ChangeEmailButton = () => {
       justifyContent="flex-start"
     >
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm data={userData} onComplete={startChangeEmailProcess} />
+        {loading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={35} />
+          </Box>
+        )}
+        {!loading && <TwoFAForm data={userData} onComplete={startChangeEmailProcess} />}
       </Modal>
       <ConfirmDialog
         confirmConfig={confirmConfig}
