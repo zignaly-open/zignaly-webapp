@@ -349,25 +349,24 @@ const StrategyPanel = (props) => {
             )}
           </FormControl>
         )}
-        {!isCopyProvider &&
-          (entryStrategy === "multi" ? (
-            <>
-              <UnitsControl
-                baseBalance={baseBalance}
-                loading={loading}
-                multiSide="long"
-                symbolData={symbolData}
-              />
-              <UnitsControl
-                baseBalance={baseBalance}
-                loading={loading}
-                multiSide="short"
-                symbolData={symbolData}
-              />
-            </>
-          ) : (
-            <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
-          ))}
+        {entryStrategy === "multi" ? (
+          <>
+            <UnitsControl
+              baseBalance={baseBalance}
+              loading={loading}
+              multiSide="long"
+              symbolData={symbolData}
+            />
+            <UnitsControl
+              baseBalance={baseBalance}
+              loading={loading}
+              multiSide="short"
+              symbolData={symbolData}
+            />
+          </>
+        ) : (
+          <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
+        )}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
           <Box
             className="leverageButton"
@@ -397,9 +396,11 @@ const StrategyPanel = (props) => {
             <input name="leverage" ref={register} type="hidden" />
           </Box>
         )}
-        <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-          <PostOnlyControl />
-        </Box>
+        {["limit", "multi"].includes(entryStrategy) && (
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl />
+          </Box>
+        )}
       </Box>
     </Box>
   );
