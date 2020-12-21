@@ -142,6 +142,7 @@ const StrategyPanel = (props) => {
   } = usePositionSizeHandlers(symbolData);
 
   const leverage = watch("leverage");
+  const marginMode = watch("marginMode");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
   const { providerService } = useContext(TradingViewContext);
@@ -385,6 +386,7 @@ const StrategyPanel = (props) => {
                 leverage={parseInt(leverage)}
                 max={symbolData.maxLeverage}
                 min={1}
+                marginMode={marginMode}
                 onClose={() => {
                   setModalVisible(false);
                 }}
@@ -392,8 +394,15 @@ const StrategyPanel = (props) => {
               />
             </Modal>
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
-            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
+            <Button onClick={() => setModalVisible(true)}>
+              {marginMode === "cross"
+                ? selectedExchange.exchangeName.toLowerCase() === "bitmex"
+                  ? "Cross"
+                  : `Cross ${leverage}x`
+                : `${leverage}x`}
+            </Button>
             <input name="leverage" ref={register} type="hidden" />
+            <input name="marginMode" ref={register} type="hidden" />
           </Box>
         )}
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
