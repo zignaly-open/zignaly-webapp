@@ -1,4 +1,5 @@
 import CopyTraderSummary from "./CopyTraderSummary";
-import ProfitSharingSummary from "./ProfitSharingSummary";
+import FuturesProfitSharingSummary from "./FuturesProfitSharingSummary";
+import SpotProfitSharingSummary from "./SpotProfitSharingSummary";
 
-export { ProfitSharingSummary, CopyTraderSummary };
+export { FuturesProfitSharingSummary, CopyTraderSummary, SpotProfitSharingSummary };
