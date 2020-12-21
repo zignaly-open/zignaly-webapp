@@ -854,6 +854,8 @@ terminal.positionprice.limit.zero: "Position price must be a number greater than
 terminal.positionsize.limit.max: "Position size must be a number lower than {value}."
 terminal.positionsize.limit.min: "Position size must be a number greater than {value}."
 terminal.positionsize.limit.zero: "Position size must be a number greater than 0."
+terminal.positionprice.multi.long: "Long price should be lower than Short Price."
+terminal.positionprice.multi.short: "Short price should be greater than Long Price."
 terminal.positionsize.percentage.required: "Position size percentage value is required."
 terminal.positionsize.required: "Position size value is required."
 terminal.positionsize.valid.percentage: "Position units percentage must be a number between 0 - 100"
