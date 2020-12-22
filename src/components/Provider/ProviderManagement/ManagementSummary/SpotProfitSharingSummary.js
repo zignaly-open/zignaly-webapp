@@ -64,7 +64,7 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       />
 
       <ManagementSummaryCard
-        foot={`USDT ${formatFloat(summary.totalFreeUSDT)}`}
+        foot={`USDT ${formatFloat((summary.totalWalletUSDT * summary.abstractPercentage) / 100)}`}
         icon="balance"
         quote="%"
         title={<FormattedMessage id="copyt.management.available" />}
