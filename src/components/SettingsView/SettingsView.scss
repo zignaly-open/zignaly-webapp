@@ -2,14 +2,16 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding-bottom: 60px;
+  padding-bottom: 40px;
 
   .subNavHeader {
     margin: 0 24px 20px;
   }
 
   .settingsContent {
-    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
     padding: 0 24px 32px;
   }
 

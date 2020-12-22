@@ -20,8 +20,7 @@ const Preferences = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
-  // const canDelete = !exchangeConnections.length;
-  const canDelete = true;
+  const canDelete = !exchangeConnections.length;
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -94,7 +93,13 @@ const Preferences = () => {
   };
 
   return (
-    <Box alignItems="flex-start" className="preferences" display="flex" flexDirection="column">
+    <Box
+      alignItems="flex-start"
+      className="preferences"
+      display="flex"
+      flexDirection="column"
+      flex={1}
+    >
       <Box>
         <label className="customLabel">
           <FormattedMessage id="preferences.darklight" />
