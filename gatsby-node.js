@@ -36,6 +36,12 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
+  // Override delete account page route to support token argument.
+  if (page.path.match(/^\/deleteAccount\/$/)) {
+    page.matchPath = "/deleteAccount/:code";
+    createPage(page);
+    return;
+  }
   // Override position page route to support positionId argument.
   if (page.path.match(/^\/copyTraders\/$/)) {
     page.matchPath = "/copyTraders/*";

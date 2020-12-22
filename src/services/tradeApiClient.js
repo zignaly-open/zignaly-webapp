@@ -2048,7 +2048,7 @@ class TradeApiClient {
   /**
    * Confirm delete account
    *
-   * @param {{code: string}} payload Payload with email code
+   * @param {{code: string, reason: string}} payload Payload with email code
    *
    * @returns {Promise<boolean>} Result
    *
@@ -2056,7 +2056,7 @@ class TradeApiClient {
    */
   async deleteAccountConfirm(payload) {
     const endpointPath = "/fe/api.php?action=deleteAccountConfirm";
-    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "delete" });
+    const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
 }
