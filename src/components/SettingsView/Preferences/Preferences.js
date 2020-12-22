@@ -58,11 +58,9 @@ const Preferences = () => {
       ...(code && { code }),
     };
     tradeApi
-      .changeEmailRequest(payload)
+      .deleteAccountRequest(payload)
       .then(() => {
         dispatch(showSuccessAlert("", "user.changeemail.alert"));
-        dispatch(endTradeApiSession());
-        navigateLogin();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

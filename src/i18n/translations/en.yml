@@ -1129,6 +1129,7 @@ preferences.2lines: "Use two lines for long numbers (Helps readability)"
 preferences.deleteaccount: "Delete Account"
 preferences.deleteaccount.confirm: "Are you sure you want to delete your account?"
 preferences.deleteaccount.exchanges: "To delete your account, you have to remove your current exchange accounts from Zignaly."
+preferences.deleteaccount.sent: "A link to delete your account has been sent to your email."
 preferences.balance: "Show balance by default"
 preferences.darklight: "Dark Side"
 
