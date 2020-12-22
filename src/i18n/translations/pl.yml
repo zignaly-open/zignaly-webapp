@@ -1308,7 +1308,7 @@ trader.harddisconnect.tooltip: "W tym momencie wyjdziesz ze wszystkich pozycji, 
 trader.ack: "Potwierdź zablokowanie środków."
 trader.ack.placeholder: "Zablokowane"
 # Should it stay "LOCKED" or it's not a parameter? Will user need to type it in english?
-trader.copy.confirm: "Aby potwierdzić, należy wpisać 'Locked'"
+trader.copy.confirm: "Aby potwierdzić, należy wpisać 'transfer'"
 profitsharing.currentAllocated: "Obecnie przydzielone saldo"
 # What is this referring to?
 profitsharing.accounting: "Wyliczenia"
