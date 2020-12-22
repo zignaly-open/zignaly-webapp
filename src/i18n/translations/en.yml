@@ -1085,6 +1085,11 @@ convert.note: "You can convert balances with a valuation below 0.001 BTC to BNB 
 convert.selected: "Selected coins"
 convert.selectall: "Select All"
 
+deleteaccount.title: "Delete Account"
+deleteaccount.confirm: "You are about to delete your Zignaly account. Are you sure you want to proceed?"
+deleteaccount.reason: "Reason"
+deleteaccount.success: "Your account has been deleted."
+
 deposit.address: "Address"
 deposit.address.copied: "Address copied."
 deposit.address.copy: "Copy Address"
@@ -1126,6 +1131,9 @@ settings.preferences: "Preferences"
 settings.profile: "Profile"
 
 preferences.2lines: "Use two lines for long numbers (Helps readability)"
+preferences.deleteaccount.confirm: "Are you sure you want to delete your account?"
+preferences.deleteaccount.exchanges: "To delete your account, you have to remove your current exchange accounts from Zignaly."
+preferences.deleteaccount.sent: "A link to delete your account has been sent to your email."
 preferences.balance: "Show balance by default"
 preferences.darklight: "Dark Side"
 
