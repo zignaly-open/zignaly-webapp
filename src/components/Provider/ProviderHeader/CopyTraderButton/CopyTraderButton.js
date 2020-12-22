@@ -154,28 +154,36 @@ const CopyTraderButton = ({ provider }) => {
   };
 
   const getTooltip = () => {
-    if (userData.isAdmin || !provider.isAdmin) {
+    if (userData.isAdmin) {
       return "";
     }
 
-    return (
-      <Typography variant="body1">
-        <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
-      </Typography>
-    );
+    if (provider.isAdmin) {
+      if (provider.followers === 1 && positions && positions.length === 0) {
+        return "";
+      }
+      return (
+        <Typography variant="body1">
+          <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
+        </Typography>
+      );
+    }
+
+    return "";
   };
 
   const checkIfCanBeDisconnected = () => {
-    // return userData.isAdmin || !provider.isAdmin;
     if (userData.isAdmin) {
       return true;
     }
+
     if (provider.isAdmin) {
       if (provider.followers === 1 && positions && positions.length === 0) {
         return true;
       }
       return false;
     }
+
     return true;
   };
 
