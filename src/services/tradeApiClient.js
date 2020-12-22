@@ -2015,7 +2015,7 @@ class TradeApiClient {
   /**
    * Request delete account
    *
-   * @param {{code?: string}} payload Payload with optional 2FA code
+   * @param {{code: string?}} payload Payload with optional 2FA code
    *
    * @returns {Promise<boolean>} Result
    *

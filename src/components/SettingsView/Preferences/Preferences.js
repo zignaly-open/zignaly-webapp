@@ -100,8 +100,8 @@ const Preferences = () => {
       alignItems="flex-start"
       className="preferences"
       display="flex"
-      flexDirection="column"
       flex={1}
+      flexDirection="column"
     >
       <Box>
         <label className="customLabel">
@@ -127,7 +127,7 @@ const Preferences = () => {
         executeActionCallback={check2FA}
         setConfirmConfig={setConfirmConfig}
       />
-      <Tooltip placement="top" title={getTooltip()} className="deleteButtonContainer">
+      <Tooltip className="deleteButtonContainer" placement="top" title={getTooltip()}>
         <span>
           <CustomButton
             className="deleteButton"
