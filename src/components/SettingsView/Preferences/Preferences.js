@@ -15,6 +15,8 @@ import { useStoreUserData } from "hooks/useStoreUserSelector";
 import tradeApi from "services/tradeApiClient";
 import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
+import { endTradeApiSession } from "store/actions/session";
+import { navigateLogin } from "services/navigation";
 
 const Preferences = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,9 @@ const Preferences = () => {
       .deleteAccountRequest(payload)
       .then(() => {
         dispatch(showSuccessAlert("", "user.changeemail.alert"));
+        // todo: logout not needed?
+        dispatch(endTradeApiSession());
+        navigateLogin();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -72,7 +77,7 @@ const Preferences = () => {
 
   const confirmAction = () => {
     setConfirmConfig({
-      titleTranslationId: "preferences.deleteaccount",
+      titleTranslationId: "deleteaccount.title",
       messageTranslationId: "preferences.deleteaccount.confirm",
       visible: true,
     });
@@ -130,7 +135,7 @@ const Preferences = () => {
             loading={loading}
             onClick={confirmAction}
           >
-            <FormattedMessage id="preferences.deleteaccount" />
+            <FormattedMessage id="deleteaccount.title" />
           </CustomButton>
         </span>
       </Tooltip>

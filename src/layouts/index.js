@@ -54,8 +54,12 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/disable2fa")) {
     return PublicPage();
   }
-  // Disable 2FA don't use any layout.
+  // Change email don't use any layout.
   if (currentPath.match("/changeEmail")) {
+    return PublicPage();
+  }
+  // Delete account don't use any layout.
+  if (currentPath.match("/deleteAccount")) {
     return PublicPage();
   }
 
