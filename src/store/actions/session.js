@@ -96,7 +96,6 @@ export const registerUser = (payload, setLoading) => {
       mixPanelTrigger(responseData, "signup");
       userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
-      setLoading(false);
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
