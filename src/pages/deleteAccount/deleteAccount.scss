@@ -13,4 +13,21 @@
   .submitButton {
     margin-top: 12px;
   }
+
+  .errorBox {
+    padding: 20px;
+
+    * {
+      color: $white;
+    }
+
+    .loginLink {
+      font-size: 18px;
+      margin-top: 10px;
+
+      &:hover {
+        color: $blue;
+      }
+    }
+  }
 }

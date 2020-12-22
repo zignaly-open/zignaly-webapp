@@ -68,7 +68,7 @@ const DeleteAccount = ({ code }) => {
         ) : verified ? (
           <>
             <img alt="Zignaly" className="logo" src={Logo} />
-            <ConfirmDeleteAccountForm setVerified={setVerified} code={code} />
+            <ConfirmDeleteAccountForm code={code} setVerified={setVerified} />
           </>
         ) : (
           <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
