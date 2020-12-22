@@ -2014,6 +2014,51 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Request delete account
+   *
+   * @param {{code?: string}} payload Payload with optional 2FA code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountRequest(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountRequest";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Visit delete account link
+   *
+   * @param {{code: string}} payload Payload with email code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountVisit(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Confirm delete account
+   *
+   * @param {{code: string}} payload Payload with email code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountConfirm(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountConfirm";
+    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "delete" });
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
