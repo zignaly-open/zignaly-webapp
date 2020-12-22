@@ -753,6 +753,7 @@ accounts.deposit.history: "Lịch Sử Gửi Tiền"
 accounts.deposit.make: "{depositLink} vào tài khoản này để bắt đầu giao dịch."
 accounts.done: "Xong"
 accounts.exchange: "Sàn Giao Dịch"
+accounts.exchange.api.kyc.tip: "You need to have passed the KYC in BitMEX, if not, the API keys won't work!"
 accounts.exchange.api.tip.binance: "- Open {url}\n
   - Log in to your account\n
   - Hover over profile and click “API Management”\n
