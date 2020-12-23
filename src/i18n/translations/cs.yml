@@ -985,6 +985,7 @@ accounts.done: "CH-Done"
 accounts.exchange: "CH-Exchange"
 accounts.exchange.api: "CH-Get 2 API Keys from Exchange"
 accounts.exchange.api.tip: "CH-Where to find these keys?"
+accounts.exchange.api.kyc.tip: "CH-You need to have passed the KYC in BitMEX, if not, the API keys won't work!"
 accounts.exchange.api.tip.binance: "- Open {url}\n
   - Log in to your account\n
   - Hover over profile and click “API Management”\n
