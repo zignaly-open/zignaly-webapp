@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Checkbox, FormControlLabel, Tooltip, Typography } from "@material-ui/core";
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { toggleBalanceBox } from "../../../store/actions/settings";
@@ -22,7 +29,8 @@ const Preferences = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
-  const canDelete = !exchangeConnections.length;
+  const canDelete =
+    !exchangeConnections.length || !exchangeConnections.find((item) => item.areKeysValid);
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -120,7 +128,18 @@ const Preferences = () => {
         label={<FormattedMessage id="preferences.balance" />}
       />
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm data={userData} onComplete={startDeleteAccountProcess} />
+        {loading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={35} />
+          </Box>
+        )}
+        {!loading && <TwoFAForm data={userData} onComplete={startDeleteAccountProcess} />}
       </Modal>
       <ConfirmDialog
         confirmConfig={confirmConfig}
