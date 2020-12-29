@@ -1020,6 +1020,8 @@ status.98: "This action disabled is on this account, check the exchange for more
 status.99: "Unknown Error, Pending Review"
 status.100: "Amount over maximum allowed by the Exchange"
 status.101: "Position liquidated"
+status.105: "Canceled according to the order type rules"
+
 # ERROR CODES
 error.occured: "Xuất hiện lỗi"
 error.noidea: "Đã xảy ra lỗi!"

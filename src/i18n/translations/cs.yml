@@ -1296,6 +1296,7 @@ status.98: "CH-This action disabled is on this account, check the exchange for m
 status.99: "CH-Unknown Error, Pending Review"
 status.100: "CH-Amount over maximum allowed by the Exchange"
 status.101: "CH-Position liquidated"
+status.105: "CH-Canceled according to the order type rules"
 
 # ERROR CODES
 error.occured: "CH-Error Occured"
