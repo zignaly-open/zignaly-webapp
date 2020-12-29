@@ -10,6 +10,11 @@
     margin-left: auto;
     margin-top: auto;
   }
+
+  .loadingBox {
+    min-height: 200px;
+    width: 100%;
+  }
 }
 
 @include media("<=sm") {
