@@ -40,6 +40,11 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     label: "Čeština",
     countryCode: "cz",
   });
+  LocalizationLanguages.push({
+    locale: "es",
+    label: "Spanish",
+    countryCode: "es",
+  });
 }
 
 module.exports = LocalizationLanguages;
