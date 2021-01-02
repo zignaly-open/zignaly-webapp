@@ -17,6 +17,8 @@ import PersonBlack from "../../../images/sidebar/personBlack.svg";
 import PersonWhite from "../../../images/sidebar/personWhite.svg";
 import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
+import ProfitBlack from "../../../images/sidebar/profitBlack.svg";
+import ProfitWhite from "../../../images/sidebar/profitWhite.svg";
 import { selectDarkTheme } from "../../../store/actions/settings";
 import UserMenu from "../Header/UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -88,6 +90,14 @@ const MobileAppbar = () => {
           return TerminalWhite;
         }
         return TerminlBlack;
+      case "profitSharing":
+        if (storeSettings.darkStyle) {
+          return ProfitWhite;
+        }
+        if (url.includes(link)) {
+          return ProfitWhite;
+        }
+        return ProfitBlack;
 
       default:
         return "";
@@ -117,6 +127,13 @@ const MobileAppbar = () => {
           to="/copyTraders/"
         >
           <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
+        </Link>
+        <Link
+          className={"sideBarLink " + (active("profitSharing") ? "active" : "")}
+          partiallyActive={true}
+          to="/copyTraders/"
+        >
+          <img alt="zignaly" className="icon profitSharing" src={getIcon("profitSharing")} />
         </Link>
         <Link
           className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
@@ -154,7 +171,7 @@ const MobileAppbar = () => {
             />
           )}
         </Box>
-        <Box
+        {/* <Box
           className={storeSettings.darkStyle ? "checkedDarkBox" : "checkedLightBox"}
           display="flex"
           flexDirection="row"
@@ -166,7 +183,7 @@ const MobileAppbar = () => {
             onClick={() => dispatch(selectDarkTheme(!storeSettings.darkStyle))}
             src={storeSettings.darkStyle ? OutlineWhite : FillWhite}
           />
-        </Box>
+        </Box> */}
       </Box>
       <Slide direction="up" in={menu}>
         <Box bgcolor="grid.content" className="userMenuDrawer">
