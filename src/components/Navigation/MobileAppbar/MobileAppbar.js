@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import "./MobileAppbar.scss";
 import { Box, Slide } from "@material-ui/core";
 import Link from "../../LocalizedLink";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";
 import TerminalWhite from "../../../images/sidebar/terminalWhite.svg";
 import TerminlBlack from "../../../images/sidebar/terminalBlack.svg";
 import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
-import FillWhite from "../../../images/sidebar/fillWhite.svg";
-import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
+// import FillWhite from "../../../images/sidebar/fillWhite.svg";
+// import OutlineWhite from "../../../images/sidebar/outlineWhite.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
 import PersonBlack from "../../../images/sidebar/personBlack.svg";
@@ -19,14 +19,14 @@ import CloseBlack from "../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../images/sidebar/closeWhite.svg";
 import ProfitBlack from "../../../images/sidebar/profitBlack.svg";
 import ProfitWhite from "../../../images/sidebar/profitWhite.svg";
-import { selectDarkTheme } from "../../../store/actions/settings";
+// import { selectDarkTheme } from "../../../store/actions/settings";
 import UserMenu from "../Header/UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 const MobileAppbar = () => {
   const [menu, showMenu] = useState(false);
   const storeSettings = useStoreSettingsSelector();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   /**
    *
