@@ -147,8 +147,7 @@ const Sidebar = () => {
       >
         <img alt="zignaly" className={"icon"} src={getIcon("profitSharing")} />
         <Typography variant="h6">
-          {/* <FormattedMessage id="menu.copytraders" /> */}
-          Profit Sharing
+          <FormattedMessage id="menu.profitSharing" />
         </Typography>
       </Link>
       <Link
