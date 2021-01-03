@@ -19,11 +19,12 @@ import { FormattedMessage } from "react-intl";
  */
 const ProvidersHeader = ({ path, rightComponent }) => {
   const isCopyTrading = path.startsWith("/copyTraders");
+  const profitSharing = path.startsWith("/profitSharing");
   const sectionNavitation = routesMapping(path);
   const [links, setLinks] = useState(sectionNavitation.links);
 
   const initLinks = () => {
-    if (!isCopyTrading) {
+    if (!isCopyTrading && !profitSharing) {
       let data = sectionNavitation.links.filter((item) => item.id !== "srv.analytics");
       setLinks(data);
     }

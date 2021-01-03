@@ -68,6 +68,22 @@ export const routesMapping = (path) => {
           },
         ],
       };
+    case "profitSharing":
+      return {
+        id: "menu.profitSharing",
+        subtitleId: "copyt.subtitle",
+        subtitle2Id: "",
+        links: [
+          {
+            id: "srv.browse",
+            to: "/copyTraders",
+          },
+          {
+            id: "srv.analytics",
+            to: "/copyTraders/analytics",
+          },
+        ],
+      };
     case "signalProviders":
       return {
         id: "menu.signalproviders",
