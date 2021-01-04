@@ -67,15 +67,27 @@ const TraderCard = (props) => {
    * @param {ChartTooltipItem} tooltipItem Tooltip object.
    * @returns {React.ReactNode} Tooltip content.
    */
-  const tooltipFormat = (tooltipItem) => (
-    <div className="traderCardTooltip">
-      <div>
-        {formatFloat2Dec(tooltipItem.yLabel)}{" "}
-        {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+  const tooltipFormat = (tooltipItem) => {
+    const data = dailyReturns[tooltipItem.index];
+
+    return (
+      <div className="traderCardTooltip">
+        <div>
+          {formatFloat2Dec(tooltipItem.yLabel)}{" "}
+          {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+        </div>
+        <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
+        <div className="subtitleTooltip">
+          <FormattedMessage
+            id="srv.closedposcount"
+            values={{
+              count: data.positions,
+            }}
+          />
+        </div>
       </div>
-      <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
-    </div>
-  );
+    );
+  };
 
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
