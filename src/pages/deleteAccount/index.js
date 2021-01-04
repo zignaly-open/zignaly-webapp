@@ -30,7 +30,7 @@ const DeleteAccount = ({ code }) => {
   const verifyCode = () => {
     setLoading(true);
     const payload = {
-      code,
+      token: code,
     };
     tradeApi
       .deleteAccountVisit(payload)
