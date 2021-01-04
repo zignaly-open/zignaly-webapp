@@ -608,6 +608,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
+ * @property {string} internalExchangeId
  */
 
 /**
