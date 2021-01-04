@@ -815,9 +815,23 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderViewActionButton(dataIndex) {
     const position = positions[dataIndex];
-    if (position.profitSharing && !position.isCopyTrader) {
+    const { isCopyTrader, profitSharing, providerOwnerUserId } = position;
+    const currentUserId = storeUserData.userId;
+    const isProviderOwner = providerOwnerUserId === currentUserId;
+
+    if (profitSharing) {
+      if (isCopyTrader || isProviderOwner) {
+        return (
+          <div className="actions">
+            <Link to={`/position/${position.positionId}`}>
+              <Eye color={colors.purpleLight} />
+            </Link>
+          </div>
+        );
+      }
       return null;
     }
+
     return (
       <div className="actions">
         <Link to={`/position/${position.positionId}`}>
