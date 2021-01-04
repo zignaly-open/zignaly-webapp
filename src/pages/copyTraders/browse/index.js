@@ -38,12 +38,12 @@ const CopyTradersBrowse = (props) => {
       </Helmet>
       <ProvidersBrowse
         connectedOnly={false}
+        provType="copytraders"
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
-        type="copyt"
       />
     </Box>
   );

@@ -35,7 +35,7 @@ import { forceCheck } from "react-lazyload";
 
 /**
  * @typedef {Object} ProvidersOptions
- * @property {boolean} copyTradersOnly
+ * @property {'signal'|'copytraders'|'profitsharing'} provType
  * @property {boolean} connectedOnly
  */
 
@@ -68,7 +68,9 @@ const useProvidersList = (options) => {
   const internalExchangeId = storeSettings.selectedExchange.internalId;
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  const { copyTradersOnly, connectedOnly } = options;
+  const { provType, connectedOnly } = options;
+  const copyTraders = provType === "copytraders";
+  const profitSharing = provType === "profitsharing";
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -80,9 +82,9 @@ const useProvidersList = (options) => {
    */
   let page;
   if (connectedOnly) {
-    page = copyTradersOnly ? "connectedCopyt" : "connectedSignalp";
+    page = copyTraders || profitSharing ? "connectedCopyt" : "connectedSignalp";
   } else {
-    page = copyTradersOnly ? "copyt" : "signalp";
+    page = copyTraders || profitSharing ? "copyt" : "signalp";
   }
 
   // @ts-ignore
@@ -124,7 +126,7 @@ const useProvidersList = (options) => {
 
   const defaultFilters = {
     ...(!connectedOnly && {
-      ...(copyTradersOnly && {
+      ...((copyTraders || profitSharing) && {
         quote: "ALL",
         exchange: "ALL",
         exchangeType: "ALL",
@@ -142,13 +144,13 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const filters = filtersData.filters;
 
-  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEWFOLLOWERS_DESC";
+  const defaultSort = copyTraders || profitSharing ? "RETURNS_DESC" : "NEWFOLLOWERS_DESC";
 
   // Sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
-      val = copyTradersOnly ? storeSettings.sort.copyt : storeSettings.sort.signalp;
+      val = copyTraders || profitSharing ? storeSettings.sort.copyt : storeSettings.sort.signalp;
     }
     return val || defaultSort;
   };
@@ -159,8 +161,9 @@ const useProvidersList = (options) => {
   };
 
   // TimeFrame
-  const defaultTimeFrame = copyTradersOnly ? 90 : 7;
-  const initTimeFrame = (copyTradersOnly && storeSettings.timeFrame[page]) || defaultTimeFrame;
+  const defaultTimeFrame = copyTraders || profitSharing ? 90 : 7;
+  const initTimeFrame =
+    ((copyTraders || profitSharing) && storeSettings.timeFrame[page]) || defaultTimeFrame;
   const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
   // Save timeFrame to store once changed
@@ -267,10 +270,12 @@ const useProvidersList = (options) => {
       token: storeSession.tradeApi.accessToken,
       type: connectedOnly ? "connected" : "all",
       ro: true,
-      copyTradersOnly,
+      provType: provType,
       timeFrame,
       internalExchangeId,
     };
+
+    console.log(payload);
 
     tradeApi
       .providersGet(payload)
@@ -290,7 +295,7 @@ const useProvidersList = (options) => {
   useEffect(loadProviders, [
     timeFrame,
     connectedOnly,
-    copyTradersOnly,
+    provType,
     storeSession.tradeApi.accessToken,
     internalExchangeId,
   ]);

@@ -30,7 +30,7 @@ const CopyTradersBrowse = (props) => {
       <Helmet>
         <title>
           {`${intl.formatMessage({
-            id: "menu.copytraders",
+            id: "menu.profitSharing",
           })} - ${intl.formatMessage({
             id: "srv.browse",
           })} | ${intl.formatMessage({ id: "product" })}`}
@@ -38,12 +38,12 @@ const CopyTradersBrowse = (props) => {
       </Helmet>
       <ProvidersBrowse
         connectedOnly={false}
+        provType="profitsharing"
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
-        type="copyt"
       />
     </Box>
   );
