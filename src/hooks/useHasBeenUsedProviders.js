@@ -38,7 +38,8 @@ const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
       tradeApi
         .providersListGet(payload)
         .then((response) => {
-          filterProviders(response);
+          // filterProviders(response);
+          setList(response);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -49,18 +50,18 @@ const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
     }
   };
 
-  /**
-   * Filter providers that have been used for the selected exchange.
-   * @param {ProvidersCollection} response Providers Collection.
-   * @returns {Void} None.
-   */
-  const filterProviders = (response) => {
-    let providerAssets = response.filter(
-      (item) =>
-        item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
-    );
-    setList(providerAssets);
-  };
+  // /**
+  //  * Filter providers that have been used for the selected exchange.
+  //  * @param {ProvidersCollection} response Providers Collection.
+  //  * @returns {Void} None.
+  //  */
+  // const filterProviders = (response) => {
+  //   let providerAssets = response.filter(
+  //     (item) =>
+  //       item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
+  //   );
+  //   setList(providerAssets);
+  // };
 
   useEffect(loadData, [
     storeSession.tradeApi.accessToken,
