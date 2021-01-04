@@ -509,7 +509,10 @@ class TradeApiClient {
    */
   async providersGet(payload) {
     const endpointPath = "/fe/api.php?action=getProviderList2";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 3 });
+    const responseData = await this.doRequest(endpointPath, {
+      ...payload,
+      version: payload.copyTradersOnly ? 2 : 3,
+    });
 
     return providersResponseTransform(responseData);
   }
