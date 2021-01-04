@@ -608,6 +608,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
+ * @property {string} internalExchangeId
  */
 
 /**
@@ -1176,13 +1177,15 @@ function providerItemTransform(providerItem) {
   transformedResponse.dailyReturns.forEach((item) => {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
     item.name = new Date(item.name);
-    transformedResponse.returns += item.returns;
     transformedResponse.closedPositions += item.positions;
   });
+  transformedResponse.returns = transformedResponse.dailyReturns.length
+    ? transformedResponse.dailyReturns[transformedResponse.dailyReturns.length - 1].returns
+    : 0;
 
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
-    (a, b) => a.name.getTime() - b.name.getTime(),
-  );
+  // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
+  //   (a, b) => a.name.getTime() - b.name.getTime(),
+  // );
 
   if (!transformedResponse.isCopyTrading) {
     // Updating followers count because it's out of date for clones

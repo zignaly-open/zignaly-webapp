@@ -509,7 +509,10 @@ class TradeApiClient {
    */
   async providersGet(payload) {
     const endpointPath = "/fe/api.php?action=getProviderList2";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const responseData = await this.doRequest(endpointPath, {
+      ...payload,
+      version: payload.copyTradersOnly ? 3 : 2,
+    });
 
     return providersResponseTransform(responseData);
   }
@@ -2030,14 +2033,14 @@ class TradeApiClient {
   /**
    * Visit delete account link
    *
-   * @param {{code: string}} payload Payload with email code
+   * @param {{token: string}} payload Payload with email code
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
+    const endpointPath = "/fe/api.php?action=";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
@@ -2045,7 +2048,7 @@ class TradeApiClient {
   /**
    * Confirm delete account
    *
-   * @param {{code: string, reason: string}} payload Payload with email code
+   * @param {{token: string, reason: string}} payload Payload with email code
    *
    * @returns {Promise<boolean>} Result
    *
