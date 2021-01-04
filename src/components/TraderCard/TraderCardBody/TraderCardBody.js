@@ -90,11 +90,7 @@ const TraderCard = (props) => {
   let chartData = { values: [], labels: [] };
   if (isCopyTrading) {
     generateStats(dailyReturns, { dateKey: "name" }, (date, data) => {
-      const lastReturns = chartData.values.length
-        ? chartData.values[chartData.values.length - 1]
-        : 0;
-
-      chartData.values.push(lastReturns + (data ? data.returns : 0));
+      chartData.values.push(data ? data.returns : 0);
       chartData.labels.push(date.toDate());
     });
   } else {
