@@ -70,7 +70,7 @@ const Preferences = () => {
     tradeApi
       .deleteAccountRequest(payload)
       .then(() => {
-        dispatch(showSuccessAlert("", "user.changeemail.alert"));
+        dispatch(showSuccessAlert("", "preferences.deleteaccount.sent"));
         // todo: logout not needed?
         dispatch(endTradeApiSession());
         navigateLogin();
