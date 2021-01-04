@@ -15,10 +15,11 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 /**
  * Provides provider list.
  *
+ * @param {string} internalId Internal Id of selected exchange.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useReadOnlyProviders = (shouldExecute = true) => {
+const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const useReadOnlyProviders = (shouldExecute = true) => {
       const payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
+        internalExchangeId: internalId,
       };
 
       tradeApi
@@ -69,4 +71,4 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   return { providers: list, providersLoading: providersLoading };
 };
 
-export default useReadOnlyProviders;
+export default useHasBeenUsedProviders;

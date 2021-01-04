@@ -54,7 +54,9 @@ const useDashboardAnalytics = (providerId) => {
   const allQuotes = Object.keys(quoteAssets);
   const [providerQuotes, setProviderQuotes] = useState([]);
 
-  const { providers, providersLoading } = useHasBeenUsedProviders();
+  const { providers, providersLoading } = useHasBeenUsedProviders(
+    storeSettings.selectedExchange.internalId,
+  );
   let providersOptions = providers.map((item) => ({
     val: item.id,
     label: item.name,
