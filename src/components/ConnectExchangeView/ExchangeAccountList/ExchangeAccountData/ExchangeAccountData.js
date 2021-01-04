@@ -31,7 +31,7 @@ const ExchangeAccountData = ({ account }) => {
   const { navigateToPath } = useContext(ModalPathContext);
   const dailyBalance = useEquity(account.internalId);
   const { balance } = useBalance(account.internalId);
-  const providers = useConnectedProviders(30, account.internalId, true);
+  const providers = useConnectedProviders(30, account.internalId, "copytraders");
   const intl = useIntl();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

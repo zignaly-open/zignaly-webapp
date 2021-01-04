@@ -24,7 +24,7 @@ import LinkOffIcon from "@material-ui/icons/LinkOff";
 const DashboardHeader = ({ path }) => {
   const storeSettings = useStoreSettingsSelector();
   const links = routesMapping(path).links;
-  const providers = useConnectedProviders(1, storeSettings.selectedExchange.internalId, false);
+  const providers = useConnectedProviders(1, storeSettings.selectedExchange.internalId, "signal");
 
   if (providers.length > 0) {
     links.push({
