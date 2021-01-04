@@ -35,8 +35,9 @@ import { useTheme } from "@material-ui/core/styles";
 const PerformanceGraph = ({ quarter, unit = "%" }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const values = quarter.weeklyStats.map((item) => item.return);
-  const labels = quarter.weeklyStats.map(() => "");
+  const values =
+    quarter && quarter.weeklyStats ? quarter.weeklyStats.map((item) => item.return) : [];
+  const labels = quarter && quarter.weeklyStats ? quarter.weeklyStats.map(() => "") : [];
   const options = {
     scales: {
       xAxes: [
