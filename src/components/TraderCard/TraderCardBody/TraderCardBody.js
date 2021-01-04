@@ -67,15 +67,27 @@ const TraderCard = (props) => {
    * @param {ChartTooltipItem} tooltipItem Tooltip object.
    * @returns {React.ReactNode} Tooltip content.
    */
-  const tooltipFormat = (tooltipItem) => (
-    <div className="traderCardTooltip">
-      <div>
-        {formatFloat2Dec(tooltipItem.yLabel)}{" "}
-        {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+  const tooltipFormat = (tooltipItem) => {
+    const data = dailyReturns[tooltipItem.index];
+
+    return (
+      <div className="traderCardTooltip">
+        <div>
+          {formatFloat2Dec(tooltipItem.yLabel)}{" "}
+          {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+        </div>
+        <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
+        <div className="subtitleTooltip">
+          <FormattedMessage
+            id="srv.closedposcount"
+            values={{
+              count: data.positions,
+            }}
+          />
+        </div>
       </div>
-      <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
-    </div>
-  );
+    );
+  };
 
   const { darkStyle, selectedExchange } = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -90,11 +102,7 @@ const TraderCard = (props) => {
   let chartData = { values: [], labels: [] };
   if (isCopyTrading) {
     generateStats(dailyReturns, { dateKey: "name" }, (date, data) => {
-      const lastReturns = chartData.values.length
-        ? chartData.values[chartData.values.length - 1]
-        : 0;
-
-      chartData.values.push(lastReturns + (data ? data.returns : 0));
+      chartData.values.push(data ? data.returns : 0);
       chartData.labels.push(date.toDate());
     });
   } else {
