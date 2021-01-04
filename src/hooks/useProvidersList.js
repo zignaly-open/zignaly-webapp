@@ -275,8 +275,6 @@ const useProvidersList = (options) => {
       internalExchangeId,
     };
 
-    console.log(payload);
-
     tradeApi
       .providersGet(payload)
       .then((responseData) => {

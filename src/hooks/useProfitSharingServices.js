@@ -29,7 +29,7 @@ const useProfitSharingServices = (internalExchangeId) => {
       token: storeSession.tradeApi.accessToken,
       type: "connected",
       ro: true,
-      copyTradersOnly: true,
+      provType: "profitsharing",
       timeFrame: 90,
       internalExchangeId,
     };
