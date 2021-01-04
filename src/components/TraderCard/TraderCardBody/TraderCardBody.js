@@ -76,8 +76,7 @@ const TraderCard = (props) => {
           {formatFloat2Dec(tooltipItem.yLabel)}{" "}
           {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
         </div>
-        <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
-        <div className="subtitleTooltip">
+        <div>
           <FormattedMessage
             id="srv.closedposcount"
             values={{
@@ -85,6 +84,7 @@ const TraderCard = (props) => {
             }}
           />
         </div>
+        <div className="subtitleTooltip">{moment(tooltipItem.xLabel).format("YYYY/MM/DD")}</div>
       </div>
     );
   };
