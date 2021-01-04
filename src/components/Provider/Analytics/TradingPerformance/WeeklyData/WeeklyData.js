@@ -64,11 +64,13 @@ const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
         justifyContent="space-between"
       >
         <Typography className="quaterLabel" variant="h3" />
-        {selected.weeklyStats.map((item, index) => (
-          <Typography key={index} variant="h5">
-            {item.return ? moment(new Date(item.day)).format("DD MMM") : "--"}
-          </Typography>
-        ))}
+        {selected &&
+          selected.weeklyStats &&
+          selected.weeklyStats.map((item, index) => (
+            <Typography key={index} variant="h5">
+              {item.return ? moment(new Date(item.day)).format("DD MMM") : "--"}
+            </Typography>
+          ))}
         <Typography className="total" variant="h5">
           Total
         </Typography>
