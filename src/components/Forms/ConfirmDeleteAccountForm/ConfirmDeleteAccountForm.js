@@ -42,7 +42,7 @@ const ConfirmDeleteAccountForm = ({ code, setVerified }) => {
     const { reason } = data;
     setLoading(true);
     const payload = {
-      code,
+      token: code,
       reason,
     };
     tradeApi
