@@ -2037,7 +2037,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    const endpointPath = "/fe/api.php?action=";
+    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
