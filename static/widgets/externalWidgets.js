@@ -47,14 +47,6 @@ script.async = true;
 script.defer = true;
 document.getElementsByTagName("head")[0].appendChild(script);
 
-// dashly
-let script2 = document.createElement("script");
-script2.type = "text/javascript";
-script2.src = "https://cdn.dashly.app/api.min.js";
-script2.id = "dashly";
-script2.async = true;
-document.getElementsByTagName("head")[0].appendChild(script2);
-
 // user pilot
 let script3 = document.createElement("script");
 script3.type = "text/javascript";
@@ -75,3 +67,11 @@ script4.src = "https://sak.userreport.com/zignaly/launcher.js";
 script4.id = "userReport";
 script4.async = true;
 document.getElementsByTagName("head")[0].appendChild(script4);
+
+let script5 = document.createElement("script");
+script5.type = "text/javascript";
+script5.src =
+  "https://cdn.segment.com/analytics.js/v1/0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA/analytics.min.js";
+script5.id = "analyticsJS";
+script5.async = true;
+document.getElementsByTagName("head")[0].appendChild(script5);
