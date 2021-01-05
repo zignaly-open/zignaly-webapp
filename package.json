@@ -35,6 +35,8 @@
     "@material-ui/lab": "^4.0.0-alpha.53",
     "@material-ui/styles": "4.10.0",
     "@reduxjs/toolkit": "^1.4.0",
+    "@segment/analytics.js-core": "^4.1.5",
+    "@segment/analytics.js-integration-segmentio": "^4.2.5",
     "@types/chai": "^4.2.14",
     "@types/dompurify": "^2.0.4",
     "@types/loadable__component": "^5.13.0",
