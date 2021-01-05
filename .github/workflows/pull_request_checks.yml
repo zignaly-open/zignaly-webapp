@@ -26,4 +26,4 @@ jobs:
           GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
         run: |
           npm test
-          npm run cy:ci
+        # npm run cy:ci
