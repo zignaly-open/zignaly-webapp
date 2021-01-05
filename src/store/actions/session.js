@@ -7,6 +7,7 @@ import gtmPushApi from "../../utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 import { userPilotLogin } from "../../utils/userPilotApi";
 import { mixPanelTrigger } from "utils/mixpanelApi";
+import { analyticsTrigger } from "utils/analyticsJsApi";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -47,6 +48,7 @@ export const startTradeApiSession = (response) => {
       gtmEvent.push(assign(eventType, response));
     }
     mixPanelTrigger(response, "login");
+    analyticsTrigger(response);
     userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
@@ -94,6 +96,7 @@ export const registerUser = (payload, setLoading) => {
       }
       startLiveSession(responseData);
       mixPanelTrigger(responseData, "signup");
+      analyticsTrigger(responseData);
       userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
     } catch (e) {
