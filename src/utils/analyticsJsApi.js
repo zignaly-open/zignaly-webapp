@@ -1,6 +1,6 @@
-import Analytics from "@segment/analytics.js-core/build/analytics";
+import Analytics from "analytics";
 // @ts-ignore
-import SegmentIntegration from "@segment/analytics.js-integration-segmentio";
+import segmentPlugin from "@analytics/segment";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserEntity} UserEntity
@@ -31,16 +31,14 @@ const analyticsJsApi = () => {
 
   if (process.env.NODE_ENV === "production") {
     // @ts-ignore
-    analytics = new Analytics();
-    analytics.use(SegmentIntegration);
-    const integrationSettings = {
-      "Segment.io": {
-        apiKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
-        retryQueue: true,
-        addBundledMetadata: true,
-      },
-    };
-    analytics.initialize(integrationSettings);
+    analytics = Analytics({
+      app: "zignaly",
+      plugins: [
+        segmentPlugin({
+          writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
+        }),
+      ],
+    });
     analytics.page();
   }
 
