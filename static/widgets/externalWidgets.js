@@ -68,10 +68,10 @@ script4.id = "userReport";
 script4.async = true;
 document.getElementsByTagName("head")[0].appendChild(script4);
 
-let script5 = document.createElement("script");
-script5.type = "text/javascript";
-script5.src =
-  "https://cdn.segment.com/analytics.js/v1/0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA/analytics.min.js";
-script5.id = "analyticsJS";
-script5.async = true;
-document.getElementsByTagName("head")[0].appendChild(script5);
+// let script5 = document.createElement("script");
+// script5.type = "text/javascript";
+// script5.src =
+//   "https://cdn.segment.com/analytics.js/v1/0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA/analytics.min.js";
+// script5.id = "analyticsJS";
+// script5.async = true;
+// document.getElementsByTagName("head")[0].appendChild(script5);

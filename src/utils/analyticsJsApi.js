@@ -1,21 +1,27 @@
+import Analytics from "@segment/analytics.js-core/build/analytics";
+// @ts-ignore
+import SegmentIntegration from "@segment/analytics.js-integration-segmentio";
+
 /**
  * @typedef {import("../services/tradeApiClient.types").UserEntity} UserEntity
  * @typedef {Object} AnalyticsJsApi
- * @property {GlobalAnalytics} analytics Dashly API push function.
+ * @property {GlobalAnalytics} analytics Analytics API push function.
  */
 
 /**
  * @typedef {Object} GlobalAnalytics
- * @prop {Function} load Connect to analytics remote API.
- * @prop {Function} track Track custom events in analytics.
- * @prop {Function} page Trigger page change event.
- * @prop {Function} identify Trigger identify event.
+ * @prop {Function} load
+ * @prop {Function} track
+ * @prop {Function} page
+ * @prop {Function} identify
+ * @prop {Function} use
+ * @prop {Function} initialize
  */
 
 /**
- * Dashly API function to track custom events.
+ * Analytics API function to track custom events.
  *
- * @returns {AnalyticsJsApi} GTM push hook object.
+ * @returns {AnalyticsJsApi} Analytics api hook object.
  */
 const analyticsJsApi = () => {
   /**
@@ -23,11 +29,18 @@ const analyticsJsApi = () => {
    */
   let analytics = null;
 
-  // @ts-ignore
-  if (typeof window !== "undefined" && window.dashly && process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production") {
     // @ts-ignore
-    analytics = window.dashly;
-    analytics.load("0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA");
+    analytics = new Analytics();
+    analytics.use(SegmentIntegration);
+    const integrationSettings = {
+      "Segment.io": {
+        apiKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
+        retryQueue: true,
+        addBundledMetadata: true,
+      },
+    };
+    analytics.initialize(integrationSettings);
     analytics.page();
   }
 
@@ -35,6 +48,20 @@ const analyticsJsApi = () => {
 };
 
 export default analyticsJsApi;
+
+/**
+ * Triger path change event.
+ *
+ * @param {string} path Path of current page
+ * @returns {void} None.
+ */
+export const analyticsPageView = (path) => {
+  const { analytics } = analyticsJsApi();
+
+  if (analytics) {
+    analytics.page({ url: path });
+  }
+};
 
 /**
  * Trigger login/signup events for dashly.
