@@ -6,9 +6,9 @@ import { showErrorAlert } from "../store/actions/ui";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../services/tradeApiClient.types").HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {Object} HookData
- * @property {ProvidersCollection} providers
+ * @property {Array<HasBeenUsedProviderEntity>} providers
  * @property {Boolean} providersLoading
  */
 
@@ -16,10 +16,11 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * Provides provider list.
  *
  * @param {string} internalId Internal Id of selected exchange.
+ * @param {Array<string>} type Type of providers to filter.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
+const useConnectedProvidersLite = (internalId, type, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -38,8 +39,7 @@ const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
       tradeApi
         .providersListGet(payload)
         .then((response) => {
-          // filterProviders(response);
-          setList(response);
+          filterProviders(response);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -50,18 +50,15 @@ const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
     }
   };
 
-  // /**
-  //  * Filter providers that have been used for the selected exchange.
-  //  * @param {ProvidersCollection} response Providers Collection.
-  //  * @returns {Void} None.
-  //  */
-  // const filterProviders = (response) => {
-  //   let providerAssets = response.filter(
-  //     (item) =>
-  //       item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
-  //   );
-  //   setList(providerAssets);
-  // };
+  /**
+   * Filter providers that have been used for the selected exchange.
+   * @param {Array<HasBeenUsedProviderEntity>} response Providers Collection.
+   * @returns {Void} None.
+   */
+  const filterProviders = (response) => {
+    let providerAssets = response.filter((item) => item.connected && type.includes(item.type));
+    setList(providerAssets);
+  };
 
   useEffect(loadData, [
     storeSession.tradeApi.accessToken,
@@ -72,4 +69,4 @@ const useHasBeenUsedProviders = (internalId, shouldExecute = true) => {
   return { providers: list, providersLoading: providersLoading };
 };
 
-export default useHasBeenUsedProviders;
+export default useConnectedProvidersLite;
