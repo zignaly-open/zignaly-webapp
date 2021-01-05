@@ -95,6 +95,8 @@ const TraderCard = (props) => {
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
   const type = isCopyTrading ? "copyt" : "srv";
+  const timeframeTranslationId =
+    timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
   /**
    * @type {ChartData}
@@ -224,7 +226,7 @@ const TraderCard = (props) => {
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: isCopyTrading ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
-                id: "time." + (timeFrame || 7) + "d",
+                id: timeframeTranslationId,
               })})`}</Typography>
             </div>
           </ConditionalWrapper>
