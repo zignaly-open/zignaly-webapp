@@ -4,7 +4,7 @@ import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useHasBeenUsedProviders from "./useHasBeenUsedProviders";
+import useConnectedProvidersLite from "./useConnectedProvidersLite";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
@@ -17,7 +17,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  * @typedef {import("../services/tradeApiClient.types").ProfitStatsObject} ProfitStatsObject
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("../store/initialState").Filters} Filters
- * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../services/tradeApiClient.types").HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  */
 
 /**
@@ -26,7 +26,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
  * @property {Array<OptionType>} timeFrames
  * @property {Array<string>} quotes
  * @property {Array<OptionType>} providersOptions
- * @property {ProvidersCollection} providers
+ * @property {Array<HasBeenUsedProviderEntity>} providers
  * @property {function} clearFilters
  * @property {function} setFilters
  * @property {Boolean} loading
@@ -52,9 +52,12 @@ const useDashboardAnalytics = (providerId) => {
 
   const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
   const allQuotes = Object.keys(quoteAssets);
-  const [providerQuotes, setProviderQuotes] = useState([]);
+  // const [providerQuotes, setProviderQuotes] = useState([]);
 
-  const { providers, providersLoading } = useHasBeenUsedProviders();
+  const { providers, providersLoading } = useConnectedProvidersLite(
+    storeSettings.selectedExchange.internalId,
+    ["copyTrading", "profitSharing"],
+  );
   let providersOptions = providers.map((item) => ({
     val: item.id,
     label: item.name,
@@ -91,21 +94,21 @@ const useDashboardAnalytics = (providerId) => {
   // @ts-ignore
   const filters = res.filters;
 
-  const adjustProviderQuotes = () => {
-    if (filters.provider.val !== "1" && filters.provider.val !== "all") {
-      const provider = providers.find((item) => item.id === filters.provider.val);
-      if (provider && provider.quote) {
-        setProviderQuotes([provider.quote]);
-        setFilters({ quote: provider.quote });
-      } else {
-        setProviderQuotes(allQuotes);
-      }
-    } else {
-      setProviderQuotes(allQuotes);
-    }
-  };
+  // const adjustProviderQuotes = () => {
+  //   if (filters.provider.val !== "1" && filters.provider.val !== "all") {
+  //     const provider = providers.find((item) => item.id === filters.provider.val);
+  //     if (provider && provider.quote) {
+  //       setProviderQuotes([provider.quote]);
+  //       setFilters({ quote: provider.quote });
+  //     } else {
+  //       setProviderQuotes(allQuotes);
+  //     }
+  //   } else {
+  //     setProviderQuotes(allQuotes);
+  //   }
+  // };
 
-  useEffect(adjustProviderQuotes, [filters.provider]);
+  // useEffect(adjustProviderQuotes, [filters.provider]);
 
   const loadDashboardStats = () => {
     if (!providersLoading) {
@@ -152,7 +155,8 @@ const useDashboardAnalytics = (providerId) => {
   return {
     stats,
     timeFrames,
-    quotes: providerQuotes.length ? providerQuotes : allQuotes,
+    // quotes: providerQuotes.length ? providerQuotes : allQuotes,
+    quotes: allQuotes,
     providersOptions,
     providers,
     clearFilters,

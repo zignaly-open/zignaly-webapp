@@ -608,6 +608,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
+ * @property {string} internalExchangeId
  */
 
 /**
@@ -1176,13 +1177,15 @@ function providerItemTransform(providerItem) {
   transformedResponse.dailyReturns.forEach((item) => {
     item.returns = typeof item.returns === "number" ? item.returns : parseFloat(item.returns);
     item.name = new Date(item.name);
-    transformedResponse.returns += item.returns;
     transformedResponse.closedPositions += item.positions;
   });
+  transformedResponse.returns = transformedResponse.dailyReturns.length
+    ? transformedResponse.dailyReturns[transformedResponse.dailyReturns.length - 1].returns
+    : 0;
 
-  transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
-    (a, b) => a.name.getTime() - b.name.getTime(),
-  );
+  // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
+  //   (a, b) => a.name.getTime() - b.name.getTime(),
+  // );
 
   if (!transformedResponse.isCopyTrading) {
     // Updating followers count because it's out of date for clones
@@ -1197,11 +1200,33 @@ function providerItemTransform(providerItem) {
 }
 
 /**
+ * @typedef {Object} HasBeenUsedProviderEntity
+ * @property {boolean} connected Hide-water mark
+ * @property {string} id
+ * @property {string} name
+ * @property {string} type
+ */
+
+/**
+ * Create empty provider entity skeletion.
+ *
+ * @returns {HasBeenUsedProviderEntity} Enpty provider entity.
+ */
+function createEmptyHasBeenProviderEntity() {
+  return {
+    connected: false,
+    id: "",
+    name: "",
+    type: "",
+  };
+}
+
+/**
  * Transform providers response to typed object.
  *
  * @export
  * @param {*} response Trade API signal providers list response.
- * @returns {ProvidersCollection} Signal providers entities collection.
+ * @returns {Array<HasBeenUsedProviderEntity>} Signal providers entities collection.
  */
 export function hasBeenUsedProvidersResponseTransform(response) {
   if (!isArray(response)) {
@@ -1217,10 +1242,10 @@ export function hasBeenUsedProvidersResponseTransform(response) {
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
- * @returns {ProviderEntity} Provider entity.
+ * @returns {HasBeenUsedProviderEntity} Provider entity.
  */
 function hasBeenUsedProviderItemTransform(providerItem) {
-  const emptyProviderEntity = createEmptyProviderEntity();
+  const emptyProviderEntity = createEmptyHasBeenProviderEntity();
   // Override the empty entity with the values that came in from API.
   return assign(emptyProviderEntity, providerItem);
 }

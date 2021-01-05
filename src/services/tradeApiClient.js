@@ -58,6 +58,7 @@ import {
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+ * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
@@ -509,7 +510,10 @@ class TradeApiClient {
    */
   async providersGet(payload) {
     const endpointPath = "/fe/api.php?action=getProviderList2";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const responseData = await this.doRequest(endpointPath, {
+      ...payload,
+      version: payload.copyTradersOnly ? 3 : 2,
+    });
 
     return providersResponseTransform(responseData);
   }
@@ -518,7 +522,7 @@ class TradeApiClient {
    * Get providers list.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
-   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
@@ -2030,7 +2034,7 @@ class TradeApiClient {
   /**
    * Visit delete account link
    *
-   * @param {{code: string}} payload Payload with email code
+   * @param {{token: string}} payload Payload with email code
    *
    * @returns {Promise<boolean>} Result
    *
@@ -2045,7 +2049,7 @@ class TradeApiClient {
   /**
    * Confirm delete account
    *
-   * @param {{code: string, reason: string}} payload Payload with email code
+   * @param {{token: string, reason: string}} payload Payload with email code
    *
    * @returns {Promise<boolean>} Result
    *

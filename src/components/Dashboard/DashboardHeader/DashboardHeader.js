@@ -5,9 +5,9 @@ import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useConnectedProviders from "../../../hooks/useConnectedProviders";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
+import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 
 /**
  *
@@ -24,7 +24,9 @@ import LinkOffIcon from "@material-ui/icons/LinkOff";
 const DashboardHeader = ({ path }) => {
   const storeSettings = useStoreSettingsSelector();
   const links = routesMapping(path).links;
-  const providers = useConnectedProviders(1, storeSettings.selectedExchange.internalId, "signal");
+  const { providers } = useConnectedProvidersLite(storeSettings.selectedExchange.internalId, [
+    "signalProvider",
+  ]);
 
   if (providers.length > 0) {
     links.push({

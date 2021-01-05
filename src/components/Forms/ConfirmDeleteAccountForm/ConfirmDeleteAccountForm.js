@@ -42,13 +42,13 @@ const ConfirmDeleteAccountForm = ({ code, setVerified }) => {
     const { reason } = data;
     setLoading(true);
     const payload = {
-      code,
+      token: code,
       reason,
     };
     tradeApi
       .deleteAccountConfirm(payload)
       .then(() => {
-        dispatch(showSuccessAlert("", "deleteAccount.success"));
+        dispatch(showSuccessAlert("", "deleteaccount.success"));
         navigate("/login");
       })
       .catch((e) => {
