@@ -30,7 +30,7 @@ const Analytics = ({ providerId }) => {
   } = useDashboardAnalytics(providerId);
 
   const selectedProvider = providers.find((p) => p.id === filters.provider.val);
-  const profitSharing = selectedProvider && selectedProvider.profitSharing;
+  const profitSharing = selectedProvider && selectedProvider.type === "profitSharing";
 
   return (
     <Box>

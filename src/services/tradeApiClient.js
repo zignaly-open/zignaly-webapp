@@ -58,6 +58,7 @@ import {
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+ * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
@@ -521,7 +522,7 @@ class TradeApiClient {
    * Get providers list.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
-   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
