@@ -48,7 +48,7 @@ const ConfirmDeleteAccountForm = ({ code, setVerified }) => {
     tradeApi
       .deleteAccountConfirm(payload)
       .then(() => {
-        dispatch(showSuccessAlert("", "deleteAccount.success"));
+        dispatch(showSuccessAlert("", "deleteaccount.success"));
         navigate("/login");
       })
       .catch((e) => {
