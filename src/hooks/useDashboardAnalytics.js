@@ -56,7 +56,8 @@ const useDashboardAnalytics = (providerId) => {
 
   const { providers, providersLoading } = useConnectedProvidersLite(
     storeSettings.selectedExchange.internalId,
-    ["copyTrading", "profitSharing"],
+    ["copyTrading", "profitSharing", "signalProvider"],
+    false,
   );
   let providersOptions = providers.map((item) => ({
     val: item.id,
