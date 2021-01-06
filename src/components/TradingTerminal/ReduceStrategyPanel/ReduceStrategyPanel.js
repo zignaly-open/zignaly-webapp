@@ -19,6 +19,7 @@ import { formatPrice } from "../../../utils/formatters";
 import useValidation from "../../../hooks/useValidation";
 import { Alert } from "@material-ui/lab";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -262,6 +263,9 @@ const ReduceStrategyPanel = (props) => {
               />
             }
           />
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl name="reducePostOnly" />
+          </Box>
         </Box>
       )}
     </Box>

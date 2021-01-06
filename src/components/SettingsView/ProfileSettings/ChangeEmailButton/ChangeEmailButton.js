@@ -10,11 +10,16 @@ import { FormattedMessage } from "react-intl";
 import { endTradeApiSession } from "store/actions/session";
 import { navigateLogin } from "services/navigation";
 import { ConfirmDialog } from "../../../Dialogs";
+import Modal from "../../../Modal";
+import TwoFAForm from "../../../../components/Forms/TwoFAForm";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const ChangeEmailButton = () => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [twoFAModal, showTwoFAModal] = useState(false);
+  const userData = useStoreUserData();
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -40,10 +45,24 @@ const ChangeEmailButton = () => {
     });
   };
 
-  const startChangeEmailProcess = () => {
+  const check2FA = () => {
+    if (userData.ask2FA) {
+      showTwoFAModal(true);
+    } else {
+      startChangeEmailProcess();
+    }
+  };
+
+  /**
+   *
+   * @param {String} code two FA code.
+   * @returns {void}
+   */
+  const startChangeEmailProcess = (code = null) => {
     setLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
+      ...(code && { code }),
     };
     tradeApi
       .changeEmailRequest(payload)
@@ -68,9 +87,23 @@ const ChangeEmailButton = () => {
       flexDirection="row"
       justifyContent="flex-start"
     >
+      <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
+        {loading && (
+          <Box
+            alignItems="center"
+            className="loadingBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+          >
+            <CircularProgress color="primary" size={35} />
+          </Box>
+        )}
+        {!loading && <TwoFAForm data={userData} onComplete={startChangeEmailProcess} />}
+      </Modal>
       <ConfirmDialog
         confirmConfig={confirmConfig}
-        executeActionCallback={startChangeEmailProcess}
+        executeActionCallback={check2FA}
         setConfirmConfig={setConfirmConfig}
       />
       {loading ? (

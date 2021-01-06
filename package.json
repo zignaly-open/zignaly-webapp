@@ -44,6 +44,7 @@
     "@types/react-loadable": "^5.5.3",
     "@types/react-test-renderer": "^16.9.3",
     "@welldone-software/why-did-you-render": "^4.3.1",
+    "analytics": "^0.6.5",
     "chart.js": "^2.9.3",
     "coinrayjs": "^1.4.15",
     "countries-list": "^2.5.6",
@@ -94,6 +95,7 @@
     "moment": "2.24.0"
   },
   "devDependencies": {
+    "@analytics/segment": "^0.6.0",
     "@babel/preset-typescript": "^7.12.7",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",

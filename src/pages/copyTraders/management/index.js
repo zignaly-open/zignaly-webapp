@@ -1,15 +1,15 @@
 import React from "react";
 import "./management.scss";
 import { Box } from "@material-ui/core";
-import {
-  CopyTraderSummary,
-  ProfitSharingSummary,
-} from "../../../components/Provider/ProviderManagement/ManagementSummary";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
-import ManagementTabs from "../../../components/Provider/ProviderManagement/ManagementTabs";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import {
+  FuturesProfitSharingManagement,
+  SpotProfitSharingManagement,
+  TraderManagement,
+} from "components/Provider/ProviderManagement";
 
 const CopyTradersManagement = () => {
   const { provider } = useStoreViewsSelector();
@@ -25,17 +25,15 @@ const CopyTradersManagement = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box className="summaryBox">
-        {provider.profitSharing ? (
-          <ProfitSharingSummary provider={provider} />
-        ) : (
-          <CopyTraderSummary provider={provider} />
-        )}
-      </Box>
-
-      <Box className="tableBoxBox">
-        <ManagementTabs provider={provider} selectedExchange={selectedExchange} />
-      </Box>
+      {provider.profitSharing && provider.exchangeType.toLowerCase() === "futures" && (
+        <FuturesProfitSharingManagement provider={provider} selectedExchange={selectedExchange} />
+      )}
+      {provider.profitSharing && provider.exchangeType.toLowerCase() === "spot" && (
+        <SpotProfitSharingManagement provider={provider} selectedExchange={selectedExchange} />
+      )}
+      {!provider.profitSharing && (
+        <TraderManagement provider={provider} selectedExchange={selectedExchange} />
+      )}
     </Box>
   );
 };

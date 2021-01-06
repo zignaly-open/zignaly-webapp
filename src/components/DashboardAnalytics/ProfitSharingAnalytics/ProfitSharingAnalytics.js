@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
- * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("../../../services/tradeApiClient.types").HasBeenUsedProviderEntity} ProviderEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderPerformanceWeeklyStats} DefaultProviderPerformanceWeeklyStats
  * @typedef {import("../../../services/tradeApiClient.types").ProviderPerformanceEntity} ProviderPerformanceEntity
  * @typedef {import("../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -144,7 +144,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
-      exchangeInternalId: provider.exchangeInternalId,
+      exchangeInternalId: storeSettings.selectedExchange.internalId,
     };
     setBalanceHistoryLoading(true);
 

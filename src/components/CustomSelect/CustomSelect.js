@@ -40,6 +40,7 @@ import "./CustomSelect.scss";
  * @property {boolean} [disableCloseOnSelect] Disable CloseOnSelect (multi options autocomplete).
  * @property {renderOption} [renderOption] Custom render option function for autocomplete.
  * @property {boolean} [multiple] Multiple options for autocomplete.
+ * @property {boolean} [disabled] Disabled.
  */
 
 /**
@@ -86,6 +87,7 @@ const CustomSelect = (props) => {
     disableCloseOnSelect,
     multiple,
     labelPlacement,
+    disabled = false,
   } = props;
 
   return (
@@ -107,6 +109,7 @@ const CustomSelect = (props) => {
             classes={{
               root: "callout1",
             }}
+            disabled={disabled}
             displayEmpty={true}
             onChange={(e) => onChange(e.target.value)}
             value={value}
@@ -127,6 +130,7 @@ const CustomSelect = (props) => {
             }}
             disableClearable={true}
             disableCloseOnSelect={disableCloseOnSelect}
+            disabled={disabled}
             getOptionLabel={(option) => extractLabel(option, options)}
             getOptionSelected={(option, v) => {
               const optionVal = extractVal(option);

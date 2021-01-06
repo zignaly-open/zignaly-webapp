@@ -15,6 +15,7 @@ import useValidation from "../../../hooks/useValidation";
 import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -108,6 +109,7 @@ const TakeProfitPanel = (props) => {
       fieldsDisabled[composeTargetPropertyName("exitUnits", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPrice", index)] = disabled;
       fieldsDisabled[composeTargetPropertyName("targetPricePercentage", index)] = disabled;
+      fieldsDisabled[composeTargetPropertyName("postOnly", index)] = disabled;
     });
 
     return fieldsDisabled;
@@ -289,6 +291,7 @@ const TakeProfitPanel = (props) => {
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
+        setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
         simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
@@ -497,6 +500,12 @@ const TakeProfitPanel = (props) => {
                 )}
                 {displayTargetFieldErrors("exitUnitsPercentage", targetId)}
                 {!isCopyProvider && displayTargetFieldErrors("exitUnits", targetId)}
+              </Box>
+              <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+                <PostOnlyControl
+                  disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+                  name={composeTargetPropertyName("postOnly", targetId)}
+                />
               </Box>
             </Box>
           ))}

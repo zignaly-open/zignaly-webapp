@@ -16,6 +16,7 @@ import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData, getUserExchanges } from "../../../store/actions/user";
 import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl, vcceUrl } from "../../../utils/affiliateURLs";
+import Alert from "@material-ui/lab/Alert";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -234,8 +235,17 @@ const ExchangeAccountConnect = () => {
                 type="password"
               />
             ))}
+
+            {exchangeName.toLowerCase() === "bitmex" && (
+              <Alert className="alert" severity="info">
+                <Typography>
+                  <FormattedMessage id="accounts.exchange.api.kyc.tip" />
+                </Typography>
+              </Alert>
+            )}
+
             <Box
-              alignItems="flex-end"
+              alignItems="center"
               className="actionStep2"
               display="flex"
               flexDirection="row"

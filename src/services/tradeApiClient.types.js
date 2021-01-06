@@ -70,6 +70,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} exchangeName Exchange name.
  * @property {string} internalExchangeId Exchange connection ID.
  * @property {number} [positionSizePercentage] Position size as percentage, used to calculate position size from allocated balance for copy trader followers positions.
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -77,6 +78,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -84,6 +86,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} amountPercentage
+ * @property {boolean} [postOnly]
  */
 
 /**
@@ -529,6 +532,10 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
  * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
+ * @property {boolean} [stopLossFollowsTakeProfit] Stop Loss moves each time a take profit target is reached
+ * @property {boolean} [stopLossToBreakEven] Stop Loss moves to break even (entry price) when take profit target is reached.
+ * @property {boolean} isolated
+ * @property {string} isolatedReadable
  */
 
 /**
@@ -548,6 +555,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} skipped
  * @property {string} buyType
  * @property {string} errorMSG
+ * @property {boolean} postOnly
  */
 
 /**
@@ -575,6 +583,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {boolean} updating
+ * @property {boolean} postOnly
  */
 
 /**
@@ -599,6 +608,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
+ * @property {string} internalExchangeId
  */
 
 /**
@@ -920,6 +930,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} ChangeEmailRequestPayload
  * @property {String} token User session token
+ * @property {String} [code] two FA code.
  */
 
 /**
@@ -1189,11 +1200,33 @@ function providerItemTransform(providerItem) {
 }
 
 /**
+ * @typedef {Object} HasBeenUsedProviderEntity
+ * @property {boolean} connected Hide-water mark
+ * @property {string} id
+ * @property {string} name
+ * @property {string} type
+ */
+
+/**
+ * Create empty provider entity skeletion.
+ *
+ * @returns {HasBeenUsedProviderEntity} Enpty provider entity.
+ */
+function createEmptyHasBeenProviderEntity() {
+  return {
+    connected: false,
+    id: "",
+    name: "",
+    type: "",
+  };
+}
+
+/**
  * Transform providers response to typed object.
  *
  * @export
  * @param {*} response Trade API signal providers list response.
- * @returns {ProvidersCollection} Signal providers entities collection.
+ * @returns {Array<HasBeenUsedProviderEntity>} Signal providers entities collection.
  */
 export function hasBeenUsedProvidersResponseTransform(response) {
   if (!isArray(response)) {
@@ -1209,10 +1242,10 @@ export function hasBeenUsedProvidersResponseTransform(response) {
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
- * @returns {ProviderEntity} Provider entity.
+ * @returns {HasBeenUsedProviderEntity} Provider entity.
  */
 function hasBeenUsedProviderItemTransform(providerItem) {
-  const emptyProviderEntity = createEmptyProviderEntity();
+  const emptyProviderEntity = createEmptyHasBeenProviderEntity();
   // Override the empty entity with the values that came in from API.
   return assign(emptyProviderEntity, providerItem);
 }
@@ -1441,6 +1474,8 @@ export function positionItemTransform(positionItem) {
     liquidationPrice: safeParseFloat(positionItem.liquidationPrice),
     markPrice: safeParseFloat(positionItem.markPrice),
     margin: safeParseFloat(positionItem.margin),
+    isolated: positionItem.isolated,
+    isolatedReadable: positionItem.isolated ? "ISOLATED" : "CROSS",
     takeProfitTargetsCountSuccess: safeParseFloat(positionItem.takeProfitTargetsCountSuccess),
   });
 
@@ -1500,6 +1535,7 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
       skipped: rebuyTarget.skipped || false,
       buyType: rebuyTarget.buyType || "",
       errorMSG: rebuyTarget.errorMSG || "",
+      postOnly: rebuyTarget.postOnly || false,
     };
   });
 }
@@ -1544,6 +1580,7 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       updating: profitTarget.updating || false,
       cancel: profitTarget.cancel || false,
       skipped: profitTarget.skipped || false,
+      postOnly: profitTarget.postOnly || false,
     };
   });
 }
@@ -1694,6 +1731,8 @@ function createEmptyPositionEntity() {
     unitsAmount: "",
     short: "",
     tradeViewSymbol: "",
+    isolated: false,
+    isolatedReadable: "",
   };
 }
 
@@ -3618,8 +3657,14 @@ export function creatProviderDataPointsEntity(response) {
  * @property {Number} totalWalletUSDT
  * @property {Number} totalCurrentMarginBTC
  * @property {Number} totalCurrentMarginUSDT
+ * @property {Number} totalInvestedBTC
+ * @property {Number} totalInvestedUSDT
  * @property {Number} totalUnrealizedProfitBTC
  * @property {Number} totalUnrealizedProfitUSDT
+ * @property {Number} totalPnlBTC
+ * @property {Number} totalPnlUSDT
+ * @property {Number} totalFreeBTC
+ * @property {Number} totalFreeUSDT
  * @property {Number} totalMarginBTC
  * @property {Number} totalMarginUSDT
  * @property {Number} abstractPercentage
@@ -3647,8 +3692,14 @@ export function creatProviderBalanceEntity(response) {
     totalWalletUSDT: response ? formatValue(response.totalWalletUSDT) : 0,
     totalCurrentMarginBTC: response ? formatValue(response.totalCurrentMarginBTC) : 0,
     totalCurrentMarginUSDT: response ? formatValue(response.totalCurrentMarginUSDT) : 0,
+    totalInvestedBTC: response ? formatValue(response.totalInvestedBTC) : 0,
+    totalInvestedUSDT: response ? formatValue(response.totalInvestedUSDT) : 0,
     totalUnrealizedProfitBTC: response ? formatValue(response.totalUnrealizedProfitBTC) : 0,
     totalUnrealizedProfitUSDT: response ? formatValue(response.totalUnrealizedProfitUSDT) : 0,
+    totalPnlBTC: response ? formatValue(response.totalPnlBTC) : 0,
+    totalPnlUSDT: response ? formatValue(response.totalPnlUSDT) : 0,
+    totalFreeBTC: response ? formatValue(response.totalFreeBTC) : 0,
+    totalFreeUSDT: response ? formatValue(response.totalFreeUSDT) : 0,
     totalMarginBTC: response ? formatValue(response.totalMarginBTC) : 0,
     totalMarginUSDT: response ? response.totalMarginUSDT : 0,
     abstractPercentage: response ? formatValue(response.abstractPercentage) : 0,
@@ -3739,6 +3790,36 @@ function createEmptyManagementPositionsEntity() {
   return {
     position: createEmptyPositionEntity(),
     subPositions: [],
+  };
+}
+
+/**
+ *
+ * @typedef {Object} ManagementBalanceAndPositionsEntity
+ * @property {Array<ManagementPositionsEntity>} positions
+ * @property {ProviderBalanceEntity} balance
+ */
+
+/**
+ * Transform management positions response to typed object mapping.
+ *
+ * @param {*} response Management balance and positions list response.
+ * @returns {ManagementBalanceAndPositionsEntity} Balance and Positions entities mapping with management ids.
+ */
+export function managementBalanceAndPositionsResponseTransform(response) {
+  let transformedResponse = createEmptyManagementBalanceAndPositionsEntity();
+  transformedResponse.positions = managementPositionsResponseTransform(response.positions);
+  transformedResponse.balance = providerBalanceResponseTransform(response.balance);
+  return transformedResponse;
+}
+
+/**
+ * @returns {ManagementBalanceAndPositionsEntity} Empty management positions entity.
+ */
+function createEmptyManagementBalanceAndPositionsEntity() {
+  return {
+    positions: [],
+    balance: null,
   };
 }
 

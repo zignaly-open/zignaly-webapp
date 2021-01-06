@@ -6,19 +6,21 @@ import { showErrorAlert } from "../store/actions/ui";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../services/tradeApiClient.types").HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {Object} HookData
- * @property {ProvidersCollection} providers
+ * @property {Array<HasBeenUsedProviderEntity>} providers
  * @property {Boolean} providersLoading
  */
 
 /**
  * Provides provider list.
  *
+ * @param {string} internalId Internal Id of selected exchange.
+ * @param {Array<string>} type Type of providers to filter.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useReadOnlyProviders = (shouldExecute = true) => {
+const useConnectedProvidersLite = (internalId, type, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -26,11 +28,12 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   const storeSettings = useStoreSettingsSelector();
 
   const loadData = () => {
-    if (shouldExecute) {
+    if (shouldExecute && storeSession.tradeApi.accessToken) {
       setProvidersLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
         ro: true,
+        internalExchangeId: internalId,
       };
 
       tradeApi
@@ -49,14 +52,11 @@ const useReadOnlyProviders = (shouldExecute = true) => {
 
   /**
    * Filter providers that have been used for the selected exchange.
-   * @param {ProvidersCollection} response Providers Collection.
+   * @param {Array<HasBeenUsedProviderEntity>} response Providers Collection.
    * @returns {Void} None.
    */
   const filterProviders = (response) => {
-    let providerAssets = response.filter(
-      (item) =>
-        item.hasBeenUsed && item.exchangeInternalId === storeSettings.selectedExchange.internalId,
-    );
+    let providerAssets = response.filter((item) => item.connected && type.includes(item.type));
     setList(providerAssets);
   };
 
@@ -69,4 +69,4 @@ const useReadOnlyProviders = (shouldExecute = true) => {
   return { providers: list, providersLoading: providersLoading };
 };
 
-export default useReadOnlyProviders;
+export default useConnectedProvidersLite;

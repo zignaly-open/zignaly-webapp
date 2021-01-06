@@ -24,6 +24,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
+import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import { Alert } from "@material-ui/lab";
 
 /**
@@ -55,7 +56,7 @@ const PriceControl = ({ multiSide, symbolData }) => {
           defaultValue={lastPrice}
           error={!!errors[name]}
           inputRef={register({
-            validate: validatePrice,
+            validate: (price) => validatePrice(price, multiSide),
           })}
           name={name}
           onChange={priceChange}
@@ -87,6 +88,7 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
       <Box alignItems="center" display="flex">
         <OutlinedInput
           className="outlineInput"
+          error={Boolean(errors[name])}
           inputRef={register({
             validate: validateUnits,
           })}
@@ -392,6 +394,11 @@ const StrategyPanel = (props) => {
             <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
             <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
             <input name="leverage" ref={register} type="hidden" />
+          </Box>
+        )}
+        {["limit", "multi"].includes(entryStrategy) && (
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl />
           </Box>
         )}
       </Box>

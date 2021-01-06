@@ -17,7 +17,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * @property {React.ChangeEventHandler} realInvestmentChange
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
- * @property {Validate} validatePrice
+ * @property {function(string, string?): string|boolean} validatePrice
  * @property {Validate} validateUnits
  */
 
@@ -102,17 +102,34 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * Validate that price is within limits.
    *
    * @param {any} price Price value.
+   * @param {string} [multiSide] Side for multi order
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
-  function validatePrice(price) {
+  function validatePrice(price, multiSide) {
     const value = parseFloat(price);
 
-    if (limits.price.min && value < limits.price.min) {
-      return formatMessage({ id: "terminal.positionprice.limit.min" }, { value: limits.price.min });
+    let min = limits.price.min;
+    let max = limits.price.max;
+
+    if (multiSide) {
+      // Check that LONG price is below SHORT and the opposite
+      if (multiSide === "long") {
+        max = currentPriceShort;
+      } else {
+        min = currentPrice;
+      }
     }
 
-    if (limits.price.max && value > limits.price.max) {
-      return formatMessage({ id: "terminal.positionprice.limit.max" }, { value: limits.price.max });
+    if (min && value < min) {
+      return multiSide === "short"
+        ? formatMessage({ id: "terminal.positionprice.multi.short" })
+        : formatMessage({ id: "terminal.positionprice.limit.min" }, { value: min });
+    }
+
+    if (max && value > max) {
+      return multiSide === "long"
+        ? formatMessage({ id: "terminal.positionprice.multi.long" })
+        : formatMessage({ id: "terminal.positionprice.limit.max" }, { value: max });
     }
 
     if (!(value > 0)) {
@@ -143,7 +160,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     trigger("positionSize").then((isValid) => {
       if (isValid) {
         updateUnits(positionSize);
-        trigger("units");
       }
     });
   }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
@@ -155,10 +171,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
   const updateUnits = (positionSize) => {
     const units = calculateUnits(positionSize, currentPrice);
     setValue("units", units.toFixed(8));
+    trigger("units");
 
     if (entryStrategy === "multi") {
       const unitsShort = calculateUnits(positionSize, currentPriceShort);
       setValue("unitsShort", unitsShort.toFixed(8));
+      trigger("unitsShort");
     }
   };
 
@@ -167,14 +185,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const draftPosition = getValues();
     const positionSize = parseFloat(draftPosition.positionSize);
-
     updateUnits(positionSize);
-    trigger("units").then((isValid) => {
-      if (isValid) {
-        const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
-        setValue("realInvestment", realInvestment.toFixed(8));
-      }
-    });
+
+    const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
+    setValue("realInvestment", realInvestment.toFixed(8));
   }, [
     errors,
     currentPrice,
@@ -226,6 +240,10 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     if (parseFloat(draftPosition.positionSize) > 0) {
       simulateInputChangeEvent("positionSize");
     }
+
+    // Trigger the other price for multi order
+    trigger("price");
+    trigger("priceShort");
   };
 
   // Trigger position size recalculation on leverage/entryType change

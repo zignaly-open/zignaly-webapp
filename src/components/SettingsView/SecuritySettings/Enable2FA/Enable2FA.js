@@ -9,7 +9,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
-import { enable2FA } from "../../../../store/actions/user";
+import { enable2FA, getUserData } from "../../../../store/actions/user";
 
 /**
  * Provides a component to enable 2FA.
@@ -78,6 +78,10 @@ const Enable2FA = () => {
         dispatch(enable2FA(!twoFAEnabled));
         const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
         dispatch(showSuccessAlert("Success", intl.formatMessage({ id: msg })));
+        const userDataPayload = {
+          token: storeSession.tradeApi.accessToken,
+        };
+        dispatch(getUserData(userDataPayload));
         // if (!twoFAEnabled) {
         //   navigate("/login");
         // }

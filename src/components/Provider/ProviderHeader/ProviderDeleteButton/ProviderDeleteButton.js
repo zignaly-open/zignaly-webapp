@@ -47,23 +47,28 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   };
 
   const deleteProvider = async () => {
-    try {
-      setLoading(true);
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-      };
-      const response = await tradeApi.providerDelete(payload);
-      if (response) {
-        setLoading(false);
-        dispatch(
-          showSuccessAlert("srv.deleteprovider.alert.title", "srv.deleteprovider.alert.body"),
-        );
+    setLoading(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      providerId: provider.id,
+    };
+    await tradeApi
+      .providerDelete(payload)
+      .then(() => {
+        let alert = provider.isClone
+          ? "srv.deleteclone.alert.body"
+          : provider.isCopyTrading
+          ? "srv.deletetrader.alert.body"
+          : "srv.deleteprovider.alert.body";
+        dispatch(showSuccessAlert("", alert));
         redirect();
-      }
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-    }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const confirmAction = () => {

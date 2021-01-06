@@ -45,6 +45,7 @@ import {
   profitSharingBalanceHistoryResponseTransform,
   providerBalanceResponseTransform,
   providerFollowersCountResponseTransform,
+  managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -57,6 +58,7 @@ import {
  * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
+ * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
@@ -132,6 +134,7 @@ import {
  * @typedef {import('./tradeApiClient.types').UserBalanceEntity} UserBalanceEntity
  * @typedef {import('./tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('./tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
+ * @typedef {import('./tradeApiClient.types').ManagementBalanceAndPositionsEntity} ManagementBalanceAndPositionsEntity
  * @typedef {import('./tradeApiClient.types').UserAvailableBalanceObject} UserAvailableBalanceObject
  * @typedef {import('./tradeApiClient.types').ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import('./tradeApiClient.types').ExchangeDepositAddress} ExchangeDepositAddress
@@ -519,7 +522,7 @@ class TradeApiClient {
    * Get providers list.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
-   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
@@ -1318,6 +1321,22 @@ class TradeApiClient {
   }
 
   /**
+   * Function to get Management positions and Balance of provider.
+   *
+   * @param {GetProviderFollowersPayload} payload Management poistions payload.
+   *
+   * @returns {Promise<ManagementBalanceAndPositionsEntity>} Returns promise that resolved management positions entity.
+   *
+   * @memberof TradeApiClient
+   */
+  async providerManagementBalanceAndPositions(payload) {
+    const endpointPath = "/fe/api.php?action=getBalanceAndPositionsForService";
+    const responseData = await this.doRequest(endpointPath, payload, "GET");
+
+    return managementBalanceAndPositionsResponseTransform(responseData);
+  }
+
+  /**
    * Change password.
    *
    * @param {UpdatePasswordPayload} payload Change password payload.
@@ -1993,6 +2012,51 @@ class TradeApiClient {
    */
   async transferMargin(payload) {
     const endpointPath = "/fe/api.php?action=transferMargin";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Request delete account
+   *
+   * @param {{code: string?}} payload Payload with optional 2FA code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountRequest(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountRequest";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Visit delete account link
+   *
+   * @param {{token: string}} payload Payload with email code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountVisit(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
+
+  /**
+   * Confirm delete account
+   *
+   * @param {{token: string, reason: string}} payload Payload with email code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async deleteAccountConfirm(payload) {
+    const endpointPath = "/fe/api.php?action=deleteAccountConfirm";
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }

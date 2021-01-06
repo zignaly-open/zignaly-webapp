@@ -184,12 +184,14 @@ const StrategyForm = (props) => {
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
+      const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
       if (targetPricePercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
           amountPercentage: parseFloat(targetExitUnitsPercentage),
+          postOnly,
         });
       }
     });
@@ -218,12 +220,14 @@ const StrategyForm = (props) => {
     const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+      const postOnly = draftPosition[`dcaPostOnly${targetId}`];
 
       if (targetPricePercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
           amountPercentage: parseFloat(targetRebuyPercentage),
+          postOnly,
         });
       }
     };
@@ -301,6 +305,8 @@ const StrategyForm = (props) => {
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+      stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
+      stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
       buyTTL: minToSeconds(buyTTL) || false,
       buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
       sellByTTL: hourToSeconds(sellTTL) || 0,
@@ -312,6 +318,7 @@ const StrategyForm = (props) => {
       providerName: "Manual Trading",
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
+      postOnly: draftPosition.postOnly,
     };
   };
 
@@ -344,6 +351,8 @@ const StrategyForm = (props) => {
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
+        stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
         buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
         takeProfitTargets:
           !draftPosition.reduceTargetPercentage && composePositionTakeProfitTargets(draftPosition),
@@ -440,6 +449,8 @@ const StrategyForm = (props) => {
   const updatePriceField = () => {
     // Update price (selected symbol changed)
     setValue("price", lastPrice);
+    // Multi order
+    setValue("priceShort", lastPrice);
   };
   useEffect(updatePriceField, [lastPrice]);
 
