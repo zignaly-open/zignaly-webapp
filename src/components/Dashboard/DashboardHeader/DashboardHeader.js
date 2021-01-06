@@ -24,9 +24,11 @@ import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 const DashboardHeader = ({ path }) => {
   const storeSettings = useStoreSettingsSelector();
   const links = routesMapping(path).links;
-  const { providers } = useConnectedProvidersLite(storeSettings.selectedExchange.internalId, [
-    "signalProvider",
-  ]);
+  const { providers } = useConnectedProvidersLite(
+    storeSettings.selectedExchange.internalId,
+    ["signalProvider"],
+    true,
+  );
 
   if (providers.length > 0) {
     links.push({

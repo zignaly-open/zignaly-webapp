@@ -17,10 +17,11 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  *
  * @param {string} internalId Internal Id of selected exchange.
  * @param {Array<string>} type Type of providers to filter.
+ * @param {boolean} onlyConnected Flag to indicate whether connected or not
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useConnectedProvidersLite = (internalId, type, shouldExecute = true) => {
+const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
@@ -56,7 +57,12 @@ const useConnectedProvidersLite = (internalId, type, shouldExecute = true) => {
    * @returns {Void} None.
    */
   const filterProviders = (response) => {
-    let providerAssets = response.filter((item) => item.connected && type.includes(item.type));
+    let providerAssets = null;
+    if (onlyConnected) {
+      providerAssets = response.filter((item) => item.connected && type.includes(item.type));
+    } else {
+      providerAssets = response.filter((item) => type.includes(item.type));
+    }
     setList(providerAssets);
   };
 
