@@ -20,8 +20,8 @@ export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
  */
 
 /**
- * @typedef {'signalp'|'copyt'} ProviderPageType
- * @typedef {'connectedSignalp'|'connectedCopyt'} ConnectedProviderPageType
+ * @typedef {'signalp'|'copyt'|'profit'} ProviderPageType
+ * @typedef {'connectedSignalp'|'connectedCopyt'|'connectedProfit'} ConnectedProviderPageType
  * @typedef {'signalpAnalytics'|'copytAnalytics'|'dashboardAnalytics'} AnalyticsPageType
  */
 

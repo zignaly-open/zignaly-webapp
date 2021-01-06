@@ -82,9 +82,9 @@ const useProvidersList = (options) => {
    */
   let page;
   if (connectedOnly) {
-    page = copyTraders || profitSharing ? "connectedCopyt" : "connectedSignalp";
+    page = copyTraders ? "connectedCopyt" : profitSharing ? "connectedProfit" : "connectedSignalp";
   } else {
-    page = copyTraders || profitSharing ? "copyt" : "signalp";
+    page = copyTraders ? "copyt" : profitSharing ? "profit" : "signalp";
   }
 
   // @ts-ignore
@@ -244,8 +244,7 @@ const useProvidersList = (options) => {
         (!filters.exchangeType ||
           filters.exchangeType === "ALL" ||
           p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser) &&
-        (!filters.profitSharing || p.profitSharing),
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
     );
     sortProviders(matches);
   };

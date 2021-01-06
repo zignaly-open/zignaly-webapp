@@ -39,11 +39,13 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
 
   const redirect = () => {
-    if (provider.isCopyTrading) {
-      navigate("/copyTraders");
-    } else {
-      navigate("/signalProviders");
-    }
+    const marketplaceLink =
+      provider.isCopyTrading && !provider.profitSharing
+        ? "/copyTraders"
+        : provider.isCopyTrading && provider.profitSharing
+        ? "/profitSharing"
+        : "/signalProviders";
+    navigate(marketplaceLink);
   };
 
   const deleteProvider = async () => {

@@ -26,14 +26,19 @@ const TraderCardHeader = (props) => {
     logoUrl,
     quote,
     exchanges,
-    isCopyTrading,
+    provType,
     id,
     exchangeType,
     profitSharing,
     profitsShare,
   } = props.provider;
 
-  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
+  const copyTraders = provType === "copytrading";
+  const profitSharingProvider = provType === "profitsharing";
+
+  const profileLink = `/${
+    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${id}`;
 
   return (
     <div className="traderCardHeader">

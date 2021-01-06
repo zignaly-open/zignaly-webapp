@@ -677,6 +677,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
+ * @property {'signal'|'copytrading'|'profitsharing'} provType
+ *
  */
 
 /**
@@ -1291,6 +1293,7 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    provType: "copytrading",
   };
 }
 
@@ -4375,6 +4378,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
+      provType: "copytrading",
     },
     signalsInfo: [],
   };

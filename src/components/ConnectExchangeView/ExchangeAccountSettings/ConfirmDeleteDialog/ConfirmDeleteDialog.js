@@ -24,10 +24,6 @@ import useProfitSharingServices from "../../../../hooks/useProfitSharingServices
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  *
- * @typedef {Object} UserProviderListOptions
- * @property {Boolean} connectedOnly
- * @property {Boolean} copyTradersOnly
- *
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} onClose
  * @property {boolean} open

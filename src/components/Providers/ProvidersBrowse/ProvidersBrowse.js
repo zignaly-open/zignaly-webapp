@@ -33,7 +33,8 @@ const ProvidersBrowse = ({
   connectedOnly,
   setModifiedFiltersCount,
 }) => {
-  const copyTradersOnly = provType === "copytraders";
+  const copyTraders = provType === "copytraders";
+  const profitSharing = provType === "profitsharing";
   const providersOptions = { provType, connectedOnly };
   const {
     providers,
@@ -64,12 +65,12 @@ const ProvidersBrowse = ({
       {toggleFilters && (
         <ProvidersFilters
           clearFilters={clearFilters}
-          copyTradersOnly={copyTradersOnly}
           exchangeTypes={exchangeTypes}
           exchanges={exchanges}
           filters={filters}
           onClose={toggleFilters}
           open={showFilters}
+          provType={provType}
           quotes={quotes}
           setFilters={setFilters}
         />
@@ -77,10 +78,10 @@ const ProvidersBrowse = ({
       {toggleSort && (
         <ProvidersSort
           clearFilters={clearSort}
-          isCopyTrading={copyTradersOnly}
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
+          provType={provType}
           sort={sort}
         />
       )}
@@ -89,10 +90,10 @@ const ProvidersBrowse = ({
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
-            ? copyTradersOnly
+            ? copyTraders || profitSharing
               ? "dashboard.traders.copying"
               : "dashboard.providers.following"
-            : copyTradersOnly
+            : copyTraders || profitSharing
             ? "copyt.traders"
             : "fil.providers",
         })}`}

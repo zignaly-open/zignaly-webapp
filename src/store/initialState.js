@@ -74,7 +74,6 @@
  * @property {string} exchange
  * @property {string} exchangeType
  * @property {string} fromUser
- * @property {boolean} profitSharing
  */
 
 /**
@@ -116,6 +115,7 @@
  * @property {DashboardAnalyticsFilters} dashboardAnalytics
  * @property {DashboardPositionsFilters} dashboardPositions
  * @property {BrowseFilters} copyt
+ * @property {BrowseFilters} profit
  * @property {SignalPBrowseFilters} signalp
  * @property {AnalyticsFilters} copytAnalytics
  * @property {AnalyticsFilters} signalpAnalytics
@@ -168,14 +168,17 @@
  * @typedef {Object} TimeframeObject
  * @property {Number} connectedCopyt
  * @property {Number} connectedSignalp
+ * @property {Number} connectedProfit
  * @property {Number} copyt
  * @property {Number} signalp
+ * @property {Number} profit
  */
 
 /**
  * @typedef {Object} SortObject
  * @property {string} copyt
  * @property {string} signalp
+ * @property {string} profit
  */
 
 /**
@@ -486,17 +489,21 @@ const initialState = {
     timeFrame: {
       connectedCopyt: null,
       connectedSignalp: null,
+      connectedProfit: null,
       copyt: null,
       signalp: null,
+      profit: null,
     },
     sort: {
       copyt: null,
       signalp: null,
+      profit: null,
     },
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
-      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "", profitSharing: false },
+      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
+      profit: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
       signalp: { fromUser: "" },
       copytAnalytics: { quote: "", base: "", timeFrame: "" },
       signalpAnalytics: { quote: "", base: "", timeFrame: "" },
