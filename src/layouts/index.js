@@ -1,6 +1,7 @@
 import React from "react";
 import PrivateAreaLayout from "./PrivateAreaLayout";
 import AppLayout from "./AppLayout";
+// import ExternalFormLayout from "./ExternalFormLayout";
 
 /**
  * @typedef {Object} PageContext
@@ -46,21 +47,16 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/signup")) {
     return PublicPage();
   }
+
   // Recover don't use any layout.
-  if (currentPath.match("/recover")) {
+  if (currentPath.match(/recover|disable2fa|changeEmail|deleteAccount/)) {
     return PublicPage();
-  }
-  // Disable 2FA don't use any layout.
-  if (currentPath.match("/disable2fa")) {
-    return PublicPage();
-  }
-  // Change email don't use any layout.
-  if (currentPath.match("/changeEmail")) {
-    return PublicPage();
-  }
-  // Delete account don't use any layout.
-  if (currentPath.match("/deleteAccount")) {
-    return PublicPage();
+
+    // return (
+    //   <AppLayout>
+    //     <ExternalFormLayout>{children}</ExternalFormLayout>
+    //   </AppLayout>
+    // );
   }
 
   return PrivatePage();

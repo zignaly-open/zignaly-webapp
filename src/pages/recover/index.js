@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import Link from "../../components/LocalizedLink";
+import ResetForm from "components/Forms/ResetForm";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -27,25 +28,6 @@ const RecoverPassword = ({ token }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const verifyCode = () => {
-    setLoading(true);
-    const payload = {
-      token: token,
-    };
-    tradeApi
-      .forgotPasswordStep2(payload)
-      .then(() => {
-        setVerified(true);
-        setLoading(false);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-        setLoading(false);
-      });
-  };
-
-  useEffect(verifyCode, [token]);
-
   return (
     <>
       <Helmet>
@@ -55,31 +37,11 @@ const RecoverPassword = ({ token }) => {
           })}`}
         </title>
       </Helmet>
-      <Box
-        alignItems="center"
-        className="recoverPasswordPage"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        {loading ? (
-          <CircularProgress color="primary" size={50} />
-        ) : verified ? (
-          <>
-            <img alt="Zignaly" className="logo" src={Logo} />
-            <ResetPasswordForm setVerified={setVerified} token={token} />
-          </>
-        ) : (
-          <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">
-            <Typography variant="h3">
-              <FormattedMessage id="recover.error" />
-            </Typography>
-            <Link className="loginLink" to="/login">
-              Back to Login
-            </Link>
-          </Box>
-        )}
-      </Box>
+      <ResetForm
+        form={ResetPasswordForm}
+        code={token}
+        verifyCode={(code) => tradeApi.forgotPasswordStep2({ token: code })}
+      />
     </>
   );
 };
