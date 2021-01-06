@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./changeEmail.scss";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
-import Logo from "../../images/logo/logoNW.svg";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../store/actions/ui";
-import { FormattedMessage, useIntl } from "react-intl";
-import Link from "../../components/LocalizedLink";
+import { useIntl } from "react-intl";
 import ChangeEmailForm from "components/Forms/ChangeEmailForm";
 import ResetForm from "components/Forms/ResetForm";
 
@@ -35,8 +30,8 @@ const ChangeEmail = ({ token }) => {
         </title>
       </Helmet>
       <ResetForm
-        form={ChangeEmailForm}
         code={token}
+        form={ChangeEmailForm}
         verifyCode={(code) => tradeApi.changeEmailVisit({ token: code })}
       />
     </>

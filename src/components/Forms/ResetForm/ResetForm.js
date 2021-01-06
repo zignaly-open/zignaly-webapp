@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./ResetForm.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoWhite.png";
-import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import Link from "components/LocalizedLink";
 
 /**
  * @param {Object} props Props.
  * @param {string} props.code Reset Code.
  * @param {function} props.form Form component to embed.
- * @param {function} props.verifyCode Method to verify code
+ * @param {function(string): Promise<*>} props.verifyCode Method to verify code
  * @returns {JSX.Element} JSx component.
  */
 const ResetForm = ({ code, form: Form, verifyCode }) => {
@@ -26,6 +25,8 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
         setVerified(true);
       })
       .catch((e) => {
+        setVerified(true);
+
         dispatch(showErrorAlert(e));
       })
       .finally(() => {

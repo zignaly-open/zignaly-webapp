@@ -30,9 +30,9 @@ const DeleteAccount = ({ code }) => {
         </title>
       </Helmet>
       <ResetForm
-        form={ConfirmDeleteAccountForm}
         code={code}
-        verifyCode={(code) => tradeApi.deleteAccountVisit({ token: code })}
+        form={ConfirmDeleteAccountForm}
+        verifyCode={(c) => tradeApi.deleteAccountVisit({ token: c })}
       />
     </>
   );

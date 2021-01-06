@@ -1,7 +1,6 @@
 import React from "react";
 import PrivateAreaLayout from "./PrivateAreaLayout";
 import AppLayout from "./AppLayout";
-// import ExternalFormLayout from "./ExternalFormLayout";
 
 /**
  * @typedef {Object} PageContext
@@ -51,12 +50,6 @@ const wrapRootWithLayout = (props) => {
   // Recover don't use any layout.
   if (currentPath.match(/recover|disable2fa|changeEmail|deleteAccount/)) {
     return PublicPage();
-
-    // return (
-    //   <AppLayout>
-    //     <ExternalFormLayout>{children}</ExternalFormLayout>
-    //   </AppLayout>
-    // );
   }
 
   return PrivatePage();
