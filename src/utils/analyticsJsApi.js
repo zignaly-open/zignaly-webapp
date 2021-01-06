@@ -39,7 +39,6 @@ const analyticsJsApi = () => {
         }),
       ],
     });
-    analytics.page();
   }
 
   return { analytics: analytics };
@@ -50,15 +49,14 @@ export default analyticsJsApi;
 /**
  * Triger path change event.
  *
- * @param {string} path Path of current page
  * @param {string} userId userId
  * @returns {void} None.
  */
-export const analyticsPageView = (path, userId) => {
+export const analyticsPageView = (userId) => {
   const { analytics } = analyticsJsApi();
 
   if (analytics) {
-    analytics.page({ url: path, userId: userId || "" });
+    analytics.page(userId);
   }
 };
 
