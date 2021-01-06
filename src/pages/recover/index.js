@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./recover.scss";
 import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
 import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
-import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import ResetForm from "components/Forms/ResetForm";
 
