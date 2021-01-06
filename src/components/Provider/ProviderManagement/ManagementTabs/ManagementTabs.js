@@ -71,7 +71,7 @@ const ManagementTabs = ({ provider, selectedExchange, tablePositions, allPositio
         <TabsMenu changeTab={changeTab} tabValue={tabValue} tabs={tabsList} />
         {tabValue === 0 && (
           <Box className="tabPanel">
-            {provider.exchangeType.toLowerCase() === "spot" ? (
+            {provider.profitSharing && provider.exchangeType.toLowerCase() === "spot" ? (
               <ManagementTable
                 allPositions={allPositions}
                 list={tablePositions}
