@@ -59,9 +59,9 @@ const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecut
   const filterProviders = (response) => {
     let providerAssets = null;
     if (onlyConnected) {
-      response.filter((item) => item.connected && type.includes(item.type));
+      providerAssets = response.filter((item) => item.connected && type.includes(item.type));
     } else {
-      response.filter((item) => type.includes(item.type));
+      providerAssets = response.filter((item) => type.includes(item.type));
     }
     setList(providerAssets);
   };
