@@ -25,8 +25,6 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
         setVerified(true);
       })
       .catch((e) => {
-        setVerified(true);
-
         dispatch(showErrorAlert(e));
       })
       .finally(() => {
