@@ -81,7 +81,7 @@ const AppLayout = (props) => {
   useEffect(() => {
     if (href) {
       mixpanelPageView(href);
-      analyticsPageView(href);
+      analyticsPageView(storeUserData.userId);
     }
   }, [href]);
 

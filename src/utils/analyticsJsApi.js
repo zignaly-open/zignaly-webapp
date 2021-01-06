@@ -39,7 +39,6 @@ const analyticsJsApi = () => {
         }),
       ],
     });
-    analytics.page();
   }
 
   return { analytics: analytics };
@@ -50,14 +49,14 @@ export default analyticsJsApi;
 /**
  * Triger path change event.
  *
- * @param {string} path Path of current page
+ * @param {string} userId userId
  * @returns {void} None.
  */
-export const analyticsPageView = (path) => {
+export const analyticsPageView = (userId) => {
   const { analytics } = analyticsJsApi();
 
   if (analytics) {
-    analytics.page({ url: path });
+    analytics.page(userId);
   }
 };
 
@@ -73,7 +72,9 @@ export const analyticsTrigger = (userData, type) => {
   const eventToTrigger = type === "login" ? "login" : "signup";
 
   if (analytics) {
-    analytics.track(eventToTrigger);
+    analytics.track(eventToTrigger, {
+      userId: userData.userId,
+    });
 
     analytics.identify(userData.userId, {
       email: userData.email,
