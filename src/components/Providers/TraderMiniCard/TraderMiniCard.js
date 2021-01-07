@@ -20,11 +20,9 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderMiniCard = ({ provider }) => {
-  const { name, logoUrl, quote, isCopyTrading, id } = provider;
+  const { name, logoUrl, quote, providerLink, id } = provider;
   const { providerUserInfo, profitPerc } = useProviderUserInfo(id);
   const color = profitPerc >= 0 ? "green" : "red";
-
-  const profileLink = `/${isCopyTrading ? "copyTraders" : "signalProviders"}/${id}`;
 
   return (
     <Box
@@ -35,7 +33,7 @@ const TraderMiniCard = ({ provider }) => {
       justifyContent="space-between"
     >
       <Box alignItems="center" display="flex" flexDirection="row" justifyContent="space-between">
-        <Link className="link" to={profileLink}>
+        <Link className="link" to={providerLink}>
           <Typography className="name" variant="h4">
             {name}
           </Typography>
