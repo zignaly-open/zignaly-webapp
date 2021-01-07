@@ -1350,8 +1350,11 @@ export function positionItemTransform(positionItem) {
       return "";
     }
 
-    if (positionItem.isCopyTrading) {
+    if (positionItem.isCopyTrading && !positionItem.profitSharing) {
       return `/copyTraders/${positionItem.providerId}`;
+    }
+    if (positionItem.isCopyTrading && positionItem.profitSharing) {
+      return `/profitSharing/${positionItem.providerId}`;
     }
 
     return `/signalProviders/${positionItem.providerId}`;
