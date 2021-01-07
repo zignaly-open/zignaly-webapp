@@ -45,6 +45,7 @@ const ConfirmTwoFADisableForm = ({ token, setVerified }) => {
       token,
       apiKey,
     };
+
     tradeApi
       .disable2FAConfirm(payload)
       .then(() => {
