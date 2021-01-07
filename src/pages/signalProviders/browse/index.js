@@ -39,7 +39,7 @@ const SignalProvidersBrowse = (props) => {
 
       <ProvidersBrowse
         connectedOnly={false}
-        provType="signal"
+        provType={["signal"]}
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}

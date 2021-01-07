@@ -35,7 +35,7 @@ import { forceCheck } from "react-lazyload";
 
 /**
  * @typedef {Object} ProvidersOptions
- * @property {'signal'|'copytraders'|'profitsharing'} provType
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
  * @property {boolean} connectedOnly
  */
 
@@ -69,8 +69,8 @@ const useProvidersList = (options) => {
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const { provType, connectedOnly } = options;
-  const copyTraders = provType === "copytraders";
-  const profitSharing = provType === "profitsharing";
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */

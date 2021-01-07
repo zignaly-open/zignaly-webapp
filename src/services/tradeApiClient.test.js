@@ -130,7 +130,7 @@ describe("Consume tradeApiClient service", () => {
       token: accessToken,
       type: "all",
       ro: true,
-      provType: "copytraders",
+      provType: ["copytraders"],
       timeFrame: 90,
       internalExchangeId: "Binance1578301457_5e12f811deda4",
     };

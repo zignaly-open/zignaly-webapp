@@ -512,7 +512,10 @@ class TradeApiClient {
     const endpointPath = "/fe/api.php?action=getProviderList2";
     const responseData = await this.doRequest(endpointPath, {
       ...payload,
-      version: payload.provType === "copytraders" || payload.provType === "profitsharing" ? 3 : 2,
+      version:
+        payload.provType.includes("copytraders") || payload.provType.includes("profitsharing")
+          ? 3
+          : 2,
     });
 
     return providersResponseTransform(responseData);

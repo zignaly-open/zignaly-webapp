@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
  *
  * @param {number} timeFrame TimeFrame for returns.
  * @param {string} internalExchangeId Filter by internal exchange id.
- * @param {'signal'|'copytraders'|'profitsharing'} provType Flag to indicate if it should returns only the copy traders.
+ * @param {Array<'signal'|'copytraders'|'profitsharing'>} provType Flag to indicate if it should returns only the copy traders.
  * @returns {ProvidersCollection} Connected Providers.
  */
 const useConnectedProviders = (timeFrame, internalExchangeId, provType) => {

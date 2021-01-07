@@ -14,7 +14,7 @@ import { Box } from "@material-ui/core";
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
- * @property {'copytraders'|'signal'|'profitsharing'} provType Type of providers to show.
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType Type of providers to show.
  * @property {boolean} connectedOnly Only display connected providers.
  */
 
@@ -33,8 +33,8 @@ const ProvidersBrowse = ({
   connectedOnly,
   setModifiedFiltersCount,
 }) => {
-  const copyTraders = provType === "copytraders";
-  const profitSharing = provType === "profitsharing";
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
   const providersOptions = { provType, connectedOnly };
   const {
     providers,
@@ -86,7 +86,7 @@ const ProvidersBrowse = ({
         />
       )}
       <TimeFrameSelectRow
-        isCopyTrading={provType === "copytraders" || provType === "profitsharing"}
+        isCopyTrading={copyTraders || profitSharing}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly

@@ -599,7 +599,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} token
  * @property {"connected"|"all"} type
  * @property {number} timeFrame
- * @property {'signal'|'copytraders'|'profitsharing'} provType
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  * @property {boolean} [ro] Read only request
  * @property {string} internalExchangeId
  */

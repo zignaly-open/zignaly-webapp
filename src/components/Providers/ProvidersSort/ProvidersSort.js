@@ -12,7 +12,7 @@ import CustomSelect from "../../CustomSelect";
  * @property {string} sort value Selected value.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {boolean} open Flag to indicates if the sort bar is open.
- * @property {string} provType
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  */
 
 /**
@@ -23,8 +23,8 @@ import CustomSelect from "../../CustomSelect";
  */
 const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, provType }) => {
   const intl = useIntl();
-  const copyTraders = provType === "copytraders";
-  const profitSharing = provType === "profitsharing";
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
 
   const sorts = [
     ...(copyTraders || profitSharing

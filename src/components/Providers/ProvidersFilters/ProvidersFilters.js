@@ -20,7 +20,7 @@ import { Box, Checkbox } from "@material-ui/core";
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {Array<OptionType>} quotes Quotes options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
- * @property {string} provType
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  */
 
 /**
@@ -41,8 +41,8 @@ const ProvidersFilters = ({
   setFilters,
 }) => {
   const intl = useIntl();
-  const copyTraders = provType === "copytraders";
-  const profitSharing = provType === "profitsharing";
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
 
   return (
     <CustomFilters
