@@ -678,6 +678,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  * @property {'signal'|'copytrading'|'profitsharing'} provType
+ * @property {string} providerLink
  *
  */
 
@@ -1197,6 +1198,12 @@ function providerItemTransform(providerItem) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
+  const copyTraders = transformedResponse.provType === "copytrading";
+  const profitSharingProvider = transformedResponse.provType === "profitsharing";
+
+  transformedResponse.providerLink = `/${
+    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${transformedResponse.id}`;
 
   return transformedResponse;
 }
@@ -1294,6 +1301,7 @@ function createEmptyProviderEntity() {
     profitsShare: 0,
     profitsMode: "",
     provType: "copytrading",
+    providerLink: "",
   };
 }
 
@@ -4382,6 +4390,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsShare: 0,
       profitsMode: "",
       provType: "copytrading",
+      providerLink: "",
     },
     signalsInfo: [],
   };

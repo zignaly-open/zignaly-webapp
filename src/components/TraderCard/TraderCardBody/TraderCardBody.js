@@ -60,6 +60,7 @@ const TraderCard = (props) => {
     returns,
     aggregateFollowers = [],
     newFollowers,
+    providerLink,
   } = provider;
 
   const copyTraders = provType === "copytrading";
@@ -147,10 +148,7 @@ const TraderCard = (props) => {
   }
 
   const redirectToProfile = () => {
-    const profileLink = `/${
-      copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
-    }/${id}`;
-    navigate(profileLink);
+    navigate(providerLink);
   };
 
   const initConfirmConfig = {

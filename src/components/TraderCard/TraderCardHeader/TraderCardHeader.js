@@ -26,26 +26,18 @@ const TraderCardHeader = (props) => {
     logoUrl,
     quote,
     exchanges,
-    provType,
-    id,
     exchangeType,
     profitSharing,
     profitsShare,
+    providerLink,
   } = props.provider;
-
-  const copyTraders = provType === "copytrading";
-  const profitSharingProvider = provType === "profitsharing";
-
-  const profileLink = `/${
-    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
-  }/${id}`;
 
   return (
     <div className="traderCardHeader">
       <ProviderLogo size="40px" title={name} url={logoUrl} />
       <div className="traderCardHeaderTitleBox">
         <div className="nameBox">
-          <Link className="name" to={profileLink}>
+          <Link className="name" to={providerLink}>
             <Typography variant="h4">{name}</Typography>
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
