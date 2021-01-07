@@ -628,7 +628,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro Read only request
- * @property {boolean} isCopyTrading Copy traders stats
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
  */
 
 /**

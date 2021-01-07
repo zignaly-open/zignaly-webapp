@@ -25,7 +25,7 @@ const SignalProvidersAnalytics = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersAnalytics type="signalp" />
+      <ProvidersAnalytics provType={["signal"]} />
     </Box>
   );
 };
