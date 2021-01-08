@@ -27,12 +27,11 @@ const ProviderHeader = () => {
   const { hasAllocated } = useContext(ProviderContext);
 
   useEffect(() => {
-    const data =
-      provider.isCopyTrading && !provider.profitSharing
+    const data = provider.isCopyTrading
+      ? !provider.profitSharing
         ? createTraderRoutes(providerId, provider)
-        : provider.isCopyTrading && provider.profitSharing
-        ? createProfitSharingRoutes(providerId, provider)
-        : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
+        : createProfitSharingRoutes(providerId, provider)
+      : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
     if (!provider.isCopyTrading) {
       data.links.some((item) => {
         if (item.to.includes("settings")) {

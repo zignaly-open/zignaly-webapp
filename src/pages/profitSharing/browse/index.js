@@ -26,7 +26,7 @@ const CopyTradersBrowse = (props) => {
   const intl = useIntl();
 
   return (
-    <Box className="ctBrowsePage">
+    <Box className="psBrowsePage">
       <Helmet>
         <title>
           {`${intl.formatMessage({

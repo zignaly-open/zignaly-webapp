@@ -7,15 +7,15 @@ import "./copyTradersAnalytics.scss";
 import ProvidersAnalytics from "../../../components/Providers/ProvidersAnalytics";
 
 /**
- * Provides analytics of signal providers.
+ * Provides analytics of profit sharing providers.
  *
  * @returns {JSX.Element} Component JSX.
  */
-const CopyTradersAnalytics = () => {
+const ProfitSharingAnalytics = () => {
   const intl = useIntl();
 
   return (
-    <Box className="ctAnalyticsPage">
+    <Box className="psAnalyticsPage">
       <Helmet>
         <title>
           {`${intl.formatMessage({
@@ -30,4 +30,4 @@ const CopyTradersAnalytics = () => {
   );
 };
 
-export default withProvidersAnalyticsLayout(CopyTradersAnalytics);
+export default withProvidersAnalyticsLayout(ProfitSharingAnalytics);
