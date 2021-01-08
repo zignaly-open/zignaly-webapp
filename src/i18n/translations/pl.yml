@@ -362,7 +362,7 @@ copyt.management.totalprofit: "Całkowity zysk"
 # This is untranslatable IMO
 copyt.management.float: "Fluktuacja"
 copyt.management.trialing: "Trialing:"
-copyt.copy.error1: "Twoje obecne konto, {selected}, jest kontem {exchange} i nie odpowiada konfiguracji Providera, która jest przeznaczona dla kont {required}."
+copyt.copy.error1: "You need a {required} account to connect to this service."
 copyt.copy.error2: "Musisz dodać giełdę, aby skopiować tego tradera."
 srv.followprovider: "Śledź tego Providera"
 srv.stopfollowing: "Przestań obserwować"
