@@ -211,6 +211,7 @@ const TradingView = () => {
       trailingStopPrice: "",
       units: "",
       dcaTargetPricePercentage1: "",
+      DCAPriority: "percentage",
     },
   });
 

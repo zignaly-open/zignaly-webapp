@@ -319,6 +319,8 @@ const StrategyForm = (props) => {
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
       postOnly: draftPosition.postOnly,
+      DCAPriority: draftPosition.DCAPriority,
+      stopLossPriority: draftPosition.DCAPriority.stopLossPriority || "percentage",
     };
   };
 
@@ -443,6 +445,8 @@ const StrategyForm = (props) => {
       updatePosition(payload);
     } else {
       const payload = composeCreatePositionPayload(draftPosition);
+      console.log(payload);
+      return;
       createPosition(payload);
     }
   };

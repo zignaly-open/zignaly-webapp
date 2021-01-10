@@ -2,9 +2,21 @@ import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isEqual, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import {
+  Button,
+  Box,
+  OutlinedInput,
+  Typography,
+  Switch,
+  RadioGroup,
+  Radio,
+  FormLabel,
+  FormControl,
+  FormHelperText,
+  FormControlLabel,
+} from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
@@ -120,6 +132,8 @@ const DCAPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
+  const DCAPriority = watch("DCAPriority");
+  console.log(DCAPriority);
 
   /**
    * Handle DCA increase remove.
@@ -204,7 +218,7 @@ const DCAPanel = (props) => {
     const targetPrice = price * (1 - targetPricePercentage / 100);
 
     const units = Math.abs(rebuyPositionSize / targetPrice);
-    if (positionSize > 0) {
+    if (targetId === "1" && positionSize > 0) {
       return validateUnitsLimits(units, "terminal.dca.limit");
     }
 
@@ -232,7 +246,7 @@ const DCAPanel = (props) => {
     const positionSize = getEntrySizeQuote();
     const rebuyPercentage = getTargetPropertyValue("rebuyPercentage", targetId);
     const rebuyPositionSize = positionSize * (rebuyPercentage / 100);
-    if (positionSize > 0) {
+    if (targetId === "1" && positionSize > 0) {
       return validateCostLimits(rebuyPositionSize, "terminal.dca.limit");
     }
 
@@ -455,6 +469,34 @@ const DCAPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
+          <FormHelperText>
+            <FormattedMessage id="terminal.price.type" />
+          </FormHelperText>
+
+          <Controller
+            name="DCAPriority"
+            render={({ onChange, value }) => (
+              <RadioGroup
+                aria-label="type"
+                value={value}
+                onChange={onChange}
+                row
+                className="customRadio"
+              >
+                <FormControlLabel
+                  value="percentage"
+                  control={<Radio />}
+                  label={<FormattedMessage id="terminal.percentage" />}
+                />
+                <FormControlLabel
+                  value="price"
+                  control={<Radio />}
+                  label={<FormattedMessage id="terminal.price" />}
+                />
+              </RadioGroup>
+            )}
+          />
+
           {cardinalityRange.map((targetId) => displayDcaTarget(targetId))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
             {!disableRemoveAction && (

@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch, FormHelperText } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext, Controller } from "react-hook-form";
@@ -12,6 +12,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { some } from "lodash";
+import PricePercentageControl from "../Controls/PricePercentageControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -234,43 +235,28 @@ const StopLossPanel = (props) => {
           justifyContent="space-around"
         >
           <Box className="stopLoss">
-            <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-              <HelperLabel descriptionId="terminal.stoploss.help" labelId="terminal.stoploss" />
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={fieldsDisabled.stopLossPercentage}
-                  inputRef={register({
-                    validate: validateStopLossPercentageLimits,
-                  })}
-                  name="stopLossPercentage"
-                  onChange={stopLossPercentageChange}
-                />
-                <div className="currencyBox">%</div>
-              </Box>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={fieldsDisabled.stopLossPrice}
-                  inputRef={register({
-                    validate: {
-                      positive: (value) =>
-                        value >= 0 || formatMessage({ id: "terminal.stoploss.limit.zero" }),
-                    },
-                  })}
-                  name="stopLossPrice"
-                  onChange={stopLossPriceChange}
-                />
-                <div className="currencyBox">{symbolData.quote}</div>
-              </Box>
-            </Box>
-            {displayFieldErrors("stopLossPercentage")}
-            {displayFieldErrors("stopLossPrice")}
+            <PricePercentageControl
+              disabled={isReadOnly}
+              priority="stopLossPriority"
+              percentage={{
+                name: "stopLossPercentage",
+                validate: validateStopLossPercentageLimits,
+                onChange: stopLossPercentageChange,
+              }}
+              price={{
+                name: "stopLossPrice",
+                onChange: stopLossPriceChange,
+                error: formatMessage({ id: "terminal.stoploss.limit.zero" }),
+              }}
+              quote={symbolData.quote}
+              labelId="terminal.stoploss"
+              labelDescriptionId="terminal.stoploss.help"
+            />
           </Box>
           <Box alignItems="center" className="title" display="flex" flexDirection="row" mt="12px">
-            <Typography variant="h5">
+            <FormHelperText>
               <FormattedMessage id="terminal.stoploss.type" />
-            </Typography>
+            </FormHelperText>
             <Controller
               as={
                 <CustomSelect
