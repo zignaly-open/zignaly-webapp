@@ -163,7 +163,8 @@ const MarginModal = ({ position, onClose }) => {
               </Typography>
             ) : (
               <Typography className="callout1">
-                <FormattedMessage id="margin.maxremoveable" />: {formatNumber(maxRemoveableMargin)}
+                <FormattedMessage id="margin.maxremoveable" />:{" "}
+                {formatNumber(maxRemoveableMargin <= 0 ? 0 : maxRemoveableMargin)}
                 XBT
               </Typography>
             )}
@@ -173,7 +174,7 @@ const MarginModal = ({ position, onClose }) => {
 
       <CustomButton
         className="submitButton"
-        disabled={balanceLoading || loading}
+        disabled={balanceLoading || loading || (mode === "REMOVE" && maxRemoveableMargin <= 0)}
         loading={loading}
         type="submit"
       >
