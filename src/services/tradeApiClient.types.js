@@ -599,7 +599,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} token
  * @property {"connected"|"all"} type
  * @property {number} timeFrame
- * @property {boolean} copyTradersOnly
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  * @property {boolean} [ro] Read only request
  * @property {string} internalExchangeId
  */
@@ -628,7 +628,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro Read only request
- * @property {boolean} isCopyTrading Copy traders stats
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
  */
 
 /**
@@ -677,6 +677,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
+ * @property {'signal'|'copytrading'|'profitsharing'} provType
+ * @property {string} providerLink
+ *
  */
 
 /**
@@ -1195,6 +1198,12 @@ function providerItemTransform(providerItem) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
+  const copyTraders = transformedResponse.provType === "copytrading";
+  const profitSharingProvider = transformedResponse.provType === "profitsharing";
+
+  transformedResponse.providerLink = `/${
+    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${transformedResponse.id}`;
 
   return transformedResponse;
 }
@@ -1291,6 +1300,8 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    provType: "copytrading",
+    providerLink: "",
   };
 }
 
@@ -1347,8 +1358,11 @@ export function positionItemTransform(positionItem) {
       return "";
     }
 
-    if (positionItem.isCopyTrading) {
+    if (positionItem.isCopyTrading && !positionItem.profitSharing) {
       return `/copyTraders/${positionItem.providerId}`;
+    }
+    if (positionItem.isCopyTrading && positionItem.profitSharing) {
+      return `/profitSharing/${positionItem.providerId}`;
     }
 
     return `/signalProviders/${positionItem.providerId}`;
@@ -4375,6 +4389,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
+      provType: "copytrading",
+      providerLink: "",
     },
     signalsInfo: [],
   };

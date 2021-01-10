@@ -25,7 +25,7 @@ const CopyTradersAnalytics = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersAnalytics type="copyt" />
+      <ProvidersAnalytics provType={["copytraders"]} />
     </Box>
   );
 };

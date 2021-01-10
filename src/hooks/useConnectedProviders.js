@@ -13,10 +13,10 @@ import { useDispatch } from "react-redux";
  *
  * @param {number} timeFrame TimeFrame for returns.
  * @param {string} internalExchangeId Filter by internal exchange id.
- * @param {boolean} copyTradersOnly Flag to indicate if it should returns only the copy traders.
+ * @param {Array<'signal'|'copytraders'|'profitsharing'>} provType Flag to indicate if it should returns only the copy traders.
  * @returns {ProvidersCollection} Connected Providers.
  */
-const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) => {
+const useConnectedProviders = (timeFrame, internalExchangeId, provType) => {
   const [providers, setProviders] = useState([]);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
       token: storeSession.tradeApi.accessToken,
       ro: true,
       timeFrame,
-      copyTradersOnly,
+      provType,
       type: "connected",
       ...(internalExchangeId && { internalExchangeId }),
     };
@@ -45,12 +45,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId, copyTradersOnly) =
         });
     }
   };
-  useEffect(loadData, [
-    storeSession.tradeApi.accessToken,
-    internalExchangeId,
-    timeFrame,
-    copyTradersOnly,
-  ]);
+  useEffect(loadData, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame, provType]);
 
   return providers;
 };

@@ -50,7 +50,7 @@ const TraderCard = (props) => {
   const {
     openPositions,
     floating,
-    isCopyTrading,
+    provType,
     followers,
     disable,
     dailyReturns,
@@ -60,7 +60,11 @@ const TraderCard = (props) => {
     returns,
     aggregateFollowers = [],
     newFollowers,
+    providerLink,
   } = provider;
+
+  const copyTraders = provType === "copytrading";
+  const profitSharingProvider = provType === "profitsharing";
 
   /**
    * Format tooltip content.
@@ -74,9 +78,9 @@ const TraderCard = (props) => {
       <div className="traderCardTooltip">
         <div>
           {formatFloat2Dec(tooltipItem.yLabel)}{" "}
-          {isCopyTrading ? "%" : <FormattedMessage id="srv.followers" />}
+          {copyTraders || profitSharingProvider ? "%" : <FormattedMessage id="srv.followers" />}
         </div>
-        {isCopyTrading && (
+        {(copyTraders || profitSharingProvider) && (
           <FormattedMessage
             id="srv.closedposcount"
             values={{
@@ -94,7 +98,7 @@ const TraderCard = (props) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
-  const type = isCopyTrading ? "copyt" : "srv";
+  const type = copyTraders || profitSharingProvider ? "copyt" : "srv";
   const timeframeTranslationId =
     timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
@@ -102,7 +106,7 @@ const TraderCard = (props) => {
    * @type {ChartData}
    */
   let chartData = { values: [], labels: [] };
-  if (isCopyTrading) {
+  if (copyTraders || profitSharingProvider) {
     generateStats(dailyReturns, { dateKey: "name" }, (date, data) => {
       chartData.values.push(data ? data.returns : 0);
       chartData.labels.push(date.toDate());
@@ -121,7 +125,7 @@ const TraderCard = (props) => {
     }
   }
 
-  const positive = (isCopyTrading ? returns : newFollowers) >= 0;
+  const positive = (copyTraders || profitSharingProvider ? returns : newFollowers) >= 0;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -144,11 +148,7 @@ const TraderCard = (props) => {
   }
 
   const redirectToProfile = () => {
-    if (isCopyTrading) {
-      navigate(`/copyTraders/${provider.id}`);
-    } else {
-      navigate(`/signalProviders/${provider.id}`);
-    }
+    navigate(providerLink);
   };
 
   const initConfirmConfig = {
@@ -205,7 +205,7 @@ const TraderCard = (props) => {
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
-            condition={isCopyTrading}
+            condition={copyTraders || profitSharingProvider}
             wrapper={(_children) => (
               <CustomToolip
                 title={
@@ -221,17 +221,21 @@ const TraderCard = (props) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {isCopyTrading ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
+                {copyTraders || profitSharingProvider ? (
+                  <>{formatFloat2Dec(returns)}%</>
+                ) : (
+                  newFollowers
+                )}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
-                id: isCopyTrading ? "sort.return" : "srv.newfollowers",
+                id: copyTraders || profitSharingProvider ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
                 id: timeframeTranslationId,
               })})`}</Typography>
             </div>
           </ConditionalWrapper>
 
-          {isCopyTrading && (
+          {(copyTraders || profitSharingProvider) && (
             <CustomToolip
               title={
                 <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />
@@ -262,14 +266,18 @@ const TraderCard = (props) => {
           </div>
           <div
             className={`actionsWrapper ${
-              !isCopyTrading || dailyReturns.length ? (positive ? "positive" : "negative") : ""
+              (!copyTraders && !profitSharingProvider) || dailyReturns.length
+                ? positive
+                  ? "positive"
+                  : "negative"
+                : ""
             }`}
           >
             <div className="followers">
               {canDisable ? (
                 <h6 className={`callout2 ${colorClass}`}>
                   <FormattedMessage
-                    id={isCopyTrading ? "trader.others" : "provider.others"}
+                    id={copyTraders || profitSharingProvider ? "trader.others" : "provider.others"}
                     values={{
                       count: followers - 1,
                     }}
@@ -278,7 +286,9 @@ const TraderCard = (props) => {
               ) : (
                 <h6 className="callout1">
                   {followers}{" "}
-                  <FormattedMessage id={isCopyTrading ? "trader.people" : "provider.people"} />
+                  <FormattedMessage
+                    id={copyTraders || profitSharingProvider ? "trader.people" : "provider.people"}
+                  />
                 </h6>
               )}
             </div>
@@ -290,7 +300,7 @@ const TraderCard = (props) => {
                     title={
                       <FormattedMessage
                         id={
-                          isCopyTrading
+                          copyTraders || profitSharingProvider
                             ? "copyt.follow.anotheraccount"
                             : "srv.follow.anotheraccount"
                         }
@@ -302,22 +312,36 @@ const TraderCard = (props) => {
                   >
                     <div>
                       <CustomButton className="textPurple" disabled={true}>
-                        <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                        <FormattedMessage
+                          id={
+                            copyTraders || profitSharingProvider ? "trader.stop" : "provider.stop"
+                          }
+                        />
                       </CustomButton>
                     </div>
                   </CustomToolip>
                 ) : (
                   <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
-                    <FormattedMessage id={isCopyTrading ? "trader.stop" : "provider.stop"} />
+                    <FormattedMessage
+                      id={copyTraders || profitSharingProvider ? "trader.stop" : "provider.stop"}
+                    />
                   </CustomButton>
                 ))}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
-                <FormattedMessage id={isCopyTrading ? "trader.view" : "provider.view"} />
+                <FormattedMessage
+                  id={copyTraders || profitSharingProvider ? "trader.view" : "provider.view"}
+                />
               </CustomButton>
             </div>
           </div>
         </div>
-        {showSummary && <UserSummary isCopyTrading={isCopyTrading} providerId={id} quote={quote} />}
+        {showSummary && (
+          <UserSummary
+            isCopyTrading={copyTraders || profitSharingProvider}
+            providerId={id}
+            quote={quote}
+          />
+        )}
       </div>
     </LazyLoad>
   );

@@ -39,12 +39,12 @@ const SignalProvidersBrowse = (props) => {
 
       <ProvidersBrowse
         connectedOnly={false}
+        provType={["signal"]}
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
-        type="signalp"
       />
     </Box>
   );

@@ -42,13 +42,19 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
-  // Override position page route to support positionId argument.
+  // Override copy traders page route to support providerId argument.
   if (page.path.match(/^\/copyTraders\/$/)) {
     page.matchPath = "/copyTraders/*";
     createPage(page);
     return;
   }
-  // Override position page route to support positionId argument.
+  // Override profit sharing page route to support providerId argument.
+  if (page.path.match(/^\/profitSharing\/$/)) {
+    page.matchPath = "/profitSharing/*";
+    createPage(page);
+    return;
+  }
+  // Override signal provider page route to support providerId argument.
   if (page.path.match(/^\/signalProviders\/$/)) {
     page.matchPath = "/signalProviders/*";
     createPage(page);

@@ -59,20 +59,6 @@ const CopyTraders = (props) => {
 
   useEffect(loadProvider, [providerId]);
 
-  const refreshProvider = () => {
-    if (providerId && providerId.length === 24 && provider.profitSharing) {
-      const payload = {
-        token: tradeApi.accessToken,
-        providerId: providerId,
-        version: 2,
-        exchangeInternalId: selectedExchange.internalId,
-      };
-      dispatch(setProvider(payload, true));
-    }
-  };
-
-  useEffect(refreshProvider, [selectedExchange.internalId]);
-
   if (!providerId) {
     // Render Browse page
     return <BrowsePage {...props} />;

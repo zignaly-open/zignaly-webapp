@@ -68,6 +68,22 @@ export const routesMapping = (path) => {
           },
         ],
       };
+    case "profitSharing":
+      return {
+        id: "menu.profitSharing",
+        subtitleId: "copyt.subtitle",
+        subtitle2Id: "",
+        links: [
+          {
+            id: "srv.browse",
+            to: "/profitSharing",
+          },
+          {
+            id: "srv.analytics",
+            to: "/profitSharing/analytics",
+          },
+        ],
+      };
     case "signalProviders":
       return {
         id: "menu.signalproviders",
@@ -154,7 +170,6 @@ export const routesMapping = (path) => {
  * @param {DefaultProviderGetObject} provider Path to map section links for.
  * @returns {SectionNavigation} A section navigation object.
  */
-
 export const createTraderRoutes = (providerId, provider) => {
   if (providerId) {
     let data = {
@@ -216,6 +231,79 @@ export const createTraderRoutes = (providerId, provider) => {
       {
         id: "srv.positions",
         to: `/copyTraders/${provider.id}/positions`,
+      },
+    ],
+  };
+};
+
+/**
+ * Map path to section navigation object.
+ *
+ * @param {String} providerId Id of the opened copyTrader.
+ * @param {DefaultProviderGetObject} provider Path to map section links for.
+ * @returns {SectionNavigation} A section navigation object.
+ */
+export const createProfitSharingRoutes = (providerId, provider) => {
+  if (providerId) {
+    let data = {
+      id: "providerProfile",
+      subtitleId: "",
+      subtitle2Id: "",
+      links: [
+        {
+          id: "srv.profile",
+          to: `/profitSharing/${provider.id}`,
+        },
+        {
+          id: "srv.analytics",
+          to: `/profitSharing/${provider.id}/analytics`,
+        },
+        {
+          id: "srv.positions",
+          to: `/profitSharing/${provider.id}/positions`,
+        },
+      ],
+    };
+
+    data.links.push({
+      id: "srv.newsfeed",
+      to: `/profitSharing/${provider.id}/feed`,
+    });
+
+    if (provider.isAdmin) {
+      if (!provider.isClone) {
+        data.links.push({
+          id: "srv.edit",
+          to: `/profitSharing/${provider.id}/edit`,
+        });
+        data.links.push({
+          id: "srv.users",
+          to: `/profitSharing/${provider.id}/users`,
+        });
+        data.links.push({
+          id: "srv.management",
+          to: `/profitSharing/${provider.id}/management`,
+        });
+      }
+    }
+    return data;
+  }
+  return {
+    id: "providerProfile",
+    subtitleId: "",
+    subtitle2Id: "",
+    links: [
+      {
+        id: "srv.profile",
+        to: `/profitSharing/${provider.id}`,
+      },
+      {
+        id: "srv.analytics",
+        to: `/profitSharing/${provider.id}/analytics`,
+      },
+      {
+        id: "srv.positions",
+        to: `/profitSharing/${provider.id}/positions`,
       },
     ],
   };

@@ -6,6 +6,7 @@ import { positionEntityStructureAssertions } from "../utils/test/positionAsserti
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
+ * @typedef {import("../services/tradeApiClient.types").ProvidersStatsPayload} ProvidersStatsPayload
  */
 
 describe("Consume tradeApiClient service", () => {
@@ -130,7 +131,7 @@ describe("Consume tradeApiClient service", () => {
       token: accessToken,
       type: "all",
       ro: true,
-      copyTradersOnly: true,
+      provType: ["copytraders"],
       timeFrame: 90,
       internalExchangeId: "Binance1578301457_5e12f811deda4",
     };
@@ -171,6 +172,9 @@ describe("Consume tradeApiClient service", () => {
   }, 60000);
 
   it("should get provider profits stats", async () => {
+    /**
+     * @type {ProvidersStatsPayload}
+     */
     const payload = {
       token: accessToken,
       ro: true,
@@ -178,7 +182,7 @@ describe("Consume tradeApiClient service", () => {
       base: "all",
       timeFrame: "2months",
       DCAFilter: "withoutDCA",
-      isCopyTrading: true,
+      provType: ["copytraders"],
     };
 
     const providersStats = await client.providersStatsGet(payload);
