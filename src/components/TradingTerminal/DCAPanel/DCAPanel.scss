@@ -54,7 +54,17 @@
     padding: 10px 0;
   }
 
-  .customRadio svg {
-    font-size: 1rem;
+  .customRadio {
+    p {
+      margin: 0;
+    }
+
+    svg {
+      font-size: 1rem;
+    }
+  }
+
+  .priorityType {
+    margin: 12px 0;
   }
 }

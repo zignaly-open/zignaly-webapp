@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, OutlinedInput, Typography, Switch, FormHelperText } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
+import "./PricePercentageControl.scss";
 
 /**
  * @typedef {Object} PricePercentage
@@ -31,18 +32,28 @@ const PricePercentageControl = ({
   labelId,
   labelDescriptionId,
 }) => {
-  const { errors, register, watch } = useFormContext();
+  const { errors, register, watch, setValue } = useFormContext();
   const priorityValue = watch(priority);
+  console.log(priorityValue);
+
+  const togglePriority = () => {
+    setValue(priority, priorityValue === "price" ? "percentage" : "price");
+  };
 
   // const [priority, setPriority]=useState('')
   return (
-    <Box>
-      <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+    <Box className="pricePercentageControl">
+      <Box className="pricePercentageInputs" display="flex" flexDirection="row" flexWrap="wrap">
         <HelperLabel descriptionId={labelDescriptionId} labelId={labelId} />
-        <Box alignItems="center" display="flex">
+        <Box
+          alignItems="center"
+          display="flex"
+          className={`pricePercentageInput ${priorityValue === "price" ? "disabled" : ""}`}
+          onClick={() => priorityValue === "price" && togglePriority()}
+        >
           <OutlinedInput
             className="outlineInput"
-            disabled={disabled || priorityValue === "price"}
+            readOnly={disabled || priorityValue === "price"}
             inputRef={register({
               validate: percentage.validate,
             })}
@@ -51,10 +62,15 @@ const PricePercentageControl = ({
           />
           <div className="currencyBox">%</div>
         </Box>
-        <Box alignItems="center" display="flex">
+        <Box
+          alignItems="center"
+          display="flex"
+          className={`pricePercentageInput ${priorityValue !== "price" ? "disabled" : ""}`}
+          onClick={() => priorityValue !== "price" && togglePriority()}
+        >
           <OutlinedInput
             className="outlineInput"
-            disabled={disabled || priorityValue !== "price"}
+            readOnly={disabled || priorityValue !== "price"}
             inputRef={register({
               validate: {
                 positive: (value) => value >= 0 || price.error,
@@ -65,7 +81,7 @@ const PricePercentageControl = ({
           />
           <div className="currencyBox">{quote}</div>
         </Box>
-        <input name="priorityName" ref={register} type="hidden" />
+        <input name={priority} ref={register} type="hidden" />
       </Box>
       {errors[percentage.name] && (
         <span className="errorText">{errors[percentage.name].message}</span>

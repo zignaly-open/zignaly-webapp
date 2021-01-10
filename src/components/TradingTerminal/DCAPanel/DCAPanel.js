@@ -10,8 +10,6 @@ import {
   Switch,
   RadioGroup,
   Radio,
-  FormLabel,
-  FormControl,
   FormHelperText,
   FormControlLabel,
 } from "@material-ui/core";
@@ -132,8 +130,6 @@ const DCAPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
-  const DCAPriority = watch("DCAPriority");
-  console.log(DCAPriority);
 
   /**
    * Handle DCA increase remove.
@@ -469,33 +465,43 @@ const DCAPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          <FormHelperText>
-            <FormattedMessage id="terminal.price.type" />
-          </FormHelperText>
+          <Box className="priorityType">
+            <FormHelperText>
+              <FormattedMessage id="terminal.price.type" />
+            </FormHelperText>
 
-          <Controller
-            name="DCAPriority"
-            render={({ onChange, value }) => (
-              <RadioGroup
-                aria-label="type"
-                value={value}
-                onChange={onChange}
-                row
-                className="customRadio"
-              >
-                <FormControlLabel
-                  value="percentage"
-                  control={<Radio />}
-                  label={<FormattedMessage id="terminal.percentage" />}
-                />
-                <FormControlLabel
-                  value="price"
-                  control={<Radio />}
-                  label={<FormattedMessage id="terminal.price" />}
-                />
-              </RadioGroup>
-            )}
-          />
+            <Controller
+              name="DCAPriority"
+              render={({ onChange, value }) => (
+                <RadioGroup
+                  aria-label="type"
+                  value={value}
+                  onChange={onChange}
+                  row
+                  className="customRadio"
+                >
+                  <FormControlLabel
+                    value="percentage"
+                    control={<Radio />}
+                    label={
+                      <FormHelperText>
+                        <FormattedMessage id="terminal.percentage" />
+                      </FormHelperText>
+                    }
+                  />
+                  <FormControlLabel
+                    value="price"
+                    control={<Radio />}
+                    label={
+                      <FormHelperText>
+                        <FormattedMessage id="terminal.price" />
+                      </FormHelperText>
+                    }
+                  />
+                </RadioGroup>
+              )}
+            />
+          </Box>
 
           {cardinalityRange.map((targetId) => displayDcaTarget(targetId))}
           <Box className="targetActions" display="flex" flexDirection="row" flexWrap="wrap">
