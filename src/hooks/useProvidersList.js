@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
@@ -15,6 +14,7 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
+import useExchangeQuotes from "./useExchangeQuotes";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -91,7 +91,10 @@ const useProvidersList = (options) => {
   const storeFilters = storeSettings.filters[page] || {};
 
   // Get quotes list unless connected providers only which don't need filters
-  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes({
+    exchangeId: storeSettings.selectedExchange.exchangeId,
+    exchangeType: storeSettings.selectedExchange.exchangeType,
+  });
   const quotes = [
     {
       val: "ALL",

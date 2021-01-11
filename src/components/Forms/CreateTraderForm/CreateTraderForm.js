@@ -249,7 +249,7 @@ const CreateTraderForm = () => {
                       <CircularProgress color="primary" size={30} />
                     </Box>
                   )}
-                  {!quotesLoading && (
+                  {!quotesLoading && quotes.length && (
                     <>
                       <Controller
                         control={control}

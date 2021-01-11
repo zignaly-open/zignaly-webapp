@@ -11,7 +11,7 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import ProviderContext from "../ProviderContext";
+import ProviderContext from "../../../context/ProviderContext";
 import { FormattedMessage } from "react-intl";
 
 /**

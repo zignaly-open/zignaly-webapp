@@ -15,6 +15,8 @@ import { ConfirmDialog } from "../../components/Dialogs";
 import useInterval from "../../hooks/useInterval";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
+import usePrivateAreaContext from "hooks/usePrivateAreaContext";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -31,6 +33,7 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
+  const privateAreaContext = usePrivateAreaContext();
 
   const updateSession = () => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
@@ -46,7 +49,7 @@ const PrivateAreaLayout = (props) => {
   const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
 
   return (
-    <>
+    <PrivateAreaContext.Provider value={privateAreaContext}>
       <ConfirmDialog
         confirmConfig={confirmConfig}
         executeActionCallback={executeRefresh}
@@ -72,7 +75,7 @@ const PrivateAreaLayout = (props) => {
           <Box className={"appContent"}>{children}</Box>
         </Box>
       </Box>
-    </>
+    </PrivateAreaContext.Provider>
   );
 };
 

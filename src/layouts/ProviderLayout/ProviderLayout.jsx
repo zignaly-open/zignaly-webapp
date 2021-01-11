@@ -4,8 +4,6 @@ import { Box, CircularProgress } from "@material-ui/core";
 import ProviderHeader from "../../components/Provider/ProviderHeader";
 import FAQ from "../../components/FAQ";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
-import ProviderContext from "components/Provider/ProviderContext";
-import useProviderContext from "hooks/useProviderContext";
 
 /**
  * @typedef {Object} ProviderLayoutProps
