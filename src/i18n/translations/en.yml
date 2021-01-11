@@ -507,6 +507,7 @@ graph.others: "Others"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "COPY-TRADERS"
 copyt.subtitle: "Copy experienced traders who trade with the currencies you own."
+profit.subtitle: "Invest in expert traders and pay only a portion of the profits."
 
 copyt.allocated: "allocated of copytrader’s balance"
 copyt.copiers: "Copiers"
@@ -764,7 +765,7 @@ signalp.create.desc: "Offer your signals as an expert trader to be followed by o
 signalp.create: "Create a Signal Provider Service"
 signalp.become: "Offer Your Signal Provider Service"
 signalp.become.mobile: "Offer Service"
-profit.become: "Offer Your Signal Profit Sharing Service"
+profit.become: "Offer Your Profit Sharing Service"
 profit.become.mobile: "Offer Service"
 signalp.disclaimer: "Disclaimer URL"
 signalp.general: "General"

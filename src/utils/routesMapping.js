@@ -71,7 +71,7 @@ export const routesMapping = (path) => {
     case "profitSharing":
       return {
         id: "menu.profitSharing",
-        subtitleId: "copyt.subtitle",
+        subtitleId: "profit.subtitle",
         subtitle2Id: "",
         links: [
           {
