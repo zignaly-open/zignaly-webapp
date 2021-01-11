@@ -17,7 +17,7 @@ import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ToggleTextarea from "./ToggleTextarea";
-import ProviderContext from "../../Provider/ProviderContext";
+import ProviderContext from "../../../context/ProviderContext";
 import { checkAllocated } from "utils/helpers";
 import ToggleRadioInput from "./ToggleRadioInput";
 

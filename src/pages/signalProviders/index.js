@@ -19,7 +19,7 @@ import tradeApi from "../../services/tradeApiClient";
 import { showErrorAlert } from "store/actions/ui";
 import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 import useProviderContext from "hooks/useProviderContext";
-import ProviderContext from "components/Provider/ProviderContext";
+import ProviderContext from "../../context/ProviderContext";
 import { checkAllocated } from "../../utils/helpers";
 
 /**
