@@ -62,7 +62,7 @@ const ProvidersFilters = ({
           value={filters.quote}
         />
       )}
-      {(copyTraders || profitSharing) && (
+      {copyTraders && (
         <CustomSelect
           onChange={(/** @type {string} */ v) => setFilters({ exchange: v })}
           options={exchanges}

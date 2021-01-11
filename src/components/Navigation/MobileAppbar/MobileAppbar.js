@@ -122,18 +122,18 @@ const MobileAppbar = () => {
           <img alt="zignaly" className={"icon"} src={getIcon("dashboard")} />
         </Link>
         <Link
-          className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
-          partiallyActive={true}
-          to="/copyTraders"
-        >
-          <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
-        </Link>
-        <Link
           className={"sideBarLink " + (active("profitSharing") ? "active" : "")}
           partiallyActive={true}
           to="/profitSharing"
         >
           <img alt="zignaly" className="icon profitSharing" src={getIcon("profitSharing")} />
+        </Link>
+        <Link
+          className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
+          partiallyActive={true}
+          to="/copyTraders"
+        >
+          <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
         </Link>
         <Link
           className={"sideBarLink " + (active("signalProviders") ? "active" : "")}

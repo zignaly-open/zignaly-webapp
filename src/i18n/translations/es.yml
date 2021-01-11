@@ -1298,6 +1298,8 @@ copyt.profitsharing.percentage: "Porcentaje de Profit Sharing"
 copyt.servicename: "Nombre del Servicio"
 signalp.create.desc: "Ofrezca sus señales como trader experto para que nuestros usuarios lo sigan"
 signalp.become.mobile: "Ofrecer servicio"
+profit.become: "Offer Your Signal Profit Sharing Service"
+profit.become.mobile: "Offer Service"
 signalp.useroption.subtitle: "Verifique las opciones para hacerlas visibles en la pestaña Perfil"
 signalp.useroption.disclaimer: "Descargo de responsabilidad"
 # This is disclaimed?
