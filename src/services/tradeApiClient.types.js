@@ -1590,6 +1590,8 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       cancel: profitTarget.cancel || false,
       skipped: profitTarget.skipped || false,
       postOnly: profitTarget.postOnly || false,
+      priceTarget: profitTarget.priceTarget || 0,
+      pricePriority: profitTarget.pricePriority || "",
     };
   });
 }
@@ -1746,6 +1748,7 @@ function createEmptyPositionEntity() {
     trailingStopTriggerPriority: "",
     stopLossToBreakEven: false,
     stopLossFollowsTakeProfit: false,
+    DCAPriority: "",
   };
 }
 

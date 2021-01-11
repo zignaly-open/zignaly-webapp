@@ -58,7 +58,6 @@ const TrailingStopPanel = (props) => {
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan } = useValidation();
   const { getEntryPrice } = usePositionEntry(positionEntity);
-  const { formatMessage } = useIntl();
   const isClosed = positionEntity ? positionEntity.closed : false;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
