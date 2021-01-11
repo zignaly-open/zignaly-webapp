@@ -393,6 +393,7 @@ graph.others: "Andere"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "COPY-TRADERS"
 copyt.subtitle: "Kopieren Sie erfahrene Trader, die mit den Krypto-Währungen handeln, die Sie besitzen."
+profit.subtitle: "Invest in expert traders and pay only a portion of the profits."
 copyt.allocated: "zugewiesenes Guthaben des Copytraders"
 copyt.copiers: "Kopierer"
 copyt.copierslast7: "Die letzten 7 Tage des Copy-Traders"
@@ -602,6 +603,8 @@ signalp.create.desc: "Offer your signals as an expert trader to be followed by o
 signalp.create: "Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
+profit.become: "Offer Your Profit Sharing Service"
+profit.become.mobile: "Offer Service"
 # TRADING TERMINAL
 terminal.autoclose.limit.zero: "Autoclose in Stunden muss größer als 0 sein."
 terminal.available: "Verfügbar"

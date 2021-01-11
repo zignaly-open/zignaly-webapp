@@ -131,16 +131,6 @@ const Sidebar = () => {
         </Typography>
       </Link>
       <Link
-        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
-        partiallyActive={true}
-        to={"/copyTraders"}
-      >
-        <img alt="zignaly" className={"icon"} src={getIcon("copyTraders")} />
-        <Typography variant="h6">
-          <FormattedMessage id="menu.copytraders" />
-        </Typography>
-      </Link>
-      <Link
         className={"sideBarLink profitSharing " + (active("profitSharing") ? "active" : "")}
         partiallyActive={true}
         to={"/profitSharing"}
@@ -148,6 +138,16 @@ const Sidebar = () => {
         <img alt="zignaly" className={"icon"} src={getIcon("profitSharing")} />
         <Typography variant="h6">
           <FormattedMessage id="menu.profitSharing" />
+        </Typography>
+      </Link>
+      <Link
+        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
+        partiallyActive={true}
+        to={"/copyTraders"}
+      >
+        <img alt="zignaly" className={"icon"} src={getIcon("copyTraders")} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.copytraders" />
         </Typography>
       </Link>
       <Link
