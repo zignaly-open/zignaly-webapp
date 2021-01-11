@@ -107,7 +107,6 @@ const DCAPanel = (props) => {
     ? Math.max(dcaIncreaseIndexes.length ? 0 : 1, size(dcaRebuyIndexes))
     : 1;
   const { expanded, expandClass, setExpanded } = useExpandable(size(dcaAllIndexes) > 0);
-  const [priorities, setPriorities] = useState({});
 
   const {
     cardinality,
@@ -131,7 +130,10 @@ const DCAPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
-  const pricePriority = watch("DCAPriority");
+  const pricePriority = watch(
+    "DCAPriority",
+    positionEntity ? positionEntity.DCAPriority : "percentage",
+  );
 
   /**
    * Handle DCA increase remove.

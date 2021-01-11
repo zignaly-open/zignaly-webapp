@@ -481,6 +481,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
  * @property {number} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
+ * @property {number} DCAPriority DCA price priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
  * @property {number} ageSeconds Elapsed seconds since position was opened.
  * @property {number} amount Position invested amount in quote currency.
