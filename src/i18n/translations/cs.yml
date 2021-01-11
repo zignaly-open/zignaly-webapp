@@ -503,6 +503,7 @@ graph.others: "CH-Others"
 # COPY-TRADERS AND PROVIDERS - SERVICE SECTIONS
 copyt.title: "CH-COPY-TRADERS"
 copyt.subtitle: "CH-Copy experienced traders who trade with the currencies you own."
+profit.subtitle: "CH-Invest in expert traders and pay only a portion of the profits."
 
 copyt.allocated: "CH-allocated of copytrader’s balance"
 copyt.copiers: "CH-Copiers"
@@ -760,7 +761,7 @@ signalp.create.desc: "CH-Offer your signals as an expert trader to be followed b
 signalp.create: "CH-Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
-profit.become: "CH-Offer Your Signal Profit Sharing Service"
+profit.become: "CH-Offer Your Profit Sharing Service"
 profit.become.mobile: "CH-Offer Service"
 signalp.disclaimer: "CH-Disclaimer URL"
 signalp.general: "CH-General"
