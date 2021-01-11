@@ -18,8 +18,8 @@ import "./PricePercentageControl.scss";
  * @param {PricePercentage} props.price Price data.
  * @param {boolean} props.disabled Disabled boolean.
  * @param {string} props.quote Price Quote.
- * @param {string} props.priority Price or Percentage based priority.
- * @param {string} props.priorityName Priority param name.
+ * @param {string} props.priorityName Price or Percentage based priority param name.
+ * @param {string} [props.defaultPriority] Default price priority.
  * @param {string} props.labelDescriptionId Label tooltip.
  * @param {string} props.labelId Label.
  * @param {JSX.Element} [props.status] Label status.
@@ -31,12 +31,13 @@ const PricePercentageControl = ({
   disabled,
   quote,
   priorityName,
+  defaultPriority,
   labelId,
   labelDescriptionId,
   status,
 }) => {
   const { errors, register, watch, setValue } = useFormContext();
-  const priorityValue = watch(priorityName);
+  const priorityValue = watch(priorityName, defaultPriority);
 
   const togglePriority = () => {
     setValue(priorityName, priorityValue === "price" ? "percentage" : "price");

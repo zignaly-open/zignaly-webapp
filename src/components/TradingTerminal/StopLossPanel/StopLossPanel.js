@@ -163,6 +163,7 @@ const StopLossPanel = (props) => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
         setValue("stopLossPercentage", formatFloat2Dec(positionEntity.stopLossPercentage));
+        setValue("stopLossPriority", positionEntity.stopLossPriority);
         stopLossPercentageChange();
       }
       updateStopLoss();
@@ -197,20 +198,6 @@ const StopLossPanel = (props) => {
   };
 
   useEffect(updateStopLoss, [entryType, strategyPrice]);
-
-  /**
-   * Display property errors.
-   *
-   * @param {string} propertyName Property name to display errors for.
-   * @returns {JSX.Element|null} Errors JSX element.
-   */
-  const displayFieldErrors = (propertyName) => {
-    if (errors[propertyName]) {
-      return <span className="errorText">{errors[propertyName].message}</span>;
-    }
-
-    return null;
-  };
 
   return (
     <Box className={`panel stopLossPanel ${expandClass}`}>

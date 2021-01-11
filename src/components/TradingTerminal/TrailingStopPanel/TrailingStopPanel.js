@@ -224,6 +224,7 @@ const TrailingStopPanel = (props) => {
               validate: (value) => validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
             }}
             priorityName="trailingStopTriggerPriority"
+            defaultPriority={positionEntity ? positionEntity.trailingStopTriggerPriority : null}
             quote={symbolData.quote}
           />
           <Box>
