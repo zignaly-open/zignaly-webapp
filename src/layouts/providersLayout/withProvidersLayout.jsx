@@ -46,6 +46,7 @@ const withProvidersLayout = (Component) => {
     const [modifiedFiltersCount, setModifiedFiltersCount] = useState(0);
     const storeModal = useStoreUIModalSelector();
     const isCopyTrading = props.path.startsWith("/copyTraders");
+    const isProfitSharing = props.path.startsWith("/profitSharing");
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const dispatch = useDispatch();
@@ -59,9 +60,9 @@ const withProvidersLayout = (Component) => {
 
     const createButtonText = () => {
       if (isMobile) {
-        return `${isCopyTrading ? "copyt" : "signalp"}.become.mobile`;
+        return `${isCopyTrading ? "copyt" : isProfitSharing ? "profit" : "signalp"}.become.mobile`;
       }
-      return `${isCopyTrading ? "copyt" : "signalp"}.become`;
+      return `${isCopyTrading ? "copyt" : isProfitSharing ? "profit" : "signalp"}.become`;
     };
 
     const filters = (
@@ -86,7 +87,11 @@ const withProvidersLayout = (Component) => {
           <CustomButton
             className="textPurple borderPurple becomeProviderButton"
             onClick={() =>
-              dispatch(isCopyTrading ? showCreateTrader(true) : showCreateProvider(true))
+              dispatch(
+                isCopyTrading || isProfitSharing
+                  ? showCreateTrader(true)
+                  : showCreateProvider(true),
+              )
             }
           >
             <Typography variant="body1">

@@ -602,6 +602,8 @@ signalp.create.desc: "Offer your signals as an expert trader to be followed by o
 signalp.create: "Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
+profit.become: "Offer Your Signal Profit Sharing Service"
+profit.become.mobile: "Offer Service"
 # TRADING TERMINAL
 terminal.autoclose.limit.zero: "Autoclose in Stunden muss größer als 0 sein."
 terminal.available: "Verfügbar"

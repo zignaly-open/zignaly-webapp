@@ -760,6 +760,8 @@ signalp.create.desc: "CH-Offer your signals as an expert trader to be followed b
 signalp.create: "CH-Create a Signal Provider Service"
 signalp.become: "CH-Offer Your Signal Provider Service"
 signalp.become.mobile: "CH-Offer Service"
+profit.become: "CH-Offer Your Signal Profit Sharing Service"
+profit.become.mobile: "CH-Offer Service"
 signalp.disclaimer: "CH-Disclaimer URL"
 signalp.general: "CH-General"
 signalp.useroption.title: "CH-User Available Options in Profile Tab"
