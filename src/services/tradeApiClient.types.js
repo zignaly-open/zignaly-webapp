@@ -77,6 +77,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
+ * @property {number} [priceTarget]
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} amountPercentage
  * @property {boolean} [postOnly]
  */
@@ -86,7 +88,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} targetId
  * @property {number} priceTargetPercentage
  * @property {number} [priceTarget]
- * @property {string} pricePriority Use price or percentage
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} amountPercentage
  * @property {boolean} [postOnly]
  */
@@ -582,6 +584,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} done
  * @property {string} orderId
  * @property {number} priceTargetPercentage
+ * @property {number} priceTarget
+ * @property {number} pricePriority
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {boolean} updating

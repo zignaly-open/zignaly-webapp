@@ -183,6 +183,8 @@ const StrategyForm = (props) => {
 
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
+      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
+      const pricePriority = draftPosition[`takeProfitPriority${targetId}`];
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
       const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
@@ -190,6 +192,8 @@ const StrategyForm = (props) => {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetPrice),
+          pricePriority,
           amountPercentage: parseFloat(targetExitUnitsPercentage),
           postOnly,
         });
@@ -325,7 +329,6 @@ const StrategyForm = (props) => {
       postOnly: draftPosition.postOnly,
       DCAPriority: draftPosition.DCAPriority,
       stopLossPriority: draftPosition.stopLossPriority || "percentage",
-      takeProfitPriority: draftPosition.takeProfitPriority || "percentage",
       trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
     };
   };

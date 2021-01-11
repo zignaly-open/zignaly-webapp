@@ -223,7 +223,7 @@ const TrailingStopPanel = (props) => {
               onChange: trailingStopPriceChange,
               validate: (value) => validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
             }}
-            priority="trailingStopTriggerPriority"
+            priorityName="trailingStopTriggerPriority"
             quote={symbolData.quote}
           />
           <Box>

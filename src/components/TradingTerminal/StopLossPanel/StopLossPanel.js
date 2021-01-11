@@ -248,7 +248,7 @@ const StopLossPanel = (props) => {
                 onChange: stopLossPriceChange,
                 error: formatMessage({ id: "terminal.stoploss.limit.zero" }),
               }}
-              priority="stopLossPriority"
+              priorityName="stopLossPriority"
               quote={symbolData.quote}
             />
           </Box>

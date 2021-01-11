@@ -291,6 +291,7 @@ const TakeProfitPanel = (props) => {
         const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("pricePriority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
         simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
@@ -409,7 +410,7 @@ const TakeProfitPanel = (props) => {
                     validate: (value) =>
                       validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
                   }}
-                  priority="takeProfitPriority"
+                  priorityName={composeTargetPropertyName("priority", targetId)}
                   quote={symbolData.quote}
                   status={
                     <ProfitTargetStatus

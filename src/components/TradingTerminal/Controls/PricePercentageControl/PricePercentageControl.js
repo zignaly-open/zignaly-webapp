@@ -19,6 +19,7 @@ import "./PricePercentageControl.scss";
  * @param {boolean} props.disabled Disabled boolean.
  * @param {string} props.quote Price Quote.
  * @param {string} props.priority Price or Percentage based priority.
+ * @param {string} props.priorityName Priority param name.
  * @param {string} props.labelDescriptionId Label tooltip.
  * @param {string} props.labelId Label.
  * @param {JSX.Element} [props.status] Label status.
@@ -29,16 +30,16 @@ const PricePercentageControl = ({
   price,
   disabled,
   quote,
-  priority,
+  priorityName,
   labelId,
   labelDescriptionId,
   status,
 }) => {
   const { errors, register, watch, setValue } = useFormContext();
-  const priorityValue = watch(priority);
+  const priorityValue = watch(priorityName);
 
   const togglePriority = () => {
-    setValue(priority, priorityValue === "price" ? "percentage" : "price");
+    setValue(priorityName, priorityValue === "price" ? "percentage" : "price");
   };
 
   return (
@@ -84,7 +85,7 @@ const PricePercentageControl = ({
           />
           <div className="currencyBox">{quote}</div>
         </Box>
-        <input name={priority} ref={register} type="hidden" />
+        <input name={priorityName} ref={register} type="hidden" />
       </Box>
       {errors[percentage.name] && (
         <span className="errorText">{errors[percentage.name].message}</span>
