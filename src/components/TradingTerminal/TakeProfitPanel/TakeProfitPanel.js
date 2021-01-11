@@ -16,6 +16,7 @@ import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import PricePercentageControl from "../Controls/PricePercentageControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -389,57 +390,34 @@ const TakeProfitPanel = (props) => {
         >
           {cardinalityRange.map((targetId) => (
             <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
-              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-                <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
-                <ProfitTargetStatus
-                  labelId="terminal.status"
-                  profitTarget={profitTargets[Number(targetId)] || null}
+              <Box className="targetPrice">
+                <PricePercentageControl
+                  disabled={
+                    fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                  }
+                  priority="takeProfitPriority"
+                  percentage={{
+                    name: composeTargetPropertyName("targetPricePercentage", targetId),
+                    validate: (value) =>
+                      greaterThan(value, 0, entryType, "terminal.takeprofit.valid.pricepercentage"),
+                    onChange: targetPricePercentageChange,
+                  }}
+                  price={{
+                    name: composeTargetPropertyName("targetPrice", targetId),
+                    onChange: targetPriceChange,
+                    error: formatMessage({ id: "terminal.takeprofit.limit" }),
+                  }}
+                  quote={symbolData.quote}
+                  labelId="terminal.target"
+                  labelDescriptionId="terminal.takeprofit.help"
+                  status={
+                    <ProfitTargetStatus
+                      labelId="terminal.status"
+                      profitTarget={profitTargets[Number(targetId)] || null}
+                    />
+                  }
                 />
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                    }
-                    error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-                    inputRef={register({
-                      validate: (value) =>
-                        greaterThan(
-                          value,
-                          0,
-                          entryType,
-                          "terminal.takeprofit.valid.pricepercentage",
-                        ),
-                    })}
-                    name={composeTargetPropertyName("targetPricePercentage", targetId)}
-                    onChange={targetPricePercentageChange}
-                  />
-                  <div className="currencyBox">%</div>
-                </Box>
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
-                    error={!!errors[composeTargetPropertyName("targetPrice", targetId)]}
-                    inputRef={register({
-                      validate: {
-                        positive: (value) =>
-                          value >= 0 ||
-                          formatMessage({
-                            id: "terminal.takeprofit.valid.price",
-                          }),
-                        price: (value) =>
-                          validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
-                      },
-                    })}
-                    name={composeTargetPropertyName("targetPrice", targetId)}
-                    onChange={targetPriceChange}
-                  />
-                  <div className="currencyBox">{symbolData.quote}</div>
-                </Box>
               </Box>
-              {displayTargetFieldErrors("targetPricePercentage", targetId)}
-              {displayTargetFieldErrors("targetPrice", targetId)}
               <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
                   descriptionId="terminal.unitstoexit.help"

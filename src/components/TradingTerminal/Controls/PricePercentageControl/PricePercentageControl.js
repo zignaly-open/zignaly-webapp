@@ -21,6 +21,7 @@ import "./PricePercentageControl.scss";
  * @param {string} props.priority
  * @param {string} props.labelDescriptionId
  * @param {string} props.labelId
+ * @param {JSX.Element} [props.status]
  * @returns {JSX.Element} JSX
  */
 const PricePercentageControl = ({
@@ -31,20 +32,20 @@ const PricePercentageControl = ({
   priority,
   labelId,
   labelDescriptionId,
+  status,
 }) => {
   const { errors, register, watch, setValue } = useFormContext();
   const priorityValue = watch(priority);
-  console.log(priorityValue);
 
   const togglePriority = () => {
     setValue(priority, priorityValue === "price" ? "percentage" : "price");
   };
 
-  // const [priority, setPriority]=useState('')
   return (
     <Box className="pricePercentageControl">
       <Box className="pricePercentageInputs" display="flex" flexDirection="row" flexWrap="wrap">
         <HelperLabel descriptionId={labelDescriptionId} labelId={labelId} />
+        {status}
         <Box
           alignItems="center"
           display="flex"
