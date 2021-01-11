@@ -220,13 +220,17 @@ const StrategyForm = (props) => {
     const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+      const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
       const postOnly = draftPosition[`dcaPostOnly${targetId}`];
+      const pricePriority = draftPosition[`pricePriority${targetId}`];
 
       if (targetPricePercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetRebuyPrice),
           amountPercentage: parseFloat(targetRebuyPercentage),
+          pricePriority,
           postOnly,
         });
       }
@@ -320,7 +324,7 @@ const StrategyForm = (props) => {
       internalExchangeId: selectedExchange.internalId,
       postOnly: draftPosition.postOnly,
       DCAPriority: draftPosition.DCAPriority,
-      stopLossPriority: draftPosition.DCAPriority.stopLossPriority || "percentage",
+      stopLossPriority: draftPosition.stopLossPriority || "percentage",
     };
   };
 
@@ -446,7 +450,6 @@ const StrategyForm = (props) => {
     } else {
       const payload = composeCreatePositionPayload(draftPosition);
       console.log(payload);
-      return;
       createPosition(payload);
     }
   };
