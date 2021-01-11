@@ -405,7 +405,8 @@ const TakeProfitPanel = (props) => {
                   price={{
                     name: composeTargetPropertyName("targetPrice", targetId),
                     onChange: targetPriceChange,
-                    error: formatMessage({ id: "terminal.takeprofit.limit" }),
+                    validate: (value) =>
+                      validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
                   }}
                   quote={symbolData.quote}
                   labelId="terminal.target"

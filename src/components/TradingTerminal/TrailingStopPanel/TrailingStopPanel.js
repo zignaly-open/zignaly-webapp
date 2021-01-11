@@ -10,6 +10,7 @@ import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
 import useValidation from "../../../hooks/useValidation";
+import PricePercentageControl from "../Controls/PricePercentageControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -207,47 +208,24 @@ const TrailingStopPanel = (props) => {
           flexWrap="wrap"
           justifyContent="space-around"
         >
-          <Box className="trailingStop" display="flex" flexDirection="row" flexWrap="wrap">
-            <HelperLabel
-              descriptionId="terminal.trailingstop.help"
-              labelId="terminal.trailingstop"
-            />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                defaultValue={initTrailingStopPercentage}
-                disabled={fieldsDisabled.trailingStopPercentage}
-                error={!!errors.trailingStopPercentage}
-                inputRef={register({
-                  validate: (value) =>
-                    greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage"),
-                })}
-                name="trailingStopPercentage"
-                onChange={trailingStopPercentageChange}
-              />
-              <div className="currencyBox">%</div>
-            </Box>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                disabled={fieldsDisabled.trailingStopPrice}
-                error={!!errors.trailingStopPrice}
-                inputRef={register({
-                  validate: {
-                    positive: (value) =>
-                      (!isNaN(value) && parseFloat(value) >= 0) ||
-                      formatMessage({ id: "terminal.trailingstop.valid.price" }),
-                    limit: (value) =>
-                      validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
-                  },
-                })}
-                name="trailingStopPrice"
-                onChange={trailingStopPriceChange}
-              />
-              <div className="currencyBox">{symbolData.quote}</div>
-            </Box>
-            {displayFieldErrors("trailingStopPercentage")}
-            {displayFieldErrors("trailingStopPrice")}
+          <PricePercentageControl
+            disabled={fieldsDisabled.trailingStopPercentage}
+            priority="trailingStopTriggerPriority"
+            percentage={{
+              name: "trailingStopPercentage",
+              error: formatMessage({ id: "terminal.trailingstop.valid.price" }),
+              onChange: trailingStopPercentageChange,
+            }}
+            price={{
+              name: "trailingStopPrice",
+              onChange: trailingStopPriceChange,
+              validate: (value) => validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
+            }}
+            quote={symbolData.quote}
+            labelId="terminal.trailingstop"
+            labelDescriptionId="terminal.trailingstop.help"
+          />
+          <Box>
             <HelperLabel descriptionId="terminal.distance.help" labelId="terminal.distance" />
             <Box alignItems="center" display="flex">
               <OutlinedInput

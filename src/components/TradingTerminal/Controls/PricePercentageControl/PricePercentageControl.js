@@ -56,7 +56,9 @@ const PricePercentageControl = ({
             className="outlineInput"
             readOnly={disabled || priorityValue === "price"}
             inputRef={register({
-              validate: percentage.validate,
+              validate: percentage.validate || {
+                positive: (value) => value >= 0 || percentage.error,
+              },
             })}
             name={percentage.name}
             onChange={percentage.onChange}
@@ -73,7 +75,7 @@ const PricePercentageControl = ({
             className="outlineInput"
             readOnly={disabled || priorityValue !== "price"}
             inputRef={register({
-              validate: {
+              validate: price.validate || {
                 positive: (value) => value >= 0 || price.error,
               },
             })}

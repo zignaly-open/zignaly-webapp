@@ -325,6 +325,8 @@ const StrategyForm = (props) => {
       postOnly: draftPosition.postOnly,
       DCAPriority: draftPosition.DCAPriority,
       stopLossPriority: draftPosition.stopLossPriority || "percentage",
+      takeProfitPriority: draftPosition.takeProfitPriority || "percentage",
+      trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
     };
   };
 
