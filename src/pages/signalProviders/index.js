@@ -21,6 +21,7 @@ import useSelectedExchangeQuotes from "hooks/useSelectedExchangeQuotes";
 import useProviderContext from "hooks/useProviderContext";
 import ProviderContext from "../../context/ProviderContext";
 import { checkAllocated } from "../../utils/helpers";
+import useExchangeQuotes from "hooks/useExchangeQuotes";
 
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderExchangeSettingsObject} ProviderExchangeSettingsObject
@@ -54,7 +55,10 @@ const SignalProviders = (props) => {
   const providerContext = useProviderContext();
   const { setHasAllocated } = providerContext;
   const [settings, setSettings] = useState(null);
-  const quoteAssets = useSelectedExchangeQuotes(selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes({
+    exchangeId: selectedExchange.exchangeId,
+    exchangeType: selectedExchange.exchangeType,
+  });
   const quotes =
     selectedExchange.name.toLowerCase() === "bitmex"
       ? { BTC: { quote: "BTC", minNotional: 0 } }

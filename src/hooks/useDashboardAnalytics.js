@@ -10,6 +10,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
 import { toNumber } from "lodash";
 import useStoreSessionSelector from "./useStoreSessionSelector";
+import useExchangeQuotes from "./useExchangeQuotes";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -50,7 +51,10 @@ const useDashboardAnalytics = (providerId) => {
 
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
 
-  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes({
+    exchangeId: storeSettings.selectedExchange.exchangeId,
+    exchangeType: storeSettings.selectedExchange.exchangeType,
+  });
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
 

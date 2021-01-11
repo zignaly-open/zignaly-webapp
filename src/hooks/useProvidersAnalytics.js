@@ -10,6 +10,7 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import useTimeFramesOptions from "./useTimeFramesOptions";
+import useExchangeQuotes from "./useExchangeQuotes";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -58,7 +59,10 @@ const useProvidersAnalytics = (provType) => {
   };
 
   // quotes
-  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes({
+    exchangeId: storeSettings.selectedExchange.exchangeId,
+    exchangeType: storeSettings.selectedExchange.exchangeType,
+  });
   const quotes = Object.keys(quoteAssets);
 
   const timeFrames = useTimeFramesOptions();
