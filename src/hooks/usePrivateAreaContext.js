@@ -12,12 +12,15 @@ import { useState } from "react";
 const usePrivateAreaContext = () => {
   const [providerCount, setProviderCount] = useState(0);
   const [quotesMap, setQuotesMapData] = useState({});
+  const [exchangeList, setExchangeList] = useState([]);
 
   return {
     providerCount,
     setProviderCount,
     quotesMap,
     setQuotesMapData,
+    exchangeList,
+    setExchangeList,
   };
 };
 

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -21,9 +22,14 @@ const useExchangeList = (shouldExecute = true) => {
   const [exchanges, setExchanges] = useState([]);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const { exchangeList, setExchangeList } = useContext(PrivateAreaContext);
 
   const loadData = () => {
     if (storeSession.tradeApi.accessToken && shouldExecute) {
+      if (exchangeList && exchangeList.length) {
+        setExchanges(exchangeList);
+        return;
+      }
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
@@ -39,6 +45,7 @@ const useExchangeList = (shouldExecute = true) => {
             data.unshift(zignaly);
           }
           setExchanges(data);
+          setExchangeList(data);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
