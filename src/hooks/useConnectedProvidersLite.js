@@ -29,7 +29,7 @@ const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecut
   const storeSettings = useStoreSettingsSelector();
 
   const loadData = () => {
-    if (shouldExecute && storeSession.tradeApi.accessToken) {
+    if (shouldExecute && storeSession.tradeApi.accessToken && internalId) {
       setProvidersLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
