@@ -474,14 +474,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
  * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
  * @property {number} stopLossPrice Stop loss price.
- * @property {number} stopLossPriority Stop loss priority (price or percentage).
+ * @property {string} stopLossPriority Stop loss priority (price or percentage).
  * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
- * @property {number} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
- * @property {number} DCAPriority DCA price priority (price or percentage).
+ * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
+ * @property {string} DCAPriority DCA price priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
  * @property {number} ageSeconds Elapsed seconds since position was opened.
  * @property {number} amount Position invested amount in quote currency.
@@ -539,8 +539,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
  * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
- * @property {boolean} [stopLossFollowsTakeProfit] Stop Loss moves each time a take profit target is reached
- * @property {boolean} [stopLossToBreakEven] Stop Loss moves to break even (entry price) when take profit target is reached.
+ * @property {boolean} stopLossFollowsTakeProfit Stop Loss moves each time a take profit target is reached
+ * @property {boolean} stopLossToBreakEven Stop Loss moves to break even (entry price) when take profit target is reached.
  * @property {boolean} isolated
  * @property {string} isolatedReadable
  */
@@ -1742,6 +1742,10 @@ function createEmptyPositionEntity() {
     tradeViewSymbol: "",
     isolated: false,
     isolatedReadable: "",
+    stopLossPriority: "",
+    trailingStopTriggerPriority: "",
+    stopLossToBreakEven: false,
+    stopLossFollowsTakeProfit: false,
   };
 }
 
