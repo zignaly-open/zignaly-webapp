@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -208,6 +208,7 @@ const TrailingStopPanel = (props) => {
           justifyContent="space-around"
         >
           <PricePercentageControl
+            defaultPriority={positionEntity ? positionEntity.trailingStopTriggerPriority : null}
             disabled={fieldsDisabled.trailingStopPercentage}
             labelDescriptionId="terminal.trailingstop.help"
             labelId="terminal.trailingstop"
@@ -223,7 +224,6 @@ const TrailingStopPanel = (props) => {
               validate: (value) => validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
             }}
             priorityName="trailingStopTriggerPriority"
-            defaultPriority={positionEntity ? positionEntity.trailingStopTriggerPriority : null}
             quote={symbolData.quote}
           />
           <Box>
