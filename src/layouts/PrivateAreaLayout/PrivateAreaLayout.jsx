@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./PrivateAreaLayout.scss";
 import { Box, Hidden } from "@material-ui/core";
 import Header from "../../components/Navigation/Header";
