@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";

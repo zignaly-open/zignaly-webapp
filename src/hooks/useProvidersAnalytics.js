@@ -3,7 +3,6 @@ import tradeApi from "../services/tradeApiClient";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
-import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useBaseAssets from "./useBaseAssets";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
