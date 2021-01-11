@@ -210,10 +210,12 @@ const TrailingStopPanel = (props) => {
         >
           <PricePercentageControl
             disabled={fieldsDisabled.trailingStopPercentage}
-            priority="trailingStopTriggerPriority"
+            labelDescriptionId="terminal.trailingstop.help"
+            labelId="terminal.trailingstop"
             percentage={{
               name: "trailingStopPercentage",
-              error: formatMessage({ id: "terminal.trailingstop.valid.price" }),
+              validate: (value) =>
+                greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage"),
               onChange: trailingStopPercentageChange,
             }}
             price={{
@@ -221,9 +223,8 @@ const TrailingStopPanel = (props) => {
               onChange: trailingStopPriceChange,
               validate: (value) => validateTargetPriceLimits(value, "terminal.trailingstop.limit"),
             }}
+            priority="trailingStopTriggerPriority"
             quote={symbolData.quote}
-            labelId="terminal.trailingstop"
-            labelDescriptionId="terminal.trailingstop.help"
           />
           <Box>
             <HelperLabel descriptionId="terminal.distance.help" labelId="terminal.distance" />

@@ -229,8 +229,8 @@ const StrategyForm = (props) => {
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
           priceTarget: parseFloat(targetRebuyPrice),
-          amountPercentage: parseFloat(targetRebuyPercentage),
           pricePriority,
+          amountPercentage: parseFloat(targetRebuyPercentage),
           postOnly,
         });
       }
@@ -451,7 +451,6 @@ const StrategyForm = (props) => {
       updatePosition(payload);
     } else {
       const payload = composeCreatePositionPayload(draftPosition);
-      console.log(payload);
       createPosition(payload);
     }
   };

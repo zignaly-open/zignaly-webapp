@@ -1,8 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber } from "lodash";
-import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch, FormHelperText } from "@material-ui/core";
+import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext, Controller } from "react-hook-form";
@@ -237,7 +236,8 @@ const StopLossPanel = (props) => {
           <Box className="stopLoss">
             <PricePercentageControl
               disabled={isReadOnly}
-              priority="stopLossPriority"
+              labelDescriptionId="terminal.stoploss.help"
+              labelId="terminal.stoploss"
               percentage={{
                 name: "stopLossPercentage",
                 validate: validateStopLossPercentageLimits,
@@ -248,9 +248,8 @@ const StopLossPanel = (props) => {
                 onChange: stopLossPriceChange,
                 error: formatMessage({ id: "terminal.stoploss.limit.zero" }),
               }}
+              priority="stopLossPriority"
               quote={symbolData.quote}
-              labelId="terminal.stoploss"
-              labelDescriptionId="terminal.stoploss.help"
             />
           </Box>
           <Box alignItems="center" className="title" display="flex" flexDirection="row" mt="12px">

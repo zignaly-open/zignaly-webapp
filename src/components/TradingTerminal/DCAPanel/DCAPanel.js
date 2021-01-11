@@ -26,7 +26,6 @@ import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
-import { range } from "lodash";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -517,28 +516,28 @@ const DCAPanel = (props) => {
               render={({ onChange, value }) => (
                 <RadioGroup
                   aria-label="type"
-                  value={value}
+                  className="customRadio"
                   onChange={onChange}
                   row
-                  className="customRadio"
+                  value={value}
                 >
                   <FormControlLabel
-                    value="percentage"
                     control={<Radio />}
                     label={
                       <FormHelperText>
                         <FormattedMessage id="terminal.percentage" />
                       </FormHelperText>
                     }
+                    value="percentage"
                   />
                   <FormControlLabel
-                    value="price"
                     control={<Radio />}
                     label={
                       <FormHelperText>
                         <FormattedMessage id="terminal.rebuy.fixedprice" />
                       </FormHelperText>
                     }
+                    value="price"
                   />
                 </RadioGroup>
               )}

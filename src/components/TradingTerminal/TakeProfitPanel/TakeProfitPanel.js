@@ -395,7 +395,8 @@ const TakeProfitPanel = (props) => {
                   disabled={
                     fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
                   }
-                  priority="takeProfitPriority"
+                  labelDescriptionId="terminal.takeprofit.help"
+                  labelId="terminal.target"
                   percentage={{
                     name: composeTargetPropertyName("targetPricePercentage", targetId),
                     validate: (value) =>
@@ -408,9 +409,8 @@ const TakeProfitPanel = (props) => {
                     validate: (value) =>
                       validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
                   }}
+                  priority="takeProfitPriority"
                   quote={symbolData.quote}
-                  labelId="terminal.target"
-                  labelDescriptionId="terminal.takeprofit.help"
                   status={
                     <ProfitTargetStatus
                       labelId="terminal.status"
