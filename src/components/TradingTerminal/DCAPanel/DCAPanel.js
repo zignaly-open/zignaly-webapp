@@ -514,6 +514,7 @@ const DCAPanel = (props) => {
             <HelperLabel descriptionId="terminal.rebuy.type.help" labelId="terminal.rebuy.type" />
 
             <Controller
+              defaultValue={pricePriority}
               name="DCAPriority"
               render={({ onChange, value }) => (
                 <RadioGroup
