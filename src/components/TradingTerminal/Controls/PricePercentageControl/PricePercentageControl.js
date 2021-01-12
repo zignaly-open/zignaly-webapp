@@ -42,7 +42,9 @@ const PricePercentageControl = ({
   const intl = useIntl();
 
   const togglePriority = () => {
-    setValue(priorityName, priorityValue === "price" ? "percentage" : "price");
+    if (!disabled) {
+      setValue(priorityName, priorityValue === "price" ? "percentage" : "price");
+    }
   };
 
   return (
@@ -58,6 +60,7 @@ const PricePercentageControl = ({
         >
           <OutlinedInput
             className="outlineInput"
+            disabled={disabled || priorityValue === "price"}
             inputRef={register({
               validate: percentage.validate || {
                 positive: (value) => value >= 0 || percentage.error,
@@ -65,7 +68,6 @@ const PricePercentageControl = ({
             })}
             name={percentage.name}
             onChange={percentage.onChange}
-            readOnly={disabled || priorityValue === "price"}
           />
           <Tooltip
             arrow
@@ -86,6 +88,7 @@ const PricePercentageControl = ({
         >
           <OutlinedInput
             className="outlineInput"
+            disabled={disabled || priorityValue !== "price"}
             inputRef={register({
               validate: price.validate || {
                 positive: (value) => value >= 0 || price.error,
@@ -93,7 +96,6 @@ const PricePercentageControl = ({
             })}
             name={price.name}
             onChange={price.onChange}
-            readOnly={disabled || priorityValue !== "price"}
           />
           <Tooltip
             arrow

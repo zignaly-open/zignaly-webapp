@@ -289,12 +289,14 @@ const TakeProfitPanel = (props) => {
         // Initialization: populate with position targets values
         const profitTarget = positionEntity.takeProfitTargets[index];
         const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const priceTarget = formatPrice(profitTarget.priceTarget, "", "");
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("targetPrice", index, priceTarget);
         setTargetPropertyValue("pricePriority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
-        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
+        // simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
   };
