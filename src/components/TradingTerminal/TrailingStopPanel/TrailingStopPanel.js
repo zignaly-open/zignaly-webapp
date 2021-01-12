@@ -142,7 +142,8 @@ const TrailingStopPanel = (props) => {
         setValue("trailingStopPercentage", percentageSign);
       } else {
         setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
-        trailingStopPercentageChange();
+        const trailingStopPrice = positionEntity ? positionEntity.trailingStopPrice : 0;
+        setValue("trailingStopPrice", trailingStopPrice);
       }
     } else {
       setValue("trailingStopPrice", "");

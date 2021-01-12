@@ -296,7 +296,7 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("pricePriority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
-        // simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
+        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
   };

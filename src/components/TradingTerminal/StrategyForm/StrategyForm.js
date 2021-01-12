@@ -331,7 +331,6 @@ const StrategyForm = (props) => {
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
       postOnly: draftPosition.postOnly,
-      DCAPriority: draftPosition.DCAPriority,
     };
   };
 
