@@ -183,6 +183,8 @@ const StrategyForm = (props) => {
 
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
+      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
+      const pricePriority = draftPosition[`takeProfitPriority${targetId}`];
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
       const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
@@ -190,6 +192,8 @@ const StrategyForm = (props) => {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetPrice),
+          pricePriority,
           amountPercentage: parseFloat(targetExitUnitsPercentage),
           postOnly,
         });
@@ -220,12 +224,16 @@ const StrategyForm = (props) => {
     const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+      const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
       const postOnly = draftPosition[`dcaPostOnly${targetId}`];
+      const pricePriority = draftPosition[`pricePriority${targetId}`];
 
       if (targetPricePercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetRebuyPrice),
+          pricePriority,
           amountPercentage: parseFloat(targetRebuyPercentage),
           postOnly,
         });
@@ -319,6 +327,9 @@ const StrategyForm = (props) => {
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
       postOnly: draftPosition.postOnly,
+      DCAPriority: draftPosition.DCAPriority,
+      stopLossPriority: draftPosition.stopLossPriority || "percentage",
+      trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
     };
   };
 

@@ -1,0 +1,21 @@
+.pricePercentageControl {
+  .disabled {
+    input,
+    fieldset,
+    .currencyBox {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+
+  .pricePercentageInput:not(.disabled) {
+    fieldset,
+    .currencyBox {
+      border: solid 1px var(--purple);
+    }
+
+    .currencyBox {
+      border-left: 0;
+    }
+  }
+}
