@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { isNumber, isString, isObject } from "lodash";
-import { formatPrice } from "../utils/formatters";
+import { isString, isObject } from "lodash";
 import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.esm";
 import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
 

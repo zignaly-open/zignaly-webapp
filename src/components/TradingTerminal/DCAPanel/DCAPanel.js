@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isEqual, keys, size } from "lodash";
 import HelperLabel from "../HelperLabel/HelperLabel";
