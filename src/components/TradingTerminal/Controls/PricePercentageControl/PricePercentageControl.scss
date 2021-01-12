@@ -24,12 +24,12 @@
     .currencyBox {
       background-color: $purpleLight;
       border-left: 0;
-      color: white;
+      color: $white;
     }
   }
 
   .dot {
-    background-color: white;
+    background-color: $white;
     border-radius: 50%;
     height: 5px;
     margin-left: 5px;
