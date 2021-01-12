@@ -313,6 +313,8 @@ const StrategyForm = (props) => {
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+      stopLossPrice: parseFloat(draftPosition.stopLossPrice),
+      stopLossPriority: draftPosition.stopLossPriority || "percentage",
       stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
       stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
       buyTTL: minToSeconds(buyTTL) || false,
@@ -321,15 +323,14 @@ const StrategyForm = (props) => {
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
       trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+      trailingStopPrice: parseFloat(draftPosition.trailingStopPrice) || false,
       trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+      trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
       providerId: 1,
       providerName: "Manual Trading",
       exchangeName: exchangeName,
       internalExchangeId: selectedExchange.internalId,
       postOnly: draftPosition.postOnly,
-      DCAPriority: draftPosition.DCAPriority,
-      stopLossPriority: draftPosition.stopLossPriority || "percentage",
-      trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
     };
   };
 

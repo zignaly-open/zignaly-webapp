@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { isNumber, isString, isObject } from "lodash";
-import { formatPrice } from "../utils/formatters";
+import { isString, isObject } from "lodash";
 import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.esm";
 import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
 
@@ -66,9 +65,7 @@ const useTradingTerminal = (setLastPrice) => {
 
           if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
             if (eventSymbol !== dataParsed.data.original_name) {
-              const receivedPrice = isNumber(dataParsed.data.last_price)
-                ? formatPrice(dataParsed.data.last_price, "", "")
-                : dataParsed.data.last_price;
+              const receivedPrice = parseFloat(dataParsed.data.last_price);
               setLastPrice(receivedPrice);
               eventSymbol = dataParsed.data.original_name;
             }
@@ -115,7 +112,7 @@ const useTradingTerminal = (setLastPrice) => {
         // Update price
         // @ts-ignore
         const price = widgetOptions.datafeed.getLastPrice();
-        setLastPrice(price);
+        setLastPrice(parseFloat(price));
       });
     } else {
       // @ts-ignore
@@ -155,7 +152,7 @@ const useTradingTerminal = (setLastPrice) => {
       chart.setSymbol(symbol, () => {
         // @ts-ignore
         const price = tradingView.options.datafeed.getLastPrice();
-        setLastPrice(price);
+        setLastPrice(parseFloat(price));
       });
     }
   };

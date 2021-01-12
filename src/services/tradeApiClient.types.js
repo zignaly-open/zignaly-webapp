@@ -479,9 +479,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
+ * @property {number} trailingStopPrice Trailing stop trigger price.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
  * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
- * @property {string} DCAPriority DCA price priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
  * @property {number} ageSeconds Elapsed seconds since position was opened.
  * @property {number} amount Position invested amount in quote currency.
@@ -554,6 +554,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ReBuyTarget
  * @property {number} targetId
  * @property {number} triggerPercentage
+ * @property {number} [priceTarget]
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} quantity
  * @property {boolean} buying
  * @property {boolean} done
@@ -1762,7 +1764,6 @@ function createEmptyPositionEntity() {
     trailingStopTriggerPriority: "",
     stopLossToBreakEven: false,
     stopLossFollowsTakeProfit: false,
-    DCAPriority: "",
   };
 }
 

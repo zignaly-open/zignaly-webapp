@@ -130,10 +130,14 @@ const DCAPanel = (props) => {
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
   const strategyPositionSize = watch("positionSize");
-  const pricePriority = watch(
-    "DCAPriority",
-    positionEntity ? positionEntity.DCAPriority : "percentage",
-  );
+
+  let pricePriorityInit = "percentage";
+  // Init price priority with value from first DCA.
+  if (positionEntity && size(positionEntity.reBuyTargets)) {
+    let [firstDCA] = Object.values(positionEntity.reBuyTargets);
+    pricePriorityInit = firstDCA.pricePriority;
+  }
+  const pricePriority = watch("DCAPriority", pricePriorityInit);
 
   /**
    * Handle DCA increase remove.
@@ -292,8 +296,10 @@ const DCAPanel = (props) => {
       dcaAllIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[Number(index)];
         const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
+        const priceTarget = formatFloat2Dec(profitTarget.priceTarget);
         const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
+        setTargetPropertyValue("rebuyPrice", index, priceTarget);
         setTargetPropertyValue("rebuyPercentage", index, quantityPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
       });
@@ -305,7 +311,15 @@ const DCAPanel = (props) => {
       initValuesFromPositionEntity();
       chainedPriceUpdates();
     }
-  }, [expanded, rebuyTargets]);
+  }, [expanded, rebuyTargets, pricePriority]);
+
+  const resetPriorityErrors = () => {
+    cardinalityRange.forEach((targetId) => {
+      clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
+      clearErrors(composeTargetPropertyName("rebuyPrice", targetId));
+    });
+  };
+  useEffect(resetPriorityErrors, [pricePriority]);
 
   const chainedPriceUpdates = () => {
     if (expanded) {
@@ -360,6 +374,7 @@ const DCAPanel = (props) => {
     if (!expanded) {
       cardinalityRange.forEach((targetId) => {
         clearErrors(composeTargetPropertyName("targetPricePercentage", targetId));
+        clearErrors(composeTargetPropertyName("rebuyPrice", targetId));
         clearErrors(composeTargetPropertyName("rebuyPercentage", targetId));
         setValue(composeTargetPropertyName("targetPricePercentage", targetId), "");
       });
@@ -390,57 +405,50 @@ const DCAPanel = (props) => {
             dcaTarget={rebuyTargets[Number(targetId)] || null}
             labelId="terminal.status"
           />
-          {pricePriority === "price" ? (
-            <>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={fieldsDisabled[composeTargetPropertyName("dcaRebuyPrice", targetId)]}
-                  error={!!errors[composeTargetPropertyName("dcaRebuyPrice", targetId)]}
-                  inputRef={register(
-                    fieldsDisabled[composeTargetPropertyName("dcaRebuyPrice", targetId)]
-                      ? null
-                      : {
-                          validate: {
-                            // positive: (value) => value >= 0 || price.error,
-                            limit: (value) =>
-                              validateTargetPriceLimits(parseFloat(value), "terminal.dca.limit"),
-                          },
-                        },
-                  )}
-                  name={composeTargetPropertyName("dcaRebuyPrice", targetId)}
-                />
-                <div className="currencyBox">{symbolData.quote}</div>
-              </Box>
-              {displayTargetFieldErrors("dcaRebuyPrice", targetId)}
-            </>
-          ) : (
-            <>
-              <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  disabled={
-                    fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                  }
-                  error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-                  inputRef={register(
-                    fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                      ? null
-                      : {
-                          validate: {
-                            percentage: (value) =>
-                              lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
-                            limit: validateDCAPriceLimit,
-                          },
-                        },
-                  )}
-                  name={composeTargetPropertyName("targetPricePercentage", targetId)}
-                />
-                <div className="currencyBox">%</div>
-              </Box>
-              {displayTargetFieldErrors("targetPricePercentage", targetId)}
-            </>
-          )}
+          <Box alignItems="center" display={pricePriority === "price" ? "flex" : "none"}>
+            <OutlinedInput
+              className="outlineInput"
+              disabled={fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)]}
+              error={!!errors[composeTargetPropertyName("rebuyPrice", targetId)]}
+              inputRef={register(
+                fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)]
+                  ? null
+                  : {
+                      validate: {
+                        // positive: (value) => value >= 0 || price.error,
+                        limit: (value) =>
+                          validateTargetPriceLimits(parseFloat(value), "terminal.dca.limit"),
+                      },
+                    },
+              )}
+              name={composeTargetPropertyName("rebuyPrice", targetId)}
+            />
+            <div className="currencyBox">{symbolData.quote}</div>
+          </Box>
+          {displayTargetFieldErrors("rebuyPrice", targetId)}
+          <Box alignItems="center" display={pricePriority !== "price" ? "flex" : "none"}>
+            <OutlinedInput
+              className="outlineInput"
+              disabled={
+                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+              }
+              error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
+              inputRef={register(
+                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                  ? null
+                  : {
+                      validate: {
+                        percentage: (value) =>
+                          lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
+                        limit: validateDCAPriceLimit,
+                      },
+                    },
+              )}
+              name={composeTargetPropertyName("targetPricePercentage", targetId)}
+            />
+            <div className="currencyBox">%</div>
+          </Box>
+          {displayTargetFieldErrors("targetPricePercentage", targetId)}
           <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
           <Box alignItems="center" display="flex">
             <OutlinedInput
@@ -512,7 +520,6 @@ const DCAPanel = (props) => {
         >
           <Box className="priorityType">
             <HelperLabel descriptionId="terminal.rebuy.type.help" labelId="terminal.rebuy.type" />
-
             <Controller
               defaultValue={pricePriority}
               name="DCAPriority"
