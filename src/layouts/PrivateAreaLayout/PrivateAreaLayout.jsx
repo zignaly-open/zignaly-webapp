@@ -17,6 +17,8 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -32,8 +34,19 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
+  const { setProviderCount } = privateAreaContext;
+  const { providers } = useConnectedProvidersLite(
+    selectedExchange.internalId,
+    ["signalProvider"],
+    true,
+  );
+
+  useEffect(() => {
+    setProviderCount(providers.length);
+  }, [providers]);
 
   const updateSession = () => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));

@@ -265,31 +265,33 @@ const useProvidersList = (options) => {
   }, [filters]);
 
   const loadProviders = () => {
-    /**
-     * @type {ProvidersPayload}
-     */
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      type: connectedOnly ? "connected" : "all",
-      ro: true,
-      provType: provType,
-      timeFrame,
-      internalExchangeId,
-    };
+    if (storeSession.tradeApi.accessToken) {
+      /**
+       * @type {ProvidersPayload}
+       */
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        type: connectedOnly ? "connected" : "all",
+        ro: true,
+        provType: provType,
+        timeFrame,
+        internalExchangeId,
+      };
 
-    tradeApi
-      .providersGet(payload)
-      .then((responseData) => {
-        const uniqueProviders = uniqBy(responseData, "id");
-        setProviders((s) => ({
-          ...s,
-          list: uniqueProviders,
-        }));
-        filterProviders(uniqueProviders);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+      tradeApi
+        .providersGet(payload)
+        .then((responseData) => {
+          const uniqueProviders = uniqBy(responseData, "id");
+          setProviders((s) => ({
+            ...s,
+            list: uniqueProviders,
+          }));
+          filterProviders(uniqueProviders);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
   // Load providers at init and on timeframe change.
   useEffect(loadProviders, [
