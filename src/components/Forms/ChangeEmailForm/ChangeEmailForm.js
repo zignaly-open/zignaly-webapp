@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 /**
  * @typedef {Object} PositionPageProps
- * @property {string} token Token aquired by the recover request.
+ * @property {string} code Token aquired by the recover request.
  */
 
 /**
@@ -20,7 +20,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ChangeEmailForm = ({ token }) => {
+const ChangeEmailForm = ({ code }) => {
   const [loading, setLoading] = useState(false);
   const [emailsDoNotMatch, setEmailsDoNotMatch] = useState(false);
   const intl = useIntl();
@@ -45,7 +45,7 @@ const ChangeEmailForm = ({ token }) => {
     if (data.confirmNewEmail === data.newEmail) {
       setLoading(true);
       const payload = {
-        token: token,
+        token: code,
         email: data.newEmail,
       };
       tradeApi

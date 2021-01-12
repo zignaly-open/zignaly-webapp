@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 /**
  * @typedef {Object} PositionPageProps
- * @property {string} token Token aquired by the recover request.
+ * @property {string} code Token aquired by the recover request.
  * @property {React.SetStateAction<*>} setVerified
  */
 
@@ -21,7 +21,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ConfirmTwoFADisableForm = ({ token, setVerified }) => {
+const ConfirmTwoFADisableForm = ({ code, setVerified }) => {
   const [loading, setLoading] = useState(false);
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const ConfirmTwoFADisableForm = ({ token, setVerified }) => {
     const { apiKey } = data;
     setLoading(true);
     const payload = {
-      token,
+      token: code,
       apiKey,
     };
 
@@ -58,7 +58,7 @@ const ConfirmTwoFADisableForm = ({ token, setVerified }) => {
             type: "manual",
             message: intl.formatMessage({ id: "form.error.apikey.error" }),
           });
-        } else if (e.code === 46) {
+        } else if (e.code === 48) {
           setVerified(false);
         } else {
           dispatch(showErrorAlert(e));
