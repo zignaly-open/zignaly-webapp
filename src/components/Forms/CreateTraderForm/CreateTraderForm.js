@@ -22,10 +22,10 @@ const MODEL_MONHTLY_FEE = 1;
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
  * @typedef {Object} DefaultProps
  * @property {boolean} isCopyTrading
- *
  */
+
 /**
- * Provides the navigation bar for the dashboard.
+ * Component to create a copytrader/profitsharing service.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
