@@ -479,6 +479,8 @@ provider.name: "Nombre"
 copyt.become: "Ofrece tus servicios como CopyTrader"
 copyt.create: "Crea un servicio de CopyTrader"
 copyt.create.desc: "Ofrezca sus servicios como trader experto para que nuestros usuarios lo copien"
+profit.create: "Create a Profit Sharing Service"
+profit.create.desc: "Offer your services as an expert trader and get a proportion of your followers' profits."
 signalp.create: "Crear una cuenta de proveedor de señal"
 signalp.become: "Ofrece tu servicio de proveedor de señales"
 # TRADING TERMINAL

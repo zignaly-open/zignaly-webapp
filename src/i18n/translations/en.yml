@@ -755,6 +755,8 @@ copyt.cannotmodify: "Please, review this information, it cannot be modified late
 copyt.cannotmodify.minAllocatedBalance: "Please, review this information, only the minimum allocated balance can be modified later."
 copyt.create: "Create a Copy Trading Service"
 copyt.create.desc: "Offer your services as an expert trader to be copied by our users"
+profit.create: "Create a Profit Sharing Service"
+profit.create.desc: "Offer your services as an expert trader and get a proportion of your followers' profits."
 copyt.laststep: "Last step (modifiable later)"
 copyt.model.choose: "Choose Copy Trading Model"
 copyt.monthlyfee.service: "Monthly Price"

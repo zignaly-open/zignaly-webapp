@@ -751,6 +751,8 @@ copyt.cannotmodify: "CH-Please, review this information, it cannot be modified l
 copyt.cannotmodify.minAllocatedBalance: "CH-Please, review this information, only the minimum allocated balance can be modified later."
 copyt.create: "CH-Create a Copy Trading Service"
 copyt.create.desc: "CH-Offer your services as an expert trader to be copied by our users"
+profit.create: "CH-Create a Profit Sharing Service"
+profit.create.desc: "CH-Offer your services as an expert trader and get a proportion of your followers' profits."
 copyt.laststep: "CH-Last step (modifiable later)"
 copyt.model.choose: "CH-Choose Copy Trading Model"
 copyt.monthlyfee.service: "CH-Monthly Price"

@@ -11,8 +11,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
 import useExchangeList from "../../../hooks/useExchangeList";
 import { navigate } from "gatsby";
-import MonthlyPayment from "../../../images/ct/monthlyPayment.svg";
-import ProfitSharing from "../../../images/ct/profitSharing.svg";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
@@ -21,22 +19,21 @@ const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
 
 /**
- * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
- */
-
-/**
- * Provides a form to create a trader account
+ * @typedef {Object} DefaultProps
+ * @property {boolean} isCopyTrading
  *
+ */
+/**
+ * Provides the navigation bar for the dashboard.
+ *
+ * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const CreateTraderForm = () => {
+const CreateTraderForm = ({ isCopyTrading }) => {
   const [loading, setLoading] = useState(false);
   const [allocated, setAllocated] = useState("");
-  const profitSharingEnabled = process.env.GATSBY_ENABLE_PROFITSHARING.toLowerCase() === "true";
-  const [selectedModel, setSelectedModel] = useState(
-    profitSharingEnabled ? MODEL_PROFIT_SHARING : MODEL_MONHTLY_FEE,
-  );
+  const selectedModel = isCopyTrading ? MODEL_MONHTLY_FEE : MODEL_PROFIT_SHARING;
   const [exchange, setExchange] = useState(/** @type {ExchangeListEntity} **/ (null));
   const [exchangeType, setExchangeType] = useState(null);
   const [step, setStep] = useState(1);
@@ -125,74 +122,15 @@ const CreateTraderForm = () => {
   return (
     <Box className="createTraderForm">
       <Typography variant="h1">
-        <FormattedMessage id="copyt.create" />
+        <FormattedMessage id={`${isCopyTrading ? "copyt" : "profit"}.create`} />
       </Typography>
       <Typography className="subHeader">
-        <FormattedMessage id="copyt.create.desc" />
+        <FormattedMessage id={`${isCopyTrading ? "copyt" : "profit"}.create.desc`} />
       </Typography>
       <form method="post" onSubmit={handleSubmit(submitForm)}>
         <Box alignItems="flex-start" className="step1" display="flex" flexDirection="column">
           {exchanges ? (
             <>
-              <Typography className="body1 bold" variant="h3">
-                <FormattedMessage id="copyt.model.choose" />
-              </Typography>
-
-              <Box className="models" display="flex">
-                {profitSharingEnabled && (
-                  <Box
-                    alignItems="center"
-                    className="model"
-                    display="flex"
-                    flexDirection="row"
-                    onClick={() => setSelectedModel(MODEL_PROFIT_SHARING)}
-                  >
-                    <Box
-                      alignItems="center"
-                      className={`iconButton fee ${
-                        selectedModel === MODEL_PROFIT_SHARING ? "selected" : ""
-                      }`}
-                      display="flex"
-                      justifyContent="center"
-                    >
-                      <img
-                        src={ProfitSharing}
-                        title={intl.formatMessage({ id: "copyt.profitsharing.service" })}
-                      />
-                    </Box>
-                    <Typography className="callout2">
-                      <FormattedMessage id="copyt.profitsharing.service" />
-                    </Typography>
-                  </Box>
-                )}
-
-                <Box
-                  alignItems="center"
-                  className="model"
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="space-between"
-                  onClick={() => setSelectedModel(MODEL_MONHTLY_FEE)}
-                >
-                  <Box
-                    alignItems="center"
-                    className={`iconButton fee ${
-                      selectedModel === MODEL_MONHTLY_FEE ? "selected" : ""
-                    }`}
-                    display="flex"
-                    justifyContent="center"
-                  >
-                    <img
-                      src={MonthlyPayment}
-                      title={intl.formatMessage({ id: "copyt.monthlyfee.service" })}
-                    />
-                  </Box>
-                  <Typography className="callout2">
-                    <FormattedMessage id="copyt.monthlyfee.service" />
-                  </Typography>
-                </Box>
-              </Box>
-
               <Typography className="body1 bold exchangeChoose" variant="h3">
                 <FormattedMessage id="accounts.exchange.choose" />
               </Typography>

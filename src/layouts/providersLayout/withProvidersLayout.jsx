@@ -81,7 +81,7 @@ const withProvidersLayout = (Component) => {
           size="fullscreen"
           state={storeModal.createTrader}
         >
-          <CreateTraderForm />
+          <CreateTraderForm isCopyTrading={isCopyTrading} />
         </Modal>
         <Hidden xsDown>
           <CustomButton
