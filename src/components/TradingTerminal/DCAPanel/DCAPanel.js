@@ -515,6 +515,7 @@ const DCAPanel = (props) => {
 
             <Controller
               name="DCAPriority"
+              defaultValue={pricePriority}
               render={({ onChange, value }) => (
                 <RadioGroup
                   aria-label="type"
