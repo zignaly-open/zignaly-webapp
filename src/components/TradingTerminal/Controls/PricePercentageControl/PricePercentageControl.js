@@ -44,7 +44,6 @@ const PricePercentageControl = ({
   const togglePriority = () => {
     setValue(priorityName, priorityValue === "price" ? "percentage" : "price");
   };
-  console.log(priorityValue);
 
   return (
     <Box className="pricePercentageControl">
