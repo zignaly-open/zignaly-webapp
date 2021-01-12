@@ -19,11 +19,7 @@ const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
 
 /**
- * @typedef {import('../../../services/tradeApiClient.types').NewProviderEntity} NewProviderEntity
  * @typedef {import('../../../services/tradeApiClient.types').ExchangeListEntity} ExchangeListEntity
- */
-
-/**
  * @typedef {Object} DefaultProps
  * @property {boolean} isCopyTrading
  *
