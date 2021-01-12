@@ -297,7 +297,6 @@ const useProvidersList = (options) => {
   useEffect(loadProviders, [
     timeFrame,
     connectedOnly,
-    provType,
     storeSession.tradeApi.accessToken,
     internalExchangeId,
   ]);
