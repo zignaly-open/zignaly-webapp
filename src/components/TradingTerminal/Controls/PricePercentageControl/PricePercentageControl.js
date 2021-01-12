@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, OutlinedInput } from "@material-ui/core";
+import { Box, OutlinedInput, Tooltip } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import "./PricePercentageControl.scss";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {Object} PricePercentage
@@ -38,10 +39,12 @@ const PricePercentageControl = ({
 }) => {
   const { errors, register, watch, setValue } = useFormContext();
   const priorityValue = watch(priorityName, defaultPriority);
+  const intl = useIntl();
 
   const togglePriority = () => {
     setValue(priorityName, priorityValue === "price" ? "percentage" : "price");
   };
+  console.log(priorityValue);
 
   return (
     <Box className="pricePercentageControl">
@@ -65,7 +68,16 @@ const PricePercentageControl = ({
             onChange={percentage.onChange}
             readOnly={disabled || priorityValue === "price"}
           />
-          <div className="currencyBox">%</div>
+          <Tooltip
+            arrow
+            enterTouchDelay={50}
+            placement="left-end"
+            title={intl.formatMessage({ id: "terminal.percentage.priority.help" })}
+          >
+            <div className="currencyBox">
+              % {priorityValue !== "price" && <span className="dot" />}
+            </div>
+          </Tooltip>
         </Box>
         <Box
           alignItems="center"
@@ -84,7 +96,16 @@ const PricePercentageControl = ({
             onChange={price.onChange}
             readOnly={disabled || priorityValue !== "price"}
           />
-          <div className="currencyBox">{quote}</div>
+          <Tooltip
+            arrow
+            enterTouchDelay={50}
+            placement="left-end"
+            title={intl.formatMessage({ id: "terminal.price.priority.help" })}
+          >
+            <div className="currencyBox">
+              {quote} {priorityValue === "price" && <span className="dot" />}
+            </div>
+          </Tooltip>
         </Box>
         <input name={priorityName} ref={register} type="hidden" />
       </Box>
