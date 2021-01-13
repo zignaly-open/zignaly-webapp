@@ -108,15 +108,18 @@ export const onInitialClientRender = () => {
   const sessionValid = verifySessionData(token, sessionData);
   // Root page handles the correct redirection manually.
   if (path !== "/") {
-    const isPrivateArea = !path.match(/login|signup|recover|disable2fa|changeEmail|deleteAccount/g);
-    if (isPrivateArea) {
-      // Redirect to login when navigating private pages with expired session.
-      if (!sessionValid) {
-        navigateLogin();
+    const isLoginArea = path.match(/login|signup/g);
+    const isRecoverArea = path.match(/recover|disable2fa|changeEmail|deleteAccount/g);
+    const isPrivateArea = !isLoginArea && !isRecoverArea;
+
+    if (sessionValid) {
+      if (isLoginArea) {
+        // Redirect to dashboard when navigating login pages with an active session.
+        navigate("/dashboard");
       }
-    } else if (sessionValid) {
-      // Redirect to dashboard when navigating login pages with an active session.
-      navigate("/dashboard");
+    } else if (isPrivateArea) {
+      // Redirect to login when navigating private pages with expired session.
+      navigateLogin();
     }
   }
 
