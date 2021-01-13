@@ -293,7 +293,7 @@ const TakeProfitPanel = (props) => {
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("targetPrice", index, priceTarget);
-        setTargetPropertyValue("pricePriority", index, profitTarget.pricePriority);
+        setTargetPropertyValue("priority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
         simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
