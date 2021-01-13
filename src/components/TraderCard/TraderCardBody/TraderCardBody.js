@@ -19,6 +19,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { ConfirmDialog } from "../../Dialogs";
+import dayjs from "dayjs";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -107,8 +108,9 @@ const TraderCard = (props) => {
    */
   let chartData = { values: [], labels: [] };
   if (copyTraders || profitSharingProvider) {
-    generateStats(dailyReturns, { dateKey: "name" }, (date, data) => {
-      chartData.values.push(data ? data.returns : 0);
+    const options = { dateKey: "name", endDate: dayjs(dailyReturns[dailyReturns.length - 1].name) };
+    generateStats(dailyReturns, options, (date, data) => {
+      chartData.values.push(data.returns);
       chartData.labels.push(date.toDate());
     });
   } else {
