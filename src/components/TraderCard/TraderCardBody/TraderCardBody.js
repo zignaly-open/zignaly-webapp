@@ -106,8 +106,8 @@ const TraderCard = (props) => {
   const [chartData, setChartData] = useState(/** @type {ChartData} */ ({ values: [], labels: [] }));
 
   useEffect(() => {
-    const values = [],
-      labels = [];
+    const values = [];
+    const labels = [];
     if (copyTrader || profitSharingProvider) {
       if (!dailyReturns.length) return;
       const options = {
