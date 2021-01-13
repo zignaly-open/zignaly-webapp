@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TraderCardBody.scss";
 import { Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
@@ -64,7 +64,7 @@ const TraderCard = (props) => {
     providerLink,
   } = provider;
 
-  const copyTraders = provType === "copytrading";
+  const copyTrader = provType === "copytrading";
   const profitSharingProvider = provType === "profitsharing";
 
   /**
@@ -79,9 +79,9 @@ const TraderCard = (props) => {
       <div className="traderCardTooltip">
         <div>
           {formatFloat2Dec(tooltipItem.yLabel)}{" "}
-          {copyTraders || profitSharingProvider ? "%" : <FormattedMessage id="srv.followers" />}
+          {copyTrader || profitSharingProvider ? "%" : <FormattedMessage id="srv.followers" />}
         </div>
-        {(copyTraders || profitSharingProvider) && (
+        {(copyTrader || profitSharingProvider) && (
           <FormattedMessage
             id="srv.closedposcount"
             values={{
@@ -99,35 +99,42 @@ const TraderCard = (props) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
-  const type = copyTraders || profitSharingProvider ? "copyt" : "srv";
+  const type = copyTrader || profitSharingProvider ? "copyt" : "srv";
   const timeframeTranslationId =
     timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
-  /**
-   * @type {ChartData}
-   */
-  let chartData = { values: [], labels: [] };
-  if (copyTraders || profitSharingProvider) {
-    const options = { dateKey: "name", endDate: dayjs(dailyReturns[dailyReturns.length - 1].name) };
-    generateStats(dailyReturns, options, (date, data) => {
-      chartData.values.push(data.returns);
-      chartData.labels.push(date.toDate());
-    });
-  } else {
-    let currentFollowers = followers;
-    // Find followers data for the past 7 days
-    for (let i = 0; i < 7; i++) {
-      const date = moment().subtract(i, "d").format("YYYY-MM-DD");
-      const followerData = aggregateFollowers.find((f) => f.date === date);
-      if (followerData) {
-        currentFollowers = followerData.totalFollowers;
-      }
-      chartData.values.unshift(currentFollowers);
-      chartData.labels.unshift(date);
-    }
-  }
+  const [chartData, setChartData] = useState(/** @type {ChartData} */ ({ values: [], labels: [] }));
 
-  const positive = (copyTraders || profitSharingProvider ? returns : newFollowers) >= 0;
+  useEffect(() => {
+    const values = [],
+      labels = [];
+    if (copyTrader || profitSharingProvider) {
+      if (!dailyReturns.length) return;
+      const options = {
+        dateKey: "name",
+        endDate: dayjs(dailyReturns[dailyReturns.length - 1].name),
+      };
+      generateStats(dailyReturns, options, (date, data) => {
+        values.push(data.returns);
+        labels.push(date.toDate());
+      });
+    } else {
+      let currentFollowers = followers;
+      // Find followers data for the past 7 days
+      for (let i = 0; i < 7; i++) {
+        const date = moment().subtract(i, "d").format("YYYY-MM-DD");
+        const followerData = aggregateFollowers.find((f) => f.date === date);
+        if (followerData) {
+          currentFollowers = followerData.totalFollowers;
+        }
+        values.unshift(currentFollowers);
+        labels.unshift(date);
+      }
+    }
+    setChartData({ values, labels });
+  }, [dailyReturns, followers]);
+
+  const positive = (copyTrader || profitSharingProvider ? returns : newFollowers) >= 0;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -207,7 +214,7 @@ const TraderCard = (props) => {
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
-            condition={copyTraders || profitSharingProvider}
+            condition={copyTrader || profitSharingProvider}
             wrapper={(_children) => (
               <CustomToolip
                 title={
@@ -223,21 +230,21 @@ const TraderCard = (props) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {copyTraders || profitSharingProvider ? (
+                {copyTrader || profitSharingProvider ? (
                   <>{formatFloat2Dec(returns)}%</>
                 ) : (
                   newFollowers
                 )}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
-                id: copyTraders || profitSharingProvider ? "sort.return" : "srv.newfollowers",
+                id: copyTrader || profitSharingProvider ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
                 id: timeframeTranslationId,
               })})`}</Typography>
             </div>
           </ConditionalWrapper>
 
-          {(copyTraders || profitSharingProvider) && (
+          {(copyTrader || profitSharingProvider) && (
             <CustomToolip
               title={
                 <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />
@@ -268,7 +275,7 @@ const TraderCard = (props) => {
           </div>
           <div
             className={`actionsWrapper ${
-              (!copyTraders && !profitSharingProvider) || dailyReturns.length
+              (!copyTrader && !profitSharingProvider) || dailyReturns.length
                 ? positive
                   ? "positive"
                   : "negative"
@@ -279,7 +286,7 @@ const TraderCard = (props) => {
               {canDisable ? (
                 <h6 className={`callout2 ${colorClass}`}>
                   <FormattedMessage
-                    id={copyTraders || profitSharingProvider ? "trader.others" : "provider.others"}
+                    id={copyTrader || profitSharingProvider ? "trader.others" : "provider.others"}
                     values={{
                       count: followers - 1,
                     }}
@@ -289,7 +296,7 @@ const TraderCard = (props) => {
                 <h6 className="callout1">
                   {followers}{" "}
                   <FormattedMessage
-                    id={copyTraders || profitSharingProvider ? "trader.people" : "provider.people"}
+                    id={copyTrader || profitSharingProvider ? "trader.people" : "provider.people"}
                   />
                 </h6>
               )}
@@ -302,7 +309,7 @@ const TraderCard = (props) => {
                     title={
                       <FormattedMessage
                         id={
-                          copyTraders || profitSharingProvider
+                          copyTrader || profitSharingProvider
                             ? "copyt.follow.anotheraccount"
                             : "srv.follow.anotheraccount"
                         }
@@ -315,9 +322,7 @@ const TraderCard = (props) => {
                     <div>
                       <CustomButton className="textPurple" disabled={true}>
                         <FormattedMessage
-                          id={
-                            copyTraders || profitSharingProvider ? "trader.stop" : "provider.stop"
-                          }
+                          id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
                         />
                       </CustomButton>
                     </div>
@@ -325,13 +330,13 @@ const TraderCard = (props) => {
                 ) : (
                   <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
                     <FormattedMessage
-                      id={copyTraders || profitSharingProvider ? "trader.stop" : "provider.stop"}
+                      id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
                     />
                   </CustomButton>
                 ))}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage
-                  id={copyTraders || profitSharingProvider ? "trader.view" : "provider.view"}
+                  id={copyTrader || profitSharingProvider ? "trader.view" : "provider.view"}
                 />
               </CustomButton>
             </div>
@@ -339,7 +344,7 @@ const TraderCard = (props) => {
         </div>
         {showSummary && (
           <UserSummary
-            isCopyTrading={copyTraders || profitSharingProvider}
+            isCopyTrading={copyTrader || profitSharingProvider}
             providerId={id}
             quote={quote}
           />
