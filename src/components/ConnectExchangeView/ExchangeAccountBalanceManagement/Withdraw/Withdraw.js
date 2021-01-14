@@ -108,6 +108,27 @@ const Withdraw = () => {
     }
   };
 
+  /**
+   * Validate the number of decimals.
+   * @param {string} value Value.
+   * @returns {boolean|string} Success or error message.
+   */
+  const checkDecimals = (value) => {
+    const maxDecimals = precisionNumberToDecimals(selectedNetwork.integerMultiple);
+    // const temp = value.split(".");
+    // const numberDecimals = temp[1] ? temp[1].length : 0;
+
+    return (
+      validateDecimals(value, maxDecimals) ||
+      intl.formatMessage(
+        {
+          id: "form.error.number.decimals",
+        },
+        { maxDecimals },
+      )
+    );
+  };
+
   return (
     <BalanceManagement>
       <Box className="exchangeAccountWithdraw">
@@ -255,21 +276,7 @@ const Withdraw = () => {
                                 max: (value) =>
                                   value <= parseFloat(selectedAsset.maxWithdrawAmount) ||
                                   intl.formatMessage({ id: "form.error.withdraw.max" }),
-                                step: (value) => {
-                                  const maxDecimals = precisionNumberToDecimals(
-                                    selectedNetwork.integerMultiple,
-                                  );
-
-                                  return (
-                                    validateDecimals(value, maxDecimals) ||
-                                    intl.formatMessage(
-                                      {
-                                        id: "form.error.number.decimals",
-                                      },
-                                      { maxDecimals },
-                                    )
-                                  );
-                                },
+                                step: checkDecimals,
                               },
                             })}
                             name="amount"
