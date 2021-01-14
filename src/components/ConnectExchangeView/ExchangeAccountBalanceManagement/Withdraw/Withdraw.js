@@ -10,6 +10,7 @@ import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
 import { formatFloat } from "../../../../utils/format";
+import { formatNumber } from "../../../../utils/formatters";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -115,8 +116,6 @@ const Withdraw = () => {
    */
   const checkDecimals = (value) => {
     const maxDecimals = precisionNumberToDecimals(selectedNetwork.integerMultiple);
-    // const temp = value.split(".");
-    // const numberDecimals = temp[1] ? temp[1].length : 0;
 
     return (
       validateDecimals(value, maxDecimals) ||
@@ -258,7 +257,8 @@ const Withdraw = () => {
                                 <FormattedMessage id="deposit.available" />
                               </span>
                               <b>
-                                {selectedAssetName} {formatFloat(selectedAsset.maxWithdrawAmount)}
+                                {selectedAssetName}{" "}
+                                {formatNumber(parseFloat(selectedAsset.maxWithdrawAmount), 8)}
                               </b>
                             </Typography>
                           </Box>
