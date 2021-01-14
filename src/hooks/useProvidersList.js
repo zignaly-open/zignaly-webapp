@@ -293,10 +293,6 @@ const useProvidersList = (options) => {
         });
     }
   };
-  console.log(timeFrame);
-  console.log(connectedOnly);
-  console.log(storeSession.tradeApi.accessToken);
-  console.log(internalExchangeId);
   // Load providers at init and on timeframe change.
   useEffect(loadProviders, [
     timeFrame,
