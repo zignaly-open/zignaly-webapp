@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
+import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -66,6 +67,7 @@ const useProvidersList = (options) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
+  const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const { provType, connectedOnly } = options;
@@ -91,10 +93,13 @@ const useProvidersList = (options) => {
   const storeFilters = storeSettings.filters[page] || {};
 
   // Get quotes list unless connected providers only which don't need filters
-  const { quoteAssets } = useExchangeQuotes({
-    exchangeId: storeSettings.selectedExchange.exchangeId,
-    exchangeType: storeSettings.selectedExchange.exchangeType,
-  });
+  const { quoteAssets } = useExchangeQuotes(
+    {
+      exchangeId: storeSettings.selectedExchange.exchangeId,
+      exchangeType: storeSettings.selectedExchange.exchangeType,
+    },
+    storeUserData.binanceConnected,
+  );
   const quotes = [
     {
       val: "ALL",
