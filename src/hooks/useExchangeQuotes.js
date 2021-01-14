@@ -4,7 +4,6 @@ import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").QuoteAssetsDict} QuoteAssetsDict
@@ -27,7 +26,6 @@ import { useStoreUserData } from "./useStoreUserSelector";
  */
 const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
   const [quoteAssets, setQuotes] = useState({});
-  const storeUserData = useStoreUserData();
   const [quotesLoading, setLoading] = useState(false);
   const { quotesMap, setQuotesMapData } = useContext(PrivateAreaContext);
   const mapKey = `${exchangeData.exchangeId}-${exchangeData.exchangeType}`;
@@ -37,7 +35,6 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
 
   const loadData = () => {
     if (
-      storeUserData.binanceConnected &&
       shouldExecute &&
       storeSession.tradeApi.accessToken &&
       exchangeData.exchangeId &&
@@ -78,7 +75,6 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
     exchangeData.exchangeId,
     exchangeData.exchangeType,
     shouldExecute,
-    storeUserData.binanceConnected,
   ]);
 
   return {
