@@ -7,7 +7,6 @@ import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
-import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
