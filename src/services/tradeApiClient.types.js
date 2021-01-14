@@ -1224,7 +1224,7 @@ function providerItemTransform(providerItem) {
  * @property {boolean} connected Hide-water mark
  * @property {string} id
  * @property {string} name
- * @property {'copyTraders'|'profitSharing'|'signalProvider'} type
+ * @property {'copyTrading'|'profitSharing'|'signalProvider'|''} type
  */
 
 /**
@@ -1237,7 +1237,7 @@ function createEmptyHasBeenProviderEntity() {
     connected: false,
     id: "",
     name: "",
-    type: "copyTraders",
+    type: "",
   };
 }
 
