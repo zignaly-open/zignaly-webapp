@@ -16,7 +16,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * Provides provider list.
  *
  * @param {string} internalId Internal Id of selected exchange.
- * @param {Array<string>} type Type of providers to filter.
+ * @param {Array<'copyTrading'|'profitSharing'|'signalProvider'>} type Type of providers to filter.
  * @param {boolean} onlyConnected Flag to indicate whether connected or not
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.

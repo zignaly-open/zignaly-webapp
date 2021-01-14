@@ -19,7 +19,7 @@ import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import initialState from "../../../../store/initialState";
-import useProfitSharingServices from "../../../../hooks/useProfitSharingServices";
+import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -46,7 +46,11 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
   const { balance } = useBalance(selectedAccount.internalId);
-  const profitSharingServices = useProfitSharingServices(selectedAccount.internalId);
+  const { providers } = useConnectedProvidersLite(
+    selectedAccount.internalId,
+    ["profitSharing"],
+    true,
+  );
   const dispatch = useDispatch();
 
   const loadOpenPositions = () => {
@@ -124,7 +128,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               <FormattedMessage id="confirm.deleteexchange.balance" />
             ) : positions.length ? (
               <FormattedMessage id="confirm.deleteexchange.openpos" />
-            ) : profitSharingServices.length ? (
+            ) : providers.length ? (
               <FormattedMessage id="confirm.deleteexchange.profit" />
             ) : (
               <FormattedMessage id="confirm.deleteexchange.message" />
@@ -143,7 +147,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               !positions ||
               brokerAccountWithFunds ||
               positions.length ||
-              profitSharingServices.length,
+              providers.length,
           )}
           loading={loading}
           onClick={deleteExchange}

@@ -45,7 +45,7 @@ const useConnectedProviders = (timeFrame, internalExchangeId, provType) => {
         });
     }
   };
-  useEffect(loadData, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame, provType]);
+  useEffect(loadData, [storeSession.tradeApi.accessToken, internalExchangeId, timeFrame]);
 
   return providers;
 };
