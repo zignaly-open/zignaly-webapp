@@ -188,7 +188,7 @@ const StrategyForm = (props) => {
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
       const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
-      if (targetPricePercentage) {
+      if (targetExitUnitsPercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
@@ -226,9 +226,9 @@ const StrategyForm = (props) => {
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
       const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
       const postOnly = draftPosition[`dcaPostOnly${targetId}`];
-      const pricePriority = draftPosition[`pricePriority${targetId}`];
+      const pricePriority = draftPosition.DCAPriority;
 
-      if (targetPricePercentage) {
+      if (targetRebuyPercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
@@ -364,6 +364,8 @@ const StrategyForm = (props) => {
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        stopLossPrice: parseFloat(draftPosition.stopLossPrice),
+        stopLossPriority: draftPosition.stopLossPriority || "percentage",
         stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
         stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
         buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
@@ -372,6 +374,8 @@ const StrategyForm = (props) => {
         reBuyTargets: composePositionDcaTargets(draftPosition),
         trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
         trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+        trailingStopPrice: parseFloat(draftPosition.trailingStopPrice) || false,
+        trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
         providerId: 1,
         providerName: "Manual Trading",
         internalExchangeId: positionEntity.internalExchangeId,

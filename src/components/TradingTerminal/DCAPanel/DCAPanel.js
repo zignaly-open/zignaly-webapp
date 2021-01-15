@@ -52,6 +52,7 @@ const DCAPanel = (props) => {
     clearErrors,
     errors,
     register,
+    unregister,
     setValue,
     watch,
     trigger,
@@ -410,17 +411,21 @@ const DCAPanel = (props) => {
               className="outlineInput"
               disabled={fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)]}
               error={!!errors[composeTargetPropertyName("rebuyPrice", targetId)]}
-              inputRef={register(
-                fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)]
-                  ? null
-                  : {
-                      validate: {
-                        // positive: (value) => value >= 0 || price.error,
-                        limit: (value) =>
-                          validateTargetPriceLimits(parseFloat(value), "terminal.dca.limit"),
-                      },
-                    },
-              )}
+              inputRef={register({
+                validate: (value) => {
+                  if (
+                    fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)] ||
+                    pricePriority !== "price"
+                  ) {
+                    return true;
+                  }
+
+                  return (
+                    // (value >= 0 || price.error) ||
+                    validateTargetPriceLimits(parseFloat(value), "terminal.dca.limit")
+                  );
+                },
+              })}
               name={composeTargetPropertyName("rebuyPrice", targetId)}
             />
             <div className="currencyBox">{symbolData.quote}</div>
@@ -430,20 +435,25 @@ const DCAPanel = (props) => {
             <OutlinedInput
               className="outlineInput"
               disabled={
-                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
+                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] ||
+                pricePriority !== "percentage"
               }
               error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-              inputRef={register(
-                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                  ? null
-                  : {
-                      validate: {
-                        percentage: (value) =>
-                          lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage"),
-                        limit: validateDCAPriceLimit,
-                      },
-                    },
-              )}
+              inputRef={register({
+                validate: (value) => {
+                  if (
+                    fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] ||
+                    pricePriority !== "percentage"
+                  ) {
+                    return true;
+                  }
+
+                  return (
+                    lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage") ||
+                    validateDCAPriceLimit
+                  );
+                },
+              })}
               name={composeTargetPropertyName("targetPricePercentage", targetId)}
             />
             <div className="currencyBox">%</div>
