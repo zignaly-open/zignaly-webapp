@@ -225,8 +225,9 @@ const StrategyForm = (props) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
       const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
+      const pricePriority = draftPosition[`dcaRebuyPriority${targetId}`];
       const postOnly = draftPosition[`dcaPostOnly${targetId}`];
-      const pricePriority = draftPosition.DCAPriority;
+      // const pricePriority = draftPosition.DCAPriority;
 
       if (targetRebuyPercentage) {
         dcaTargets.push({
