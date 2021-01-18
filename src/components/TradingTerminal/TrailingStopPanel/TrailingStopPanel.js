@@ -142,8 +142,10 @@ const TrailingStopPanel = (props) => {
         setValue("trailingStopPercentage", percentageSign);
       } else {
         setValue("trailingStopPercentage", `${percentageSign}${newPercentage}`);
-        const trailingStopPrice = positionEntity ? positionEntity.trailingStopPrice : 0;
-        setValue("trailingStopPrice", trailingStopPrice);
+        if (positionEntity) {
+          setValue("trailingStopPrice", positionEntity.trailingStopTriggerPrice);
+          setValue("trailingStopTriggerPriority", positionEntity.trailingStopTriggerPriority);
+        }
       }
     } else {
       setValue("trailingStopPrice", "");
@@ -209,7 +211,7 @@ const TrailingStopPanel = (props) => {
           justifyContent="space-around"
         >
           <PricePercentageControl
-            defaultPriority={positionEntity ? positionEntity.trailingStopTriggerPriority : null}
+            // defaultPriority={positionEntity ? positionEntity.trailingStopTriggerPriority : null}
             disabled={fieldsDisabled.trailingStopPercentage}
             labelDescriptionId="terminal.trailingstop.help"
             labelId="terminal.trailingstop"
