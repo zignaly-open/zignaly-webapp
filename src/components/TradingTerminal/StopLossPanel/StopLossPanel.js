@@ -194,6 +194,7 @@ const StopLossPanel = (props) => {
       // Otherwise use the custom SL value and apply the sign corresponding to entry type.
       const newValue = formatFloat2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
       setValue("stopLossPercentage", formatFloat2Dec(newValue));
+      // todo: simulateInputChangeEvent
     }
   };
 

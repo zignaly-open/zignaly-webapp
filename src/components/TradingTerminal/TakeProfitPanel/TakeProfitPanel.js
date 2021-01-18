@@ -12,6 +12,7 @@ import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import useValidation from "../../../hooks/useValidation";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
@@ -292,19 +293,22 @@ const TakeProfitPanel = (props) => {
         const priceTarget = formatPrice(profitTarget.priceTarget, "", "");
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        console.log(priceTarget);
         setTargetPropertyValue("targetPrice", index, priceTarget);
         setTargetPropertyValue("priority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
-        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
   };
 
   useEffect(() => {
     if (expanded) {
-      initValuesFromPositionEntity();
-      chainedPriceUpdates();
+      if (positionEntity) {
+        initValuesFromPositionEntity();
+      } else {
+        chainedPriceUpdates();
+      }
     } else {
       cardinalityRange.forEach((targetId) => {
         clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
@@ -329,13 +333,20 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-        // Trigger target price calculation
-        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+
+        // Trigger target price/percentage calculation
+        const priorityName = composeTargetPropertyName("priority", targetId);
+        const val = getValues();
+        if (val[priorityName] !== "price") {
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        } else {
+          simulateInputChangeEvent(composeTargetPropertyName("targetPrice", targetId));
+        }
       }
     });
   };
 
-  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
+  useEffectSkipFirst(chainedPriceUpdates, [entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {

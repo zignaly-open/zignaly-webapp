@@ -26,6 +26,7 @@ import "./DCAPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -310,8 +311,11 @@ const DCAPanel = (props) => {
 
   useDeepCompareEffect(() => {
     if (expanded) {
-      initValuesFromPositionEntity();
-      chainedPriceUpdates();
+      if (positionEntity) {
+        initValuesFromPositionEntity();
+      } else {
+        chainedPriceUpdates();
+      }
     }
   }, [expanded, rebuyTargets]);
 
@@ -362,7 +366,7 @@ const DCAPanel = (props) => {
     }
   };
 
-  useEffect(chainedPriceUpdates, [cardinality, entryType, strategyPrice]);
+  useEffectSkipFirst(chainedPriceUpdates, [cardinality, entryType, strategyPrice]);
 
   // Automatically expand/collpase panel depending on dca orders amount.
   const autoExpandCollapse = () => {
