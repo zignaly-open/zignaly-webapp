@@ -1,6 +1,5 @@
-import initialState from "../store/initialState";
+import initialState from "../initialState";
 import {
-  SET_USER_EXCHANGES,
   REMOVE_USER,
   GET_USER_BALANCE,
   REMOVE_USER_BALANCE,
@@ -10,12 +9,12 @@ import {
   GET_USER_DATA,
   ENABLE_TWO_FA,
   SET_DAILY_BALANCE_LOADER,
-} from "../store/actions/user";
+} from "../actions/user";
 import { createReducer } from "@reduxjs/toolkit";
 
 /**
- * @typedef {import("../store/initialState").UserObject} UserObject
- * @typedef {import('../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("../initialState").UserObject} UserObject
+ * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  */
 
 /**
@@ -30,11 +29,6 @@ import { createReducer } from "@reduxjs/toolkit";
  */
 
 const user = createReducer(initialState.user, {
-  [SET_USER_EXCHANGES]: (state, action) => {
-    state.loaded = true;
-    state.exchangeConnections = action.payload;
-  },
-
   [REMOVE_USER]: () => {
     return initialState.user;
   },
@@ -60,7 +54,7 @@ const user = createReducer(initialState.user, {
   },
 
   [REMOVE_USER_EXCHANGE]: (state, action) => {
-    state.exchangeConnections = state.exchangeConnections.filter(
+    state.userData.exchanges = state.userData.exchanges.filter(
       (item) => item.internalId !== action.payload,
     );
   },

@@ -149,9 +149,9 @@ export function makeServer({ environment = "test" } = {}) {
           case "getExchangeList":
             response = schema.db.exchanges;
             break;
-          case "getUserExchanges":
-            response = schema.db.userExchanges;
-            break;
+          // case "getUserExchanges":
+          //   response = schema.db.userExchanges;
+          //   break;
           case "getUserData":
             response = schema.db.userData;
             break;

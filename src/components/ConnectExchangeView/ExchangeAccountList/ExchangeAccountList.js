@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./ExchangeAccountList.scss";
-import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
@@ -31,9 +31,9 @@ const ExchangeAccountList = ({ demo }) => {
     resetToPath,
   } = useContext(ModalPathContext);
 
-  const storeUser = useStoreUserSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const { exchanges } = useExchangeList();
-  const userExchanges = storeUser.exchangeConnections.filter((e) =>
+  const userExchanges = exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
 

@@ -1,4 +1,4 @@
-import { unsetUser, getUserExchanges, getUserData } from "./user";
+import { unsetUser, getUserData } from "./user";
 import { unsetProvider } from "./views";
 import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
@@ -119,7 +119,6 @@ export const loadAppUserData = (token) => {
         token,
       };
 
-      dispatch(getUserExchanges(authorizationPayload));
       dispatch(getUserData(authorizationPayload));
     }
   };

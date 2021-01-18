@@ -11,7 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { getUserData, getUserExchanges } from "../../../store/actions/user";
+import { getUserData } from "../../../store/actions/user";
 import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
 import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
@@ -153,7 +153,6 @@ const ExchangeAccountAdd = ({ demo }) => {
         const exchangePayload = {
           token: storeSession.tradeApi.accessToken,
         };
-        dispatch(getUserExchanges(exchangePayload));
         dispatch(getUserData(exchangePayload));
         mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");

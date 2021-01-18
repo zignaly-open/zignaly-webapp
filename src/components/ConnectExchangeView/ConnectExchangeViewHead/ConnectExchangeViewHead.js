@@ -7,7 +7,7 @@ import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import MobileExchangeList from "../../Navigation/MobileHeader/MobileExchangeList";
-import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
 import GlobalModalHead from "../GlobalModalHead";
 import { useTheme } from "@material-ui/core/styles";
@@ -29,7 +29,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
     formRef,
   } = useContext(ModalPathContext);
   const methods = useFormContext();
-  const storeUser = useStoreUserSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -104,7 +104,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
                 {tempMessage}
               </Typography>
             )}
-            {storeUser.exchangeConnections.length > 0 &&
+            {exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
             {isMobile && tempMessage && (
