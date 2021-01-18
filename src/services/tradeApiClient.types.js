@@ -479,7 +479,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
- * @property {number} trailingStopPrice Trailing stop trigger price.
+ * @property {number} trailingStopTriggerPrice Trailing stop trigger price.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
  * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
@@ -1730,7 +1730,7 @@ function createEmptyPositionEntity() {
     takeProfitTargetsCountPending: 0,
     takeProfitTargetsCountSuccess: 0,
     trailingStopPercentage: 0,
-    trailingStopPrice: null,
+    trailingStopTriggerPrice: null,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
     type: "",
