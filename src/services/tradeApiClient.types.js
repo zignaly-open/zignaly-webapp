@@ -452,7 +452,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
  * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
  * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
- * @property {number|boolean} trailingStopPrice Trailing stop price or false when not enabled.
  * @property {boolean} trailingStopTriggered Flag that indicates when trailing stop is triggered.
  * @property {boolean} updating Flag that indicates that some position updates are in progress.
  * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
@@ -479,7 +478,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
- * @property {number} trailingStopTriggerPrice Trailing stop trigger price.
+ * @property {number|boolean} trailingStopTriggerPrice Trailing stop trigger price or false when not enabled.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
  * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
