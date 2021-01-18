@@ -52,7 +52,6 @@ const DCAPanel = (props) => {
     clearErrors,
     errors,
     register,
-    unregister,
     setValue,
     watch,
     trigger,
@@ -336,7 +335,6 @@ const DCAPanel = (props) => {
     });
   };
   useEffect(priorityUpdate, [pricePriority]);
-  console.log(getValues());
 
   const chainedPriceUpdates = () => {
     if (expanded) {
@@ -432,10 +430,10 @@ const DCAPanel = (props) => {
             labelId="terminal.status"
           />
           <input
+            defaultValue={pricePriority}
             name={composeTargetPropertyName("rebuyPriority", targetId)}
             ref={register}
             type="hidden"
-            defaultValue={pricePriority}
           />
           <Box alignItems="center" display={getDCAPriority(targetId) !== "price" ? "flex" : "none"}>
             <OutlinedInput
