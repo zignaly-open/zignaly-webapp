@@ -1552,6 +1552,8 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
     return {
       targetId: parseInt(rebuyTarget.targetId) || 0,
       triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
+      pricePriority: rebuyTarget.pricePriority || "percentage",
+      priceTarget: rebuyTarget.priceTarget || 1000,
       quantity: parseFloat(rebuyTarget.quantity) || 0,
       buying: rebuyTarget.buying || false,
       done: rebuyTarget.done || false,
