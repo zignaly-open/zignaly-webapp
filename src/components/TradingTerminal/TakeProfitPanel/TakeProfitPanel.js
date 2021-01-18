@@ -293,7 +293,6 @@ const TakeProfitPanel = (props) => {
         const priceTarget = formatPrice(profitTarget.priceTarget, "", "");
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
-        console.log(priceTarget);
         setTargetPropertyValue("targetPrice", index, priceTarget);
         setTargetPropertyValue("priority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
