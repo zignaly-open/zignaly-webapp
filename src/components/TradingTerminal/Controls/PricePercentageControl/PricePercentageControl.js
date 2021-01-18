@@ -32,7 +32,7 @@ const PricePercentageControl = ({
   disabled,
   quote,
   priorityName,
-  defaultPriority,
+  defaultPriority = "percentage",
   labelId,
   labelDescriptionId,
   status,

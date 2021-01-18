@@ -1,11 +1,11 @@
 .pricePercentageControl {
-  .pricePercentageInput:not(.readOnly) {
-    .disabled {
+  .pricePercentageInput {
+    &:not(.readOnly).disabled {
       input,
       fieldset,
       .currencyBox {
         cursor: pointer;
-        opacity: 0.5;
+        opacity: 0.6;
       }
     }
   }
