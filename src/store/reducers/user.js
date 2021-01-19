@@ -51,6 +51,7 @@ const user = createReducer(initialState.user, {
 
   [GET_USER_DATA]: (state, action) => {
     state.userData = action.payload;
+    state.loaded = true;
   },
 
   [REMOVE_USER_EXCHANGE]: (state, action) => {
