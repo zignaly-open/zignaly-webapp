@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { camelCase, range, upperFirst } from "lodash";
 import { simulateInputChangeEvent } from "../utils/events";
@@ -38,6 +38,12 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
       setCardinality(cardinality - 1);
     }
   };
+
+  useEffect(() => {
+    // If the default cardinality changes, update current value
+    // Needed when using "Increase Position Size", which ends up not needing the empty DCA first target group.
+    setCardinality(defaultCardinality);
+  }, [defaultCardinality]);
 
   /**
    * Compose dynamic target property name.
