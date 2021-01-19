@@ -1,15 +1,15 @@
 import { assign } from "lodash";
-import initialState from "../store/initialState";
+import initialState from "../initialState";
 import {
   SET_APP_VERSION,
   START_TRADE_API_SESSION,
   END_TRADE_API_SESSION,
   REFRESH_SESSION_DATA,
   CLEAR_SESSION_DATA,
-} from "../store/actions/session";
+} from "../actions/session";
 
 /**
- * @typedef {import("../store/initialState").DefaultStateSession} StateSessionType
+ * @typedef {import("../initialState").DefaultStateSession} StateSessionType
  */
 
 /**

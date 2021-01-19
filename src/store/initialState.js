@@ -21,7 +21,6 @@
 
 /**
  * @typedef {Object} UserObject
- * @property {Array<ExchangeConnectionEntity>} exchangeConnections
  * @property {UserBalance} balance
  * @property {DefaultDailyBalanceEntity} dailyBalance
  * @property {UserEntity} userData
@@ -512,7 +511,6 @@ const initialState = {
   },
   user: {
     loaded: false,
-    exchangeConnections: [],
     balance: {
       pnlBTC: 0,
       pnlUSDT: 0,
@@ -575,6 +573,7 @@ const initialState = {
       role: "",
       realExchangeConnected: false,
       demoExchangeConnected: false,
+      exchanges: [],
     },
   },
   ui: {

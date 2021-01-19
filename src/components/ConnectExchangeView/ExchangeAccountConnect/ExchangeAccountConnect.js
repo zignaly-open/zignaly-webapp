@@ -14,7 +14,7 @@ import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
-import { getUserData, getUserExchanges } from "../../../store/actions/user";
+import { getUserData } from "../../../store/actions/user";
 import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl, vcceUrl } from "../../../utils/affiliateURLs";
 import Alert from "@material-ui/lab/Alert";
 
@@ -105,7 +105,6 @@ const ExchangeAccountConnect = () => {
         const exchangePayload = {
           token: storeSession.tradeApi.accessToken,
         };
-        dispatch(getUserExchanges(exchangePayload));
         dispatch(getUserData(exchangePayload));
         resetToPath(previousPath);
       })

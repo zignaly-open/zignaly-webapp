@@ -4,7 +4,10 @@ import { getDisplayName } from "../../utils";
 import { Box, CircularProgress } from "@material-ui/core";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
-import { useStoreUserSelector } from "../../hooks/useStoreUserSelector";
+import {
+  useStoreUserExchangeConnections,
+  useStoreUserSelector,
+} from "../../hooks/useStoreUserSelector";
 import NoExchanges from "../../components/Dashboard/NoExchanges";
 
 /**
@@ -28,7 +31,8 @@ const withDashboardLayout = (Component) => {
    * @returns {JSX.Element} Component JSX.
    */
   const WrapperComponent = (props) => {
-    const user = useStoreUserSelector();
+    const storeUser = useStoreUserSelector();
+    const exchangeConnections = useStoreUserExchangeConnections();
 
     return (
       <Box
@@ -38,7 +42,7 @@ const withDashboardLayout = (Component) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {!user.loaded ? (
+        {!storeUser.loaded ? (
           <Box
             alignItems="center"
             className="loadingBox"
@@ -48,7 +52,7 @@ const withDashboardLayout = (Component) => {
           >
             <CircularProgress color="primary" size={50} />
           </Box>
-        ) : user.exchangeConnections.length > 0 ? (
+        ) : exchangeConnections.length > 0 ? (
           <>
             <DashboardHeader path={props.path} />
             <Box className="pageContent">

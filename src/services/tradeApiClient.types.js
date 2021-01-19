@@ -329,6 +329,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} role
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
+ * @property {Array<ExchangeConnectionEntity>} exchanges
  */
 
 /**
@@ -1135,6 +1136,7 @@ export function userEntityResponseTransform(response) {
     role: response.role,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    exchanges: response.exchanges ? response.exchanges : [],
   };
 }
 

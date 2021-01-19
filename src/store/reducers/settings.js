@@ -1,4 +1,4 @@
-import initialState from "../store/initialState";
+import initialState from "../initialState";
 import {
   SELECT_LANGUAGE,
   SET_SELECTED_EXCHANGE,
@@ -14,19 +14,19 @@ import {
   SET_RESPONSIVE_TABLE,
   SET_TERMINAL_PAIR,
   SET_TERMINAL_PROVIDER,
-} from "../store/actions/settings";
+} from "../actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
 /**
- * @typedef {import("../store/initialState").DefaultStateSettings} StateSettingsType
- * @typedef {import("../store/initialState").DisplayColumns} DisplayColumns
- * @typedef {import("../store/actions/settings").SetTimeFrameAction} SetTimeFrameAction
- * @typedef {import("../store/actions/settings").SetSortAction} SetSortAction
- * @typedef {import("../store/actions/settings").SetFiltersAction} SetFiltersAction
- * @typedef {import("../store/actions/settings").SetSortColumnAction} SetSortColumnAction
- * @typedef {import("../store/actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
- * @typedef {import("../store/actions/settings").SetTerminalPairAction} SetTerminalPairAction
- * @typedef {import("../store/actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
+ * @typedef {import("../initialState").DefaultStateSettings} StateSettingsType
+ * @typedef {import("../initialState").DisplayColumns} DisplayColumns
+ * @typedef {import("../actions/settings").SetTimeFrameAction} SetTimeFrameAction
+ * @typedef {import("../actions/settings").SetSortAction} SetSortAction
+ * @typedef {import("../actions/settings").SetFiltersAction} SetFiltersAction
+ * @typedef {import("../actions/settings").SetSortColumnAction} SetSortColumnAction
+ * @typedef {import("../actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
+ * @typedef {import("../actions/settings").SetTerminalPairAction} SetTerminalPairAction
+ * @typedef {import("../actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  */
 
 /**

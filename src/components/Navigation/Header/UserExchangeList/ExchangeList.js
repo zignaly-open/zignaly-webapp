@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
-import { useStoreUserSelector } from "../../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { getDailyUserBalance } from "../../../../store/actions/user";
@@ -27,9 +27,9 @@ import { getDailyUserBalance } from "../../../../store/actions/user";
 
 const ExchangeList = (props) => {
   const { onClose } = props;
-  const storeUser = useStoreUserSelector();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
 
   /**
@@ -53,8 +53,8 @@ const ExchangeList = (props) => {
 
   return (
     <Box alignItems="flex-start" className="exchangeList" display="flex" flexDirection="column">
-      {storeUser.exchangeConnections &&
-        storeUser.exchangeConnections.map((item, index) => (
+      {exchangeConnections &&
+        exchangeConnections.map((item, index) => (
           <MenuItem
             className={
               "exchangeListItem " +
