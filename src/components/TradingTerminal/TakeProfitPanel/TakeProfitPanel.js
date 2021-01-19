@@ -98,7 +98,7 @@ const TakeProfitPanel = (props) => {
    * @returns {boolean} .
    */
   const isDisabled = (targetId) => {
-    const target = positionEntity ? positionEntity.takeProfitTargets[targetId] : null;
+    const target = positionEntity ? positionEntity.takeProfitTargets[parseInt(targetId)] : null;
     return (target && target.done) || isReadOnly;
   };
 
