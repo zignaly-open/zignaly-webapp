@@ -92,6 +92,16 @@ const TakeProfitPanel = (props) => {
   const isClosed = positionEntity ? positionEntity.closed : false;
   const { formatMessage } = useIntl();
 
+  /**
+   * Check if target inputs should be disabled.
+   * @param {string} targetId Target id.
+   * @returns {boolean} .
+   */
+  const isDisabled = (targetId) => {
+    const target = positionEntity ? positionEntity.takeProfitTargets[parseInt(targetId)] : null;
+    return (target && target.done) || isReadOnly;
+  };
+
   const getFieldsDisabledStatus = () => {
     /**
      * @type {Object<string, boolean>}
@@ -405,9 +415,7 @@ const TakeProfitPanel = (props) => {
             <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
               <Box className="targetPrice">
                 <PricePercentageControl
-                  disabled={
-                    fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                  }
+                  disabled={isDisabled(targetId)}
                   labelDescriptionId="terminal.takeprofit.help"
                   labelId="terminal.target"
                   percentage={{
@@ -440,9 +448,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
-                    }
+                    disabled={isDisabled(targetId)}
                     error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
                     inputRef={register(
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
@@ -465,7 +471,7 @@ const TakeProfitPanel = (props) => {
                     <Box alignItems="center" display="flex">
                       <OutlinedInput
                         className="outlineInput"
-                        disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                        disabled={isDisabled(targetId)}
                         error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
                         inputRef={register(
                           fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]
@@ -495,7 +501,7 @@ const TakeProfitPanel = (props) => {
               </Box>
               <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
                 <PostOnlyControl
-                  disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+                  disabled={isDisabled(targetId)}
                   name={composeTargetPropertyName("postOnly", targetId)}
                 />
               </Box>

@@ -207,6 +207,15 @@ const DCAPanel = (props) => {
     return fieldsDisabled;
   };
 
+  /**
+   * Check if target inputs should be disabled.
+   * @param {string} targetId Target id.
+   * @returns {boolean} .
+   */
+  const isDisabled = (targetId) => {
+    return Boolean(dcaExecutionIndex[targetId]) || isReadOnly;
+  };
+
   //  const validateUnits = (targetId) => {
   //    const positionSize = getEntrySizeQuote();
   //    const units = range(1, Number(targetId), 1).reduce((units, index) => {
@@ -442,9 +451,7 @@ const DCAPanel = (props) => {
           <Box alignItems="center" display={getDCAPriority(targetId) !== "price" ? "flex" : "none"}>
             <OutlinedInput
               className="outlineInput"
-              disabled={
-                fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-              }
+              disabled={isDisabled(targetId)}
               error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
               inputRef={register({
                 validate: (value) => {
@@ -469,7 +476,7 @@ const DCAPanel = (props) => {
           <Box alignItems="center" display={getDCAPriority(targetId) === "price" ? "flex" : "none"}>
             <OutlinedInput
               className="outlineInput"
-              disabled={fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)]}
+              disabled={isDisabled(targetId)}
               error={!!errors[composeTargetPropertyName("rebuyPrice", targetId)]}
               inputRef={register({
                 validate: (value) => {
@@ -495,7 +502,7 @@ const DCAPanel = (props) => {
           <Box alignItems="center" display="flex">
             <OutlinedInput
               className="outlineInput"
-              disabled={fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]}
+              disabled={isDisabled(targetId)}
               error={!!errors[composeTargetPropertyName("rebuyPercentage", targetId)]}
               inputRef={register(
                 fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
@@ -520,7 +527,7 @@ const DCAPanel = (props) => {
         {displayTargetFieldErrors("rebuyPercentage", targetId)}
         <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
           <PostOnlyControl
-            disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+            disabled={isDisabled(targetId)}
             name={composeTargetPropertyName("postOnly", targetId)}
           />
         </Box>
