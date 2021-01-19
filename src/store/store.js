@@ -69,13 +69,25 @@ const migrations = {
       },
     };
   },
+  20: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        userData: {
+          ...state.user.userData,
+          exchanges: initialState.user.userData.exchanges,
+        },
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 19,
+  version: 20,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui", "views"],
 };
