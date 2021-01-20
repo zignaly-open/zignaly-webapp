@@ -13,10 +13,10 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * Provides balance summary for exchange.
- *
- * @returns {HookData} Balance.
+ * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request, demo accounts are bypassed.
+ * @returns {HookData} Balance.j
  */
-const useAvailableBalance = () => {
+const useAvailableBalance = (shouldExecute = true) => {
   const [balance, setBalance] = useState({});
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
@@ -28,7 +28,8 @@ const useAvailableBalance = () => {
     if (
       storeSession.tradeApi.accessToken &&
       storeSettings.selectedExchange.internalId &&
-      !storeSettings.selectedExchange.paperTrading
+      !storeSettings.selectedExchange.paperTrading &&
+      shouldExecute
     ) {
       setLoading(true);
       const payload = {

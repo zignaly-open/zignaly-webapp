@@ -43,7 +43,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const { errors, handleSubmit, setError, control } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { balance } = useAvailableBalance();
+  const { balance } = useAvailableBalance(provider.profitSharing);
 
   /**
    *
