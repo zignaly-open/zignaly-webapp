@@ -388,6 +388,7 @@ const StrategyForm = (props) => {
         reducePersistent: draftPosition.reducePersistent,
         removeReduceRecurringPersistent: draftPosition.reduceRecurringPersistent === false,
         removeReduceOrder: draftPosition.removeReduceOrder,
+        postOnly: draftPosition.postOnly,
       },
       positionStrategy,
     );
