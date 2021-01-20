@@ -1,7 +1,7 @@
 import client from "./tradeApiClient";
 // import faker from "faker";
 import { assert } from "chai";
-import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "./tradeApiClient.types";
+// import { POSITION_SIDE_LONG, POSITION_ENTRY_TYPE_LIMIT } from "./tradeApiClient.types";
 import { positionEntityStructureAssertions } from "../utils/test/positionAssertions";
 
 /**
