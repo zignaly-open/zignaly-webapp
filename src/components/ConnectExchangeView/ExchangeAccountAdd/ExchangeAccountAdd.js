@@ -60,6 +60,15 @@ const ExchangeAccountAdd = ({ demo }) => {
     exchangeType === "futures" &&
     ["binance", "bitmex"].includes(exchangeName.toLowerCase());
 
+  // eslint-disable-next-line no-console
+  console.log(process.env.NODE_ENV);
+  // eslint-disable-next-line no-console
+  console.log(demo);
+  // eslint-disable-next-line no-console
+  console.log(exchangeType);
+  // eslint-disable-next-line no-console
+  console.log(exchangeName);
+
   const selectedExchange = exchanges
     ? exchanges.find((e) => e.name.toLowerCase() === exchangeName.toLowerCase())
     : null;

@@ -329,117 +329,117 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(exchangeList, "Exchange list is not an array.");
   }, 60000);
 
-  it("should create and update manual market order position", async () => {
-    const payload = {
-      token: accessToken,
-      type: POSITION_ENTRY_TYPE_LIMIT,
-      pair: "BTCUSDT",
-      positionSize: 100,
-      positionSizeQuote: "USDT",
-      side: POSITION_SIDE_LONG,
-      limitPrice: 10200.456,
-      stopLossPercentage: false,
-      buyTTL: false,
-      buyStopPrice: 0,
-      sellByTTL: 0,
-      takeProfitTargets: [
-        {
-          targetId: 1,
-          priceTargetPercentage: 10,
-          quoteTarget: 0.37543,
-          amountPercentage: 100,
-          value: 293,
-        },
-      ],
-      reBuyTargets: [
-        {
-          targetId: 1,
-          priceTargetPercentage: -30,
-          amountPercentage: 0.5,
-        },
-      ],
-      trailingStopTriggerPercentage: false,
-      trailingStopPercentage: false,
-      providerId: 1,
-      providerName: "Manual Trading",
-      exchangeName: "Binance",
-      internalExchangeId: "Binance1578301457_5e12f811deda4",
-    };
+  // it("should create and update manual market order position", async () => {
+  //   const payload = {
+  //     token: accessToken,
+  //     type: POSITION_ENTRY_TYPE_LIMIT,
+  //     pair: "BTCUSDT",
+  //     positionSize: 100,
+  //     positionSizeQuote: "USDT",
+  //     side: POSITION_SIDE_LONG,
+  //     limitPrice: 10200.456,
+  //     stopLossPercentage: false,
+  //     buyTTL: false,
+  //     buyStopPrice: 0,
+  //     sellByTTL: 0,
+  //     takeProfitTargets: [
+  //       {
+  //         targetId: 1,
+  //         priceTargetPercentage: 10,
+  //         quoteTarget: 0.37543,
+  //         amountPercentage: 100,
+  //         value: 293,
+  //       },
+  //     ],
+  //     reBuyTargets: [
+  //       {
+  //         targetId: 1,
+  //         priceTargetPercentage: -30,
+  //         amountPercentage: 0.5,
+  //       },
+  //     ],
+  //     trailingStopTriggerPercentage: false,
+  //     trailingStopPercentage: false,
+  //     providerId: 1,
+  //     providerName: "Manual Trading",
+  //     exchangeName: "Binance",
+  //     internalExchangeId: "Binance1578301457_5e12f811deda4",
+  //   };
 
-    const positionId = await client.manualPositionCreate(payload);
-    assert.isString(positionId, "Create position ID is not a string.");
-    assert.lengthOf(positionId, 24, "Created position ID don't have expected length.");
+  //   const positionId = await client.manualPositionCreate(payload);
+  //   assert.isString(positionId, "Create position ID is not a string.");
+  //   assert.lengthOf(positionId, 24, "Created position ID don't have expected length.");
 
-    const updatePayload = {
-      token: accessToken,
-      positionId,
-      providerId: payload.providerId,
-      providerName: payload.providerName,
-      trailingStopTriggerPercentage: 5,
-      trailingStopPercentage: 3,
-      takeProfitTargets: payload.takeProfitTargets,
-      stopLossPercentage: 3,
-      reBuyTargets: [
-        {
-          targetId: 1,
-          priceTargetPercentage: 5,
-          amountPercentage: 50,
-        },
-      ],
-      internalExchangeId: payload.internalExchangeId,
-    };
+  //   const updatePayload = {
+  //     token: accessToken,
+  //     positionId,
+  //     providerId: payload.providerId,
+  //     providerName: payload.providerName,
+  //     trailingStopTriggerPercentage: 5,
+  //     trailingStopPercentage: 3,
+  //     takeProfitTargets: payload.takeProfitTargets,
+  //     stopLossPercentage: 3,
+  //     reBuyTargets: [
+  //       {
+  //         targetId: 1,
+  //         priceTargetPercentage: 5,
+  //         amountPercentage: 50,
+  //       },
+  //     ],
+  //     internalExchangeId: payload.internalExchangeId,
+  //   };
 
-    const updatedPositionId = await client.manualPositionUpdate(updatePayload);
-    assert.isString(updatedPositionId, "Response is not a position ID string.");
+  //   const updatedPositionId = await client.manualPositionUpdate(updatePayload);
+  //   assert.isString(updatedPositionId, "Response is not a position ID string.");
 
-    // Get the position entity after the update to check the changes.
-    const updatedPositionEntity = await client.positionGet({
-      token: accessToken,
-      positionId: updatedPositionId,
-      internalExchangeId: payload.internalExchangeId,
-    });
+  //   // Get the position entity after the update to check the changes.
+  //   const updatedPositionEntity = await client.positionGet({
+  //     token: accessToken,
+  //     positionId: updatedPositionId,
+  //     internalExchangeId: payload.internalExchangeId,
+  //   });
 
-    assert.equal(
-      updatedPositionEntity.reBuyTargets[1].triggerPercentage,
-      5,
-      "DCA target percentage don't match the expected value.",
-    );
+  //   assert.equal(
+  //     updatedPositionEntity.reBuyTargets[1].triggerPercentage,
+  //     5,
+  //     "DCA target percentage don't match the expected value.",
+  //   );
 
-    assert.equal(
-      updatedPositionEntity.reBuyTargets[1].quantity,
-      50,
-      "DCA target amount amount don't match the expected value.",
-    );
+  //   assert.equal(
+  //     updatedPositionEntity.reBuyTargets[1].quantity,
+  //     50,
+  //     "DCA target amount amount don't match the expected value.",
+  //   );
 
-    assert.equal(
-      updatedPositionEntity.takeProfitTargets[1].amountPercentage,
-      100,
-      "Take profit target percentage don't match the expected value.",
-    );
+  //   assert.equal(
+  //     updatedPositionEntity.takeProfitTargets[1].amountPercentage,
+  //     100,
+  //     "Take profit target percentage don't match the expected value.",
+  //   );
 
-    assert.isAtLeast(
-      updatedPositionEntity.takeProfitTargets[1].priceTargetPercentage,
-      10,
-      "Take profit target price don't match the expected value.",
-    );
+  //   assert.isAtLeast(
+  //     updatedPositionEntity.takeProfitTargets[1].priceTargetPercentage,
+  //     10,
+  //     "Take profit target price don't match the expected value.",
+  //   );
 
-    const positionActionPayload = {
-      positionId: updatedPositionEntity.positionId,
-      token: accessToken,
-    };
+  //   const positionActionPayload = {
+  //     positionId: updatedPositionEntity.positionId,
+  //     token: accessToken,
+  //   };
 
-    // Position still entering, we can cancel.
-    if (updatedPositionEntity.status === 1) {
-      const cancelPosition = await client.positionCancel(positionActionPayload);
-      assert.isTrue(cancelPosition.updating, "Cancel position is not flagged as updating.");
-    }
+  //   // Position still entering, we can cancel.
+  //   if (updatedPositionEntity.status === 1) {
+  //     const cancelPosition = await client.positionCancel(positionActionPayload);
+  //     assert.isTrue(cancelPosition.updating, "Cancel position is not flagged as updating.");
+  //   }
 
-    // Position is filled, we can exit.
-    if (updatedPositionEntity.status === 9) {
-      const exitPosition = await client.positionExit(positionActionPayload);
-      assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
-    }
-  }, 70000);
+  //   // Position is filled, we can exit.
+  //   if (updatedPositionEntity.status === 9) {
+  //     const exitPosition = await client.positionExit(positionActionPayload);
+  //     assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
+  //   }
+  // }, 70000);
 
   it("should get position by ID", async () => {
     const payload = {
