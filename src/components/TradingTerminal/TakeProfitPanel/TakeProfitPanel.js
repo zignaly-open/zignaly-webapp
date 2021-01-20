@@ -502,6 +502,7 @@ const TakeProfitPanel = (props) => {
               <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
                 <PostOnlyControl
                   disabled={isDisabled(targetId)}
+                  exchange={positionEntity?.exchange}
                   name={composeTargetPropertyName("postOnly", targetId)}
                 />
               </Box>

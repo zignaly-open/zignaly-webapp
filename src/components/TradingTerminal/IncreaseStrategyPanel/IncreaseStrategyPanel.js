@@ -313,7 +313,7 @@ const IncreaseStrategyPanel = (props) => {
           )}
           {["limit", "stop_limit"].includes(entryStrategy) && (
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-              <PostOnlyControl />
+              <PostOnlyControl exchange={positionEntity?.exchange} />
             </Box>
           )}
         </Box>

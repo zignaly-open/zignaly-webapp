@@ -266,7 +266,7 @@ const ReduceStrategyPanel = (props) => {
           />
           {["limit"].includes(reduceOrderType) && (
             <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-              <PostOnlyControl name="reducePostOnly" />
+              <PostOnlyControl exchange={positionEntity?.exchange} name="reducePostOnly" />
             </Box>
           )}
         </Box>
