@@ -67,20 +67,20 @@ describe("Consume tradeApiClient service", () => {
     process.env.GATSBY_API_KEY = apiSecretKey;
   });
 
-  it("should get new v2 user open positions", async () => {
-    const payload = {
-      token: accessToken,
-      internalExchangeId: "KuCoin1577351230_5e04783e55368",
-    };
+  // it("should get new v2 user open positions", async () => {
+  //   const payload = {
+  //     token: accessToken,
+  //     internalExchangeId: "KuCoin1577351230_5e04783e55368",
+  //   };
 
-    const positionsCollection = await client.openPositionsGet(payload);
-    assert.isArray(positionsCollection, "Positions collection is not an array.");
-    assert.isAtLeast(positionsCollection.length, 2, "Less than expected total positions.");
-    assert.isObject(positionsCollection[0], "First collection position item is not an object.");
-    assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
-    positionEntityStructureAssertions(positionsCollection[0]);
-    positionEntityStructureAssertions(positionsCollection[1]);
-  }, 60000);
+  //   const positionsCollection = await client.openPositionsGet(payload);
+  //   assert.isArray(positionsCollection, "Positions collection is not an array.");
+  //   assert.isAtLeast(positionsCollection.length, 2, "Less than expected total positions.");
+  //   assert.isObject(positionsCollection[0], "First collection position item is not an object.");
+  //   assert.isObject(positionsCollection[1], "Second collection position item is not an object.");
+  //   positionEntityStructureAssertions(positionsCollection[0]);
+  //   positionEntityStructureAssertions(positionsCollection[1]);
+  // }, 60000);
 
   it("should get user closed positions", async () => {
     const payload = {
