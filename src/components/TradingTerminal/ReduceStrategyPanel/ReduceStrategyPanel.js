@@ -93,6 +93,7 @@ const ReduceStrategyPanel = (props) => {
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
+  const reduceOrderType = watch("reduceOrderType");
 
   // Close panel on position update
   useEffect(() => {
@@ -263,9 +264,11 @@ const ReduceStrategyPanel = (props) => {
               />
             }
           />
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <PostOnlyControl name="reducePostOnly" />
-          </Box>
+          {["limit"].includes(reduceOrderType) && (
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+              <PostOnlyControl name="reducePostOnly" />
+            </Box>
+          )}
         </Box>
       )}
     </Box>
