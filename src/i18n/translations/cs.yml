@@ -1300,7 +1300,12 @@ status.98: "CH-This action disabled is on this account, check the exchange for m
 status.99: "CH-Unknown Error, Pending Review"
 status.100: "CH-Amount over maximum allowed by the Exchange"
 status.101: "CH-Position liquidated"
-status.105: "CH-Canceled according to the order type rules"
+status.102: "CH-Your API keys do not have the right permissions, please choose 'order' instead of 'order cancel'"
+status.103: "CH-There is an existing contract for the given market, please review it before opening a new one"
+status.104: "CH-Position side (LONG|SHORT) is not allowed in your configuration"
+status.105: "CH-Canceled according to the order type's rules"
+status.106: "CH-Market expired"
+status.107: "CH-Demo trading has been disabled, it will be re-enabled soon"
 
 # ERROR CODES
 error.occured: "CH-Error Occured"
