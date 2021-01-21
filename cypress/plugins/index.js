@@ -20,6 +20,7 @@ const dotenvPlugin = require("cypress-dotenv");
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  require("@cypress/code-coverage/task")(on, config);
 
   // Detect proper env file but it currently only works with dev env
   const appStage = process.env.STAGE || "dev";
