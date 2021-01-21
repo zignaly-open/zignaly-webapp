@@ -30,4 +30,8 @@ jobs:
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
         with:
-          github-token: ${{ secrets.COVERALL_GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: carlesnunez/check-my-bundlephobia@v1.6.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ignore-dev-dependencies: true
