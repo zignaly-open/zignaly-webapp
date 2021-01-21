@@ -212,7 +212,7 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  getRequestLock(cacheId, timeout = 40000) {
+  getRequestLock(cacheId /* timeout = 40000 */) {
     if (this.requestLock[cacheId]) {
       return false;
     }
