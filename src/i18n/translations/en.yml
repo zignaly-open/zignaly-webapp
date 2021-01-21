@@ -1345,7 +1345,12 @@ status.98: "This action disabled is on this account, check the exchange for more
 status.99: "Unknown Error, Pending Review"
 status.100: "Amount over maximum allowed by the Exchange"
 status.101: "Position liquidated"
-status.105: "Canceled according to the order type rules"
+status.102: "Your API keys do not have the right permissions, please choose 'order' instead of 'order cancel'"
+status.103: "There is an existing contract for the given market, please review it before opening a new one"
+status.104: "Position side (LONG|SHORT) is not allowed in your configuration"
+status.105: "Canceled according to the order type's rules"
+status.106: "Market expired"
+status.107: "Demo trading has been disabled, it will be re-enabled soon"
 
 # ERROR CODES
 error.occured: "Error Occured"
