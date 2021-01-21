@@ -220,9 +220,9 @@ class TradeApiClient {
     this.requestLock[cacheId] = true;
 
     // Timeout to automatically release the lock.
-    setTimeout(() => {
-      this.releaseRequestLock(cacheId);
-    }, timeout);
+    // setTimeout(() => {
+    //   this.releaseRequestLock(cacheId);
+    // }, timeout);
 
     return true;
   }
