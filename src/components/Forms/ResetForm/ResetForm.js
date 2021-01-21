@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ResetForm.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import Logo from "images/logo/logoWhite.png";
+import Logo from "images/logo/logoNW.svg";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import { FormattedMessage } from "react-intl";
@@ -44,7 +44,7 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
     >
       {loading ? (
         <CircularProgress color="primary" size={50} />
-      ) : verified ? (
+      ) : !verified ? (
         <>
           <img alt="Zignaly" className="logo" src={Logo} />
           <Form code={code} setVerified={setVerified} />
