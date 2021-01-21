@@ -112,7 +112,7 @@ const ReduceStrategyPanel = (props) => {
         reduceRecurring: "",
         reducePersistent: "",
       });
-      setReduceTargetUnits();
+      setReduceTargetUnits("");
     }
   };
   useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
