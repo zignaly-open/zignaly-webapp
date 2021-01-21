@@ -59,7 +59,7 @@ const IncreaseStrategyPanel = (props) => {
   );
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
-  const entryStrategy = watch("entryStrategy");
+  const entryStrategy = watch("entryStrategy", "limit");
   const { lastPrice, updatedAt, providerService, setProviderService } = useContext(
     TradingViewContext,
   );

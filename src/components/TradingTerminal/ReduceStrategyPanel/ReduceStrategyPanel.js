@@ -93,7 +93,7 @@ const ReduceStrategyPanel = (props) => {
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
-  const reduceOrderType = watch("reduceOrderType");
+  const reduceOrderType = watch("reduceOrderType", "limit");
 
   // Close panel on position update
   useEffect(() => {
