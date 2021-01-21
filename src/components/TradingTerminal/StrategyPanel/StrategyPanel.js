@@ -140,6 +140,7 @@ const StrategyPanel = (props) => {
 
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
+
   const { providerService } = useContext(TradingViewContext);
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
