@@ -191,12 +191,6 @@ exports.onCreateBabelConfig = ({ actions }) => {
       },
     },
   });
-
-  // Add istanbul plugin for code coverage
-  actions.setBabelPlugin({
-    name: "babel-plugin-istanbul",
-    options: {},
-  });
 };
 
 const express = require("express");
