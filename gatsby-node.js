@@ -180,6 +180,12 @@ exports.onCreateBabelConfig = ({ actions }) => {
       },
     },
   });
+
+  // Add istanbul plugin for code coverage
+  actions.setBabelPlugin({
+    name: "istanbul",
+    options: {},
+  });
 };
 
 const express = require("express");
