@@ -144,9 +144,9 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     );
   }
 
-  // Ignore Conflicting css order
-  // https://spectrum.chat/gatsby-js/general/having-issue-related-to-chunk-commons-mini-css-extract-plugin~0ee9c456-a37e-472a-a1a0-cc36f8ae6033
   if (stage === "build-javascript") {
+    // Ignore Conflicting css order
+    // https://spectrum.chat/gatsby-js/general/having-issue-related-to-chunk-commons-mini-css-extract-plugin~0ee9c456-a37e-472a-a1a0-cc36f8ae6033
     const miniCssExtractPlugin = config.plugins.find(
       (plugin) => plugin.constructor.name === "MiniCssExtractPlugin",
     );
