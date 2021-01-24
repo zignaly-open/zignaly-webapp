@@ -68,6 +68,7 @@ const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const svgCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/;
+// const { StatsWriterPlugin } = require("webpack-stats-plugin");
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   const config = getConfig();
@@ -153,6 +154,20 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     if (miniCssExtractPlugin) {
       miniCssExtractPlugin.options.ignoreOrder = true;
     }
+
+    // Generate additional stats file
+    // config.plugins.push(
+    //   new StatsWriterPlugin({
+    //     filename: "stats.json",
+    //     stats: {
+    //       context: "./src", // optional, will improve readability of the paths
+    //       assets: true,
+    //       entrypoints: true,
+    //       chunks: true,
+    //       modules: true,
+    //     },
+    //   }),
+    // );
   }
 
   config.plugins.push(new CaseSensitivePathsPlugin());
