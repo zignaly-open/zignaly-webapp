@@ -34,4 +34,3 @@ jobs:
       - uses: carlesnunez/check-my-bundlephobia@v1.6.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          ignore-dev-dependencies: true
