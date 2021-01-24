@@ -101,6 +101,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@cypress/code-coverage": "^3.9.2",
     "@semantic-release/exec": "^5.0.0",
+    "@size-limit/preset-app": "^4.9.1",
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
     "@types/chart.js": "^2.9.24",
@@ -144,6 +145,7 @@
     "semantic-release": "^17.2.1",
     "semantic-release-jira-releases": "^0.7.2",
     "semantic-release-slack-bot": "^1.6.2",
+    "size-limit": "^4.9.1",
     "start-server-and-test": "^1.11.6",
     "style-loader": "^1.2.1",
     "stylelint": "^13.7.1",
@@ -174,6 +176,11 @@
       "pre-push": "npm run checkall"
     }
   },
+  "size-limit": [
+    {
+      "path": "dist/app-*.js"
+    }
+  ],
   "scripts": {
     "build": "npm install && npm run reset && gatsby build --prefix-paths",
     "build:package": "tar -C public -zcvf release.tar.gz ./ && rm -rf public/",
