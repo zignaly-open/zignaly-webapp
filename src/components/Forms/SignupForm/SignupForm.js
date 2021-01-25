@@ -21,6 +21,8 @@ const SignupForm = () => {
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
+  const isCheckly =
+    typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
 
   if (!hasMounted) {
     // Don't render form statically
@@ -189,7 +191,7 @@ const SignupForm = () => {
         </Box>
 
         <Box className="captchaBox">
-          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
+          {!isCheckly && <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />}
         </Box>
 
         <Box className="inputBox button-box">
