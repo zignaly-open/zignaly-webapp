@@ -115,8 +115,10 @@ const TraderCard = (props) => {
         endDate: dayjs(dailyReturns[dailyReturns.length - 1].name),
       };
       generateStats(dailyReturns, options, (date, data) => {
-        values.push(data.returns);
-        labels.push(date.toDate());
+        if (data) {
+          values.push(data.returns);
+          labels.push(date.toDate());
+        }
       });
     } else {
       let currentFollowers = followers;

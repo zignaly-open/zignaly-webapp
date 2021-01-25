@@ -68,6 +68,7 @@ const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const svgCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/;
+// const { StatsWriterPlugin } = require("webpack-stats-plugin");
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   const config = getConfig();
@@ -144,6 +145,31 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     );
   }
 
+  if (stage === "build-javascript") {
+    // Ignore Conflicting css order
+    // https://spectrum.chat/gatsby-js/general/having-issue-related-to-chunk-commons-mini-css-extract-plugin~0ee9c456-a37e-472a-a1a0-cc36f8ae6033
+    const miniCssExtractPlugin = config.plugins.find(
+      (plugin) => plugin.constructor.name === "MiniCssExtractPlugin",
+    );
+    if (miniCssExtractPlugin) {
+      miniCssExtractPlugin.options.ignoreOrder = true;
+    }
+
+    // Generate additional stats file
+    // config.plugins.push(
+    //   new StatsWriterPlugin({
+    //     filename: "stats.json",
+    //     stats: {
+    //       context: "./src", // optional, will improve readability of the paths
+    //       assets: true,
+    //       entrypoints: true,
+    //       chunks: true,
+    //       modules: true,
+    //     },
+    //   }),
+    // );
+  }
+
   config.plugins.push(new CaseSensitivePathsPlugin());
   config.resolve.plugins.push(new TsconfigPathsPlugin({ extensions: [".js", ".ts", ".tsx"] }));
   // eslint-disable-next-line no-console
@@ -180,6 +206,14 @@ exports.onCreateBabelConfig = ({ actions }) => {
       },
     },
   });
+
+  if (process.env.NODE_ENV !== "production") {
+    // Add istanbul plugin for code coverage
+    actions.setBabelPlugin({
+      name: "babel-plugin-istanbul",
+      options: {},
+    });
+  }
 };
 
 const express = require("express");
