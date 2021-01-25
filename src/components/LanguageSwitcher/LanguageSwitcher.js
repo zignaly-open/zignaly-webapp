@@ -1,11 +1,10 @@
 import React from "react";
 import "./LanguageSwitcher.scss";
-// @ts-ignore
-import Flag from "react-world-flags";
 import { languages } from "../../i18n";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../store/actions/settings";
+import FlagIcon from "components/FlagIcon";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -27,11 +26,14 @@ const LanguageSwitcher = () => {
 
   return (
     <div className="languageSwitcher">
-      <Flag className="flag" code="en" />
-
       {languages.map((lang) =>
         lang.locale === storeSettings.languageCode ? (
-          <Flag className="flag" code={lang.countryCode} key={lang.locale} title={lang.label} />
+          <FlagIcon
+            className="flag"
+            code={lang.countryCode}
+            key={lang.locale}
+            titleName={lang.label}
+          />
         ) : (
           <button
             data-lang-code={lang.locale}
@@ -39,7 +41,12 @@ const LanguageSwitcher = () => {
             onClick={handleLanguageSelection}
             type="button"
           >
-            <Flag className="flag" code={lang.countryCode} key={lang.locale} title={lang.label} />
+            <FlagIcon
+              className="flag"
+              code={lang.countryCode}
+              key={lang.locale}
+              titleName={lang.label}
+            />
           </button>
         ),
       )}

@@ -1,12 +1,11 @@
 import React from "react";
 import "./LanguageSwitcherDropdown.scss";
-// @ts-ignore
-import Flag from "react-world-flags";
 import { languages } from "../../../i18n";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../../store/actions/settings";
 import { Select, MenuItem } from "@material-ui/core";
+import FlagIcon from "components/FlagIcon";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -35,7 +34,7 @@ const LanguageSwitcher = () => {
       >
         {languages.map((lang) => (
           <MenuItem key={lang.locale} value={lang.locale}>
-            <Flag className="flag" code={lang.countryCode} title={lang.label} />
+            <FlagIcon className="flag" code={lang.countryCode} titleName={lang.label} />
           </MenuItem>
         ))}
       </Select>
