@@ -206,6 +206,14 @@ exports.onCreateBabelConfig = ({ actions }) => {
       },
     },
   });
+
+  if (process.env.NODE_ENV !== "development") {
+    // Add istanbul plugin for code coverage
+    actions.setBabelPlugin({
+      name: "babel-plugin-istanbul",
+      options: {},
+    });
+  }
 };
 
 const express = require("express");
