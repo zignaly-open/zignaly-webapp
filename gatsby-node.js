@@ -207,7 +207,7 @@ exports.onCreateBabelConfig = ({ actions }) => {
     },
   });
 
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== "production") {
     // Add istanbul plugin for code coverage
     actions.setBabelPlugin({
       name: "babel-plugin-istanbul",
