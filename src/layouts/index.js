@@ -51,6 +51,10 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match(/recover|disable2fa|changeEmail|deleteAccount/)) {
     return PublicPage();
   }
+  // Delete account don't use any layout.
+  if (currentPath.match("/deleteAccount")) {
+    return PublicPage();
+  }
 
   return PrivatePage();
 };

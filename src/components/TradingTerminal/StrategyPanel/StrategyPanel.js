@@ -373,6 +373,11 @@ const StrategyPanel = (props) => {
             <PostOnlyControl />
           </Box>
         )}
+        {["limit", "multi"].includes(entryStrategy) && (
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl />
+          </Box>
+        )}
       </Box>
     </Box>
   );
