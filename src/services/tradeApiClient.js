@@ -207,12 +207,11 @@ class TradeApiClient {
    * we prevent that piled up request process concurrently.
    *
    * @param {string} cacheId Request cache ID (endpoint-payload md5 hash) to get lock for.
-   * @param {number} [timeout=40000] Lock time to live in millisecs.
    * @returns {boolean} True when lock was acquired, false when existing lock is in place.
    *
    * @memberof TradeApiClient
    */
-  getRequestLock(cacheId, timeout = 40000) {
+  getRequestLock(cacheId) {
     if (this.requestLock[cacheId]) {
       return false;
     }
@@ -220,9 +219,9 @@ class TradeApiClient {
     this.requestLock[cacheId] = true;
 
     // Timeout to automatically release the lock.
-    setTimeout(() => {
-      this.releaseRequestLock(cacheId);
-    }, timeout);
+    // setTimeout(() => {
+    //   this.releaseRequestLock(cacheId);
+    // }, timeout);
 
     return true;
   }
