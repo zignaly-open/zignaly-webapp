@@ -8,7 +8,7 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef {Object} ProvidersAnalyticsPropTypes
- * @property {'signalp'|'copyt'} type Type of provider to retreive.
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType Type of provider to retreive.
  */
 
 /**
@@ -17,7 +17,7 @@ import { Box } from "@material-ui/core";
  * @param {ProvidersAnalyticsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersAnalytics = ({ type }) => {
+const ProvidersAnalytics = ({ provType }) => {
   const {
     stats,
     quotes,
@@ -26,7 +26,12 @@ const ProvidersAnalytics = ({ type }) => {
     clearFilters,
     filters,
     setFilters,
-  } = useProvidersAnalytics(type);
+  } = useProvidersAnalytics(provType);
+
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
+
+  const type = copyTraders || profitSharing ? "copyt" : "signalp";
 
   return (
     <Box>

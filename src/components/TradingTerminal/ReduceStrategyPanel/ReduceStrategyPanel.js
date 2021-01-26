@@ -93,6 +93,7 @@ const ReduceStrategyPanel = (props) => {
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
+  const reduceOrderType = watch("reduceOrderType", "limit");
 
   // Close panel on position update
   useEffect(() => {
@@ -111,6 +112,7 @@ const ReduceStrategyPanel = (props) => {
         reduceRecurring: "",
         reducePersistent: "",
       });
+      setReduceTargetUnits("");
     }
   };
   useEffectSkipFirst(emptyFieldsWhenCollapsed, [expand]);
@@ -150,30 +152,32 @@ const ReduceStrategyPanel = (props) => {
             name="reduceOrderType"
           />
 
-          <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-            <HelperLabel
-              descriptionId="terminal.reducestrategy.targetpercentage.help"
-              labelId="terminal.target"
-            />
-            <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                error={!!errors.reduceTargetPercentage}
-                inputRef={register({
-                  validate: (value) =>
-                    !isNaN(value) ||
-                    formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
-                })}
-                name="reduceTargetPercentage"
-                onChange={reduceTargetPercentageChange}
+          {reduceOrderType !== "market" && (
+            <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
+              <HelperLabel
+                descriptionId="terminal.reducestrategy.targetpercentage.help"
+                labelId="terminal.target"
               />
-              <div className="currencyBox">%</div>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput
+                  className="outlineInput"
+                  error={!!errors.reduceTargetPercentage}
+                  inputRef={register({
+                    validate: (value) =>
+                      !isNaN(value) ||
+                      formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
+                  })}
+                  name="reduceTargetPercentage"
+                  onChange={reduceTargetPercentageChange}
+                />
+                <div className="currencyBox">%</div>
+              </Box>
+              <Box alignItems="center" display="flex">
+                <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
+                <div className="currencyBox">{symbolData.unitsInvestment}</div>
+              </Box>
             </Box>
-            <Box alignItems="center" display="flex">
-              <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
-              <div className="currencyBox">{symbolData.unitsInvestment}</div>
-            </Box>
-          </Box>
+          )}
           {errors.reduceTargetPercentage && (
             <span className="errorText">{errors.reduceTargetPercentage.message}</span>
           )}
@@ -263,9 +267,11 @@ const ReduceStrategyPanel = (props) => {
               />
             }
           />
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <PostOnlyControl name="reducePostOnly" />
-          </Box>
+          {["limit"].includes(reduceOrderType) && (
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+              <PostOnlyControl exchange={positionEntity?.exchange} name="reducePostOnly" />
+            </Box>
+          )}
         </Box>
       )}
     </Box>

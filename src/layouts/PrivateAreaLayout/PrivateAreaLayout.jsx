@@ -15,6 +15,10 @@ import { ConfirmDialog } from "../../components/Dialogs";
 import useInterval from "../../hooks/useInterval";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
+import usePrivateAreaContext from "hooks/usePrivateAreaContext";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -30,7 +34,19 @@ import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
+  const { selectedExchange } = useStoreSettingsSelector();
   const dispatch = useDispatch();
+  const privateAreaContext = usePrivateAreaContext();
+  const { setProviderCount } = privateAreaContext;
+  const { providers } = useConnectedProvidersLite(
+    selectedExchange.internalId,
+    ["signalProvider"],
+    true,
+  );
+
+  useEffect(() => {
+    setProviderCount(providers.length);
+  }, [providers]);
 
   const updateSession = () => {
     dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
@@ -46,7 +62,7 @@ const PrivateAreaLayout = (props) => {
   const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
 
   return (
-    <>
+    <PrivateAreaContext.Provider value={privateAreaContext}>
       <ConfirmDialog
         confirmConfig={confirmConfig}
         executeActionCallback={executeRefresh}
@@ -72,7 +88,7 @@ const PrivateAreaLayout = (props) => {
           <Box className={"appContent"}>{children}</Box>
         </Box>
       </Box>
-    </>
+    </PrivateAreaContext.Provider>
   );
 };
 

@@ -13,7 +13,10 @@ import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
+import {
+  useStoreUserExchangeConnections,
+  useStoreUserSelector,
+} from "../../../hooks/useStoreUserSelector";
 import { toggleBalanceBox } from "../../../store/actions/settings";
 import "./Header.scss";
 import DownIconPurple from "../../../images/header/chevronDownPurple.svg";
@@ -29,6 +32,7 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 const Header = () => {
   const storeSettings = useStoreSettingsSelector();
   const storeUser = useStoreUserSelector();
+  const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
@@ -61,7 +65,7 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        {storeUser.exchangeConnections.length > 0 && (
+        {exchangeConnections.length > 0 && (
           <Box
             alignItems="center"
             className={"balanceWrapper " + (storeSettings.balanceBox ? "full" : "")}
@@ -101,9 +105,7 @@ const Header = () => {
           </Box>
         )}
         {storeUser.loaded &&
-          ((storeUser.exchangeConnections.length > 0 && <UserExchangeList />) || (
-            <ConnectExchangeButton />
-          ))}
+          ((exchangeConnections.length > 0 && <UserExchangeList />) || <ConnectExchangeButton />)}
         <Box className="linkBox">
           <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
             <ProviderLogo

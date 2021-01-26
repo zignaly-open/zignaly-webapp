@@ -3,13 +3,13 @@ import tradeApi from "../services/tradeApiClient";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useStoreSessionSelector from "./useStoreSessionSelector";
-import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useBaseAssets from "./useBaseAssets";
 import { useIntl } from "react-intl";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import useTimeFramesOptions from "./useTimeFramesOptions";
+import useExchangeQuotes from "./useExchangeQuotes";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -35,17 +35,20 @@ import useTimeFramesOptions from "./useTimeFramesOptions";
 /**
  * Hook to generate the providers stats fetching and filtering.
  *
- * @param {'signalp'|'copyt'} type Type of provider to retreive.
+ * @param {Array<'signal'|'copytraders'|'profitsharing'>} provType Type of provider to retreive.
  * @returns {ProviderStatsData} Providers stats and filtering objects.
  */
-const useProvidersAnalytics = (type) => {
+const useProvidersAnalytics = (provType) => {
   const intl = useIntl();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
 
-  const page = type === "signalp" ? "signalpAnalytics" : "copytAnalytics";
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
+
+  const page = copyTraders || profitSharing ? "copytAnalytics" : "signalpAnalytics";
   const storeFilters = storeSettings.filters[page];
 
   const defaultFilters = {
@@ -55,7 +58,10 @@ const useProvidersAnalytics = (type) => {
   };
 
   // quotes
-  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes({
+    exchangeId: storeSettings.selectedExchange.exchangeId,
+    exchangeType: storeSettings.selectedExchange.exchangeType,
+  });
   const quotes = Object.keys(quoteAssets);
 
   const timeFrames = useTimeFramesOptions();
@@ -102,7 +108,7 @@ const useProvidersAnalytics = (type) => {
       base: filters.base,
       timeFrame: filters.timeFrame,
       DCAFilter: "anyDCA",
-      isCopyTrading: type === "copyt",
+      provType: provType,
     };
     tradeApi
       .providersStatsGet(payload)
@@ -115,7 +121,7 @@ const useProvidersAnalytics = (type) => {
   };
 
   // Load stats at init and on filters change
-  useEffect(loadProvidersStats, [filters, storeSession.tradeApi.accessToken, type]);
+  useEffect(loadProvidersStats, [filters, storeSession.tradeApi.accessToken, provType]);
 
   return {
     stats,

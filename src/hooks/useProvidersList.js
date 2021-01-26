@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
-import useSelectedExchangeQuotes from "./useSelectedExchangeQuotes";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
@@ -15,6 +14,8 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
+import useExchangeQuotes from "./useExchangeQuotes";
+import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -35,7 +36,7 @@ import { forceCheck } from "react-lazyload";
 
 /**
  * @typedef {Object} ProvidersOptions
- * @property {boolean} copyTradersOnly
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
  * @property {boolean} connectedOnly
  */
 
@@ -66,9 +67,12 @@ const useProvidersList = (options) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
+  const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  const { copyTradersOnly, connectedOnly } = options;
+  const { provType, connectedOnly } = options;
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -80,16 +84,22 @@ const useProvidersList = (options) => {
    */
   let page;
   if (connectedOnly) {
-    page = copyTradersOnly ? "connectedCopyt" : "connectedSignalp";
+    page = copyTraders ? "connectedCopyt" : profitSharing ? "connectedProfit" : "connectedSignalp";
   } else {
-    page = copyTradersOnly ? "copyt" : "signalp";
+    page = copyTraders ? "copyt" : profitSharing ? "profit" : "signalp";
   }
 
   // @ts-ignore
   const storeFilters = storeSettings.filters[page] || {};
 
   // Get quotes list unless connected providers only which don't need filters
-  const quoteAssets = useSelectedExchangeQuotes(storeSettings.selectedExchange.internalId);
+  const { quoteAssets } = useExchangeQuotes(
+    {
+      exchangeId: storeSettings.selectedExchange.exchangeId,
+      exchangeType: storeSettings.selectedExchange.exchangeType,
+    },
+    storeUserData.binanceConnected,
+  );
   const quotes = [
     {
       val: "ALL",
@@ -124,7 +134,7 @@ const useProvidersList = (options) => {
 
   const defaultFilters = {
     ...(!connectedOnly && {
-      ...(copyTradersOnly && {
+      ...((copyTraders || profitSharing) && {
         quote: "ALL",
         exchange: "ALL",
         exchangeType: "ALL",
@@ -142,13 +152,13 @@ const useProvidersList = (options) => {
   // @ts-ignore
   const filters = filtersData.filters;
 
-  const defaultSort = copyTradersOnly ? "RETURNS_DESC" : "NEWFOLLOWERS_DESC";
+  const defaultSort = copyTraders || profitSharing ? "RETURNS_DESC" : "NEWFOLLOWERS_DESC";
 
   // Sort
   const initSort = () => {
     let val;
     if (!connectedOnly) {
-      val = copyTradersOnly ? storeSettings.sort.copyt : storeSettings.sort.signalp;
+      val = copyTraders || profitSharing ? storeSettings.sort.copyt : storeSettings.sort.signalp;
     }
     return val || defaultSort;
   };
@@ -159,8 +169,9 @@ const useProvidersList = (options) => {
   };
 
   // TimeFrame
-  const defaultTimeFrame = copyTradersOnly ? 90 : 7;
-  const initTimeFrame = (copyTradersOnly && storeSettings.timeFrame[page]) || defaultTimeFrame;
+  const defaultTimeFrame = copyTraders || profitSharing ? 90 : 7;
+  const initTimeFrame =
+    ((copyTraders || profitSharing) && storeSettings.timeFrame[page]) || defaultTimeFrame;
   const [timeFrame, setTimeFrame] = useState(initTimeFrame);
 
   // Save timeFrame to store once changed
@@ -241,8 +252,7 @@ const useProvidersList = (options) => {
         (!filters.exchangeType ||
           filters.exchangeType === "ALL" ||
           p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser) &&
-        (!filters.profitSharing || p.profitSharing),
+        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
     );
     sortProviders(matches);
   };
@@ -260,37 +270,38 @@ const useProvidersList = (options) => {
   }, [filters]);
 
   const loadProviders = () => {
-    /**
-     * @type {ProvidersPayload}
-     */
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      type: connectedOnly ? "connected" : "all",
-      ro: true,
-      copyTradersOnly,
-      timeFrame,
-      internalExchangeId,
-    };
+    if (storeSession.tradeApi.accessToken) {
+      /**
+       * @type {ProvidersPayload}
+       */
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        type: connectedOnly ? "connected" : "all",
+        ro: true,
+        provType: provType,
+        timeFrame,
+        internalExchangeId,
+      };
 
-    tradeApi
-      .providersGet(payload)
-      .then((responseData) => {
-        const uniqueProviders = uniqBy(responseData, "id");
-        setProviders((s) => ({
-          ...s,
-          list: uniqueProviders,
-        }));
-        filterProviders(uniqueProviders);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+      tradeApi
+        .providersGet(payload)
+        .then((responseData) => {
+          const uniqueProviders = uniqBy(responseData, "id");
+          setProviders((s) => ({
+            ...s,
+            list: uniqueProviders,
+          }));
+          filterProviders(uniqueProviders);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
   // Load providers at init and on timeframe change.
   useEffect(loadProviders, [
     timeFrame,
     connectedOnly,
-    copyTradersOnly,
     storeSession.tradeApi.accessToken,
     internalExchangeId,
   ]);

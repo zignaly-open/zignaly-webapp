@@ -1,0 +1,40 @@
+.pricePercentageControl {
+  .pricePercentageInput {
+    &:not(.readOnly).disabled {
+      input,
+      fieldset,
+      .currencyBox {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .currencyBox {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .pricePercentageInput:not(.disabled) {
+    fieldset,
+    .currencyBox {
+      border: solid 1px var(--purple);
+    }
+
+    .currencyBox {
+      background-color: $purpleLight;
+      border-left: 0;
+      color: $white;
+    }
+  }
+
+  .dot {
+    background-color: $white;
+    border-radius: 50%;
+    height: 5px;
+    margin-left: 5px;
+    width: 5px;
+  }
+}

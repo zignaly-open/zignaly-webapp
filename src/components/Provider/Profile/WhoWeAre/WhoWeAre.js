@@ -8,11 +8,10 @@ import DiscordIcon from "../../../../images/ct/discord.svg";
 import LinkedinIcon from "../../../../images/ct/linkedin.svg";
 import TelegramIcon from "../../../../images/ct/telegram.svg";
 import EmailIcon from "@material-ui/icons/Email";
-// @ts-ignore
-import Flag from "react-world-flags";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
+import FlagIcon from "components/FlagIcon";
 
 /**
  * @typedef {Object} DefaultProps
@@ -81,7 +80,7 @@ const WhoWeAre = ({ provider }) => {
                     key={index}
                   >
                     <span className="name">{item.name}</span>
-                    <Flag className="flag" code={item.countryCode.toUpperCase()} />
+                    <FlagIcon className="flag" code={item.countryCode.toUpperCase()} />
                   </Box>
                 ))}
             </Box>

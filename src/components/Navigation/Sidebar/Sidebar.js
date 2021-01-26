@@ -10,6 +10,8 @@ import CopyWhite from "../../../images/sidebar/copyWhite.svg";
 import CopyBlack from "../../../images/sidebar/copyBlack.svg";
 import DashboardWhite from "../../../images/sidebar/dashboardWhite.svg";
 import DashboardBlack from "../../../images/sidebar/dashboardBlack.svg";
+import ProfitBlack from "../../../images/sidebar/profitBlack.svg";
+import ProfitWhite from "../../../images/sidebar/profitWhite.svg";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import ThemeSwitcher from "../../ThemeSwitcher";
@@ -92,6 +94,14 @@ const Sidebar = () => {
           return TerminalWhite;
         }
         return TerminlBlack;
+      case "profitSharing":
+        if (storeSettings.darkStyle) {
+          return ProfitWhite;
+        }
+        if (url.includes(link)) {
+          return ProfitWhite;
+        }
+        return ProfitBlack;
 
       default:
         return "";
@@ -118,6 +128,16 @@ const Sidebar = () => {
         <img alt="zignaly" className={"icon"} src={getIcon("dashboard")} />
         <Typography variant="h6">
           <FormattedMessage id="menu.dashboard" />
+        </Typography>
+      </Link>
+      <Link
+        className={"sideBarLink profitSharing " + (active("profitSharing") ? "active" : "")}
+        partiallyActive={true}
+        to={"/profitSharing"}
+      >
+        <img alt="zignaly" className={"icon"} src={getIcon("profitSharing")} />
+        <Typography variant="h6">
+          <FormattedMessage id="menu.profitSharing" />
         </Typography>
       </Link>
       <Link

@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
+import { calculateUnits } from "utils/calculations";
 
 /**
  * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -139,18 +140,6 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
-  /**
-   * @param {number} positionSize positionSize
-   * @param {number} price price
-   * @returns {number} units
-   */
-  const calculateUnits = (positionSize, price) => {
-    if (contractType === "inverse") {
-      return (price * positionSize) / multiplier;
-    }
-    return positionSize / (price * multiplier);
-  };
-
   const realInvestmentChange = useCallback(() => {
     if (errors.realInvestment) return;
 
@@ -169,12 +158,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
    * @returns {void}
    */
   const updateUnits = (positionSize) => {
-    const units = calculateUnits(positionSize, currentPrice);
+    const units = calculateUnits(positionSize, currentPrice, selectedSymbol);
     setValue("units", units.toFixed(8));
     trigger("units");
 
     if (entryStrategy === "multi") {
-      const unitsShort = calculateUnits(positionSize, currentPriceShort);
+      const unitsShort = calculateUnits(positionSize, currentPriceShort, selectedSymbol);
       setValue("unitsShort", unitsShort.toFixed(8));
       trigger("unitsShort");
     }

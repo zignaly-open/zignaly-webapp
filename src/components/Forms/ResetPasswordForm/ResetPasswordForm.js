@@ -24,7 +24,7 @@ import Captcha from "../../Captcha";
 
 /**
  * @typedef {Object} PositionPageProps
- * @property {string} token Token aquired by the recover request.
+ * @property {string} code Token aquired by the recover request.
  * @property {React.SetStateAction<*>} setVerified
  */
 
@@ -34,7 +34,7 @@ import Captcha from "../../Captcha";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ResetPasswordForm = ({ token, setVerified }) => {
+const ResetPasswordForm = ({ code, setVerified }) => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
@@ -104,7 +104,7 @@ const ResetPasswordForm = ({ token, setVerified }) => {
       setPasswordDoNotMatch(false);
       setLoading(true);
       const payload = {
-        token: token,
+        token: code,
         password: data.password,
         gRecaptchaResponse,
       };

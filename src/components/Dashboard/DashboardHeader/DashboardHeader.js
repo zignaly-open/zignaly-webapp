@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./DashboardHeader.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
@@ -7,7 +7,7 @@ import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
-import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  *
@@ -23,18 +23,16 @@ import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
  */
 const DashboardHeader = ({ path }) => {
   const storeSettings = useStoreSettingsSelector();
-  const links = routesMapping(path).links;
-  const { providers } = useConnectedProvidersLite(
-    storeSettings.selectedExchange.internalId,
-    ["signalProvider"],
-    true,
-  );
+  let links = routesMapping(path).links;
+  const { providerCount } = useContext(PrivateAreaContext);
 
-  if (providers.length > 0) {
+  if (providerCount > 0) {
     links.push({
       id: "dashboard.providers",
       to: "/dashboard/connectedProviders",
     });
+  } else {
+    links = links.filter((item) => item.id !== "dashboard.providers");
   }
 
   return (

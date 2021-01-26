@@ -29,6 +29,7 @@ const TraderHeaderInfo = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const [copyModal, showCopyModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
+  const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const selectedExchangeProviderData = provider.exchangeInternalIds
     ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
     : undefined;
@@ -149,7 +150,7 @@ const TraderHeaderInfo = ({ provider }) => {
               </>
             )
           )}
-          {provider.exchangeInternalId && !provider.disable && (
+          {(sameSelectedExchange || selectedExchangeProviderData) && !provider.disable && (
             <img
               alt="zignaly"
               className="editIcon"

@@ -20,7 +20,7 @@ import { Box, Checkbox } from "@material-ui/core";
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {Array<OptionType>} quotes Quotes options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
- * @property {boolean} copyTradersOnly
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  */
 
 /**
@@ -36,11 +36,13 @@ const ProvidersFilters = ({
   exchangeTypes,
   clearFilters,
   open,
-  copyTradersOnly,
+  provType,
   filters,
   setFilters,
 }) => {
   const intl = useIntl();
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
 
   return (
     <CustomFilters
@@ -51,7 +53,7 @@ const ProvidersFilters = ({
         id: "fil.filters",
       })}
     >
-      {copyTradersOnly && (
+      {(copyTraders || profitSharing) && (
         <CustomSelect
           onChange={(/** @type {OptionType} */ val) => setFilters({ quote: val.val })}
           options={quotes}
@@ -60,7 +62,7 @@ const ProvidersFilters = ({
           value={filters.quote}
         />
       )}
-      {copyTradersOnly && (
+      {copyTraders && (
         <CustomSelect
           onChange={(/** @type {string} */ v) => setFilters({ exchange: v })}
           options={exchanges}
@@ -68,7 +70,7 @@ const ProvidersFilters = ({
           value={filters.exchange}
         />
       )}
-      {copyTradersOnly && (
+      {(copyTraders || profitSharing) && (
         <CustomSelect
           onChange={(/** @type {string} */ v) => setFilters({ exchangeType: v })}
           options={exchangeTypes}
@@ -96,7 +98,7 @@ const ProvidersFilters = ({
           <FormattedMessage id="srv.filters.userowned" />
         </span>
       </Box>
-      {copyTradersOnly && (
+      {/* {(copyTraders || profitSharing) && (
         <Box
           alignItems="center"
           className="checkboxFilter"
@@ -113,7 +115,7 @@ const ProvidersFilters = ({
             <FormattedMessage id="srv.filters.profitsharing" />
           </span>
         </Box>
-      )}
+      )} */}
     </CustomFilters>
   );
 };

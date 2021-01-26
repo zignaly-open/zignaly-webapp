@@ -1,6 +1,6 @@
 import { assign } from "lodash";
-import initialState from "../store/initialState";
-import { GET_PROVIDER, REMOVE_PROVIDER, SHOW_PROFILE_LOADER } from "../store/actions/views";
+import initialState from "../initialState";
+import { GET_PROVIDER, REMOVE_PROVIDER, SHOW_PROFILE_LOADER } from "../actions/views";
 
 /**
  * @typedef {Object} ActionObject

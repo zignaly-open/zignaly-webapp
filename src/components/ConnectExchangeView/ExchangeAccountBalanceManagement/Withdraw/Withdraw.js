@@ -10,6 +10,7 @@ import BalanceManagement from "../BalanceManagement";
 import NetworksToggleGroup from "../NetworksToggleGroup";
 import CustomButton from "../../../CustomButton";
 import { formatFloat } from "../../../../utils/format";
+import { formatNumber } from "../../../../utils/formatters";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -106,6 +107,25 @@ const Withdraw = () => {
     } else {
       performWithdraw(data);
     }
+  };
+
+  /**
+   * Validate the number of decimals.
+   * @param {string} value Value.
+   * @returns {boolean|string} Success or error message.
+   */
+  const checkDecimals = (value) => {
+    const maxDecimals = precisionNumberToDecimals(selectedNetwork.integerMultiple);
+
+    return (
+      validateDecimals(value, maxDecimals) ||
+      intl.formatMessage(
+        {
+          id: "form.error.number.decimals",
+        },
+        { maxDecimals },
+      )
+    );
   };
 
   return (
@@ -237,7 +257,8 @@ const Withdraw = () => {
                                 <FormattedMessage id="deposit.available" />
                               </span>
                               <b>
-                                {selectedAssetName} {formatFloat(selectedAsset.maxWithdrawAmount)}
+                                {selectedAssetName}{" "}
+                                {formatNumber(parseFloat(selectedAsset.maxWithdrawAmount), 8)}
                               </b>
                             </Typography>
                           </Box>
@@ -255,21 +276,7 @@ const Withdraw = () => {
                                 max: (value) =>
                                   value <= parseFloat(selectedAsset.maxWithdrawAmount) ||
                                   intl.formatMessage({ id: "form.error.withdraw.max" }),
-                                step: (value) => {
-                                  const maxDecimals = precisionNumberToDecimals(
-                                    selectedNetwork.integerMultiple,
-                                  );
-
-                                  return (
-                                    validateDecimals(value, maxDecimals) ||
-                                    intl.formatMessage(
-                                      {
-                                        id: "form.error.number.decimals",
-                                      },
-                                      { maxDecimals },
-                                    )
-                                  );
-                                },
+                                step: checkDecimals,
                               },
                             })}
                             name="amount"

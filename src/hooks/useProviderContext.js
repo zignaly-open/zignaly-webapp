@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 /**
- * @typedef {import("../components/Provider/ProviderContext").ProviderContextObject} ProviderContextObject
+ * @typedef {import("../context/ProviderContext").ProviderContextObject} ProviderContextObject
  */
 
 /**

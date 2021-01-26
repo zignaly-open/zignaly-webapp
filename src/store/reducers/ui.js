@@ -1,4 +1,4 @@
-import initialState from "../store/initialState";
+import initialState from "../initialState";
 import { assign } from "lodash";
 import {
   SHOW_LOADER,
@@ -11,10 +11,10 @@ import {
   SHOW_CREATE_TRADER,
   SHOW_BALANCE_LOADER,
   SHOW_GLOBAL_MODAL,
-} from "../store/actions/ui";
+} from "../actions/ui";
 
 /**
- * @typedef {import("../store/initialState").DefaultUIObject} DefaultUIObject
+ * @typedef {import("../initialState").DefaultUIObject} DefaultUIObject
  */
 
 /**

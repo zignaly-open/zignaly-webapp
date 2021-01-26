@@ -20,7 +20,7 @@ const ConnectedTraders = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse connectedOnly={true} type="copyt" />
+      <ProvidersBrowse connectedOnly={true} provType={["copytraders", "profitsharing"]} />
     </Box>
   );
 };

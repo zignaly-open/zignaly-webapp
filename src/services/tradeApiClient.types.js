@@ -77,6 +77,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} PositionProfitTarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
+ * @property {number} [priceTarget]
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} amountPercentage
  * @property {boolean} [postOnly]
  */
@@ -85,6 +87,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} PositionDCATarget
  * @property {number} targetId
  * @property {number} priceTargetPercentage
+ * @property {number} [priceTarget]
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} amountPercentage
  * @property {boolean} [postOnly]
  */
@@ -325,6 +329,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} role
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
+ * @property {Array<ExchangeConnectionEntity>} exchanges
  */
 
 /**
@@ -448,7 +453,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
  * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
  * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
- * @property {number|boolean} trailingStopPrice Trailing stop price or false when not enabled.
  * @property {boolean} trailingStopTriggered Flag that indicates when trailing stop is triggered.
  * @property {boolean} updating Flag that indicates that some position updates are in progress.
  * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
@@ -470,11 +474,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
  * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
  * @property {number} stopLossPrice Stop loss price.
+ * @property {string} stopLossPriority Stop loss priority (price or percentage).
  * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
  * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
  * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
  * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
+ * @property {number|boolean} trailingStopTriggerPrice Trailing stop trigger price or false when not enabled.
  * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
+ * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
  * @property {string} age Elapsed time since position was opened in human readable format.
  * @property {number} ageSeconds Elapsed seconds since position was opened.
  * @property {number} amount Position invested amount in quote currency.
@@ -532,8 +539,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} short Short symbol name displayed in Zignaly.
  * @property {string} tradeViewSymbol TradingView symbol.
  * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
- * @property {boolean} [stopLossFollowsTakeProfit] Stop Loss moves each time a take profit target is reached
- * @property {boolean} [stopLossToBreakEven] Stop Loss moves to break even (entry price) when take profit target is reached.
+ * @property {boolean} stopLossFollowsTakeProfit Stop Loss moves each time a take profit target is reached
+ * @property {boolean} stopLossToBreakEven Stop Loss moves to break even (entry price) when take profit target is reached.
  * @property {boolean} isolated
  * @property {string} isolatedReadable
  */
@@ -547,6 +554,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ReBuyTarget
  * @property {number} targetId
  * @property {number} triggerPercentage
+ * @property {number} [priceTarget]
+ * @property {string} [pricePriority] Use price or percentage
  * @property {number} quantity
  * @property {boolean} buying
  * @property {boolean} done
@@ -580,6 +589,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} done
  * @property {string} orderId
  * @property {number} priceTargetPercentage
+ * @property {number} priceTarget
+ * @property {number} pricePriority
  * @property {boolean} cancel
  * @property {boolean} skipped
  * @property {boolean} updating
@@ -599,7 +610,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} token
  * @property {"connected"|"all"} type
  * @property {number} timeFrame
- * @property {boolean} copyTradersOnly
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
  * @property {boolean} [ro] Read only request
  * @property {string} internalExchangeId
  */
@@ -628,7 +639,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} timeFrame
  * @property {string} DCAFilter
  * @property {boolean} ro Read only request
- * @property {boolean} isCopyTrading Copy traders stats
+ * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
  */
 
 /**
@@ -677,6 +688,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
+ * @property {'signal'|'copytrading'|'profitsharing'} provType
+ * @property {string} providerLink
+ *
  */
 
 /**
@@ -1122,6 +1136,7 @@ export function userEntityResponseTransform(response) {
     role: response.role,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    exchanges: response.exchanges ? response.exchanges : [],
   };
 }
 
@@ -1195,6 +1210,12 @@ function providerItemTransform(providerItem) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
+  const copyTraders = transformedResponse.provType === "copytrading";
+  const profitSharingProvider = transformedResponse.provType === "profitsharing";
+
+  transformedResponse.providerLink = `/${
+    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${transformedResponse.id}`;
 
   return transformedResponse;
 }
@@ -1204,7 +1225,7 @@ function providerItemTransform(providerItem) {
  * @property {boolean} connected Hide-water mark
  * @property {string} id
  * @property {string} name
- * @property {string} type
+ * @property {'copyTrading'|'profitSharing'|'signalProvider'} type
  */
 
 /**
@@ -1217,7 +1238,7 @@ function createEmptyHasBeenProviderEntity() {
     connected: false,
     id: "",
     name: "",
-    type: "",
+    type: "copyTrading",
   };
 }
 
@@ -1291,6 +1312,8 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
+    provType: "copytrading",
+    providerLink: "",
   };
 }
 
@@ -1347,8 +1370,11 @@ export function positionItemTransform(positionItem) {
       return "";
     }
 
-    if (positionItem.isCopyTrading) {
+    if (positionItem.isCopyTrading && !positionItem.profitSharing) {
       return `/copyTraders/${positionItem.providerId}`;
+    }
+    if (positionItem.isCopyTrading && positionItem.profitSharing) {
+      return `/profitSharing/${positionItem.providerId}`;
     }
 
     return `/signalProviders/${positionItem.providerId}`;
@@ -1527,6 +1553,8 @@ function positionRebuyTargetsTransforrm(rebuyTargets) {
     return {
       targetId: parseInt(rebuyTarget.targetId) || 0,
       triggerPercentage: parseFloat(rebuyTarget.triggerPercentage) || 0,
+      pricePriority: rebuyTarget.pricePriority || "percentage",
+      priceTarget: rebuyTarget.priceTarget || 1000,
       quantity: parseFloat(rebuyTarget.quantity) || 0,
       buying: rebuyTarget.buying || false,
       done: rebuyTarget.done || false,
@@ -1581,6 +1609,8 @@ function positionTakeProfitTargetsTransforrm(profitTargets) {
       cancel: profitTarget.cancel || false,
       skipped: profitTarget.skipped || false,
       postOnly: profitTarget.postOnly || false,
+      priceTarget: profitTarget.priceTarget || 0,
+      pricePriority: profitTarget.pricePriority || "",
     };
   });
 }
@@ -1701,7 +1731,7 @@ function createEmptyPositionEntity() {
     takeProfitTargetsCountPending: 0,
     takeProfitTargetsCountSuccess: 0,
     trailingStopPercentage: 0,
-    trailingStopPrice: null,
+    trailingStopTriggerPrice: null,
     trailingStopTriggerPercentage: 0,
     trailingStopTriggered: false,
     type: "",
@@ -1733,6 +1763,10 @@ function createEmptyPositionEntity() {
     tradeViewSymbol: "",
     isolated: false,
     isolatedReadable: "",
+    stopLossPriority: "",
+    trailingStopTriggerPriority: "",
+    stopLossToBreakEven: false,
+    stopLossFollowsTakeProfit: false,
   };
 }
 
@@ -4375,6 +4409,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
+      provType: "copytrading",
+      providerLink: "",
     },
     signalsInfo: [],
   };

@@ -46,16 +46,9 @@ const wrapRootWithLayout = (props) => {
   if (currentPath.match("/signup")) {
     return PublicPage();
   }
+
   // Recover don't use any layout.
-  if (currentPath.match("/recover")) {
-    return PublicPage();
-  }
-  // Disable 2FA don't use any layout.
-  if (currentPath.match("/disable2fa")) {
-    return PublicPage();
-  }
-  // Change email don't use any layout.
-  if (currentPath.match("/changeEmail")) {
+  if (currentPath.match(/recover|disable2fa|changeEmail|deleteAccount/)) {
     return PublicPage();
   }
   // Delete account don't use any layout.

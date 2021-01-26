@@ -10,7 +10,7 @@ import BalanceBox from "../Header/TopBalance";
 import { FormattedMessage } from "react-intl";
 import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -19,8 +19,8 @@ import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 
 const MobileHeader = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeUser = useStoreUserSelector();
   const [showBalance, setShowBalance] = useState(false);
+  const exchangeConnections = useStoreUserExchangeConnections();
 
   return (
     <Box
@@ -30,7 +30,7 @@ const MobileHeader = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      {storeUser.exchangeConnections.length > 0 && (
+      {exchangeConnections.length > 0 && (
         <Box
           alignItems="flex-start"
           className="connectedBox"
@@ -72,7 +72,7 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {storeUser.exchangeConnections.length === 0 && <ConnectExchangeButton />}
+      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
     </Box>
   );
 };

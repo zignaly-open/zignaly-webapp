@@ -12,10 +12,12 @@ import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import useValidation from "../../../hooks/useValidation";
+import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import "./TakeProfitPanel.scss";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import PricePercentageControl from "../Controls/PricePercentageControl";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -89,6 +91,16 @@ const TakeProfitPanel = (props) => {
   const disableRemoveAction = isReadOnly || isTargetLocked;
   const isClosed = positionEntity ? positionEntity.closed : false;
   const { formatMessage } = useIntl();
+
+  /**
+   * Check if target inputs should be disabled.
+   * @param {string} targetId Target id.
+   * @returns {boolean} .
+   */
+  const isDisabled = (targetId) => {
+    const target = positionEntity ? positionEntity.takeProfitTargets[parseInt(targetId)] : null;
+    return (target && target.done) || isReadOnly;
+  };
 
   const getFieldsDisabledStatus = () => {
     /**
@@ -288,19 +300,24 @@ const TakeProfitPanel = (props) => {
         // Initialization: populate with position targets values
         const profitTarget = positionEntity.takeProfitTargets[index];
         const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const priceTarget = formatPrice(profitTarget.priceTarget, "", "");
         const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
+        setTargetPropertyValue("targetPrice", index, priceTarget);
+        setTargetPropertyValue("priority", index, profitTarget.pricePriority);
         setTargetPropertyValue("exitUnitsPercentage", index, amountPercentage);
         setTargetPropertyValue("postOnly", index, profitTarget.postOnly);
-        simulateInputChangeEvent(composeTargetPropertyName("exitUnitsPercentage", index));
       });
     }
   };
 
   useEffect(() => {
     if (expanded) {
-      initValuesFromPositionEntity();
-      chainedPriceUpdates();
+      if (positionEntity) {
+        initValuesFromPositionEntity();
+      } else {
+        chainedPriceUpdates();
+      }
     } else {
       cardinalityRange.forEach((targetId) => {
         clearErrors(composeTargetPropertyName("exitUnitsPercentage", targetId));
@@ -325,13 +342,20 @@ const TakeProfitPanel = (props) => {
         setTargetPropertyValue("targetPricePercentage", targetId, sign);
       } else {
         setTargetPropertyValue("targetPricePercentage", targetId, `${sign}${newValue}`);
-        // Trigger target price calculation
-        simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+
+        // Trigger target price/percentage calculation
+        const priorityName = composeTargetPropertyName("priority", targetId);
+        const val = getValues();
+        if (val[priorityName] !== "price") {
+          simulateInputChangeEvent(composeTargetPropertyName("targetPricePercentage", targetId));
+        } else {
+          simulateInputChangeEvent(composeTargetPropertyName("targetPrice", targetId));
+        }
       }
     });
   };
 
-  useEffect(chainedPriceUpdates, [entryType, strategyPrice]);
+  useEffectSkipFirst(chainedPriceUpdates, [entryType, strategyPrice]);
 
   const chainedUnitsUpdates = () => {
     if (expanded) {
@@ -389,57 +413,33 @@ const TakeProfitPanel = (props) => {
         >
           {cardinalityRange.map((targetId) => (
             <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
-              <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-                <HelperLabel descriptionId="terminal.takeprofit.help" labelId="terminal.target" />
-                <ProfitTargetStatus
-                  labelId="terminal.status"
-                  profitTarget={profitTargets[Number(targetId)] || null}
+              <Box className="targetPrice">
+                <PricePercentageControl
+                  disabled={isDisabled(targetId)}
+                  labelDescriptionId="terminal.takeprofit.help"
+                  labelId="terminal.target"
+                  percentage={{
+                    name: composeTargetPropertyName("targetPricePercentage", targetId),
+                    validate: (value) =>
+                      greaterThan(value, 0, entryType, "terminal.takeprofit.valid.pricepercentage"),
+                    onChange: targetPricePercentageChange,
+                  }}
+                  price={{
+                    name: composeTargetPropertyName("targetPrice", targetId),
+                    onChange: targetPriceChange,
+                    validate: (value) =>
+                      validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
+                  }}
+                  priorityName={composeTargetPropertyName("priority", targetId)}
+                  quote={symbolData.quote}
+                  status={
+                    <ProfitTargetStatus
+                      labelId="terminal.status"
+                      profitTarget={profitTargets[Number(targetId)] || null}
+                    />
+                  }
                 />
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)]
-                    }
-                    error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-                    inputRef={register({
-                      validate: (value) =>
-                        greaterThan(
-                          value,
-                          0,
-                          entryType,
-                          "terminal.takeprofit.valid.pricepercentage",
-                        ),
-                    })}
-                    name={composeTargetPropertyName("targetPricePercentage", targetId)}
-                    onChange={targetPricePercentageChange}
-                  />
-                  <div className="currencyBox">%</div>
-                </Box>
-                <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
-                    disabled={fieldsDisabled[composeTargetPropertyName("targetPrice", targetId)]}
-                    error={!!errors[composeTargetPropertyName("targetPrice", targetId)]}
-                    inputRef={register({
-                      validate: {
-                        positive: (value) =>
-                          value >= 0 ||
-                          formatMessage({
-                            id: "terminal.takeprofit.valid.price",
-                          }),
-                        price: (value) =>
-                          validateTargetPriceLimits(value, "terminal.takeprofit.limit"),
-                      },
-                    })}
-                    name={composeTargetPropertyName("targetPrice", targetId)}
-                    onChange={targetPriceChange}
-                  />
-                  <div className="currencyBox">{symbolData.quote}</div>
-                </Box>
               </Box>
-              {displayTargetFieldErrors("targetPricePercentage", targetId)}
-              {displayTargetFieldErrors("targetPrice", targetId)}
               <Box className="targetUnits" display="flex" flexDirection="row" flexWrap="wrap">
                 <HelperLabel
                   descriptionId="terminal.unitstoexit.help"
@@ -448,9 +448,7 @@ const TakeProfitPanel = (props) => {
                 <Box alignItems="center" display="flex">
                   <OutlinedInput
                     className="outlineInput"
-                    disabled={
-                      fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
-                    }
+                    disabled={isDisabled(targetId)}
                     error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
                     inputRef={register(
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
@@ -473,7 +471,7 @@ const TakeProfitPanel = (props) => {
                     <Box alignItems="center" display="flex">
                       <OutlinedInput
                         className="outlineInput"
-                        disabled={fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]}
+                        disabled={isDisabled(targetId)}
                         error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
                         inputRef={register(
                           fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]
@@ -503,7 +501,8 @@ const TakeProfitPanel = (props) => {
               </Box>
               <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
                 <PostOnlyControl
-                  disabled={fieldsDisabled[composeTargetPropertyName("postOnly", targetId)]}
+                  disabled={isDisabled(targetId)}
+                  exchange={positionEntity?.exchange}
                   name={composeTargetPropertyName("postOnly", targetId)}
                 />
               </Box>

@@ -43,7 +43,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const { errors, handleSubmit, setError, control } = useForm();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { balance } = useAvailableBalance();
+  const { balance } = useAvailableBalance(provider.profitSharing);
 
   /**
    *
@@ -133,8 +133,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
         let msg = intl.formatMessage(
           { id: "copyt.copy.error1" },
           {
-            selected: `${selectedExchange.internalName.toUpperCase()}`,
-            exchange: `${selectedExchange.name.toUpperCase()} ${selectedExchange.exchangeType.toUpperCase()}`,
             required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
           },
         );

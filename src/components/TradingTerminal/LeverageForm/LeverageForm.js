@@ -24,6 +24,7 @@ const LeverageForm = (props) => {
   const { min, max, leverage, setValue, onClose } = props;
   const [val, setVal] = useState(leverage);
   const marks = [
+    { value: 1, label: "1" },
     { value: 25, label: "25" },
     { value: 50, label: "50" },
     { value: 75, label: "75" },

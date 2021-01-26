@@ -14,7 +14,7 @@ import { Box } from "@material-ui/core";
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
- * @property {'copyt'|'signalp'} type Type of providers to show.
+ * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType Type of providers to show.
  * @property {boolean} connectedOnly Only display connected providers.
  */
 
@@ -29,12 +29,13 @@ const ProvidersBrowse = ({
   toggleFilters,
   showFilters,
   showSort,
-  type,
+  provType,
   connectedOnly,
   setModifiedFiltersCount,
 }) => {
-  const copyTradersOnly = type === "copyt";
-  const providersOptions = { copyTradersOnly, connectedOnly };
+  const copyTraders = provType.includes("copytraders");
+  const profitSharing = provType.includes("profitsharing");
+  const providersOptions = { provType, connectedOnly };
   const {
     providers,
     quotes,
@@ -64,12 +65,12 @@ const ProvidersBrowse = ({
       {toggleFilters && (
         <ProvidersFilters
           clearFilters={clearFilters}
-          copyTradersOnly={copyTradersOnly}
           exchangeTypes={exchangeTypes}
           exchanges={exchanges}
           filters={filters}
           onClose={toggleFilters}
           open={showFilters}
+          provType={provType}
           quotes={quotes}
           setFilters={setFilters}
         />
@@ -77,22 +78,22 @@ const ProvidersBrowse = ({
       {toggleSort && (
         <ProvidersSort
           clearFilters={clearSort}
-          isCopyTrading={copyTradersOnly}
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
+          provType={provType}
           sort={sort}
         />
       )}
       <TimeFrameSelectRow
-        isCopyTrading={copyTradersOnly}
+        isCopyTrading={copyTraders || profitSharing}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
-            ? copyTradersOnly
+            ? copyTraders || profitSharing
               ? "dashboard.traders.copying"
               : "dashboard.providers.following"
-            : copyTradersOnly
+            : copyTraders || profitSharing
             ? "copyt.traders"
             : "fil.providers",
         })}`}

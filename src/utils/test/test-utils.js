@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import initialState from "store/initialState";
-import rootReducer from "reducers/rootReducer";
+import rootReducer from "store/reducers/rootReducer";
 import userExchanges from "utils/mirage/fixtures/userExchanges";
 import userData from "utils/mirage/fixtures/userData";
 

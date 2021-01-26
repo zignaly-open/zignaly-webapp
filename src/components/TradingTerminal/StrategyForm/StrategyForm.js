@@ -183,13 +183,17 @@ const StrategyForm = (props) => {
 
     targetRange.forEach((targetId) => {
       const targetPricePercentage = draftPosition[`takeProfitTargetPricePercentage${targetId}`];
+      const targetPrice = draftPosition[`takeProfitTargetPrice${targetId}`];
+      const pricePriority = draftPosition[`takeProfitPriority${targetId}`];
       const targetExitUnitsPercentage = draftPosition[`takeProfitExitUnitsPercentage${targetId}`];
       const postOnly = draftPosition[`takeProfitPostOnly${targetId}`];
 
-      if (targetPricePercentage) {
+      if (targetExitUnitsPercentage) {
         takeProfitTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetPrice),
+          pricePriority,
           amountPercentage: parseFloat(targetExitUnitsPercentage),
           postOnly,
         });
@@ -220,12 +224,17 @@ const StrategyForm = (props) => {
     const composeTargetItem = (targetId) => {
       const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
       const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+      const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
+      const pricePriority = draftPosition[`dcaRebuyPriority${targetId}`];
       const postOnly = draftPosition[`dcaPostOnly${targetId}`];
+      // const pricePriority = draftPosition.DCAPriority;
 
-      if (targetPricePercentage) {
+      if (targetRebuyPercentage) {
         dcaTargets.push({
           targetId,
           priceTargetPercentage: parseFloat(targetPricePercentage),
+          priceTarget: parseFloat(targetRebuyPrice),
+          pricePriority,
           amountPercentage: parseFloat(targetRebuyPercentage),
           postOnly,
         });
@@ -305,6 +314,8 @@ const StrategyForm = (props) => {
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
       stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+      stopLossPrice: parseFloat(draftPosition.stopLossPrice),
+      stopLossPriority: draftPosition.stopLossPriority || "percentage",
       stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
       stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
       buyTTL: minToSeconds(buyTTL) || false,
@@ -313,7 +324,9 @@ const StrategyForm = (props) => {
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
       trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+      trailingStopTriggerPrice: parseFloat(draftPosition.trailingStopPrice) || false,
       trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+      trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
       providerId: 1,
       providerName: "Manual Trading",
       exchangeName: exchangeName,
@@ -331,6 +344,7 @@ const StrategyForm = (props) => {
   const composeCreatePositionPayload = (draftPosition) => {
     return assign(composePositionPayload(draftPosition), composePositionStrategy(draftPosition), {
       leverage: parseInt(draftPosition.leverage) || 1,
+      marginMode: draftPosition.marginMode || "",
     });
   };
 
@@ -351,6 +365,8 @@ const StrategyForm = (props) => {
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        stopLossPrice: parseFloat(draftPosition.stopLossPrice),
+        stopLossPriority: draftPosition.stopLossPriority || "percentage",
         stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
         stopLossToBreakEven: draftPosition.stopLossType === "stopLossToBreakEven",
         buyStopPrice: parseFloat(draftPosition.stopPrice) || 0,
@@ -359,6 +375,8 @@ const StrategyForm = (props) => {
         reBuyTargets: composePositionDcaTargets(draftPosition),
         trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
         trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
+        trailingStopTriggerPrice: parseFloat(draftPosition.trailingStopPrice) || false,
+        trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
         providerId: 1,
         providerName: "Manual Trading",
         internalExchangeId: positionEntity.internalExchangeId,
@@ -370,6 +388,7 @@ const StrategyForm = (props) => {
         reducePersistent: draftPosition.reducePersistent,
         removeReduceRecurringPersistent: draftPosition.reduceRecurringPersistent === false,
         removeReduceOrder: draftPosition.removeReduceOrder,
+        postOnly: draftPosition.postOnly,
       },
       positionStrategy,
     );

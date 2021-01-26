@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
-import { Box } from "@material-ui/core";
+import React, { useContext } from "react";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import {
-  Button,
+  Box,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -14,9 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import Modal from "../../Modal";
 import { CircularProgress } from "@material-ui/core";
-import { LeverageForm } from "..";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
@@ -25,6 +22,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import MarginButtons from "../Controls/MarginControl";
 import { Alert } from "@material-ui/lab";
 
 /**
@@ -125,11 +123,10 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
  */
 const StrategyPanel = (props) => {
   const { symbolData } = props;
-  const { control, errors, register, setValue, watch } = useFormContext();
+  const { control, errors, register, watch } = useFormContext();
   const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
-  const [modalVisible, setModalVisible] = useState(false);
   const { balance, loading } = useAvailableBalance();
   const baseBalance = (balance && balance[symbolData.unitsAmount]) || 0;
   const quoteBalance = (balance && balance[symbolData.unitsInvestment]) || 0;
@@ -141,9 +138,9 @@ const StrategyPanel = (props) => {
     positionSizePercentageChange,
   } = usePositionSizeHandlers(symbolData);
 
-  const leverage = watch("leverage");
   const entryType = watch("entryType");
   const entryStrategy = watch("entryStrategy");
+
   const { providerService } = useContext(TradingViewContext);
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
@@ -369,31 +366,11 @@ const StrategyPanel = (props) => {
             <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
           ))}
         {storeSettings.selectedExchange.exchangeType === "futures" && (
-          <Box
-            className="leverageButton"
-            display="flex"
-            flexDirection="column"
-            justifyContent="flex-end"
-          >
-            <Modal
-              onClose={() => setModalVisible(false)}
-              persist={false}
-              size="small"
-              state={modalVisible}
-            >
-              <LeverageForm
-                leverage={parseInt(leverage)}
-                max={symbolData.maxLeverage}
-                min={1}
-                onClose={() => {
-                  setModalVisible(false);
-                }}
-                setValue={setValue}
-              />
-            </Modal>
-            <HelperLabel descriptionId="terminal.leverage.help" labelId="terminal.leverage" />
-            <Button onClick={() => setModalVisible(true)}>{leverage}x</Button>
-            <input name="leverage" ref={register} type="hidden" />
+          <MarginButtons symbolData={symbolData} />
+        )}
+        {["limit", "multi"].includes(entryStrategy) && (
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+            <PostOnlyControl />
           </Box>
         )}
         {["limit", "multi"].includes(entryStrategy) && (

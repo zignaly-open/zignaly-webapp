@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import "./ProviderHeader.scss";
 import { Box } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
-import { createProviderRoutes, createTraderRoutes } from "../../../utils/routesMapping";
+import {
+  createProviderRoutes,
+  createTraderRoutes,
+  createProfitSharingRoutes,
+} from "../../../utils/routesMapping";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import TraderHeaderActions from "./TraderHeaderActions";
 import TraderHeaderInfo from "./TraderHeaderInfo";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import ProviderContext from "../ProviderContext";
+import ProviderContext from "../../../context/ProviderContext";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -24,7 +28,9 @@ const ProviderHeader = () => {
 
   useEffect(() => {
     const data = provider.isCopyTrading
-      ? createTraderRoutes(providerId, provider)
+      ? !provider.profitSharing
+        ? createTraderRoutes(providerId, provider)
+        : createProfitSharingRoutes(providerId, provider)
       : createProviderRoutes(providerId, provider, storeSettings.selectedExchange);
     if (!provider.isCopyTrading) {
       data.links.some((item) => {

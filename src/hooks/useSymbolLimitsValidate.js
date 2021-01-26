@@ -8,7 +8,6 @@ import { useIntl } from "react-intl";
  * @typedef {Object} SymbolLimitsValidateHook
  * @property {function} validateCostLimits
  * @property {function} validateTargetPriceLimits
- * @property {function} validateTargetPriceLimits
  * @property {function} validateUnitsLimits
  */
 

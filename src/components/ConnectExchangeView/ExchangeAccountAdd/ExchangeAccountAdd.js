@@ -11,7 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { getUserData, getUserExchanges } from "../../../store/actions/user";
+import { getUserData } from "../../../store/actions/user";
 import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
 import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
@@ -55,7 +55,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   const testNet = watch("testNet");
   // Show testnet only for binance demo futures
   const showTestnet =
-    process.env.NODE_ENV !== "production" &&
+    process.env.GATSBY_ENABLE_TESTNET === "true" &&
     demo &&
     exchangeType === "futures" &&
     ["binance", "bitmex"].includes(exchangeName.toLowerCase());
@@ -153,7 +153,6 @@ const ExchangeAccountAdd = ({ demo }) => {
         const exchangePayload = {
           token: storeSession.tradeApi.accessToken,
         };
-        dispatch(getUserExchanges(exchangePayload));
         dispatch(getUserData(exchangePayload));
         mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
