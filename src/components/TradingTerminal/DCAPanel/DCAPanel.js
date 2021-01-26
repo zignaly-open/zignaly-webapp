@@ -19,7 +19,7 @@ import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
-import { calculateDcaPrice } from "../../../utils/calculations";
+import { calculateDcaPrice, calculateUnits } from "utils/calculations";
 import DCATargetStatus from "../DCATargetStatus/DCATargetStatus";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./DCAPanel.scss";
@@ -246,7 +246,8 @@ const DCAPanel = (props) => {
     const targetPricePercentage = getTargetPropertyValue("targetPricePercentage", targetId);
     const targetPrice = price * (1 - targetPricePercentage / 100);
 
-    const units = Math.abs(rebuyPositionSize / targetPrice);
+    const units = calculateUnits(rebuyPositionSize, targetPrice, symbolData);
+    // todo: positionSize and price are null when creating a position
     if (targetId === "1" && positionSize > 0) {
       return validateUnitsLimits(units, "terminal.dca.limit");
     }
