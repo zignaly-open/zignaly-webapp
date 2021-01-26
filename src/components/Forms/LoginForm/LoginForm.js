@@ -35,6 +35,8 @@ const LoginForm = () => {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const isCheckly =
+    typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
@@ -154,7 +156,7 @@ const LoginForm = () => {
           </Box>
 
           <Box className="captchaBox">
-            <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
+            {!isCheckly && <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />}
           </Box>
 
           <Box className="inputBox">
