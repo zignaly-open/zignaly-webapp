@@ -75,7 +75,7 @@ Once you have a username and password you will be able to login and start browsi
 
 If you find any bug or would like to suggest a feature you can open a new issue at Github https://github.com/zignaly-open/zignaly-webapp/issues Once you receive our feedback you can start working in the implementation and provide a pull request that will be reviewed by our development core team.
 
-The PR should pass our quality checks and automated tests in order to be approved. You can validate that your code is passing by looking at the Github pull request automatic checks section. Take into account that tests are executed automatically by our Github Actiosn check workflow and that cannot be validated locally due to the fact that requires many complex state conditions that are hard to replicate in new trading accounts. However you can validate code standard checks:
+The PR should pass our quality checks and automated tests in order to be approved. You can validate that your code is passing by looking at the Github pull request automatic checks section. Take into account that tests are executed automatically by our Github Actions check workflow and that cannot be validated locally due to the fact that requires many complex state conditions that are hard to replicate in new trading accounts. However you can validate code standard checks:
 
 ```sh
 npm run checkall
