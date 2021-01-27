@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
 import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
@@ -15,6 +15,7 @@ import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
 import { mixpanelPageView } from "utils/mixpanelApi";
 import { analyticsPageView } from "utils/analyticsJsApi";
+import ENMessages from "../../i18n/translations/en.yml";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -30,6 +31,7 @@ import { analyticsPageView } from "utils/analyticsJsApi";
  */
 const AppLayout = (props) => {
   const { children, forceLightTheme } = props;
+  const [messages, setMessages] = useState(ENMessages);
   const storeSettings = useStoreSettingsSelector();
   const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
@@ -43,11 +45,12 @@ const AppLayout = (props) => {
   // Merged english messages with selected by user locale messages
   // In this case all english data would be overridden to user selected locale, but untranslated
   // (missed in object keys) just stay in english
-  const mergedMessages = Object.assign(
-    {},
-    translations.en,
-    translations[storeSettings.languageCode],
-  );
+  useEffect(() => {
+    translations[storeSettings.languageCode]().then((selectedLanguageMessages) => {
+      const mergedMessages = Object.assign({}, ENMessages, selectedLanguageMessages);
+      setMessages(mergedMessages);
+    });
+  }, [storeSettings.languageCode]);
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", darkStyle ? "dark" : "light");
@@ -86,7 +89,7 @@ const AppLayout = (props) => {
   }, [href]);
 
   return (
-    <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
+    <IntlProvider locale={storeSettings.languageCode} messages={messages}>
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
