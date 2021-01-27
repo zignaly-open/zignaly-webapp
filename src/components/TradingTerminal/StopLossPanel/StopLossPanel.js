@@ -258,24 +258,6 @@ const StopLossPanel = (props) => {
               name="stopLossType"
             />
           </Box>
-          <Box alignItems="center" className="title" display="flex" flexDirection="row" mt="12px">
-            <Typography variant="h5">
-              <FormattedMessage id="terminal.stoploss.type" />
-            </Typography>
-            <Controller
-              as={
-                <CustomSelect
-                  disabled={fieldsDisabled.stopLossType}
-                  label=""
-                  onChange={() => {}}
-                  options={stopLossTypeOptions}
-                />
-              }
-              control={control}
-              defaultValue={type}
-              name="stopLossType"
-            />
-          </Box>
         </Box>
       )}
     </Box>
