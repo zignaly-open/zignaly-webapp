@@ -18,6 +18,11 @@ import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 
 /**
+ *
+ * @typedef {Record<string, string>} MessageRecord
+ */
+
+/**
  * @typedef {Object} PrivateAreaLayoutProps
  * @property {Object} children
  * @property {Boolean} [forceLightTheme]
@@ -31,7 +36,7 @@ import ENMessages from "../../i18n/translations/en.yml";
  */
 const AppLayout = (props) => {
   const { children, forceLightTheme } = props;
-  const [messages, setMessages] = useState(ENMessages);
+  const [messages, setMessages] = useState(null);
   const storeSettings = useStoreSettingsSelector();
   const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
@@ -46,11 +51,21 @@ const AppLayout = (props) => {
   // In this case all english data would be overridden to user selected locale, but untranslated
   // (missed in object keys) just stay in english
   useEffect(() => {
-    translations[storeSettings.languageCode]().then((selectedLanguageMessages) => {
+    getMessages(storeSettings.languageCode).then((selectedLanguageMessages) => {
       const mergedMessages = Object.assign({}, ENMessages, selectedLanguageMessages);
       setMessages(mergedMessages);
     });
   }, [storeSettings.languageCode]);
+
+  /**
+   *
+   * @param {string} lang languageCode
+   * @returns {Promise<MessageRecord>} returns a record
+   */
+  const getMessages = async (lang) => {
+    const data = await translations[lang]();
+    return data;
+  };
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", darkStyle ? "dark" : "light");
@@ -89,7 +104,7 @@ const AppLayout = (props) => {
   }, [href]);
 
   return (
-    <IntlProvider locale={storeSettings.languageCode} messages={messages}>
+    <IntlProvider locale={storeSettings.languageCode} messages={messages ? messages : ENMessages}>
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
