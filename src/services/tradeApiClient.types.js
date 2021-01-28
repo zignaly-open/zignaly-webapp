@@ -1136,7 +1136,9 @@ export function userEntityResponseTransform(response) {
     role: response.role,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
-    exchanges: response.exchanges ? response.exchanges : [],
+    exchanges: response.exchanges
+      ? userExchangeConnectionResponseTransform(response.exchanges)
+      : [],
   };
 }
 
