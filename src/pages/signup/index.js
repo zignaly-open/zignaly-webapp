@@ -11,7 +11,7 @@ import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid
 
 const SignupPage = () => {
   const intl = useIntl();
-  useRedirectUponSessionValid("/copyTraders");
+  useRedirectUponSessionValid("/profitSharing");
 
   return (
     <>
