@@ -1167,7 +1167,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.fundingfees",
-        propertyName: "fees",
+        propertyName: "fundingFees",
         renderFunction: renderFundingFee,
       },
       {
