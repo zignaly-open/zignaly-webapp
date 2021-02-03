@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { getUserData } from "../../../store/actions/user";
-import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
+// import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
 import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
 /**
@@ -155,7 +155,7 @@ const ExchangeAccountAdd = ({ demo }) => {
         };
         dispatch(getUserData(exchangePayload));
         mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
-        userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
+        // userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
       })
       .catch((e) => {

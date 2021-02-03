@@ -5,7 +5,7 @@ import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
-import { userPilotLogin } from "../../utils/userPilotApi";
+// import { userPilotLogin } from "../../utils/userPilotApi";
 import { mixPanelTrigger } from "utils/mixpanelApi";
 import { analyticsTrigger } from "utils/analyticsJsApi";
 
@@ -49,7 +49,7 @@ export const startTradeApiSession = (response) => {
     }
     mixPanelTrigger(response, "login");
     analyticsTrigger(response);
-    userPilotLogin(response);
+    // userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
 };
@@ -97,7 +97,7 @@ export const registerUser = (payload, setLoading) => {
       startLiveSession(responseData);
       mixPanelTrigger(responseData, "signup");
       analyticsTrigger(responseData);
-      userPilotLogin(responseData);
+      // userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
     } catch (e) {
       dispatch(showErrorAlert(e));

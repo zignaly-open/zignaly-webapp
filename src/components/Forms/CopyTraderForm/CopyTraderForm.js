@@ -14,7 +14,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
+// import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
 import { mixpanelProviderEnabled } from "utils/mixpanelApi";
 
 /**
@@ -96,7 +96,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
             };
             dispatch(setProvider(payload2, !provider.profitSharing));
             mixpanelProviderEnabled();
-            userPilotProviderEnabled();
+            // userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
             onClose();
             if (provider.profitSharing) {

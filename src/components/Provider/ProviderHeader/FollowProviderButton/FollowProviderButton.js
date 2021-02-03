@@ -11,7 +11,7 @@ import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
-import { userPilotProviderEnabled } from "../../../../utils/userPilotApi";
+// import { userPilotProviderEnabled } from "../../../../utils/userPilotApi";
 import Modal from "../../../Modal";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 
@@ -88,7 +88,7 @@ const FollowProviderButton = ({ provider }) => {
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(setProvider(payload2, true));
-          userPilotProviderEnabled();
+          // userPilotProviderEnabled();
           dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         })
         .catch((e) => {
