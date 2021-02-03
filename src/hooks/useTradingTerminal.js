@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { isString, isObject } from "lodash";
+import { isString, isObject, isNumber } from "lodash";
 import { widget as PrivateTradingViewWidget } from "tradingView/charting_library/charting_library.esm";
 import { getTradingViewExchangeSymbol } from "tradingView/tradingViewOptions";
+import { formatPrice } from "utils/formatters";
 
 /**
  *
@@ -65,7 +66,9 @@ const useTradingTerminal = (setLastPrice) => {
 
           if (dataParsed.name === "quoteUpdate" && dataParsed.data) {
             if (eventSymbol !== dataParsed.data.original_name) {
-              const receivedPrice = parseFloat(dataParsed.data.last_price);
+              const receivedPrice = isNumber(dataParsed.data.last_price)
+                ? formatPrice(dataParsed.data.last_price, "", "")
+                : dataParsed.data.last_price;
               setLastPrice(receivedPrice);
               eventSymbol = dataParsed.data.original_name;
             }
