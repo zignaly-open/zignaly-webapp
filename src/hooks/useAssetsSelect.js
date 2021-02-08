@@ -32,7 +32,7 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
 
   const assets = useExchangeAssets(internalId, updatedAt);
   const assetsList = Object.keys(assets)
-    .filter((a) => type !== "futures" || ["USDT", "BNB"].includes(a))
+    .filter((a) => type !== "futures" || ["USDT", "BNB", "BUSD"].includes(a))
     .sort();
   const selectedAsset = assets[selectedAssetData.name];
 
