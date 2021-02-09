@@ -11,7 +11,8 @@ import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid
 
 const SignupPage = () => {
   const intl = useIntl();
-  useRedirectUponSessionValid("/profitSharing");
+  const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+  useRedirectUponSessionValid(params.get("ret") ? params.get("ret") : "/profitSharing");
 
   return (
     <>

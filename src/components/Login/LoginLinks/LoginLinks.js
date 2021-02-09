@@ -5,6 +5,9 @@ import Link from "../../LocalizedLink";
 import { FormattedMessage } from "react-intl";
 
 const LoginLinks = () => {
+  const params = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
+  const ret = params.get("ret");
+
   /**
    *
    * @param {string} link String to test in the url.
@@ -29,10 +32,16 @@ const LoginLinks = () => {
       flexDirection="row"
       justifyContent="space-evenly"
     >
-      <Link className={"loginLinkItem " + (active("login") ? "activeLink" : "")} to="/login">
+      <Link
+        className={"loginLinkItem " + (active("login") ? "activeLink" : "")}
+        to={ret ? `/login?ret=${ret}` : "/login"}
+      >
         <FormattedMessage id="login.title" />
       </Link>
-      <Link className={"loginLinkItem " + (active("signup") ? "activeLink" : "")} to="/signup">
+      <Link
+        className={"loginLinkItem " + (active("signup") ? "activeLink" : "")}
+        to={ret ? `/signup?ret=${ret}` : "/signup"}
+      >
         <FormattedMessage id="signup.title" />
       </Link>
     </Box>
