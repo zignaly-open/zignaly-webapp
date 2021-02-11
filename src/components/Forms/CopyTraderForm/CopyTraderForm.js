@@ -276,7 +276,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
         justifyContent="flex-start"
       >
         {Boolean(alert) && (
-          <Alert className="alert" severity="error">
+          <Alert className="alert" classes={{ icon: "alertIcon" }} severity="error">
             <Typography className="message" variant="body1">
               {alert}
               {provider.profitSharing && <Help className="helpIcon" onClick={redirectToHelp} />}
