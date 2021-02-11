@@ -63,11 +63,19 @@
     h5 {
       text-align: center;
       width: 80px;
+
+      &.btc {
+        overflow-wrap: break-word;
+      }
     }
 
     .total {
       text-align: right;
       width: 80px;
+
+      &.btc {
+        overflow-wrap: break-word;
+      }
     }
   }
 }
