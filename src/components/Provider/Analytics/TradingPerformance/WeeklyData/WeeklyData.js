@@ -35,6 +35,7 @@ import moment from "moment";
  */
 
 const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
+  const decimalPlaces = unit === "BTC" ? 8 : 2;
   /**
    * Function to select a quarter.
    *
@@ -91,12 +92,19 @@ const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
               {item.label}
             </Typography>
             {item.weeklyStats.map((item2, index2) => (
-              <Typography className={item2.return >= 0 ? "green" : "red"} key={index2} variant="h5">
-                {item2.return ? `${item2.return.toFixed(2)}${unit}` : "--"}
+              <Typography
+                className={`${unit.toLowerCase()} ${item2.return >= 0 ? "green" : "red"}`}
+                key={index2}
+                variant="h5"
+              >
+                {item2.return ? `${item2.return.toFixed(decimalPlaces)}${unit}` : "--"}
               </Typography>
             ))}
-            <Typography className={"total " + (item.total >= 0 ? "green" : "red")} variant="h5">
-              {item.total ? `${item.total.toFixed(2)}${unit}` : "--"}
+            <Typography
+              className={`total ${unit.toLowerCase()} ${item.total >= 0 ? "green" : "red"}`}
+              variant="h5"
+            >
+              {item.total ? `${item.total.toFixed(decimalPlaces)}${unit}` : "--"}
             </Typography>
           </Box>
         ))}
