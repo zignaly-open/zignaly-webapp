@@ -19,19 +19,19 @@ jobs:
         run: npm run jslint
       - name: Check Types
         run: npm run tscheck
-      - name: Test
-        env:
-          GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
-          GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
-          GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
-        run: |
-          # npm test
-          # npm run cy:ci
-      - name: Coveralls GitHub Action
-        uses: coverallsapp/github-action@v1.1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: carlesnunez/check-my-bundlephobia@v1.6.0
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          ignore-dev-dependencies: false
+      # - name: Test
+      #   env:
+      #     GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}
+      #     GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
+      #     GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
+      #   run: |
+      #     npm test
+      #     npm run cy:ci
+      # - name: Coveralls GitHub Action
+      #   uses: coverallsapp/github-action@v1.1.2
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      # - uses: carlesnunez/check-my-bundlephobia@v1.6.0
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     ignore-dev-dependencies: false
