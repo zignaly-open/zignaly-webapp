@@ -16,6 +16,7 @@ import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 // import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
 import { mixpanelProviderEnabled } from "utils/mixpanelApi";
+import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {Object} DefaultProps
@@ -257,6 +258,14 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
     handleSubmit(onSubmit);
   };
 
+  const redirectToHelp = () => {
+    if (typeof window !== "undefined") {
+      const link =
+        "https://help.zignaly.com/hc/en-us/articles/360019579879-I-have-an-error-of-incorrect-exchange-account-when-trying-to-connect-to-a-Profit-Sharing-service-";
+      window.open(link, "_blank");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -268,7 +277,10 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
       >
         {Boolean(alert) && (
           <Alert className="alert" severity="error">
-            <Typography variant="body1">{alert}</Typography>
+            <Typography className="message" variant="body1">
+              {alert}
+              {provider.profitSharing && <Help className="helpIcon" onClick={redirectToHelp} />}
+            </Typography>
           </Alert>
         )}
         <Typography className={"formTitle " + (alert ? "noMargin" : "")} variant="h3">
