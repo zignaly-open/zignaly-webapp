@@ -27,6 +27,7 @@ import useValidation from "../../../hooks/useValidation";
 import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
+import { formatPrice } from "utils/formatters";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -309,7 +310,7 @@ const DCAPanel = (props) => {
       dcaAllIndexes.forEach((index) => {
         const profitTarget = positionEntity.reBuyTargets[Number(index)];
         const triggerPercentage = formatFloat2Dec(profitTarget.triggerPercentage);
-        const priceTarget = formatFloat2Dec(profitTarget.priceTarget);
+        const priceTarget = formatPrice(profitTarget.priceTarget);
         const quantityPercentage = formatFloat2Dec(profitTarget.quantity);
         setTargetPropertyValue("targetPricePercentage", index, triggerPercentage);
         setTargetPropertyValue("rebuyPrice", index, priceTarget);
