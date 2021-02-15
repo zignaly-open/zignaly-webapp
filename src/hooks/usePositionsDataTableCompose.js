@@ -201,7 +201,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderAge(dataIndex) {
     const position = positions[dataIndex];
-    return <>{position.age}</>;
+    return <>{position.age || "-"}</>;
   }
 
   /**
