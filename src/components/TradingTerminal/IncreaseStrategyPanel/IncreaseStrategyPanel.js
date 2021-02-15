@@ -16,6 +16,7 @@ import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
@@ -40,6 +41,7 @@ const IncreaseStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
+  const { selectedExchange } = useStoreSettingsSelector();
   const {
     positionSizeChange,
     validateUnits,
@@ -49,7 +51,7 @@ const IncreaseStrategyPanel = (props) => {
     validatePositionSize,
     positionSizePercentageChange,
   } = usePositionSizeHandlers(symbolData, positionEntity.leverage);
-  const { balance, loading } = useAvailableBalance();
+  const { balance, loading } = useAvailableBalance(selectedExchange);
   const exchangeConnections = useStoreUserExchangeConnections();
   const exchange = exchangeConnections.find(
     (item) => item.internalId === positionEntity.internalExchangeId,
