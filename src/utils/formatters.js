@@ -27,11 +27,12 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2) => 
 
   if (typeof valueNumber === "number") {
     let finalValue = String(
-      valueNumber.toLocaleString("en-US", {
+      new Intl.NumberFormat("en-US", {
         minimumFractionDigits: precision,
         maximumFractionDigits: precision,
-      }),
+      }).format(valueNumber),
     );
+
     return finalValue.replace(/,/g, separator);
   }
 
