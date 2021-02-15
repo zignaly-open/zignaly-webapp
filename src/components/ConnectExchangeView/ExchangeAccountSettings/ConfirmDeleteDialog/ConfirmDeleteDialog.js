@@ -6,7 +6,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import useBalance from "../../../../hooks/useBalance";
 import ModalPathContext from "../../ModalPathContext";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
@@ -20,6 +19,7 @@ import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import initialState from "../../../../store/initialState";
 import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
+import useAvailableBalance from "hooks/useAvailableBalance";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -45,7 +45,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const storeExchanegeConnections = useStoreUserExchangeConnections();
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { balance } = useBalance(selectedAccount.internalId);
+  const { balance } = useAvailableBalance(selectedAccount);
   const { providers } = useConnectedProvidersLite(
     selectedAccount.internalId,
     ["profitSharing"],
@@ -111,7 +111,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   };
 
   const brokerAccountWithFunds =
-    selectedAccount.isBrokerAccount && balance && balance.totalUSDT > 0.01;
+    selectedAccount.isBrokerAccount && balance && Object.values(balance).some((item) => item > 0);
+
   return (
     <Dialog onClose={() => onClose()} open={open}>
       <DialogTitle>

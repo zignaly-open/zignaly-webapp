@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 
 /**
+ * @typedef {import("services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {Object} HookData
  * @property {*} balance
  * @property {Boolean} loading
@@ -13,13 +13,13 @@ import { showErrorAlert } from "../store/actions/ui";
 
 /**
  * Provides balance summary for exchange.
+ * @param {ExchangeConnectionEntity} selectedExchange Exchange account object.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request, demo accounts are bypassed.
  * @returns {HookData} Balance.j
  */
-const useAvailableBalance = (shouldExecute = true) => {
+const useAvailableBalance = (selectedExchange, shouldExecute = true) => {
   const [balance, setBalance] = useState({});
   const [loading, setLoading] = useState(false);
-  const storeSettings = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
@@ -27,14 +27,14 @@ const useAvailableBalance = (shouldExecute = true) => {
     // Skip balance fetch for paper trading exchanges.
     if (
       storeSession.tradeApi.accessToken &&
-      storeSettings.selectedExchange.internalId &&
-      !storeSettings.selectedExchange.paperTrading &&
+      selectedExchange.internalId &&
+      !selectedExchange.paperTrading &&
       shouldExecute
     ) {
       setLoading(true);
       const payload = {
         token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: storeSettings.selectedExchange.internalId,
+        exchangeInternalId: selectedExchange.internalId,
       };
 
       tradeApi
@@ -51,10 +51,7 @@ const useAvailableBalance = (shouldExecute = true) => {
     }
   };
 
-  useEffect(loadData, [
-    storeSettings.selectedExchange.internalId,
-    storeSession.tradeApi.accessToken,
-  ]);
+  useEffect(loadData, [selectedExchange.internalId, storeSession.tradeApi.accessToken]);
 
   return { balance, loading };
 };

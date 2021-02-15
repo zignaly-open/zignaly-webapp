@@ -127,7 +127,7 @@ const StrategyPanel = (props) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
   const storeSettings = useStoreSettingsSelector();
-  const { balance, loading } = useAvailableBalance();
+  const { balance, loading } = useAvailableBalance(selectedExchange);
   const baseBalance = (balance && balance[symbolData.unitsAmount]) || 0;
   const quoteBalance = (balance && balance[symbolData.unitsInvestment]) || 0;
 
