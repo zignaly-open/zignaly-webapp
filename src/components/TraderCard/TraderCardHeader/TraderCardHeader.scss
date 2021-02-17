@@ -46,6 +46,10 @@
         margin-left: 5px;
         position: relative;
         width: 80px;
+
+        &.successFeeBox {
+          width: 120px;
+        }
       }
 
       .price {
