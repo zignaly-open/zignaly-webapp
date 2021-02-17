@@ -42,7 +42,7 @@ const TraderCardHeader = (props) => {
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
           {profitSharing ? (
-            <div className="commissionBox">
+            <div className="commissionBox successFeeBox">
               <Typography variant="h4">{`${profitsShare}%`}</Typography>
               <Typography className="price" variant="subtitle1">
                 <FormattedMessage id="copyt.successfee" />
