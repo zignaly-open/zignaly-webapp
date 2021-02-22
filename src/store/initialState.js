@@ -341,7 +341,7 @@ const initialState = {
         "pair",
         "buyPrice",
         "sellPrice",
-        "remainAmount",
+        "amount",
         "positionSizeQuote",
         "risk",
         "fees",
@@ -374,7 +374,6 @@ const initialState = {
         "cancel",
       ],
       profileClosedPositions: [
-        "remainAmount",
         "pair",
         "buyPrice",
         "closeDataRedable",
