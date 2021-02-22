@@ -63,7 +63,7 @@
     "memory-cache": "^0.2.0",
     "mixpanel-browser": "^2.40.0",
     "moment": "^2.28.0",
-    "mui-datatables": "^3.4.1",
+    "mui-datatables": "^3.7.6",
     "node-jose": "^1.1.4",
     "node-sass": "^4.14.1",
     "puff-puff": "^1.0.0",
