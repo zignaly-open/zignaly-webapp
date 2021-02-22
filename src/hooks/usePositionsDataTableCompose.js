@@ -882,7 +882,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
         },
       });
     }
-    console.log(allOptions);
 
     return allOptions;
   }
