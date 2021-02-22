@@ -13,7 +13,7 @@ import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccou
 import { showErrorAlert } from "../../../store/actions/ui";
 import { getUserData } from "../../../store/actions/user";
 // import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
-import { mixpanelExchangeConnected } from "utils/mixpanelApi";
+// import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -154,7 +154,7 @@ const ExchangeAccountAdd = ({ demo }) => {
           token: storeSession.tradeApi.accessToken,
         };
         dispatch(getUserData(exchangePayload));
-        mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
+        // mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         // userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;
       })
