@@ -976,12 +976,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       {
         columnId: "col.initialamount",
         propertyName: "amount",
-        renderFunction: renderAmount,
-      },
-      {
-        columnId: "col.remainingamount",
-        propertyName: "remainAmount",
-        renderFunction: partial(renderBaseSymbolWithPrice, "remainAmount"),
+        renderFunction: renderQuoteSize,
       },
       {
         columnId: "col.invested",
@@ -1117,7 +1112,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.amount",
-        propertyName: "remainAmount",
+        propertyName: "amount",
         renderFunction: renderAmount,
       },
       {
