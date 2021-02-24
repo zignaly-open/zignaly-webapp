@@ -1,8 +1,9 @@
 import { navigate } from "gatsby";
 
 export const navigateLogin = () => {
-  const path = typeof window !== "undefined" ? window.location.pathname : "";
+  const path =
+    typeof window !== "undefined" ? window.location.pathname + window.location.search : "";
   if (!path.includes("/login")) {
-    navigate("/login?ret=" + path, { state: { forced: true } });
+    navigate("/login?ret=" + encodeURIComponent(path), { state: { forced: true } });
   }
 };
