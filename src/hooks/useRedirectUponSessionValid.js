@@ -23,7 +23,8 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       const params = new URLSearchParams(
         typeof window !== "undefined" ? window.location.search : "",
       );
-      const path = newUserPath || decodeURIComponent(params.get("ret")) || "/dashboard";
+      const path =
+        newUserPath || (params.get("ret") && decodeURIComponent(params.get("ret"))) || "/dashboard";
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
