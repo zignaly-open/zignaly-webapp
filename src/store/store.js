@@ -81,13 +81,22 @@ const migrations = {
       },
     };
   },
+  21: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        balanceBox: initialState.settings.balanceBox,
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 20,
+  version: 21,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui", "views"],
 };

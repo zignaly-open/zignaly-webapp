@@ -223,7 +223,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
-    balanceBox: true,
+    balanceBox: false,
     rowsPerPage: {},
     displayColumns: {
       signalpAnalytics: [
