@@ -976,7 +976,12 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       {
         columnId: "col.initialamount",
         propertyName: "amount",
-        renderFunction: renderQuoteSize,
+        renderFunction: renderAmount,
+      },
+      {
+        columnId: "col.remainingamount",
+        propertyName: "remainAmount",
+        renderFunction: partial(renderBaseSymbolWithPrice, "remainAmount"),
       },
       {
         columnId: "col.invested",
