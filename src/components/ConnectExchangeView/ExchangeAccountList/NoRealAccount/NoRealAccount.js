@@ -61,7 +61,7 @@ const NoRealAccount = () => {
           </CustomButton>
           <Box className="exchangeSubtitle">{getExchangeNamesCombined(exchanges, "or")}</Box>
         </Box>
-        <Box alignItems="center" display="flex" flexDirection="column">
+        {/* <Box alignItems="center" display="flex" flexDirection="column">
           <Typography variant="h4">
             <FormattedMessage id="accounts.connect.experiment" />
           </Typography>
@@ -71,7 +71,7 @@ const NoRealAccount = () => {
           >
             <FormattedMessage id="accounts.create.demo" />
           </CustomButton>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

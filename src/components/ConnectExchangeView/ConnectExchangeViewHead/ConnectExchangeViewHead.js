@@ -104,6 +104,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
                 {tempMessage}
               </Typography>
             )}
+
             {exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
