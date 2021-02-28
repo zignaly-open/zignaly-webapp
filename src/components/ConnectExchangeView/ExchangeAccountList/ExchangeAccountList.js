@@ -36,17 +36,22 @@ const ExchangeAccountList = ({ demo }) => {
   const userExchanges = exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
+  const hasDemoAccounts = exchangeConnections.find((e) => e.paperTrading || e.isTestnet);
 
   const tabs = [
     {
       id: "realAccounts",
       title: "accounts.real",
     },
-    {
+  ];
+
+  // Only show demo tab if the user already has demo accounts
+  if (hasDemoAccounts) {
+    tabs.push({
       id: "demoAccounts",
       title: "accounts.demo",
-    },
-  ];
+    });
+  }
 
   /**
    * Navigation callback

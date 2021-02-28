@@ -44,14 +44,14 @@ const ConnectExchange = ({ onClose }) => {
           <FormattedMessage id="accounts.connect.go" />
         </CustomButton>
       </Box>
-      <Box className="demo" display="flex" flexDirection="column">
+      {/* <Box className="demo" display="flex" flexDirection="column">
         <Typography variant="h4">
           <FormattedMessage id="accounts.connect.experiment" />
         </Typography>
         <CustomButton className="body2 textPurple exchangeButton" onClick={navigate}>
           <FormattedMessage id="accounts.create.demo" />
         </CustomButton>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
