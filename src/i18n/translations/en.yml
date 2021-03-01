@@ -644,7 +644,7 @@ srv.edit.list.tooltip: "Please fulfill all these requirements and then contact o
 srv.edit.list.1.tooltip: Have a logo and description.
 srv.edit.list.2.tooltip: Add a way to contact you.
 srv.edit.list.3.tooltip: Connect with a real account.
-srv.edit.list.4.tooltip: 2 weeks of results.
+srv.edit.list.4.tooltip: 4 weeks of results.
 srv.edit.upload: "Upload"
 srv.edit.delete: "Delete"
 srv.edit.countries: "Select Countries"
