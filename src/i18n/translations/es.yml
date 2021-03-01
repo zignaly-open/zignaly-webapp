@@ -1284,7 +1284,7 @@ srv.newsfeed: "Feed"
 srv.edit.list.1.tooltip: Tener un logo y una descripción.
 srv.edit.list.2.tooltip: Agrega una forma de contactarte.
 srv.edit.list.3.tooltip: Conéctese con una cuenta real.
-srv.edit.list.4.tooltip: 2 semanas de resultados.
+srv.edit.list.4.tooltip: 1 month of results.
 signalp.settings.apikey: "Clave API"
 alert.management.cancelall.title: "¡Cancelado con éxito!"
 alert.management.cancelall.body: "Su solicitud para cancelar estas posiciones se ha enviado correctamente."
