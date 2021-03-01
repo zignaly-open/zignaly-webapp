@@ -1117,7 +1117,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.amount",
-        propertyName: "remainAmount",
+        propertyName: "amount",
         renderFunction: renderAmount,
       },
       {
