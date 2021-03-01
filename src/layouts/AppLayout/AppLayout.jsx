@@ -14,7 +14,7 @@ import useScript from "../../hooks/useScript";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
 // import { mixpanelPageView } from "utils/mixpanelApi";
-// import { analyticsPageView } from "utils/analyticsJsApi";
+import { analyticsPageView } from "utils/analyticsJsApi";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -78,12 +78,12 @@ const AppLayout = (props) => {
     }
   }, [href, storeUserData.userId]);
 
-  // useEffect(() => {
-  //   if (href) {
-  //     mixpanelPageView(href);
-  //     analyticsPageView(storeUserData.userId);
-  //   }
-  // }, [href]);
+  useEffect(() => {
+    if (href) {
+      // mixpanelPageView(href);
+      analyticsPageView(storeUserData.userId);
+    }
+  }, [href]);
 
   return (
     <IntlProvider locale={storeSettings.languageCode} messages={mergedMessages}>
