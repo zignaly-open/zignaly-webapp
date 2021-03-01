@@ -1347,7 +1347,7 @@ srv.newsfeed: "Feed"
 srv.edit.list.1.tooltip: Miej logo i opis.
 srv.edit.list.2.tooltip: Dodaj sposób kontaktu z Tobą.
 srv.edit.list.3.tooltip: Połącz się z prawdziwym kontem.
-srv.edit.list.4.tooltip: 2 tygodnie wyników.
+srv.edit.list.4.tooltip: 4 tygodnie wyników.
 signalp.settings.apikey: "Klucz API"
 alert.management.cancelall.title: "Anulowano pomyślnie!"
 alert.management.cancelall.body: "Twoja prośba o anulowanie tych pozycji została pomyślnie przesłana."
