@@ -8,6 +8,7 @@ import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 // import { userPilotLogin } from "../../utils/userPilotApi";
 // import { mixPanelTrigger } from "utils/mixpanelApi";
 import { analyticsTrigger } from "utils/analyticsJsApi";
+import { toggleBalanceBox } from "./settings";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -68,6 +69,7 @@ export const endTradeApiSession = () => {
       dispatch(unsetUser());
       dispatch(unsetProvider());
       dispatch(clearSessionData());
+      dispatch(toggleBalanceBox(false));
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
