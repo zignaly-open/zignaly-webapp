@@ -15,6 +15,7 @@ const translations = {
   de: () => import("./de.yml"),
   pl: () => import("./pl.yml"),
   es: () => import("./es.yml"),
+  tr: () => import("./tr.yml"),
 };
 
 export default translations;
