@@ -64,12 +64,19 @@ export const analyticsPageView = (userId) => {
  * Trigger login/signup events for dashly.
  *
  * @param {UserEntity} userData User Entity.
+ * @param {String} eventType User Entity.
  * @returns {void} None.
  */
-export const analyticsTrigger = (userData) => {
+export const analyticsTrigger = (userData, eventType) => {
   const { analytics } = analyticsJsApi();
 
   if (analytics) {
+    if (eventType === "signup") {
+      analytics.track("newUser", {
+        userId: userData.userId,
+      });
+    }
+
     analytics.identify(userData.userId, {
       email: userData.email,
     });
