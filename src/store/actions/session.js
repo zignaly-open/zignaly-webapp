@@ -48,7 +48,7 @@ export const startTradeApiSession = (response) => {
       gtmEvent.push(assign(eventType, response));
     }
     // mixPanelTrigger(response, "login");
-    analyticsTrigger(response);
+    analyticsTrigger(response, "login");
     // userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
   };
@@ -96,7 +96,7 @@ export const registerUser = (payload, setLoading) => {
       }
       startLiveSession(responseData);
       // mixPanelTrigger(responseData, "signup");
-      analyticsTrigger(responseData);
+      analyticsTrigger(responseData, "signup");
       // userPilotLogin(responseData);
       dispatch(startTradeApiSession(responseData));
     } catch (e) {
