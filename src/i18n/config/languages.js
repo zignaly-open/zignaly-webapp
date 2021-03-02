@@ -42,8 +42,13 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
   });
   LocalizationLanguages.push({
     locale: "es",
-    label: "Spanish",
+    label: "Español",
     countryCode: "es",
+  });
+  LocalizationLanguages.push({
+    locale: "tr",
+    label: "Türkçe",
+    countryCode: "tr",
   });
 }
 
