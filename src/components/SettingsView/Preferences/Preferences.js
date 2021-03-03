@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
   Box,
-  Checkbox,
+  // Checkbox,
   CircularProgress,
-  FormControlLabel,
+  // FormControlLabel,
   Tooltip,
   Typography,
 } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
-import { toggleBalanceBox } from "../../../store/actions/settings";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+// import { toggleBalanceBox } from "../../../store/actions/settings";
+// import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import ThemeSwitcher from "../../ThemeSwitcher";
 import "./Preferences.scss";
@@ -27,7 +27,7 @@ import { navigateLogin } from "services/navigation";
 
 const Preferences = () => {
   const dispatch = useDispatch();
-  const storeSettings = useStoreSettingsSelector();
+  // const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const canDelete =
     !exchangeConnections.length || !exchangeConnections.find((item) => item.areKeysValid);
@@ -117,7 +117,7 @@ const Preferences = () => {
         </label>
         <ThemeSwitcher full={true} />
       </Box>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={
           <Checkbox
             checked={storeSettings.balanceBox}
@@ -126,7 +126,7 @@ const Preferences = () => {
           />
         }
         label={<FormattedMessage id="preferences.balance" />}
-      />
+      /> */}
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
         {loading && (
           <Box
