@@ -338,6 +338,9 @@ class TradeApiClient {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
 
+    // @ts-ignore
+    const token = payload.token;
+
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
     const options = payload
@@ -347,6 +350,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
+            ...(token && { Authorization: "Bearer " + token })
           },
         }
       : { method: "GET" };
