@@ -16,7 +16,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
  * @property {DefaultProviderGetObject | ProviderEntity} provider
- * @property {Function} callback
+ * @property {Function} [callback]
  */
 
 /**
