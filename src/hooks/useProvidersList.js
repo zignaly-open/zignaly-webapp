@@ -61,9 +61,10 @@ import { useStoreUserData } from "./useStoreUserSelector";
  * Hook to generate the providers data fetching and filtering.
  *
  * @param {ProvidersOptions} options Hook options.
+ * @param {Number} updatedAt last updated time.
  * @returns {ProvidersData} Providers and filtering objects.
  */
-const useProvidersList = (options) => {
+const useProvidersList = (options, updatedAt = null) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
@@ -304,6 +305,7 @@ const useProvidersList = (options) => {
     connectedOnly,
     storeSession.tradeApi.accessToken,
     internalExchangeId,
+    updatedAt,
   ]);
 
   return {

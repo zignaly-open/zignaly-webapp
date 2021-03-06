@@ -37,6 +37,7 @@ import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {ProviderEntity} provider The provider to display.
  * @property {number} timeFrame Selected timeFrame.
+ * @property {Function} reloadProviders reload providers list.
  */
 
 /**
@@ -48,7 +49,7 @@ import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
 const TraderCard = (props) => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  const { provider, showSummary, timeFrame } = props;
+  const { provider, showSummary, timeFrame, reloadProviders } = props;
   const {
     openPositions,
     floating,
@@ -190,6 +191,7 @@ const TraderCard = (props) => {
       .then((response) => {
         if (response) {
           dispatch(showSuccessAlert(`${type}.unfollow.alert.title`, `${type}.unfollow.alert.body`));
+          reloadProviders();
           setCanDisable(false);
         }
       })
@@ -213,7 +215,11 @@ const TraderCard = (props) => {
         size="small"
         state={stopCopyingModal}
       >
-        <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
+        <StopCopyingTraderForm
+          callback={reloadProviders}
+          onClose={handleStopCopyingModalClose}
+          provider={provider}
+        />
       </Modal>
       <div className="traderCardBody">
         <div className="returnsBox">

@@ -9,6 +9,7 @@ import "./ProvidersList.scss";
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {number} timeFrame Selected timeFrame.
+ * @property {Function} reloadProviders reload providers list.
  */
 
 /**
@@ -18,7 +19,7 @@ import "./ProvidersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers, showSummary, timeFrame } = props;
+  const { providers, showSummary, timeFrame, reloadProviders } = props;
 
   return (
     <Box
@@ -34,6 +35,7 @@ const ProvidersList = (props) => {
             <TraderCard
               key={provider.id}
               provider={provider}
+              reloadProviders={reloadProviders}
               showSummary={showSummary}
               timeFrame={timeFrame}
             />

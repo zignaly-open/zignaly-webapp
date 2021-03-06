@@ -16,6 +16,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
  * @property {DefaultProviderGetObject | ProviderEntity} provider
+ * @property {Function} callback
  */
 
 /**
@@ -23,7 +24,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const StopCopyingTraderForm = ({ onClose, provider }) => {
+const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
   const [disconnectionType, setDisconnectType] = useState("soft");
@@ -59,7 +60,11 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
     tradeApi
       .providerDisable(disablePayload)
       .then(() => {
-        refreshProvider();
+        if (!callback) {
+          refreshProvider();
+        } else {
+          callback();
+        }
         dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
       })
       .catch((e) => {
@@ -81,7 +86,11 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
     tradeApi
       .providerDisconnect(disconnectPayload)
       .then(() => {
-        refreshProvider();
+        if (!callback) {
+          refreshProvider();
+        } else {
+          callback();
+        }
         dispatch(showSuccessAlert("copyt.unfollow.alert.title", "copyt.unfollow.alert.body"));
       })
       .catch((e) => {
