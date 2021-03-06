@@ -20,6 +20,8 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { ConfirmDialog } from "../../Dialogs";
 import dayjs from "dayjs";
+import Modal from "../../Modal";
+import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -99,11 +101,16 @@ const TraderCard = (props) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
+  const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const type = copyTrader || profitSharingProvider ? "copyt" : "srv";
   const timeframeTranslationId =
     timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
   const [chartData, setChartData] = useState(/** @type {ChartData} */ ({ values: [], labels: [] }));
+
+  const handleStopCopyingModalClose = () => {
+    showStopCopyingModal(false);
+  };
 
   useEffect(() => {
     const values = [];
@@ -162,19 +169,12 @@ const TraderCard = (props) => {
     navigate(providerLink);
   };
 
-  const initConfirmConfig = {
-    titleTranslationId: `confirm.${type}.unfollow.title`,
-    messageTranslationId: `confirm.${type}.unfollow.message`,
-    visible: false,
-  };
-
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-
-  const confirmAction = () => {
-    setConfirmConfig({
-      ...initConfirmConfig,
-      visible: true,
-    });
+  const handleProviderDisconnect = () => {
+    if (profitSharingProvider || copyTrader) {
+      showStopCopyingModal(true);
+    } else {
+      stopCopying();
+    }
   };
 
   const stopCopying = () => {
@@ -208,11 +208,14 @@ const TraderCard = (props) => {
 
   return (
     <LazyLoad height="310px" offset={600} once>
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={stopCopying}
-        setConfirmConfig={setConfirmConfig}
-      />
+      <Modal
+        onClose={handleStopCopyingModalClose}
+        persist={false}
+        size="small"
+        state={stopCopyingModal}
+      >
+        <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
+      </Modal>
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
@@ -330,7 +333,11 @@ const TraderCard = (props) => {
                     </div>
                   </CustomToolip>
                 ) : (
-                  <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
+                  <CustomButton
+                    className="textPurple"
+                    loading={loading}
+                    onClick={handleProviderDisconnect}
+                  >
                     <FormattedMessage
                       id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
                     />

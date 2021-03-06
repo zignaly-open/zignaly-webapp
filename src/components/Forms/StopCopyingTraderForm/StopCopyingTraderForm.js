@@ -12,9 +12,10 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import('../../../services/tradeApiClient.types').ProviderEntity} ProviderEntity
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
- * @property {DefaultProviderGetObject} provider
+ * @property {DefaultProviderGetObject | ProviderEntity} provider
  */
 
 /**
@@ -31,7 +32,6 @@ const StopCopyingTraderForm = ({ onClose, provider }) => {
 
   const stopCopying = () => {
     setLoader(true);
-
     if (!provider.profitSharing) {
       disable();
     } else {
