@@ -28,9 +28,9 @@ const TraderCard = (props) => {
       <TraderCardHeader provider={provider} />
       <TraderCardBody
         provider={provider}
+        reloadProviders={reloadProviders}
         showSummary={showSummary}
         timeFrame={timeFrame}
-        reloadProviders={reloadProviders}
       />
     </div>
   );
