@@ -18,7 +18,6 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import { ConfirmDialog } from "../../Dialogs";
 import dayjs from "dayjs";
 import Modal from "../../Modal";
 import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
