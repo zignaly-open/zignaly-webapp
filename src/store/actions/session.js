@@ -5,8 +5,6 @@ import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
-// import { userPilotLogin } from "../../utils/userPilotApi";
-// import { mixPanelTrigger } from "utils/mixpanelApi";
 import { analyticsTrigger } from "utils/analyticsJsApi";
 import { toggleBalanceBox } from "./settings";
 
