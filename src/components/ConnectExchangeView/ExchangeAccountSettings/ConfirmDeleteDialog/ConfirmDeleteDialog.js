@@ -99,8 +99,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           currentPath: previousPath,
         });
         onClose();
-        const authorizationPayload = { token: storeSession.tradeApi.accessToken };
-        dispatch(getUserData(authorizationPayload));
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

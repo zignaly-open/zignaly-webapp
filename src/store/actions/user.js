@@ -151,21 +151,31 @@ export const getDailyUserBalance = (payload) => {
 /**
  * Get user balance store thunk action.
  *
- * @param {AuthorizationPayload} payload Trade API user authorization.
+ * @param {String} token User's access token
+ * @param {'login'|'signup'} [eventType] User's event type
+ * @param {Function} [callback] callback function to execute
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const getUserData = (payload) => {
+export const getUserData = (token, eventType, callback) => {
   return async (dispatch) => {
     try {
-      const responseData = await tradeApi.userDataGet(payload);
-      const action = {
-        type: GET_USER_DATA,
-        payload: responseData,
-      };
+      if (token) {
+        const payload = {
+          token: token,
+        };
+        const responseData = await tradeApi.userDataGet(payload);
+        const action = {
+          type: GET_USER_DATA,
+          payload: responseData,
+        };
 
-      dispatch(action);
-      dispatch(initUserExchanges(payload.token, responseData.exchanges));
+        dispatch(action);
+        if (callback) {
+          callback(responseData, eventType);
+        }
+        dispatch(initUserExchanges(payload.token, responseData.exchanges));
+      }
     } catch (e) {
       dispatch(showErrorAlert(e));
     }

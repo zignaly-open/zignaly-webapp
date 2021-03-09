@@ -111,7 +111,7 @@ export const mixPanelTrigger = (userData, type) => {
       "Plan Id": "",
       "Plan Type": "",
       "Cookie-Ref": "",
-      Ref: userData.ref || "",
+      // Ref: userData.ref || "",
       "2FA": userData.twoFAEnable,
       Notify: userData.subscribe,
       Providers: userData.providerEnable,
@@ -119,7 +119,7 @@ export const mixPanelTrigger = (userData, type) => {
       "Binance Connected": userData.binanceConnected,
       "Buys Count": userData.buysCount,
       "Sells Count": userData.sellsCount,
-      Status: userData.status,
+      // Status: userData.status,
     });
     /* eslint-enable */
     mixPanel.track(eventToTrigger);

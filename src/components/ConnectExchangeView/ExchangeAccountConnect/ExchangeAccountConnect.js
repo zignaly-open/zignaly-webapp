@@ -102,10 +102,7 @@ const ExchangeAccountConnect = () => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
-        const exchangePayload = {
-          token: storeSession.tradeApi.accessToken,
-        };
-        dispatch(getUserData(exchangePayload));
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
         resetToPath(previousPath);
       })
       .catch((e) => {

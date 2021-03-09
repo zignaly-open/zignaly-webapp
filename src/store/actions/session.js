@@ -27,14 +27,10 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
 
 /**
  * @param {UserEntity} response User login payload.
+ * @param {'login'|'signup'} eventType User event.
  * @returns {AppThunk} return action object.
  */
-export const startTradeApiSession = (response) => {
-  const { gtmEvent } = gtmPushApi();
-  const eventType = {
-    event: "login",
-  };
-
+export const startTradeApiSession = (response, eventType) => {
   return async (dispatch) => {
     if (!response.token) return;
 
@@ -44,14 +40,8 @@ export const startTradeApiSession = (response) => {
     };
 
     dispatch(action);
-    // Add event type with user entity properties.
-    if (gtmEvent) {
-      gtmEvent.push(assign(eventType, response));
-    }
-    // mixPanelTrigger(response, "login");
-    analyticsTrigger(response, "login");
-    // userPilotLogin(response);
     dispatch(refreshSessionData(response.token));
+    dispatch(getUserData(response.token, eventType, initExternalWidgets));
   };
 };
 
@@ -84,44 +74,13 @@ export const endTradeApiSession = () => {
  * @returns {AppThunk} Thunk action function.
  */
 export const registerUser = (payload, setLoading) => {
-  const { gtmEvent } = gtmPushApi();
-  const eventType = {
-    event: "signup",
-  };
-
   return async (dispatch) => {
     try {
       const responseData = await tradeApi.userRegister(payload);
-      // Add event type with user entity properties.
-      if (gtmEvent) {
-        gtmEvent.push(assign(eventType, responseData));
-      }
-      startLiveSession(responseData);
-      // mixPanelTrigger(responseData, "signup");
-      analyticsTrigger(responseData, "signup");
-      // userPilotLogin(responseData);
-      dispatch(startTradeApiSession(responseData));
+      dispatch(startTradeApiSession(responseData, "signup"));
     } catch (e) {
       dispatch(showErrorAlert(e));
       setLoading(false);
-    }
-  };
-};
-
-/**
- * Function to preload user data.
- *
- * @param {string} token api token.
- * @returns {AppThunk} Thunk action.
- */
-export const loadAppUserData = (token) => {
-  return async (dispatch) => {
-    if (token) {
-      const authorizationPayload = {
-        token,
-      };
-
-      dispatch(getUserData(authorizationPayload));
     }
   };
 };
@@ -147,6 +106,28 @@ export const refreshSessionData = (token) => {
       dispatch(showErrorAlert(e));
     }
   };
+};
+
+/**
+ * Function to initialize enternal widgets like GTM, AnalyticsJS etc
+ *
+ * @param {UserEntity} userData user data.
+ * @param {'login'|'signup'} eventType event type.
+ * @returns {void}
+ */
+export const initExternalWidgets = (userData, eventType) => {
+  const { gtmEvent } = gtmPushApi();
+  const gtmpEventType = {
+    event: eventType,
+  };
+
+  if (gtmEvent) {
+    gtmEvent.push(assign(gtmpEventType, userData));
+  }
+  analyticsTrigger(userData, eventType);
+  if (eventType === "signup") {
+    startLiveSession(userData);
+  }
 };
 
 /**
