@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./ResetForm.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNW.svg";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import Link from "components/LocalizedLink";
 
