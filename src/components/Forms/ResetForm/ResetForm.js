@@ -20,9 +20,6 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
 
   const verify = () => {
     verifyCode(code)
-      .then(() => {
-        setExpired(true);
-      })
       .catch(() => {
         setExpired(true);
       })
