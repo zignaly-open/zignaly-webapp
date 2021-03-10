@@ -9,7 +9,7 @@ export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
 export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
-export const GET_USER_DATA = "GET_USER_DATA_ACTION";
+export const SET_USER_DATA = "SET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
 export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
 
@@ -166,7 +166,7 @@ export const getUserData = (token, eventType, callback) => {
         };
         const responseData = await tradeApi.userDataGet(payload);
         const action = {
-          type: GET_USER_DATA,
+          type: SET_USER_DATA,
           payload: responseData,
         };
 
