@@ -25,7 +25,7 @@ import Captcha from "../../Captcha";
 /**
  * @typedef {Object} PositionPageProps
  * @property {string} code Token aquired by the recover request.
- * @property {React.SetStateAction<*>} setVerified
+ * @property {React.SetStateAction<*>} setExpired
  */
 
 /**
@@ -34,7 +34,7 @@ import Captcha from "../../Captcha";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ResetPasswordForm = ({ code, setVerified }) => {
+const ResetPasswordForm = ({ code, setExpired }) => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
@@ -117,8 +117,11 @@ const ResetPasswordForm = ({ code, setVerified }) => {
           navigate("/login");
         })
         .catch((e) => {
-          dispatch(showErrorAlert(e));
-          setVerified(false);
+          if (e.code === 48) {
+            setExpired(false);
+          } else {
+            dispatch(showErrorAlert(e));
+          }
         })
         .finally(() => {
           setLoading(false);
