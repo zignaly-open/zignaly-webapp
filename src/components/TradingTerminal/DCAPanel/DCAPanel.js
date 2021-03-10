@@ -439,7 +439,14 @@ const DCAPanel = (props) => {
     return (
       <Box className="targetGroup" data-target-id={targetId} key={`target${targetId}`}>
         <Box className="targetPrice" display="flex" flexDirection="row" flexWrap="wrap">
-          <HelperLabel descriptionId="terminal.dca.help" labelId="terminal.target" />
+          <HelperLabel
+            descriptionId={
+              getDCAPriority(targetId) === "price"
+                ? "terminal.dca.help"
+                : "terminal.dca.percentage.help"
+            }
+            labelId="terminal.target"
+          />
           <DCATargetStatus
             dcaTarget={rebuyTargets[Number(targetId)] || null}
             labelId="terminal.status"
