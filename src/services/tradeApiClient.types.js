@@ -4416,6 +4416,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsMode: "",
       provType: "copytrading",
       providerLink: "",
+      exchangeInternalIds: null,
     },
     signalsInfo: [],
   };
