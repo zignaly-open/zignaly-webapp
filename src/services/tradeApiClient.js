@@ -350,7 +350,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
-            ...(token && { Authorization: "Bearer " + token })
+            ...(token && { Authorization: "Bearer " + token }),
           },
         }
       : { method: "GET" };
@@ -1366,8 +1366,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async enable2FA1Step(payload) {
-    const endpointPath = `/fe/api.php?action=enable2FA1Step&token=${payload.token}`;
-    const responseData = await this.doRequest(endpointPath, null);
+    const endpointPath = "/fe/api.php?action=enable2FA1Step";
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
   }
