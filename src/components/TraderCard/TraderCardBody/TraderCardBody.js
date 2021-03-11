@@ -205,18 +205,19 @@ const TraderCard = (props) => {
 
   const checkConnectedAccountExists = () => {
     if (provider.profitSharing) {
-      exchangeConnections.forEach((userExchange) => {
+      for (let index = 0; index < exchangeConnections.length; index++) {
         let found = provider.exchangeInternalIds.find(
-          (connectedExchange) => connectedExchange.internalId === userExchange.internalId,
+          (connectedExchange) =>
+            connectedExchange.internalId === exchangeConnections[index].internalId,
         );
         if (found) {
-          return userExchange;
+          return exchangeConnections[index];
         }
-        return null;
-      });
+      }
     } else {
       return exchangeConnections.find((a) => a.internalId === provider.exchangeInternalId);
     }
+    return null;
   };
 
   const connectedAccount = checkConnectedAccountExists();
