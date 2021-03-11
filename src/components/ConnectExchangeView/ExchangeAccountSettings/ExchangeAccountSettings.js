@@ -127,7 +127,7 @@ const ExchangeAccountSettings = () => {
     return tradeApi
       .exchangeUpdate(payload)
       .then(() => {
-        dispatch(getUserData({ token: storeSession.tradeApi.accessToken }));
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
         setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
         return true;
       })

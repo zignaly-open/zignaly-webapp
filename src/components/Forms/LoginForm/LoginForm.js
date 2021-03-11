@@ -54,12 +54,12 @@ const LoginForm = () => {
       showTwoFAModal(true);
       setLoading(false);
     } else {
-      dispatch(startTradeApiSession(response));
+      dispatch(startTradeApiSession(response, "login"));
     }
   };
 
   const onSuccess = () => {
-    dispatch(startTradeApiSession(loginResponse));
+    dispatch(startTradeApiSession(loginResponse, "login"));
   };
 
   /**

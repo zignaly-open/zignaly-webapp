@@ -6,7 +6,7 @@ import {
   GET_DAILY_USER_BALANCE,
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
-  GET_USER_DATA,
+  SET_USER_DATA,
   ENABLE_TWO_FA,
   SET_DAILY_BALANCE_LOADER,
 } from "../actions/user";
@@ -49,7 +49,7 @@ const user = createReducer(initialState.user, {
     state.dailyBalance = action.payload;
   },
 
-  [GET_USER_DATA]: (state, action) => {
+  [SET_USER_DATA]: (state, action) => {
     state.userData = action.payload;
     state.loaded = true;
   },
