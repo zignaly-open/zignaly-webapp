@@ -203,9 +203,24 @@ const TraderCard = (props) => {
       });
   };
 
-  const connectedAccount = exchangeConnections.find(
-    (a) => a.internalId === provider.exchangeInternalId,
-  );
+  const checkConnectedAccountExists = () => {
+    if (provider.profitSharing) {
+      for (let index = 0; index < exchangeConnections.length; index++) {
+        let found = provider.exchangeInternalIds.find(
+          (connectedExchange) =>
+            connectedExchange.internalId === exchangeConnections[index].internalId,
+        );
+        if (found) {
+          return exchangeConnections[index];
+        }
+      }
+    } else {
+      return exchangeConnections.find((a) => a.internalId === provider.exchangeInternalId);
+    }
+    return null;
+  };
+
+  const connectedAccount = checkConnectedAccountExists();
 
   return (
     <LazyLoad height="310px" offset={600} once>
@@ -314,7 +329,7 @@ const TraderCard = (props) => {
 
             <div className="actions">
               {canDisable &&
-                (connectedAccount && selectedExchange.internalId !== provider.exchangeInternalId ? (
+                (connectedAccount && connectedAccount.internalId !== selectedExchange.internalId ? (
                   <CustomToolip
                     title={
                       <FormattedMessage

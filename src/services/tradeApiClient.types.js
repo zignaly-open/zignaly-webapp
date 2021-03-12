@@ -664,7 +664,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
- *
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
 
 /**
@@ -1137,6 +1137,7 @@ function providerItemTransform(providerItem) {
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
     floating: parseFloat(providerItem.floating) || 0,
     aggregateFollowers: providerItem.aggregateFollowers ? providerItem.aggregateFollowers : [],
+    exchangeInternalIds: providerItem.exchangeInternalIds ? providerItem.exchangeInternalIds : [],
   });
 
   transformedResponse.dailyReturns.forEach((item) => {
@@ -1264,6 +1265,7 @@ function createEmptyProviderEntity() {
     profitsMode: "",
     provType: "copytrading",
     providerLink: "",
+    exchangeInternalIds: null,
   };
 }
 
@@ -4362,6 +4364,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsMode: "",
       provType: "copytrading",
       providerLink: "",
+      exchangeInternalIds: null,
     },
     signalsInfo: [],
   };
