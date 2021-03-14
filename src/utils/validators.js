@@ -12,15 +12,15 @@ export const validatePassword = (password) => {
   if (password) {
     if (password.length >= 3) {
       strength += 1;
-      for (let a = 0; a < password.length; a++) {
-        if (password[a] === password[a].toUpperCase()) {
+      for (let i = 0; i < password.length; i++) {
+        if (password[i] === password[i].toUpperCase()) {
           strength += 1;
           break;
         }
       }
       let str = String(password);
-      for (let a = 0; a < str.length; a++) {
-        let char = parseInt(str.charAt(a));
+      for (let i = 0; i < str.length; i++) {
+        let char = parseInt(str.charAt(i));
         if (!isNaN(char)) {
           strength += 1;
           break;

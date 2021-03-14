@@ -20,28 +20,25 @@ const PasswordStrength = (props) => {
   const [bars, setBars] = useState([]);
 
   useEffect(() => {
-    const checkStrength = () => {
-      let data = [];
-      let color = "";
-      if (strength === 1) {
-        color = "red";
+    let data = [];
+    let color = "";
+    if (strength === 1) {
+      color = "red";
+    }
+    if (strength > 1 && strength <= 3) {
+      color = "yellow";
+    }
+    if (strength >= 4) {
+      color = "green";
+    }
+    for (let i = 1; i <= 4; i++) {
+      if (i <= strength) {
+        data.push(color);
+      } else {
+        data.push("");
       }
-      if (strength > 1 && strength <= 3) {
-        color = "yellow";
-      }
-      if (strength >= 4) {
-        color = "green";
-      }
-      for (let a = 1; a <= 4; a++) {
-        if (a <= strength) {
-          data.push(color);
-        } else {
-          data.push("");
-        }
-      }
-      setBars(data);
-    };
-    checkStrength();
+    }
+    setBars(data);
   }, [strength]);
 
   return (

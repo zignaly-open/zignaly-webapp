@@ -12,7 +12,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionPageProps
  * @property {string} code Token aquired by the recover request.
- * @property {React.SetStateAction<*>} setVerified
+ * @property {React.SetStateAction<*>} setExpired
  */
 
 /**
@@ -21,7 +21,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ConfirmTwoFADisableForm = ({ code, setVerified }) => {
+const ConfirmTwoFADisableForm = ({ code, setExpired }) => {
   const [loading, setLoading] = useState(false);
   const { errors, handleSubmit, register, setError } = useForm();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const ConfirmTwoFADisableForm = ({ code, setVerified }) => {
             message: intl.formatMessage({ id: "form.error.apikey.error" }),
           });
         } else if (e.code === 48) {
-          setVerified(false);
+          setExpired(false);
         } else {
           dispatch(showErrorAlert(e));
         }

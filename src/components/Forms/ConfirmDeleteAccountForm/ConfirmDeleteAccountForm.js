@@ -12,7 +12,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 /**
  * @typedef {Object} PositionPageProps
  * @property {string} code code aquired by the recover request.
- * @property {React.SetStateAction<*>} setVerified
+ * @property {React.SetStateAction<*>} setExpired
  */
 
 /**
@@ -21,7 +21,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PositionPageProps} props Component properties.
  * @returns {JSX.Element} Reset Password element.
  */
-const ConfirmDeleteAccountForm = ({ code, setVerified }) => {
+const ConfirmDeleteAccountForm = ({ code, setExpired }) => {
   const [loading, setLoading] = useState(false);
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
@@ -52,9 +52,8 @@ const ConfirmDeleteAccountForm = ({ code, setVerified }) => {
         navigate("/login");
       })
       .catch((e) => {
-        if (e.code === 46) {
-          // link expired, todo: improve flow?
-          setVerified(false);
+        if (e.code === 48) {
+          setExpired(false);
         } else {
           dispatch(showErrorAlert(e));
         }
