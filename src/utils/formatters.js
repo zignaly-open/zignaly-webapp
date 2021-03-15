@@ -64,3 +64,15 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
 
   return addThousandsSeparator(formattedPrice, thousandSeparator, precision);
 };
+
+/**
+ * Prefix link with http to avoid xss attacks
+ * @param {string} url Url
+ * @return {string} url
+ */
+export const prefixLinkForXSS = (url) => {
+  if (!url.startsWith("http")) {
+    return "https://" + url;
+  }
+  return url;
+};
