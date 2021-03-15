@@ -12,6 +12,7 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 import FlagIcon from "components/FlagIcon";
+import { prefixLinkForXSS } from "utils/formatters";
 
 /**
  * @typedef {Object} DefaultProps
@@ -34,7 +35,7 @@ const WhoWeAre = ({ provider }) => {
    */
   const redirectToSocial = (link) => {
     if (typeof window !== "undefined") {
-      window.open(link, "_blank");
+      window.open(prefixLinkForXSS(link), "_blank");
     }
   };
 
