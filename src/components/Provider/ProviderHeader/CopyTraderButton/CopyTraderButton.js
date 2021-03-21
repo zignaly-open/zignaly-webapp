@@ -153,38 +153,18 @@ const CopyTraderButton = ({ provider }) => {
       });
   };
 
-  const getTooltip = () => {
-    if (userData.isAdmin) {
-      return "";
-    }
-
-    if (provider.isAdmin) {
-      if (provider.followers === 1 && positions && positions.length === 0) {
-        return "";
-      }
+  const getPSButtonTooltip = () => {
+    if (!PSCanBeDisconnected()) {
       return (
         <Typography variant="body1">
           <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
         </Typography>
       );
     }
-
-    return "";
   };
 
-  const checkIfCanBeDisconnected = () => {
-    if (userData.isAdmin) {
-      return true;
-    }
-
-    if (provider.isAdmin) {
-      if (provider.followers === 1 && positions && positions.length === 0) {
-        return true;
-      }
-      return false;
-    }
-
-    return true;
+  const PSCanBeDisconnected = () => {
+    return !provider.isAdmin || (provider.followers <= 1 && positions && positions.length === 0);
   };
 
   return (
@@ -202,67 +182,70 @@ const CopyTraderButton = ({ provider }) => {
       />
       {profitSharing ? (
         <>
-          {disabled && !disconnecting && (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && (
-            <Tooltip placement="top" title={getTooltip()}>
-              <span>
-                <CustomButton
-                  className="loadMoreButton"
-                  disabled={!checkIfCanBeDisconnected()}
-                  onClick={() => showStopCopyingModal(true)}
-                >
-                  <FormattedMessage id="copyt.stopcopyingtrader" />
-                </CustomButton>
-              </span>
-            </Tooltip>
-          )}
-          {!disabled && disconnecting && (
-            <CustomButton
-              className="loadMoreButton"
-              loading={cancelDisconnectLoader}
-              onClick={confirmCancel}
-            >
-              <FormattedMessage id="copyt.canceldisconnecting" />
-            </CustomButton>
+          {!disconnecting ? (
+            disabled ? (
+              <CustomButton className="submitButton" onClick={startCopying}>
+                <FormattedMessage id="copyt.copythistrader" />
+              </CustomButton>
+            ) : (
+              <Tooltip placement="top" title={getPSButtonTooltip()}>
+                <span>
+                  <CustomButton
+                    className="loadMoreButton"
+                    disabled={!PSCanBeDisconnected()}
+                    onClick={() => showStopCopyingModal(true)}
+                  >
+                    <FormattedMessage id="copyt.stopcopyingtrader" />
+                  </CustomButton>
+                </span>
+              </Tooltip>
+            )
+          ) : (
+            !disabled && (
+              <CustomButton
+                className="loadMoreButton"
+                loading={cancelDisconnectLoader}
+                onClick={confirmCancel}
+              >
+                <FormattedMessage id="copyt.canceldisconnecting" />
+              </CustomButton>
+            )
           )}
         </>
       ) : (
         <>
-          {disabled && !disconnecting && (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
-            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-              <FormattedMessage id="copyt.stopcopyingtrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && !sameSelectedExchange && (
-            <Box
-              alignItems="center"
-              className="actionHelpBox"
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-start"
-            >
-              <Typography variant="h4">
-                <FormattedMessage id="copyt.followingfrom" />
-              </Typography>
-              <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
-                <Box>
-                  <ExchangeIcon
-                    exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
-                    size="mediumLarge"
-                  />
+          {!disconnecting &&
+            (disabled ? (
+              <CustomButton className="submitButton" onClick={startCopying}>
+                <FormattedMessage id="copyt.copythistrader" />
+              </CustomButton>
+            ) : !followingFrom || sameSelectedExchange ? (
+              <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+                <FormattedMessage id="copyt.stopcopyingtrader" />
+              </CustomButton>
+            ) : (
+              !sameSelectedExchange && (
+                <Box
+                  alignItems="center"
+                  className="actionHelpBox"
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-start"
+                >
+                  <Typography variant="h4">
+                    <FormattedMessage id="copyt.followingfrom" />
+                  </Typography>
+                  <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
+                    <Box>
+                      <ExchangeIcon
+                        exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                        size="mediumLarge"
+                      />
+                    </Box>
+                  </Tooltip>
                 </Box>
-              </Tooltip>
-            </Box>
-          )}
+              )
+            ))}
         </>
       )}
       <Modal
