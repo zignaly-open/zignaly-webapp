@@ -66,7 +66,8 @@ const PositionsTable = (props) => {
     sides,
     modifiedFilters,
   } = usePositionsList(type, positionEntity, notifyPositionsUpdate, persistKey);
-  const showTypesFilter = type === "log";
+  // Show option to display all error logs for admins
+  const showTypesFilter = type === "log" && userData.isAdmin;
   const { formatMessage } = useIntl();
   const [marginPosition, setMarginPosition] = useState(null);
 
