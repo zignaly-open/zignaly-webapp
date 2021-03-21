@@ -540,21 +540,6 @@ class TradeApiClient {
   }
 
   /**
-   * Get user's exchange connections.
-   *
-   * @param {AuthorizationPayload} payload User's exchange connections payload.
-   * @returns {Promise<Array<ExchangeConnectionEntity>>} Promise that resolbves user's exchange connections.
-   * @memberof TradeApiClient
-   */
-
-  async userExchangesGet(payload) {
-    const endpointPath = "/fe/api.php?action=getUserExchanges";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userExchangeConnectionResponseTransform(responseData);
-  }
-
-  /**
    * Get user's quick balance summary.
    *
    * @param {UserBalancePayload} payload Get user balance summary payload.
