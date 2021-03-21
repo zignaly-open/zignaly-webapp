@@ -7,7 +7,6 @@ import {
   positionsResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
-  userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   positionItemTransform,
   userEquityResponseTransform,
@@ -537,21 +536,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return hasBeenUsedProvidersResponseTransform(responseData);
-  }
-
-  /**
-   * Get user's exchange connections.
-   *
-   * @param {AuthorizationPayload} payload User's exchange connections payload.
-   * @returns {Promise<Array<ExchangeConnectionEntity>>} Promise that resolbves user's exchange connections.
-   * @memberof TradeApiClient
-   */
-
-  async userExchangesGet(payload) {
-    const endpointPath = "/fe/api.php?action=getUserExchanges";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userExchangeConnectionResponseTransform(responseData);
   }
 
   /**

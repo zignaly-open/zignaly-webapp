@@ -141,15 +141,6 @@ describe("Consume tradeApiClient service", () => {
     assert.isString(providersCollection[0].id, "First collection provider ID is not a string.");
   }, 60000);
 
-  it("should get user exchange connections", async () => {
-    const getExchangeConnectionPayload = {
-      token: accessToken,
-    };
-
-    const exchangeConnections = await client.userExchangesGet(getExchangeConnectionPayload);
-    assert.isArray(exchangeConnections, "Exchange connection is not an array.");
-  }, 60000);
-
   it("should get user balance", async () => {
     const getBalancePayload = {
       token: accessToken,
