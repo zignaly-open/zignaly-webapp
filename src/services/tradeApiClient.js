@@ -7,7 +7,6 @@ import {
   positionsResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
-  userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   positionItemTransform,
   userEquityResponseTransform,
