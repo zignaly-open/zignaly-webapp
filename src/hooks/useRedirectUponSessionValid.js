@@ -20,11 +20,17 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
 
     if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
       // Navigate to return url or dashboard
-      const params = new URLSearchParams(
-        typeof window !== "undefined" ? window.location.search : "",
-      );
-      const path =
-        newUserPath || (params.get("ret") && decodeURIComponent(params.get("ret"))) || "/dashboard";
+      const params = new URLSearchParams(window.location.search);
+      let path = newUserPath || "/dashboard";
+      if (params.get("ret")) {
+        // Redirect to last visited page
+        const ret = decodeURIComponent(params.get("ret"));
+        // Ensure we are not redirecting to an external domain
+        if (ret.indexOf(".") === -1) {
+          path = ret;
+        }
+      }
+
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
