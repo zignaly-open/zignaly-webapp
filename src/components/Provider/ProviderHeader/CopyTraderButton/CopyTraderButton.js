@@ -23,10 +23,10 @@ import SuccessBox from "./SuccessBox";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {import('services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * Button to copy a service provider.
  *
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
@@ -214,17 +214,16 @@ const CopyTraderButton = ({ provider }) => {
         </>
       ) : (
         <>
-          {!disconnecting &&
-            (disabled ? (
-              <CustomButton className="submitButton" onClick={startCopying}>
-                <FormattedMessage id="copyt.copythistrader" />
-              </CustomButton>
-            ) : !followingFrom || sameSelectedExchange ? (
+          {disabled ? (
+            <CustomButton className="submitButton" onClick={startCopying}>
+              <FormattedMessage id="copyt.copythistrader" />
+            </CustomButton>
+          ) : (
+            <>
               <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
                 <FormattedMessage id="copyt.stopcopyingtrader" />
               </CustomButton>
-            ) : (
-              !sameSelectedExchange && (
+              {!sameSelectedExchange && (
                 <Box
                   alignItems="center"
                   className="actionHelpBox"
@@ -244,8 +243,9 @@ const CopyTraderButton = ({ provider }) => {
                     </Box>
                   </Tooltip>
                 </Box>
-              )
-            ))}
+              )}
+            </>
+          )}
         </>
       )}
       <Modal
