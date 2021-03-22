@@ -180,50 +180,15 @@ const CopyTraderButton = ({ provider }) => {
         executeActionCallback={cancelDisconnect}
         setConfirmConfig={setConfirmConfig}
       />
-      {profitSharing ? (
-        <>
-          {!disconnecting ? (
-            disabled ? (
-              <CustomButton className="submitButton" onClick={startCopying}>
-                <FormattedMessage id="copyt.copythistrader" />
-              </CustomButton>
-            ) : (
-              <Tooltip placement="top" title={getPSButtonTooltip()}>
-                <span>
-                  <CustomButton
-                    className="loadMoreButton"
-                    disabled={!PSCanBeDisconnected()}
-                    onClick={() => showStopCopyingModal(true)}
-                  >
-                    <FormattedMessage id="copyt.stopcopyingtrader" />
-                  </CustomButton>
-                </span>
-              </Tooltip>
-            )
-          ) : (
-            !disabled && (
-              <CustomButton
-                className="loadMoreButton"
-                loading={cancelDisconnectLoader}
-                onClick={confirmCancel}
-              >
-                <FormattedMessage id="copyt.canceldisconnecting" />
-              </CustomButton>
-            )
-          )}
-        </>
-      ) : (
-        <>
-          {disabled ? (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
-          ) : (
+      <>
+        {!disconnecting ? (
+          disabled ? (
             <>
-              <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-                <FormattedMessage id="copyt.stopcopyingtrader" />
-              </CustomButton>
-              {!sameSelectedExchange && (
+              {sameSelectedExchange ? (
+                <CustomButton className="submitButton" onClick={startCopying}>
+                  <FormattedMessage id="copyt.copythistrader" />
+                </CustomButton>
+              ) : (
                 <Box
                   alignItems="center"
                   className="actionHelpBox"
@@ -245,9 +210,31 @@ const CopyTraderButton = ({ provider }) => {
                 </Box>
               )}
             </>
-          )}
-        </>
-      )}
+          ) : (
+            <Tooltip placement="top" title={getPSButtonTooltip()}>
+              <span>
+                <CustomButton
+                  className="loadMoreButton"
+                  disabled={!PSCanBeDisconnected()}
+                  onClick={() => showStopCopyingModal(true)}
+                >
+                  <FormattedMessage id="copyt.stopcopyingtrader" />
+                </CustomButton>
+              </span>
+            </Tooltip>
+          )
+        ) : (
+          !disabled && (
+            <CustomButton
+              className="loadMoreButton"
+              loading={cancelDisconnectLoader}
+              onClick={confirmCancel}
+            >
+              <FormattedMessage id="copyt.canceldisconnecting" />
+            </CustomButton>
+          )
+        )}
+      </>
       <Modal
         onClose={handleStopCopyingModalClose}
         persist={false}
