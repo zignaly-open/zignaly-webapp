@@ -46,6 +46,7 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
+import { store } from "store/store.js";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
@@ -337,8 +338,9 @@ class TradeApiClient {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
 
+    const state = store.getState();
     // @ts-ignore
-    const token = payload.token;
+    const token = state.session.tradeApi.accessToken;
 
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
