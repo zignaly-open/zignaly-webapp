@@ -1267,6 +1267,7 @@ function createEmptyProviderEntity() {
     provType: "copytrading",
     providerLink: "",
     exchangeInternalIds: null,
+    isAdmin: false,
   };
 }
 
@@ -4366,6 +4367,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       provType: "copytrading",
       providerLink: "",
       exchangeInternalIds: null,
+      isAdmin: false,
     },
     signalsInfo: [],
   };
