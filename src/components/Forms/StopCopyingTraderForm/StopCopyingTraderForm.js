@@ -114,20 +114,55 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
       className="stopCopyingForm"
       display="flex"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="flex-start"
+      flex={1}
     >
       {canDisconnectLoading ? (
-        <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="center"
+          flex={1}
+          width={1}
+        >
           <CircularProgress className="loader" />
         </Box>
       ) : canDisconnect ? (
         <>
-          {provider.profitSharing && (
-            <Typography variant="h3">
-              <FormattedMessage id="confirm.copyt.unfollow.title2" />
-            </Typography>
-          )}
-          {!provider.profitSharing && (
+          {provider.profitSharing ? (
+            <>
+              <Typography variant="h3">
+                <FormattedMessage id="confirm.copyt.unfollow.title2" />
+              </Typography>
+              <Box className="labeledInputsBox" display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="row" justifyContent="space-between">
+                  <span
+                    className={"button " + (disconnectionType === "soft" ? "checked" : "")}
+                    onClick={() => setDisconnectType("soft")}
+                  >
+                    <FormattedMessage id="trader.softdisconnect" />
+                  </span>
+                  {/* <span
+              className={"button " + (disconnectType === "hard" ? "checked" : "")}
+              onClick={() => setDisconnectType("hard")}
+            >
+              <FormattedMessage id="trader.harddisconnect" />
+            </span> */}
+                </Box>
+                {disconnectionType === "soft" && (
+                  <span className="info">
+                    <FormattedMessage id="trader.softdisconnect.tooltip" />
+                  </span>
+                )}
+                {disconnectionType === "hard" && (
+                  <span className="info">
+                    <FormattedMessage id="trader.harddisconnect.tooltip" />
+                  </span>
+                )}
+              </Box>
+            </>
+          ) : (
             <>
               <Typography variant="h3">
                 <FormattedMessage id="confirm.copyt.unfollow.title" />
@@ -137,35 +172,6 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
                 <FormattedMessage id="confirm.copyt.unfollow.message" />
               </Typography>
             </>
-          )}
-
-          {provider.profitSharing && (
-            <Box className="labeledInputsBox" display="flex" flexDirection="column">
-              <Box display="flex" flexDirection="row" justifyContent="space-between">
-                <span
-                  className={"button " + (disconnectionType === "soft" ? "checked" : "")}
-                  onClick={() => setDisconnectType("soft")}
-                >
-                  <FormattedMessage id="trader.softdisconnect" />
-                </span>
-                {/* <span
-              className={"button " + (disconnectType === "hard" ? "checked" : "")}
-              onClick={() => setDisconnectType("hard")}
-            >
-              <FormattedMessage id="trader.harddisconnect" />
-            </span> */}
-              </Box>
-              {disconnectionType === "soft" && (
-                <span className="info">
-                  <FormattedMessage id="trader.softdisconnect.tooltip" />
-                </span>
-              )}
-              {disconnectionType === "hard" && (
-                <span className="info">
-                  <FormattedMessage id="trader.harddisconnect.tooltip" />
-                </span>
-              )}
-            </Box>
           )}
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
@@ -179,9 +185,14 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
           </Box>
         </>
       ) : (
-        <span className="info">
-          <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
-        </span>
+        <>
+          <Typography variant="h3">
+            <FormattedMessage id="confirm.copyt.unfollow.title" />
+          </Typography>
+          <Typography variant="body1">
+            <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
+          </Typography>
+        </>
       )}
     </Box>
   );
