@@ -665,6 +665,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
+ * @property {boolean} isAdmin True if the current user is provider's admin
  */
 
 /**
