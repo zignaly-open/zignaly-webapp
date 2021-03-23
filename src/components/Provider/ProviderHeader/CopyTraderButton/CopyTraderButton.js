@@ -46,7 +46,6 @@ const CopyTraderButton = ({ provider }) => {
   const followingFrom =
     exchangeConnections &&
     exchangeConnections.find((e) => e.internalId === provider.exchangeInternalId);
-  console.log(provider, followingFrom);
   const exchangeData =
     provider.exchangeInternalIds &&
     provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);

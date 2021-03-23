@@ -204,26 +204,15 @@ const TraderCard = (props) => {
       });
   };
 
-  /**
-   * Find exchange account copying the service
-   * @returns {ExchangeConnectionEntity} Exchange Account
-   */
-  const getConnectedAccount = () => {
-    return exchangeConnections.find((e) => {
-      // if (provider.profitSharing) {
-      //   return provider.exchangeInternalIds.find(
-      //     (providerExchange) => providerExchange.internalId === e.internalId,
-      //   );
-      // }
-
-      return e.internalId === provider.exchangeInternalId;
-    });
-  };
-  console.log(provider);
-
-  const connectedAccount = getConnectedAccount();
+  const connectedAccount = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
   const isCopyingWithAnotherAccount =
     connectedAccount && connectedAccount.internalId !== selectedExchange.internalId;
+  const exchangeData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+  const disconnecting = exchangeData && exchangeData.disconnecting;
 
   const getPSButtonTooltip = () => {
     if (isCopyingWithAnotherAccount) {
@@ -350,7 +339,7 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {canDisable && (
+              {!disconnecting && canDisable && (
                 <CustomToolip title={getPSButtonTooltip()}>
                   <div>
                     <CustomButton
