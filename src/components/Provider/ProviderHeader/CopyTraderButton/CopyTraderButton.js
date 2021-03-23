@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./CopyTraderButton.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
@@ -7,10 +7,7 @@ import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
-import {
-  useStoreUserData,
-  useStoreUserExchangeConnections,
-} from "../../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";

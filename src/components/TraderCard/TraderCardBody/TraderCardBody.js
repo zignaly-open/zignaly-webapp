@@ -344,8 +344,8 @@ const TraderCard = (props) => {
                   <div>
                     <CustomButton
                       className="textPurple"
-                      loading={loading}
                       disabled={isCopyingWithAnotherAccount}
+                      loading={loading}
                       onClick={handleProviderDisconnect}
                     >
                       <FormattedMessage

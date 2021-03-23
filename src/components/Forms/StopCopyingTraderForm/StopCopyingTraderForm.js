@@ -113,17 +113,17 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
       alignItems="flex-start"
       className="stopCopyingForm"
       display="flex"
+      flex={1}
       flexDirection="column"
       justifyContent="flex-start"
-      flex={1}
     >
       {canDisconnectLoading ? (
         <Box
-          display="flex"
-          flexDirection="row"
           alignItems="center"
-          justifyContent="center"
+          display="flex"
           flex={1}
+          flexDirection="row"
+          justifyContent="center"
           width={1}
         >
           <CircularProgress className="loader" />
