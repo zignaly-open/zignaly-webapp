@@ -26,8 +26,9 @@ import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
- * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
- * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").DailyReturn} DailyReturn
+ * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  */
@@ -203,24 +204,34 @@ const TraderCard = (props) => {
       });
   };
 
-  const checkConnectedAccountExists = () => {
-    if (provider.profitSharing) {
-      for (let index = 0; index < exchangeConnections.length; index++) {
-        let found = provider.exchangeInternalIds.find(
-          (connectedExchange) =>
-            connectedExchange.internalId === exchangeConnections[index].internalId,
-        );
-        if (found) {
-          return exchangeConnections[index];
-        }
-      }
-    } else {
-      return exchangeConnections.find((a) => a.internalId === provider.exchangeInternalId);
-    }
-    return null;
-  };
+  const connectedAccount = exchangeConnections.find(
+    (e) => e.internalId === provider.exchangeInternalId,
+  );
+  const isCopyingWithAnotherAccount =
+    connectedAccount && connectedAccount.internalId !== selectedExchange.internalId;
+  const exchangeData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+  const disconnecting = exchangeData && exchangeData.disconnecting;
 
-  const connectedAccount = checkConnectedAccountExists();
+  const getPSButtonTooltip = () => {
+    if (isCopyingWithAnotherAccount) {
+      return (
+        <FormattedMessage
+          id={
+            copyTrader || profitSharingProvider
+              ? "copyt.follow.anotheraccount"
+              : "srv.follow.anotheraccount"
+          }
+          values={{
+            account: connectedAccount.internalName,
+          }}
+        />
+      );
+    }
+
+    return "";
+  };
 
   return (
     <LazyLoad height="310px" offset={600} once>
@@ -328,41 +339,22 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {canDisable &&
-                (connectedAccount && connectedAccount.internalId !== selectedExchange.internalId ? (
-                  <CustomToolip
-                    title={
+              {!disconnecting && canDisable && (
+                <CustomToolip title={getPSButtonTooltip()}>
+                  <div>
+                    <CustomButton
+                      className="textPurple"
+                      disabled={isCopyingWithAnotherAccount}
+                      loading={loading}
+                      onClick={handleProviderDisconnect}
+                    >
                       <FormattedMessage
-                        id={
-                          copyTrader || profitSharingProvider
-                            ? "copyt.follow.anotheraccount"
-                            : "srv.follow.anotheraccount"
-                        }
-                        values={{
-                          account: connectedAccount.internalName,
-                        }}
+                        id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
                       />
-                    }
-                  >
-                    <div>
-                      <CustomButton className="textPurple" disabled={true}>
-                        <FormattedMessage
-                          id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
-                        />
-                      </CustomButton>
-                    </div>
-                  </CustomToolip>
-                ) : (
-                  <CustomButton
-                    className="textPurple"
-                    loading={loading}
-                    onClick={handleProviderDisconnect}
-                  >
-                    <FormattedMessage
-                      id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
-                    />
-                  </CustomButton>
-                ))}
+                    </CustomButton>
+                  </div>
+                </CustomToolip>
+              )}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage
                   id={copyTrader || profitSharingProvider ? "trader.view" : "provider.view"}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./CopyTraderButton.scss";
 import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
@@ -7,14 +7,11 @@ import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
-import {
-  useStoreUserData,
-  useStoreUserExchangeConnections,
-} from "../../../../hooks/useStoreUserSelector";
+import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
@@ -23,10 +20,10 @@ import SuccessBox from "./SuccessBox";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
+ * @property {import('services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
 /**
- * Provides the navigation bar for the dashboard.
+ * Button to copy a service provider.
  *
  * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
@@ -34,28 +31,22 @@ import SuccessBox from "./SuccessBox";
 const CopyTraderButton = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
-  const [positions, setPositions] = useState(null);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
-  const { profitSharing } = provider;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const followingFrom =
     exchangeConnections &&
     exchangeConnections.find((e) => e.internalId === provider.exchangeInternalId);
-  const disconnectedExchangeData = provider.exchangeInternalIds
-    ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
-    : undefined;
-  const disconnecting =
-    disconnectedExchangeData && disconnectedExchangeData.disconnecting
-      ? disconnectedExchangeData.disconnecting
-      : false;
+  const exchangeData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+  const disconnecting = exchangeData && exchangeData.disconnecting;
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -76,25 +67,6 @@ const CopyTraderButton = ({ provider }) => {
       visible: true,
     });
   };
-
-  const loadPositions = () => {
-    if (provider.id && provider.profitSharing && provider.isAdmin && !provider.disable) {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-      };
-      tradeApi
-        .providerOpenPositions(payload)
-        .then((response) => {
-          setPositions(response);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
-  };
-
-  useEffect(loadPositions, [provider.id]);
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -153,40 +125,6 @@ const CopyTraderButton = ({ provider }) => {
       });
   };
 
-  const getTooltip = () => {
-    if (userData.isAdmin) {
-      return "";
-    }
-
-    if (provider.isAdmin) {
-      if (provider.followers === 1 && positions && positions.length === 0) {
-        return "";
-      }
-      return (
-        <Typography variant="body1">
-          <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
-        </Typography>
-      );
-    }
-
-    return "";
-  };
-
-  const checkIfCanBeDisconnected = () => {
-    if (userData.isAdmin) {
-      return true;
-    }
-
-    if (provider.isAdmin) {
-      if (provider.followers === 1 && positions && positions.length === 0) {
-        return true;
-      }
-      return false;
-    }
-
-    return true;
-  };
-
   return (
     <Box
       alignItems="center"
@@ -200,27 +138,43 @@ const CopyTraderButton = ({ provider }) => {
         executeActionCallback={cancelDisconnect}
         setConfirmConfig={setConfirmConfig}
       />
-      {profitSharing ? (
-        <>
-          {disabled && !disconnecting && (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && (
-            <Tooltip placement="top" title={getTooltip()}>
-              <span>
-                <CustomButton
-                  className="loadMoreButton"
-                  disabled={!checkIfCanBeDisconnected()}
-                  onClick={() => showStopCopyingModal(true)}
-                >
-                  <FormattedMessage id="copyt.stopcopyingtrader" />
+      <>
+        {!disconnecting ? (
+          disabled ? (
+            <>
+              {sameSelectedExchange ? (
+                <CustomButton className="submitButton" onClick={startCopying}>
+                  <FormattedMessage id="copyt.copythistrader" />
                 </CustomButton>
-              </span>
-            </Tooltip>
-          )}
-          {!disabled && disconnecting && (
+              ) : (
+                <Box
+                  alignItems="center"
+                  className="actionHelpBox"
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-start"
+                >
+                  <Typography variant="h4">
+                    <FormattedMessage id="copyt.followingfrom" />
+                  </Typography>
+                  <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
+                    <Box>
+                      <ExchangeIcon
+                        exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                        size="mediumLarge"
+                      />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              )}
+            </>
+          ) : (
+            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+              <FormattedMessage id="copyt.stopcopyingtrader" />
+            </CustomButton>
+          )
+        ) : (
+          !disabled && (
             <CustomButton
               className="loadMoreButton"
               loading={cancelDisconnectLoader}
@@ -228,43 +182,9 @@ const CopyTraderButton = ({ provider }) => {
             >
               <FormattedMessage id="copyt.canceldisconnecting" />
             </CustomButton>
-          )}
-        </>
-      ) : (
-        <>
-          {disabled && !disconnecting && (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && (!followingFrom || sameSelectedExchange) && (
-            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-              <FormattedMessage id="copyt.stopcopyingtrader" />
-            </CustomButton>
-          )}
-          {!disabled && !disconnecting && !sameSelectedExchange && (
-            <Box
-              alignItems="center"
-              className="actionHelpBox"
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-start"
-            >
-              <Typography variant="h4">
-                <FormattedMessage id="copyt.followingfrom" />
-              </Typography>
-              <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
-                <Box>
-                  <ExchangeIcon
-                    exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
-                    size="mediumLarge"
-                  />
-                </Box>
-              </Tooltip>
-            </Box>
-          )}
-        </>
-      )}
+          )
+        )}
+      </>
       <Modal
         onClose={handleStopCopyingModalClose}
         persist={false}
