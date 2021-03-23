@@ -14,7 +14,7 @@ import {
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { setProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
@@ -34,28 +34,23 @@ import SuccessBox from "./SuccessBox";
 const CopyTraderButton = ({ provider }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const storeSession = useStoreSessionSelector();
-  const userData = useStoreUserData();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
   const [connectModal, showConnectModal] = useState(false);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
-  const [positions, setPositions] = useState(null);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
   const disabled = provider.disable;
-  const { profitSharing } = provider;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const followingFrom =
     exchangeConnections &&
     exchangeConnections.find((e) => e.internalId === provider.exchangeInternalId);
-  const disconnectedExchangeData = provider.exchangeInternalIds
-    ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
-    : undefined;
-  const disconnecting =
-    disconnectedExchangeData && disconnectedExchangeData.disconnecting
-      ? disconnectedExchangeData.disconnecting
-      : false;
+  console.log(provider, followingFrom);
+  const exchangeData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+  const disconnecting = exchangeData && exchangeData.disconnecting;
 
   /**
    * @typedef {import("../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -76,25 +71,6 @@ const CopyTraderButton = ({ provider }) => {
       visible: true,
     });
   };
-
-  const loadPositions = () => {
-    if (provider.id && provider.profitSharing && provider.isAdmin && !provider.disable) {
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        providerId: provider.id,
-      };
-      tradeApi
-        .providerOpenPositions(payload)
-        .then((response) => {
-          setPositions(response);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
-  };
-
-  useEffect(loadPositions, [provider.id]);
 
   const startCopying = () => {
     if (exchangeConnections.length) {
@@ -153,20 +129,6 @@ const CopyTraderButton = ({ provider }) => {
       });
   };
 
-  const getPSButtonTooltip = () => {
-    if (!PSCanBeDisconnected()) {
-      return (
-        <Typography variant="body1">
-          <FormattedMessage id="copyt.stopcopyingtrader.tooltip" />
-        </Typography>
-      );
-    }
-  };
-
-  const PSCanBeDisconnected = () => {
-    return !provider.isAdmin || (provider.followers <= 1 && positions && positions.length === 0);
-  };
-
   return (
     <Box
       alignItems="center"
@@ -211,17 +173,9 @@ const CopyTraderButton = ({ provider }) => {
               )}
             </>
           ) : (
-            <Tooltip placement="top" title={getPSButtonTooltip()}>
-              <span>
-                <CustomButton
-                  className="loadMoreButton"
-                  disabled={!PSCanBeDisconnected()}
-                  onClick={() => showStopCopyingModal(true)}
-                >
-                  <FormattedMessage id="copyt.stopcopyingtrader" />
-                </CustomButton>
-              </span>
-            </Tooltip>
+            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+              <FormattedMessage id="copyt.stopcopyingtrader" />
+            </CustomButton>
           )
         ) : (
           !disabled && (
