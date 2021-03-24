@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./ResetForm.scss";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNW.svg";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import Link from "components/LocalizedLink";
 
@@ -16,16 +14,12 @@ import Link from "components/LocalizedLink";
  */
 const ResetForm = ({ code, form: Form, verifyCode }) => {
   const [loading, setLoading] = useState(true);
-  const [verified, setVerified] = useState(false);
-  const dispatch = useDispatch();
+  const [expired, setExpired] = useState(false);
 
   const verify = () => {
     verifyCode(code)
-      .then(() => {
-        setVerified(true);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
+      .catch(() => {
+        setExpired(true);
       })
       .finally(() => {
         setLoading(false);
@@ -44,10 +38,10 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
     >
       {loading ? (
         <CircularProgress color="primary" size={50} />
-      ) : verified ? (
+      ) : !expired ? (
         <>
           <img alt="Zignaly" className="logo" src={Logo} />
-          <Form code={code} setVerified={setVerified} />
+          <Form code={code} setExpired={setExpired} />
         </>
       ) : (
         <Box alignItems="center" className="errorBox" display="flex" flexDirection="column">

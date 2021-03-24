@@ -10,6 +10,8 @@ import PasswordInput from "../../../Passwords/PasswordInput";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import { navigateLogin } from "services/navigation";
+import { endTradeApiSession } from "store/actions/session";
 import "./UpdatePassword.scss";
 
 /**
@@ -56,7 +58,8 @@ const UpdatePassword = () => {
         dispatch(
           showSuccessAlert("Success", intl.formatMessage({ id: "security.password.success" })),
         );
-        setEditing(false);
+        dispatch(endTradeApiSession());
+        navigateLogin();
       })
       .catch((e) => {
         if (e.code === 7) {

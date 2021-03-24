@@ -9,7 +9,7 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import SettingsView from "../../components/SettingsView";
 import { useDispatch } from "react-redux";
-import { loadAppUserData, refreshSessionData } from "../../store/actions/session";
+import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
 import { ConfirmDialog } from "../../components/Dialogs";
 import useInterval from "../../hooks/useInterval";
@@ -19,6 +19,7 @@ import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
+import { getUserData } from "store/actions/user";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -55,7 +56,7 @@ const PrivateAreaLayout = (props) => {
   useInterval(updateSession, minToMillisec(60), true);
 
   const loadUserData = () => {
-    dispatch(loadAppUserData(storeSession.tradeApi.accessToken));
+    dispatch(getUserData(storeSession.tradeApi.accessToken));
   };
   useEffect(loadUserData, []);
 

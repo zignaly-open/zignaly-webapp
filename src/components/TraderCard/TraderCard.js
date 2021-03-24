@@ -11,6 +11,7 @@ import TraderCardBody from "./TraderCardBody";
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {Provider} provider The provider to display.
  * @property {number} timeFrame Selected timeFrame.
+ * @property {Function} reloadProviders reload providers list.
  */
 
 /**
@@ -20,12 +21,17 @@ import TraderCardBody from "./TraderCardBody";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { provider, showSummary, timeFrame } = props;
+  const { provider, showSummary, timeFrame, reloadProviders } = props;
 
   return (
     <div className="traderCard">
       <TraderCardHeader provider={provider} />
-      <TraderCardBody provider={provider} showSummary={showSummary} timeFrame={timeFrame} />
+      <TraderCardBody
+        provider={provider}
+        reloadProviders={reloadProviders}
+        showSummary={showSummary}
+        timeFrame={timeFrame}
+      />
     </div>
   );
 };

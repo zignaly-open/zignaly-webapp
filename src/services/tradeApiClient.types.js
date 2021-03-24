@@ -292,41 +292,15 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} createdAt Creation timestamp: e.g. (2020-05-14T14:34:48).
  * @property {boolean} providerEnable Indicates if user is subscribed to signal providers.
  * @property {boolean} twoFAEnable Indicate if 2FA is enabled.
- * @property {string} ref
  * @property {boolean} subscribe
  * @property {boolean} isAdmin Indicate if user is administrator.
+ * @property {boolean} isSupport Indicate if user is from support team.
  * @property {boolean} binanceConnected Indicates if user has Binance exchange connected.
  * @property {number} buysCount Counts the number of buys positions.
  * @property {number} sellsCount Counts the number of sell positions.
- * @property {string} planId Reference of the Zignaly subscription plan.
- * @property {string} planName Name of the Zignaly plan that user is subscribed to.
- * @property {string} planType
- * @property {string} projectId
- * @property {boolean} minimumProviderSettings
- * @property {number} status Indicate if user is active or not.
- * @property {Onboarding} onboarding Indicate user onboarding stage.
- * @property {string} refCode
- * @property {string} dashlyEchoAuth
- * @property {string} dashlyHash
  * @property {string} userName
  * @property {string} imageUrl
- * @property {string} firstPositionClosedAt
- * @property {string} firstPositionOpenedAt
- * @property {string} firstRealPositionClosedAt
- * @property {string} firstRealPositionOpenedAt
  * @property {boolean} hasActivated
- * @property {string} hasActivatedAt
- * @property {string} hasRegisteredAt
- * @property {boolean} isSupport
- * @property {string} lastPositionClosedAt
- * @property {string} lastPositionOpenedAt
- * @property {string} lastRealPositionClosedAt
- * @property {string} lastRealPositionOpenedAt
- * @property {number} positionBuysCount
- * @property {number} positionSellsCount
- * @property {number} realPositionBuysCount
- * @property {number} realPositionSellsCount
- * @property {string} role
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
  * @property {Array<ExchangeConnectionEntity>} exchanges
@@ -690,7 +664,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
  * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
- *
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
+ * @property {boolean} isAdmin True if the current user is provider's admin
  */
 
 /**
@@ -1099,41 +1074,15 @@ export function userEntityResponseTransform(response) {
     createdAt: response.createdAt,
     providerEnable: response.providerEnable,
     twoFAEnable: response["2FAEnable"] ? response["2FAEnable"] : false,
-    ref: response.ref ? response.ref : "",
     subscribe: response.subscribe,
     isAdmin: response.isAdmin,
+    isSupport: response.isSupport,
     binanceConnected: response.binanceConnected,
     buysCount: response.buysCount,
     sellsCount: response.sellsCount,
-    planId: response.planId,
-    planName: response.planName,
-    planType: response.planType,
-    projectId: response.projectId,
-    minimumProviderSettings: response.minimumProviderSettings,
-    status: response.status,
-    onboarding: response.onboarding,
-    refCode: response.refCode,
-    dashlyHash: response.dashlyHash ? response.dashlyHash : "",
-    dashlyEchoAuth: response.dashlyEchoAuth ? response.dashlyEchoAuth : "",
     userName: response.userName,
     imageUrl: response.imageUrl,
-    firstPositionClosedAt: response.firstPositionClosedAt,
-    firstPositionOpenedAt: response.firstPositionOpenedAt,
-    firstRealPositionClosedAt: response.firstRealPositionClosedAt,
-    firstRealPositionOpenedAt: response.firstRealPositionOpenedAt,
     hasActivated: response.hasActivated,
-    hasActivatedAt: response.hasActivatedAt,
-    hasRegisteredAt: response.hasRegisteredAt,
-    isSupport: response.isSupport,
-    lastPositionClosedAt: response.lastPositionClosedAt,
-    lastPositionOpenedAt: response.lastPositionOpenedAt,
-    lastRealPositionClosedAt: response.lastRealPositionClosedAt,
-    lastRealPositionOpenedAt: response.lastRealPositionOpenedAt,
-    positionBuysCount: response.positionBuysCount,
-    positionSellsCount: response.positionSellsCount,
-    realPositionBuysCount: response.realPositionBuysCount,
-    realPositionSellsCount: response.realPositionSellsCount,
-    role: response.role,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
     exchanges: response.exchanges
@@ -1189,6 +1138,7 @@ function providerItemTransform(providerItem) {
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
     floating: parseFloat(providerItem.floating) || 0,
     aggregateFollowers: providerItem.aggregateFollowers ? providerItem.aggregateFollowers : [],
+    exchangeInternalIds: providerItem.exchangeInternalIds ? providerItem.exchangeInternalIds : [],
   });
 
   transformedResponse.dailyReturns.forEach((item) => {
@@ -1316,6 +1266,8 @@ function createEmptyProviderEntity() {
     profitsMode: "",
     provType: "copytrading",
     providerLink: "",
+    exchangeInternalIds: null,
+    isAdmin: false,
   };
 }
 
@@ -4414,6 +4366,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsMode: "",
       provType: "copytrading",
       providerLink: "",
+      exchangeInternalIds: null,
+      isAdmin: false,
     },
     signalsInfo: [],
   };

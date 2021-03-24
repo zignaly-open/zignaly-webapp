@@ -48,7 +48,7 @@ const ProfileSettings = () => {
       .updateUser(payload)
       .then(() => {
         dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
-        dispatch(getUserData({ token: storeSession.tradeApi.accessToken }));
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

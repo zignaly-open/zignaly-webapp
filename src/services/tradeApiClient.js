@@ -7,7 +7,6 @@ import {
   positionsResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
-  userExchangeConnectionResponseTransform,
   userBalanceResponseTransform,
   positionItemTransform,
   userEquityResponseTransform,
@@ -47,6 +46,7 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
+import { store } from "store/store.js";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
@@ -338,6 +338,10 @@ class TradeApiClient {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
 
+    const state = store.getState();
+    // @ts-ignore
+    const token = state.session.tradeApi.accessToken;
+
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
     const options = payload
@@ -347,6 +351,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
+            ...(token && { Authorization: "Bearer " + token }),
           },
         }
       : { method: "GET" };
@@ -533,21 +538,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return hasBeenUsedProvidersResponseTransform(responseData);
-  }
-
-  /**
-   * Get user's exchange connections.
-   *
-   * @param {AuthorizationPayload} payload User's exchange connections payload.
-   * @returns {Promise<Array<ExchangeConnectionEntity>>} Promise that resolbves user's exchange connections.
-   * @memberof TradeApiClient
-   */
-
-  async userExchangesGet(payload) {
-    const endpointPath = "/fe/api.php?action=getUserExchanges";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return userExchangeConnectionResponseTransform(responseData);
   }
 
   /**
@@ -1362,8 +1352,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async enable2FA1Step(payload) {
-    const endpointPath = `/fe/api.php?action=enable2FA1Step&token=${payload.token}`;
-    const responseData = await this.doRequest(endpointPath, null);
+    const endpointPath = "/fe/api.php?action=enable2FA1Step";
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return responseData;
   }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
@@ -36,6 +36,7 @@ const ProvidersBrowse = ({
   const copyTraders = provType.includes("copytraders");
   const profitSharing = provType.includes("profitsharing");
   const providersOptions = { provType, connectedOnly };
+  const [updatedAt, setUpdatedAt] = useState(null);
   const {
     providers,
     quotes,
@@ -50,7 +51,7 @@ const ProvidersBrowse = ({
     modifiedFilters,
     timeFrame,
     setTimeFrame,
-  } = useProvidersList(providersOptions);
+  } = useProvidersList(providersOptions, updatedAt);
   const intl = useIntl();
 
   useEffect(() => {
@@ -59,6 +60,10 @@ const ProvidersBrowse = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modifiedFilters]);
+
+  const reloadProviders = () => {
+    setUpdatedAt(new Date().getTime());
+  };
 
   return (
     <Box className="providersBrowse">
@@ -99,7 +104,12 @@ const ProvidersBrowse = ({
         })}`}
         value={timeFrame}
       />
-      <ProvidersList providers={providers} showSummary={connectedOnly} timeFrame={timeFrame} />
+      <ProvidersList
+        providers={providers}
+        reloadProviders={reloadProviders}
+        showSummary={connectedOnly}
+        timeFrame={timeFrame}
+      />
     </Box>
   );
 };

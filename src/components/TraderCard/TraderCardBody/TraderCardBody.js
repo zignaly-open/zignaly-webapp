@@ -18,15 +18,17 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import { ConfirmDialog } from "../../Dialogs";
 import dayjs from "dayjs";
+import Modal from "../../Modal";
+import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartData} ChartData
  * @typedef {import('chart.js').ChartTooltipItem} ChartTooltipItem
- * @typedef {import("../../../services/tradeApiClient.types").DailyReturn} DailyReturn
- * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").DailyReturn} DailyReturn
+ * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
  *
  */
@@ -36,6 +38,7 @@ import dayjs from "dayjs";
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {ProviderEntity} provider The provider to display.
  * @property {number} timeFrame Selected timeFrame.
+ * @property {Function} reloadProviders reload providers list.
  */
 
 /**
@@ -47,7 +50,7 @@ import dayjs from "dayjs";
 const TraderCard = (props) => {
   const intl = useIntl();
   const dispatch = useDispatch();
-  const { provider, showSummary, timeFrame } = props;
+  const { provider, showSummary, timeFrame, reloadProviders } = props;
   const {
     openPositions,
     floating,
@@ -99,11 +102,16 @@ const TraderCard = (props) => {
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
+  const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const type = copyTrader || profitSharingProvider ? "copyt" : "srv";
   const timeframeTranslationId =
     timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
   const [chartData, setChartData] = useState(/** @type {ChartData} */ ({ values: [], labels: [] }));
+
+  const handleStopCopyingModalClose = () => {
+    showStopCopyingModal(false);
+  };
 
   useEffect(() => {
     const values = [];
@@ -162,19 +170,12 @@ const TraderCard = (props) => {
     navigate(providerLink);
   };
 
-  const initConfirmConfig = {
-    titleTranslationId: `confirm.${type}.unfollow.title`,
-    messageTranslationId: `confirm.${type}.unfollow.message`,
-    visible: false,
-  };
-
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
-
-  const confirmAction = () => {
-    setConfirmConfig({
-      ...initConfirmConfig,
-      visible: true,
-    });
+  const handleProviderDisconnect = () => {
+    if (profitSharingProvider || copyTrader) {
+      showStopCopyingModal(true);
+    } else {
+      stopCopying();
+    }
   };
 
   const stopCopying = () => {
@@ -191,6 +192,7 @@ const TraderCard = (props) => {
       .then((response) => {
         if (response) {
           dispatch(showSuccessAlert(`${type}.unfollow.alert.title`, `${type}.unfollow.alert.body`));
+          reloadProviders();
           setCanDisable(false);
         }
       })
@@ -203,16 +205,48 @@ const TraderCard = (props) => {
   };
 
   const connectedAccount = exchangeConnections.find(
-    (a) => a.internalId === provider.exchangeInternalId,
+    (e) => e.internalId === provider.exchangeInternalId,
   );
+  const isCopyingWithAnotherAccount =
+    connectedAccount && connectedAccount.internalId !== selectedExchange.internalId;
+  const exchangeData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+  const disconnecting = exchangeData && exchangeData.disconnecting;
+
+  const getPSButtonTooltip = () => {
+    if (isCopyingWithAnotherAccount) {
+      return (
+        <FormattedMessage
+          id={
+            copyTrader || profitSharingProvider
+              ? "copyt.follow.anotheraccount"
+              : "srv.follow.anotheraccount"
+          }
+          values={{
+            account: connectedAccount.internalName,
+          }}
+        />
+      );
+    }
+
+    return "";
+  };
 
   return (
     <LazyLoad height="310px" offset={600} once>
-      <ConfirmDialog
-        confirmConfig={confirmConfig}
-        executeActionCallback={stopCopying}
-        setConfirmConfig={setConfirmConfig}
-      />
+      <Modal
+        onClose={handleStopCopyingModalClose}
+        persist={false}
+        size="small"
+        state={stopCopyingModal}
+      >
+        <StopCopyingTraderForm
+          callback={reloadProviders}
+          onClose={handleStopCopyingModalClose}
+          provider={provider}
+        />
+      </Modal>
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
@@ -305,37 +339,22 @@ const TraderCard = (props) => {
             </div>
 
             <div className="actions">
-              {canDisable &&
-                (connectedAccount && selectedExchange.internalId !== provider.exchangeInternalId ? (
-                  <CustomToolip
-                    title={
+              {!disconnecting && canDisable && (
+                <CustomToolip title={getPSButtonTooltip()}>
+                  <div>
+                    <CustomButton
+                      className="textPurple"
+                      disabled={isCopyingWithAnotherAccount}
+                      loading={loading}
+                      onClick={handleProviderDisconnect}
+                    >
                       <FormattedMessage
-                        id={
-                          copyTrader || profitSharingProvider
-                            ? "copyt.follow.anotheraccount"
-                            : "srv.follow.anotheraccount"
-                        }
-                        values={{
-                          account: connectedAccount.internalName,
-                        }}
+                        id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
                       />
-                    }
-                  >
-                    <div>
-                      <CustomButton className="textPurple" disabled={true}>
-                        <FormattedMessage
-                          id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
-                        />
-                      </CustomButton>
-                    </div>
-                  </CustomToolip>
-                ) : (
-                  <CustomButton className="textPurple" loading={loading} onClick={confirmAction}>
-                    <FormattedMessage
-                      id={copyTrader || profitSharingProvider ? "trader.stop" : "provider.stop"}
-                    />
-                  </CustomButton>
-                ))}
+                    </CustomButton>
+                  </div>
+                </CustomToolip>
+              )}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
                 <FormattedMessage
                   id={copyTrader || profitSharingProvider ? "trader.view" : "provider.view"}
