@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
+import { emailRegex } from "utils/validators";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -114,7 +115,7 @@ const SignupForm = () => {
             inputRef={register({
               required: intl.formatMessage({ id: "security.email.error.empty" }),
               pattern: {
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                value: emailRegex,
                 message: intl.formatMessage({ id: "security.email.error.invalid" }),
               },
             })}
