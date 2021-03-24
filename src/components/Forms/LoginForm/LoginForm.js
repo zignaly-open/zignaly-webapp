@@ -14,6 +14,7 @@ import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
+import { emailRegex } from "utils/validators";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -126,7 +127,7 @@ const LoginForm = () => {
               inputRef={register({
                 required: intl.formatMessage({ id: "security.email.error.empty" }),
                 pattern: {
-                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                  value: emailRegex,
                   message: intl.formatMessage({ id: "security.email.error.invalid" }),
                 },
               })}

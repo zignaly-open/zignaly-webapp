@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "gatsby";
 import { FormattedMessage, useIntl } from "react-intl";
+import { emailRegex } from "utils/validators";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -106,7 +107,7 @@ const ChangeEmailForm = ({ code }) => {
             inputRef={register({
               required: intl.formatMessage({ id: "security.email.error.empty" }),
               pattern: {
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                value: emailRegex,
                 message: intl.formatMessage({ id: "security.email.error.invalid" }),
               },
             })}
@@ -137,7 +138,7 @@ const ChangeEmailForm = ({ code }) => {
             inputRef={register({
               required: intl.formatMessage({ id: "security.email.error.empty" }),
               pattern: {
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+                value: emailRegex,
                 message: intl.formatMessage({ id: "security.email.error.invalid" }),
               },
             })}

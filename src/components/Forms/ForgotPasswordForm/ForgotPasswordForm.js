@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import Captcha from "../../Captcha";
+import { emailRegex } from "utils/validators";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,7 @@ const ForgotPasswordForm = () => {
             fullWidth
             inputRef={register({
               required: true,
-              pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/,
+              pattern: emailRegex,
             })}
             name="email"
             type="email"
