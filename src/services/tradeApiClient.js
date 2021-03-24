@@ -429,7 +429,6 @@ class TradeApiClient {
   async userLogin(payload) {
     const endpointPath = "/fe/api.php?action=login";
     const responseData = await this.doRequest(endpointPath, payload);
-    this.setToken(responseData.token);
 
     return userEntityResponseTransform(responseData);
   }
