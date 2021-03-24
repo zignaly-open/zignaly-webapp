@@ -6,8 +6,6 @@ import SignOut from "../../../images/header/signOut.svg";
 import Settings from "../../../images/dashboard/settings.svg";
 import { Box, MenuItem, Grow } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { useDispatch } from "react-redux";
-import { endTradeApiSession } from "../../../store/actions/session";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -28,11 +26,9 @@ import { navigateLogin } from "../../../services/navigation";
  * @returns {JSX.Element} JSX component.
  */
 const UserMenu = ({ onClose }) => {
-  const dispatch = useDispatch();
   const [languageSelector, showLanguageSelector] = useState(false);
 
   const logout = () => {
-    dispatch(endTradeApiSession());
     navigateLogin();
     onClose();
   };

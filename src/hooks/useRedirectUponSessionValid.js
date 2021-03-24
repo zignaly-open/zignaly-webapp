@@ -3,23 +3,26 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import { navigate } from "gatsby";
 import { verifySessionData } from "../utils/auth";
 import { globalHistory } from "@reach/router";
+import { useDispatch } from "react-redux";
+import { endTradeApiSession } from "store/actions/session";
 
 const useRedirectUponSessionValid = (newUserPath = "") => {
   const storeSession = useStoreSessionSelector();
+  const dispatch = useDispatch();
   const forced = useRef(globalHistory.location.state && globalHistory.location.state.forced);
 
   useEffect(() => {
-    // Don't redirect to private area if we've been forced to redirect already.
-    // This happens when the tradeapi client detects the session has expired. It's not possible to
-    // clear the auth token there, we should detect it as expired now but there is a small chance
-    // that's not the case, at least locally, when switching api server for example.
+    if (!storeSession.tradeApi.accessToken) return;
+
     if (forced.current) {
+      // Token was marked as expired, clear it here.
       forced.current = false;
+      dispatch(endTradeApiSession());
       return;
     }
 
+    // Navigate to return url or dashboard if session is valid
     if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
-      // Navigate to return url or dashboard
       const params = new URLSearchParams(window.location.search);
       let path = newUserPath || "/dashboard";
       if (params.get("ret")) {

@@ -20,6 +20,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
 import { getUserData } from "store/actions/user";
+import tradeApi from "services/tradeApiClient";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -56,6 +57,7 @@ const PrivateAreaLayout = (props) => {
   useInterval(updateSession, minToMillisec(60), true);
 
   const loadUserData = () => {
+    tradeApi.setToken(storeSession.tradeApi.accessToken);
     dispatch(getUserData(storeSession.tradeApi.accessToken));
   };
   useEffect(loadUserData, []);

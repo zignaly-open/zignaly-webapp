@@ -46,7 +46,6 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
-import { store } from "store/store.js";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
@@ -177,6 +176,15 @@ class TradeApiClient {
      * @type {Object<string, boolean>} Tracks request lock.
      */
     this.requestLock = {};
+  }
+
+  /**
+   * Set authentication token
+   * @param {string} [token] Token
+   * @returns {void}
+   */
+  setToken(token) {
+    this.token = token;
   }
 
   /**
@@ -338,10 +346,6 @@ class TradeApiClient {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
 
-    const state = store.getState();
-    // @ts-ignore
-    const token = state.session.tradeApi.accessToken;
-
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
     const options = payload
@@ -351,7 +355,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
-            ...(token && { Authorization: "Bearer " + token }),
+            ...(this.token && { Authorization: "Bearer " + this.token }),
           },
         }
       : { method: "GET" };
@@ -425,6 +429,7 @@ class TradeApiClient {
   async userLogin(payload) {
     const endpointPath = "/fe/api.php?action=login";
     const responseData = await this.doRequest(endpointPath, payload);
+    this.setToken(responseData.token);
 
     return userEntityResponseTransform(responseData);
   }
@@ -2058,6 +2063,6 @@ class TradeApiClient {
 // instance, see:
 // https://medium.com/@lazlojuly/are-node-js-modules-singletons-764ae97519af
 const client = new TradeApiClient();
-Object.freeze(client);
+// Object.freeze(client);
 
 export default client;
