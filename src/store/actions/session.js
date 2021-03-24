@@ -31,6 +31,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
 export const startTradeApiSession = (response, eventType) => {
   return async (dispatch) => {
     if (!response.token) return;
+    tradeApi.setToken(response.token);
 
     const action = {
       type: START_TRADE_API_SESSION,
@@ -58,6 +59,7 @@ export const endTradeApiSession = () => {
       dispatch(unsetProvider());
       dispatch(clearSessionData());
       dispatch(toggleBalanceBox(false));
+      tradeApi.setToken();
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
