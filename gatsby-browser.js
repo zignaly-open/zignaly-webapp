@@ -9,6 +9,7 @@ import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
 import "whatwg-fetch";
+import tradeApi from "services/tradeApiClient";
 // import { makeServer } from "utils/mirage/server";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
@@ -97,6 +98,9 @@ export const onInitialClientRender = () => {
   const state = store.getState();
   // @ts-ignore
   const token = state.session.tradeApi.accessToken;
+  // Init api auth token with persisted value
+  tradeApi.setToken(token);
+
   // @ts-ignore
   const sessionData = state.session.sessionData;
   let path = "";

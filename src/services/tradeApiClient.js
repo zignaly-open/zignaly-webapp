@@ -46,7 +46,6 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
 } from "./tradeApiClient.types";
-import { store } from "store/store.js";
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
@@ -177,6 +176,15 @@ class TradeApiClient {
      * @type {Object<string, boolean>} Tracks request lock.
      */
     this.requestLock = {};
+  }
+
+  /**
+   * Set authentication token
+   * @param {string} [token] Token
+   * @returns {void}
+   */
+  setToken(token) {
+    this.token = token;
   }
 
   /**
@@ -330,17 +338,16 @@ class TradeApiClient {
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
+   * @param {string} [token] Authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "") {
+  async doRequest(endpointPath, payload, method = "", token) {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
 
-    const state = store.getState();
-    // @ts-ignore
-    const token = state.session.tradeApi.accessToken;
+    const authToken = this.token || token;
 
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
@@ -351,7 +358,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
-            ...(token && { Authorization: "Bearer " + token }),
+            ...(authToken && { Authorization: "Bearer " + authToken }),
           },
         }
       : { method: "GET" };
@@ -1398,7 +1405,7 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "POST", payload.token);
 
     return responseData;
   }
@@ -2058,6 +2065,6 @@ class TradeApiClient {
 // instance, see:
 // https://medium.com/@lazlojuly/are-node-js-modules-singletons-764ae97519af
 const client = new TradeApiClient();
-Object.freeze(client);
+// Object.freeze(client);
 
 export default client;
