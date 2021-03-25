@@ -37,6 +37,8 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
+    } else {
+      dispatch(endTradeApiSession());
     }
   }, [storeSession.sessionData]);
 };
