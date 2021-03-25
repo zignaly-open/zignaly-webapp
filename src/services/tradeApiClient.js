@@ -338,7 +338,7 @@ class TradeApiClient {
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
-   * @param {string} [token] Authentication token.
+   * @param {string} [token] Optional authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
