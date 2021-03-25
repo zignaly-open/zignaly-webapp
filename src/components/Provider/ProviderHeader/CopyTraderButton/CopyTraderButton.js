@@ -141,33 +141,29 @@ const CopyTraderButton = ({ provider }) => {
       <>
         {!disconnecting ? (
           disabled ? (
-            <>
-              {sameSelectedExchange ? (
-                <CustomButton className="submitButton" onClick={startCopying}>
-                  <FormattedMessage id="copyt.copythistrader" />
-                </CustomButton>
-              ) : (
-                <Box
-                  alignItems="center"
-                  className="actionHelpBox"
-                  display="flex"
-                  flexDirection="row"
-                  justifyContent="flex-start"
-                >
-                  <Typography variant="h4">
-                    <FormattedMessage id="copyt.followingfrom" />
-                  </Typography>
-                  <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
-                    <Box>
-                      <ExchangeIcon
-                        exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
-                        size="mediumLarge"
-                      />
-                    </Box>
-                  </Tooltip>
+            <CustomButton className="submitButton" onClick={startCopying}>
+              <FormattedMessage id="copyt.copythistrader" />
+            </CustomButton>
+          ) : !sameSelectedExchange ? (
+            <Box
+              alignItems="center"
+              className="actionHelpBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-start"
+            >
+              <Typography variant="h4">
+                <FormattedMessage id="copyt.followingfrom" />
+              </Typography>
+              <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
+                <Box>
+                  <ExchangeIcon
+                    exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                    size="mediumLarge"
+                  />
                 </Box>
-              )}
-            </>
+              </Tooltip>
+            </Box>
           ) : (
             <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
               <FormattedMessage id="copyt.stopcopyingtrader" />
