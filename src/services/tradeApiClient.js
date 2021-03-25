@@ -338,13 +338,16 @@ class TradeApiClient {
    * @param {string} endpointPath API endpoint path and action.
    * @param {Object} payload Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
+   * @param {string} [token] Authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "") {
+  async doRequest(endpointPath, payload, method = "", token) {
     const requestUrl = this.baseUrl + endpointPath;
     let responseData = {};
+
+    const authToken = this.token || token;
 
     // TODO: Comply with request method parameter once backend resolve a GET
     // method usage issue for requests that needs payload as query string.
@@ -355,7 +358,7 @@ class TradeApiClient {
           headers: {
             "Content-Type": "application/json",
             "X-API-KEY": process.env.GATSBY_API_KEY || "",
-            ...(this.token && { Authorization: "Bearer " + this.token }),
+            ...(authToken && { Authorization: "Bearer " + authToken }),
           },
         }
       : { method: "GET" };
@@ -1402,7 +1405,7 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, payload, "POST", payload.token);
 
     return responseData;
   }
