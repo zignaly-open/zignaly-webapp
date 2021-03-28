@@ -65,6 +65,7 @@ const TraderCard = (props) => {
     aggregateFollowers = [],
     newFollowers,
     providerLink,
+    profitSharing,
   } = provider;
 
   const copyTrader = provType === "copytrading";
@@ -214,8 +215,8 @@ const TraderCard = (props) => {
     provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
   const disconnecting = exchangeData && exchangeData.disconnecting;
 
-  const getPSButtonTooltip = () => {
-    if (isCopyingWithAnotherAccount) {
+  const getCopyButtonTooltip = () => {
+    if (!profitSharing && isCopyingWithAnotherAccount) {
       return (
         <FormattedMessage
           id={
@@ -340,11 +341,11 @@ const TraderCard = (props) => {
 
             <div className="actions">
               {!disconnecting && canDisable && (
-                <CustomToolip title={getPSButtonTooltip()}>
+                <CustomToolip title={getCopyButtonTooltip()}>
                   <div>
                     <CustomButton
                       className="textPurple"
-                      disabled={isCopyingWithAnotherAccount}
+                      disabled={!profitSharing && isCopyingWithAnotherAccount}
                       loading={loading}
                       onClick={handleProviderDisconnect}
                     >
