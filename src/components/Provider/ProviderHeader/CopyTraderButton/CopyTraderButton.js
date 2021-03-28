@@ -38,6 +38,7 @@ const CopyTraderButton = ({ provider }) => {
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
   const [cancelDisconnectLoader, showCancelDisconnectLoader] = useState(false);
+  const { profitSharing } = provider;
   const disabled = provider.disable;
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
   const followingFrom =
@@ -144,7 +145,7 @@ const CopyTraderButton = ({ provider }) => {
             <CustomButton className="submitButton" onClick={startCopying}>
               <FormattedMessage id="copyt.copythistrader" />
             </CustomButton>
-          ) : !sameSelectedExchange ? (
+          ) : !profitSharing && !sameSelectedExchange ? (
             <Box
               alignItems="center"
               className="actionHelpBox"
