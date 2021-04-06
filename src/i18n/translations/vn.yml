@@ -1301,6 +1301,13 @@ accounts.create.or: "Tạo hoặc kết nối tới tài khoản giao dịch"
 accounts.exchange.api: "Nhập 2 Api Keys từ sàn giao dịch"
 accounts.exchange.api.tip: "Cách lấy API từ Binance?"
 accounts.exchange.api.tipdesc: "- Mở binance.com trên một tab mới\n  - Đăng nhập vào Binance\n  - tới mục hồ sơ và click vào \"Quản lý API\"\n  - Đặt một tên cho API Key\n  - Bấm tạo mới\n  - Làm theo hướng dẫn xác thực\n  - Sau khi hoàn tất, sao chép các mã API vào mục nhập API trên zignaly\n  - Hoàn tất"
+accounts.exchange.api.tip.ascendex: "- Open {url}\n
+  - Log in to AscendEX\n
+  - Go to API Setting in user menu\n
+  - Give the API key a name and fill other necessary details (If any)\n
+  - Click create API key\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
+  - Done"
 accounts.exchange.choose: "Chọn sàn giao dịch"
 accounts.exchange.customname: "Tạo tên tùy chỉnh cho tài khoản này"
 accounts.next: "Bước tiếp theo"

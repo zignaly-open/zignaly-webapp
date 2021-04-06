@@ -15,7 +15,13 @@ import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
 import { getUserData } from "../../../store/actions/user";
-import { binanceUrl, bitmexAPIKeysUrl, kucoinUrl, vcceUrl } from "../../../utils/affiliateURLs";
+import {
+  binanceUrl,
+  bitmexAPIKeysUrl,
+  kucoinUrl,
+  vcceUrl,
+  ascendEXUrl,
+} from "../../../utils/affiliateURLs";
 import Alert from "@material-ui/lab/Alert";
 
 /**
@@ -149,6 +155,9 @@ const ExchangeAccountConnect = () => {
         break;
       case "vcce":
         url = vcceUrl;
+        break;
+      case "ascendex":
+        url = ascendEXUrl;
         break;
       default:
         url = binanceUrl;
