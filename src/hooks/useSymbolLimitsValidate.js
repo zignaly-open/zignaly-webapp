@@ -1,7 +1,7 @@
 import { useIntl } from "react-intl";
 
 /**
- * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  */
 
 /**

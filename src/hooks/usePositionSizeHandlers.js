@@ -6,7 +6,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
 import { calculateUnits } from "utils/calculations";
 
 /**
- * @typedef {import("../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("react-hook-form/dist/types/form").Validate} Validate
  */
 
