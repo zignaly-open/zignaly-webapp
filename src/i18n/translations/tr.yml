@@ -1332,6 +1332,13 @@ terminal.trailingstop.valid.percentage.greater: "İzleyen stop yüzdesi, 0'dan b
 terminal.trailingstop.valid.percentage.lower: "İzleyen stop yüzdesi, 0'dan küçük bir sayı olmalıdır."
 terminal.provider.available: "Kullanılabilir:"
 accounts.exchange.api.tip.bitmex: "- Git {url}\n - Bitmex'te oturum açın\n - API anahtarına bir ad verin\n - Anahtar izinlerini \"Order\" (\"Sipariş\") olarak ayarlayın\n - API anahtarı oluştur'u tıklayın\n - Bittiğinde, yeni oluşturulan API'nin API anahtarlarını yukarıdaki ilgili alanlara yapıştırın\n - Bitti"
+accounts.exchange.api.tip.ascendex: "- Open {url}\n
+  - Log in to AscendEX\n
+  - Go to API Setting in user menu\n
+  - Give the API key a name and fill other necessary details (If any)\n
+  - Click create API key\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
+  - Done"
 management.positions: "Pozisyonlar"
 management.orders: "Emirler"
 management.contracts: "Kontratlar"
