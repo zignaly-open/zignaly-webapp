@@ -10,7 +10,7 @@ export const calculateDcaPrice = (price, dcaPercentage) => {
 };
 
 /**
- * @typedef {import("services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  */
 
 /**

@@ -19,7 +19,7 @@ import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 

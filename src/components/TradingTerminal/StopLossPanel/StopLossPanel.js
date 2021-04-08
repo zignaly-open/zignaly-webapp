@@ -14,8 +14,7 @@ import { some } from "lodash";
 import PricePercentageControl from "../Controls/PricePercentageControl";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
