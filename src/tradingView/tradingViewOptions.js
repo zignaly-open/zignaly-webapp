@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 
 import VcceDataFeed from "services/vcceDataFeed";
+import AscendexDataFeed from "services/ascendexDataFeed";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -113,7 +114,7 @@ export function createWidgetOptions(options) {
   let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
 
-  if (exchange.exchangeName.toLowerCase() === "vcce") {
+  if (exchange.exchangeName.toLowerCase() === "vccee") {
     // For VCCE we use a custom datafeed
     const dataFeedOptions = {
       exchange,
@@ -121,6 +122,13 @@ export function createWidgetOptions(options) {
       tradeApiToken,
     };
     dataFeed = new VcceDataFeed(dataFeedOptions);
+  } else if (exchange.exchangeName.toLowerCase() === "vcce") {
+    const dataFeedOptions = {
+      exchange,
+      symbolsData,
+      tradeApiToken,
+    };
+    dataFeed = new AscendexDataFeed(dataFeedOptions);
   }
   const isSelfHosted = Boolean(dataFeed);
 
