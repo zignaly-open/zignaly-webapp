@@ -1,12 +1,18 @@
 /* eslint-disable camelcase */
 
-import VcceDataFeed from "services/vcceDataFeed";
-import AscendexDataFeed from "services/ascendexDataFeed";
+import VcceDataFeed from "services/dataFeed/vcceDataFeed";
+import AscendexDataFeed from "services/dataFeed/ascendexDataFeed";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("tradingView/charting_library/charting_library").ChartingLibraryWidgetOptions} ChartingLibraryWidgetOptions
+ * @typedef {import("tradingView/charting_library/charting_library").IBasicDataFeed} IBasicDataFeed
  * @typedef {import("services//tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import("services/dataFeed/dataFeed").DataFeedOptions} DataFeedOptions
+ */
+
+/**
+ * @typedef {ChartingLibraryWidgetOptions['datafeed']} DataFeed
  */
 
 /**
@@ -104,6 +110,23 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchange) {
 }
 
 /**
+ * Creates an instance of VcceDataFeed.
+ * @param {DataFeedOptions} options Construct options.
+ * @returns {DataFeed} Exchange data feed
+ */
+const createDataFeed = (options) => {
+  let dataFeed = null;
+  if (options.exchange.exchangeName.toLowerCase() === "vccee") {
+    dataFeed = new VcceDataFeed(options);
+  } else if (options.exchange.exchangeName.toLowerCase() === "vcce") {
+    dataFeed = new AscendexDataFeed(options);
+  }
+
+  // @ts-ignore
+  return dataFeed;
+};
+
+/**
  * Create Trading View data feed configuration.
  *
  * @param {WidgetOptions} options Configuration to create Trading View widget options
@@ -111,31 +134,18 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchange) {
  * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
 export function createWidgetOptions(options) {
-  let dataFeed = null;
   const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
-
-  if (exchange.exchangeName.toLowerCase() === "vccee") {
-    // For VCCE we use a custom datafeed
-    const dataFeedOptions = {
-      exchange,
-      symbolsData,
-      tradeApiToken,
-    };
-    dataFeed = new VcceDataFeed(dataFeedOptions);
-  } else if (exchange.exchangeName.toLowerCase() === "vcce") {
-    const dataFeedOptions = {
-      exchange,
-      symbolsData,
-      tradeApiToken,
-    };
-    dataFeed = new AscendexDataFeed(dataFeedOptions);
-  }
-  const isSelfHosted = Boolean(dataFeed);
+  const dataFeedOptions = {
+    exchange,
+    symbolsData,
+    tradeApiToken,
+  };
+  const feed = createDataFeed(dataFeedOptions);
 
   return {
-    ...(isSelfHosted && {
+    ...(feed && {
       // Load market data to the self hosted charting library
-      datafeed: dataFeed,
+      datafeed: feed,
       library_path: process.env.GATSBY_BASE_PATH + "/charting_library/charting_library/",
     }),
     autosize: true,
