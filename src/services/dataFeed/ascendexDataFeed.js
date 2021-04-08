@@ -87,7 +87,7 @@ class AscendexDataFeed extends DataFeed {
    * @param {MarketSymbol} symbolData Market symbol data.
    * @param {string} resolution Data resolution.
    * @param {PeriodParams} periodParams Selected period.
-   * @returns {Promise<Candle>} None.
+   * @returns {Promise<Candle>} Promise.
    */
   getBarsRequest(symbolData, resolution, periodParams) {
     const { from: startDate, to: endDate, firstDataRequest } = periodParams;

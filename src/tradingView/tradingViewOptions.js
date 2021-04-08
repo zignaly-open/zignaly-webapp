@@ -116,9 +116,9 @@ export function getTradingViewExchangeSymbol(tradeViewSymbol, exchange) {
  */
 const createDataFeed = (options) => {
   let dataFeed = null;
-  if (options.exchange.exchangeName.toLowerCase() === "vccee") {
+  if (options.exchange.exchangeName.toLowerCase() === "vcce") {
     dataFeed = new VcceDataFeed(options);
-  } else if (options.exchange.exchangeName.toLowerCase() === "vcce") {
+  } else if (options.exchange.exchangeName.toLowerCase() === "ascendex") {
     dataFeed = new AscendexDataFeed(options);
   }
 

@@ -1,4 +1,4 @@
-import { isEmpty, last } from "lodash";
+import dayjs from "dayjs";
 import { resolutionToMilliseconds } from "utils/timeConvert";
 import DataFeed from "./dataFeed";
 
@@ -19,6 +19,7 @@ import DataFeed from "./dataFeed";
  * @typedef {import("tradingView/charting_library/charting_library").Bar} Bar
  * @typedef {import("tradingView/charting_library/charting_library").SubscribeBarsCallback} SubscribeBarsCallback
  * @typedef {import("tradingView/charting_library/charting_library").LibrarySymbolInfo} LibrarySymbolInfo
+ * @typedef {import("tradingView/charting_library/charting_library").PeriodParams} PeriodParams
  */
 
 /**
@@ -82,127 +83,47 @@ class VcceDataFeed extends DataFeed {
    *
    * @param {MarketSymbol} symbolData Market symbol data.
    * @param {string} resolution Data resolution.
-   * @param {number} startDate Get data since.
-   * @param {number} endDate Get data to.
-   * @param {HistoryCallback} onResultCallback Notify data.
-   * @param {ErrorCallback} onErrorCallback Notify error.
-   * @param {boolean} firstDataRequest First request boolean.
-   * @returns {Void} None.
-   * @memberof VcceDataFeed
+   * @param {PeriodParams} periodParams Selected period.
+   * @returns {Promise<Candle>} Promise.
    */
-  // eslint-disable-next-line max-params
-  getBars(
-    symbolData,
-    resolution,
-    startDate,
-    endDate,
-    onResultCallback,
-    onErrorCallback,
-    firstDataRequest,
-  ) {
-    this.allCandles = [];
+  getBarsRequest(symbolData, resolution, periodParams) {
+    const { from: startDate, to: endDate, firstDataRequest } = periodParams;
 
-    /**
-     * Notify symbol prices in Trading View bars format so chart widget.
-     *
-     * @param {Bar[]} formattedCandles Candles in TV bar object format.
-     * @returns {Void} None.
-     */
-    const notifyPricesData = (formattedCandles) => {
-      if (this.allCandles.length === 0) {
-        onResultCallback([], { noData: true });
-      } else {
-        onResultCallback(formattedCandles, {
-          noData: false,
-        });
-      }
-    };
-
-    if (firstDataRequest) {
-      // Store date, this will be used for the interval requests to get live candle.
-      // We need it for performance reasons because the reply will be cached.
-      this.startDate = startDate;
-    }
-
-    this.getCandlesData(
+    return this.getCandlesData(
       // @ts-ignore
       symbolData.base.toLowerCase(),
       // @ts-ignore
       symbolData.quote.toLowerCase(),
       resolutionToMilliseconds(resolution),
       startDate,
-      endDate,
-    )
-      .then((newCandles) => {
-        // Accumulate candles.
-        this.allCandles = this.allCandles.concat(newCandles);
-
-        const formattedCandles = this.allCandles.map(this.parseOHLCV);
-        notifyPricesData(formattedCandles);
-      })
-      .catch((e) => {
-        onErrorCallback(`ERROR: ${e.message}`);
-      });
+      firstDataRequest ? endDate : dayjs.unix(endDate).startOf("minute").unix(),
+    ).then((newCandles) => {
+      return newCandles.map(this.parseOHLCV);
+    });
   }
 
   /**
-   * Interval requests to get live data
+   * Call request to get latest candle price data.
    *
    * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Prices data resolution.
-   * @param {SubscribeBarsCallback} onRealtimeCallback Notify tick to chart.
-   * @returns {Void} None.
-   *
-   * @memberof VcceDataFeed
+   * @returns {Promise<Bar>} Promise.
    */
-  // eslint-disable-next-line max-params
-  subscribeBars(symbolData, resolution, onRealtimeCallback) {
-    const refreshCandle = () => {
-      this.getCandlesData(
-        // @ts-ignore
-        symbolData.base.toLowerCase(),
-        // @ts-ignore
-        symbolData.quote.toLowerCase(),
-        resolutionToMilliseconds(resolution),
-        this.startDate,
-      )
-        .then((candles) => {
-          if (candles.length) {
-            const lastCandle = candles[candles.length - 1];
-            onRealtimeCallback(this.parseOHLCV(lastCandle));
-          }
-        })
-        .catch((e) => {
-          // eslint-disable-next-line no-console
-          console.error(`ERROR: ${e.message}`);
-        });
-    };
-    this.candleSubscription = setInterval(refreshCandle, 15000);
-  }
-
-  /**
-   * Unsubscribe from interval request
-   *
-   * @returns {Void} None.
-   * @memberof VcceDataFeed
-   */
-  unsubscribeBars() {
-    clearInterval(this.candleSubscription);
-  }
-
-  /**
-   * Get last price.
-   *
-   * @returns {number} Price.
-   * @memberof VcceDataFeed
-   */
-  getLastPrice() {
-    if (isEmpty(this.allCandles)) {
-      return null;
-    }
-
-    // @ts-ignore
-    return last(this.allCandles).close;
+  refreshBarRequest(symbolData, resolution) {
+    return this.getCandlesData(
+      // @ts-ignore
+      symbolData.base.toLowerCase(),
+      // @ts-ignore
+      symbolData.quote.toLowerCase(),
+      resolutionToMilliseconds(resolution),
+      this.startDate,
+      dayjs().startOf("minute").unix(),
+    ).then((candles) => {
+      if (candles.length) {
+        const lastCandle = candles[candles.length - 1];
+        return this.parseOHLCV(lastCandle);
+      }
+    });
   }
 }
 
