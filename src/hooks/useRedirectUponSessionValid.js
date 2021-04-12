@@ -12,14 +12,15 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
   const forced = useRef(globalHistory.location.state && globalHistory.location.state.forced);
 
   useEffect(() => {
-    if (!storeSession.tradeApi.accessToken) return;
-
     if (forced.current) {
       // Token was marked as expired, clear it here.
       forced.current = false;
+
       dispatch(endTradeApiSession());
       return;
     }
+
+    if (!storeSession.tradeApi.accessToken) return;
 
     // Navigate to return url or dashboard if session is valid
     if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
