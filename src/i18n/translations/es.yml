@@ -1264,7 +1264,7 @@ copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 srv.newfollowers: "Nuevos seguidores"
 copyt.canceldisconnecting: "Cancelar desconexión"
-copyt.management.cancel: "Cancelar positiones \"todavía entrando\""
+copyt.management.cancel: 'Cancelar positiones "todavía entrando"'
 copyt.management.exit: "Cerrar Posiciones"
 copyt.copy.error4: "No puede conectarse al servicio de Profit Sharing utilizando una cuenta Demo."
 copyt.copy.error5: "No tiene suficiente {quote} para aumentar su saldo asignado."
@@ -1328,6 +1328,13 @@ terminal.trailingstop.valid.percentage.greater: "El porcentaje de trailing stop 
 terminal.trailingstop.valid.percentage.lower: "El porcentaje de trailing stop debe ser un número menor que 0."
 terminal.provider.available: "Disponible:"
 accounts.exchange.api.tip.bitmex: "- Abrir {url}\n - Iniciar sesión en Bitmex\n - Dale un nombre a la clave API\n - Establezca los permisos clave como \"Order\"\n - Haga clic en crear clave API\n - Cuando termine, copie las claves API de la API recién creada en los campos de entrada correspondientes arriba\n - Hecho"
+accounts.exchange.api.tip.ascendex: "- Open {url}\n
+  - Log in to AscendEX\n
+  - Go to API Setting in user menu\n
+  - Give the API key a name and fill other necessary details (Check View, Trade and Transfer permissions)\n
+  - Click create API key\n
+  - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
+  - Done"
 management.positions: "Posiciones"
 management.orders: "Órdenes"
 management.contracts: "Contratos"
@@ -1485,7 +1492,7 @@ deleteaccount.title: "Borrar cuenta"
 deleteaccount.confirm: "Está a punto de eliminar su cuenta de Zignaly. ¿Estas seguro que deseas continuar?"
 deleteaccount.reason: "Razón"
 deleteaccount.success: "Tu cuenta ha sido eliminada."
-deposit.time.alert: "Por favor, tenga en cuenta que una vez que el estado del depósito sea \"Ok\", puede tardar hasta 3 horas en reflejarse en su saldo."
+deposit.time.alert: 'Por favor, tenga en cuenta que una vez que el estado del depósito sea "Ok", puede tardar hasta 3 horas en reflejarse en su saldo.'
 preferences.deleteaccount.confirm: "¿Estás seguro de que deseas eliminar tu cuenta?"
 preferences.deleteaccount.exchanges: "Para eliminar su cuenta, debe eliminar sus cuentas de exchange actuales de Zignaly."
 preferences.deleteaccount.sent: "Se ha enviado un enlace para eliminar su cuenta a su correo electrónico."

@@ -1386,7 +1386,7 @@ accounts.exchange.api.tip.vcce: "- Open {url}\n
 accounts.exchange.api.tip.ascendex: "- Open {url}\n
   - Log in to AscendEX\n
   - Go to API Setting in user menu\n
-  - Give the API key a name and fill other necessary details (If any)\n
+  - Give the API key a name and fill other necessary details (Check View, Trade and Transfer permissions)\n
   - Click create API key\n
   - When done, copy the API keys of the newly created API back into the corresponding input fields above\n
   - Done"
