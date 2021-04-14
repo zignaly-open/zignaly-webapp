@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import "./NoDemoAccount.scss";
 import { FormattedMessage } from "react-intl";
-import CustomButton from "../../../CustomButton";
+// import CustomButton from "../../../CustomButton";
 import { Typography } from "@material-ui/core";
-import ModalPathContext from "../../ModalPathContext";
+// import ModalPathContext from "../../ModalPathContext";
 import useExchangeList from "../../../../hooks/useExchangeList";
 import { getExchangeNamesCombined } from "../../../../utils/helpers";
 
@@ -14,12 +14,12 @@ import { getExchangeNamesCombined } from "../../../../utils/helpers";
  */
 const NoDemoAccount = () => {
   const { exchanges } = useExchangeList();
-  const { navigateToPath } = useContext(ModalPathContext);
+  // const { navigateToPath } = useContext(ModalPathContext);
 
   return (
     <Box className="noDemoAccount">
       <Box alignItems="center" display="flex" flexDirection="column">
-        <Typography className="connectHead" variant="h3">
+        {/* <Typography className="connectHead" variant="h3">
           <FormattedMessage id="accounts.connect.experiment" />
         </Typography>
         <CustomButton
@@ -27,7 +27,7 @@ const NoDemoAccount = () => {
           onClick={() => navigateToPath("createDemoAccount")}
         >
           <FormattedMessage id="accounts.create.demo" />
-        </CustomButton>
+        </CustomButton> */}
         <Typography variant="h4">
           <FormattedMessage id="accounts.connect.existing.or" />
         </Typography>
