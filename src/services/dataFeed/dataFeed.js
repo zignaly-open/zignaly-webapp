@@ -218,7 +218,9 @@ class DataFeed {
   // eslint-disable-next-line max-params
   getBars(symbolData, resolution, periodParams, onHistoryCallback, onErrorCallback) {
     const { from: startDate, firstDataRequest } = periodParams;
-    this.allCandles = [];
+    if (firstDataRequest) {
+      this.allCandles = [];
+    }
 
     /**
      * Notify symbol prices in Trading View bars format so chart widget.
@@ -227,7 +229,7 @@ class DataFeed {
      * @returns {Void} None.
      */
     const notifyPricesData = (formattedCandles) => {
-      if (this.allCandles.length === 0) {
+      if (formattedCandles.length === 0) {
         onHistoryCallback([], { noData: true });
       } else {
         onHistoryCallback(formattedCandles, {
