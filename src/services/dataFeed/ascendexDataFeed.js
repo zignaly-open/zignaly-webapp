@@ -90,7 +90,7 @@ class AscendexDataFeed extends DataFeed {
    * @returns {Promise<Candle>} Promise.
    */
   getBarsRequest(symbolData, resolution, periodParams) {
-    const { from: startDate, to: endDate, firstDataRequest } = periodParams;
+    const { from: startDate, to: endDate } = periodParams;
 
     return this.getCandlesData(
       // @ts-ignore
@@ -99,7 +99,7 @@ class AscendexDataFeed extends DataFeed {
       symbolData.quote.toUpperCase(),
       resolution,
       startDate * 1000,
-      firstDataRequest ? endDate * 1000 : dayjs.unix(endDate).startOf("minute").valueOf(),
+      dayjs.unix(endDate).startOf("minute").valueOf(),
     ).then((newCandles) => {
       return newCandles ? newCandles.data.map((d) => this.parseOHLCV(d.data)) : [];
     });

@@ -87,7 +87,7 @@ class VcceDataFeed extends DataFeed {
    * @returns {Promise<Candle>} Promise.
    */
   getBarsRequest(symbolData, resolution, periodParams) {
-    const { from: startDate, to: endDate, firstDataRequest } = periodParams;
+    const { from: startDate, to: endDate } = periodParams;
 
     return this.getCandlesData(
       // @ts-ignore
@@ -96,7 +96,7 @@ class VcceDataFeed extends DataFeed {
       symbolData.quote.toLowerCase(),
       resolutionToMilliseconds(resolution),
       startDate,
-      firstDataRequest ? endDate : dayjs.unix(endDate).startOf("minute").unix(),
+      dayjs.unix(endDate).startOf("minute").unix(),
     ).then((newCandles) => {
       return newCandles.map(this.parseOHLCV);
     });
