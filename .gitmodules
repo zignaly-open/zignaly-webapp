@@ -1,3 +1,4 @@
 [submodule "static/charting_library"]
 	path = static/charting_library
 	url = git@github.com:tradingview/charting_library.git
+  branch = unstable

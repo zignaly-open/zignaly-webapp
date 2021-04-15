@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import "./ExchangeAccountList.scss";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
@@ -109,7 +109,7 @@ const ExchangeAccountList = ({ demo }) => {
             </Box>
           ) : (
             <Box className="exchangeButtons" display="flex" justifyContent="flex-start">
-              <Box display="flex" flexDirection="column">
+              {/* <Box display="flex" flexDirection="column">
                 <Typography variant="h4">
                   <FormattedMessage id="accounts.connect.experiment" />
                 </Typography>
@@ -119,7 +119,7 @@ const ExchangeAccountList = ({ demo }) => {
                 >
                   <FormattedMessage id="accounts.create.demo" />
                 </CustomButton>
-              </Box>
+              </Box> */}
             </Box>
           )}
         </Box>

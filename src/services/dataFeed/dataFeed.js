@@ -8,17 +8,12 @@
 
 /* eslint-disable camelcase */
 import { isEmpty, last } from "lodash";
-import { resolutionToMilliseconds } from "utils/timeConvert";
-
-/**
- * @typedef {Array<string>} Candle
- */
 
 /**
  *
- * @typedef {import("./tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("./tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
- * @typedef {import("./tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
+ * @typedef {import("services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("tradingView/charting_library/charting_library").OnReadyCallback} OnReadyCallback
  * @typedef {import("tradingView/charting_library/charting_library").ServerTimeCallback} ServerTimeCallback
  * @typedef {import("tradingView/charting_library/charting_library").SearchSymbolsCallback} SearchSymbolsCallback
@@ -28,6 +23,11 @@ import { resolutionToMilliseconds } from "utils/timeConvert";
  * @typedef {import("tradingView/charting_library/charting_library").Bar} Bar
  * @typedef {import("tradingView/charting_library/charting_library").SubscribeBarsCallback} SubscribeBarsCallback
  * @typedef {import("tradingView/charting_library/charting_library").LibrarySymbolInfo} LibrarySymbolInfo
+ * @typedef {import("tradingView/charting_library/charting_library").PeriodParams} PeriodParams
+ */
+
+/**
+ * @typedef {Array<Bar>} Candle
  */
 
 /**
@@ -40,14 +40,15 @@ import { resolutionToMilliseconds } from "utils/timeConvert";
 /**
  * Prices data feed from CoinRay provider.
  *
+ * @abstract
  * @property {TradeApiClient} tradeApi API client.
  * @returns {IBasicDataFeed} Trading View Chart data feed.
  */
-class VcceDataFeed {
+class DataFeed {
   /**
-   * Creates an instance of VcceDataFeed.
+   * Creates an instance of DataFeed.
    * @param {DataFeedOptions} options Construct options.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   constructor(options) {
     this.symbolsData = options.symbolsData || null;
@@ -66,7 +67,7 @@ class VcceDataFeed {
    *
    * @param {OnReadyCallback} callback On ready callback.
    * @returns {Void} None.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   onReady(callback) {
     const resolutions = ["1", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W"];
@@ -89,7 +90,7 @@ class VcceDataFeed {
   //  *
   //  * @param {ServerTimeCallback} callback Server time callback.
   //  * @returns {Void} None.
-  //  * @memberof VcceDataFeed
+  //  * @memberof DataFeed
   //  */
   // getServerTime(callback) {
   //   tradeApi
@@ -112,7 +113,7 @@ class VcceDataFeed {
   //  * @param {String} symbolType Symbol type.
   //  * @param {SearchSymbolsCallback} onResultReadyCallback Callback to resolve symbol match.
   //  * @returns {Void} None.
-  //  * @memberof VcceDataFeed
+  //  * @memberof DataFeed
   //  */
   // eslint-disable-next-line max-params
   // searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
@@ -143,7 +144,7 @@ class VcceDataFeed {
    * @param {ResolveCallback} onSymbolResolvedCallback Notify symbol resolved.
    * @param {ErrorCallback} onResolveErrorCallback Notify symbol resolve error.
    * @returns {Void} None.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   resolveSymbol(symbol, onSymbolResolvedCallback, onResolveErrorCallback) {
     for (let symbolData of this.symbolsData) {
@@ -190,52 +191,17 @@ class VcceDataFeed {
   }
 
   /**
-   * Get price candles for selected symbol.
+   * Get price bar for a given symbol.
    *
-   * @param {string} base Symbol base currency.
-   * @param {string} quote Symbol quote currency.
-   * @param {string|number} resolution Data resolution.
-   * @param {number} startTime Get data since.
-   * @param {number} [endTime] Get data to.
-   * @returns {Promise<Candle>} Promise that resolve candle data.
-   * @memberof VcceDataFeed
+   * @param {MarketSymbol} symbolData Market symbol data.
+   * @param {string} resolution Data resolution.
+   * @param {PeriodParams} periodParams Selected period.
+   * @returns {Promise<Candle>} None.
+   * @abstract
    */
-  // eslint-disable-next-line max-params
-  async getCandlesData(base, quote, resolution, startTime, endTime) {
-    let endpointPath = `/tradingview?lang=en&coin=${base}&currency=${quote}&resolution=${resolution}&from=${startTime}`;
-    if (endTime) {
-      endpointPath += `&to=${endTime}`;
-    }
-    const requestUrl = this.baseUrl + endpointPath;
-
-    try {
-      const response = await fetch(requestUrl);
-      const candles = await response.json();
-
-      return candles;
-      // return JSON.parse(candles.contents);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(`Get candles data error: ${error.message}`);
-    }
-
-    return [];
-  }
-
-  /**
-   * Parse api candle bars
-   * @param {*} candle VCCE Candle
-   * @returns {*} New candle
-   */
-  parseOHLCV(candle) {
-    return {
-      time: parseFloat(candle.time),
-      open: parseFloat(candle.open),
-      high: parseFloat(candle.high),
-      low: parseFloat(candle.low),
-      close: parseFloat(candle.close),
-      volume: parseFloat(candle.volume),
-    };
+  // eslint-disable-next-line no-unused-vars
+  getBarsRequest(symbolData, resolution, periodParams) {
+    throw new Error("must be implemented by subclass!");
   }
 
   /**
@@ -243,24 +209,15 @@ class VcceDataFeed {
    *
    * @param {MarketSymbol} symbolData Market symbol data.
    * @param {string} resolution Data resolution.
-   * @param {number} startDate Get data since.
-   * @param {number} endDate Get data to.
-   * @param {HistoryCallback} onResultCallback Notify data.
+   * @param {PeriodParams} periodParams Selected period.
+   * @param {HistoryCallback} onHistoryCallback Notify data.
    * @param {ErrorCallback} onErrorCallback Notify error.
-   * @param {boolean} firstDataRequest First request boolean.
    * @returns {Void} None.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   // eslint-disable-next-line max-params
-  getBars(
-    symbolData,
-    resolution,
-    startDate,
-    endDate,
-    onResultCallback,
-    onErrorCallback,
-    firstDataRequest,
-  ) {
+  getBars(symbolData, resolution, periodParams, onHistoryCallback, onErrorCallback) {
+    const { from: startDate, firstDataRequest } = periodParams;
     this.allCandles = [];
 
     /**
@@ -271,9 +228,9 @@ class VcceDataFeed {
      */
     const notifyPricesData = (formattedCandles) => {
       if (this.allCandles.length === 0) {
-        onResultCallback([], { noData: true });
+        onHistoryCallback([], { noData: true });
       } else {
-        onResultCallback(formattedCandles, {
+        onHistoryCallback(formattedCandles, {
           noData: false,
         });
       }
@@ -285,20 +242,10 @@ class VcceDataFeed {
       this.startDate = startDate;
     }
 
-    this.getCandlesData(
-      // @ts-ignore
-      symbolData.base.toLowerCase(),
-      // @ts-ignore
-      symbolData.quote.toLowerCase(),
-      resolutionToMilliseconds(resolution),
-      startDate,
-      endDate,
-    )
-      .then((newCandles) => {
+    this.getBarsRequest(symbolData, resolution, periodParams)
+      .then((formattedCandles) => {
         // Accumulate candles.
-        this.allCandles = this.allCandles.concat(newCandles);
-
-        const formattedCandles = this.allCandles.map(this.parseOHLCV);
+        this.allCandles = this.allCandles.concat(formattedCandles);
         notifyPricesData(formattedCandles);
       })
       .catch((e) => {
@@ -312,40 +259,44 @@ class VcceDataFeed {
    * @param {LibrarySymbolInfo} symbolData Market symbol data.
    * @param {string} resolution Prices data resolution.
    * @param {SubscribeBarsCallback} onRealtimeCallback Notify tick to chart.
-   * @returns {Void} None.
+   * @returns {Void} Promise.
    *
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   // eslint-disable-next-line max-params
   subscribeBars(symbolData, resolution, onRealtimeCallback) {
-    const refreshCandle = () => {
-      this.getCandlesData(
-        // @ts-ignore
-        symbolData.base.toLowerCase(),
-        // @ts-ignore
-        symbolData.quote.toLowerCase(),
-        resolutionToMilliseconds(resolution),
-        this.startDate,
-      )
-        .then((candles) => {
-          if (candles.length) {
-            const lastCandle = candles[candles.length - 1];
-            onRealtimeCallback(this.parseOHLCV(lastCandle));
+    this.candleSubscription = setInterval(() => {
+      this.refreshBarRequest(symbolData, resolution)
+        .then((candle) => {
+          if (candle) {
+            onRealtimeCallback(candle);
           }
         })
         .catch((e) => {
           // eslint-disable-next-line no-console
           console.error(`ERROR: ${e.message}`);
         });
-    };
-    this.candleSubscription = setInterval(refreshCandle, 15000);
+    }, 15000);
+  }
+
+  /**
+   * Call request to get latest candle price data.
+   *
+   * @param {LibrarySymbolInfo} symbolData Market symbol data.
+   * @param {string} resolution Prices data resolution.
+   * @returns {Promise<Bar>} Promise.
+   * @abstract
+   */
+  // eslint-disable-next-line no-unused-vars
+  refreshBarRequest(symbolData, resolution) {
+    throw new Error("must be implemented by subclass!");
   }
 
   /**
    * Unsubscribe from interval request
    *
    * @returns {Void} None.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   unsubscribeBars() {
     clearInterval(this.candleSubscription);
@@ -355,7 +306,7 @@ class VcceDataFeed {
    * Get last price.
    *
    * @returns {number} Price.
-   * @memberof VcceDataFeed
+   * @memberof DataFeed
    */
   getLastPrice() {
     if (isEmpty(this.allCandles)) {
@@ -367,4 +318,4 @@ class VcceDataFeed {
   }
 }
 
-export default VcceDataFeed;
+export default DataFeed;

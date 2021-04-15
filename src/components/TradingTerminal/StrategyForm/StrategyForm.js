@@ -22,7 +22,6 @@ import "./StrategyForm.scss";
 // import { mixpanelPositionCreated } from "utils/mixpanelApi";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
  * @typedef {any} TVWidget
  * @typedef {any} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload

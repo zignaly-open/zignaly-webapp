@@ -26,8 +26,7 @@ import MarginButtons from "../Controls/MarginControl";
 import { Alert } from "@material-ui/lab";
 
 /**
- * @typedef {import("../../../services/coinRayDataFeed").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/coinRayDataFeed").CoinRayCandle} CoinRayCandle
+ * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
  */
 
 /**
