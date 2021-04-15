@@ -53,9 +53,9 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
 
     // Start at the first week day of the quarter's first week.
     let quarterStart = dayjs(performance.weeklyStats[0].day).startOf("quarter");
-    if (quarterStart.day() > 0) {
-      quarterStart = quarterStart.add(1, "w").startOf("w");
-    }
+    // if (quarterStart.day() > 0) {
+    //   quarterStart = quarterStart.add(1, "w").startOf("w");
+    // }
 
     /** @type {StatsOptions} */
     const options = {
