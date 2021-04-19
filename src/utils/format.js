@@ -107,7 +107,7 @@ export const formatCurrency = (value) => {
     case 10:
       return `${formatFloat2Dec(value / 1000000)} Million`;
     default:
-      return "";
+      return `${formatFloat2Dec(value)}`;
   }
 };
 
