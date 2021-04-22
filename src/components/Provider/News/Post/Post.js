@@ -312,30 +312,32 @@ const Post = ({ post: _post, onPostDeleted }) => {
               <div dangerouslySetInnerHTML={{ __html: content }} />
             </Typography>
           </div>
-          <div className="repliesBox">
-            {!showAllComments && post.replies.length > 2 && (
-              <Typography
-                className="showAllComments callout2"
-                onClick={() => setShowAllComments(true)}
-              >
-                <FormattedMessage
-                  id="wall.replies.more"
-                  values={{ number: post.replies.length - 2 }}
-                />
-              </Typography>
-            )}
+          {post.allowReplies && (
+            <div className="repliesBox">
+              {!showAllComments && post.replies.length > 2 && (
+                <Typography
+                  className="showAllComments callout2"
+                  onClick={() => setShowAllComments(true)}
+                >
+                  <FormattedMessage
+                    id="wall.replies.more"
+                    values={{ number: post.replies.length - 2 }}
+                  />
+                </Typography>
+              )}
 
-            {sortedReplies.map((reply) => (
-              <Reply
-                key={reply.id}
-                onReplyAdded={onReplyAdded}
-                onReplyDeleted={onReplyDeleted}
-                postId={post.id}
-                reply={reply}
-              />
-            ))}
-            <AddReply onReplyAdded={onReplyAdded} postId={post.id} />
-          </div>
+              {sortedReplies.map((reply) => (
+                <Reply
+                  key={reply.id}
+                  onReplyAdded={onReplyAdded}
+                  onReplyDeleted={onReplyDeleted}
+                  postId={post.id}
+                  reply={reply}
+                />
+              ))}
+              <AddReply onReplyAdded={onReplyAdded} postId={post.id} />
+            </div>
+          )}
         </Paper>
       </LazyLoad>
     </Box>
