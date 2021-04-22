@@ -97,7 +97,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
       const dayDate = dayjs(entry.date).startOf("d");
       if (["pnl", "successFee"].includes(entry.type)) {
         // Calculate total PnL by week for weekly profit stats
-        const week = dayDate.week();
         const statsPnLWeek = weekStats.length && weekStats[weekStats.length - 1];
         if (statsPnLWeek && dayjs(statsPnLWeek.day).isSame(dayDate, "w")) {
           statsPnLWeek.return += entry.amount;

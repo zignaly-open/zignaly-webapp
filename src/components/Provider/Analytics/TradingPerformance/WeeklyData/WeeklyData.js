@@ -1,7 +1,6 @@
 import React from "react";
 import "./WeeklyData.scss";
 import { Box, Typography } from "@material-ui/core";
-import moment from "moment";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 dayjs.extend(isSameOrBefore);
