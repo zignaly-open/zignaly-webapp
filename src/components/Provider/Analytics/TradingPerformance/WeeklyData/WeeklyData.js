@@ -2,6 +2,9 @@ import React from "react";
 import "./WeeklyData.scss";
 import { Box, Typography } from "@material-ui/core";
 import moment from "moment";
+import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+dayjs.extend(isSameOrBefore);
 
 /**
  *
@@ -69,7 +72,9 @@ const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
           selected.weeklyStats &&
           selected.weeklyStats.map((item, index) => (
             <Typography key={index} variant="h5">
-              {item.return ? moment(new Date(item.day)).format("DD MMM") : "--"}
+              {dayjs(item.day).isSameOrBefore(dayjs(), "week")
+                ? dayjs(item.day).format("DD MMM")
+                : "--"}
             </Typography>
           ))}
         <Typography className="total" variant="h5">

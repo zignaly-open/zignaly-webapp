@@ -2578,7 +2578,6 @@ function createConnectedProviderUserInfoEntity(response) {
 /**
  *
  * @typedef {Object} DefaultProviderPerformanceWeeklyStats
- * @property {String} week
  * @property {Number} return
  * @property {String} day
  * @property {Number} positions
