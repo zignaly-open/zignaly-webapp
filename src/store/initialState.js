@@ -645,7 +645,7 @@ const initialState = {
       about: "",
       performance: {
         closePositions: 0,
-        weeklyStats: [{ week: "", return: 0, day: "", positions: 0 }],
+        weeklyStats: [{ return: 0, day: "", positions: 0 }],
         openPositions: 0,
         totalBalance: 0,
         totalTradingVolume: 0,

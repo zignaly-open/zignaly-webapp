@@ -101,7 +101,7 @@ const CreatePost = ({ providerId, onCreated }) => {
         >
           <FormattedMessage id="wall.post" />
         </CustomButton>
-        <Box display="flex" alignItems="center">
+        <Box alignItems="center" display="flex">
           <Typography variant="h5">
             <FormattedMessage id="wall.replies.allow" />
           </Typography>
