@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
@@ -93,7 +93,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
               version: 2,
               exchangeInternalId: selectedExchange.internalId,
             };
-            dispatch(setProvider(payload2, !provider.profitSharing));
+            dispatch(getProvider(payload2, !provider.profitSharing));
             // mixpanelProviderEnabled();
             // userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));

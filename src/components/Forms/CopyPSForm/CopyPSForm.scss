@@ -9,25 +9,20 @@
     text-align: center;
   }
 
+  .wrongExchangeTitle {
+    margin-bottom: 32px;
+
+    svg {
+      margin-left: 8px;
+    }
+  }
+
   .summaryTitle {
     margin-bottom: 16px;
   }
 
   .modeTitle {
     margin: 48px 0 24px;
-  }
-
-  h4 {
-    margin-bottom: 20px;
-    max-width: 80%;
-    text-align: center;
-    text-transform: initial;
-  }
-
-  .para {
-    margin-bottom: 20px;
-    text-align: center;
-    width: 80%;
   }
 
   .fieldBox {

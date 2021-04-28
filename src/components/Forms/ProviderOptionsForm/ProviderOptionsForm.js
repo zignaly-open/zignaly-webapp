@@ -8,7 +8,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useNestedCheckboxes from "../../../hooks/useNestedCheckboxes";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 
@@ -113,7 +113,7 @@ const ProviderOptionsForm = ({ provider }) => {
                 exchangeInternalId: storeSettings.selectedExchange.internalId,
               };
 
-              dispatch(setProvider(payload2, true));
+              dispatch(getProvider(payload2, true));
             }
           })
           .catch((e) => {

@@ -6,7 +6,7 @@ import CustomButton from "../../CustomButton";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useCheckPSCanDisconnect from "hooks/useCheckPSCanDisconnect";
@@ -49,7 +49,7 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
       version: 2,
       exchangeInternalId: selectedExchange.internalId,
     };
-    dispatch(setProvider(getProviderPayload, true));
+    dispatch(getProvider(getProviderPayload, true));
   };
 
   const disable = () => {

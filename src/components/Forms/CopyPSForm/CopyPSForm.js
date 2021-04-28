@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
@@ -29,6 +29,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
+import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {Object} DefaultProps
@@ -49,7 +50,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   const { selectedExchange } = useStoreSettingsSelector();
   const [loading, setLoading] = useState(false);
   const [profitsMode, setProfitsMode] = useState(provider.profitsMode || "reinvest");
-  const [alert, setAlert] = useState(undefined);
   const {
     errors,
     handleSubmit,
@@ -71,7 +71,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     "allocatedBalance",
     !provider.disable ? provider.allocatedBalance : "",
   );
-  console.log(allocatedBalance);
 
   /**
    * @returns {String} Exchange name to display in the error.
@@ -113,15 +112,19 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
 
   const wrongExchange = checkWrongExchange();
 
+  /**
+   * Check allocated amount is correct
+   * @param {string} val Value.
+   * @returns {boolean|string} Result or error message.
+   */
   const validateAmount = (val) => {
-    console.log("val");
     const newAllocated = parseFloat(val);
+
     if (!provider.disable && newAllocated < provider.allocatedBalance) {
       return intl.formatMessage({ id: "form.error.allocatedBalance.reduce" });
     }
 
     if (!balanceLoading) {
-      console.log((quoteBalance, newAllocated - provider.allocatedBalance));
       // Balance checks
       if (provider.disable && quoteBalance < newAllocated) {
         return intl.formatMessage(
@@ -151,8 +154,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    console.log(data);
-    if (step === 1) {
+    if (step === 1 && provider.disable) {
       setStep(2);
     } else {
       setLoading(true);
@@ -174,8 +176,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payloadProvider, false));
-          dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
+          dispatch(getProvider(payloadProvider, false));
           onClose();
           onSuccess();
         })
@@ -188,6 +189,12 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     }
   };
 
+  const redirectToHelp = () => {
+    const link =
+      "https://help.zignaly.com/hc/en-us/articles/360019579879-I-have-an-error-of-incorrect-exchange-account-when-trying-to-connect-to-a-Profit-Sharing-service-";
+    window.open(link, "_blank");
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -198,9 +205,12 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
         justifyContent="flex-start"
       >
         {wrongExchange ? (
-          <Box display="flex" flexDirection="column" flex={1}>
-            <Typography variant="h3">
-              <FormattedMessage id="profitsharing.wrongexchange" />
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Typography variant="h3" className="wrongExchangeTitle">
+              <Box display="flex" flexDirection="row" alignItems="center" component="span">
+                <FormattedMessage id="profitsharing.wrongexchange" />
+                <Help className="helpIcon" onClick={redirectToHelp} />
+              </Box>
             </Typography>
             <Typography>{wrongExchange}</Typography>
           </Box>
@@ -346,7 +356,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
               type="submit"
               disabled={balanceLoading || !isValid}
             >
-              {step === 1 ? (
+              {step === 1 && provider.disable ? (
                 <FormattedMessage id="action.next" />
               ) : (
                 <>
