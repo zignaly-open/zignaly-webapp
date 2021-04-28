@@ -5,6 +5,7 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
 import CopyTraderForm from "../../../Forms/CopyTraderForm";
+import CopyPSForm from "../../../Forms/CopyPSForm";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
@@ -191,11 +192,19 @@ const CopyTraderButton = ({ provider }) => {
         <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm
-          onClose={handleCopyModalClose}
-          onSuccess={handleCopySuccessModalOpen}
-          provider={provider}
-        />
+        {provider.profitSharing ? (
+          <CopyPSForm
+            onClose={handleCopyModalClose}
+            onSuccess={handleCopySuccessModalOpen}
+            provider={provider}
+          />
+        ) : (
+          <CopyTraderForm
+            onClose={handleCopyModalClose}
+            onSuccess={handleCopySuccessModalOpen}
+            provider={provider}
+          />
+        )}
       </Modal>
       <Modal
         onClose={handleCopySuccessModalClose}

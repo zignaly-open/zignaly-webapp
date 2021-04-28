@@ -15,7 +15,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * Provides balance summary for exchange.
  * @param {ExchangeConnectionEntity} selectedExchange Exchange account object.
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request, demo accounts are bypassed.
- * @returns {HookData} Balance.j
+ * @returns {HookData} Balance.
  */
 const useAvailableBalance = (selectedExchange, shouldExecute = true) => {
   const [balance, setBalance] = useState({});

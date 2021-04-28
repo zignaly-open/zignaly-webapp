@@ -14,8 +14,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-// import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
-// import { mixpanelProviderEnabled } from "utils/mixpanelApi";
+import NumberInput from "../NumberInput";
 import { Help } from "@material-ui/icons";
 
 /**
@@ -36,7 +35,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
-  const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
   const [profitsMode, setProfitsMode] = useState(
     provider.profitsMode ? provider.profitsMode : "reinvest",
   );
@@ -309,37 +307,17 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
             flexDirection="column"
             justifyContent="start"
           >
-            <Controller
+            <NumberInput
               control={control}
+              quote={provider.copyTradingQuote}
+              defaultValue={!provider.disable ? provider.allocatedBalance : ""}
+              placeholder={intl.formatMessage({
+                id: provider.profitSharing
+                  ? "trader.amount.placeholder.1"
+                  : "trader.amount.placeholder.2",
+              })}
+              error={!!errors.allocatedBalance}
               name="allocatedBalance"
-              render={(props) => (
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
-                    ),
-                  }}
-                  className="customInput"
-                  error={!!errors.allocatedBalance}
-                  fullWidth
-                  onChange={(e) => {
-                    let data = e.target.value;
-                    if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
-                      data = data.replace(",", ".");
-                      setAllocated(data);
-                      props.onChange(data);
-                    }
-                  }}
-                  placeholder={intl.formatMessage({
-                    id: provider.profitSharing
-                      ? "trader.amount.placeholder.1"
-                      : "trader.amount.placeholder.2",
-                  })}
-                  value={allocated}
-                  variant="outlined"
-                />
-              )}
-              rules={{ required: "Please enter a valid Amount!" }}
             />
             {provider.profitSharing && errors.allocatedBalance && (
               <span className={"text red"}>{errors.allocatedBalance.message}</span>
