@@ -309,15 +309,15 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
           >
             <NumberInput
               control={control}
-              quote={provider.copyTradingQuote}
               defaultValue={!provider.disable ? provider.allocatedBalance : ""}
+              error={!!errors.allocatedBalance}
+              name="allocatedBalance"
               placeholder={intl.formatMessage({
                 id: provider.profitSharing
                   ? "trader.amount.placeholder.1"
                   : "trader.amount.placeholder.2",
               })}
-              error={!!errors.allocatedBalance}
-              name="allocatedBalance"
+              quote={provider.copyTradingQuote}
               rules={{ required: true }}
             />
             {provider.profitSharing && errors.allocatedBalance && (

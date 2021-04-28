@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import "./CopyPSForm.scss";
 import {
   Box,
-  TextField,
   Typography,
-  InputAdornment,
   CircularProgress,
   FormHelperText,
   Checkbox,
   OutlinedInput,
-  FormControlLabel,
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
@@ -19,13 +16,9 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
-import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import Alert from "@material-ui/lab/Alert";
-import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import { showErrorAlert } from "../../../store/actions/ui";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-// import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
-// import { mixpanelProviderEnabled } from "utils/mixpanelApi";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
@@ -36,16 +29,15 @@ import { Help } from "@material-ui/icons";
  * @property {import('../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  * @property {Function} onClose
  * @property {Function} onSuccess
- *
  */
+
 /**
- * Provides the navigation bar for the dashboard.
+ * Form to copy a PS service.
  *
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
 const CopyPSForm = ({ provider, onClose, onSuccess }) => {
-  const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
   const [loading, setLoading] = useState(false);
@@ -53,7 +45,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   const {
     errors,
     handleSubmit,
-    setError,
     control,
     formState: { isValid },
     register,
@@ -149,9 +140,9 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
    */
 
   /**
-   *
+   * Submit form callback.
    * @param {FormData} data Form data.
-   * @returns {void} None.
+   * @returns {void}
    */
   const onSubmit = (data) => {
     if (step === 1 && provider.disable) {
@@ -205,9 +196,9 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
         justifyContent="flex-start"
       >
         {wrongExchange ? (
-          <Box display="flex" flexDirection="column" alignItems="flex-start">
-            <Typography variant="h3" className="wrongExchangeTitle">
-              <Box display="flex" flexDirection="row" alignItems="center" component="span">
+          <Box alignItems="flex-start" display="flex" flexDirection="column">
+            <Typography className="wrongExchangeTitle" variant="h3">
+              <Box alignItems="center" component="span" display="flex" flexDirection="row">
                 <FormattedMessage id="profitsharing.wrongexchange" />
                 <Help className="helpIcon" onClick={redirectToHelp} />
               </Box>
@@ -224,33 +215,33 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
 
                 <Box
                   alignItems="start"
+                  className="allocatedBox"
                   display="flex"
                   flexDirection="column"
                   justifyContent="start"
-                  className="allocatedBox"
                 >
                   <Typography>
                     <FormattedMessage id="profitsharing.howmuch" />
                   </Typography>
                   <NumberInput
                     control={control}
-                    quote={provider.copyTradingQuote}
                     defaultValue={allocatedBalance}
+                    error={!!errors.allocatedBalance}
+                    name="allocatedBalance"
                     placeholder={intl.formatMessage({
                       id: "trader.amount.placeholder.1",
                     })}
-                    error={!!errors.allocatedBalance}
-                    name="allocatedBalance"
+                    quote={provider.copyTradingQuote}
                     rules={{
                       required: true,
-                      validate: (val) => validateAmount(val),
+                      validate: (/** @type {string} */ val) => validateAmount(val),
                     }}
                   />
                   {errors.allocatedBalance && (
                     <span className={"text red"}>{errors.allocatedBalance.message}</span>
                   )}
                   <FormHelperText component="div">
-                    <Box display="flex" flexDirection="row" alignItems="center">
+                    <Box alignItems="center" display="flex" flexDirection="row">
                       <FormattedMessage id="deposit.available" />
                       {balanceLoading ? (
                         <CircularProgress color="primary" size={15} />
@@ -310,7 +301,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                 </Typography>
                 <Box className="acks" display="flex" flexDirection="column">
                   {["ack1", "ack2", "ack3"].map((ack) => (
-                    <Box key={ack} className="ack">
+                    <Box className="ack" key={ack}>
                       <Controller
                         control={control}
                         defaultValue={false}
@@ -332,12 +323,13 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                     </Box>
                   ))}
                 </Box>
-                <Box display="flex" flexDirection="column" alignItems="center">
+                <Box alignItems="center" display="flex" flexDirection="column">
                   <Typography>
                     <FormattedMessage id="profitsharing.confirmtransfer" />
                   </Typography>
                   <OutlinedInput
                     className="customInput transferInput"
+                    error={!!errors.transfer}
                     inputRef={register({
                       validate: (val) => val.toLowerCase() === "transfer",
                     })}
@@ -345,16 +337,15 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                     placeholder={intl.formatMessage({
                       id: "trader.ack.placeholder",
                     })}
-                    error={!!errors.transfer}
                   />
                 </Box>
               </>
             )}
             <CustomButton
               className="full submitButton"
+              disabled={balanceLoading || !isValid}
               loading={loading}
               type="submit"
-              disabled={balanceLoading || !isValid}
             >
               {step === 1 && provider.disable ? (
                 <FormattedMessage id="action.next" />

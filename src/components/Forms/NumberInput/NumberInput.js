@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
+import { Controller } from "react-hook-form";
+import { TextField, InputAdornment } from "@material-ui/core";
 
 const NumberInput = ({ control, quote, defaultValue, placeholder, error, name, rules }) => {
   const [allocated, setAllocated] = useState(defaultValue);
@@ -8,6 +8,7 @@ const NumberInput = ({ control, quote, defaultValue, placeholder, error, name, r
   return (
     <Controller
       control={control}
+      defaultValue={allocated}
       name={name}
       render={(props) => (
         <TextField
@@ -17,6 +18,7 @@ const NumberInput = ({ control, quote, defaultValue, placeholder, error, name, r
           className="customInput"
           error={error}
           fullWidth
+          onBlur={props.onBlur}
           onChange={(e) => {
             let data = e.target.value;
             if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
@@ -25,14 +27,12 @@ const NumberInput = ({ control, quote, defaultValue, placeholder, error, name, r
               props.onChange(data);
             }
           }}
-          onBlur={props.onBlur}
           placeholder={placeholder}
           value={allocated}
           variant="outlined"
         />
       )}
       rules={rules}
-      defaultValue={allocated}
     />
   );
 };

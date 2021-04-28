@@ -68,59 +68,16 @@
 }
 
 @include media("<=sm") {
-  .copyTraderForm {
+  .copyPSForm {
+    margin-bottom: 48px;
     padding: 0 15px 30px;
 
-    .alert {
-      * {
-        font-size: 14px;
-      }
+    h3 {
+      margin: 48px 0;
     }
 
-    .formTitle {
-      font-size: 18px;
-      max-width: 100%;
-
-      &.noMargin {
-        margin-top: 0;
-      }
-    }
-
-    .para {
-      font-size: 14px;
-      width: 100%;
-    }
-
-    h4 {
-      font-size: 14px;
-      max-width: 100%;
-    }
-
-    p {
-      width: 100%;
-    }
-
-    .fieldBox {
-      .inputBox {
-        width: 100%;
-      }
-    }
-
-    .customLabel {
-      font-size: 14px;
-    }
-
-    .inputBox {
-      width: 100%;
-
-      .text {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 5px;
-        text-align: center;
-        width: 100%;
-      }
+    .acks {
+      margin: 42px 0 28px;
     }
   }
 }
