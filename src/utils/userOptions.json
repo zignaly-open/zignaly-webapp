@@ -1,5 +1,10 @@
 [
   {
+    "id": "customerKey",
+    "label": "signalp.option.apikey",
+    "tooltip": ""
+  },
+  {
     "id": "stopLossFromSignal",
     "label": "signalp.option.stoploss",
     "tooltip": "signalp.useroption.stopLossFromSignal.help"
