@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
 
-const NumberInput = ({ control, quote, defaultValue, placeholder, error, name }) => {
+const NumberInput = ({ control, quote, defaultValue, placeholder, error, name, rules }) => {
   const [allocated, setAllocated] = useState(defaultValue);
-  console.log("er", error);
 
   return (
     <Controller
@@ -32,8 +31,8 @@ const NumberInput = ({ control, quote, defaultValue, placeholder, error, name })
           variant="outlined"
         />
       )}
-      rules={{ required: "Please enter a valid Amount!" }}
-      defaultValue=""
+      rules={rules}
+      defaultValue={allocated}
     />
   );
 };

@@ -1,32 +1,16 @@
 .copyPSForm {
   min-height: 300px;
   overflow-y: scroll;
-  padding: 0 40px 30px;
+  padding: 0 60px 30px;
 
-  .alert {
-    margin-bottom: 20px;
-    margin-top: 10px;
-    padding: 6px 0;
-
-    div {
-      padding: 0;
-    }
-
-    .alertIcon {
-      display: none;
-    }
-
-    .helpIcon {
-      cursor: pointer;
-      font-size: 20px;
-      margin-bottom: -3px;
-    }
-  }
-
-  .formTitle {
+  h3 {
     font-weight: 700;
     margin: 64px 0;
     text-align: center;
+  }
+
+  .summaryTitle {
+    margin-bottom: 16px;
   }
 
   .modeTitle {
@@ -69,46 +53,22 @@
     }
   }
 
-  .inputBox {
-    width: 300px;
-
-    .text {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      margin-top: 5px;
-      text-align: center;
-      width: 100%;
-    }
+  .acks {
+    margin: 54px 0 48px;
   }
 
-  .labeledInputsBox {
-    margin-bottom: 20px;
-    width: 80%;
-
-    span {
-      border: 2px solid $purple;
-      box-sizing: border-box;
-      cursor: pointer;
-      display: inline-block;
-      font-weight: 700;
-      padding: 10px;
-      text-align: center;
-      width: 50%;
-
-      &.checked {
-        background: $purple;
-        color: $white;
-      }
-    }
-  }
-
-  .customTextarea {
+  .ack {
     margin-bottom: 30px;
+  }
 
-    > div {
-      padding: 10px;
-    }
+  .transferInput {
+    margin: 25px 0 48px;
+  }
+
+  .submitButton,
+  .customInput,
+  .allocatedBox {
+    width: 264px;
   }
 }
 

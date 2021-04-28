@@ -12,6 +12,7 @@ import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import SuccessBox from "../CopyTraderButton/SuccessBox";
+import CopyPSForm from "../../../Forms/CopyPSForm";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -183,11 +184,19 @@ const TraderHeaderInfo = ({ provider }) => {
         )}
       </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm
-          onClose={handleCopyModalClose}
-          onSuccess={handleCopySuccessModalOpen}
-          provider={provider}
-        />
+        {provider.profitSharing ? (
+          <CopyPSForm
+            onClose={handleCopyModalClose}
+            onSuccess={handleCopySuccessModalOpen}
+            provider={provider}
+          />
+        ) : (
+          <CopyTraderForm
+            onClose={handleCopyModalClose}
+            onSuccess={handleCopySuccessModalOpen}
+            provider={provider}
+          />
+        )}
       </Modal>
       <Modal
         onClose={handleCopySuccessModalClose}

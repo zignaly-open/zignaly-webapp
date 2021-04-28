@@ -236,11 +236,11 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
    */
   const prepareExchangeName = () => {
     let name = "";
-    for (let a = 0; a < provider.exchanges.length; a++) {
-      if (provider.exchanges[a + 1]) {
-        name += `${provider.exchanges[a]}/`;
+    for (let i = 0; i < provider.exchanges.length; i++) {
+      if (provider.exchanges[i + 1]) {
+        name += `${provider.exchanges[i]}/`;
       } else {
-        name += `${provider.exchanges[a]}`;
+        name += `${provider.exchanges[i]}`;
       }
     }
     return name;
@@ -318,6 +318,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
               })}
               error={!!errors.allocatedBalance}
               name="allocatedBalance"
+              rules={{ required: true }}
             />
             {provider.profitSharing && errors.allocatedBalance && (
               <span className={"text red"}>{errors.allocatedBalance.message}</span>
