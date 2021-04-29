@@ -10,7 +10,7 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { useDispatch } from "react-redux";
-import { setProvider, unsetProvider } from "../../store/actions/views";
+import { getProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -73,7 +73,7 @@ const SignalProviders = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload, true));
+      dispatch(getProvider(payload, true));
     };
     if (providerId && providerId.length === 24) {
       loadProvider();

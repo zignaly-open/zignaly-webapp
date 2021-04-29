@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography, InputAdornment } from "@material-ui/core";
+import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -8,14 +8,13 @@ import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-// import { userPilotProviderEnabled } from "../../../utils/userPilotApi";
-// import { mixpanelProviderEnabled } from "utils/mixpanelApi";
+import NumberInput from "../NumberInput";
 import { Help } from "@material-ui/icons";
 
 /**
@@ -36,7 +35,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
-  const [allocated, setAllocated] = useState(!provider.disable ? provider.allocatedBalance : "");
   const [profitsMode, setProfitsMode] = useState(
     provider.profitsMode ? provider.profitsMode : "reinvest",
   );
@@ -95,7 +93,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
               version: 2,
               exchangeInternalId: selectedExchange.internalId,
             };
-            dispatch(setProvider(payload2, !provider.profitSharing));
+            dispatch(getProvider(payload2, !provider.profitSharing));
             // mixpanelProviderEnabled();
             // userPilotProviderEnabled();
             dispatch(showSuccessAlert("copyt.follow.alert.title", "copyt.follow.alert.body"));
@@ -238,11 +236,11 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
    */
   const prepareExchangeName = () => {
     let name = "";
-    for (let a = 0; a < provider.exchanges.length; a++) {
-      if (provider.exchanges[a + 1]) {
-        name += `${provider.exchanges[a]}/`;
+    for (let i = 0; i < provider.exchanges.length; i++) {
+      if (provider.exchanges[i + 1]) {
+        name += `${provider.exchanges[i]}/`;
       } else {
-        name += `${provider.exchanges[a]}`;
+        name += `${provider.exchanges[i]}`;
       }
     }
     return name;
@@ -309,37 +307,18 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
             flexDirection="column"
             justifyContent="start"
           >
-            <Controller
+            <NumberInput
               control={control}
+              defaultValue={!provider.disable ? provider.allocatedBalance : ""}
+              error={!!errors.allocatedBalance}
               name="allocatedBalance"
-              render={(props) => (
-                <TextField
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">{provider.copyTradingQuote}</InputAdornment>
-                    ),
-                  }}
-                  className="customInput"
-                  error={!!errors.allocatedBalance}
-                  fullWidth
-                  onChange={(e) => {
-                    let data = e.target.value;
-                    if (data.match(/^$|^[0-9]\d*(?:[.,]\d{0,8})?$/)) {
-                      data = data.replace(",", ".");
-                      setAllocated(data);
-                      props.onChange(data);
-                    }
-                  }}
-                  placeholder={intl.formatMessage({
-                    id: provider.profitSharing
-                      ? "trader.amount.placeholder.1"
-                      : "trader.amount.placeholder.2",
-                  })}
-                  value={allocated}
-                  variant="outlined"
-                />
-              )}
-              rules={{ required: "Please enter a valid Amount!" }}
+              placeholder={intl.formatMessage({
+                id: provider.profitSharing
+                  ? "trader.amount.placeholder.1"
+                  : "trader.amount.placeholder.2",
+              })}
+              quote={provider.copyTradingQuote}
+              rules={{ required: true }}
             />
             {provider.profitSharing && errors.allocatedBalance && (
               <span className={"text red"}>{errors.allocatedBalance.message}</span>

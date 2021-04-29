@@ -6,7 +6,7 @@ import "./WallSubscribe.scss";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import { setProvider } from "../../../../store/actions/views";
+import { getProvider } from "../../../../store/actions/views";
 import { useDispatch } from "react-redux";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
@@ -46,7 +46,7 @@ const WallSubscribe = ({ subscribed, providerId }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2, true));
+          dispatch(getProvider(payload2, true));
         }
       })
       .catch((e) => {

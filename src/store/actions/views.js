@@ -18,7 +18,7 @@ export const SHOW_PROFILE_LOADER = "SHOW_PROFILE_LOADER_ACTION";
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const setProvider = (payload, showLoader) => {
+export const getProvider = (payload, showLoader) => {
   return async (dispatch) => {
     try {
       if (showLoader) {

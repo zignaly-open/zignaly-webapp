@@ -1,0 +1,83 @@
+.copyPSForm {
+  min-height: 300px;
+  overflow-y: scroll;
+  padding: 0 60px 30px;
+
+  h3 {
+    font-weight: 700;
+    margin: 64px 0;
+    text-align: center;
+  }
+
+  .wrongExchangeTitle {
+    margin-bottom: 32px;
+
+    svg {
+      margin-left: 8px;
+    }
+  }
+
+  .summaryTitle {
+    margin-bottom: 16px;
+  }
+
+  .modeTitle {
+    margin: 48px 0 24px;
+  }
+
+  .fieldBox {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  .customLabel {
+    text-align: center;
+    width: 100%;
+  }
+
+  .customInput {
+    margin-top: 11px;
+  }
+
+  .modeButtons {
+    padding: 0 40px 64px;
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .acks {
+    margin: 54px 0 48px;
+  }
+
+  .ack {
+    margin-bottom: 30px;
+  }
+
+  .transferInput {
+    margin: 25px 0 48px;
+  }
+
+  .submitButton,
+  .customInput,
+  .allocatedBox {
+    width: 264px;
+  }
+}
+
+@include media("<=sm") {
+  .copyPSForm {
+    margin-bottom: 48px;
+    padding: 0 15px 30px;
+
+    h3 {
+      margin: 48px 0;
+    }
+
+    .acks {
+      margin: 42px 0 28px;
+    }
+  }
+}
