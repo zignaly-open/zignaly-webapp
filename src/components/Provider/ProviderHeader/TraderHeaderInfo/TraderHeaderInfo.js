@@ -184,9 +184,9 @@ const TraderHeaderInfo = ({ provider }) => {
       </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <ConnectTraderForm
-          provider={provider}
           onClose={handleCopyModalClose}
           onSuccess={handleCopySuccessModalOpen}
+          provider={provider}
         />
       </Modal>
       <Modal

@@ -8,7 +8,7 @@ import { Box, CircularProgress, Typography } from "@material-ui/core";
 import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import {
   useStoreUserData,
@@ -19,6 +19,7 @@ import "./TradingView.scss";
 import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
+import CustomButton from "components/CustomButton";
 
 /**
  * @typedef {any} TVWidget
@@ -58,6 +59,7 @@ const TradingViewEdit = (props) => {
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
   const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
+  const [recoverPositionLoading, setRecoverPositionLoading] = useState(false);
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
@@ -279,6 +281,27 @@ const TradingViewEdit = (props) => {
     }
   };
 
+  const recoverPositionAsSupportUser = () => {
+    setRecoverPositionLoading(true);
+    const payload = {
+      token: storeSession.tradeApi.accessToken,
+      internalExchangeId: storeSettings.selectedExchange.internalId,
+      positionId: positionId,
+    };
+
+    tradeApi
+      .recoverPosition(payload)
+      .then(() => {
+        dispatch(showSuccessAlert("", "request submitted to recover position"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setRecoverPositionLoading(false);
+      });
+  };
+
   return (
     <TradingViewContext.Provider value={tradingViewContext}>
       <FormProvider {...methods}>
@@ -319,6 +342,17 @@ const TradingViewEdit = (props) => {
               />
             )}
           </Box>
+          {storeUserData && storeUserData.isAdmin && positionId && (
+            <Box marginTop={2} maxWidth="300px" minWidth="300px">
+              <CustomButton
+                className="submitButton"
+                loading={recoverPositionLoading}
+                onClick={recoverPositionAsSupportUser}
+              >
+                Recover Position
+              </CustomButton>
+            </Box>
+          )}
           {positionRawData && (
             <Box alignItems="center" display="flex" flexDirection="column" mt="24px">
               <Typography variant="h6">Debug</Typography>
