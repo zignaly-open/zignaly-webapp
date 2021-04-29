@@ -22,7 +22,6 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
-import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {Object} DefaultProps
@@ -62,46 +61,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     "allocatedBalance",
     !provider.disable ? provider.allocatedBalance : "",
   );
-
-  /**
-   * @returns {String} Exchange name to display in the error.
-   */
-  const prepareExchangeName = () => {
-    let name = "";
-    for (let i = 0; i < provider.exchanges.length; i++) {
-      if (provider.exchanges[i + 1]) {
-        name += `${provider.exchanges[i]}/`;
-      } else {
-        name += `${provider.exchanges[i]}`;
-      }
-    }
-    return name;
-  };
-
-  const checkWrongExchange = () => {
-    if (selectedExchange.paperTrading) {
-      return intl.formatMessage({ id: "copyt.copy.error4" });
-    }
-
-    if (provider.exchanges.length && provider.exchanges[0] !== "") {
-      if (
-        !provider.exchanges.includes(selectedExchange.name.toLowerCase()) ||
-        provider.exchangeType.toLowerCase() !== selectedExchange.exchangeType.toLowerCase()
-      ) {
-        let exchangeName = prepareExchangeName();
-        return intl.formatMessage(
-          { id: "copyt.copy.error1" },
-          {
-            required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
-          },
-        );
-      }
-    }
-
-    return "";
-  };
-
-  const wrongExchange = checkWrongExchange();
 
   /**
    * Check allocated amount is correct
@@ -180,12 +139,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     }
   };
 
-  const redirectToHelp = () => {
-    const link =
-      "https://help.zignaly.com/hc/en-us/articles/360019579879-I-have-an-error-of-incorrect-exchange-account-when-trying-to-connect-to-a-Profit-Sharing-service-";
-    window.open(link, "_blank");
-  };
-
   let terms = ["ack2", "ack3"];
   if (selectedExchange.exchangeType === "futures") {
     // Add terms for futures PS
@@ -201,172 +154,158 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        {wrongExchange ? (
-          <Box alignItems="flex-start" display="flex" flexDirection="column">
-            <Typography className="wrongExchangeTitle" variant="h3">
-              <Box alignItems="center" component="span" display="flex" flexDirection="row">
-                <FormattedMessage id="profitsharing.wrongexchange" />
-                <Help className="helpIcon" onClick={redirectToHelp} />
-              </Box>
+        {step === 1 ? (
+          <>
+            <Typography variant="h3">
+              <FormattedMessage id="profitsharing.start" />
             </Typography>
-            <Typography>{wrongExchange}</Typography>
-          </Box>
+
+            <Box
+              alignItems="start"
+              className="allocatedBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+            >
+              <Typography>
+                <FormattedMessage id="profitsharing.howmuch" />
+              </Typography>
+              <NumberInput
+                control={control}
+                defaultValue={allocatedBalance}
+                error={!!errors.allocatedBalance}
+                name="allocatedBalance"
+                placeholder={intl.formatMessage({
+                  id: "trader.amount.placeholder.1",
+                })}
+                quote={provider.copyTradingQuote}
+                rules={{
+                  required: true,
+                  validate: (/** @type {string} */ val) => validateAmount(val),
+                }}
+              />
+              {errors.allocatedBalance && (
+                <span className={"text red"}>{errors.allocatedBalance.message}</span>
+              )}
+              <FormHelperText component="div">
+                <Box alignItems="center" display="flex" flexDirection="row">
+                  <FormattedMessage id="deposit.available" />
+                  {balanceLoading ? (
+                    <CircularProgress color="primary" size={15} />
+                  ) : (
+                    <>
+                      {provider.copyTradingQuote}&nbsp;
+                      <span className="balance">{formatNumber(quoteBalance)}</span>
+                    </>
+                  )}
+                </Box>
+              </FormHelperText>
+            </Box>
+
+            <Typography className="modeTitle">
+              <FormattedMessage id="profitsharing.profitsmode" />
+            </Typography>
+
+            <ToggleButtonGroup
+              className="modeButtons"
+              exclusive
+              onChange={(e, val) => val && setProfitsMode(val)}
+              value={profitsMode}
+            >
+              <ToggleButton value="reinvest">
+                <FormattedMessage id="trader.reinvest" />
+              </ToggleButton>
+              <ToggleButton value="withdraw">
+                <FormattedMessage id="trader.withdraw" />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </>
         ) : (
           <>
-            {step === 1 ? (
-              <>
-                <Typography variant="h3">
-                  <FormattedMessage id="profitsharing.start" />
-                </Typography>
+            <Typography variant="h3">
+              <FormattedMessage id="profitsharing.confirm" />
+            </Typography>
 
-                <Box
-                  alignItems="start"
-                  className="allocatedBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="start"
-                >
-                  <Typography>
-                    <FormattedMessage id="profitsharing.howmuch" />
-                  </Typography>
-                  <NumberInput
+            <Typography className="summaryTitle">
+              <FormattedMessage id="profitsharing.investing" />
+              :&nbsp;
+              <b>
+                {allocatedBalance} {provider.copyTradingQuote}
+              </b>
+            </Typography>
+            <Typography>
+              <FormattedMessage id="profitsharing.profitswillbe" />
+              :&nbsp;
+              <b>
+                <FormattedMessage
+                  id={
+                    profitsMode === "reinvest"
+                      ? "profitsharing.reinvested"
+                      : "profitsharing.withdrawn"
+                  }
+                />
+              </b>
+            </Typography>
+            <Box className="acks" display="flex" flexDirection="column">
+              {terms.map((ack) => (
+                <Box className="ack" key={ack}>
+                  <Controller
                     control={control}
-                    defaultValue={allocatedBalance}
-                    error={!!errors.allocatedBalance}
-                    name="allocatedBalance"
-                    placeholder={intl.formatMessage({
-                      id: "trader.amount.placeholder.1",
-                    })}
-                    quote={provider.copyTradingQuote}
+                    defaultValue={false}
+                    name={ack}
+                    render={({ onChange, value }) => (
+                      <Checkbox
+                        checked={value}
+                        className="checkboxInput"
+                        onChange={(e) => onChange(e.target.checked)}
+                      />
+                    )}
                     rules={{
                       required: true,
-                      validate: (/** @type {string} */ val) => validateAmount(val),
                     }}
                   />
-                  {errors.allocatedBalance && (
-                    <span className={"text red"}>{errors.allocatedBalance.message}</span>
-                  )}
-                  <FormHelperText component="div">
-                    <Box alignItems="center" display="flex" flexDirection="row">
-                      <FormattedMessage id="deposit.available" />
-                      {balanceLoading ? (
-                        <CircularProgress color="primary" size={15} />
-                      ) : (
-                        <>
-                          {provider.copyTradingQuote}&nbsp;
-                          <span className="balance">{formatNumber(quoteBalance)}</span>
-                        </>
-                      )}
-                    </Box>
-                  </FormHelperText>
-                </Box>
-
-                <Typography className="modeTitle">
-                  <FormattedMessage id="profitsharing.profitsmode" />
-                </Typography>
-
-                <ToggleButtonGroup
-                  className="modeButtons"
-                  exclusive
-                  onChange={(e, val) => val && setProfitsMode(val)}
-                  value={profitsMode}
-                >
-                  <ToggleButton value="reinvest">
-                    <FormattedMessage id="trader.reinvest" />
-                  </ToggleButton>
-                  <ToggleButton value="withdraw">
-                    <FormattedMessage id="trader.withdraw" />
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </>
-            ) : (
-              <>
-                <Typography variant="h3">
-                  <FormattedMessage id="profitsharing.confirm" />
-                </Typography>
-
-                <Typography className="summaryTitle">
-                  <FormattedMessage id="profitsharing.investing" />
-                  :&nbsp;
-                  <b>
-                    {allocatedBalance} {provider.copyTradingQuote}
-                  </b>
-                </Typography>
-                <Typography>
-                  <FormattedMessage id="profitsharing.profitswillbe" />
-                  :&nbsp;
-                  <b>
+                  <label className="customLabel">
                     <FormattedMessage
-                      id={
-                        profitsMode === "reinvest"
-                          ? "profitsharing.reinvested"
-                          : "profitsharing.withdrawn"
-                      }
+                      id={`profitsharing.${ack}`}
+                      values={{ quote: provider.copyTradingQuote }}
                     />
-                  </b>
-                </Typography>
-                <Box className="acks" display="flex" flexDirection="column">
-                  {terms.map((ack) => (
-                    <Box className="ack" key={ack}>
-                      <Controller
-                        control={control}
-                        defaultValue={false}
-                        name={ack}
-                        render={({ onChange, value }) => (
-                          <Checkbox
-                            checked={value}
-                            className="checkboxInput"
-                            onChange={(e) => onChange(e.target.checked)}
-                          />
-                        )}
-                        rules={{
-                          required: true,
-                        }}
-                      />
-                      <label className="customLabel">
-                        <FormattedMessage
-                          id={`profitsharing.${ack}`}
-                          values={{ quote: provider.copyTradingQuote }}
-                        />
-                      </label>
-                    </Box>
-                  ))}
+                  </label>
                 </Box>
-                <Box alignItems="center" display="flex" flexDirection="column">
-                  <Typography>
-                    <FormattedMessage id="profitsharing.confirmtransfer" />
-                  </Typography>
-                  <OutlinedInput
-                    className="customInput transferInput"
-                    error={!!errors.transfer}
-                    inputRef={register({
-                      validate: (val) => val.toLowerCase() === "transfer",
-                    })}
-                    name="transfer"
-                    placeholder={intl.formatMessage({
-                      id: "trader.ack.placeholder",
-                    })}
-                  />
-                </Box>
-              </>
-            )}
-            <CustomButton
-              className="full submitButton"
-              disabled={balanceLoading || !isValid}
-              loading={loading}
-              type="submit"
-            >
-              {step === 1 && provider.disable ? (
-                <FormattedMessage id="action.next" />
-              ) : (
-                <>
-                  <FormattedMessage id="trader.ack.placeholder" /> {allocatedBalance}{" "}
-                  {provider.copyTradingQuote}
-                </>
-              )}
-            </CustomButton>
+              ))}
+            </Box>
+            <Box alignItems="center" display="flex" flexDirection="column">
+              <Typography>
+                <FormattedMessage id="profitsharing.confirmtransfer" />
+              </Typography>
+              <OutlinedInput
+                className="customInput transferInput"
+                error={!!errors.transfer}
+                inputRef={register({
+                  validate: (val) => val.toLowerCase() === "transfer",
+                })}
+                name="transfer"
+                placeholder={intl.formatMessage({
+                  id: "trader.ack.placeholder",
+                })}
+              />
+            </Box>
           </>
         )}
+        <CustomButton
+          className="full submitButton"
+          disabled={balanceLoading || !isValid}
+          loading={loading}
+          type="submit"
+        >
+          {step === 1 && provider.disable ? (
+            <FormattedMessage id="action.next" />
+          ) : (
+            <>
+              <FormattedMessage id="trader.ack.placeholder" /> {allocatedBalance}{" "}
+              {provider.copyTradingQuote}
+            </>
+          )}
+        </CustomButton>
       </Box>
     </form>
   );

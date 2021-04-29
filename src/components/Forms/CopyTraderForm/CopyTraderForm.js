@@ -11,7 +11,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Alert from "@material-ui/lab/Alert";
-import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import NumberInput from "../NumberInput";
@@ -31,7 +30,6 @@ import { Help } from "@material-ui/icons";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
-  const storeUserExchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const { selectedExchange } = useStoreSettingsSelector();
   const [actionLoading, setActionLoading] = useState(false);
@@ -67,11 +65,7 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
    */
   const onSubmit = (data) => {
     if (!data.transfer || data.transfer.toLowerCase() === "transfer") {
-      if (
-        validateExchange() &&
-        validateAllocated(data.allocatedBalance) &&
-        validateBalance(data.allocatedBalance)
-      ) {
+      if (validateAllocated(data.allocatedBalance) && validateBalance(data.allocatedBalance)) {
         setActionLoading(true);
         const payload = {
           allocatedBalance: data.allocatedBalance,
@@ -112,38 +106,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
     } else {
       setError("transfer", { type: "patter", message: "" });
     }
-  };
-
-  const validateExchange = () => {
-    if (storeUserExchangeConnections.length > 0) {
-      if (provider.profitSharing && selectedExchange.paperTrading) {
-        let msg = intl.formatMessage({ id: "copyt.copy.error4" });
-        setAlert(msg);
-        return false;
-      }
-      if (provider.exchanges.length && provider.exchanges[0] !== "") {
-        if (
-          provider.exchanges.includes(selectedExchange.name.toLowerCase()) &&
-          provider.exchangeType.toLowerCase() === selectedExchange.exchangeType.toLowerCase()
-        ) {
-          return true;
-        }
-        let exchangeName = prepareExchangeName();
-        let msg = intl.formatMessage(
-          { id: "copyt.copy.error1" },
-          {
-            required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
-          },
-        );
-        setAlert(msg);
-        return false;
-      }
-    } else {
-      let msg = intl.formatMessage({ id: "copyt.copy.error2" });
-      setAlert(msg);
-      return false;
-    }
-    return true;
   };
 
   /**
@@ -229,21 +191,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
       return validateAlreadyAllocated();
     }
     return validateNeeded();
-  };
-
-  /**
-   * @returns {String} Exchange name to display in the error.
-   */
-  const prepareExchangeName = () => {
-    let name = "";
-    for (let i = 0; i < provider.exchanges.length; i++) {
-      if (provider.exchanges[i + 1]) {
-        name += `${provider.exchanges[i]}/`;
-      } else {
-        name += `${provider.exchanges[i]}`;
-      }
-    }
-    return name;
   };
 
   /**
