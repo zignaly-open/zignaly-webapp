@@ -186,6 +186,12 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     window.open(link, "_blank");
   };
 
+  let terms = ["ack2", "ack3"];
+  if (selectedExchange.exchangeType === "futures") {
+    // Add terms for futures PS
+    terms.unshift("ack1");
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
@@ -300,7 +306,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                   </b>
                 </Typography>
                 <Box className="acks" display="flex" flexDirection="column">
-                  {["ack1", "ack2", "ack3"].map((ack) => (
+                  {terms.map((ack) => (
                     <Box className="ack" key={ack}>
                       <Controller
                         control={control}
@@ -318,7 +324,10 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                         }}
                       />
                       <label className="customLabel">
-                        <FormattedMessage id={`profitsharing.${ack}`} />
+                        <FormattedMessage
+                          id={`profitsharing.${ack}`}
+                          values={{ quote: provider.copyTradingQuote }}
+                        />
                       </label>
                     </Box>
                   ))}
