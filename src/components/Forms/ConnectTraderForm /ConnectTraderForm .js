@@ -84,9 +84,9 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
       {wrongExchange ? (
         <Box
           alignItems="flex-start"
+          className="wrongExchangeBox"
           display="flex"
           flexDirection="column"
-          className="wrongExchangeBox"
         >
           <Typography className="wrongExchangeTitle" variant="h3">
             <Box alignItems="center" component="span" display="flex" flexDirection="row">
