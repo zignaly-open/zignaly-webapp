@@ -10,7 +10,7 @@ export const affiliateName = "Affiliate Program";
 export const affiliateURL = "https://zignaly.firstpromoter.com/";
 export const buyCryptoURL = "https://changelly.com/?ref_id=q0s68wsie1uf9wza";
 export const howToSendSignalsUrl =
-  "https://help.zignaly.com/hc/en-us/categories/360002703720-Sending-Signals";
+  "https://help.zignaly.com/hc/en-us/articles/360017846139-Guide-to-sending-signals";
 export const howToGetMerchantIDUrl =
   "https://help.zignaly.com/hc/en-us/articles/360015904740-Implement-a-payment-system";
 export const bitmexAPIKeysUrl = "https://www.bitmex.com/app/apiKeys";
