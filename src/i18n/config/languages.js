@@ -31,6 +31,11 @@ const LocalizationLanguages = [
     label: "Polski",
     countryCode: "pl",
   },
+  {
+    locale: "es",
+    label: "Español",
+    countryCode: "es",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
@@ -39,11 +44,6 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     locale: "cs",
     label: "Čeština",
     countryCode: "cz",
-  });
-  LocalizationLanguages.push({
-    locale: "es",
-    label: "Español",
-    countryCode: "es",
   });
   LocalizationLanguages.push({
     locale: "tr",
