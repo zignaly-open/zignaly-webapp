@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./CopyPSForm.scss";
 import {
   Box,
@@ -48,8 +48,9 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     formState: { isValid },
     register,
     watch,
+    trigger,
   } = useForm({
-    mode: "onBlur",
+    mode: "onChange",
     shouldUnregister: false,
   });
   const dispatch = useDispatch();
@@ -61,6 +62,13 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     "allocatedBalance",
     !provider.disable ? provider.allocatedBalance : "",
   );
+
+  // Update validation when we receive quote balance
+  useEffect(() => {
+    if (allocatedBalance && quoteBalance) {
+      trigger();
+    }
+  }, [quoteBalance]);
 
   /**
    * Check allocated amount is correct
@@ -249,22 +257,22 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
             <Box className="acks" display="flex" flexDirection="column">
               {terms.map((ack) => (
                 <Box className="ack" key={ack}>
-                  <Controller
-                    control={control}
-                    defaultValue={false}
-                    name={ack}
-                    render={({ onChange, value }) => (
-                      <Checkbox
-                        checked={value}
-                        className="checkboxInput"
-                        onChange={(e) => onChange(e.target.checked)}
-                      />
-                    )}
-                    rules={{
-                      required: true,
-                    }}
-                  />
                   <label className="customLabel">
+                    <Controller
+                      control={control}
+                      defaultValue={false}
+                      name={ack}
+                      render={({ onChange, value }) => (
+                        <Checkbox
+                          checked={value}
+                          className="checkboxInput"
+                          onChange={(e) => onChange(e.target.checked)}
+                        />
+                      )}
+                      rules={{
+                        required: true,
+                      }}
+                    />
                     <FormattedMessage
                       id={`profitsharing.${ack}`}
                       values={{ quote: provider.copyTradingQuote }}
