@@ -1,11 +1,11 @@
 .copyPSForm {
   min-height: 300px;
   overflow-y: scroll;
-  padding: 0 60px 30px;
+  padding: 0 40px 30px;
 
   h3 {
     font-weight: 700;
-    margin: 64px 0;
+    margin: 30px 0;
     text-align: center;
   }
 
@@ -41,7 +41,7 @@
   }
 
   .acks {
-    margin: 54px 0 48px;
+    margin: 48px 0 28px;
   }
 
   .ack {
@@ -56,6 +56,10 @@
   .customInput,
   .allocatedBox {
     width: 264px;
+  }
+
+  .customLabel {
+    cursor: pointer;
   }
 }
 
