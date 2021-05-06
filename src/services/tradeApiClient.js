@@ -357,7 +357,7 @@ class TradeApiClient {
      */
     let options = {
       method: method,
-      body: null,
+      body: "",
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": process.env.GATSBY_API_KEY || "",
@@ -365,7 +365,7 @@ class TradeApiClient {
       },
     };
 
-    if (method === "GET" && payload && payload.query) {
+    if (method === "GET" && payload.query) {
       requestUrl = `${requestUrl}?${new URLSearchParams(payload.query)}`;
     } else {
       options.body = JSON.stringify(payload);
