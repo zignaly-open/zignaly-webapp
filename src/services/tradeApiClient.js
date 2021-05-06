@@ -150,6 +150,13 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
+ *
+ *
+ *
+ *
+ * @typedef {Object} PayloadOptions
+ * @property {Object} query
+ * @property {Object} body
  */
 
 /**
