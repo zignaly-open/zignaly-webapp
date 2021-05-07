@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography, Switch, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { ConfirmDialog } from "../../../Dialogs";
@@ -29,6 +29,7 @@ const CreatePost = ({ providerId, onCreated }) => {
   const storeSession = useStoreSessionSelector();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState("");
+  const [allowReplies, setAllowReplies] = useState(true);
   const dispatch = useDispatch();
 
   const createPost = () => {
@@ -41,6 +42,7 @@ const CreatePost = ({ providerId, onCreated }) => {
         token: storeSession.tradeApi.accessToken,
         providerId,
         content,
+        allowReplies,
       };
 
       tradeApi
@@ -90,14 +92,29 @@ const CreatePost = ({ providerId, onCreated }) => {
 
       <Editor content={content} onChange={setContent} />
 
-      <CustomButton
-        className="submitButton"
-        disabled={content.length < 10}
-        loading={isLoading}
-        onClick={() => createPost()}
-      >
-        <FormattedMessage id="wall.post" />
-      </CustomButton>
+      <Box display="flex" justifyContent="space-between">
+        <CustomButton
+          className="submitButton"
+          disabled={content.length < 10}
+          loading={isLoading}
+          onClick={() => createPost()}
+        >
+          <FormattedMessage id="wall.post" />
+        </CustomButton>
+        <Box alignItems="center" display="flex">
+          <Typography variant="h5">
+            <FormattedMessage id="wall.replies.allow" />
+          </Typography>
+          <Switch
+            checked={allowReplies}
+            className="switch"
+            onChange={(e, value) => {
+              setAllowReplies(value);
+            }}
+            size="medium"
+          />
+        </Box>
+      </Box>
     </Paper>
   );
 };

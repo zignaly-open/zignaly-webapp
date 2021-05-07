@@ -4,7 +4,7 @@ import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
-import CopyTraderForm from "../../../Forms/CopyTraderForm";
+import ConnectTraderForm from "../../../Forms/ConnectTraderForm ";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
@@ -13,7 +13,7 @@ import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../../../store/actions/views";
+import { getProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { ConfirmDialog } from "../../../Dialogs";
 import SuccessBox from "./SuccessBox";
@@ -113,7 +113,7 @@ const CopyTraderButton = ({ provider }) => {
           version: 2,
           exchangeInternalId: selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload, true));
+        dispatch(getProvider(providerPayload, true));
         dispatch(
           showSuccessAlert("srv.canceldisconnect.alert.title", "srv.canceldisconnect.alert.body"),
         );
@@ -191,7 +191,7 @@ const CopyTraderButton = ({ provider }) => {
         <StopCopyingTraderForm onClose={handleStopCopyingModalClose} provider={provider} />
       </Modal>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm
+        <ConnectTraderForm
           onClose={handleCopyModalClose}
           onSuccess={handleCopySuccessModalOpen}
           provider={provider}

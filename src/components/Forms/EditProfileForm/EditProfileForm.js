@@ -19,7 +19,7 @@ import SocialSelect from "./SocialSelect";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -140,7 +140,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             version: 2,
             exchangeInternalId: storeSettings.selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2, true));
+          dispatch(getProvider(payload2, true));
           dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
         })
         .catch((e) => {

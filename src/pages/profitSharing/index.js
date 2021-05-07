@@ -9,7 +9,7 @@ import Positions from "./positions";
 import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider, unsetProvider } from "../../store/actions/views";
+import { getProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
@@ -53,7 +53,7 @@ const ProfitSharing = (props) => {
         version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
-      dispatch(setProvider(payload, true));
+      dispatch(getProvider(payload, true));
     }
   };
 

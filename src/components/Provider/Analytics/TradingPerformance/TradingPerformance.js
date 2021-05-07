@@ -61,7 +61,7 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     const options = {
       unit: "w",
       startDate: quarterStart,
-      endDate: dayjs().endOf("quarter").startOf("d"),
+      endDate: dayjs().endOf("quarter").endOf("w").startOf("d"),
       dateKey: "day",
     };
     generateStats(performance.weeklyStats, options, (weekDate, data) => {

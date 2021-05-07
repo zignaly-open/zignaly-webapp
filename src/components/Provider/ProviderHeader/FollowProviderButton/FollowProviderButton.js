@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../../../store/actions/views";
+import { getProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
@@ -55,7 +55,7 @@ const FollowProviderButton = ({ provider }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2, true));
+          dispatch(getProvider(payload2, true));
           dispatch(showSuccessAlert("srv.follow.alert.title", "srv.follow.alert.body"));
         })
         .catch((e) => {
@@ -87,7 +87,7 @@ const FollowProviderButton = ({ provider }) => {
             version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
-          dispatch(setProvider(payload2, true));
+          dispatch(getProvider(payload2, true));
           // userPilotProviderEnabled();
           dispatch(showSuccessAlert("srv.unfollow.alert.title", "srv.unfollow.alert.body"));
         })

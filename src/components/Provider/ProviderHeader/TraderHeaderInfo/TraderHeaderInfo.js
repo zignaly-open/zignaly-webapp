@@ -5,13 +5,13 @@ import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import EditIcon from "../../../../images/ct/edit.svg";
 import Modal from "../../../Modal";
-import CopyTraderForm from "../../../Forms/CopyTraderForm";
 import { formatFloat } from "../../../../utils/format";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import SuccessBox from "../CopyTraderButton/SuccessBox";
+import ConnectTraderForm from "../../../Forms/ConnectTraderForm ";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -183,11 +183,19 @@ const TraderHeaderInfo = ({ provider }) => {
         )}
       </Hidden>
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
-        <CopyTraderForm
+        <ConnectTraderForm
           onClose={handleCopyModalClose}
           onSuccess={handleCopySuccessModalOpen}
           provider={provider}
         />
+      </Modal>
+      <Modal
+        onClose={handleCopySuccessModalClose}
+        persist={false}
+        size="small"
+        state={copySuccessModal}
+      >
+        <SuccessBox provider={provider} />
       </Modal>
       <Modal
         onClose={handleCopySuccessModalClose}

@@ -3,6 +3,8 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
+import { useStoreUserData } from "./useStoreUserSelector";
+import useProviderUsers from "./useProviderUsers";
 
 /**
  * @typedef {import('services/tradeApiClient.types').DefaultProviderGetObject} Provider
@@ -25,12 +27,15 @@ const useCheckPSCanDisconnect = (provider) => {
   const [canDisconnect, setCanDisconnect] = useState(null);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
+  const userData = useStoreUserData();
+  let { list } = useProviderUsers(provider.id);
+  const providerFollowers = list.filter((user) => user.userId !== userData.userId);
 
   const loadPositions = () => {
     if (!provider) return;
 
     if (!provider.disable && provider.profitSharing && provider.isAdmin) {
-      if (provider.followers <= 1) {
+      if (providerFollowers.length < 1) {
         const payload = {
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,

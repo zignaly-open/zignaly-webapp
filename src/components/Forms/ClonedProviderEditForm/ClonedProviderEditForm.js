@@ -7,7 +7,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
-import { setProvider } from "../../../store/actions/views";
+import { getProvider } from "../../../store/actions/views";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import "./ClonedProviderEditForm.scss";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -60,7 +60,7 @@ const CopyTraderEditProfileForm = ({ provider, onClose }) => {
           version: 2,
           exchangeInternalId: storeSettings.selectedExchange.internalId,
         };
-        dispatch(setProvider(providerPayload, true));
+        dispatch(getProvider(providerPayload, true));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
         onClose();
       })

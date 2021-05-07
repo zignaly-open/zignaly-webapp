@@ -991,6 +991,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} CreatePostPayload
  * @property {string} providerId
  * @property {string} content
+ * @property {boolean} allowReplies
  */
 
 /**
@@ -1011,6 +1012,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} spams
  * @property {number} likes
  * @property {boolean} unapproved Post has been unlisted by moderators
+ * @property {boolean} allowReplies
  * @property {Array<Post>} replies
  */
 
@@ -2576,7 +2578,6 @@ function createConnectedProviderUserInfoEntity(response) {
 /**
  *
  * @typedef {Object} DefaultProviderPerformanceWeeklyStats
- * @property {String} week
  * @property {Number} return
  * @property {String} day
  * @property {Number} positions

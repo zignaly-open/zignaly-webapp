@@ -2059,6 +2059,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Confirm delete account
+   *
+   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload with email code
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async recoverPosition(payload) {
+    const endpointPath = "/fe/api.php?action=recoverPosition";
+    const responseData = await this.doRequest(endpointPath, payload);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

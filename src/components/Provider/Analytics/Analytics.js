@@ -34,7 +34,7 @@ const CopyTradersAnalytics = ({ provider }) => {
     openPositions: 0,
     totalBalance: 0,
     totalTradingVolume: 0,
-    weeklyStats: [{ week: "", return: 0, day: "", positions: 0 }],
+    weeklyStats: [{ return: 0, day: "", positions: 0 }],
   };
   const emptyFollowers = createProviderCopiersEmptyEntity();
   const emptyStats = createEmptyProfileProviderStatsEntity();
