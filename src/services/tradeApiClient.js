@@ -59,6 +59,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
  * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
@@ -364,7 +365,7 @@ class TradeApiClient {
      */
     let options = {
       method: method,
-      body: "",
+      body: null,
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": process.env.GATSBY_API_KEY || "",
@@ -372,8 +373,10 @@ class TradeApiClient {
       },
     };
 
-    if (method === "GET" && payload.query) {
-      requestUrl = `${requestUrl}?${new URLSearchParams(payload.query)}`;
+    if (method === "GET") {
+      requestUrl = payload.query
+        ? `${requestUrl}?${new URLSearchParams(payload.query)}`
+        : requestUrl;
     } else {
       options.body = JSON.stringify(payload);
     }
@@ -538,6 +541,28 @@ class TradeApiClient {
           ? 3
           : 2,
     });
+
+    return providersResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers list.
+   *
+   * @param {NewAPIProvidersPayload} payload Get providers payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersGetNew(payload) {
+    const endpointPath = `/providers/${payload.type}/${payload.timeFrame}`;
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        ...payload,
+        apiVersion: 2,
+      },
+      "GET",
+    );
 
     return providersResponseTransform(responseData);
   }

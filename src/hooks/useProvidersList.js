@@ -26,6 +26,7 @@ import { useStoreUserData } from "./useStoreUserSelector";
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
+ * @typedef {import("../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("./useFilters").FiltersData} FiltersData
  */
@@ -275,7 +276,7 @@ const useProvidersList = (options, updatedAt = null) => {
       /**
        * @type {ProvidersPayload}
        */
-      const payload = {
+      const payload1 = {
         token: storeSession.tradeApi.accessToken,
         type: connectedOnly ? "connected" : "all",
         ro: true,
@@ -284,8 +285,20 @@ const useProvidersList = (options, updatedAt = null) => {
         internalExchangeId,
       };
 
-      tradeApi
-        .providersGet(payload)
+      /**
+       * @type {NewAPIProvidersPayload}
+       */
+      const payload2 = {
+        type: copyTraders ? "copy_trading" : profitSharing ? "profit_sharing" : "signal_providers",
+        timeFrame,
+        internalExchangeId,
+      };
+
+      const fetchMethod = connectedOnly
+        ? tradeApi.providersGet(payload1)
+        : tradeApi.providersGetNew(payload2);
+
+      fetchMethod
         .then((responseData) => {
           const uniqueProviders = uniqBy(responseData, "id");
           setProviders((s) => ({
