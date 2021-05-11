@@ -8,6 +8,7 @@ import { Box, Checkbox } from "@material-ui/core";
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("../../../store/initialState").BrowseFilters} BrowseFilters
  * @typedef {import("../../../store/initialState").SignalPBrowseFilters} SignalPBrowseFilters
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  */
 
 /**
@@ -20,7 +21,7 @@ import { Box, Checkbox } from "@material-ui/core";
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {Array<OptionType>} quotes Quotes options.
  * @property {boolean} open Flag to indicates if the filters bar is open.
- * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
+ * @property {NewAPIProvidersPayload["type"]} type
  */
 
 /**
@@ -36,13 +37,13 @@ const ProvidersFilters = ({
   exchangeTypes,
   clearFilters,
   open,
-  provType,
+  type,
   filters,
   setFilters,
 }) => {
   const intl = useIntl();
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
+  const copyTraders = type === "copy_trading";
+  const profitSharing = type === "profit_sharing";
 
   return (
     <CustomFilters

@@ -37,7 +37,7 @@ import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {Object} ProvidersOptions
- * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
+ * @property {NewAPIProvidersPayload["type"]} type
  * @property {boolean} connectedOnly
  */
 
@@ -72,9 +72,9 @@ const useProvidersList = (options, updatedAt = null) => {
   const storeUserData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  const { provType, connectedOnly } = options;
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
+  const { type, connectedOnly } = options;
+  const copyTraders = type === "copy_trading";
+  const profitSharing = type === "profit_sharing";
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -274,31 +274,16 @@ const useProvidersList = (options, updatedAt = null) => {
   const loadProviders = () => {
     if (storeSession.tradeApi.accessToken) {
       /**
-       * @type {ProvidersPayload}
-       */
-      const payload1 = {
-        token: storeSession.tradeApi.accessToken,
-        type: connectedOnly ? "connected" : "all",
-        ro: true,
-        provType: provType,
-        timeFrame,
-        internalExchangeId,
-      };
-
-      /**
        * @type {NewAPIProvidersPayload}
        */
       const payload2 = {
-        type: copyTraders ? "copy_trading" : profitSharing ? "profit_sharing" : "signal_providers",
+        type,
         timeFrame,
         internalExchangeId,
       };
 
-      const fetchMethod = connectedOnly
-        ? tradeApi.providersGet(payload1)
-        : tradeApi.providersGetNew(payload2);
-
-      fetchMethod
+      tradeApi
+        .providersGetNew(payload2)
         .then((responseData) => {
           const uniqueProviders = uniqBy(responseData, "id");
           setProviders((s) => ({

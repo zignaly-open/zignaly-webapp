@@ -591,7 +591,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} NewAPIProvidersPayload
- * @property {"copy_trading"|"profit_sharing"|"signal_providers"} type
+ * @property {'copy_trading'|'signal_providers'|'profit_sharing'|'connected_traders'|'connected_providers'} type
  * @property {number} timeFrame
  * @property {string} [internalExchangeId]
  */

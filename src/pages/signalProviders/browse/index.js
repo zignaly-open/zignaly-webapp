@@ -38,13 +38,12 @@ const SignalProvidersBrowse = (props) => {
       </Helmet>
 
       <ProvidersBrowse
-        connectedOnly={false}
-        provType={["signal"]}
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
+        type="signal_providers"
       />
     </Box>
   );

@@ -8,14 +8,14 @@ import useProvidersList from "../../../hooks/useProvidersList";
 import { Box } from "@material-ui/core";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} ProvidersBrowsePropTypes
  * @property {boolean} [showFilters] Flag to indicate if filters should be rendered.
  * @property {boolean} [showSort] Flag to indicate if sort options should be rendered.
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
- * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType Type of providers to show.
- * @property {boolean} connectedOnly Only display connected providers.
+ * @property {NewAPIProvidersPayload["type"]} type Type of providers to show.
  */
 
 /**
@@ -29,13 +29,13 @@ const ProvidersBrowse = ({
   toggleFilters,
   showFilters,
   showSort,
-  provType,
-  connectedOnly,
+  type,
   setModifiedFiltersCount,
 }) => {
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
-  const providersOptions = { provType, connectedOnly };
+  const copyTraders = type === "copy_trading";
+  const profitSharing = type === "profit_sharing";
+  const connectedOnly = type === "connected_traders" || type === "connected_providers";
+  const providersOptions = { type, connectedOnly };
   const [updatedAt, setUpdatedAt] = useState(null);
   const {
     providers,
@@ -75,9 +75,9 @@ const ProvidersBrowse = ({
           filters={filters}
           onClose={toggleFilters}
           open={showFilters}
-          provType={provType}
           quotes={quotes}
           setFilters={setFilters}
+          type={type}
         />
       )}
       {toggleSort && (
@@ -86,8 +86,8 @@ const ProvidersBrowse = ({
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
-          provType={provType}
           sort={sort}
+          type={type}
         />
       )}
       <TimeFrameSelectRow

@@ -555,11 +555,14 @@ class TradeApiClient {
    */
   async providersGetNew(payload) {
     const endpointPath = `/providers/${payload.type}/${payload.timeFrame}`;
+    const connectedOnly =
+      payload.type === "connected_providers" || payload.type === "connected_traders";
     const responseData = await this.doRequest(
       endpointPath,
       {
         ...payload,
         apiVersion: 2,
+        ...(connectedOnly && { query: { internalExchangeId: payload.internalExchangeId } }),
       },
       "GET",
     );
