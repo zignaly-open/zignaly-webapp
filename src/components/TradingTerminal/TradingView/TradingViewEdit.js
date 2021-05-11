@@ -181,7 +181,8 @@ const TradingViewEdit = (props) => {
     setUpdatedAt(new Date());
   };
 
-  const isLoading = tradingViewWidget === null || !positionEntity || !selectedSymbol;
+  const isDelisted = selectedSymbol === undefined;
+  const isLoading = !positionEntity || (!selectedSymbol && !isDelisted);
 
   const bootstrapWidget = () => {
     // Skip if TV widget already exists or TV library is not ready.
@@ -306,7 +307,7 @@ const TradingViewEdit = (props) => {
     <TradingViewContext.Provider value={tradingViewContext}>
       <FormProvider {...methods}>
         <Box className="tradingTerminal" display="flex" flexDirection="column" width={1}>
-          {!isLoading && (
+          {positionEntity && (
             <PositionsTable
               notifyPositionsUpdate={processPositionsUpdate}
               positionEntity={positionEntity}
