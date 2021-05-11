@@ -46,7 +46,7 @@ const PrivateAreaLayout = (props) => {
   );
 
   useEffect(() => {
-    setProviderCount(providers.length);
+    setProviderCount(providers ? providers.length : 0);
   }, [providers]);
 
   const updateSession = () => {

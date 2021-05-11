@@ -16,6 +16,7 @@ import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
 import { useStoreUserData } from "./useStoreUserSelector";
+import useConnectedProvidersLite from "./useConnectedProvidersLite";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -80,6 +81,11 @@ const useProvidersList = (options, updatedAt = null) => {
    */
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
+  const { providers: connectedProviders } = useConnectedProvidersLite(
+    "",
+    [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
+    false,
+  );
 
   /**
    * @type {PageType} Page shorthand
@@ -272,7 +278,7 @@ const useProvidersList = (options, updatedAt = null) => {
   }, [filters]);
 
   const loadProviders = () => {
-    if (storeSession.tradeApi.accessToken) {
+    if (storeSession.tradeApi.accessToken && connectedProviders) {
       /**
        * @type {NewAPIProvidersPayload}
        */
@@ -285,7 +291,17 @@ const useProvidersList = (options, updatedAt = null) => {
       tradeApi
         .providersGetNew(payload2)
         .then((responseData) => {
-          const uniqueProviders = uniqBy(responseData, "id");
+          let uniqueProviders = uniqBy(responseData, "id");
+          uniqueProviders.forEach((provider, index) => {
+            const connectedProvider = connectedProviders.find((item) => item.id === provider.id);
+            if (connectedProvider) {
+              let newProvider = { ...provider };
+              newProvider.disable = !connectedProvider.connected;
+              newProvider.exchangeInternalId = connectedProvider.exchangeInternalId;
+              newProvider.exchangeInternalIds = connectedProvider.exchangeInternalIds;
+              uniqueProviders[index] = newProvider;
+            }
+          });
           setProviders((s) => ({
             ...s,
             list: uniqueProviders,
@@ -304,6 +320,7 @@ const useProvidersList = (options, updatedAt = null) => {
     storeSession.tradeApi.accessToken,
     internalExchangeId,
     updatedAt,
+    connectedProviders,
   ]);
 
   return {

@@ -62,10 +62,13 @@ const useDashboardAnalytics = (providerId) => {
     ["copyTrading", "profitSharing", "signalProvider"],
     false,
   );
-  let providersOptions = providers.map((item) => ({
-    val: item.id,
-    label: item.name,
-  }));
+
+  let providersOptions =
+    providers &&
+    providers.map((item) => ({
+      val: item.id,
+      label: item.name,
+    }));
 
   providersOptions.unshift({
     val: "1",
@@ -162,7 +165,7 @@ const useDashboardAnalytics = (providerId) => {
     // quotes: providerQuotes.length ? providerQuotes : allQuotes,
     quotes: allQuotes,
     providersOptions,
-    providers,
+    providers: providers ? providers : [],
     clearFilters,
     loading,
     filters,

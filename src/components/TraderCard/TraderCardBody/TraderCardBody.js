@@ -114,6 +114,10 @@ const TraderCard = (props) => {
   };
 
   useEffect(() => {
+    setCanDisable(!provider.disable);
+  }, [provider.disable]);
+
+  useEffect(() => {
     const values = [];
     const labels = [];
     if (copyTrader || profitSharingProvider) {
@@ -212,7 +216,7 @@ const TraderCard = (props) => {
   const exchangeData =
     provider.exchangeInternalIds &&
     provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
-  const disconnecting = exchangeData && exchangeData.disconnecting;
+  const disconnecting = exchangeData ? exchangeData.disconnecting : false;
 
   const getCopyButtonTooltip = () => {
     if (!profitSharing && isCopyingWithAnotherAccount) {

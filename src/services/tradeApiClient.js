@@ -579,8 +579,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providersListGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderList";
-    const responseData = await this.doRequest(endpointPath, payload);
+    // const endpointPath = "/fe/api.php?action=getProviderList";
+    const endpointPath = "/user/providers";
+    const internalId = payload.internalExchangeId;
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        ...payload,
+        apiVersion: 2,
+        ...(internalId && { query: { internalExchangeId: internalId } }),
+      },
+      "GET",
+    );
 
     return hasBeenUsedProvidersResponseTransform(responseData);
   }

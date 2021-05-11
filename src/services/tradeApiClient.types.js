@@ -1189,6 +1189,8 @@ function providerItemTransform(providerItem) {
  * @property {boolean} connected Hide-water mark
  * @property {string} id
  * @property {string} name
+ * @property {string} exchangeInternalId
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {'copyTrading'|'profitSharing'|'signalProvider'} type
  */
 
@@ -1203,6 +1205,8 @@ function createEmptyHasBeenProviderEntity() {
     id: "",
     name: "",
     type: "copyTrading",
+    exchangeInternalId: "",
+    exchangeInternalIds: [],
   };
 }
 
