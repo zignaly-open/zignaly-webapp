@@ -51,7 +51,7 @@
     "gatsby-plugin-react-helmet": "^3.3.10",
     "jose-jwe-jws": "^0.2.2",
     "lightweight-charts": "^3.2.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "mixpanel-browser": "^2.40.0",
     "moment": "^2.28.0",
