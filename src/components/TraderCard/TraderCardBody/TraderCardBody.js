@@ -58,7 +58,6 @@ const TraderCard = (props) => {
     followers,
     disable,
     dailyReturns,
-    id,
     quote,
     closedPositions,
     returns,
@@ -367,7 +366,7 @@ const TraderCard = (props) => {
         {showSummary && (
           <UserSummary
             isCopyTrading={copyTrader || profitSharingProvider}
-            providerId={id}
+            provider={provider}
             quote={quote}
           />
         )}

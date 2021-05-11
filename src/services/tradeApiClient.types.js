@@ -673,6 +673,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {boolean} isAdmin True if the current user is provider's admin
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
+ * @property {number} profitsSinceCopying
  */
 
 /**
@@ -1277,6 +1280,9 @@ function createEmptyProviderEntity() {
     providerLink: "",
     exchangeInternalIds: null,
     isAdmin: false,
+    currentAllocated: 0,
+    allocatedBalance: 0,
+    profitsSinceCopying: 0,
   };
 }
 
@@ -4376,6 +4382,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       providerLink: "",
       exchangeInternalIds: null,
       isAdmin: false,
+      allocatedBalance: 0,
+      currentAllocated: 0,
+      profitsSinceCopying: 0,
     },
     signalsInfo: [],
   };
