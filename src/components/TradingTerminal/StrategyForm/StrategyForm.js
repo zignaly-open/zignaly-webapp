@@ -240,8 +240,8 @@ const StrategyForm = (props) => {
       }
     };
 
-    range(1, 20, 1).forEach(composeTargetItem);
-    range(1000, 1020, 1).forEach(composeTargetItem);
+    range(1, 51, 1).forEach(composeTargetItem);
+    range(1000, 1051, 1).forEach(composeTargetItem);
 
     return isEmpty(dcaTargets) ? false : dcaTargets;
   };
@@ -517,7 +517,7 @@ const StrategyForm = (props) => {
   };
   useEffect(drawTrailingStopPriceLine, [trailingStopPrice]);
 
-  const targetGroupIndexes = concat(range(1, 10, 1), range(1000, 1020, 1));
+  const targetGroupIndexes = concat(range(1, 51, 1), range(1000, 1051, 1));
   const takeProfitFields = targetGroupIndexes.map((id) => `takeProfitTargetPrice${id}`);
   const takeProfitTargetPrices = watch(takeProfitFields);
   const drawTakeProfitTargetPriceLines = () => {
