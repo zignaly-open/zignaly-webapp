@@ -50,7 +50,7 @@ import CustomButton from "components/CustomButton";
 const TradingViewEdit = (props) => {
   const { positionId } = props;
   const tradingViewContext = useTradingViewContext();
-  const { setLastPrice, lastPrice, setProviderService, setUpdatedAt } = tradingViewContext;
+  const { setLastPrice, lastPrice, setUpdatedAt } = tradingViewContext;
   const {
     instantiateWidget,
     tradingViewWidget,
@@ -58,7 +58,6 @@ const TradingViewEdit = (props) => {
     changeSymbol,
     removeWidget,
   } = useTradingTerminal(setLastPrice);
-  console.log(lastPrice, tradingViewWidget);
 
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
