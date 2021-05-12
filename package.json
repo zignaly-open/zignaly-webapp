@@ -37,7 +37,7 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@welldone-software/why-did-you-render": "^4.3.1",
     "analytics": "^0.6.5",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "coinrayjs": "^1.4.15",
     "countries-list": "^2.5.6",
     "country-flags-svg": "^1.1.0",
