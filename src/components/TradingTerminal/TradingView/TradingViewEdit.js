@@ -16,7 +16,10 @@ import {
 } from "../../../hooks/useStoreUserSelector";
 import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
-import { createExchangeConnectionEmptyEntity } from "../../../services/tradeApiClient.types";
+import {
+  createExchangeConnectionEmptyEntity,
+  createMarketSymbolEmptyValueObject,
+} from "../../../services/tradeApiClient.types";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
 import CustomButton from "components/CustomButton";
@@ -47,7 +50,7 @@ import CustomButton from "components/CustomButton";
 const TradingViewEdit = (props) => {
   const { positionId } = props;
   const tradingViewContext = useTradingViewContext();
-  const { setLastPrice, lastPrice, setProviderService, setUpdatedAt } = tradingViewContext;
+  const { setLastPrice, lastPrice, setUpdatedAt } = tradingViewContext;
   const {
     instantiateWidget,
     tradingViewWidget,
@@ -55,6 +58,7 @@ const TradingViewEdit = (props) => {
     changeSymbol,
     removeWidget,
   } = useTradingTerminal(setLastPrice);
+
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
@@ -95,7 +99,22 @@ const TradingViewEdit = (props) => {
     tradeApi
       .exchangeConnectionMarketDataGet(marketDataPayload)
       .then((data) => {
-        const symbolData = data.find((d) => d.short === positionData.short);
+        let symbolData = data.find((d) => d.short === positionData.short);
+        if (!symbolData) {
+          // When symbol is delisted rely on position symbol data.
+          symbolData = {
+            ...createMarketSymbolEmptyValueObject(),
+            id: positionData.symbol,
+            base: positionData.base,
+            baseId: positionData.base,
+            quote: positionData.quote,
+            quoteId: positionData.quote,
+            short: positionData.short,
+            tradeViewSymbol: positionData.tradeViewSymbol,
+            // @ts-ignore
+            limits: {},
+          };
+        }
         setSelectedSymbol(symbolData);
       })
       .catch((e) => {
@@ -333,7 +352,7 @@ const TradingViewEdit = (props) => {
               </Box>
             )}
             <Box className="tradingViewChart" id="trading_view_chart" />
-            {!isLoading && lastPrice && (
+            {!isLoading && (
               <StrategyForm
                 lastPrice={lastPrice}
                 notifyPositionUpdate={notifyPositionUpdate}
