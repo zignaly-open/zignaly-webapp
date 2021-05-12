@@ -119,7 +119,7 @@ const StrategyForm = (props) => {
 
     // Avoid draw lines when widget don't expose chart API, this is the case
     // when TV library is loaded as widget from vendor servers.
-    if (!isFunction(tradingViewWidget.chart)) {
+    if (!tradingViewWidget || !isFunction(tradingViewWidget.chart)) {
       return null;
     }
 
