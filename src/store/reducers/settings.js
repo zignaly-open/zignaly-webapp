@@ -14,6 +14,7 @@ import {
   SET_RESPONSIVE_TABLE,
   SET_TERMINAL_PAIR,
   SET_TERMINAL_PROVIDER,
+  SET_MARKETPLACE_CACHE_MODAL,
 } from "../actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -45,6 +46,10 @@ const settings = createReducer(initialState.settings, {
 
   [SELECT_THEME]: (state, action) => {
     state.darkStyle = action.payload;
+  },
+
+  [SET_MARKETPLACE_CACHE_MODAL]: (state, action) => {
+    state.marketplaceCacheModal = action.payload;
   },
 
   [TOGGLE_BALANCE_BOX]: (state, action) => {
