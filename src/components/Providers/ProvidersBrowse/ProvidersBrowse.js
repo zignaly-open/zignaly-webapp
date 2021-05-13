@@ -32,8 +32,7 @@ const ProvidersBrowse = ({
   type,
   setModifiedFiltersCount,
 }) => {
-  const copyTraders = type === "copy_trading";
-  const profitSharing = type === "profit_sharing";
+  const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
   const connectedOnly = type === "connected_traders" || type === "connected_providers";
   const providersOptions = { type, connectedOnly };
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -91,14 +90,14 @@ const ProvidersBrowse = ({
         />
       )}
       <TimeFrameSelectRow
-        isCopyTrading={copyTraders || profitSharing}
+        isCopyTrading={isCopyTrading}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
-            ? copyTraders || profitSharing
+            ? isCopyTrading
               ? "dashboard.traders.copying"
               : "dashboard.providers.following"
-            : copyTraders || profitSharing
+            : isCopyTrading
             ? "copyt.traders"
             : "fil.providers",
         })}`}
