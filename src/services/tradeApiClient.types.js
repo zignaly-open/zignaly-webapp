@@ -590,6 +590,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} NewAPIProvidersPayload
+ * @property {'copy_trading'|'signal_providers'|'profit_sharing'|'connected_traders'|'connected_providers'} type
+ * @property {number} timeFrame
+ * @property {string} [internalExchangeId]
+ */
+
+/**
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
@@ -666,6 +673,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {boolean} isAdmin True if the current user is provider's admin
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
+ * @property {number} profitsSinceCopying
  */
 
 /**
@@ -1179,6 +1189,8 @@ function providerItemTransform(providerItem) {
  * @property {boolean} connected Hide-water mark
  * @property {string} id
  * @property {string} name
+ * @property {string} exchangeInternalId
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {'copyTrading'|'profitSharing'|'signalProvider'} type
  */
 
@@ -1193,6 +1205,8 @@ function createEmptyHasBeenProviderEntity() {
     id: "",
     name: "",
     type: "copyTrading",
+    exchangeInternalId: "",
+    exchangeInternalIds: [],
   };
 }
 
@@ -1270,6 +1284,9 @@ function createEmptyProviderEntity() {
     providerLink: "",
     exchangeInternalIds: null,
     isAdmin: false,
+    currentAllocated: 0,
+    allocatedBalance: 0,
+    profitsSinceCopying: 0,
   };
 }
 
@@ -4369,6 +4386,9 @@ export const createEmptyProfileProviderStatsEntity = () => {
       providerLink: "",
       exchangeInternalIds: null,
       isAdmin: false,
+      allocatedBalance: 0,
+      currentAllocated: 0,
+      profitsSinceCopying: 0,
     },
     signalsInfo: [],
   };

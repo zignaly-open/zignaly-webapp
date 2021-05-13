@@ -58,7 +58,6 @@ const TraderCard = (props) => {
     followers,
     disable,
     dailyReturns,
-    id,
     quote,
     closedPositions,
     returns,
@@ -113,6 +112,10 @@ const TraderCard = (props) => {
   const handleStopCopyingModalClose = () => {
     showStopCopyingModal(false);
   };
+
+  useEffect(() => {
+    setCanDisable(!provider.disable);
+  }, [provider.disable]);
 
   useEffect(() => {
     const values = [];
@@ -213,7 +216,7 @@ const TraderCard = (props) => {
   const exchangeData =
     provider.exchangeInternalIds &&
     provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
-  const disconnecting = exchangeData && exchangeData.disconnecting;
+  const disconnecting = exchangeData ? exchangeData.disconnecting : false;
 
   const getCopyButtonTooltip = () => {
     if (!profitSharing && isCopyingWithAnotherAccount) {
@@ -367,7 +370,7 @@ const TraderCard = (props) => {
         {showSummary && (
           <UserSummary
             isCopyTrading={copyTrader || profitSharingProvider}
-            providerId={id}
+            provider={provider}
             quote={quote}
           />
         )}

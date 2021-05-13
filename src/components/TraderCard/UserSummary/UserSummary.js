@@ -1,13 +1,13 @@
 import React from "react";
 import "./UserSummary.scss";
-import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { Box, Typography } from "@material-ui/core";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";
 /**
+ * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {Object} DefaultProps
- * @property {string} providerId Provider Id.
+ * @property {ProviderEntity} provider Provider entity.
  * @property {string} quote Quote traded by provider.
  * @property {boolean} isCopyTrading Flag to indicate if it's a copy trader.
  */
@@ -16,8 +16,10 @@ import CustomTooltip from "../../CustomTooltip";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ providerId, quote, isCopyTrading }) => {
-  const { providerUserInfo, profitPerc } = useProviderUserInfo(providerId);
+const UserSummary = ({ provider, quote, isCopyTrading }) => {
+  const profitPerc = provider.allocatedBalance
+    ? (provider.profitsSinceCopying / provider.allocatedBalance) * 100
+    : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (
@@ -34,7 +36,7 @@ const UserSummary = ({ providerId, quote, isCopyTrading }) => {
             justifyContent="space-between"
           >
             <Typography variant="h5">
-              {quote} {formatFloat(providerUserInfo.currentAllocated)}
+              {quote} {formatFloat(provider.currentAllocated)}
             </Typography>
             {/* <Typography variant="h5">$1280,46</Typography> */}
           </Box>
@@ -51,7 +53,7 @@ const UserSummary = ({ providerId, quote, isCopyTrading }) => {
         </CustomTooltip>
         <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
           <Typography className={color} variant="h5">
-            {quote} {formatFloat(providerUserInfo.profitsSinceCopying)}
+            {quote} {formatFloat(provider.profitsSinceCopying)}
           </Typography>
         </CustomTooltip>
       </Box>

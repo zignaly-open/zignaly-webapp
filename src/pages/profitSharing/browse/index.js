@@ -37,13 +37,12 @@ const CopyTradersBrowse = (props) => {
         </title>
       </Helmet>
       <ProvidersBrowse
-        connectedOnly={false}
-        provType={["profitsharing"]}
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
+        type="profit_sharing"
       />
     </Box>
   );

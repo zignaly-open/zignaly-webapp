@@ -51,6 +51,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
     ["profitSharing"],
     true,
   );
+
+  const providerAvailable = providers && providers.length;
   const dispatch = useDispatch();
 
   const loadOpenPositions = () => {
@@ -128,7 +130,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               <FormattedMessage id="confirm.deleteexchange.balance" />
             ) : positions.length ? (
               <FormattedMessage id="confirm.deleteexchange.openpos" />
-            ) : providers.length ? (
+            ) : providerAvailable ? (
               <FormattedMessage id="confirm.deleteexchange.profit" />
             ) : (
               <FormattedMessage id="confirm.deleteexchange.message" />
@@ -147,7 +149,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               !positions ||
               brokerAccountWithFunds ||
               positions.length ||
-              providers.length,
+              providerAvailable,
           )}
           loading={loading}
           onClick={deleteExchange}
