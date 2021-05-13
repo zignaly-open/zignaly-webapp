@@ -90,13 +90,22 @@ const migrations = {
       },
     };
   },
+  22: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        marketplaceCacheModal: initialState.settings.marketplaceCacheModal,
+      },
+    };
+  },
 };
 
 const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 21,
+  version: 22,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui", "views"],
 };

@@ -13,6 +13,7 @@ export const SET_SORT = "SET_SORT";
 export const SET_FILTERS = "SET_FILTERS";
 export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
 export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
+export const SET_MARKETPLACE_CACHE_MODAL = "SET_MARKETPLACE_CACHE_MODAL";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -35,6 +36,19 @@ export const selectDarkTheme = (darkStyle) => {
   return {
     type: SELECT_THEME,
     payload: darkStyle,
+  };
+};
+
+/**
+ * Dark style flag selected by user.
+ *
+ * @param {Boolean} flag
+ */
+
+export const setMarketplaceCacheModal = (flag) => {
+  return {
+    type: SET_MARKETPLACE_CACHE_MODAL,
+    payload: flag,
   };
 };
 

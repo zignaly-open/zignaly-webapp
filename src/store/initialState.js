@@ -131,6 +131,7 @@
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {Boolean} marketplaceCacheModal
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
  * @property {SortColumns} sortColumns
@@ -225,6 +226,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    marketplaceCacheModal: true,
     balanceBox: false,
     rowsPerPage: {},
     displayColumns: {

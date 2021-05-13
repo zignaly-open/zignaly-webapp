@@ -32,6 +32,9 @@ import userOptions from "../../../utils/userOptions.json";
 import { howToSendSignalsUrl, howToGetMerchantIDUrl } from "../../../utils/affiliateURLs";
 import { formatFloat } from "utils/format";
 import initialState from "store/initialState";
+import Modal from "../../Modal";
+import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
+import { setMarketplaceCacheModal } from "store/actions/settings";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -68,6 +71,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const publicSwitch = watch("public", provider.public);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
+  const [cacheModal, showCacheModal] = useState(false);
+  const [submittedFormData, setSubmittedFormData] = useState(null);
 
   const loadPositions = () => {
     if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
@@ -109,7 +114,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @param {SubmitObject} data Form data received at submit.
    * @returns {void} None.
    */
-  const onSubmit = (data) => {
+  const updateData = (data) => {
     if (validatePaymentFields(data)) {
       if (data.ipnSecret === "**********") {
         if (formatFloat(provider.internalPaymentInfo.price) !== formatFloat(data.price)) {
@@ -248,11 +253,16 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   /**
    * Handle submit buttton click.
    *
-   * @type {React.MouseEventHandler} handleClickSubmit
+   * @param {*} data formData
    * @returns {void}
    */
-  const handleSubmitClick = () => {
-    handleSubmit(onSubmit);
+  const onSubmit = (data) => {
+    if (storeSettings.marketplaceCacheModal) {
+      showCacheModal(true);
+      setSubmittedFormData(data);
+    } else {
+      updateData(data);
+    }
   };
 
   /**
@@ -359,6 +369,22 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     return false;
   };
 
+  const handleCacheModalClose = () => {
+    showCacheModal(false);
+  };
+
+  /**
+   *
+   * @param {Boolean} showAgain Whether to show cache modal again
+   * @returns {void}
+   */
+  const onAcceptance = (showAgain) => {
+    if (showAgain) {
+      dispatch(setMarketplaceCacheModal(false));
+    }
+    updateData(submittedFormData);
+  };
+
   const GetListedTooltip = () => {
     return (
       <Box display="flex" flexDirection="column">
@@ -385,6 +411,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
 
   return (
     <Box bgcolor="grid.content" className="formWrapper">
+      <Modal onClose={handleCacheModalClose} persist={false} size="small" state={cacheModal}>
+        <MarketplaceCacheMessage onClose={handleCacheModalClose} onSuccess={onAcceptance} />
+      </Modal>
       <form method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="flex-start"
@@ -833,12 +862,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
             <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
 
-            <CustomButton
-              className={"full submitButton"}
-              loading={loading}
-              onClick={handleSubmitClick}
-              type="submit"
-            >
+            <CustomButton className={"full submitButton"} loading={loading} type="submit">
               <FormattedMessage id="action.saveData" />
             </CustomButton>
           </Box>
