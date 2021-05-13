@@ -63,17 +63,22 @@ const useDashboardAnalytics = (providerId) => {
     false,
   );
 
-  let providersOptions =
-    providers &&
-    providers.map((item) => ({
-      val: item.id,
-      label: item.name,
-    }));
+  let providersOptions = [
+    {
+      val: "1",
+      label: intl.formatMessage({ id: "fil.manual" }),
+    },
+  ];
 
-  providersOptions.unshift({
-    val: "1",
-    label: intl.formatMessage({ id: "fil.manual" }),
-  });
+  if (providers) {
+    providersOptions = providersOptions.concat(
+      providers.map((item) => ({
+        val: item.id,
+        label: item.name,
+      })),
+    );
+  }
+
   const filteredProvider = providerId
     ? providersOptions.find((item) => item.val === providerId)
     : "";
