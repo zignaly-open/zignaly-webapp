@@ -201,6 +201,27 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderAge(dataIndex) {
     const position = positions[dataIndex];
+    const { isCopyTrader, profitSharing, providerOwnerUserId } = position;
+    const currentUserId = storeUserData.userId;
+    const isProviderOwner = providerOwnerUserId === currentUserId;
+
+    if (profitSharing) {
+      if (isCopyTrader || isProviderOwner) {
+        return <>{position.age}</>;
+      }
+      return null;
+    }
+    return <>{position.age}</>;
+  }
+
+  /**
+   * Compose age element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderManagementAge(dataIndex) {
+    const position = positions[dataIndex];
     return <>{position.age || "-"}</>;
   }
 
@@ -899,6 +920,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
         renderFunction: null,
       },
       {
+        columnId: "col.positionid",
+        propertyName: "positionId",
+        renderFunction: null,
+      },
+      {
         columnId: "col.provider.logo",
         propertyName: "providerLogo",
         renderFunction: renderProviderIcon,
@@ -1429,7 +1455,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       {
         columnId: "col.age",
         propertyName: "ageSeconds",
-        renderFunction: renderAge,
+        renderFunction: renderManagementAge,
       },
       {
         columnId: "col.actions",

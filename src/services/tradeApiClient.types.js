@@ -1464,8 +1464,8 @@ export function positionItemTransform(positionItem) {
   const risk = calculateRisk(positionEntity);
   const augmentedEntity = assign(positionEntity, {
     // Hide age for PS because positions doesn't include time
-    age: positionItem.profitSharing ? null : openDateMoment.toNow(true),
-    ageSeconds: positionItem.profitSharing ? null : openDateMoment.diff(nowDate),
+    age: openDateMoment.toNow(true),
+    ageSeconds: openDateMoment.diff(nowDate),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format(dateFormat) : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
