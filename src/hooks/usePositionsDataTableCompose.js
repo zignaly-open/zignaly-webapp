@@ -1036,7 +1036,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.dca",
-        propertyName: "reBuyTargetsCountPending",
+        propertyName: "reBuyTargetsCountSuccess",
         renderFunction: renderRebuyTargets,
       },
       {
@@ -1183,7 +1183,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.dca",
-        propertyName: "reBuyTargetsCountPending",
+        propertyName: "reBuyTargetsCountSuccess",
         renderFunction: renderRebuyTargets,
       },
       {
@@ -1444,7 +1444,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.dca",
-        propertyName: "reBuyTargetsCountPending",
+        propertyName: "reBuyTargetsCountSuccess",
         renderFunction: renderRebuyTargets,
       },
       {
@@ -1584,7 +1584,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       },
       {
         columnId: "col.dca",
-        propertyName: "reBuyTargetsCountPending",
+        propertyName: "reBuyTargetsCountSuccess",
         renderFunction: renderRebuyTargets,
       },
       {
