@@ -42,6 +42,22 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
   );
 
   /**
+   * Get start of the date quarter, starting at the begining of the week.
+   * e.g. Thu Jan 14 -> Sun Jan 3
+   * @param {dayjs.Dayjs} date Date
+   * @return {dayjs.Dayjs} Date
+   */
+  const getQuarterWeekStart = (date) => {
+    let quarterStart = date.startOf("quarter");
+    if (quarterStart.day() > 0) {
+      // Start at the beginning of the week (Fri Jan 1 -> Sun Jan 3)
+      quarterStart = quarterStart.add(1, "w").startOf("w");
+    }
+
+    return quarterStart;
+  };
+
+  /**
    * Update the weekly stats to fill missing weeks and group them by quarters
    * @returns {void}
    */
@@ -51,29 +67,35 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     /** @type {Array<DefaultQuarter>} */
     const _quarters = [];
 
-    // Start at the first week day of the quarter's first week.
-    let quarterStart = dayjs(performance.weeklyStats[0].day).startOf("quarter");
-    if (quarterStart.day() > 0) {
-      quarterStart = quarterStart.add(1, "w").startOf("w");
+    const firstStatsDay = dayjs(performance.weeklyStats[0].day);
+    let startDate = getQuarterWeekStart(firstStatsDay);
+
+    // If we have stats for the first week of the quarter we skipped, they will be added
+    // to the previous quarter. (e.g. Sat Apr 3 will be assigned to quarter 1, not 2)
+    if (firstStatsDay.isBefore(startDate)) {
+      startDate = startDate.subtract(1, "quarter");
     }
 
     /** @type {StatsOptions} */
     const options = {
       unit: "w",
-      startDate: quarterStart,
-      endDate: dayjs().endOf("quarter").endOf("w").startOf("d"),
+      startDate,
+      endDate: dayjs().endOf("quarter").startOf("d"),
       dateKey: "day",
     };
+
     generateStats(performance.weeklyStats, options, (weekDate, data) => {
       const lastQuarter = _quarters && _quarters[_quarters.length - 1];
-      const currentQuarterId = weekDate.quarter();
+      let currentQuarterId = weekDate.quarter();
+
       const returns = data ? data.return : 0;
       const weekStats = {
-        day: weekDate.format(),
+        day: weekDate.startOf("w").format(),
         week: weekDate.week().toString(),
         return: returns,
         positions: data ? data.positions : 0,
       };
+
       if (lastQuarter && lastQuarter.id === currentQuarterId) {
         // Add weekly stats to current quarter
         lastQuarter.weeklyStats.push(weekStats);

@@ -62,6 +62,7 @@ export const generateStats = (data, options, makeStats) => {
         // Found a match
         matches.push(d);
       } else {
+        // Stop looking for a match if we already passed a date with no result.
         break;
       }
     }
