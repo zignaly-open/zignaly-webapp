@@ -5,6 +5,7 @@ import { navigateLogin } from "./navigation";
 import {
   userEntityResponseTransform,
   positionsResponseTransform,
+  positionsShortResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
   userBalanceResponseTransform,
@@ -503,7 +504,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return positionsResponseTransform(responseData);
+    return positionsShortResponseTransform(responseData);
   }
 
   /**
