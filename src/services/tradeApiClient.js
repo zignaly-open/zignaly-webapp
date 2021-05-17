@@ -504,7 +504,7 @@ class TradeApiClient {
       ...payload,
     });
 
-    return positionsResponseTransform(responseData);
+    return positionsShortResponseTransform(responseData);
   }
 
   /**
