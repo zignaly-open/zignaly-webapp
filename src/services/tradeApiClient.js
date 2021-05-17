@@ -487,7 +487,7 @@ class TradeApiClient {
       "GET",
     );
 
-    return positionsResponseTransform(responseData);
+    return positionsShortResponseTransform(responseData);
   }
 
   /**

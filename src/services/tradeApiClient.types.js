@@ -1308,6 +1308,7 @@ export function positionsResponseTransform(response) {
   });
 }
 
+/* eslint-disable camelcase */
 const shortProperties = {
   a: "accounting",
   am: "amount",
@@ -1391,6 +1392,7 @@ const shortProperties = {
   u: "updating",
   uid: "userId",
 };
+/* eslint-enable camelcase */
 
 /**
  * Transform positions response containing short properties to typed
@@ -1407,7 +1409,7 @@ export function positionsShortResponseTransform(response) {
   return response.map((positionShortItem) => {
     // Map short properties to full name.
     let mapped = Object.keys(positionShortItem).reduce((acc, key) => {
-            // @ts-ignore
+      // @ts-ignore
       acc[shortProperties[key]] = positionShortItem[key];
       return acc;
     }, {});
