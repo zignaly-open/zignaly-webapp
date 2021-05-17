@@ -5,6 +5,7 @@ import { navigateLogin } from "./navigation";
 import {
   userEntityResponseTransform,
   positionsResponseTransform,
+  positionsShortResponseTransform,
   providersResponseTransform,
   providersStatsResponseTransform,
   userBalanceResponseTransform,

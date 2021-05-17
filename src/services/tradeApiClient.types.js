@@ -1308,6 +1308,113 @@ export function positionsResponseTransform(response) {
   });
 }
 
+const shortProperties = {
+  a: "accounting",
+  am: "amount",
+  b: "base",
+  bp: "buyPrice",
+  bt: "buyTTL",
+  cs: "checkStop",
+  cd: "closeDate",
+  c: "closed",
+  close_order: "close_order",
+  ct: "closeTrigger",
+  cti: "copyTraderId",
+  ca: "currentAllocatedBalance",
+  e: "exchange",
+  en: "exchangeInternalName",
+  et: "exchangeType",
+  f: "fees",
+  ff: "fundingFees",
+  ie: "internalExchangeId",
+  i: "invested",
+  iq: "investedQuote",
+  ic: "isCopyTrader",
+  ict: "isCopyTrading",
+  l: "leverage",
+  lg: "logoUrl",
+  n: "netProfit",
+  np: "netProfitPercentage",
+  openDateBackup: "openDateBackup",
+  od: "openDate",
+  open_order: "open_order",
+  ot: "openTrigger",
+  o: "orders",
+  p: "pair",
+  pt: "paperTrading",
+  pi: "positionId",
+  psp: "positionSizePercentage",
+  ps: "positionSize",
+  psq: "positionSizeQuote",
+  pp: "profitPercentage",
+  pf: "profit",
+  psh: "profitSharing",
+  pri: "providerId",
+  pn: "providerName",
+  pr: "provider",
+  qa: "quoteAsset",
+  q: "quote",
+  ri: "realInvestment",
+  rbtcf: "reBuyTargetsCountFail",
+  rbtcp: "reBuyTargetsCountPending",
+  rbtcs: "reBuyTargetsCountSuccess",
+  rbt: "reBuyTargets",
+  ra: "remainAmount",
+  sbt: "sellByTTL",
+  spo: "sellPlaceOrderAt",
+  sp: "sellPrice",
+  sh: "short",
+  sd: "side",
+  si: "signalId",
+  sm: "signalMetadata",
+  st: "signalTerm",
+  std: "statusDesc",
+  sts: "status",
+  slp: "stopLossPercentage",
+  sl: "stopLossPrice",
+  sly: "stopLossPriority",
+  sy: "symbol",
+  tp: "takeProfit",
+  tpcf: "takeProfitTargetsCountFail",
+  tpcp: "takeProfitTargetsCountPending",
+  tpcs: "takeProfitTargetsCountSuccess",
+  tpt: "takeProfitTargets",
+  tv: "tradeViewSymbol",
+  trsp: "trailingStopPercentage",
+  trst: "trailingStopTriggered",
+  trstp: "trailingStopTriggerPercentage",
+  trstr: "trailingStopTriggerPrice",
+  trsty: "trailingStopTriggerPriority",
+  t: "type",
+  ua: "unitsAmount",
+  ui: "unitsInvestment",
+  u: "updating",
+  uid: "userId",
+};
+
+/**
+ * Transform positions response containing short properties to typed
+ * UserPositionsCollection collection.
+ *
+ * @param {*} response Trade API positions list response.
+ * @returns {UserPositionsCollection} Positions entities collection.
+ */
+export function positionsShortResponseTransform(response) {
+  if (!isArray(response)) {
+    throw new Error("Response must be an array of positions.");
+  }
+
+  return response.map((positionShortItem) => {
+    // Map short properties to full name.
+    let mapped = Object.keys(positionShortItem).reduce((acc, key) => {
+            // @ts-ignore
+      acc[shortProperties[key]] = positionShortItem[key];
+      return acc;
+    }, {});
+    return positionItemTransform(mapped);
+  });
+}
+
 /**
  * Transform Trade API position item to typed PositionEntity object.
  *
