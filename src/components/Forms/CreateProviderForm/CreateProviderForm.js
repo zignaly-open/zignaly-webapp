@@ -89,7 +89,6 @@ const CreateProviderForm = () => {
     const payload = {
       ...data,
       projectId: "z01",
-      description: "",
       providerId: CREATE_PROVIDER_ID,
       version: 2,
       token: storeSession.tradeApi.accessToken,
