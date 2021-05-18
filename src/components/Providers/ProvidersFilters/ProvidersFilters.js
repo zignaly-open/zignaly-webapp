@@ -79,26 +79,6 @@ const ProvidersFilters = ({
           value={filters.exchangeType}
         />
       )}
-      <Box
-        alignItems="center"
-        className="checkboxFilter"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-start"
-      >
-        <Checkbox
-          // @ts-ignore
-          checked={filters.fromUser === "userOwned"}
-          onChange={(e) =>
-            e.target.checked
-              ? setFilters({ fromUser: "userOwned" })
-              : setFilters({ fromUser: "ALL" })
-          }
-        />
-        <span>
-          <FormattedMessage id="srv.filters.userowned" />
-        </span>
-      </Box>
       {/* {(copyTraders || profitSharing) && (
         <Box
           alignItems="center"

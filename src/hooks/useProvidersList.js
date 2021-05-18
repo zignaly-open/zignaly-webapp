@@ -17,6 +17,7 @@ import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
 import { useStoreUserData } from "./useStoreUserSelector";
 import useConnectedProvidersLite from "./useConnectedProvidersLite";
+import useOwnedProviders from "./useOwnedProviders";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -66,7 +67,7 @@ import useConnectedProvidersLite from "./useConnectedProvidersLite";
  * @param {Number} updatedAt last updated time.
  * @returns {ProvidersData} Providers and filtering objects.
  */
-const useProvidersList = (options, updatedAt = null) => {
+const useProvidersList = (options, updatedAt = null, shouldExecute = true) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
@@ -84,7 +85,8 @@ const useProvidersList = (options, updatedAt = null) => {
   const { providers: connectedProviders } = useConnectedProvidersLite(
     "",
     [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
-    false,
+    true,
+    shouldExecute,
   );
 
   /**
@@ -106,7 +108,7 @@ const useProvidersList = (options, updatedAt = null) => {
       exchangeId: storeSettings.selectedExchange.exchangeId,
       exchangeType: storeSettings.selectedExchange.exchangeType,
     },
-    storeUserData.binanceConnected,
+    !connectedOnly && shouldExecute,
   );
   const quotes = [
     {
@@ -147,7 +149,6 @@ const useProvidersList = (options, updatedAt = null) => {
         exchange: "ALL",
         exchangeType: "ALL",
       }),
-      fromUser: "ALL",
       profitSharing: false,
     }),
   };
@@ -259,8 +260,7 @@ const useProvidersList = (options, updatedAt = null) => {
           p.exchanges.includes(filters.exchange.toLowerCase())) &&
         (!filters.exchangeType ||
           filters.exchangeType === "ALL" ||
-          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
+          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()),
     );
     sortProviders(matches);
   };
@@ -278,7 +278,7 @@ const useProvidersList = (options, updatedAt = null) => {
   }, [filters]);
 
   const loadProviders = () => {
-    if (storeSession.tradeApi.accessToken && connectedProviders) {
+    if (storeSession.tradeApi.accessToken && connectedProviders && shouldExecute) {
       /**
        * @type {NewAPIProvidersPayload}
        */
@@ -321,6 +321,7 @@ const useProvidersList = (options, updatedAt = null) => {
     internalExchangeId,
     updatedAt,
     connectedProviders,
+    shouldExecute,
   ]);
 
   return {

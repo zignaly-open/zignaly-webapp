@@ -1,13 +1,13 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { useIntl } from "react-intl";
-import withProvidersLayout from "../../../layouts/providersLayout/withProvidersLayout";
+import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
 import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
-import "./signalProvidersBrowse.scss";
+import "./copyTradersBrowse.scss";
 
 /**
- * @typedef {Object} SignalProvidersBrowsePropTypes
+ * @typedef {Object} CopyTradersBrowsePropTypes
  * @property {boolean} showFilters Flag to indicate if filters should be rendered.
  * @property {boolean} showSort Flag to indicate if sort options should be rendered.
  * @property {function} toggleFilters Callback that delegate filters toggle state to caller.
@@ -16,37 +16,29 @@ import "./signalProvidersBrowse.scss";
  */
 
 /**
- * Provides a list to browse signal providers.
+ * Provides a list to browse copy traders.
  *
- * @param {SignalProvidersBrowsePropTypes} props Component properties.
+ * @param {CopyTradersBrowsePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const SignalProvidersBrowse = (props) => {
+const MyTraders = (props) => {
   const { showFilters, showSort, toggleFilters, toggleSort, setModifiedFiltersCount } = props;
   const intl = useIntl();
 
   return (
-    <Box className="spBrowsePage">
+    <Box className="psBrowsePage">
       <Helmet>
         <title>
           {`${intl.formatMessage({
-            id: "menu.signalproviders",
+            id: "menu.profitSharing",
           })} - ${intl.formatMessage({
-            id: "srv.marketplace",
+            id: "srv.myservices",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-
-      <ProvidersBrowse
-        setModifiedFiltersCount={setModifiedFiltersCount}
-        showFilters={showFilters}
-        showSort={showSort}
-        toggleFilters={toggleFilters}
-        toggleSort={toggleSort}
-        type="signal_providers"
-      />
+      <ProvidersBrowse type="my_profit_sharing" />
     </Box>
   );
 };
 
-export default withProvidersLayout(SignalProvidersBrowse);
+export default withProvidersLayout(MyTraders);

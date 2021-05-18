@@ -4,7 +4,8 @@ import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
 import ProvidersList from "../ProvidersList";
 import TimeFrameSelectRow from "../TimeFrameSelectRow";
-import useProvidersList from "../../../hooks/useProvidersList";
+import useProvidersList from "hooks/useProvidersList";
+import useOwnedProviders from "hooks/useOwnedProviders";
 import { Box } from "@material-ui/core";
 
 /**
@@ -34,10 +35,11 @@ const ProvidersBrowse = ({
 }) => {
   const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
   const connectedOnly = type === "connected_traders" || type === "connected_providers";
+  const myServices = type === "my_profit_sharing" || type === "my_traders";
   const providersOptions = { type, connectedOnly };
   const [updatedAt, setUpdatedAt] = useState(null);
   const {
-    providers,
+    providers: providersList,
     quotes,
     exchanges,
     exchangeTypes,
@@ -50,7 +52,10 @@ const ProvidersBrowse = ({
     modifiedFilters,
     timeFrame,
     setTimeFrame,
-  } = useProvidersList(providersOptions, updatedAt);
+  } = useProvidersList(providersOptions, updatedAt, !myServices);
+  const myProviders = useOwnedProviders(myServices);
+  let providers = myProviders || providersList;
+
   const intl = useIntl();
 
   useEffect(() => {

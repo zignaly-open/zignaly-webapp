@@ -59,7 +59,7 @@ export const routesMapping = (path) => {
         subtitle2Id: "",
         links: [
           {
-            id: "srv.browse",
+            id: "srv.marketplace",
             to: "/copyTraders",
           },
           {
@@ -75,8 +75,12 @@ export const routesMapping = (path) => {
         subtitle2Id: "",
         links: [
           {
-            id: "srv.browse",
+            id: "srv.marketplace",
             to: "/profitSharing",
+          },
+          {
+            id: "srv.myservices",
+            to: "/profitSharing/my",
           },
           {
             id: "srv.analytics",
@@ -91,7 +95,7 @@ export const routesMapping = (path) => {
         subtitle2Id: "signalp.subtitle2",
         links: [
           {
-            id: "srv.browse",
+            id: "srv.marketplace",
             to: "/signalProviders",
           },
           {

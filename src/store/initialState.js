@@ -73,12 +73,6 @@
  * @property {string} [quote]
  * @property {string} exchange
  * @property {string} exchangeType
- * @property {string} fromUser
- */
-
-/**
- * @typedef {Object} SignalPBrowseFilters
- * @property {string} [fromUser]
  */
 
 /**
@@ -504,9 +498,9 @@ const initialState = {
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
-      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
-      profit: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
-      signalp: { fromUser: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "" },
+      profit: { quote: "", exchange: "", exchangeType: "" },
+      signalp: {},
       copytAnalytics: { quote: "", base: "", timeFrame: "" },
       signalpAnalytics: { quote: "", base: "", timeFrame: "" },
     },

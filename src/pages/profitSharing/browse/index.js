@@ -32,7 +32,7 @@ const CopyTradersBrowse = (props) => {
           {`${intl.formatMessage({
             id: "menu.profitSharing",
           })} - ${intl.formatMessage({
-            id: "srv.browse",
+            id: "srv.marketplace",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>

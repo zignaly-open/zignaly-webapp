@@ -65,7 +65,10 @@ const withProvidersLayout = (Component) => {
       return `${isCopyTrading ? "copyt" : isProfitSharing ? "profit" : "signalp"}.become`;
     };
 
-    const filters = (
+    const renderFiltersButton = isCopyTrading || isProfitSharing;
+    const renderRightComponent = !props.path.startsWith("/profitSharing/my");
+
+    const filters = renderRightComponent ? (
       <>
         <Modal
           onClose={() => dispatch(showCreateProvider(false))}
@@ -108,16 +111,20 @@ const withProvidersLayout = (Component) => {
           flexDirection="row"
           justifyContent="space-around"
         >
-          <img
-            className="icon iconPurple"
-            onClick={() => toggleFilters()}
-            src={showFilters ? FilterFillIcon : FilterIcon}
-            title="Filter"
-          />
-          {modifiedFiltersCount > 0 && (
-            <Typography className="modified" variant="subtitle1">
-              {modifiedFiltersCount}
-            </Typography>
+          {renderFiltersButton && (
+            <>
+              <img
+                className="icon iconPurple"
+                onClick={() => toggleFilters()}
+                src={showFilters ? FilterFillIcon : FilterIcon}
+                title="Filter"
+              />
+              {modifiedFiltersCount > 0 && (
+                <Typography className="modified" variant="subtitle1">
+                  {modifiedFiltersCount}
+                </Typography>
+              )}
+            </>
           )}
           <img
             className="icon iconPurple"
@@ -127,7 +134,7 @@ const withProvidersLayout = (Component) => {
           />
         </Box>
       </>
-    );
+    ) : null;
 
     return (
       <Box

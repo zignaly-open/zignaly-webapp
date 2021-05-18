@@ -580,7 +580,6 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providersListGet(payload) {
-    // const endpointPath = "/fe/api.php?action=getProviderList";
     const endpointPath = "/user/providers";
     const internalId = payload.internalExchangeId;
     const responseData = await this.doRequest(
@@ -589,6 +588,28 @@ class TradeApiClient {
         ...payload,
         apiVersion: 2,
         ...(internalId && { query: { internalExchangeId: internalId } }),
+      },
+      "GET",
+    );
+
+    return hasBeenUsedProvidersResponseTransform(responseData);
+  }
+
+  /**
+   * Get providers owned by user.
+   *
+   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersOwnedGet(payload) {
+    const endpointPath = "/providers/user_services";
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        ...payload,
+        apiVersion: 2,
       },
       "GET",
     );
