@@ -107,7 +107,7 @@ const useProvidersList = (options, updatedAt = null) => {
       exchangeId: storeSettings.selectedExchange.exchangeId,
       exchangeType: storeSettings.selectedExchange.exchangeType,
     },
-    !connectedOnly && shouldExecute,
+    !connectedOnly,
   );
   const quotes = [
     {
@@ -293,7 +293,7 @@ const useProvidersList = (options, updatedAt = null) => {
             if (profitSharing) {
               return p.profitSharing;
             } else if (copyTraders) {
-              return p.isCopyTrading;
+              return p.isCopyTrading && !p.profitSharing;
             }
             return !p.isCopyTrading;
           });

@@ -4,30 +4,30 @@ import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
 import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
-import "./myProfitSharing.scss";
+import "./mySignalProviders.scss";
 
 /**
  * Provides a list to browse copy traders.
  *
  * @returns {JSX.Element} Component JSX.
  */
-const MyProfitSharing = () => {
+const MySignalProviders = () => {
   const intl = useIntl();
 
   return (
-    <Box className="myProfitSharingPage">
+    <Box className="mySPPage">
       <Helmet>
         <title>
           {`${intl.formatMessage({
-            id: "menu.profitSharing",
+            id: "menu.signalproviders",
           })} - ${intl.formatMessage({
             id: "srv.myservices",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse type="profit_sharing" myServices={true} />
+      <ProvidersBrowse type="signal_providers" myServices={true} />
     </Box>
   );
 };
 
-export default withProvidersLayout(MyProfitSharing);
+export default withProvidersLayout(MySignalProviders);
