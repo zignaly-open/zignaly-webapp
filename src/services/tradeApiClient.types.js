@@ -1344,6 +1344,7 @@ const shortProperties = {
   p: "pair",
   pt: "paperTrading",
   pi: "positionId",
+  poui: "providerOwnerUserId",
   psp: "positionSizePercentage",
   ps: "positionSize",
   psq: "positionSizeQuote",
