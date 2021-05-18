@@ -36,7 +36,7 @@ const MyTraders = (props) => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse type="my_profit_sharing" />
+      <ProvidersBrowse type="profit_sharing" myServices={true} />
     </Box>
   );
 };

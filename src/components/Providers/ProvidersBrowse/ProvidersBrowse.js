@@ -17,6 +17,8 @@ import { Box } from "@material-ui/core";
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
  * @property {NewAPIProvidersPayload["type"]} type Type of providers to show.
+ * @property {boolean} connectedOnly Load only connected services
+ * @property {boolean} myServices Load only created services
  */
 
 /**
@@ -31,15 +33,15 @@ const ProvidersBrowse = ({
   showFilters,
   showSort,
   type,
+  connectedOnly,
+  myServices,
   setModifiedFiltersCount,
 }) => {
   const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
-  const connectedOnly = type === "connected_traders" || type === "connected_providers";
-  const myServices = type === "my_profit_sharing" || type === "my_traders";
-  const providersOptions = { type, connectedOnly };
+  const providersOptions = { type, connectedOnly, myServices };
   const [updatedAt, setUpdatedAt] = useState(null);
   const {
-    providers: providersList,
+    providers,
     quotes,
     exchanges,
     exchangeTypes,
@@ -52,9 +54,7 @@ const ProvidersBrowse = ({
     modifiedFilters,
     timeFrame,
     setTimeFrame,
-  } = useProvidersList(providersOptions, updatedAt, !myServices);
-  const myProviders = useOwnedProviders(myServices);
-  let providers = myProviders || providersList;
+  } = useProvidersList(providersOptions, updatedAt);
 
   const intl = useIntl();
 

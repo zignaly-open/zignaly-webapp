@@ -15,7 +15,7 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * @param {string} providerId Quote of the bases.
  * @returns {{providerUserInfo: ConnectedProviderUserInfo, profitPerc: number}} Provider user info.
  */
-const useOwnedProviders = (shouldExecute) => {
+const useOwnedProviders = (shouldExecute = true) => {
   const [providers, setProviders] = useState(null);
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();

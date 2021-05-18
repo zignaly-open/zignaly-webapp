@@ -41,6 +41,7 @@ import useOwnedProviders from "./useOwnedProviders";
  * @typedef {Object} ProvidersOptions
  * @property {NewAPIProvidersPayload["type"]} type
  * @property {boolean} connectedOnly
+ * @property {boolean} myServices
  */
 
 /**
@@ -67,16 +68,15 @@ import useOwnedProviders from "./useOwnedProviders";
  * @param {Number} updatedAt last updated time.
  * @returns {ProvidersData} Providers and filtering objects.
  */
-const useProvidersList = (options, updatedAt = null, shouldExecute = true) => {
+const useProvidersList = (options, updatedAt = null) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
-  const storeUserData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  const { type, connectedOnly } = options;
+  const { type, connectedOnly, myServices } = options;
   const copyTraders = type === "copy_trading";
   const profitSharing = type === "profit_sharing";
+
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
@@ -86,7 +86,6 @@ const useProvidersList = (options, updatedAt = null, shouldExecute = true) => {
     "",
     [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
     true,
-    shouldExecute,
   );
 
   /**
@@ -278,54 +277,68 @@ const useProvidersList = (options, updatedAt = null, shouldExecute = true) => {
   }, [filters]);
 
   const loadProviders = () => {
-    if (storeSession.tradeApi.accessToken && connectedProviders && shouldExecute) {
-      /**
-       * @type {NewAPIProvidersPayload}
-       */
-      const payload2 = {
-        type,
-        timeFrame,
-        internalExchangeId,
-      };
+    /**
+     * @type {NewAPIProvidersPayload}
+     */
+    const payload = {
+      type,
+      timeFrame,
+      internalExchangeId,
+    };
 
-      tradeApi
-        .providersGetNew(payload2)
-        .then((responseData) => {
-          let uniqueProviders = uniqBy(responseData, "id");
-          uniqueProviders.forEach((provider, index) => {
-            const connectedProvider = connectedProviders.find((item) => item.id === provider.id);
-            if (connectedProvider) {
-              let newProvider = { ...provider };
-              newProvider.disable = !connectedProvider.connected;
-              newProvider.exchangeInternalId = connectedProvider.exchangeInternalId;
-              newProvider.exchangeInternalIds = connectedProvider.exchangeInternalIds;
-              uniqueProviders[index] = newProvider;
+    const method = myServices
+      ? tradeApi.providersOwnedGet(payload).then((responseData) => {
+          // Filter proper service type
+          return responseData.filter((p) => {
+            if (profitSharing) {
+              return p.profitSharing;
+            } else if (copyTraders) {
+              return p.isCopyTrading;
             }
+            return !p.isCopyTrading;
           });
-          setProviders((s) => ({
-            ...s,
-            list: uniqueProviders,
-          }));
-          filterProviders(uniqueProviders);
         })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
+      : tradeApi.providersGetNew(payload);
+
+    method
+      .then((responseData) => {
+        setProviders((s) => ({
+          ...s,
+          list: responseData,
+        }));
+        filterProviders(responseData);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
   };
-  // Load providers at init and on timeframe change.
-  useEffect(loadProviders, [
-    timeFrame,
-    connectedOnly,
-    storeSession.tradeApi.accessToken,
-    internalExchangeId,
-    updatedAt,
-    connectedProviders,
-    shouldExecute,
-  ]);
+  // Load providers at init, on timeframe/exchange account change
+  useEffect(loadProviders, [timeFrame, internalExchangeId, updatedAt]);
+
+  /**
+   * Combine user providers data with provider list
+   * @param {ProvidersCollection} list Providers list
+   * @returns {ProvidersCollection} Providers list
+   */
+  const augmentProviders = (list) => {
+    if (!list || !connectedProviders) return null;
+
+    return list.map((provider) => {
+      const connectedProvider = connectedProviders.find((item) => item.id === provider.id);
+      if (connectedProvider) {
+        return {
+          ...provider,
+          disable: !connectedProvider.connected,
+          exchangeInternalId: connectedProvider.exchangeInternalId,
+          exchangeInternalIds: connectedProvider.exchangeInternalIds,
+        };
+      }
+      return provider;
+    });
+  };
 
   return {
-    providers: providers.filteredList,
+    providers: augmentProviders(providers.filteredList),
     timeFrame,
     setTimeFrame,
     quotes,

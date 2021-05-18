@@ -572,6 +572,28 @@ class TradeApiClient {
   }
 
   /**
+   * Get providers owned by user.
+   *
+   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersOwnedGet(payload) {
+    const endpointPath = "/providers/user_services/" + payload.timeFrame;
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        ...payload,
+        apiVersion: 2,
+      },
+      "GET",
+    );
+
+    return providersResponseTransform(responseData);
+  }
+
+  /**
    * Get providers list.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
@@ -588,28 +610,6 @@ class TradeApiClient {
         ...payload,
         apiVersion: 2,
         ...(internalId && { query: { internalExchangeId: internalId } }),
-      },
-      "GET",
-    );
-
-    return hasBeenUsedProvidersResponseTransform(responseData);
-  }
-
-  /**
-   * Get providers owned by user.
-   *
-   * @param {ProvidersListPayload} payload Get providers list payload.
-   * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
-   *
-   * @memberof TradeApiClient
-   */
-  async providersOwnedGet(payload) {
-    const endpointPath = "/providers/user_services";
-    const responseData = await this.doRequest(
-      endpointPath,
-      {
-        ...payload,
-        apiVersion: 2,
       },
       "GET",
     );
