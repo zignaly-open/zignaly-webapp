@@ -110,7 +110,7 @@
  * @property {DashboardPositionsFilters} dashboardPositions
  * @property {BrowseFilters} copyt
  * @property {BrowseFilters} profit
- * @property {SignalPBrowseFilters} signalp
+ * @property {Object} signalp
  * @property {AnalyticsFilters} copytAnalytics
  * @property {AnalyticsFilters} signalpAnalytics
  */

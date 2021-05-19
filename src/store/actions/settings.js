@@ -193,7 +193,7 @@ export const setSort = (payload) => {
 
 /**
  * @typedef {"copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType} FilterPage
- * @typedef {Filters["copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType]} Filter
+ * @typedef {Filters["copyt"|"dashboardPositions"|AnalyticsPageType]} Filter
  */
 
 /**

@@ -5,7 +5,6 @@ import ProvidersSort from "../ProvidersSort";
 import ProvidersList from "../ProvidersList";
 import TimeFrameSelectRow from "../TimeFrameSelectRow";
 import useProvidersList from "hooks/useProvidersList";
-import useOwnedProviders from "hooks/useOwnedProviders";
 import { Box } from "@material-ui/core";
 
 /**
@@ -17,8 +16,7 @@ import { Box } from "@material-ui/core";
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
  * @property {NewAPIProvidersPayload["type"]} type Type of providers to show.
- * @property {boolean} connectedOnly Load only connected services
- * @property {boolean} myServices Load only created services
+ * @property {boolean} [myServices] Load only created services by the user.
  */
 
 /**
@@ -33,10 +31,10 @@ const ProvidersBrowse = ({
   showFilters,
   showSort,
   type,
-  connectedOnly,
-  myServices,
+  myServices = false,
   setModifiedFiltersCount,
 }) => {
+  const connectedOnly = type.startsWith("connected");
   const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
   const providersOptions = { type, connectedOnly, myServices };
   const [updatedAt, setUpdatedAt] = useState(null);

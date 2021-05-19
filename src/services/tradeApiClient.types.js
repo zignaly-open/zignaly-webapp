@@ -605,6 +605,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} ProvidersOwnedPayload
+ * @property {number} timeFrame
+ */
+
+/**
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro

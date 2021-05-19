@@ -61,6 +61,7 @@ import {
  * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').NewAPIProvidersPayload} NewAPIProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersOwnedPayload} ProvidersOwnedPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
@@ -572,9 +573,9 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers owned by user.
+   * Get providers services owned by user.
    *
-   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @param {ProvidersOwnedPayload} payload Get providers list payload.
    * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient

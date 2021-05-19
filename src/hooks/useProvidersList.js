@@ -15,9 +15,7 @@ import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
-import { useStoreUserData } from "./useStoreUserSelector";
 import useConnectedProvidersLite from "./useConnectedProvidersLite";
-import useOwnedProviders from "./useOwnedProviders";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
