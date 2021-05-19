@@ -86,10 +86,6 @@ export const routesMapping = (path) => {
             id: "srv.myservices",
             to: "/profitSharing/my",
           },
-          {
-            id: "srv.analytics",
-            to: "/profitSharing/analytics",
-          },
         ],
       };
     case "signalProviders":
@@ -106,10 +102,6 @@ export const routesMapping = (path) => {
             id: "srv.myservices",
             to: "/signalProviders/my",
           },
-          {
-            id: "srv.analytics",
-            to: "/signalProviders/analytics",
-          },
         ],
       };
     case "copyTrader":
@@ -121,10 +113,6 @@ export const routesMapping = (path) => {
           {
             id: "srv.profile",
             to: "/copyTrader",
-          },
-          {
-            id: "srv.analytics",
-            to: "/copyTrader/analytics",
           },
           {
             id: "srv.positions",

@@ -545,6 +545,7 @@ const initialState = {
       realExchangeConnected: false,
       demoExchangeConnected: false,
       exchanges: [],
+      isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
     },
   },
   ui: {

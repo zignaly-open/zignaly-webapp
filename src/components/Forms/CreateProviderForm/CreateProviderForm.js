@@ -7,6 +7,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateProvider } from "../../../store/actions/ui";
+import { getUserData } from "store/actions/user";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -102,6 +103,8 @@ const CreateProviderForm = () => {
 
         navigate(profileLink);
         dispatch(showCreateProvider(false));
+        // Refresh user data to show My Services tab
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

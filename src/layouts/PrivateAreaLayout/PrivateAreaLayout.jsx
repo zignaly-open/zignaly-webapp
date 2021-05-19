@@ -56,7 +56,7 @@ const PrivateAreaLayout = (props) => {
   useInterval(updateSession, minToMillisec(60), true);
 
   const loadUserData = () => {
-    dispatch(getUserData(storeSession.tradeApi.accessToken));
+    dispatch(getUserData(storeSession.tradeApi.accessToken), true);
   };
   useEffect(loadUserData, []);
 

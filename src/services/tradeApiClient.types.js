@@ -283,6 +283,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} isTraderType
+ * @property {boolean} profit_sharing True if the user has created a profit sharing service provider.
+ * @property {boolean} copy_trading True if the user has created a copy trader service provider.
+ * @property {boolean} signal_providers True if the user has created a signal provider service.
+ */
+
+/**
  * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -303,6 +310,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} hasActivated
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
+ * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
  */
 
@@ -1089,6 +1097,7 @@ export function userEntityResponseTransform(response) {
     hasActivated: response.hasActivated,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    isTrader: response.isTrader,
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],

@@ -4,6 +4,8 @@ import { Box, Typography } from "@material-ui/core";
 import { routesMapping } from "../../../utils/routesMapping";
 import SubNavHeader from "../../SubNavHeader";
 import { FormattedMessage } from "react-intl";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
+import user from "store/reducers/user";
 
 /**
  * @typedef {Object} SubNavHeaderPropTypes
@@ -19,17 +21,21 @@ import { FormattedMessage } from "react-intl";
  */
 const ProvidersHeader = ({ path, rightComponent }) => {
   const isCopyTrading = path.startsWith("/copyTraders");
+  const isProfitSharing = path.startsWith("/profitSharing");
+  const isSignalProvider = path.startsWith("/signalProviders");
   const sectionNavitation = routesMapping(path);
-  const [links, setLinks] = useState(sectionNavitation.links);
-
-  const initLinks = () => {
-    if (!isCopyTrading) {
-      let data = sectionNavitation.links.filter((item) => item.id !== "srv.analytics");
-      setLinks(data);
+  const userData = useStoreUserData();
+  const links = sectionNavitation.links.filter((item) => {
+    if (item.id === "srv.myservices") {
+      // Only show My Services tab if the user has created a service
+      return (
+        (isProfitSharing && userData.isTrader.profit_sharing) ||
+        (isCopyTrading && userData.isTrader.copy_trading) ||
+        (isSignalProvider && userData.isTrader.signal_providers)
+      );
     }
-  };
-
-  useEffect(initLinks, []);
+    return true;
+  });
 
   return (
     <Box className="providersHeader">
