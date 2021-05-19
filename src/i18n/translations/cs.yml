@@ -581,7 +581,7 @@ srv.payment.error.message: "CH-Your transaction was not completed. Please try ag
 srv.disclaimer.title: "CH-Disclaimer"
 srv.disclaimer.text: "CH-Your are paying the fee directly to the signal provider or copy trader. Zignaly doesn't provide any trading advise or recommendation."
 srv.edit.cacheinfo.title: "CH-Important Message"
-srv.edit.cacheinfo.message: "CH-These changes could take up to 15 minutes to be reflected in your service card inside marketplace"
+srv.edit.cacheinfo.message: "CH-These changes could take up to 30 minutes to be reflected in your service card inside marketplace"
 srv.edit.cacheinfo.dont: "CH-Don't show this message again!"
 srv.about: "CH-About us"
 srv.options: "CH-Options"

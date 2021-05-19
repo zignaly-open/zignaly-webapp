@@ -596,7 +596,7 @@ srv.payment.error.message: "Your transaction was not completed. Please try again
 srv.disclaimer.title: "Disclaimer"
 srv.disclaimer.text: "Your are paying the fee directly to the signal provider or copy trader. Zignaly doesn't provide any trading advise or recommendation."
 srv.edit.cacheinfo.title: "Important Message"
-srv.edit.cacheinfo.message: "These changes could take up to 15 minutes to be reflected in your service card inside marketplace"
+srv.edit.cacheinfo.message: "These changes could take up to 30 minutes to be reflected in your service card inside marketplace"
 srv.edit.cacheinfo.dont: "Don't show this message again!"
 srv.about: "About us"
 srv.options: "Options"
