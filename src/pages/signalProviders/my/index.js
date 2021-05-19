@@ -25,7 +25,7 @@ const MySignalProviders = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse type="signal_providers" myServices={true} />
+      <ProvidersBrowse myServices={true} type="signal_providers" />
     </Box>
   );
 };

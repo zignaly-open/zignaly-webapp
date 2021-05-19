@@ -25,7 +25,7 @@ const MyProfitSharing = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse type="profit_sharing" myServices={true} />
+      <ProvidersBrowse myServices={true} type="profit_sharing" />
     </Box>
   );
 };

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./ProvidersHeader.scss";
 import { Box, Typography } from "@material-ui/core";
 import { routesMapping } from "../../../utils/routesMapping";
 import SubNavHeader from "../../SubNavHeader";
 import { FormattedMessage } from "react-intl";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
-import user from "store/reducers/user";
 
 /**
  * @typedef {Object} SubNavHeaderPropTypes

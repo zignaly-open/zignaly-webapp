@@ -25,7 +25,7 @@ const MyCopyTraders = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse type="copy_trading" myServices={true} />
+      <ProvidersBrowse myServices={true} type="copy_trading" />
     </Box>
   );
 };
