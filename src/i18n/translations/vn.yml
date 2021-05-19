@@ -461,7 +461,7 @@ srv.payment.error.message: "Your transaction was not completed. Please try again
 srv.disclaimer.title: "Miễn trừ"
 srv.disclaimer.text: "Bạn trả phí trực tiếp cho nhà cung cấp tín hiệu hoặc nhà giao dịch sao chép. Zignaly không cung cấp bất kỳ lời khuyên hay khuyến nghị giao dịch nào."
 srv.edit.cacheinfo.title: "Important Message"
-srv.edit.cacheinfo.message: "These changes could take up to 15 minutes to be reflected in your service card inside marketplace"
+srv.edit.cacheinfo.message: "These changes could take up to 30 minutes to be reflected in your service card inside marketplace"
 srv.edit.cacheinfo.dont: "Don't show this message again!"
 srv.about: "Về chúng tôi"
 srv.options: "Tùy chọn"
