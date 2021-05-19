@@ -288,7 +288,7 @@ const useProvidersList = (options, updatedAt = null) => {
 
     const method = myServices
       ? tradeApi.providersOwnedGet(payload).then((responseData) => {
-          // Filter proper service type
+          // Filter proper services type
           return responseData.filter((p) => {
             if (profitSharing) {
               return p.profitSharing;

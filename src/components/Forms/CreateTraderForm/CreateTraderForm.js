@@ -110,7 +110,9 @@ const CreateTraderForm = ({ isCopyTrading }) => {
     tradeApi
       .copyTraderCreate(payload)
       .then((response) => {
-        const profileLink = `/profitSharing/${response.id}/edit`;
+        const profileLink = `/${isCopyTrading ? "copyTraders" : "profitSharing"}/${
+          response.id
+        }/edit`;
         navigate(profileLink);
         dispatch(showCreateTrader(false));
         // Refresh user data to show My Services tab

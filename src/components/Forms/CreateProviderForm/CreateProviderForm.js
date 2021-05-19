@@ -97,10 +97,7 @@ const CreateProviderForm = () => {
     tradeApi
       .providerCreate(payload)
       .then((response) => {
-        const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
-          response.id
-        }/edit`;
-
+        const profileLink = `/signalProviders/${response.id}/edit`;
         navigate(profileLink);
         dispatch(showCreateProvider(false));
         // Refresh user data to show My Services tab

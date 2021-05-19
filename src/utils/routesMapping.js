@@ -66,10 +66,6 @@ export const routesMapping = (path) => {
             id: "srv.myservices",
             to: "/copyTraders/my",
           },
-          {
-            id: "srv.analytics",
-            to: "/copyTraders/analytics",
-          },
         ],
       };
     case "profitSharing":
