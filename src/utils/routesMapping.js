@@ -111,6 +111,10 @@ export const routesMapping = (path) => {
             to: "/copyTrader",
           },
           {
+            id: "srv.analytics",
+            to: "/copyTrader/analytics",
+          },
+          {
             id: "srv.positions",
             to: "/copyTrader/positions",
           },
