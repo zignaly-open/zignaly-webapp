@@ -32,7 +32,7 @@ const SignalProvidersBrowse = (props) => {
           {`${intl.formatMessage({
             id: "menu.signalproviders",
           })} - ${intl.formatMessage({
-            id: "srv.browse",
+            id: "srv.marketplace",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>

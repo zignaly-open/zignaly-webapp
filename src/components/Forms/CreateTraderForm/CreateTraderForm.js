@@ -14,6 +14,7 @@ import { navigate } from "gatsby";
 import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
+import { getUserData } from "store/actions/user";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -109,9 +110,13 @@ const CreateTraderForm = ({ isCopyTrading }) => {
     tradeApi
       .copyTraderCreate(payload)
       .then((response) => {
-        const profileLink = `/copyTraders/${response.id}/edit`;
+        const profileLink = `/${isCopyTrading ? "copyTraders" : "profitSharing"}/${
+          response.id
+        }/edit`;
         navigate(profileLink);
         dispatch(showCreateTrader(false));
+        // Refresh user data to show My Services tab
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

@@ -61,6 +61,7 @@ import {
  * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
  * @typedef {import('./tradeApiClient.types').NewAPIProvidersPayload} NewAPIProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersOwnedPayload} ProvidersOwnedPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
@@ -572,6 +573,28 @@ class TradeApiClient {
   }
 
   /**
+   * Get providers services owned by user.
+   *
+   * @param {ProvidersOwnedPayload} payload Get providers list payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersOwnedGet(payload) {
+    const endpointPath = "/providers/user_services/" + payload.timeFrame;
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        ...payload,
+        apiVersion: 2,
+      },
+      "GET",
+    );
+
+    return providersResponseTransform(responseData);
+  }
+
+  /**
    * Get providers list.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
@@ -580,7 +603,6 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providersListGet(payload) {
-    // const endpointPath = "/fe/api.php?action=getProviderList";
     const endpointPath = "/user/providers";
     const internalId = payload.internalExchangeId;
     const responseData = await this.doRequest(

@@ -1,13 +1,11 @@
 import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
-import { useIntl, FormattedMessage } from "react-intl";
-import { Box, Checkbox } from "@material-ui/core";
+import { useIntl } from "react-intl";
 
 /**
  * @typedef {import("../../CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("../../../store/initialState").BrowseFilters} BrowseFilters
- * @typedef {import("../../../store/initialState").SignalPBrowseFilters} SignalPBrowseFilters
  * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  */
 
@@ -16,7 +14,7 @@ import { Box, Checkbox } from "@material-ui/core";
  * @property {function} onClose Callback that delegate filters toggle state to caller.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {function} setFilters Callback that delegate filters update to caller.
- * @property {BrowseFilters|SignalPBrowseFilters|{}} filters Current filters.
+ * @property {BrowseFilters|{}} filters Current filters.
  * @property {Array<OptionType>} exchanges Exchanges options.
  * @property {Array<OptionType>} exchangeTypes Exchange types options.
  * @property {Array<OptionType>} quotes Quotes options.
@@ -79,26 +77,6 @@ const ProvidersFilters = ({
           value={filters.exchangeType}
         />
       )}
-      <Box
-        alignItems="center"
-        className="checkboxFilter"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-start"
-      >
-        <Checkbox
-          // @ts-ignore
-          checked={filters.fromUser === "userOwned"}
-          onChange={(e) =>
-            e.target.checked
-              ? setFilters({ fromUser: "userOwned" })
-              : setFilters({ fromUser: "ALL" })
-          }
-        />
-        <span>
-          <FormattedMessage id="srv.filters.userowned" />
-        </span>
-      </Box>
       {/* {(copyTraders || profitSharing) && (
         <Box
           alignItems="center"

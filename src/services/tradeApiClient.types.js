@@ -283,6 +283,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} isTraderType
+ * @property {boolean} profit_sharing True if the user has created a profit sharing service provider.
+ * @property {boolean} copy_trading True if the user has created a copy trader service provider.
+ * @property {boolean} signal_providers True if the user has created a signal provider service.
+ */
+
+/**
  * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -303,6 +310,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} hasActivated
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
+ * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
  */
 
@@ -597,6 +605,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} ProvidersOwnedPayload
+ * @property {number} timeFrame
+ */
+
+/**
  * @typedef {Object} ProvidersListPayload
  * @property {string} token
  * @property {boolean} ro
@@ -634,23 +647,15 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProviderEntity
  * @property {string} id
  * @property {string} name
- * @property {string} description
- * @property {string} shortDesc
- * @property {string} longDesc
- * @property {string|boolean} fee
  * @property {number} price
- * @property {boolean|string} website
  * @property {Array<string>} exchanges
  * @property {boolean} key
  * @property {boolean} disable False if user is copying
  * @property {boolean} customerKey
  * @property {boolean} public
- * @property {boolean} hasRecommendedSettings
  * @property {string} logoUrl
- * @property {boolean} hasBeenUsed
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
- * @property {boolean} clonedFrom
  * @property {number} createdAt
  * @property {boolean} isFromUser
  * @property {string} quote
@@ -1097,6 +1102,7 @@ export function userEntityResponseTransform(response) {
     hasActivated: response.hasActivated,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    isTrader: response.isTrader,
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
@@ -1248,23 +1254,15 @@ function createEmptyProviderEntity() {
   return {
     id: "",
     name: "",
-    description: "",
-    shortDesc: "",
-    longDesc: "",
-    fee: false,
     price: 0,
-    website: false,
     exchanges: [],
     key: false,
     disable: true,
     customerKey: false,
     public: true,
     logoUrl: "",
-    hasRecommendedSettings: false,
-    hasBeenUsed: false,
     isClone: false,
     isCopyTrading: false,
-    clonedFrom: false,
     createdAt: 0,
     isFromUser: false,
     quote: "",
@@ -2621,12 +2619,6 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
- * @typedef {Object} DefaultProviderClonedFromObject
- * @property {String} $oid
- */
-
-/**
- *
  * @typedef {Object} DefaultProviderAllocatedUpdatedAtDateObject
  * @property {String} $numberlong
  */
@@ -2737,14 +2729,10 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaultProviderGetObject
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
- * @property {String} description
  * @property {Boolean} disable True when provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
- * @property {String} fee
- * @property {Boolean} hasBeenUsed
- * @property {Boolean} hasRecommendedSettings
  * @property {String} id
  * @property {DefaulProviderInternalPaymentObject} internalPaymentInfo
  * @property {Boolean} isAdmin
@@ -2753,18 +2741,15 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} key
  * @property {Boolean} list
  * @property {String} logoUrl
- * @property {String} longDesc
  * @property {Number} minAllocatedBalance
  * @property {String} name
  * @property {DefaultProviderOptions} options
  * @property {Boolean} public
- * @property {String} shortDesc
  * @property {DefaultProviderUserPaymentObject} userPaymentInfo
  * @property {String} website
  * @property {Number} allocatedBalance
  * @property {DefaultProviderAllocatedUpdatedAtObject} allocatedBalanceUpdatedAt
  * @property {Boolean} balanceFilter
- * @property {DefaultProviderClonedFromObject} clonedFrom
  * @property {String} createdAt
  * @property {Boolean} enableInProvider
  * @property {String} originalBalance
@@ -2858,14 +2843,10 @@ function createEmptyProviderGetEntity() {
   return {
     connected: false,
     copyTradingQuote: "",
-    description: "",
     disable: true,
     exchangeInternalId: "",
     exchangeType: "",
     exchanges: [""],
-    fee: "",
-    hasBeenUsed: false,
-    hasRecommendedSettings: false,
     id: "",
     internalPaymentInfo: {
       isPremium: true,
@@ -2880,7 +2861,6 @@ function createEmptyProviderGetEntity() {
     key: false,
     list: false,
     logoUrl: "",
-    longDesc: "",
     minAllocatedBalance: 0,
     name: "",
     options: {
@@ -2904,13 +2884,10 @@ function createEmptyProviderGetEntity() {
       disclaimer: "",
     },
     public: false,
-    shortDesc: "",
     userPaymentInfo: { userId: "" },
-    website: "",
     allocatedBalance: 0,
     allocatedBalanceUpdatedAt: { $date: { $numberlong: "" } },
     balanceFilter: false,
-    clonedFrom: { $oid: "" },
     createdAt: "",
     enableInProvider: false,
     originalBalance: "",
@@ -4006,7 +3983,6 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {ProviderOptions & Object} ProviderCreatePayload
  * @property {string} name
- * @property {string} description
  * @property {string} disclaimer
  * @property {string} exchangeType
  * @property {string} projectId
@@ -4023,7 +3999,6 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} key
  * @property {string} userId
  * @property {string} projectId
- * @property {string} description
  * @property {Array<string>} exchanges
  * @property {string} exchangeType
  * @property {DefaultProviderOptions} options
@@ -4076,7 +4051,6 @@ const createEmptyNewProviderEntity = () => {
     key: "",
     userId: "",
     projectId: "",
-    description: "",
     exchanges: [],
     exchangeType: "",
     options: {
@@ -4460,23 +4434,15 @@ export const createEmptyProfileProviderStatsEntity = () => {
     providerInfo: {
       id: "",
       name: "",
-      description: "",
-      shortDesc: "",
-      longDesc: "",
-      fee: false,
       price: 0,
-      website: false,
       exchanges: [],
       key: false,
       disable: true,
       customerKey: false,
       public: true,
       logoUrl: "",
-      hasRecommendedSettings: false,
-      hasBeenUsed: false,
       isClone: false,
       isCopyTrading: false,
-      clonedFrom: false,
       createdAt: 0,
       isFromUser: false,
       quote: "",

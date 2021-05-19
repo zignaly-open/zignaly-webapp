@@ -633,7 +633,6 @@ srv.edit.ipn.alert: "CH-You need to add Merchant ID and IPN Secret in order to u
 srv.edit.trial: "CH-Trial"
 srv.edit.exchanges: "CH-Exchanges"
 srv.edit.exchangetype: "CH-Exchange Type"
-srv.filters.userowned: "CH-User Owned"
 srv.filters.profitsharing: "CH-Profit Sharing"
 srv.edit.quotes: "CH-Quotes"
 srv.edit.public: "CH-Make it Public"
