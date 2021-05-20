@@ -2099,9 +2099,9 @@ class TradeApiClient {
   }
 
   /**
-   * Confirm delete account
+   * Recover position
    *
-   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload with email code
+   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload to recover position
    *
    * @returns {Promise<boolean>} Result
    *
