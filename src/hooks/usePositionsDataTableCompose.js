@@ -205,13 +205,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const currentUserId = storeUserData.userId;
     const isProviderOwner = providerOwnerUserId === currentUserId;
 
-    if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return <>{position.age}</>;
-      }
-      return null;
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return <>{position.age}</>;
     }
-    return <>{position.age}</>;
+    return null;
   }
 
   /**
@@ -785,13 +782,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const currentUserId = storeUserData.userId;
     const isProviderOwner = providerOwnerUserId === currentUserId;
 
-    if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return composeAllActionButtons(position, confirmActionHandler);
-      }
-      return null;
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return composeAllActionButtons(position, confirmActionHandler);
     }
-    return composeAllActionButtons(position, confirmActionHandler);
+    return null;
   }
 
   /**

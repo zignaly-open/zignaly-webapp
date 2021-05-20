@@ -18,7 +18,7 @@ import { setSelectedExchange } from "../../../../store/actions/settings";
 import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import initialState from "../../../../store/initialState";
-import useConnectedProvidersLite from "hooks/useConnectedProvidersLite";
+import useConnectedProvidersList from "hooks/useConnectedProvidersList";
 import useAvailableBalance from "hooks/useAvailableBalance";
 
 /**
@@ -46,13 +46,13 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
   const { balance } = useAvailableBalance(selectedAccount);
-  const { providers } = useConnectedProvidersLite(
+  const { providers } = useConnectedProvidersList(
     selectedAccount.internalId,
     ["profitSharing"],
     true,
   );
 
-  const providerAvailable = providers && providers.length;
+  const hasConnectedPS = providers && providers.length;
   const dispatch = useDispatch();
 
   const loadOpenPositions = () => {
@@ -130,7 +130,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
               <FormattedMessage id="confirm.deleteexchange.balance" />
             ) : positions.length ? (
               <FormattedMessage id="confirm.deleteexchange.openpos" />
-            ) : providerAvailable ? (
+            ) : hasConnectedPS ? (
               <FormattedMessage id="confirm.deleteexchange.profit" />
             ) : (
               <FormattedMessage id="confirm.deleteexchange.message" />
@@ -145,11 +145,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
         <CustomButton
           className="textPurple"
           disabled={Boolean(
-            !balance ||
-              !positions ||
-              brokerAccountWithFunds ||
-              positions.length ||
-              providerAvailable,
+            !balance || !positions || brokerAccountWithFunds || positions.length || hasConnectedPS,
           )}
           loading={loading}
           onClick={deleteExchange}

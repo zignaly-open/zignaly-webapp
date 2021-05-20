@@ -156,9 +156,6 @@ import {
  *
  *
  *
- * @typedef {Object} PayloadOptions
- * @property {Object} query
- * @property {Object} body
  */
 
 /**
@@ -348,14 +345,14 @@ class TradeApiClient {
    * @param {string} endpointPath API endpoint path and action.
    * @param {*} payload Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
+   * @param {number} [apiVersion] API to call
    * @param {string} [token] Optional authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "POST", token) {
-    const baseUrl =
-      payload.apiVersion && payload.apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
+  async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
+    const baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
     let requestUrl = baseUrl + endpointPath;
     let responseData = {};
 
@@ -375,15 +372,10 @@ class TradeApiClient {
     };
 
     if (method === "GET") {
-      requestUrl = payload.query
-        ? `${requestUrl}?${new URLSearchParams(payload.query)}`
-        : requestUrl;
+      requestUrl = `${requestUrl}?${new URLSearchParams(payload)}`;
     } else {
       options.body = JSON.stringify(payload);
     }
-
-    // TODO: Comply with request method parameter once backend resolve a GET
-    // method usage issue for requests that needs payload as query string.
 
     const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
     if (method === "GET") {
@@ -556,17 +548,7 @@ class TradeApiClient {
    */
   async providersGetNew(payload) {
     const endpointPath = `/providers/${payload.type}/${payload.timeFrame}`;
-    const connectedOnly =
-      payload.type === "connected_providers" || payload.type === "connected_traders";
-    const responseData = await this.doRequest(
-      endpointPath,
-      {
-        ...payload,
-        apiVersion: 2,
-        ...(connectedOnly && { query: { internalExchangeId: payload.internalExchangeId } }),
-      },
-      "GET",
-    );
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
     return providersResponseTransform(responseData);
   }
@@ -581,14 +563,8 @@ class TradeApiClient {
    */
   async providersOwnedGet(payload) {
     const endpointPath = "/providers/user_services/" + payload.timeFrame;
-    const responseData = await this.doRequest(
-      endpointPath,
-      {
-        ...payload,
-        apiVersion: 2,
-      },
-      "GET",
-    );
+
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
     return providersResponseTransform(responseData);
   }
@@ -603,16 +579,7 @@ class TradeApiClient {
    */
   async providersListGet(payload) {
     const endpointPath = "/user/providers";
-    const internalId = payload.internalExchangeId;
-    const responseData = await this.doRequest(
-      endpointPath,
-      {
-        ...payload,
-        apiVersion: 2,
-        ...(internalId && { query: { internalExchangeId: internalId } }),
-      },
-      "GET",
-    );
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
     return hasBeenUsedProvidersResponseTransform(responseData);
   }
@@ -1460,7 +1427,7 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", payload.token);
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 1, payload.token);
 
     return responseData;
   }
@@ -2116,9 +2083,9 @@ class TradeApiClient {
   }
 
   /**
-   * Confirm delete account
+   * Recover position
    *
-   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload with email code
+   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload to recover position
    *
    * @returns {Promise<boolean>} Result
    *
