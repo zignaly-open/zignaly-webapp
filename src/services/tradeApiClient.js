@@ -352,8 +352,8 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "POST", apiVersion, token) {
-    const baseUrl = apiVersion && apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
+  async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
+    const baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
     let requestUrl = baseUrl + endpointPath;
     let responseData = {};
 
