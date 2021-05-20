@@ -649,21 +649,6 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers profits stats.
-   *
-   * @param {ProvidersStatsPayload} payload Get providers stats payload.
-   * @returns {Promise<ProvidersStatsCollection>} Promise that resolves providers stats collection.
-   *
-   * @memberof TradeApiClient
-   */
-  async providersStatsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderProfitStats";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return providersStatsResponseTransform(responseData);
-  }
-
-  /**
    * Close a position.
    *
    * This action will detach the position monitoring from Zignaly but will continue open in the exchange.

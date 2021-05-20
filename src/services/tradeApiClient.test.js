@@ -162,26 +162,6 @@ describe("Consume tradeApiClient service", () => {
     assert.isArray(equity.balances, "Equity balances property is not an array.");
   }, 60000);
 
-  it("should get provider profits stats", async () => {
-    /**
-     * @type {ProvidersStatsPayload}
-     */
-    const payload = {
-      token: accessToken,
-      ro: true,
-      quote: "BTC",
-      base: "all",
-      timeFrame: "2months",
-      DCAFilter: "withoutDCA",
-      provType: ["copytraders"],
-    };
-
-    const providersStats = await client.providersStatsGet(payload);
-    assert.isArray(providersStats, "Provider stats is not an array.");
-    assert.isObject(providersStats[0], "First stats is not an object.");
-    assert.isString(providersStats[0].providerId, "First provider ID is not a string.");
-  }, 60000);
-
   it("should get quote assets", async () => {
     const payload = {
       token: accessToken,
