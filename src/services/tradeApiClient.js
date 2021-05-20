@@ -7,7 +7,6 @@ import {
   positionsResponseTransform,
   positionsShortResponseTransform,
   providersResponseTransform,
-  providersStatsResponseTransform,
   userBalanceResponseTransform,
   positionItemTransform,
   userEquityResponseTransform,
