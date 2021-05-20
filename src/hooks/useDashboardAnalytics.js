@@ -3,7 +3,7 @@ import tradeApi from "../services/tradeApiClient";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useConnectedProvidersLite from "./useConnectedProvidersLite";
+import useConnectedProvidersList from "./useConnectedProvidersList";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
@@ -57,7 +57,7 @@ const useDashboardAnalytics = (providerId) => {
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
 
-  const { providers, providersLoading } = useConnectedProvidersLite(
+  const { providers, providersLoading } = useConnectedProvidersList(
     storeSettings.selectedExchange.internalId,
     ["copyTrading", "profitSharing", "signalProvider"],
     false,

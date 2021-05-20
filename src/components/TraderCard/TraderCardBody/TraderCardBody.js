@@ -58,13 +58,15 @@ const TraderCard = (props) => {
     followers,
     disable,
     dailyReturns,
-    quote,
     closedPositions,
     returns,
     aggregateFollowers = [],
     newFollowers,
     providerLink,
     profitSharing,
+    id: providerId,
+    exchangeInternalId,
+    exchangeInternalIds,
   } = provider;
 
   const copyTrader = provType === "copytrading";
@@ -114,8 +116,8 @@ const TraderCard = (props) => {
   };
 
   useEffect(() => {
-    setCanDisable(!provider.disable);
-  }, [provider.disable]);
+    setCanDisable(!disable);
+  }, [disable]);
 
   useEffect(() => {
     const values = [];
@@ -187,7 +189,7 @@ const TraderCard = (props) => {
     const payload = {
       disable: true,
       token: storeSession.tradeApi.accessToken,
-      providerId: provider.id,
+      providerId: providerId,
       type: "connected",
     };
 
@@ -208,14 +210,12 @@ const TraderCard = (props) => {
       });
   };
 
-  const connectedAccount = exchangeConnections.find(
-    (e) => e.internalId === provider.exchangeInternalId,
-  );
+  const connectedAccount = exchangeConnections.find((e) => e.internalId === exchangeInternalId);
   const isCopyingWithAnotherAccount =
     connectedAccount && connectedAccount.internalId !== selectedExchange.internalId;
   const exchangeData =
-    provider.exchangeInternalIds &&
-    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
+    exchangeInternalIds &&
+    exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
   const disconnecting = exchangeData ? exchangeData.disconnecting : false;
 
   const getCopyButtonTooltip = () => {
@@ -367,13 +367,7 @@ const TraderCard = (props) => {
             </div>
           </div>
         </div>
-        {showSummary && (
-          <UserSummary
-            isCopyTrading={copyTrader || profitSharingProvider}
-            provider={provider}
-            quote={quote}
-          />
-        )}
+        {showSummary && <UserSummary provider={provider} />}
       </div>
     </LazyLoad>
   );
