@@ -1,12 +1,14 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
+import HelpIcon from "@material-ui/icons/Help";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {string} name
  * @property {JSX.Element} [info]
  * @property {JSX.Element} value
+ * @property {string|JSX.Element} [tooltip]
  */
 
 /**
@@ -15,7 +17,7 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} JSX
  */
-const EquityPart = ({ name, info, value }) => {
+const EquityPart = ({ name, info, value, tooltip }) => {
   return (
     <Box alignItems="flex-start" className="dataBox" display="flex" flexDirection="column">
       <Box
@@ -25,9 +27,16 @@ const EquityPart = ({ name, info, value }) => {
         justifyContent="space-between"
         mb={1}
       >
-        <Typography variant="h4">
-          <FormattedMessage id={name} />
-        </Typography>
+        <Box alignItems="center" display="flex" flexDirection="row">
+          <Typography variant="h4">
+            <FormattedMessage id={name} />
+          </Typography>
+          {tooltip && (
+            <Tooltip interactive placement="top" title={tooltip}>
+              <HelpIcon className="helpIcon" />
+            </Tooltip>
+          )}
+        </Box>
         {info && <span className="number3 smallText">{info}</span>}
       </Box>
       <Box alignItems="center" display="flex" flexDirection="row" justifyContent="flex-start">
