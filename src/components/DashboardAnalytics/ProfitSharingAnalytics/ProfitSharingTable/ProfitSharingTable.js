@@ -8,6 +8,7 @@ import AccountingFilter from "../AccountingFilter";
 import { Box, Tooltip } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import { pnlRetainInfoUrl } from "utils/affiliateURLs";
+import { TooltipWithUrl } from "components/TotalEquityBar/EquityPart/EquityPart";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -99,9 +100,9 @@ const ProfitSharingTable = ({ data }) => {
                   interactive
                   placement="top"
                   title={
-                    <FormattedMessage
-                      id="profitsharing.types.pnl.tooltip"
-                      values={{ url: pnlRetainInfoUrl }}
+                    <TooltipWithUrl
+                      message="profitsharing.types.pnl.tooltip"
+                      url={pnlRetainInfoUrl}
                     />
                   }
                 >
