@@ -52,6 +52,11 @@ body {
   }
 }
 
+.anchor {
+  color: $blue;
+  margin-top: 5px;
+}
+
 [data-theme="dark"] {
   &[data-os="win"] {
     ::-webkit-scrollbar {

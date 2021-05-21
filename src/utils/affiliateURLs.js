@@ -18,3 +18,8 @@ export const binanceUrl = "https://accounts.binance.com/";
 export const kucoinUrl = "https://www.kucoin.com/";
 export const vcceUrl = "https://vcc.exchange/";
 export const ascendEXUrl = "https://bitmax.io/en/account/api-key";
+export const retainInfoUrl =
+  "https://help.zignaly.com/hc/en-us/articles/360017357399-Understanding-Profit-Sharing-";
+export const highWaterMarkInfoUrl =
+  "https://help.zignaly.com/hc/en-us/articles/360017357399-Understanding-Profit-Sharing-";
+export const pnlRetainInfoUrl = "https://help.zignaly.com/hc/en-us/articles/360021682320)";
