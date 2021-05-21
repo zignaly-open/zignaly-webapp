@@ -305,13 +305,11 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
-  const isOpenPositionsTable = type.toLowerCase().includes("open");
-
   /**
    * @type {MUIDataTableOptions}
    */
   const options = {
-    sortOrder: { name: isOpenPositionsTable ? "open_order" : "close_order", direction: "desc" },
+    sortOrder: { name: "openDateReadable", direction: "desc" },
   };
 
   const embedFilters = () => {
