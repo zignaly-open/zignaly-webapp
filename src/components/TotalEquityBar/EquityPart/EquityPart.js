@@ -21,7 +21,7 @@ import HelpIcon from "@material-ui/icons/Help";
  * @param {TooltipObject} props Component props.
  * @returns {JSX.Element} JSX
  */
-export const CustomTooltipContent = ({ message, url }) => {
+export const TooltipWithUrl = ({ message, url }) => {
   return (
     <Box alignItems="flex-start" display="flex" flexDirection="column" justifyContent="flex-start">
       <span>
@@ -60,7 +60,7 @@ const EquityPart = ({ name, info, value, tooltip }) => {
             <Tooltip
               interactive
               placement="top"
-              title={<CustomTooltipContent message={tooltip.message} url={tooltip.url} />}
+              title={<TooltipWithUrl message={tooltip.message} url={tooltip.url} />}
             >
               <HelpIcon className="helpIcon" />
             </Tooltip>
