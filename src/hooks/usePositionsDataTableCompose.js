@@ -909,11 +909,6 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
   function composeOpenPositionsDataTable() {
     const configColumns = [
       {
-        columnId: "col.open.number",
-        propertyName: "open_order",
-        renderFunction: null,
-      },
-      {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
         renderFunction: null,
@@ -1075,6 +1070,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function composeClosePositionsDataTable() {
     const configColumns = [
+      {
+        columnId: "col.open.number",
+        propertyName: "open_order",
+        renderFunction: null,
+      },
       {
         columnId: "col.close.number",
         propertyName: "close_order",
