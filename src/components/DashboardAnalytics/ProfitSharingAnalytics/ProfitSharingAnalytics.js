@@ -14,7 +14,6 @@ import ProfitSharingTable from "./ProfitSharingTable";
 import ProfitSharingEquityChart from "./ProfitSharingEquityChart";
 import "./ProfitSharingAnalytics.scss";
 import dayjs from "dayjs";
-import { FormattedMessage } from "react-intl";
 import { retainInfoUrl, highWaterMarkInfoUrl } from "../../../utils/affiliateURLs";
 
 /**
@@ -192,7 +191,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
               <>
                 <EquityPart
                   name="profitsharing.initAllocated"
-                  tooltip={<FormattedMessage id="profitsharing.initAllocated.tooltip" />}
+                  tooltip={{ message: "profitsharing.initAllocated.tooltip" }}
                   value={
                     <>
                       {balanceHistory.quote} {formatFloat(balanceHistory.initBalance)}
@@ -203,7 +202,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
                 <EquityPart
                   name="profitsharing.currentAllocated"
                   //   info={<>= USDT {formatFloat(10.1)}</>}
-                  tooltip={<FormattedMessage id="profitsharing.currentAllocated.tooltip" />}
+                  tooltip={{ message: "profitsharing.currentAllocated.tooltip" }}
                   value={
                     <>
                       {/* <Typography className={`number1`}> */}
@@ -216,12 +215,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
                 <span className="operator">|</span>
                 <EquityPart
                   name="profitsharing.retain"
-                  tooltip={
-                    <FormattedMessage
-                      id="profitsharing.retain.tooltip"
-                      values={{ url: retainInfoUrl }}
-                    />
-                  }
+                  tooltip={{ message: "profitsharing.retain.tooltip", url: retainInfoUrl }}
                   value={
                     <>
                       <Typography className="number1">
@@ -233,12 +227,10 @@ const ProfitSharingAnalytics = ({ provider }) => {
                 <span className="operator">|</span>
                 <EquityPart
                   name="profitsharing.watermark"
-                  tooltip={
-                    <FormattedMessage
-                      id="profitsharing.watermark.tooltip"
-                      values={{ url: highWaterMarkInfoUrl }}
-                    />
-                  }
+                  tooltip={{
+                    message: "profitsharing.watermark.tooltip",
+                    url: highWaterMarkInfoUrl,
+                  }}
                   value={
                     <>
                       {balanceHistory.quote} {formatFloat(balanceHistory.watermark)}
