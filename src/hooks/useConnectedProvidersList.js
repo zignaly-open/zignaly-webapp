@@ -30,8 +30,6 @@ const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecut
     if (shouldExecute && storeSession.tradeApi.accessToken) {
       setProvidersLoading(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
         ...(internalId && { internalExchangeId: internalId }),
       };
 

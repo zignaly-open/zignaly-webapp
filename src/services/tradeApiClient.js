@@ -548,6 +548,8 @@ class TradeApiClient {
    */
   async providersGetNew(payload) {
     const endpointPath = `/providers/${payload.type}/${payload.timeFrame}`;
+    delete payload.type;
+    delete payload.timeFrame;
     const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
     return providersResponseTransform(responseData);

@@ -8,9 +8,11 @@ import { Link } from "gatsby";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} Provider
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  *
  * @typedef {Object} TraderCardHeaderPropTypes
  * @property {Provider} provider The provider to display.
+ * @property {NewAPIProvidersPayload["type"]} type provider type
  */
 
 /**
@@ -19,7 +21,9 @@ import { Link } from "gatsby";
  * @param {TraderCardHeaderPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TraderCardHeader = (props) => {
+const TraderCardHeader = ({ provider, type }) => {
+  const connectedOnly = type.startsWith("connected");
+  const profitSharing = connectedOnly ? provider.profitSharing : type === "profit_sharing";
   const {
     price,
     name,
@@ -27,10 +31,9 @@ const TraderCardHeader = (props) => {
     quote,
     exchanges,
     exchangeType,
-    profitSharing,
     profitsShare,
     providerLink,
-  } = props.provider;
+  } = provider;
 
   return (
     <div className="traderCardHeader">
