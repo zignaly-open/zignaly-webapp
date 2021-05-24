@@ -50,6 +50,16 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     label: "Türkçe",
     countryCode: "tr",
   });
+  LocalizationLanguages.push({
+    locale: "fr",
+    label: "French",
+    countryCode: "fr",
+  });
+  LocalizationLanguages.push({
+    locale: "pt",
+    label: "Portugese",
+    countryCode: "pt",
+  });
 }
 
 module.exports = LocalizationLanguages;
