@@ -6,17 +6,20 @@ import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";
 /**
  * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} DefaultProps
  * @property {ProviderEntity} provider Provider entity.
+ * @property {NewAPIProvidersPayload["type"]} type Provider type.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ provider }) => {
-  const { quote, provType, profitsSinceCopying, allocatedBalance, currentAllocated } = provider;
-  const isCopyTrading = provType === "copytrading" || provType === "profitsharing";
+const UserSummary = ({ provider, type }) => {
+  const { quote, profitsSinceCopying, allocatedBalance, currentAllocated } = provider;
+  const isCopyTrading =
+    type === "connected_traders" || type === "copy_trading" || type === "profit_sharing";
   const profitPerc = allocatedBalance ? (profitsSinceCopying / allocatedBalance) * 100 : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 

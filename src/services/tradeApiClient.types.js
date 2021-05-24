@@ -611,8 +611,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersListPayload
- * @property {string} token
- * @property {boolean} ro
  * @property {string} internalExchangeId
  */
 
@@ -649,10 +647,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} name
  * @property {number} price
  * @property {Array<string>} exchanges
- * @property {boolean} key
  * @property {boolean} disable False if user is copying
- * @property {boolean} customerKey
- * @property {boolean} public
  * @property {string} logoUrl
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
@@ -674,7 +669,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
- * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {boolean} isAdmin True if the current user is provider's admin
@@ -1256,10 +1250,7 @@ function createEmptyProviderEntity() {
     name: "",
     price: 0,
     exchanges: [],
-    key: false,
     disable: true,
-    customerKey: false,
-    public: true,
     logoUrl: "",
     isClone: false,
     isCopyTrading: false,
@@ -1278,7 +1269,6 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
-    provType: "copytrading",
     providerLink: "",
     exchangeInternalIds: null,
     isAdmin: false,
@@ -4436,10 +4426,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       name: "",
       price: 0,
       exchanges: [],
-      key: false,
       disable: true,
-      customerKey: false,
-      public: true,
       logoUrl: "",
       isClone: false,
       isCopyTrading: false,
@@ -4458,7 +4445,6 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
-      provType: "copytrading",
       providerLink: "",
       exchangeInternalIds: null,
       isAdmin: false,

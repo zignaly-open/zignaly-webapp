@@ -12,6 +12,7 @@ it("renders correctly", () => {
       reloadProviders={() => {}}
       showSummary={true}
       timeFrame={30}
+      type="copy_trading"
     />,
   );
   expect(tree).toBeDefined();

@@ -5,11 +5,13 @@ import "./ProvidersList.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} ProvidersListPropTypes
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {number} timeFrame Selected timeFrame.
  * @property {Function} reloadProviders reload providers list.
+ * @property {NewAPIProvidersPayload["type"]} type reload providers list.
  */
 
 /**
@@ -19,7 +21,7 @@ import "./ProvidersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers, showSummary, timeFrame, reloadProviders } = props;
+  const { providers, showSummary, timeFrame, reloadProviders, type } = props;
 
   return (
     <Box
@@ -38,6 +40,7 @@ const ProvidersList = (props) => {
               reloadProviders={reloadProviders}
               showSummary={showSummary}
               timeFrame={timeFrame}
+              type={type}
             />
             // </LazyLoad>
           ))}
