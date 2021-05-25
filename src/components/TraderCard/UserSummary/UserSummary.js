@@ -18,8 +18,7 @@ import CustomTooltip from "../../CustomTooltip";
  */
 const UserSummary = ({ provider, type }) => {
   const { quote, profitsSinceCopying, allocatedBalance, currentAllocated } = provider;
-  const isCopyTrading =
-    type === "connected_traders" || type === "copy_trading" || type === "profit_sharing";
+  const isCopyTrading = ["connected_traders", "copy_trading", "profit_sharing"].includes(type);
   const profitPerc = allocatedBalance ? (profitsSinceCopying / allocatedBalance) * 100 : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 
