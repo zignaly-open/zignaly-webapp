@@ -353,7 +353,7 @@ class TradeApiClient {
    */
   async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
     const baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
-    let requestUrl = baseUrl + endpointPath;
+    let requestUrl = apiVersion === 3 ? endpointPath : baseUrl + endpointPath;
     let responseData = {};
 
     const authToken = this.token || token;
@@ -490,11 +490,17 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getSoldPositions2";
-    const responseData = await this.doRequest(endpointPath, {
-      type: "sold",
-      ...payload,
-    });
+    // const endpointPath = "/fe/api.php?action=getSoldPositions2";
+    const endpointPath = "https://test.zignaly.com/get-sold-positions/";
+    const responseData = await this.doRequest(
+      endpointPath,
+      {
+        type: "sold",
+        ...payload,
+      },
+      "POST",
+      3,
+    );
 
     return positionsShortResponseTransform(responseData);
   }
