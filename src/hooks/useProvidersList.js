@@ -247,17 +247,21 @@ const useProvidersList = (options, updatedAt = null) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    const matches = list.filter(
-      (p) =>
-        (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
-        (!filters.exchange ||
-          filters.exchange === "ALL" ||
-          p.exchanges.includes(filters.exchange.toLowerCase())) &&
-        (!filters.exchangeType ||
-          filters.exchangeType === "ALL" ||
-          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()),
-    );
-    sortProviders(matches);
+    if (!myServices) {
+      const matches = list.filter(
+        (p) =>
+          (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
+          (!filters.exchange ||
+            filters.exchange === "ALL" ||
+            p.exchanges.includes(filters.exchange.toLowerCase())) &&
+          (!filters.exchangeType ||
+            filters.exchangeType === "ALL" ||
+            p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()),
+      );
+      sortProviders(matches);
+    } else {
+      sortProviders(list);
+    }
   };
 
   // Filter providers on filter change
@@ -283,17 +287,7 @@ const useProvidersList = (options, updatedAt = null) => {
     };
 
     const method = myServices
-      ? tradeApi.providersOwnedGet(payload).then((responseData) => {
-          // Filter proper services type
-          return responseData.filter((p) => {
-            if (profitSharing) {
-              return p.profitSharing;
-            } else if (copyTraders) {
-              return p.isCopyTrading && !p.profitSharing;
-            }
-            return !p.isCopyTrading;
-          });
-        })
+      ? tradeApi.providersOwnedGet(payload)
       : tradeApi.providersGetNew(payload);
 
     method

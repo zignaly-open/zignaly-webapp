@@ -607,6 +607,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} ProvidersOwnedPayload
  * @property {number} timeFrame
+ * @property {NewAPIProvidersPayload["type"]} type
  */
 
 /**
@@ -1176,7 +1177,7 @@ function providerItemTransform(providerItem, providerType) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
-  let connectedOnly = providerType.startsWith("connected");
+  let connectedOnly = providerType ? providerType.startsWith("connected") : false;
   let copyTraders = false;
   let profitSharingProvider = false;
 
