@@ -20,7 +20,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecute = true) => {
+const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState(null);
   const dispatch = useDispatch();
@@ -30,9 +30,7 @@ const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecut
     if (shouldExecute && storeSession.tradeApi.accessToken) {
       setProvidersLoading(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
-        internalExchangeId: internalId,
+        ...(internalId && { internalExchangeId: internalId }),
       };
 
       tradeApi
@@ -66,4 +64,4 @@ const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecut
   return { providers: list, providersLoading: providersLoading };
 };
 
-export default useConnectedProvidersLite;
+export default useConnectedProvidersList;

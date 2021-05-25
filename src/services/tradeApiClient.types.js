@@ -611,8 +611,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersListPayload
- * @property {string} token
- * @property {boolean} ro
  * @property {string} internalExchangeId
  */
 
@@ -649,10 +647,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} name
  * @property {number} price
  * @property {Array<string>} exchanges
- * @property {boolean} key
  * @property {boolean} disable False if user is copying
- * @property {boolean} customerKey
- * @property {boolean} public
  * @property {string} logoUrl
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
@@ -674,7 +669,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
- * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {boolean} isAdmin True if the current user is provider's admin
@@ -1114,15 +1108,16 @@ export function userEntityResponseTransform(response) {
  *
  * @export
  * @param {*} response Trade API signal providers list response.
+ * @param {*} providerType Trade API signal providers list response.
  * @returns {ProvidersCollection} Signal providers entities collection.
  */
-export function providersResponseTransform(response) {
+export function providersResponseTransform(response, providerType = null) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of providers.");
   }
 
   return response.map((providerItem) => {
-    return providerItemTransform(providerItem);
+    return providerItemTransform(providerItem, providerType);
   });
 }
 
@@ -1148,9 +1143,10 @@ const calculateNewFollowers = (provider) => {
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
+ * @param {*} providerType requested provider type
  * @returns {ProviderEntity} Provider entity.
  */
-function providerItemTransform(providerItem) {
+function providerItemTransform(providerItem, providerType) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
@@ -1180,8 +1176,16 @@ function providerItemTransform(providerItem) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
-  const copyTraders = transformedResponse.provType === "copytrading";
-  const profitSharingProvider = transformedResponse.provType === "profitsharing";
+  let copyTraders = false;
+  let profitSharingProvider = false;
+
+  if (!providerType) {
+    copyTraders = transformedResponse.provType === "copytrading";
+    profitSharingProvider = transformedResponse.provType === "profitsharing";
+  } else {
+    copyTraders = providerType === "copy_trading";
+    profitSharingProvider = providerType === "profit_sharing";
+  }
 
   transformedResponse.providerLink = `/${
     copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
@@ -1256,10 +1260,7 @@ function createEmptyProviderEntity() {
     name: "",
     price: 0,
     exchanges: [],
-    key: false,
     disable: true,
-    customerKey: false,
-    public: true,
     logoUrl: "",
     isClone: false,
     isCopyTrading: false,
@@ -1278,7 +1279,6 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
-    provType: "copytrading",
     providerLink: "",
     exchangeInternalIds: null,
     isAdmin: false,
@@ -4436,10 +4436,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       name: "",
       price: 0,
       exchanges: [],
-      key: false,
       disable: true,
-      customerKey: false,
-      public: true,
       logoUrl: "",
       isClone: false,
       isCopyTrading: false,
@@ -4458,7 +4455,6 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
-      provType: "copytrading",
       providerLink: "",
       exchangeInternalIds: null,
       isAdmin: false,

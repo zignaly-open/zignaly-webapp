@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
-import useConnectedProvidersLite from "./useConnectedProvidersLite";
+import useConnectedProvidersList from "./useConnectedProvidersList";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -78,7 +78,7 @@ const useProvidersList = (options, updatedAt = null) => {
    */
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
-  const { providers: connectedProviders } = useConnectedProvidersLite(
+  const { providers: connectedProviders } = useConnectedProvidersList(
     "",
     [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
     true,
@@ -279,7 +279,7 @@ const useProvidersList = (options, updatedAt = null) => {
     const payload = {
       type,
       timeFrame,
-      internalExchangeId,
+      ...(connectedOnly && { internalExchangeId: internalExchangeId }),
     };
 
     const method = myServices

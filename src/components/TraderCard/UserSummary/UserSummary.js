@@ -6,20 +6,20 @@ import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";
 /**
  * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} DefaultProps
  * @property {ProviderEntity} provider Provider entity.
- * @property {string} quote Quote traded by provider.
- * @property {boolean} isCopyTrading Flag to indicate if it's a copy trader.
+ * @property {NewAPIProvidersPayload["type"]} type Provider type.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ provider, quote, isCopyTrading }) => {
-  const profitPerc = provider.allocatedBalance
-    ? (provider.profitsSinceCopying / provider.allocatedBalance) * 100
-    : 0;
+const UserSummary = ({ provider, type }) => {
+  const { quote, profitsSinceCopying, allocatedBalance, currentAllocated } = provider;
+  const isCopyTrading = ["connected_traders", "copy_trading", "profit_sharing"].includes(type);
+  const profitPerc = allocatedBalance ? (profitsSinceCopying / allocatedBalance) * 100 : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (
@@ -36,7 +36,7 @@ const UserSummary = ({ provider, quote, isCopyTrading }) => {
             justifyContent="space-between"
           >
             <Typography variant="h5">
-              {quote} {formatFloat(provider.currentAllocated)}
+              {quote} {formatFloat(currentAllocated)}
             </Typography>
             {/* <Typography variant="h5">$1280,46</Typography> */}
           </Box>
@@ -53,7 +53,7 @@ const UserSummary = ({ provider, quote, isCopyTrading }) => {
         </CustomTooltip>
         <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
           <Typography className={color} variant="h5">
-            {quote} {formatFloat(provider.profitsSinceCopying)}
+            {quote} {formatFloat(profitsSinceCopying)}
           </Typography>
         </CustomTooltip>
       </Box>

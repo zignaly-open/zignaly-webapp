@@ -205,13 +205,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const currentUserId = storeUserData.userId;
     const isProviderOwner = providerOwnerUserId === currentUserId;
 
-    if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return <>{position.age}</>;
-      }
-      return null;
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return <>{position.age}</>;
     }
-    return <>{position.age}</>;
+    return null;
   }
 
   /**
@@ -785,13 +782,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const currentUserId = storeUserData.userId;
     const isProviderOwner = providerOwnerUserId === currentUserId;
 
-    if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return composeAllActionButtons(position, confirmActionHandler);
-      }
-      return null;
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return composeAllActionButtons(position, confirmActionHandler);
     }
-    return composeAllActionButtons(position, confirmActionHandler);
+    return null;
   }
 
   /**
@@ -1076,6 +1070,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function composeClosePositionsDataTable() {
     const configColumns = [
+      {
+        columnId: "col.open.number",
+        propertyName: "open_order",
+        renderFunction: null,
+      },
+      {
+        columnId: "col.close.number",
+        propertyName: "close_order",
+        renderFunction: null,
+      },
       {
         columnId: "col.date.open",
         propertyName: "openDateReadable",

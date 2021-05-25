@@ -5,7 +5,10 @@ import { formatDate } from "../../../../utils/format";
 import { formatPrice } from "../../../../utils/formatters";
 import "./ProfitSharingTable.scss";
 import AccountingFilter from "../AccountingFilter";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
+import HelpIcon from "@material-ui/icons/Help";
+import { pnlRetainInfoUrl } from "utils/affiliateURLs";
+import { TooltipWithUrl } from "components/TotalEquityBar/EquityPart/EquityPart";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry
@@ -86,7 +89,29 @@ const ProfitSharingTable = ({ data }) => {
       name: "amount",
       label: "col.amount",
       options: {
-        customBodyRender: (amount) => formatPrice(amount),
+        customBodyRenderLite: (dataIndex) => {
+          const rowData = data[dataIndex];
+          const showTooltip = rowData.type.toLowerCase() === "pnl" && rowData.amount === 0;
+          return (
+            <Box alignItems="center" display="flex" flexDirection="row">
+              <span>{formatPrice(rowData.amount)}</span>
+              {showTooltip && (
+                <Tooltip
+                  interactive
+                  placement="top"
+                  title={
+                    <TooltipWithUrl
+                      message="profitsharing.types.pnl.tooltip"
+                      url={pnlRetainInfoUrl}
+                    />
+                  }
+                >
+                  <HelpIcon className="helpIcon" />
+                </Tooltip>
+              )}
+            </Box>
+          );
+        },
       },
     },
   ];
