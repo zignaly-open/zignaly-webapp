@@ -1,6 +1,5 @@
 .loginPage {
   background-color: $paleGrey;
-  // max-width: 1200px;
 
   .headerBox {
     margin: 42px 42px 0;
@@ -22,8 +21,6 @@
 
   .languageBox {
     position: absolute;
-    // right: 30px;
-    // top: 30px;
     right: 180px;
   }
 
@@ -61,6 +58,46 @@
       font-weight: bold;
       line-height: 31px;
       margin-top: 24px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .loginPage {
+    .loginTabs {
+      order: 1;
+    }
+
+    .heroSide {
+      order: 2;
+      margin: 36px 0 0;
+    }
+
+    .headerBox {
+      margin-left: 15px;
+    }
+
+    .languageBox {
+      right: 8px;
+    }
+
+    .heroBox {
+      flex-direction: column;
+      margin-top: 60px;
+    }
+
+    .sect {
+      margin-top: 60px;
+    }
+
+    .press {
+      h2 {
+        padding-top: 75px;
+      }
+
+      .quotes {
+        margin-top: 38px;
+      }
     }
   }
 }
