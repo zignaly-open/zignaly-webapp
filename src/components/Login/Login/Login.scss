@@ -1,0 +1,66 @@
+.loginPage {
+  background-color: $paleGrey;
+  // max-width: 1200px;
+
+  .headerBox {
+    margin: 42px 42px 0;
+  }
+
+  h1 {
+    font-size: 40px;
+    letter-spacing: normal;
+    text-transform: none;
+
+    strong {
+      color: $purple;
+    }
+  }
+
+  .logo {
+    width: 163px;
+  }
+
+  .languageBox {
+    position: absolute;
+    // right: 30px;
+    // top: 30px;
+    right: 180px;
+  }
+
+  .heroBox {
+    margin: 88px 15px;
+  }
+
+  .heroSide {
+    margin-right: 64px;
+    max-width: 400px;
+  }
+
+  .sect {
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    margin-top: 80px;
+
+    img {
+      margin-right: 24px;
+    }
+
+    .sectDescBox {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sectHeader {
+      color: $purple;
+      font-weight: 600;
+    }
+
+    .sectTitle {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 31px;
+      margin-top: 24px;
+    }
+  }
+}

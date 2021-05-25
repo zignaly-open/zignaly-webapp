@@ -1,0 +1,48 @@
+.pressQuote {
+  background-color: $white;
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.06);
+  height: 262px;
+  margin: 8px;
+  padding: 35px 40px 22px;
+  position: relative;
+  width: 343px;
+
+  .readMore {
+    color: $purple;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 21px;
+  }
+
+  .quoteIcon {
+    color: $purple;
+    font-size: 160px;
+    font-weight: bold;
+    left: -9px;
+    line-height: 208px;
+    opacity: 0.1;
+    position: absolute;
+    top: 4px;
+  }
+
+  .date {
+    display: flex;
+    font-size: 14px;
+    font-weight: 300;
+    justify-content: flex-end;
+    line-height: 18px;
+  }
+
+  .content {
+    margin-top: 36px;
+  }
+
+  .quoteFooter {
+    bottom: 22px;
+    padding: 0 40px;
+    position: absolute;
+    right: 0;
+    width: 100%;
+  }
+}

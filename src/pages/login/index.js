@@ -7,11 +7,15 @@ import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import LoginForm from "../../components/Forms/LoginForm";
 import LoginHeader from "../../components/Login/LoginHeader";
+import Login from "../../components/Login/Login";
 import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
 
 const LoginPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid();
+
+  // const showNew = Math.random() < 0.5;
+  const showNew = true;
 
   return (
     <>
@@ -22,14 +26,22 @@ const LoginPage = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box className="loginPage">
-        <LoginHeader>
+      {showNew ? (
+        <Login>
           <LoginTabs>
             <LoginForm />
           </LoginTabs>
-        </LoginHeader>
-        <Testimonials />
-      </Box>
+        </Login>
+      ) : (
+        <Box className="loginPageOld">
+          <LoginHeader>
+            <LoginTabs>
+              <LoginForm />
+            </LoginTabs>
+          </LoginHeader>
+          <Testimonials />
+        </Box>
+      )}
     </>
   );
 };

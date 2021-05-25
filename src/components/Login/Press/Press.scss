@@ -1,0 +1,25 @@
+.press {
+  height: 400px;
+  margin-top: 8px;
+
+  .bg {
+    position: absolute;
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 42px;
+    padding-top: 200px;
+    text-align: center;
+  }
+
+  .quotes {
+    margin: 72px 38px 178px;
+
+    .pressQuote {
+      z-index: 2;
+    }
+  }
+}
