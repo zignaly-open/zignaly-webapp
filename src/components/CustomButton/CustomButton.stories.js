@@ -9,7 +9,11 @@ export default {
   // },
 };
 
-const Template = (args) => (
+/**
+ * @typedef {import('./CustomButton').DefaultProps} DefaultProps
+ */
+
+const Template = (/** @type {DefaultProps} */ args) => (
   <CustomButton className="submitButton" {...args}>
     Button
   </CustomButton>
@@ -21,7 +25,7 @@ Primary.args = {
   loading: false,
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const Loading = Template.bind({});
+Loading.args = {
   loading: true,
 };
