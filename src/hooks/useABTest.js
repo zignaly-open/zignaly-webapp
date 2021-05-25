@@ -10,6 +10,7 @@ import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 const useAPTest = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
+  // Load the saved a/b flag
   let showNew = storeSettings.testAB.login;
 
   useEffect(() => {

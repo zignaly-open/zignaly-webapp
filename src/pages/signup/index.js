@@ -16,9 +16,9 @@ const SignupPage = () => {
   useRedirectUponSessionValid("/profitSharing");
   const showNew = useABTest();
 
-  if (showNew === null) {
-    return null;
-  }
+  // if (showNew === null) {
+  //   return null;
+  // }
   return (
     <>
       <Helmet>
@@ -28,7 +28,7 @@ const SignupPage = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      {showNew ? (
+      {showNew || showNew === null ? (
         <Login>
           <LoginTabs>
             <SignupForm />
