@@ -15,6 +15,7 @@ import {
   SET_TERMINAL_PAIR,
   SET_TERMINAL_PROVIDER,
   SET_MARKETPLACE_CACHE_MODAL,
+  SET_TEST_AB,
 } from "../actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -28,6 +29,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../actions/settings").SetResponsiveTableAction} SetResponsiveTableAction
  * @typedef {import("../actions/settings").SetTerminalPairAction} SetTerminalPairAction
  * @typedef {import("../actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
+ * @typedef {import("../actions/settings").SetTestABAction} SetTestABAction
  */
 
 /**
@@ -121,6 +123,11 @@ const settings = createReducer(initialState.settings, {
 
   [SET_TERMINAL_PROVIDER]: (state, /** @type {SetTerminalProviderAction} */ action) => {
     state.tradingTerminal.provider = action.payload;
+  },
+
+  [SET_TEST_AB]: (state, /** @type {SetTestABAction} */ action) => {
+    const { page, enable } = action.payload;
+    state.testAB[page] = enable;
   },
 });
 

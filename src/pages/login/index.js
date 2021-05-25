@@ -8,14 +8,17 @@ import { useIntl } from "react-intl";
 import LoginForm from "../../components/Forms/LoginForm";
 import LoginHeader from "../../components/Login/LoginHeader";
 import Login from "../../components/Login/Login";
-import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
+import useRedirectUponSessionValid from "hooks/useRedirectUponSessionValid";
+import useABTest from "hooks/useABTest";
 
 const LoginPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid();
+  const showNew = useABTest();
 
-  // const showNew = Math.random() < 0.5;
-  const showNew = true;
+  if (showNew === null) {
+    return null;
+  }
 
   return (
     <>

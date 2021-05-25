@@ -47,7 +47,7 @@ const Press = () => {
         justifyContent="center"
       >
         {quotes.map((quote, i) => (
-          <PressQuote quote={quote} />
+          <PressQuote quote={quote} key={i} />
         ))}
       </Box>
     </Box>

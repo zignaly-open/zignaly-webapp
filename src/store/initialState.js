@@ -136,6 +136,7 @@
  * @property {SortObject} sort
  * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
+ * @property {Object<'login', boolean>} testAB
  */
 
 /**
@@ -505,6 +506,9 @@ const initialState = {
       signalpAnalytics: { quote: "", base: "", timeFrame: "" },
     },
     tradingTerminal: { pair: {}, provider: "" },
+    testAB: {
+      login: null,
+    },
   },
   user: {
     loaded: false,
