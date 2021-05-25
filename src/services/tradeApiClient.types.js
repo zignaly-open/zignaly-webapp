@@ -1176,15 +1176,20 @@ function providerItemTransform(providerItem, providerType) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
+  let connectedOnly = providerType.startsWith("connected");
   let copyTraders = false;
   let profitSharingProvider = false;
 
   if (!providerType) {
     copyTraders = transformedResponse.provType === "copytrading";
     profitSharingProvider = transformedResponse.provType === "profitsharing";
-  } else {
+  } else if (!connectedOnly) {
     copyTraders = providerType === "copy_trading";
     profitSharingProvider = providerType === "profit_sharing";
+  } else {
+    copyTraders = providerType === "connected_traders" && !transformedResponse.profitSharing;
+    profitSharingProvider =
+      providerType === "connected_traders" && transformedResponse.profitSharing;
   }
 
   transformedResponse.providerLink = `/${
