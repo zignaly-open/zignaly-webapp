@@ -40,7 +40,6 @@ import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
  * @property {ProviderEntity} provider The provider to display.
  * @property {number} timeFrame Selected timeFrame.
  * @property {Function} reloadProviders reload providers list.
- * @property {NewAPIProvidersPayload["type"]} type provider type
  */
 
 /**
@@ -49,7 +48,7 @@ import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
  * @param {TraderCardBodyPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders, type }) => {
+const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const {
@@ -66,13 +65,9 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders, type })
     id: providerId,
     exchangeInternalId,
     exchangeInternalIds,
+    profitSharing,
+    copyTrader,
   } = provider;
-
-  const connectedOnly = type.startsWith("connected");
-  const profitSharing = connectedOnly ? provider.profitSharing : type === "profit_sharing";
-  const copyTrader = connectedOnly
-    ? type === "connected_traders" && !provider.profitSharing
-    : type === "copy_trading";
 
   /**
    * Format tooltip content.
@@ -370,7 +365,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders, type })
             </div>
           </div>
         </div>
-        {showSummary && <UserSummary provider={provider} type={type} />}
+        {showSummary && <UserSummary provider={provider} />}
       </div>
     </LazyLoad>
   );

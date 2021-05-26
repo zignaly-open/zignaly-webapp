@@ -14,7 +14,6 @@ import TraderCardBody from "./TraderCardBody";
  * @property {Provider} provider The provider to display.
  * @property {number} timeFrame Selected timeFrame.
  * @property {Function} reloadProviders reload providers list.
- * @property {NewAPIProvidersPayload["type"]} type provider type
  */
 
 /**
@@ -24,17 +23,16 @@ import TraderCardBody from "./TraderCardBody";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderCard = (props) => {
-  const { provider, showSummary, timeFrame, reloadProviders, type } = props;
+  const { provider, showSummary, timeFrame, reloadProviders } = props;
 
   return (
     <div className="traderCard">
-      <TraderCardHeader provider={provider} type={type} />
+      <TraderCardHeader provider={provider} />
       <TraderCardBody
         provider={provider}
         reloadProviders={reloadProviders}
         showSummary={showSummary}
         timeFrame={timeFrame}
-        type={type}
       />
     </div>
   );

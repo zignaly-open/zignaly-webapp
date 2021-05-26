@@ -571,11 +571,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providersOwnedGet(payload) {
+    const type = payload.type;
     const endpointPath = "/providers/user_services/" + payload.timeFrame;
-
     const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
-
-    return providersResponseTransform(responseData);
+    return providersResponseTransform(responseData, type);
   }
 
   /**

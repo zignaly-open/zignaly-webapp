@@ -12,7 +12,6 @@ import { Link } from "gatsby";
  *
  * @typedef {Object} TraderCardHeaderPropTypes
  * @property {Provider} provider The provider to display.
- * @property {NewAPIProvidersPayload["type"]} type provider type
  */
 
 /**
@@ -21,9 +20,7 @@ import { Link } from "gatsby";
  * @param {TraderCardHeaderPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TraderCardHeader = ({ provider, type }) => {
-  const connectedOnly = type.startsWith("connected");
-  const profitSharing = connectedOnly ? provider.profitSharing : type === "profit_sharing";
+const TraderCardHeader = ({ provider }) => {
   const {
     price,
     name,
@@ -32,6 +29,7 @@ const TraderCardHeader = ({ provider, type }) => {
     exchanges,
     exchangeType,
     profitsShare,
+    profitSharing,
     providerLink,
   } = provider;
 

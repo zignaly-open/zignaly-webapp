@@ -111,7 +111,6 @@ const ProvidersBrowse = ({
         reloadProviders={reloadProviders}
         showSummary={connectedOnly}
         timeFrame={timeFrame}
-        type={type}
       />
     </Box>
   );
