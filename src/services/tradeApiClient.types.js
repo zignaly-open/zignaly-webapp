@@ -1121,23 +1121,23 @@ export function providersResponseTransform(response, providerType = null) {
   });
 }
 
-/**
- * Calculate new followers for the past week
- * @param {ProviderEntity} provider Provider entity.
- * @returns {number} followers
- */
-const calculateNewFollowers = (provider) => {
-  // Find first date that is less than 7 days old
-  let followerDataOneWeekAgo = provider.aggregateFollowers.find(
-    (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
-  );
-  let newFollowers = 0;
-  if (followerDataOneWeekAgo) {
-    newFollowers = provider.followers - followerDataOneWeekAgo.totalFollowers;
-  }
+// /**
+//  * Calculate new followers for the past week
+//  * @param {ProviderEntity} provider Provider entity.
+//  * @returns {number} followers
+//  */
+// const calculateNewFollowers = (provider) => {
+//   // Find first date that is less than 7 days old
+//   let followerDataOneWeekAgo = provider.aggregateFollowers.find(
+//     (followerData) => moment().diff(moment(followerData.date), "d") <= 7,
+//   );
+//   let newFollowers = 0;
+//   if (followerDataOneWeekAgo) {
+//     newFollowers = provider.followers - followerDataOneWeekAgo.totalFollowers;
+//   }
 
-  return newFollowers;
-};
+//   return newFollowers;
+// };
 
 /**
  * Transform API provider item to typed object.
@@ -1168,14 +1168,15 @@ function providerItemTransform(providerItem, providerType) {
   //   (a, b) => a.name.getTime() - b.name.getTime(),
   // );
 
-  if (!transformedResponse.isCopyTrading) {
-    // Updating followers count because it's out of date for clones
-    transformedResponse.followers = transformedResponse.aggregateFollowers.length
-      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
-          .totalFollowers
-      : 0;
-    transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
-  }
+  // if (!transformedResponse.isCopyTrading) {
+  //   // Updating followers count because it's out of date for clones
+  //   transformedResponse.followers = transformedResponse.aggregateFollowers.length
+  //     ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
+  //         .totalFollowers
+  //     : 0;
+  //   transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
+  // }
+
   let connectedOnly = providerType.startsWith("connected");
   let copyTraders = false;
   let profitSharingProvider = false;
