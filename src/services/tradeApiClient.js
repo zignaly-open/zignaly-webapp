@@ -377,7 +377,7 @@ class TradeApiClient {
       options.body = JSON.stringify(payload);
     }
 
-    const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
+    const cacheId = this.generateRequestCacheId(requestUrl, options.body || "");
     if (method === "GET") {
       let cacheResponseData = cache.get(cacheId);
       if (cacheResponseData) {
