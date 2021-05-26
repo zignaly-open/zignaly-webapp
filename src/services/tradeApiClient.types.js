@@ -1170,15 +1170,6 @@ function providerItemTransform(providerItem, providerType) {
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),
   // );
-
-  if (!transformedResponse.isCopyTrading) {
-    // Updating followers count because it's out of date for clones
-    transformedResponse.followers = transformedResponse.aggregateFollowers.length
-      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
-          .totalFollowers
-      : 0;
-    transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
-  }
   let connectedOnly = providerType ? providerType.startsWith("connected") : false;
   let copyTrader = false;
   let profitSharingProvider = false;
@@ -1203,9 +1194,19 @@ function providerItemTransform(providerItem, providerType) {
     copyTrader ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
   }/${transformedResponse.id}`;
 
+  if (!copyTrader && !profitSharingProvider) {
+    // Updating followers count because it's out of date for clones
+    transformedResponse.followers = transformedResponse.aggregateFollowers.length
+      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
+          .totalFollowers
+      : 0;
+    transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
+  }
+
   transformedResponse.profitSharing = profitSharingProvider;
   transformedResponse.copyTrader = copyTrader;
   transformedResponse.CTorPS = CTorPS;
+  transformedResponse.quote = providerItem.quote || providerItem.copyTradingQuote || "";
 
   return transformedResponse;
 }
