@@ -1,0 +1,103 @@
+.loginPage {
+  background-color: $paleGrey;
+
+  .headerBox {
+    margin: 42px 42px 0;
+  }
+
+  h1 {
+    font-size: 40px;
+    letter-spacing: normal;
+    text-transform: none;
+
+    strong {
+      color: $purple;
+    }
+  }
+
+  .logo {
+    width: 163px;
+  }
+
+  .languageBox {
+    position: absolute;
+    right: 130px;
+  }
+
+  .heroBox {
+    margin: 88px 15px;
+  }
+
+  .heroSide {
+    margin-right: 64px;
+    max-width: 400px;
+  }
+
+  .sect {
+    align-items: start;
+    display: flex;
+    flex-direction: row;
+    margin-top: 80px;
+
+    img {
+      margin-right: 24px;
+    }
+
+    .sectDescBox {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sectHeader {
+      color: $purple;
+      font-weight: 600;
+    }
+
+    .sectTitle {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 31px;
+      margin-top: 24px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .loginPage {
+    .loginTabs {
+      order: 1;
+    }
+
+    .heroSide {
+      margin: 36px 0 0;
+      order: 2;
+    }
+
+    .headerBox {
+      margin-left: 15px;
+    }
+
+    .languageBox {
+      right: 8px;
+    }
+
+    .heroBox {
+      flex-direction: column;
+      margin-top: 60px;
+    }
+
+    .sect {
+      margin-top: 60px;
+    }
+
+    .press {
+      h2 {
+        padding-top: 75px;
+      }
+
+      .quotes {
+        margin-top: 38px;
+      }
+    }
+  }
+}

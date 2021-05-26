@@ -42,7 +42,7 @@ const LoginLinks = () => {
         className={"loginLinkItem " + (active("signup") ? "activeLink" : "")}
         to={ret ? `/signup?ret=${ret}` : "/signup"}
       >
-        <FormattedMessage id="signup.title" />
+        <FormattedMessage id="action.signup" />
       </Link>
     </Box>
   );
