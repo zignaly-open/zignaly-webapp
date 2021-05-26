@@ -676,6 +676,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} currentAllocated Allocated balance with unrealized pnl.
  * @property {number} allocatedBalance Allocated balance without unrealized pnl.
  * @property {number} profitsSinceCopying
+ * @property {boolean} CTorPS
+ * @property {boolean} copyTrader
  */
 
 /**
@@ -1178,24 +1180,32 @@ function providerItemTransform(providerItem, providerType) {
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
   let connectedOnly = providerType ? providerType.startsWith("connected") : false;
-  let copyTraders = false;
+  let copyTrader = false;
   let profitSharingProvider = false;
+  let CTorPS = false;
 
+  // This first check is for legacy api
   if (!providerType) {
-    copyTraders = transformedResponse.provType === "copytrading";
+    copyTrader = transformedResponse.provType === "copytrading";
     profitSharingProvider = transformedResponse.provType === "profitsharing";
   } else if (!connectedOnly) {
-    copyTraders = providerType === "copy_trading";
+    copyTrader = providerType === "copy_trading";
     profitSharingProvider = providerType === "profit_sharing";
+    CTorPS = !["signal_providers", "connected_providers"].includes(providerType);
   } else {
-    copyTraders = providerType === "connected_traders" && !transformedResponse.profitSharing;
+    copyTrader = providerType === "connected_traders" && !transformedResponse.profitSharing;
+    CTorPS = providerType === "connected_traders";
     profitSharingProvider =
       providerType === "connected_traders" && transformedResponse.profitSharing;
   }
 
   transformedResponse.providerLink = `/${
-    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+    copyTrader ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
   }/${transformedResponse.id}`;
+
+  transformedResponse.profitSharing = profitSharingProvider;
+  transformedResponse.copyTrader = copyTrader;
+  transformedResponse.CTorPS = CTorPS;
 
   return transformedResponse;
 }
@@ -1291,6 +1301,8 @@ function createEmptyProviderEntity() {
     currentAllocated: 0,
     allocatedBalance: 0,
     profitsSinceCopying: 0,
+    CTorPS: false,
+    copyTrader: false,
   };
 }
 
@@ -4467,6 +4479,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       allocatedBalance: 0,
       currentAllocated: 0,
       profitsSinceCopying: 0,
+      copyTrader: false,
+      CTorPS: false,
     },
     signalsInfo: [],
   };

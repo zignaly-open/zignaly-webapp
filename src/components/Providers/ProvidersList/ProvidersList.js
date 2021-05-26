@@ -11,7 +11,6 @@ import "./ProvidersList.scss";
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.
  * @property {number} timeFrame Selected timeFrame.
  * @property {Function} reloadProviders reload providers list.
- * @property {NewAPIProvidersPayload["type"]} type reload providers list.
  */
 
 /**
@@ -21,7 +20,7 @@ import "./ProvidersList.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const ProvidersList = (props) => {
-  const { providers, showSummary, timeFrame, reloadProviders, type } = props;
+  const { providers, showSummary, timeFrame, reloadProviders } = props;
 
   return (
     <Box
@@ -40,7 +39,6 @@ const ProvidersList = (props) => {
               reloadProviders={reloadProviders}
               showSummary={showSummary}
               timeFrame={timeFrame}
-              type={type}
             />
             // </LazyLoad>
           ))}
