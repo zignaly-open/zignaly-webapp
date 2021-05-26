@@ -1,10 +1,34 @@
 .press {
-  height: 400px;
   margin-top: 8px;
 
-  .bg {
+  .chart {
+    margin-top: -20%;
     position: absolute;
     width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .slide {
+    animation: slider ease-in 4s;
+    background-color: $paleGrey;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  @keyframes slider {
+    from {
+      width: 100%;
+    }
+
+    to {
+      width: 0;
+    }
   }
 
   h2 {
@@ -12,11 +36,14 @@
     font-weight: bold;
     line-height: 42px;
     padding-top: 200px;
+    position: relative;
     text-align: center;
+    z-index: 3;
   }
 
   .quotes {
-    margin: 72px 38px 178px;
+    height: 385px;
+    margin: 72px 38px;
 
     .pressQuote {
       z-index: 2;

@@ -64,10 +64,10 @@ const Login = ({ children }) => {
             <img src={OneDollar} />
             <div className="sectDescBox">
               <Typography className="sectHeader">
-                <FormattedMessage id="login.hero.record" />
+                <FormattedMessage id="login.hero.min" />
               </Typography>
               <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.record.desc" />
+                <FormattedMessage id="login.hero.min.desc" />
               </Typography>
             </div>
           </div>
