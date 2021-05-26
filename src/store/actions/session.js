@@ -6,7 +6,7 @@ import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 import { analyticsTrigger } from "utils/analyticsJsApi";
-import { setMarketplaceCacheModal, toggleBalanceBox } from "./settings";
+import { toggleBalanceBox } from "./settings";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
 export const END_TRADE_API_SESSION = "END_TRADE_API_SESSION";
@@ -59,7 +59,6 @@ export const endTradeApiSession = () => {
       dispatch(unsetProvider());
       dispatch(clearSessionData());
       dispatch(toggleBalanceBox(false));
-      dispatch(setMarketplaceCacheModal(true));
       tradeApi.setToken();
     } catch (e) {
       dispatch(showErrorAlert(e));
