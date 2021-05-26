@@ -36,7 +36,10 @@ const quotes = [
 const Press = () => {
   return (
     <Box className="press">
-      <img src={ChartBg} className="bg" />
+      <div className="chart">
+        <img src={ChartBg} />
+        <div className="slide" />
+      </div>
       <Typography variant="h2">
         <FormattedMessage id="login.press" />
       </Typography>
