@@ -1,9 +1,8 @@
 .loginPage {
   background-color: $paleGrey;
-
-  .headerBox {
-    margin: 42px 42px 0;
-  }
+  margin: 42px auto;
+  max-width: 1077px;
+  padding: 0 8px;
 
   h1 {
     font-size: 40px;
@@ -19,27 +18,21 @@
     width: 163px;
   }
 
-  .languageBox {
-    position: absolute;
-    right: 130px;
-  }
-
   .heroBox {
-    margin: 88px 15px;
+    margin: 88px 0;
     position: relative;
     z-index: 3;
   }
 
   .heroSide {
-    margin-right: 64px;
-    max-width: 400px;
+    margin-right: 75px;
   }
 
   .sect {
     align-items: start;
     display: flex;
     flex-direction: row;
-    margin-top: 80px;
+    margin: 80px 71px 0 0;
 
     img {
       margin-right: 24px;
@@ -64,6 +57,18 @@
   }
 }
 
+@include media(">sm", "<=md") {
+  .loginPage {
+    .heroSide {
+      margin-right: 22px;
+    }
+
+    .sect {
+      margin-right: 10px;
+    }
+  }
+}
+
 @include media("<=sm") {
   .loginPage {
     .loginTabs {
@@ -75,20 +80,13 @@
       order: 2;
     }
 
-    .headerBox {
-      margin-left: 15px;
-    }
-
-    .languageBox {
-      right: 8px;
-    }
-
     .heroBox {
       flex-direction: column;
       margin-top: 60px;
     }
 
     .sect {
+      margin-right: 0px;
       margin-top: 60px;
     }
 
