@@ -1825,6 +1825,7 @@ function createEmptyPositionEntity() {
     stopLossPercentage: 0,
     stopLossPrice: null,
     stopLossStyle: "",
+    stopLossOrderId: "",
     symbol: "",
     takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
