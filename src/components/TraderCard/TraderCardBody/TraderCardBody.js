@@ -66,7 +66,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     exchangeInternalId,
     exchangeInternalIds,
     profitSharing,
-    copyTrader,
+    CTorPS,
   } = provider;
 
   /**
@@ -81,9 +81,9 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
       <div className="traderCardTooltip">
         <div>
           {formatFloat2Dec(tooltipItem.yLabel)}{" "}
-          {copyTrader || profitSharing ? "%" : <FormattedMessage id="srv.followers" />}
+          {CTorPS ? "%" : <FormattedMessage id="srv.followers" />}
         </div>
-        {(copyTrader || profitSharing) && (
+        {CTorPS && (
           <FormattedMessage
             id="srv.closedposcount"
             values={{
@@ -102,7 +102,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
-  const traderType = copyTrader || profitSharing ? "copyt" : "srv";
+  const traderType = CTorPS ? "copyt" : "srv";
   const timeframeTranslationId =
     timeFrame === 3650 ? "time.total" : "time." + (timeFrame || 7) + "d";
 
@@ -119,7 +119,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
   useEffect(() => {
     const values = [];
     const labels = [];
-    if (copyTrader || profitSharing) {
+    if (CTorPS) {
       if (!dailyReturns.length) return;
       const options = {
         dateKey: "name",
@@ -147,7 +147,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     setChartData({ values, labels });
   }, [dailyReturns, followers]);
 
-  const positive = (copyTrader || profitSharing ? returns : newFollowers) >= 0;
+  const positive = (CTorPS ? returns : newFollowers) >= 0;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -174,7 +174,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
   };
 
   const handleProviderDisconnect = () => {
-    if (profitSharing || copyTrader) {
+    if (CTorPS) {
       showStopCopyingModal(true);
     } else {
       stopCopying();
@@ -224,11 +224,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     if (!profitSharing && isCopyingWithAnotherAccount) {
       return (
         <FormattedMessage
-          id={
-            copyTrader || profitSharing
-              ? "copyt.follow.anotheraccount"
-              : "srv.follow.anotheraccount"
-          }
+          id={CTorPS ? "copyt.follow.anotheraccount" : "srv.follow.anotheraccount"}
           values={{
             account: connectedAccount.internalName,
           }}
@@ -256,7 +252,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
-            condition={copyTrader || profitSharing}
+            condition={CTorPS}
             wrapper={(_children) => (
               <CustomToolip
                 title={
@@ -272,17 +268,17 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {copyTrader || profitSharing ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
+                {CTorPS ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
-                id: copyTrader || profitSharing ? "sort.return" : "srv.newfollowers",
+                id: CTorPS ? "sort.return" : "srv.newfollowers",
               })} (${intl.formatMessage({
                 id: timeframeTranslationId,
               })})`}</Typography>
             </div>
           </ConditionalWrapper>
 
-          {(copyTrader || profitSharing) && (
+          {CTorPS && (
             <CustomToolip
               title={
                 <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />
@@ -313,18 +309,14 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
           </div>
           <div
             className={`actionsWrapper ${
-              (!copyTrader && !profitSharing) || dailyReturns.length
-                ? positive
-                  ? "positive"
-                  : "negative"
-                : ""
+              !CTorPS || dailyReturns.length ? (positive ? "positive" : "negative") : ""
             }`}
           >
             <div className="followers">
               {canDisable ? (
                 <h6 className={`callout2 ${colorClass}`}>
                   <FormattedMessage
-                    id={copyTrader || profitSharing ? "trader.others" : "provider.others"}
+                    id={CTorPS ? "trader.others" : "provider.others"}
                     values={{
                       count: followers - 1,
                     }}
@@ -332,10 +324,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
                 </h6>
               ) : (
                 <h6 className="callout1">
-                  {followers}{" "}
-                  <FormattedMessage
-                    id={copyTrader || profitSharing ? "trader.people" : "provider.people"}
-                  />
+                  {followers} <FormattedMessage id={CTorPS ? "trader.people" : "provider.people"} />
                 </h6>
               )}
             </div>
@@ -350,17 +339,13 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
                       loading={loading}
                       onClick={handleProviderDisconnect}
                     >
-                      <FormattedMessage
-                        id={copyTrader || profitSharing ? "trader.stop" : "provider.stop"}
-                      />
+                      <FormattedMessage id={CTorPS ? "trader.stop" : "provider.stop"} />
                     </CustomButton>
                   </div>
                 </CustomToolip>
               )}
               <CustomButton className="textPurple" onClick={redirectToProfile}>
-                <FormattedMessage
-                  id={copyTrader || profitSharing ? "trader.view" : "provider.view"}
-                />
+                <FormattedMessage id={CTorPS ? "trader.view" : "provider.view"} />
               </CustomButton>
             </div>
           </div>
