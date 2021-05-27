@@ -89,8 +89,8 @@ const ProfitSharingTable = ({ data }) => {
       name: "amount",
       label: "col.amount",
       options: {
-        customBodyRenderLite: (dataIndex) => {
-          const rowData = data[dataIndex];
+        customBodyRenderLite: (dataIndex, rowIndex) => {
+          const rowData = filteredData[rowIndex];
           const showTooltip = rowData.type.toLowerCase() === "pnl" && rowData.amount === 0;
           return (
             <Box alignItems="center" display="flex" flexDirection="row">
