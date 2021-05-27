@@ -123,6 +123,7 @@ class VcceDataFeed extends DataFeed {
         const lastCandle = candles[candles.length - 1];
         return this.parseOHLCV(lastCandle);
       }
+      return {};
     });
   }
 }

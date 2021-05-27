@@ -362,7 +362,7 @@ const TradingViewEdit = (props) => {
               />
             )}
           </Box>
-          {storeUserData && storeUserData.isAdmin && positionId && (
+          {storeUserData.isAdmin && positionId && (
             <Box marginTop={2} maxWidth="300px" minWidth="300px">
               <CustomButton
                 className="submitButton"

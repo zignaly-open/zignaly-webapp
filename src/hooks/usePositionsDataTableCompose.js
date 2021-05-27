@@ -201,6 +201,24 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function renderAge(dataIndex) {
     const position = positions[dataIndex];
+    const { isCopyTrader, profitSharing, providerOwnerUserId } = position;
+    const currentUserId = storeUserData.userId;
+    const isProviderOwner = providerOwnerUserId === currentUserId;
+
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return <>{position.age}</>;
+    }
+    return null;
+  }
+
+  /**
+   * Compose age element for a given position.
+   *
+   * @param {number} dataIndex Data entity index.
+   * @returns {JSX.Element} Composed JSX element.
+   */
+  function renderManagementAge(dataIndex) {
+    const position = positions[dataIndex];
     return <>{position.age || "-"}</>;
   }
 
@@ -764,13 +782,10 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
     const currentUserId = storeUserData.userId;
     const isProviderOwner = providerOwnerUserId === currentUserId;
 
-    if (profitSharing) {
-      if (isCopyTrader || isProviderOwner) {
-        return composeAllActionButtons(position, confirmActionHandler);
-      }
-      return null;
+    if (!profitSharing || isCopyTrader || isProviderOwner) {
+      return composeAllActionButtons(position, confirmActionHandler);
     }
-    return composeAllActionButtons(position, confirmActionHandler);
+    return null;
   }
 
   /**
@@ -896,6 +911,11 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
+        renderFunction: null,
+      },
+      {
+        columnId: "col.positionid",
+        propertyName: "positionId",
         renderFunction: null,
       },
       {
@@ -1050,6 +1070,16 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
    */
   function composeClosePositionsDataTable() {
     const configColumns = [
+      {
+        columnId: "col.open.number",
+        propertyName: "open_order",
+        renderFunction: null,
+      },
+      {
+        columnId: "col.close.number",
+        propertyName: "close_order",
+        renderFunction: null,
+      },
       {
         columnId: "col.date.open",
         propertyName: "openDateReadable",
@@ -1429,7 +1459,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
       {
         columnId: "col.age",
         propertyName: "ageSeconds",
-        renderFunction: renderAge,
+        renderFunction: renderManagementAge,
       },
       {
         columnId: "col.actions",

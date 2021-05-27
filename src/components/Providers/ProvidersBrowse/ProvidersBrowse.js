@@ -4,18 +4,19 @@ import ProvidersFilters from "../ProvidersFilters";
 import ProvidersSort from "../ProvidersSort";
 import ProvidersList from "../ProvidersList";
 import TimeFrameSelectRow from "../TimeFrameSelectRow";
-import useProvidersList from "../../../hooks/useProvidersList";
+import useProvidersList from "hooks/useProvidersList";
 import { Box } from "@material-ui/core";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} ProvidersBrowsePropTypes
  * @property {boolean} [showFilters] Flag to indicate if filters should be rendered.
  * @property {boolean} [showSort] Flag to indicate if sort options should be rendered.
  * @property {function} [toggleFilters] Callback that delegate filters toggle state to caller.
  * @property {function} [toggleSort] Callback that delegate sort toggle state to caller.
  * @property {function} [setModifiedFiltersCount] Callback that delegate modifiedFiltersCount to caller.
- * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType Type of providers to show.
- * @property {boolean} connectedOnly Only display connected providers.
+ * @property {NewAPIProvidersPayload["type"]} type Type of providers to show.
+ * @property {boolean} [myServices] Load only created services by the user.
  */
 
 /**
@@ -29,13 +30,14 @@ const ProvidersBrowse = ({
   toggleFilters,
   showFilters,
   showSort,
-  provType,
-  connectedOnly,
+  type,
+  myServices = false,
   setModifiedFiltersCount,
 }) => {
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
-  const providersOptions = { provType, connectedOnly };
+  const connectedOnly = type.startsWith("connected");
+  const connectedTradersOnly = type === "connected_traders";
+  const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
+  const providersOptions = { type, connectedOnly, myServices };
   const [updatedAt, setUpdatedAt] = useState(null);
   const {
     providers,
@@ -52,6 +54,7 @@ const ProvidersBrowse = ({
     timeFrame,
     setTimeFrame,
   } = useProvidersList(providersOptions, updatedAt);
+
   const intl = useIntl();
 
   useEffect(() => {
@@ -75,9 +78,9 @@ const ProvidersBrowse = ({
           filters={filters}
           onClose={toggleFilters}
           open={showFilters}
-          provType={provType}
           quotes={quotes}
           setFilters={setFilters}
+          type={type}
         />
       )}
       {toggleSort && (
@@ -86,19 +89,19 @@ const ProvidersBrowse = ({
           onChange={setSort}
           onClose={toggleSort}
           open={showSort}
-          provType={provType}
           sort={sort}
+          type={type}
         />
       )}
       <TimeFrameSelectRow
-        isCopyTrading={copyTraders || profitSharing}
+        isCopyTrading={isCopyTrading}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
-            ? copyTraders || profitSharing
+            ? isCopyTrading
               ? "dashboard.traders.copying"
               : "dashboard.providers.following"
-            : copyTraders || profitSharing
+            : isCopyTrading
             ? "copyt.traders"
             : "fil.providers",
         })}`}
@@ -107,7 +110,7 @@ const ProvidersBrowse = ({
       <ProvidersList
         providers={providers}
         reloadProviders={reloadProviders}
-        showSummary={connectedOnly}
+        showSummary={connectedTradersOnly}
         timeFrame={timeFrame}
       />
     </Box>

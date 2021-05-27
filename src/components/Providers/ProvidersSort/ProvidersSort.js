@@ -6,13 +6,14 @@ import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 
 /**
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} ProvidersSortPropTypes
  * @property {function} onChange Callback that delegate sorting changes to caller.
  * @property {function} onClose Callback that delegate sorting toggle state to caller.
  * @property {string} sort value Selected value.
  * @property {function} clearFilters Callback that delegate filters clearing to caller.
  * @property {boolean} open Flag to indicates if the sort bar is open.
- * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
+ * @property {NewAPIProvidersPayload["type"]} type
  */
 
 /**
@@ -21,10 +22,10 @@ import CustomSelect from "../../CustomSelect";
  * @param {ProvidersSortPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, provType }) => {
+const ProvidersSort = ({ onChange, onClose, sort, clearFilters, open, type }) => {
   const intl = useIntl();
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
+  const copyTraders = type === "copy_trading";
+  const profitSharing = type === "profit_sharing";
 
   const sorts = [
     ...(copyTraders || profitSharing

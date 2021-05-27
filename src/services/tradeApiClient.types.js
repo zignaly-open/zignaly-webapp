@@ -154,6 +154,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Boolean} subscribe
  * @property {Boolean} array
  * @property {string} ref
+ * @property {Boolean} [newPageAB] Flag to indicate the user is using new A/B page.
  */
 
 /**
@@ -283,6 +284,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} isTraderType
+ * @property {boolean} profit_sharing True if the user has created a profit sharing service provider.
+ * @property {boolean} copy_trading True if the user has created a copy trader service provider.
+ * @property {boolean} signal_providers True if the user has created a signal provider service.
+ */
+
+/**
  * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -303,6 +311,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} hasActivated
  * @property {boolean} realExchangeConnected
  * @property {boolean} demoExchangeConnected
+ * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
  */
 
@@ -517,6 +526,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} stopLossToBreakEven Stop Loss moves to break even (entry price) when take profit target is reached.
  * @property {boolean} isolated
  * @property {string} isolatedReadable
+ * @property {string} stopLossOrderId Stop loss order id
  */
 
 /**
@@ -590,9 +600,20 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} NewAPIProvidersPayload
+ * @property {'copy_trading'|'signal_providers'|'profit_sharing'|'connected_traders'|'connected_providers'} type
+ * @property {number} timeFrame
+ * @property {string} [internalExchangeId]
+ */
+
+/**
+ * @typedef {Object} ProvidersOwnedPayload
+ * @property {number} timeFrame
+ * @property {NewAPIProvidersPayload["type"]} type
+ */
+
+/**
  * @typedef {Object} ProvidersListPayload
- * @property {string} token
- * @property {boolean} ro
  * @property {string} internalExchangeId
  */
 
@@ -627,23 +648,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} ProviderEntity
  * @property {string} id
  * @property {string} name
- * @property {string} description
- * @property {string} shortDesc
- * @property {string} longDesc
- * @property {string|boolean} fee
  * @property {number} price
- * @property {boolean|string} website
  * @property {Array<string>} exchanges
- * @property {boolean} key
  * @property {boolean} disable False if user is copying
- * @property {boolean} customerKey
- * @property {boolean} public
- * @property {boolean} hasRecommendedSettings
  * @property {string} logoUrl
- * @property {boolean} hasBeenUsed
  * @property {boolean} isClone
  * @property {boolean} isCopyTrading
- * @property {boolean} clonedFrom
  * @property {number} createdAt
  * @property {boolean} isFromUser
  * @property {string} quote
@@ -662,10 +672,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsShare Connected exchange account id
  * @property {string} profitsMode Connected exchange account id
  * @property {Array<ProviderFollowers>} [aggregateFollowers] Followers history data (signal providers)
- * @property {'signal'|'copytrading'|'profitsharing'} provType
  * @property {string} providerLink
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {boolean} isAdmin True if the current user is provider's admin
+ * @property {number} currentAllocated Allocated balance with unrealized pnl.
+ * @property {number} allocatedBalance Allocated balance without unrealized pnl.
+ * @property {number} profitsSinceCopying
+ * @property {boolean} CTorPS
+ * @property {boolean} copyTrader
  */
 
 /**
@@ -1087,6 +1101,7 @@ export function userEntityResponseTransform(response) {
     hasActivated: response.hasActivated,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    isTrader: response.isTrader,
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
@@ -1098,15 +1113,16 @@ export function userEntityResponseTransform(response) {
  *
  * @export
  * @param {*} response Trade API signal providers list response.
+ * @param {*} providerType Trade API signal providers list response.
  * @returns {ProvidersCollection} Signal providers entities collection.
  */
-export function providersResponseTransform(response) {
+export function providersResponseTransform(response, providerType = null) {
   if (!isArray(response)) {
     throw new Error("Response must be an array of providers.");
   }
 
   return response.map((providerItem) => {
-    return providerItemTransform(providerItem);
+    return providerItemTransform(providerItem, providerType);
   });
 }
 
@@ -1132,9 +1148,10 @@ const calculateNewFollowers = (provider) => {
  * Transform API provider item to typed object.
  *
  * @param {Object.<string, any>} providerItem Trade API provider item.
+ * @param {*} providerType requested provider type
  * @returns {ProviderEntity} Provider entity.
  */
-function providerItemTransform(providerItem) {
+function providerItemTransform(providerItem, providerType) {
   const emptyProviderEntity = createEmptyProviderEntity();
   // Override the empty entity with the values that came in from API.
   const transformedResponse = assign(emptyProviderEntity, providerItem, {
@@ -1155,8 +1172,28 @@ function providerItemTransform(providerItem) {
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),
   // );
+  let connectedOnly = providerType ? providerType.startsWith("connected") : false;
+  let copyTrader = false;
+  let profitSharingProvider = false;
 
-  if (!transformedResponse.isCopyTrading) {
+  // This first check is for legacy api
+  if (!providerType) {
+    copyTrader = transformedResponse.provType === "copytrading";
+    profitSharingProvider = transformedResponse.provType === "profitsharing";
+  } else if (!connectedOnly) {
+    copyTrader = providerType === "copy_trading";
+    profitSharingProvider = providerType === "profit_sharing";
+  } else {
+    copyTrader = providerType === "connected_traders" && !transformedResponse.profitSharing;
+    profitSharingProvider =
+      providerType === "connected_traders" && transformedResponse.profitSharing;
+  }
+
+  transformedResponse.providerLink = `/${
+    copyTrader ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${transformedResponse.id}`;
+
+  if (!copyTrader && !profitSharingProvider) {
     // Updating followers count because it's out of date for clones
     transformedResponse.followers = transformedResponse.aggregateFollowers.length
       ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
@@ -1164,12 +1201,11 @@ function providerItemTransform(providerItem) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
-  const copyTraders = transformedResponse.provType === "copytrading";
-  const profitSharingProvider = transformedResponse.provType === "profitsharing";
 
-  transformedResponse.providerLink = `/${
-    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
-  }/${transformedResponse.id}`;
+  transformedResponse.profitSharing = profitSharingProvider;
+  transformedResponse.copyTrader = copyTrader;
+  transformedResponse.CTorPS = copyTrader || profitSharingProvider;
+  transformedResponse.quote = providerItem.quote || providerItem.copyTradingQuote || "";
 
   return transformedResponse;
 }
@@ -1179,6 +1215,8 @@ function providerItemTransform(providerItem) {
  * @property {boolean} connected Hide-water mark
  * @property {string} id
  * @property {string} name
+ * @property {string} exchangeInternalId
+ * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {'copyTrading'|'profitSharing'|'signalProvider'} type
  */
 
@@ -1193,6 +1231,8 @@ function createEmptyHasBeenProviderEntity() {
     id: "",
     name: "",
     type: "copyTrading",
+    exchangeInternalId: "",
+    exchangeInternalIds: [],
   };
 }
 
@@ -1234,23 +1274,12 @@ function createEmptyProviderEntity() {
   return {
     id: "",
     name: "",
-    description: "",
-    shortDesc: "",
-    longDesc: "",
-    fee: false,
     price: 0,
-    website: false,
     exchanges: [],
-    key: false,
     disable: true,
-    customerKey: false,
-    public: true,
     logoUrl: "",
-    hasRecommendedSettings: false,
-    hasBeenUsed: false,
     isClone: false,
     isCopyTrading: false,
-    clonedFrom: false,
     createdAt: 0,
     isFromUser: false,
     quote: "",
@@ -1266,10 +1295,14 @@ function createEmptyProviderEntity() {
     profitSharing: false,
     profitsShare: 0,
     profitsMode: "",
-    provType: "copytrading",
     providerLink: "",
     exchangeInternalIds: null,
     isAdmin: false,
+    currentAllocated: 0,
+    allocatedBalance: 0,
+    profitsSinceCopying: 0,
+    CTorPS: false,
+    copyTrader: false,
   };
 }
 
@@ -1574,8 +1607,8 @@ export function positionItemTransform(positionItem) {
   const risk = calculateRisk(positionEntity);
   const augmentedEntity = assign(positionEntity, {
     // Hide age for PS because positions doesn't include time
-    age: positionItem.profitSharing ? null : openDateMoment.toNow(true),
-    ageSeconds: positionItem.profitSharing ? null : openDateMoment.diff(nowDate),
+    age: openDateMoment.toNow(true),
+    ageSeconds: openDateMoment.diff(nowDate),
     closeDateReadable: positionEntity.closeDate ? closeDateMoment.format(dateFormat) : "-",
     exitPriceStyle: getPriceColorType(
       positionEntity.sellPrice,
@@ -1792,6 +1825,7 @@ function createEmptyPositionEntity() {
     stopLossPercentage: 0,
     stopLossPrice: null,
     stopLossStyle: "",
+    stopLossOrderId: "",
     symbol: "",
     takeProfitTargets: {},
     takeProfitTargetsCountFail: 0,
@@ -2604,12 +2638,6 @@ function createConnectedProviderUserInfoEntity(response) {
 
 /**
  *
- * @typedef {Object} DefaultProviderClonedFromObject
- * @property {String} $oid
- */
-
-/**
- *
  * @typedef {Object} DefaultProviderAllocatedUpdatedAtDateObject
  * @property {String} $numberlong
  */
@@ -2720,14 +2748,10 @@ function createConnectedProviderUserInfoEntity(response) {
  * @typedef {Object} DefaultProviderGetObject
  * @property {Boolean} connected
  * @property {String} copyTradingQuote
- * @property {String} description
  * @property {Boolean} disable True when provider is not connected.
  * @property {String} exchangeInternalId
  * @property {String} exchangeType
  * @property {Array<String>} exchanges
- * @property {String} fee
- * @property {Boolean} hasBeenUsed
- * @property {Boolean} hasRecommendedSettings
  * @property {String} id
  * @property {DefaulProviderInternalPaymentObject} internalPaymentInfo
  * @property {Boolean} isAdmin
@@ -2736,18 +2760,15 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} key
  * @property {Boolean} list
  * @property {String} logoUrl
- * @property {String} longDesc
  * @property {Number} minAllocatedBalance
  * @property {String} name
  * @property {DefaultProviderOptions} options
  * @property {Boolean} public
- * @property {String} shortDesc
  * @property {DefaultProviderUserPaymentObject} userPaymentInfo
  * @property {String} website
  * @property {Number} allocatedBalance
  * @property {DefaultProviderAllocatedUpdatedAtObject} allocatedBalanceUpdatedAt
  * @property {Boolean} balanceFilter
- * @property {DefaultProviderClonedFromObject} clonedFrom
  * @property {String} createdAt
  * @property {Boolean} enableInProvider
  * @property {String} originalBalance
@@ -2841,14 +2862,10 @@ function createEmptyProviderGetEntity() {
   return {
     connected: false,
     copyTradingQuote: "",
-    description: "",
     disable: true,
     exchangeInternalId: "",
     exchangeType: "",
     exchanges: [""],
-    fee: "",
-    hasBeenUsed: false,
-    hasRecommendedSettings: false,
     id: "",
     internalPaymentInfo: {
       isPremium: true,
@@ -2863,7 +2880,6 @@ function createEmptyProviderGetEntity() {
     key: false,
     list: false,
     logoUrl: "",
-    longDesc: "",
     minAllocatedBalance: 0,
     name: "",
     options: {
@@ -2887,13 +2903,10 @@ function createEmptyProviderGetEntity() {
       disclaimer: "",
     },
     public: false,
-    shortDesc: "",
     userPaymentInfo: { userId: "" },
-    website: "",
     allocatedBalance: 0,
     allocatedBalanceUpdatedAt: { $date: { $numberlong: "" } },
     balanceFilter: false,
-    clonedFrom: { $oid: "" },
     createdAt: "",
     enableInProvider: false,
     originalBalance: "",
@@ -3989,7 +4002,6 @@ function createEmptyProfileNotificationsEntity() {
 /**
  * @typedef {ProviderOptions & Object} ProviderCreatePayload
  * @property {string} name
- * @property {string} description
  * @property {string} disclaimer
  * @property {string} exchangeType
  * @property {string} projectId
@@ -4006,7 +4018,6 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} key
  * @property {string} userId
  * @property {string} projectId
- * @property {string} description
  * @property {Array<string>} exchanges
  * @property {string} exchangeType
  * @property {DefaultProviderOptions} options
@@ -4059,7 +4070,6 @@ const createEmptyNewProviderEntity = () => {
     key: "",
     userId: "",
     projectId: "",
-    description: "",
     exchanges: [],
     exchangeType: "",
     options: {
@@ -4443,23 +4453,12 @@ export const createEmptyProfileProviderStatsEntity = () => {
     providerInfo: {
       id: "",
       name: "",
-      description: "",
-      shortDesc: "",
-      longDesc: "",
-      fee: false,
       price: 0,
-      website: false,
       exchanges: [],
-      key: false,
       disable: true,
-      customerKey: false,
-      public: true,
       logoUrl: "",
-      hasRecommendedSettings: false,
-      hasBeenUsed: false,
       isClone: false,
       isCopyTrading: false,
-      clonedFrom: false,
       createdAt: 0,
       isFromUser: false,
       quote: "",
@@ -4475,10 +4474,14 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitSharing: false,
       profitsShare: 0,
       profitsMode: "",
-      provType: "copytrading",
       providerLink: "",
       exchangeInternalIds: null,
       isAdmin: false,
+      allocatedBalance: 0,
+      currentAllocated: 0,
+      profitsSinceCopying: 0,
+      copyTrader: false,
+      CTorPS: false,
     },
     signalsInfo: [],
   };

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
-import { uniqBy } from "lodash";
 import {
   setSort as setSortAction,
   setTimeFrame as setTimeFrameAction,
@@ -15,7 +13,7 @@ import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
-import { useStoreUserData } from "./useStoreUserSelector";
+import useConnectedProvidersList from "./useConnectedProvidersList";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -26,6 +24,7 @@ import { useStoreUserData } from "./useStoreUserSelector";
  * @typedef {import("../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {import("../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {import("../services/tradeApiClient.types").ProvidersPayload} ProvidersPayload
+ * @typedef {import("../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  * @typedef {import("./useFilters").FiltersData} FiltersData
  */
@@ -36,8 +35,9 @@ import { useStoreUserData } from "./useStoreUserSelector";
 
 /**
  * @typedef {Object} ProvidersOptions
- * @property {Array<'signal'|'copytraders'|'profitsharing'>} provType
+ * @property {NewAPIProvidersPayload["type"]} type
  * @property {boolean} connectedOnly
+ * @property {boolean} myServices
  */
 
 /**
@@ -68,17 +68,21 @@ const useProvidersList = (options, updatedAt = null) => {
   const intl = useIntl();
   const storeSettings = useStoreSettingsSelector();
   const internalExchangeId = storeSettings.selectedExchange.internalId;
-  const storeUserData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
-  const { provType, connectedOnly } = options;
-  const copyTraders = provType.includes("copytraders");
-  const profitSharing = provType.includes("profitsharing");
+  const { type, connectedOnly, myServices } = options;
+  const copyTraders = type === "copy_trading";
+  const profitSharing = type === "profit_sharing";
+
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
    */
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
+  const { providers: connectedProviders } = useConnectedProvidersList(
+    "",
+    [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
+    true,
+  );
 
   /**
    * @type {PageType} Page shorthand
@@ -99,7 +103,7 @@ const useProvidersList = (options, updatedAt = null) => {
       exchangeId: storeSettings.selectedExchange.exchangeId,
       exchangeType: storeSettings.selectedExchange.exchangeType,
     },
-    storeUserData.binanceConnected,
+    !connectedOnly,
   );
   const quotes = [
     {
@@ -140,7 +144,6 @@ const useProvidersList = (options, updatedAt = null) => {
         exchange: "ALL",
         exchangeType: "ALL",
       }),
-      fromUser: "ALL",
       profitSharing: false,
     }),
   };
@@ -244,18 +247,21 @@ const useProvidersList = (options, updatedAt = null) => {
    * @returns {void}
    */
   const filterProviders = (list) => {
-    const matches = list.filter(
-      (p) =>
-        (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
-        (!filters.exchange ||
-          filters.exchange === "ALL" ||
-          p.exchanges.includes(filters.exchange.toLowerCase())) &&
-        (!filters.exchangeType ||
-          filters.exchangeType === "ALL" ||
-          p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()) &&
-        (!filters.fromUser || filters.fromUser === "ALL" || p.isFromUser),
-    );
-    sortProviders(matches);
+    if (!myServices) {
+      const matches = list.filter(
+        (p) =>
+          (!filters.quote || filters.quote === "ALL" || p.quote === filters.quote) &&
+          (!filters.exchange ||
+            filters.exchange === "ALL" ||
+            p.exchanges.includes(filters.exchange.toLowerCase())) &&
+          (!filters.exchangeType ||
+            filters.exchangeType === "ALL" ||
+            p.exchangeType.toLowerCase() === filters.exchangeType.toLowerCase()),
+      );
+      sortProviders(matches);
+    } else {
+      sortProviders(list);
+    }
   };
 
   // Filter providers on filter change
@@ -271,45 +277,58 @@ const useProvidersList = (options, updatedAt = null) => {
   }, [filters]);
 
   const loadProviders = () => {
-    if (storeSession.tradeApi.accessToken) {
-      /**
-       * @type {ProvidersPayload}
-       */
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        type: connectedOnly ? "connected" : "all",
-        ro: true,
-        provType: provType,
-        timeFrame,
-        internalExchangeId,
-      };
+    /**
+     * @type {NewAPIProvidersPayload}
+     */
+    const payload = {
+      type,
+      timeFrame,
+      ...(connectedOnly && { internalExchangeId: internalExchangeId }),
+    };
 
-      tradeApi
-        .providersGet(payload)
-        .then((responseData) => {
-          const uniqueProviders = uniqBy(responseData, "id");
-          setProviders((s) => ({
-            ...s,
-            list: uniqueProviders,
-          }));
-          filterProviders(uniqueProviders);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
-    }
+    const method = myServices
+      ? tradeApi.providersOwnedGet(payload)
+      : tradeApi.providersGetNew(payload);
+
+    method
+      .then((responseData) => {
+        setProviders((s) => ({
+          ...s,
+          list: responseData,
+        }));
+        filterProviders(responseData);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
   };
-  // Load providers at init and on timeframe change.
-  useEffect(loadProviders, [
-    timeFrame,
-    connectedOnly,
-    storeSession.tradeApi.accessToken,
-    internalExchangeId,
-    updatedAt,
-  ]);
+  // Load providers at init, on timeframe/exchange account change
+  useEffect(loadProviders, [timeFrame, internalExchangeId, updatedAt]);
+
+  /**
+   * Combine user providers data with provider list
+   * @param {ProvidersCollection} list Providers list
+   * @returns {ProvidersCollection} Providers list
+   */
+  const augmentProviders = (list) => {
+    if (!list || !connectedProviders) return null;
+
+    return list.map((provider) => {
+      const connectedProvider = connectedProviders.find((item) => item.id === provider.id);
+      if (connectedProvider) {
+        return {
+          ...provider,
+          disable: !connectedProvider.connected,
+          exchangeInternalId: connectedProvider.exchangeInternalId,
+          exchangeInternalIds: connectedProvider.exchangeInternalIds,
+        };
+      }
+      return provider;
+    });
+  };
 
   return {
-    providers: providers.filteredList,
+    providers: augmentProviders(providers.filteredList),
     timeFrame,
     setTimeFrame,
     quotes,

@@ -5,6 +5,7 @@ import "./ProvidersList.scss";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
+ * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} ProvidersListPropTypes
  * @property {ProvidersCollection} providers Flag to indicate if filters should be rendered.
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.

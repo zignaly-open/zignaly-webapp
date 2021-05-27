@@ -150,7 +150,7 @@ const ExchangeAccountAdd = ({ demo }) => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData(storeSession.tradeApi.accessToken, true));
         // mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         // userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;

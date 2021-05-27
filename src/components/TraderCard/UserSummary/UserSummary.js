@@ -1,28 +1,28 @@
 import React from "react";
 import "./UserSummary.scss";
-import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { Box, Typography } from "@material-ui/core";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";
 /**
+ * @typedef {import("services/tradeApiClient.types").ProviderEntity} ProviderEntity
+ * @typedef {import("services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} DefaultProps
- * @property {string} providerId Provider Id.
- * @property {string} quote Quote traded by provider.
- * @property {boolean} isCopyTrading Flag to indicate if it's a copy trader.
+ * @property {ProviderEntity} provider Provider entity.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ providerId, quote, isCopyTrading }) => {
-  const { providerUserInfo, profitPerc } = useProviderUserInfo(providerId);
+const UserSummary = ({ provider }) => {
+  const { quote, profitsSinceCopying, allocatedBalance, currentAllocated, CTorPS } = provider;
+  const profitPerc = allocatedBalance ? (profitsSinceCopying / allocatedBalance) * 100 : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
-      {isCopyTrading && (
+      {CTorPS && (
         <>
           <Typography variant="subtitle1">
             <FormattedMessage id="srv.allocated" />
@@ -34,7 +34,7 @@ const UserSummary = ({ providerId, quote, isCopyTrading }) => {
             justifyContent="space-between"
           >
             <Typography variant="h5">
-              {quote} {formatFloat(providerUserInfo.currentAllocated)}
+              {quote} {formatFloat(currentAllocated)}
             </Typography>
             {/* <Typography variant="h5">$1280,46</Typography> */}
           </Box>
@@ -51,7 +51,7 @@ const UserSummary = ({ providerId, quote, isCopyTrading }) => {
         </CustomTooltip>
         <CustomTooltip title={<FormattedMessage id="trader.returnsince.tooltip" />}>
           <Typography className={color} variant="h5">
-            {quote} {formatFloat(providerUserInfo.profitsSinceCopying)}
+            {quote} {formatFloat(profitsSinceCopying)}
           </Typography>
         </CustomTooltip>
       </Box>

@@ -7,6 +7,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateProvider } from "../../../store/actions/ui";
+import { getUserData } from "store/actions/user";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "../../CustomSelect";
 import useExchangeList from "../../../hooks/useExchangeList";
@@ -89,7 +90,6 @@ const CreateProviderForm = () => {
     const payload = {
       ...data,
       projectId: "z01",
-      description: "",
       providerId: CREATE_PROVIDER_ID,
       version: 2,
       token: storeSession.tradeApi.accessToken,
@@ -97,12 +97,11 @@ const CreateProviderForm = () => {
     tradeApi
       .providerCreate(payload)
       .then((response) => {
-        const profileLink = `/${response.isCopyTrading ? "copyTraders" : "signalProviders"}/${
-          response.id
-        }/edit`;
-
+        const profileLink = `/signalProviders/${response.id}/edit`;
         navigate(profileLink);
         dispatch(showCreateProvider(false));
+        // Refresh user data to show My Services tab
+        dispatch(getUserData(storeSession.tradeApi.accessToken));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

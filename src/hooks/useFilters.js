@@ -48,6 +48,7 @@ const useFilters = (
     /**
      * @type {Filter}
      */
+    // @ts-ignore
     const values = {};
     Object.keys(defaultValues).forEach((/** @type {keyof Filter} */ key) => {
       values[key] = defaultValues[key];

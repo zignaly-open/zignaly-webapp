@@ -40,17 +40,18 @@ const initUserExchanges = (token, responseData) => {
       let exchangeInternalId = "";
       let selected = null;
       if (storeSelectedExchange && storeSelectedExchange.internalId) {
+        // Use selected exchange from store
         exchangeInternalId = storeSelectedExchange.internalId;
         selected = responseData.find((item) => item.internalId === exchangeInternalId);
       }
       if (!selected) {
+        // If no exchange account saved, use the first one
         selected = responseData.length ? responseData[0] : initialState.settings.selectedExchange;
       }
       dispatch(setSelectedExchange(selected));
+
+      // If the user has any exchange account, query balance
       if (responseData.length > 0) {
-        /**
-         * @type {UserEquityPayload}
-         */
         let balancePayload = { token: token, exchangeInternalId: selected.internalId };
         dispatch(getDailyUserBalance(balancePayload));
       }
@@ -149,15 +150,15 @@ export const getDailyUserBalance = (payload) => {
 };
 
 /**
- * Get user balance store thunk action.
+ * Get user data store thunk action.
  *
- * @param {String} token User's access token
- * @param {'login'|'signup'} [eventType] User's event type
- * @param {Function} [callback] callback function to execute
+ * @param {string} token User's access token
+ * @param {boolean} [loadExchanges] Load user exchanges
+ * @param {function(UserEntity): *} [callback] Callback function
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const getUserData = (token, eventType, callback) => {
+export const getUserData = (token, loadExchanges = false, callback) => {
   return async (dispatch) => {
     try {
       if (token) {
@@ -172,9 +173,11 @@ export const getUserData = (token, eventType, callback) => {
 
         dispatch(action);
         if (callback) {
-          callback(responseData, eventType);
+          callback(responseData);
         }
-        dispatch(initUserExchanges(payload.token, responseData.exchanges));
+        if (loadExchanges) {
+          dispatch(initUserExchanges(payload.token, responseData.exchanges));
+        }
       }
     } catch (e) {
       dispatch(showErrorAlert(e));

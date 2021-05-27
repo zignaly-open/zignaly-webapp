@@ -8,28 +8,46 @@ import { useIntl } from "react-intl";
 import LoginHeader from "../../components/Login/LoginHeader";
 import SignupForm from "../../components/Forms/SignupForm";
 import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
+import useABTest from "hooks/useABTest";
+import Login from "../../components/Login/Login";
+import useHasMounted from "hooks/useHasMounted";
 
 const SignupPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid("/profitSharing");
+  const showNew = useABTest();
+
+  const hasMounted = useHasMounted();
+  if (!hasMounted) {
+    // Don't render statically due to split test
+    return null;
+  }
 
   return (
     <>
       <Helmet>
         <title>
           {`${intl.formatMessage({
-            id: "signup.title",
+            id: "action.signup",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Box className="signupPage">
-        <LoginHeader>
+      {showNew || showNew === null ? (
+        <Login>
           <LoginTabs>
             <SignupForm />
           </LoginTabs>
-        </LoginHeader>
-        <Testimonials />
-      </Box>
+        </Login>
+      ) : (
+        <Box className="signupPage">
+          <LoginHeader>
+            <LoginTabs>
+              <SignupForm />
+            </LoginTabs>
+          </LoginHeader>
+          <Testimonials />
+        </Box>
+      )}
     </>
   );
 };

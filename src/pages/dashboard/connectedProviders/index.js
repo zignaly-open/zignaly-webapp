@@ -20,7 +20,7 @@ const ConnectedProviders = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <ProvidersBrowse connectedOnly={true} provType={["signal"]} />
+      <ProvidersBrowse type="connected_providers" />
     </Box>
   );
 };

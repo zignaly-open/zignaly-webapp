@@ -32,19 +32,18 @@ const SignalProvidersBrowse = (props) => {
           {`${intl.formatMessage({
             id: "menu.signalproviders",
           })} - ${intl.formatMessage({
-            id: "srv.browse",
+            id: "srv.marketplace",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
 
       <ProvidersBrowse
-        connectedOnly={false}
-        provType={["signal"]}
         setModifiedFiltersCount={setModifiedFiltersCount}
         showFilters={showFilters}
         showSort={showSort}
         toggleFilters={toggleFilters}
         toggleSort={toggleSort}
+        type="signal_providers"
       />
     </Box>
   );

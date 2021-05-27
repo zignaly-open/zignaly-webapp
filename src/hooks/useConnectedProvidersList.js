@@ -3,7 +3,6 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
@@ -21,20 +20,17 @@ import useStoreSettingsSelector from "./useStoreSettingsSelector";
  * @param {boolean} [shouldExecute] Flag to indicate if we should execute the request.
  * @returns {HookData} Provider list.
  */
-const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecute = true) => {
+const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecute = true) => {
   const [providersLoading, setProvidersLoading] = useState(true);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(null);
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
-  const storeSettings = useStoreSettingsSelector();
 
   const loadData = () => {
-    if (shouldExecute && storeSession.tradeApi.accessToken && internalId) {
+    if (shouldExecute && storeSession.tradeApi.accessToken) {
       setProvidersLoading(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
-        internalExchangeId: internalId,
+        ...(internalId && { internalExchangeId: internalId }),
       };
 
       tradeApi
@@ -63,13 +59,9 @@ const useConnectedProvidersLite = (internalId, type, onlyConnected, shouldExecut
     setList(providerAssets);
   };
 
-  useEffect(loadData, [
-    storeSession.tradeApi.accessToken,
-    storeSettings.selectedExchange.internalId,
-    shouldExecute,
-  ]);
+  useEffect(loadData, [storeSession.tradeApi.accessToken, internalId, shouldExecute]);
 
   return { providers: list, providersLoading: providersLoading };
 };
 
-export default useConnectedProvidersLite;
+export default useConnectedProvidersList;

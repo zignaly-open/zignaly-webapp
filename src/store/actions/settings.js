@@ -13,6 +13,8 @@ export const SET_SORT = "SET_SORT";
 export const SET_FILTERS = "SET_FILTERS";
 export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
 export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
+export const SET_MARKETPLACE_CACHE_MODAL = "SET_MARKETPLACE_CACHE_MODAL";
+export const SET_TEST_AB = "SET_TEST_AB";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -35,6 +37,19 @@ export const selectDarkTheme = (darkStyle) => {
   return {
     type: SELECT_THEME,
     payload: darkStyle,
+  };
+};
+
+/**
+ * Dark style flag selected by user.
+ *
+ * @param {string} userId
+ */
+
+export const setMarketplaceCacheModal = (userId) => {
+  return {
+    type: SET_MARKETPLACE_CACHE_MODAL,
+    payload: userId,
   };
 };
 
@@ -179,7 +194,7 @@ export const setSort = (payload) => {
 
 /**
  * @typedef {"copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType} FilterPage
- * @typedef {Filters["copyt"|"signalp"|"dashboardPositions"|AnalyticsPageType]} Filter
+ * @typedef {Filters["copyt"|"dashboardPositions"|AnalyticsPageType]} Filter
  */
 
 /**
@@ -257,6 +272,30 @@ export const setTerminalPair = (payload) => {
 export const setTerminalProvider = (payload) => {
   return {
     type: SET_TERMINAL_PROVIDER,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} SetTestABPayload
+ * @property {'login'} page
+ * @property {boolean} enable
+ */
+
+/**
+ * @typedef {Object} SetTestABAction
+ * @property {typeof SET_TEST_AB} type
+ * @property {SetTestABPayload} payload
+ */
+
+/**
+ * Set A/B test flags.
+ * @param {SetTestABPayload} payload Payload.
+ * @returns {SetTestABAction} Action.
+ */
+export const setTestAB = (payload) => {
+  return {
+    type: SET_TEST_AB,
     payload,
   };
 };

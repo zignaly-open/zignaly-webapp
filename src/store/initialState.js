@@ -73,12 +73,6 @@
  * @property {string} [quote]
  * @property {string} exchange
  * @property {string} exchangeType
- * @property {string} fromUser
- */
-
-/**
- * @typedef {Object} SignalPBrowseFilters
- * @property {string} [fromUser]
  */
 
 /**
@@ -116,7 +110,7 @@
  * @property {DashboardPositionsFilters} dashboardPositions
  * @property {BrowseFilters} copyt
  * @property {BrowseFilters} profit
- * @property {SignalPBrowseFilters} signalp
+ * @property {Object} signalp
  * @property {AnalyticsFilters} copytAnalytics
  * @property {AnalyticsFilters} signalpAnalytics
  */
@@ -131,6 +125,7 @@
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
+ * @property {Object<string, boolean>} disableCacheModal
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
  * @property {SortColumns} sortColumns
@@ -141,6 +136,7 @@
  * @property {SortObject} sort
  * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
+ * @property {Object<'login', boolean>} testAB
  */
 
 /**
@@ -225,6 +221,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
+    disableCacheModal: {},
     balanceBox: false,
     rowsPerPage: {},
     displayColumns: {
@@ -502,13 +499,16 @@ const initialState = {
     filters: {
       dashboardAnalytics: { timeFrame: "", quote: "", provider: null },
       dashboardPositions: { providerId: "", pair: "", side: "", type: "", status: "" },
-      copyt: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
-      profit: { quote: "", exchange: "", exchangeType: "", fromUser: "" },
-      signalp: { fromUser: "" },
+      copyt: { quote: "", exchange: "", exchangeType: "" },
+      profit: { quote: "", exchange: "", exchangeType: "" },
+      signalp: {},
       copytAnalytics: { quote: "", base: "", timeFrame: "" },
       signalpAnalytics: { quote: "", base: "", timeFrame: "" },
     },
     tradingTerminal: { pair: {}, provider: "" },
+    testAB: {
+      login: null,
+    },
   },
   user: {
     loaded: false,
@@ -549,6 +549,8 @@ const initialState = {
       realExchangeConnected: false,
       demoExchangeConnected: false,
       exchanges: [],
+      // eslint-disable-next-line
+      isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
     },
   },
   ui: {
@@ -578,14 +580,10 @@ const initialState = {
     provider: {
       connected: false,
       copyTradingQuote: "",
-      description: "",
       disable: true,
       exchangeInternalId: "",
       exchangeType: "",
       exchanges: [""],
-      fee: "",
-      hasBeenUsed: false,
-      hasRecommendedSettings: false,
       id: "",
       internalPaymentInfo: {
         isPremium: true,
@@ -600,7 +598,6 @@ const initialState = {
       key: false,
       list: false,
       logoUrl: "",
-      longDesc: "",
       minAllocatedBalance: 0,
       name: "",
       options: {
@@ -625,13 +622,10 @@ const initialState = {
         disclaimer: "",
       },
       public: false,
-      shortDesc: "",
       userPaymentInfo: { userId: "" },
-      website: "",
       allocatedBalance: 0,
       allocatedBalanceUpdatedAt: { $date: { $numberlong: "" } },
       balanceFilter: false,
-      clonedFrom: { $oid: "" },
       createdAt: "",
       enableInProvider: false,
       originalBalance: "",
@@ -699,6 +693,7 @@ const initialState = {
       profitsMode: "",
       notificationsPosts: false,
       exchangeInternalIds: [],
+      website: "",
     },
   },
 };

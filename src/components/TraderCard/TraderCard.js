@@ -6,6 +6,8 @@ import TraderCardBody from "./TraderCardBody";
 /**
  * @typedef {import("../../services/tradeApiClient.types").ProviderEntity} Provider
  * @typedef {import("../../services/tradeApiClient.types").DailyReturn} DailyReturn
+ * @typedef {import("../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
+ *
  *
  * @typedef {Object} TraderCardPropTypes
  * @property {boolean} showSummary Flag to indicate if summary should be rendered.

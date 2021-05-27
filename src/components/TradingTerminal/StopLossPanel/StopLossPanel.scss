@@ -9,14 +9,14 @@
       justify-content: space-between;
 
       > :nth-child(1) {
-        flex: 0 0 100%;
+        flex: 0 0 50%;
       }
 
-      > :nth-child(2) {
+      > :nth-last-child(3) {
         flex: 0 0 40%;
       }
 
-      > :nth-child(3) {
+      > :nth-last-child(2) {
         flex: 0 0 calc(60% - 15px);
       }
     }

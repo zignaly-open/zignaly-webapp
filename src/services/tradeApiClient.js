@@ -7,7 +7,6 @@ import {
   positionsResponseTransform,
   positionsShortResponseTransform,
   providersResponseTransform,
-  providersStatsResponseTransform,
   userBalanceResponseTransform,
   positionItemTransform,
   userEquityResponseTransform,
@@ -60,6 +59,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
  * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  * @typedef {import('./tradeApiClient.types').ProvidersPayload} ProvidersPayload
+ * @typedef {import('./tradeApiClient.types').NewAPIProvidersPayload} NewAPIProvidersPayload
+ * @typedef {import('./tradeApiClient.types').ProvidersOwnedPayload} ProvidersOwnedPayload
  * @typedef {import('./tradeApiClient.types').ProvidersListPayload} ProvidersListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
@@ -151,6 +152,10 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
+ *
+ *
+ *
+ *
  */
 
 /**
@@ -166,7 +171,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   constructor() {
-    this.baseUrl = process.env.GATSBY_TRADEAPI_URL;
+    this.baseUrlv1 = process.env.GATSBY_TRADEAPI_URL;
+    this.baseUrlv2 = process.env.GATSBY_TRADEAPI_URL_NEW;
 
     /**
      * @type {Object<string, number>} Tracks request average latency.
@@ -337,34 +343,46 @@ class TradeApiClient {
    * Process API HTTP request.
    *
    * @param {string} endpointPath API endpoint path and action.
-   * @param {Object} payload Request payload parameters object.
+   * @param {*} payload Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
+   * @param {number} [apiVersion] API to call
    * @param {string} [token] Optional authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "", token) {
-    const requestUrl = this.baseUrl + endpointPath;
+  async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
+    let baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
+
+    if (payload.CF) {
+      baseUrl = baseUrl.split(apiVersion === 2 ? "/new_api" : "/api")[0];
+    }
+
+    let requestUrl = baseUrl + endpointPath;
     let responseData = {};
 
     const authToken = this.token || token;
 
-    // TODO: Comply with request method parameter once backend resolve a GET
-    // method usage issue for requests that needs payload as query string.
-    const options = payload
-      ? {
-          method: "POST",
-          body: JSON.stringify(payload),
-          headers: {
-            "Content-Type": "application/json",
-            "X-API-KEY": process.env.GATSBY_API_KEY || "",
-            ...(authToken && { Authorization: "Bearer " + authToken }),
-          },
-        }
-      : { method: "GET" };
+    /**
+     * @type {*}
+     */
+    let options = {
+      method: method,
+      body: null,
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": process.env.GATSBY_API_KEY || "",
+        ...(authToken && { Authorization: "Bearer " + authToken }),
+      },
+    };
 
-    const cacheId = this.generateRequestCacheId(endpointPath, options.body || "");
+    if (method === "GET") {
+      requestUrl = `${requestUrl}?${new URLSearchParams(payload)}`;
+    } else {
+      options.body = JSON.stringify(payload);
+    }
+
+    const cacheId = this.generateRequestCacheId(requestUrl, options.body || "");
     if (method === "GET") {
       let cacheResponseData = cache.get(cacheId);
       if (cacheResponseData) {
@@ -463,7 +481,7 @@ class TradeApiClient {
    */
   async openPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 }, "GET");
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return positionsResponseTransform(responseData);
   }
@@ -477,9 +495,11 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getSoldPositions2";
+    // const endpointPath = "/fe/api.php?action=getSoldPositions2";
+    const endpointPath = "/get-sold-positions/";
     const responseData = await this.doRequest(endpointPath, {
       type: "sold",
+      CF: true, // Flag to indicated whether to request from cloudefar or rest api
       ...payload,
     });
 
@@ -496,14 +516,10 @@ class TradeApiClient {
    */
   async logPositionsGet(payload) {
     const endpointPath = "/fe/api.php?action=getClosedPositions";
-    const responseData = await this.doRequest(
-      endpointPath,
-      {
-        type: "log",
-        ...payload,
-      },
-      "GET",
-    );
+    const responseData = await this.doRequest(endpointPath, {
+      type: "log",
+      ...payload,
+    });
 
     return positionsResponseTransform(responseData);
   }
@@ -532,14 +548,47 @@ class TradeApiClient {
   /**
    * Get providers list.
    *
+   * @param {NewAPIProvidersPayload} payload Get providers payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersGetNew(payload) {
+    const endpointPath = `/providers/${payload.type}/${payload.timeFrame}`;
+    const type = payload.type;
+    delete payload.type;
+    delete payload.timeFrame;
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
+
+    return providersResponseTransform(responseData, type);
+  }
+
+  /**
+   * Get providers services owned by user.
+   *
+   * @param {ProvidersOwnedPayload} payload Get providers list payload.
+   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
+   *
+   * @memberof TradeApiClient
+   */
+  async providersOwnedGet(payload) {
+    const type = payload.type;
+    const endpointPath = "/providers/user_services/" + payload.timeFrame;
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
+    return providersResponseTransform(responseData, type);
+  }
+
+  /**
+   * Get providers list.
+   *
    * @param {ProvidersListPayload} payload Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
   async providersListGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderList";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const endpointPath = "/user/providers";
+    const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
     return hasBeenUsedProvidersResponseTransform(responseData);
   }
@@ -554,7 +603,7 @@ class TradeApiClient {
 
   async userBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
   }
@@ -572,21 +621,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return userEquityResponseTransform(responseData);
-  }
-
-  /**
-   * Get providers profits stats.
-   *
-   * @param {ProvidersStatsPayload} payload Get providers stats payload.
-   * @returns {Promise<ProvidersStatsCollection>} Promise that resolves providers stats collection.
-   *
-   * @memberof TradeApiClient
-   */
-  async providersStatsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderProfitStats";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return providersStatsResponseTransform(responseData);
   }
 
   /**
@@ -653,7 +687,7 @@ class TradeApiClient {
    */
   async positionGet(payload) {
     const endpointPath = "/fe/api.php?action=getPosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 }, "GET");
+    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
 
     return positionItemTransform(responseData);
   }
@@ -1173,7 +1207,7 @@ class TradeApiClient {
    */
   async providerCopyTradingDataPointsGet(payload) {
     const endpointPath = "/fe/api.php?action=getCopyTradingDataPoints";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return providerDataPointsResponseTransform(responseData);
   }
@@ -1189,7 +1223,7 @@ class TradeApiClient {
    */
   async providerBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getBalanceForService";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return providerBalanceResponseTransform(responseData);
   }
@@ -1205,7 +1239,7 @@ class TradeApiClient {
    */
   async providerFollowersCountGet(payload) {
     const endpointPath = "/fe/api.php?action=getFollowersForProvider";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return providerFollowersCountResponseTransform(responseData);
   }
@@ -1311,7 +1345,7 @@ class TradeApiClient {
    */
   async providerManagementPositions(payload) {
     const endpointPath = "/fe/api.php?action=getCopyTradingPositions";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return managementPositionsResponseTransform(responseData);
   }
@@ -1327,7 +1361,7 @@ class TradeApiClient {
    */
   async providerManagementBalanceAndPositions(payload) {
     const endpointPath = "/fe/api.php?action=getBalanceAndPositionsForService";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return managementBalanceAndPositionsResponseTransform(responseData);
   }
@@ -1402,7 +1436,7 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", payload.token);
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 1, payload.token);
 
     return responseData;
   }
@@ -1448,7 +1482,7 @@ class TradeApiClient {
    */
   async providerOpenPositions(payload) {
     const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return positionsResponseTransform(responseData);
   }
@@ -1464,7 +1498,7 @@ class TradeApiClient {
    */
   async providerSoldPositions(payload) {
     const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return positionsResponseTransform(responseData);
   }
@@ -1684,7 +1718,7 @@ class TradeApiClient {
    */
   async sessionDataGet(payload) {
     const endpointPath = "/fe/api.php?action=getSessionData";
-    const responseData = await this.doRequest(endpointPath, payload, "GET");
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return sessionDataResponseTransform(responseData);
   }
@@ -2058,9 +2092,9 @@ class TradeApiClient {
   }
 
   /**
-   * Confirm delete account
+   * Recover position
    *
-   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload with email code
+   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload to recover position
    *
    * @returns {Promise<boolean>} Result
    *

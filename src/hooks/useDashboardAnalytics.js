@@ -3,7 +3,7 @@ import tradeApi from "../services/tradeApiClient";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useConnectedProvidersLite from "./useConnectedProvidersLite";
+import useConnectedProvidersList from "./useConnectedProvidersList";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
@@ -57,20 +57,28 @@ const useDashboardAnalytics = (providerId) => {
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
 
-  const { providers, providersLoading } = useConnectedProvidersLite(
+  const { providers, providersLoading } = useConnectedProvidersList(
     storeSettings.selectedExchange.internalId,
     ["copyTrading", "profitSharing", "signalProvider"],
     false,
   );
-  let providersOptions = providers.map((item) => ({
-    val: item.id,
-    label: item.name,
-  }));
 
-  providersOptions.unshift({
-    val: "1",
-    label: intl.formatMessage({ id: "fil.manual" }),
-  });
+  let providersOptions = [
+    {
+      val: "1",
+      label: intl.formatMessage({ id: "fil.manual" }),
+    },
+  ];
+
+  if (providers) {
+    providersOptions = providersOptions.concat(
+      providers.map((item) => ({
+        val: item.id,
+        label: item.name,
+      })),
+    );
+  }
+
   const filteredProvider = providerId
     ? providersOptions.find((item) => item.val === providerId)
     : "";
@@ -162,7 +170,7 @@ const useDashboardAnalytics = (providerId) => {
     // quotes: providerQuotes.length ? providerQuotes : allQuotes,
     quotes: allQuotes,
     providersOptions,
-    providers,
+    providers: providers ? providers : [],
     clearFilters,
     loading,
     filters,
