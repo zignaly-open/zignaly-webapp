@@ -44,14 +44,14 @@ const Press = () => {
         <FormattedMessage id="login.press" />
       </Typography>
       <Box
-        display="flex"
         className="quotes"
+        display="flex"
         flexDirection="row"
         flexWrap="wrap"
         justifyContent="center"
       >
         {quotes.map((quote, i) => (
-          <PressQuote quote={quote} key={i} />
+          <PressQuote key={i} quote={quote} />
         ))}
       </Box>
     </Box>

@@ -127,6 +127,7 @@ class AscendexDataFeed extends DataFeed {
         const lastCandle = candles.data[candles.data.length - 1];
         return this.parseOHLCV(lastCandle.data);
       }
+      return {};
     });
   }
 }

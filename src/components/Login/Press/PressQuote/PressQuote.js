@@ -28,11 +28,11 @@ const PressQuote = ({ quote }) => {
       <span className="quoteIcon">“</span>
       <div className="content">{quote.quote}</div>
       <Box
+        alignItems="center"
+        className="quoteFooter"
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
-        className="quoteFooter"
-        alignItems="center"
         width={1}
       >
         <Typography className="readMore">
