@@ -35,6 +35,7 @@ const ProvidersBrowse = ({
   setModifiedFiltersCount,
 }) => {
   const connectedOnly = type.startsWith("connected");
+  const connectedTradersOnly = type === "connected_traders";
   const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
   const providersOptions = { type, connectedOnly, myServices };
   const [updatedAt, setUpdatedAt] = useState(null);
@@ -109,7 +110,7 @@ const ProvidersBrowse = ({
       <ProvidersList
         providers={providers}
         reloadProviders={reloadProviders}
-        showSummary={connectedOnly}
+        showSummary={connectedTradersOnly}
         timeFrame={timeFrame}
       />
     </Box>
