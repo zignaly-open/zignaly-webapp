@@ -24,7 +24,7 @@ import { FormattedMessage } from "react-intl";
 const Login = ({ children }) => {
   return (
     <Box className="loginPage">
-      <Box display="flex" flexDirection="row" className="headerBox" justifyContent="space-between">
+      <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
         <img alt="Zignaly" className="logo" src={Logo} />
         <Box className="languageBox">
           <LanguageSwitcherDropdown />
