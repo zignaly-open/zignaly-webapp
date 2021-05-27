@@ -43,13 +43,13 @@ export const selectDarkTheme = (darkStyle) => {
 /**
  * Dark style flag selected by user.
  *
- * @param {Boolean} flag
+ * @param {string} userId
  */
 
-export const setMarketplaceCacheModal = (flag) => {
+export const setMarketplaceCacheModal = (userId) => {
   return {
     type: SET_MARKETPLACE_CACHE_MODAL,
-    payload: flag,
+    payload: userId,
   };
 };
 
