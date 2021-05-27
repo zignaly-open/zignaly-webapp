@@ -569,13 +569,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   rules={{
                     required: true,
                     maxLength: 50,
-                    pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
+                    minLength: 5,
                   }}
                 />
                 {errors.name && (
                   <span className="errorText">
-                    Name is reuired of max 50 characters. (Allowed characters, Numbers, Letters,
-                    $,-,_)
+                    <FormattedMessage id="form.error.name.length" />
                   </span>
                 )}
               </Box>

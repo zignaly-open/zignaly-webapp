@@ -119,12 +119,11 @@ const CopyTraderEditProfileForm = ({ provider, onClose }) => {
               required: true,
               maxLength: 50,
               minLength: 5,
-              pattern: /^([a-zA-Z0-9 ()$_-]+)$/,
             }}
           />
           {errors.name && (
             <span className="errorText">
-              <FormattedMessage id="profile.error.name" />
+              <FormattedMessage id="form.error.name.length" />
             </span>
           )}
         </Box>
