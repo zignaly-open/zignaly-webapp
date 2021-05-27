@@ -9,22 +9,20 @@ import CustomTooltip from "../../CustomTooltip";
  * @typedef {import("services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload
  * @typedef {Object} DefaultProps
  * @property {ProviderEntity} provider Provider entity.
- * @property {NewAPIProvidersPayload["type"]} type Provider type.
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const UserSummary = ({ provider, type }) => {
-  const { quote, profitsSinceCopying, allocatedBalance, currentAllocated } = provider;
-  const isCopyTrading = ["connected_traders", "copy_trading", "profit_sharing"].includes(type);
+const UserSummary = ({ provider }) => {
+  const { quote, profitsSinceCopying, allocatedBalance, currentAllocated, CTorPS } = provider;
   const profitPerc = allocatedBalance ? (profitsSinceCopying / allocatedBalance) * 100 : 0;
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (
     <Box className="userSummary" display="flex" flexDirection="column" justifyContent="flex-start">
-      {isCopyTrading && (
+      {CTorPS && (
         <>
           <Typography variant="subtitle1">
             <FormattedMessage id="srv.allocated" />

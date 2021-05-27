@@ -36,19 +36,22 @@ const quotes = [
 const Press = () => {
   return (
     <Box className="press">
-      <img src={ChartBg} className="bg" />
+      <div className="chart">
+        <img src={ChartBg} />
+        <div className="slide" />
+      </div>
       <Typography variant="h2">
         <FormattedMessage id="login.press" />
       </Typography>
       <Box
-        display="flex"
         className="quotes"
+        display="flex"
         flexDirection="row"
         flexWrap="wrap"
         justifyContent="center"
       >
         {quotes.map((quote, i) => (
-          <PressQuote quote={quote} key={i} />
+          <PressQuote key={i} quote={quote} />
         ))}
       </Box>
     </Box>

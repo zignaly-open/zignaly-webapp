@@ -125,7 +125,7 @@
  * @typedef {Object} DefaultStateSettings
  * @property {String} languageCode
  * @property {Boolean} darkStyle
- * @property {Boolean} marketplaceCacheModal
+ * @property {Object<string, boolean>} disableCacheModal
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
  * @property {SortColumns} sortColumns
@@ -221,7 +221,7 @@ const initialState = {
   settings: {
     languageCode: "en",
     darkStyle: false,
-    marketplaceCacheModal: true,
+    disableCacheModal: {},
     balanceBox: false,
     rowsPerPage: {},
     displayColumns: {
@@ -549,6 +549,7 @@ const initialState = {
       realExchangeConnected: false,
       demoExchangeConnected: false,
       exchanges: [],
+      // eslint-disable-next-line
       isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
     },
   },

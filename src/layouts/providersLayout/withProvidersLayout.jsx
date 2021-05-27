@@ -66,7 +66,7 @@ const withProvidersLayout = (Component) => {
     };
 
     const renderFiltersButton = isCopyTrading || isProfitSharing;
-    const renderRightComponent = !props.path.startsWith("/profitSharing/my");
+    const renderRightComponent = !props.path.includes("/my");
 
     const filters = renderRightComponent ? (
       <>

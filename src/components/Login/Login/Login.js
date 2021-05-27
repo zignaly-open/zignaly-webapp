@@ -24,7 +24,7 @@ import { FormattedMessage } from "react-intl";
 const Login = ({ children }) => {
   return (
     <Box className="loginPage">
-      <Box display="flex" flexDirection="row" className="headerBox" justifyContent="space-between">
+      <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
         <img alt="Zignaly" className="logo" src={Logo} />
         <Box className="languageBox">
           <LanguageSwitcherDropdown />
@@ -64,10 +64,10 @@ const Login = ({ children }) => {
             <img src={OneDollar} />
             <div className="sectDescBox">
               <Typography className="sectHeader">
-                <FormattedMessage id="login.hero.record" />
+                <FormattedMessage id="login.hero.min" />
               </Typography>
               <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.record.desc" />
+                <FormattedMessage id="login.hero.min.desc" />
               </Typography>
             </div>
           </div>

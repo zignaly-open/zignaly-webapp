@@ -24,7 +24,7 @@ const SignupPage = () => {
       <Helmet>
         <title>
           {`${intl.formatMessage({
-            id: "signup.title",
+            id: "action.signup",
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>

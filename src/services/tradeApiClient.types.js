@@ -607,6 +607,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} ProvidersOwnedPayload
  * @property {number} timeFrame
+ * @property {NewAPIProvidersPayload["type"]} type
  */
 
 /**
@@ -675,6 +676,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} currentAllocated Allocated balance with unrealized pnl.
  * @property {number} allocatedBalance Allocated balance without unrealized pnl.
  * @property {number} profitsSinceCopying
+ * @property {boolean} CTorPS
+ * @property {boolean} copyTrader
  */
 
 /**
@@ -1167,8 +1170,28 @@ function providerItemTransform(providerItem, providerType) {
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),
   // );
+  let connectedOnly = providerType ? providerType.startsWith("connected") : false;
+  let copyTrader = false;
+  let profitSharingProvider = false;
 
-  if (!transformedResponse.isCopyTrading) {
+  // This first check is for legacy api
+  if (!providerType) {
+    copyTrader = transformedResponse.provType === "copytrading";
+    profitSharingProvider = transformedResponse.provType === "profitsharing";
+  } else if (!connectedOnly) {
+    copyTrader = providerType === "copy_trading";
+    profitSharingProvider = providerType === "profit_sharing";
+  } else {
+    copyTrader = providerType === "connected_traders" && !transformedResponse.profitSharing;
+    profitSharingProvider =
+      providerType === "connected_traders" && transformedResponse.profitSharing;
+  }
+
+  transformedResponse.providerLink = `/${
+    copyTrader ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
+  }/${transformedResponse.id}`;
+
+  if (!copyTrader && !profitSharingProvider) {
     // Updating followers count because it's out of date for clones
     transformedResponse.followers = transformedResponse.aggregateFollowers.length
       ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
@@ -1176,25 +1199,11 @@ function providerItemTransform(providerItem, providerType) {
       : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
-  let connectedOnly = providerType.startsWith("connected");
-  let copyTraders = false;
-  let profitSharingProvider = false;
 
-  if (!providerType) {
-    copyTraders = transformedResponse.provType === "copytrading";
-    profitSharingProvider = transformedResponse.provType === "profitsharing";
-  } else if (!connectedOnly) {
-    copyTraders = providerType === "copy_trading";
-    profitSharingProvider = providerType === "profit_sharing";
-  } else {
-    copyTraders = providerType === "connected_traders" && !transformedResponse.profitSharing;
-    profitSharingProvider =
-      providerType === "connected_traders" && transformedResponse.profitSharing;
-  }
-
-  transformedResponse.providerLink = `/${
-    copyTraders ? "copyTraders" : profitSharingProvider ? "profitSharing" : "signalProviders"
-  }/${transformedResponse.id}`;
+  transformedResponse.profitSharing = profitSharingProvider;
+  transformedResponse.copyTrader = copyTrader;
+  transformedResponse.CTorPS = copyTrader || profitSharingProvider;
+  transformedResponse.quote = providerItem.quote || providerItem.copyTradingQuote || "";
 
   return transformedResponse;
 }
@@ -1290,6 +1299,8 @@ function createEmptyProviderEntity() {
     currentAllocated: 0,
     allocatedBalance: 0,
     profitsSinceCopying: 0,
+    CTorPS: false,
+    copyTrader: false,
   };
 }
 
@@ -4466,6 +4477,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       allocatedBalance: 0,
       currentAllocated: 0,
       profitsSinceCopying: 0,
+      copyTrader: false,
+      CTorPS: false,
     },
     signalsInfo: [],
   };
