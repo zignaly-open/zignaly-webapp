@@ -241,10 +241,11 @@ const StopLossPanel = (props) => {
               status={
                 positionEntity &&
                 positionEntity.exchangeType === "futures" &&
+                positionEntity.exchange.toLowerCase() === "binance" &&
                 positionEntity.stopLossPercentage ? (
                   <StopLossStatus orderId={positionEntity.stopLossOrderId} />
                 ) : (
-                  <div />
+                  <span />
                 )
               }
             />
