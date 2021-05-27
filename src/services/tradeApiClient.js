@@ -355,7 +355,7 @@ class TradeApiClient {
     let baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
 
     if (payload.CF) {
-      baseUrl = baseUrl.split("/api")[0];
+      baseUrl = baseUrl.split(apiVersion === 2 ? "/api" : "/new_api")[0];
     }
 
     let requestUrl = baseUrl + endpointPath;
