@@ -51,7 +51,7 @@ const settings = createReducer(initialState.settings, {
   },
 
   [SET_MARKETPLACE_CACHE_MODAL]: (state, action) => {
-    state.marketplaceCacheModal = action.payload;
+    state.disableCacheModal[action.payload] = true;
   },
 
   [TOGGLE_BALANCE_BOX]: (state, action) => {

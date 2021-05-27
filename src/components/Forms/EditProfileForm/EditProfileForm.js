@@ -257,7 +257,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @returns {void}
    */
   const onSubmit = (data) => {
-    if (storeSettings.marketplaceCacheModal) {
+    if (!storeSettings.disableCacheModal[storeUserData.userId]) {
       showCacheModal(true);
       setSubmittedFormData(data);
     } else {
@@ -380,7 +380,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    */
   const onAcceptance = (showAgain) => {
     if (showAgain) {
-      dispatch(setMarketplaceCacheModal(false));
+      dispatch(setMarketplaceCacheModal(storeUserData.userId));
     }
     updateData(submittedFormData);
   };

@@ -1174,7 +1174,6 @@ function providerItemTransform(providerItem, providerType) {
   let connectedOnly = providerType ? providerType.startsWith("connected") : false;
   let copyTrader = false;
   let profitSharingProvider = false;
-  let CTorPS = false;
 
   // This first check is for legacy api
   if (!providerType) {
@@ -1183,10 +1182,8 @@ function providerItemTransform(providerItem, providerType) {
   } else if (!connectedOnly) {
     copyTrader = providerType === "copy_trading";
     profitSharingProvider = providerType === "profit_sharing";
-    CTorPS = !["signal_providers", "connected_providers"].includes(providerType);
   } else {
     copyTrader = providerType === "connected_traders" && !transformedResponse.profitSharing;
-    CTorPS = providerType === "connected_traders";
     profitSharingProvider =
       providerType === "connected_traders" && transformedResponse.profitSharing;
   }
@@ -1206,7 +1203,7 @@ function providerItemTransform(providerItem, providerType) {
 
   transformedResponse.profitSharing = profitSharingProvider;
   transformedResponse.copyTrader = copyTrader;
-  transformedResponse.CTorPS = CTorPS;
+  transformedResponse.CTorPS = copyTrader || profitSharingProvider;
   transformedResponse.quote = providerItem.quote || providerItem.copyTradingQuote || "";
 
   return transformedResponse;

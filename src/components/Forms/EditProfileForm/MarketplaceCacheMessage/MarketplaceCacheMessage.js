@@ -17,7 +17,7 @@ import CustomButton from "../../../CustomButton";
  * @returns {JSX.Element} Component JSX.
  */
 const MarketplaceCacheMessage = ({ onClose, onSuccess }) => {
-  const [showaAgain, setShowAgain] = useState(true);
+  const [showaAgain, setShowAgain] = useState(false);
 
   const handleSuccess = () => {
     onSuccess(showaAgain);
