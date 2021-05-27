@@ -11,6 +11,7 @@ import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
+import useABTest from "hooks/useABTest";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ const SignupForm = () => {
   const intl = useIntl();
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
+  const newPageAB = useABTest();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -58,6 +60,7 @@ const SignupForm = () => {
       array: true,
       gRecaptchaResponse: gRecaptchaResponse,
       terms: data.terms,
+      newPageAB,
     };
     dispatch(registerUser(payload, setLoading));
   };
@@ -195,7 +198,7 @@ const SignupForm = () => {
           {!isCheckly && <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />}
         </Box>
 
-        <Box className="inputBox button-box">
+        <Box className="inputBox buttonBox">
           <CustomButton className={"full submitButton"} loading={loading} type="submit">
             <FormattedMessage id="action.signup" />
           </CustomButton>

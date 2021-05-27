@@ -10,11 +10,18 @@ import LoginHeader from "../../components/Login/LoginHeader";
 import Login from "../../components/Login/Login";
 import useRedirectUponSessionValid from "hooks/useRedirectUponSessionValid";
 import useABTest from "hooks/useABTest";
+import useHasMounted from "hooks/useHasMounted";
 
 const LoginPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid();
   const showNew = useABTest();
+
+  const hasMounted = useHasMounted();
+  if (!hasMounted) {
+    // Don't render statically due to split test
+    return null;
+  }
 
   return (
     <>

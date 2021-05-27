@@ -30,7 +30,7 @@ const Login = ({ children }) => {
           <LanguageSwitcherDropdown />
         </Box>
       </Box>
-      <Box className="heroBox" display="flex" flexDirection="row" justifyContent="center">
+      <Box className="heroBox" display="flex" flexDirection="row" justifyContent="space-between">
         <Box className="heroSide">
           <Typography variant="h1">
             <FormattedMessage

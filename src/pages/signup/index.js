@@ -10,15 +10,19 @@ import SignupForm from "../../components/Forms/SignupForm";
 import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
 import useABTest from "hooks/useABTest";
 import Login from "../../components/Login/Login";
+import useHasMounted from "hooks/useHasMounted";
 
 const SignupPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid("/profitSharing");
   const showNew = useABTest();
 
-  // if (showNew === null) {
-  //   return null;
-  // }
+  const hasMounted = useHasMounted();
+  if (!hasMounted) {
+    // Don't render statically due to split test
+    return null;
+  }
+
   return (
     <>
       <Helmet>
