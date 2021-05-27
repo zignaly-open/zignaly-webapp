@@ -12,6 +12,10 @@
         flex: 0 0 50%;
       }
 
+      > :nth-child(2) {
+        flex: 0 0 50%;
+      }
+
       > :nth-last-child(3) {
         flex: 0 0 40%;
       }
