@@ -12,6 +12,8 @@ import "./StopLossPanel.scss";
 import CustomSelect from "../../CustomSelect";
 import { some } from "lodash";
 import PricePercentageControl from "../Controls/PricePercentageControl";
+import StopLossStatus from "../StopLossStatus/StopLossStatus";
+import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -237,6 +239,15 @@ const StopLossPanel = (props) => {
               }}
               priorityName="stopLossPriority"
               quote={symbolData.quote}
+              status={
+                positionEntity &&
+                positionEntity.exchangeType === "futures" &&
+                positionEntity.stopLossPercentage ? (
+                  <StopLossStatus orderId={positionEntity.stopLossOrderId} />
+                ) : (
+                  <div />
+                )
+              }
             />
           </Box>
           <Box alignItems="center" className="title" display="flex" flexDirection="row" mt="12px">

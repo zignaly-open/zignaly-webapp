@@ -526,6 +526,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} stopLossToBreakEven Stop Loss moves to break even (entry price) when take profit target is reached.
  * @property {boolean} isolated
  * @property {string} isolatedReadable
+ * @property {string} stopLossOrderId Stop loss order id
  */
 
 /**
