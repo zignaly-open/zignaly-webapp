@@ -2,6 +2,9 @@
   align-items: center;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 180px;
 
   button {
     background-color: transparent;
@@ -12,7 +15,7 @@
 
   img {
     cursor: pointer;
-    margin: 0 0.4rem;
+    margin: 0.4rem;
     width: 1.4em;
   }
 }
