@@ -433,7 +433,7 @@ const usePositionsList = (
       }
     }
   };
-  useInterval(updateData, 3000, true);
+  useInterval(updateData, 10000, true);
 
   const handlePositionTypeChange = () => {
     typeRef.current = type;
