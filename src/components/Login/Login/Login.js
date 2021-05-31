@@ -4,7 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNB.svg";
 import Trophy from "images/login/trophy.svg";
 import Coins from "images/login/coins.svg";
-import OneDollar from "images/login/1$.svg";
+import OneDollar from "images/login/$1.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";

@@ -1,6 +1,6 @@
 import React from "react";
 import "./PressQuote.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -35,9 +35,9 @@ const PressQuote = ({ quote }) => {
         justifyContent="space-between"
         width={1}
       >
-        <Typography className="readMore">
+        <a className="readMore" href={quote.url} rel="noreferrer" target="_blank">
           <FormattedMessage id="login.readmore" />
-        </Typography>
+        </a>
         <img src={quote.logo} />
       </Box>
     </Box>

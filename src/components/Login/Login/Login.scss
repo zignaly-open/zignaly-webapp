@@ -7,6 +7,7 @@
   h1 {
     font-size: 40px;
     letter-spacing: normal;
+    padding-bottom: 40px;
     text-transform: none;
 
     strong {
@@ -32,7 +33,7 @@
     align-items: start;
     display: flex;
     flex-direction: row;
-    margin: 80px 71px 0 0;
+    margin: 40px 71px 0 0;
 
     img {
       margin-right: 24px;
@@ -87,7 +88,6 @@
 
     .sect {
       margin-right: 0;
-      margin-top: 60px;
     }
 
     .press {
