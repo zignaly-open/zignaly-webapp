@@ -2120,21 +2120,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
     return responseData;
   }
-
-  /**
-   * Generate provider positions report
-   *
-   * @param {{token: string}} payload Payload to generate position report
-   *
-   * @returns {Promise<boolean>} Result
-   *
-   * @memberof TradeApiClient
-   */
-  async downloadReport(payload) {
-    const endpointPath = "/report";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
-    return responseData;
-  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
