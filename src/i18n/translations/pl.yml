@@ -24,6 +24,8 @@ menu.positionview: "Zobacz pozycję"
 login.title: "Logowanie"
 signup.title: "Rejestracja"
 recover.title: "Odzyskaj hasło"
+position.report.title: "Position Report"
+position.report.download.message: "Downloading your file, Please wait!"
 recover.error: "Link wygasł! Rozpocznij proces ponownie ze strony logowania!"
 # BALANCE
 balance.available: "Dostępne środki"

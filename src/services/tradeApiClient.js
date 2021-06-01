@@ -2107,19 +2107,6 @@ class TradeApiClient {
   }
 
   /**
-   * Generate user positions report
-   *
-   * @returns {Promise<boolean>} Result
-   *
-   * @memberof TradeApiClient
-   */
-  async generateUserPositionsReport() {
-    const endpointPath = "/user/report/positions";
-    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
-    return responseData;
-  }
-
-  /**
    * Generate user exchange positions report
    *
    * @param {{internalExchangeId: string}} payload Payload to generate position report
@@ -2137,15 +2124,15 @@ class TradeApiClient {
   /**
    * Generate provider positions report
    *
-   * @param {{providerId: string}} payload Payload to generate position report
+   * @param {{token: string}} payload Payload to generate position report
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
-  async generateProviderPositionsReport(payload) {
-    const endpointPath = `/user/exchanges/${payload.providerId}/report/positions`;
-    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+  async downloadReport(payload) {
+    const endpointPath = "/report";
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
     return responseData;
   }
 }

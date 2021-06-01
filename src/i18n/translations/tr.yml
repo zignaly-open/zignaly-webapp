@@ -21,6 +21,8 @@ menu.positionview: "Pozisyonu Görüntüle"
 login.title: "Oturum aç"
 signup.title: "Üye Ol"
 recover.title: "Parola Kurtarma"
+position.report.title: "Position Report"
+position.report.download.message: "Downloading your file, Please wait!"
 recover.error: "Bağlantının süresi doldu! Lütfen işlemi oturum açma sayfasından tekrar başlatın!"
 # BALANCE
 balance.available: "Kullanılabilir"
