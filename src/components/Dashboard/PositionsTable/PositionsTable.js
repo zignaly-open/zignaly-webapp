@@ -18,6 +18,7 @@ import { useIntl } from "react-intl";
 import PositionsContext from "../PositionsContext";
 import Modal from "../../Modal";
 import MarginModal from "./MarginModal";
+import PositionsReportModal from "./PositionsReportModal";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
@@ -70,6 +71,8 @@ const PositionsTable = (props) => {
   const showTypesFilter = type === "log" && userData.isAdmin;
   const { formatMessage } = useIntl();
   const [marginPosition, setMarginPosition] = useState(null);
+  const [processingReports, setProcessingReports] = useState(false);
+  const [reportModal, setReportModal] = useState(false);
 
   const toggleFilters = () => {
     setFiltersVisibility(!filtersVisibility);
@@ -305,11 +308,37 @@ const PositionsTable = (props) => {
 
   const { columns, data } = composeDataTableForPositionsType();
 
+  const generatePositionsReport = () => {
+    tradeApi
+      .generateExchangePositionsReport({ internalExchangeId: selectedExchange.internalId })
+      .then(() => {
+        setProcessingReports(true);
+        setReportModal(false);
+        dispatch(showSuccessAlert("", "alert.positionreport.message"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setProcessingReports(false);
+      });
+    return false;
+  };
+
+  const showReportModal = () => {
+    setReportModal(true);
+    return false;
+  };
+
   /**
    * @type {MUIDataTableOptions}
    */
   const options = {
     sortOrder: { name: "openDateReadable", direction: "desc" },
+    // @ts-ignore
+    download: processingReports ? "disabled" : true,
+    // @ts-ignore
+    onDownload: type === "closed" ? showReportModal : null,
   };
 
   const embedFilters = () => {
@@ -356,8 +385,15 @@ const PositionsTable = (props) => {
         state={Boolean(marginPosition)}
       >
         {marginPosition && (
-          <MarginModal onClose={() => setMarginPosition(null)} position={marginPosition} />
+          <MarginModal onClose={() => setMarginPosition(false)} position={marginPosition} />
         )}
+      </Modal>
+
+      <Modal onClose={() => setReportModal(false)} persist={false} size="small" state={reportModal}>
+        <PositionsReportModal
+          onClose={() => setReportModal(false)}
+          onSuccess={generatePositionsReport}
+        />
       </Modal>
 
       {loading && (

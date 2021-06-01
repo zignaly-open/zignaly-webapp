@@ -588,6 +588,7 @@ srv.disclaimer.title: "CH-Disclaimer"
 srv.disclaimer.text: "CH-Your are paying the fee directly to the signal provider or copy trader. Zignaly doesn't provide any trading advise or recommendation."
 srv.edit.cacheinfo.title: "CH-Important Message"
 srv.edit.cacheinfo.message: "CH-These changes could take up to 30 minutes to be reflected in your service card inside marketplace"
+position.report.message: "CH-We will process your request and send you an email about information to download your position report history."
 srv.edit.cacheinfo.dont: "CH-Don't show this message again!"
 srv.about: "CH-About us"
 srv.options: "CH-Options"
@@ -713,6 +714,7 @@ alert.management.cancelall.body: "CH-Your request to cancel these positions has 
 alert.management.exitall.title: "CH-Exited Successfully!"
 alert.management.exitall.body: "CH-Your request to exit these positions has been submitted successfully."
 alert.changeemail.confirm.body: "CH-Your email has been reset. You can now login with new email!"
+alert.positionreport.message: "Request Processed! You will receive an email shortly."
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "CH-Your API-Key from the provider"
@@ -1457,6 +1459,7 @@ action.saveSettings: "CH-Save Settings"
 action.forgot: "CH-Forgot Password"
 action.changeemail: "CH-Change Email"
 action.accept: "CH-Accept"
+action.proceed: "CH-Proceed"
 
 # FORM
 form.button.save: "CH-Save"
