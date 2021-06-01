@@ -75,17 +75,17 @@ jobs:
           echo "WEBAPP_PACKAGE=zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
           echo $WEBAPP_PACKAGE
       - name: Deploy Release
-        run: scp $WEBAPP_PACKAGE webapp:/zignaly-stanging/artifacts
+        run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
       - name: Unpack Release
         run: |
           CMD_PREPARE="sudo mkdir -p $UNPACK_DIRECTORY"
           ssh webapp $CMD_PREPARE
-          CMD_UNPACK="sudo tar -zxvf /zignaly-stanging/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY"
+          CMD_UNPACK="sudo tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY"
           ssh webapp $CMD_UNPACK
           CMD_LINK="sudo ln -nsf $UNPACK_DIRECTORY $APP_LINK"
           ssh webapp $CMD_LINK
           CMD_RELOAD="sudo /etc/init.d/nginx reload"
           ssh webapp $CMD_RELOAD
         env:
-          UNPACK_DIRECTORY: /zignaly/zignaly.com-stanging/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
-          APP_LINK: /zignaly/zignaly.com-stanging/app
+          UNPACK_DIRECTORY: /zignaly/staging.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
+          APP_LINK: /zignaly/staging.zignaly.com-stanging/app
