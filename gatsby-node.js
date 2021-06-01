@@ -60,6 +60,12 @@ exports.onCreatePage = ({ page, actions }) => {
     createPage(page);
     return;
   }
+  // Override position report page route to support token argument.
+  if (page.path.match(/^\/positionReport\/$/)) {
+    page.matchPath = "/positionReport/:token";
+    createPage(page);
+    return;
+  }
 };
 
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");

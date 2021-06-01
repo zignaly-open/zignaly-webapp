@@ -19,6 +19,8 @@ menu.positionview: "Vista da Posição"
 login.title: "Conecte-se"
 signup.title: "Inscrever-se"
 recover.title: "Recuperar senha"
+position.report.title: "Position Report"
+position.report.download.message: "Downloading your file, Please wait!"
 recover.error: "Link expirado! Por favor, reinicie o processo na página de login!"
 # BALANCE
 balance.available: "acessível"
