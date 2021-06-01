@@ -2105,6 +2105,49 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
     return responseData;
   }
+
+  /**
+   * Generate user positions report
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async generateUserPositionsReport() {
+    const endpointPath = "/user/report/positions";
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Generate user exchange positions report
+   *
+   * @param {{internalExchangeId: string}} payload Payload to generate position report
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async generateExchangePositionsReport(payload) {
+    const endpointPath = `/user/exchanges/${payload.internalExchangeId}/report/positions`;
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Generate provider positions report
+   *
+   * @param {{providerId: string}} payload Payload to generate position report
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async generateProviderPositionsReport(payload) {
+    const endpointPath = `/user/exchanges/${payload.providerId}/report/positions`;
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
