@@ -1,12 +1,13 @@
 name: Deploy To Staging Server
 
 on:
-  release:
-    types: [ published ]
+  push:
+    branches:
+      - release/**
 
 jobs:
   build:
-    name: Webapp Prod Release
+    name: Webapp Staging Release
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
