@@ -46,7 +46,7 @@ const CopyTraderSummary = ({ provider }) => {
             }`}
             icon="followers"
             title={<FormattedMessage id="copyt.management.totalfollowers" />}
-            value={summary.totalFollowers}
+            value={provider.followers}
           />
 
           <ManagementSummaryCard
