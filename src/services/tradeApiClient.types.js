@@ -2855,6 +2855,7 @@ export function providerGetResponseTransform(response) {
         : response.options,
   });
   transformed.options.allowClones = checkClones();
+  transformed.copyTradingQuote = response.quote || response.copyTradingQuote || "";
   return transformed;
 }
 
