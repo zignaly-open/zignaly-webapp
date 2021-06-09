@@ -89,4 +89,4 @@ jobs:
           ssh webapp $CMD_RELOAD
         env:
           UNPACK_DIRECTORY: /zignaly/staging.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
-          APP_LINK: /zignaly/staging.zignaly.com-staging/app
+          APP_LINK: /zignaly/staging.zignaly.com/app
