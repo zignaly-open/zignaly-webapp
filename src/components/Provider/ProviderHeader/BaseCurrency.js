@@ -14,20 +14,22 @@ import { Tooltip } from "@material-ui/core";
 const BaseCurrency = ({ provider }) => {
   const getProvideQuotes = () => {
     let quotes = "";
-    if (provider.signalProviderQuotes.length <= 2) {
-      for (let a = 0; a < provider.signalProviderQuotes.length; a++) {
-        quotes += provider.signalProviderQuotes[a];
-        if (a !== provider.signalProviderQuotes.length - 1) {
-          quotes += ", ";
+    if (provider.signalProviderQuotes) {
+      if (provider.signalProviderQuotes.length <= 2) {
+        for (let a = 0; a < provider.signalProviderQuotes.length; a++) {
+          quotes += provider.signalProviderQuotes[a];
+          if (a !== provider.signalProviderQuotes.length - 1) {
+            quotes += ", ";
+          }
         }
-      }
-    } else {
-      for (let a = 0; a < 2; a++) {
-        quotes += provider.signalProviderQuotes[a];
-        if (a !== 1) {
-          quotes += ", ";
-        } else {
-          quotes += "...";
+      } else {
+        for (let a = 0; a < 2; a++) {
+          quotes += provider.signalProviderQuotes[a];
+          if (a !== 1) {
+            quotes += ", ";
+          } else {
+            quotes += "...";
+          }
         }
       }
     }
@@ -36,10 +38,12 @@ const BaseCurrency = ({ provider }) => {
 
   const getProviderQuotesTooltip = () => {
     let quotes = "";
-    for (let a = 0; a < provider.signalProviderQuotes.length; a++) {
-      quotes += provider.signalProviderQuotes[a];
-      if (a !== provider.signalProviderQuotes.length - 1) {
-        quotes += ", ";
+    if (provider.signalProviderQuotes) {
+      for (let a = 0; a < provider.signalProviderQuotes.length; a++) {
+        quotes += provider.signalProviderQuotes[a];
+        if (a !== provider.signalProviderQuotes.length - 1) {
+          quotes += ", ";
+        }
       }
     }
     return quotes;

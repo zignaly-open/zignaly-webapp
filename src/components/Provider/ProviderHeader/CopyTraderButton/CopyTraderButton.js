@@ -172,13 +172,20 @@ const CopyTraderButton = ({ provider }) => {
           )
         ) : (
           !disabled && (
-            <CustomButton
-              className="loadMoreButton"
-              loading={cancelDisconnectLoader}
-              onClick={confirmCancel}
+            <Tooltip
+              placement="right"
+              title={<FormattedMessage id="copyt.canceldisconnecting.tooltip" />}
             >
-              <FormattedMessage id="copyt.canceldisconnecting" />
-            </CustomButton>
+              <Box>
+                <CustomButton
+                  className="loadMoreButton"
+                  loading={cancelDisconnectLoader}
+                  onClick={confirmCancel}
+                >
+                  <FormattedMessage id="copyt.canceldisconnecting" />
+                </CustomButton>
+              </Box>
+            </Tooltip>
           )
         )}
       </>
