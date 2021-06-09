@@ -2,7 +2,7 @@
   {
     "id": "customerKey",
     "label": "signalp.option.apikey",
-    "tooltip": ""
+    "tooltip": "signalp.option.apikey"
   },
   {
     "id": "stopLossFromSignal",
