@@ -1271,6 +1271,7 @@ copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 srv.newfollowers: "Nuevos seguidores"
 copyt.canceldisconnecting: "Cancelar desconexión"
+copyt.canceldisconnecting.tooltip: "Since you currently have open positions with this service, the soft disconnection process has begun! No more new positions will open, but all previous positions need to be closed to release your funds in your balance."
 copyt.management.cancel: 'Cancelar positiones "todavía entrando"'
 copyt.management.exit: "Cerrar Posiciones"
 copyt.copy.error4: "No puede conectarse al servicio de Profit Sharing utilizando una cuenta Demo."
