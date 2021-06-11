@@ -11,7 +11,7 @@ import {
 } from "@material-ui/lab";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-// import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 // import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 // import tradeApi from "../../../services/tradeApiClient";
@@ -35,6 +35,7 @@ import useAvailableBalance from "hooks/useAvailableBalance";
  * @returns {JSX.Element} Component JSX.
  */
 const InternalTransferForm = ({ selectedExchange }) => {
+  const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   // const storeSession = useStoreSessionSelector();
@@ -125,7 +126,9 @@ const InternalTransferForm = ({ selectedExchange }) => {
         flexDirection="column"
         justifyContent="flex-start"
       >
-        <Typography variant="h3">Internal Transfer From</Typography>
+        <Typography variant="h3">
+          <FormattedMessage id="transfer.internal.form.title" />
+        </Typography>
         <Timeline className="timeline">
           <TimelineItem className="timelineItem">
             <TimelineSeparator>
@@ -140,7 +143,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
                   name="fromAccount"
                   render={({ onChange, value }) => (
                     <CustomSelect
-                      label="From"
+                      label={intl.formatMessage({ id: "transfer.internal.form.from" })}
                       labelPlacement="top"
                       onChange={(/** @type {string} **/ v) => {
                         onChange(v);
@@ -173,10 +176,12 @@ const InternalTransferForm = ({ selectedExchange }) => {
                 <Controller
                   control={control}
                   defaultValue={toAccountList.length ? toAccountList[0].val : ""}
-                  name="fromAccount"
+                  name="toAccount"
                   render={({ onChange, value }) => (
                     <CustomSelect
-                      label="To"
+                      label={intl.formatMessage({
+                        id: "transfer.internal.form.to",
+                      })}
                       labelPlacement="top"
                       onChange={(/** @type {string} **/ v) => {
                         onChange(v);
@@ -199,7 +204,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
                   name="selectedAsset"
                   render={({ onChange, value }) => (
                     <CustomSelect
-                      label="Coin"
+                      label={intl.formatMessage({ id: "transfer.internal.coin" })}
                       labelPlacement="top"
                       onChange={(/** @type {string} **/ v) => {
                         onChange(v);
@@ -225,19 +230,22 @@ const InternalTransferForm = ({ selectedExchange }) => {
                   justifyContent="space-between"
                 >
                   <label className="customLabel">
-                    Amount
-                    {/* <FormattedMessage id="srv.edit.title" /> */}
+                    <FormattedMessage id="transfer.internal.amount" />
                   </label>
                   <label className="customLabel">
-                    {balance[selectedAsset] || 0} Available
-                    {/* <FormattedMessage id="srv.edit.title" /> */}
+                    {balance[selectedAsset] || 0}{" "}
+                    <FormattedMessage id="transfer.internal.available" />
                   </label>
                 </Box>
                 <Controller
                   as={
                     <TextField
                       InputProps={{
-                        endAdornment: <InputAdornment position="end">MAX</InputAdornment>,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <FormattedMessage id="transfer.internal.max" />
+                          </InputAdornment>
+                        ),
                       }}
                       className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
                       error={!!errors.amount}
@@ -259,8 +267,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
 
         <Box className="formAction" display="flex" flexDirection="row" justifyContent="center">
           <CustomButton className="submitButton" loading={loading} type="submit">
-            Transfer
-            {/* <FormattedMessage id="action.saveData" /> */}
+            <FormattedMessage id="accounts.transfer" />
           </CustomButton>
         </Box>
       </Box>
