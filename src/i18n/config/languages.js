@@ -36,6 +36,16 @@ const LocalizationLanguages = [
     label: "Español",
     countryCode: "es",
   },
+  {
+    locale: "fr",
+    label: "French",
+    countryCode: "fr",
+  },
+  {
+    locale: "pt",
+    label: "Portugese",
+    countryCode: "pt",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
@@ -49,16 +59,6 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     locale: "tr",
     label: "Türkçe",
     countryCode: "tr",
-  });
-  LocalizationLanguages.push({
-    locale: "fr",
-    label: "French",
-    countryCode: "fr",
-  });
-  LocalizationLanguages.push({
-    locale: "pt",
-    label: "Portugese",
-    countryCode: "pt",
   });
 }
 

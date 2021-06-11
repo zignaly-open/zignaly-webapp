@@ -34,6 +34,10 @@ const ExchangeAccountTopBar = ({ account }) => {
 
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
 
+  const disableConvertButton = () => {
+    return account.exchangeType.toLowerCase() === "futures";
+  };
+
   return (
     <Box
       alignItems="center"
@@ -118,6 +122,7 @@ const ExchangeAccountTopBar = ({ account }) => {
             </CustomButton>
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
+              disabled={disableConvertButton()}
               onClick={() => navigateToPath("convert", account)}
             >
               {isMobile ? (

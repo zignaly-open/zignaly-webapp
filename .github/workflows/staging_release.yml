@@ -36,7 +36,7 @@ jobs:
       - name: Install submodules
         run: git submodule update --init
       - name: Build
-        run: npm run build:prod
+        run: npm run build:staging
       # - name: Integration Tests
       # We can't test production build because it isn't built to use mirage
       # run: npm run cy:ci:prod
