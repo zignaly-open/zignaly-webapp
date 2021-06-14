@@ -26,8 +26,12 @@ import { Alert } from "@material-ui/lab";
 const Deposit = () => {
   const {
     pathParams: { selectedAccount },
+    setPathParams,
   } = useContext(ModalPathContext);
   const copyToClipboard = useClipboard();
+
+  // Initialize exchange internal id if/when account is activated
+  const internalId = selectedAccount.activated ? selectedAccount.internalId : "";
 
   const {
     selectedAssetName,
@@ -36,16 +40,18 @@ const Deposit = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType);
+  } = useAssetsSelect(internalId, selectedAccount.exchangeType);
 
   // Activate account if needed
-  useActivateSubAccount(selectedAccount);
+  useActivateSubAccount(selectedAccount, () => {
+    // Update context object
+    setPathParams((params) => ({
+      ...params,
+      selectedAccount: { ...params.selectedAccount, activated: true },
+    }));
+  });
 
-  const depositAddress = useExchangeDepositAddress(
-    selectedAccount.activated ? selectedAccount.internalId : "",
-    selectedAssetName,
-    selectedNetwork,
-  );
+  const depositAddress = useExchangeDepositAddress(internalId, selectedAssetName, selectedNetwork);
 
   const copyAddress = () => {
     if (depositAddress) copyToClipboard(depositAddress.address, "deposit.address.copied");
@@ -98,7 +104,7 @@ const Deposit = () => {
                 </Typography>
               </Box>
               <Box className="transferColumnsBox" display="flex" flexDirection="row">
-                <Box className="coinColumn">
+                <Box className={`coinColumn ${selectedAsset ? "selected" : ""}`}>
                   <TransferCoinPicker
                     asset={selectedAsset}
                     coins={assetsList}
@@ -106,15 +112,17 @@ const Deposit = () => {
                     onChange={setSelectedAsset}
                     selectedCoin={selectedAssetName}
                   />
-                  <Box className="tipBox">
-                    <img src={TimeIcon} />
-                    <Typography className="bold" variant="body1">
-                      <FormattedMessage id="deposit.waitingtime" />
-                    </Typography>
-                    <Typography variant="body1">
-                      <FormattedMessage id="deposit.processing" />
-                    </Typography>
-                  </Box>
+                  {selectedAsset && (
+                    <Box className="tipBox">
+                      <img src={TimeIcon} />
+                      <Typography className="bold" variant="body1">
+                        <FormattedMessage id="deposit.waitingtime" />
+                      </Typography>
+                      <Typography variant="body1">
+                        <FormattedMessage id="deposit.processing" />
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
                 {selectedAsset && (
                   <Box className="networkColumn">
