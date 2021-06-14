@@ -1977,6 +1977,7 @@ export function createExchangeConnectionEmptyEntity() {
     globalPositionsPerMarket: false,
     globalWhitelist: false,
     balanceSynced: false,
+    activated: false,
   };
 }
 
