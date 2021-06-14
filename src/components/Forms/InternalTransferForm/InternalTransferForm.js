@@ -13,18 +13,19 @@ import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-// import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-// import tradeApi from "../../../services/tradeApiClient";
-// import { useDispatch } from "react-redux";
+import tradeApi from "../../../services/tradeApiClient";
+import { useDispatch } from "react-redux";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
-// import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
+import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
 import CustomSelect from "components/CustomSelect";
 import useExchangeAssets from "hooks/useExchangeAssets";
 import useAvailableBalance from "hooks/useAvailableBalance";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
+ * @typedef {import("../../../services/tradeApiClient.types").InternalTransferPayload} InternalTransferPayload
  * @typedef {Object} DefaultProps
  * @property {ExchangeConnectionEntity} selectedExchange
  */
@@ -38,83 +39,48 @@ const InternalTransferForm = ({ selectedExchange }) => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
-  // const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, watch } = useForm();
-  // const dispatch = useDispatch();
-  const accounts = storeUserData.exchanges.filter((item) => item.isBrokerAccount);
-  const fromAccountList = accounts.length
-    ? accounts.map((i) => ({ val: i.internalId, label: i.internalName }))
-    : [];
-  const toAccountList =
-    accounts.length > 1
-      ? accounts
-          .filter((item) => item.internalId !== accounts[0].internalId)
-          .map((i) => ({ val: i.internalId, label: i.internalName }))
-      : [];
+  const { errors, handleSubmit, control, watch, setError } = useForm({ mode: "onChange" });
+  const dispatch = useDispatch();
+  const accounts = storeUserData.exchanges
+    .filter((item) => item.isBrokerAccount)
+    .map((i) => ({ val: i.internalId, label: i.internalName }));
+  const fromAccountList = accounts;
+  const toAccountList = accounts;
   const assets = useExchangeAssets(selectedExchange.internalId, new Date());
   const assetsOptions = Object.keys(assets);
   const { balance } = useAvailableBalance(selectedExchange);
   const selectedAsset = watch("selectedAsset", "BTC");
+  const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
+  const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
 
-  // const initAccounts = () => {
-  //   const accounts = storeUserData.exchanges.filter((item) => item.isBrokerAccount);
-  //   setFromAccountList(() => (accounts.length ? accounts : []));
-  //   setFromAccount(() => (accounts.length ? accounts[0].internalId : ""));
-  //   setToAccountList(() =>
-  //     accounts.length > 1
-  //       ? accounts.filter((item) => item.internalId !== accounts[0].internalId)
-  //       : [],
-  //   );
-  //   setToAccount(() => (accounts.length > 1 ? accounts[1].internalId : ""));
-  // };
+  const validateAccounts = () => {
+    if (selectedToAccount === selectedFromAccount) {
+      setError("internalIdDest", { type: "manual", message: "" });
+    }
+  };
 
-  // useEffect(initAccounts, []);
+  useEffectSkipFirst(validateAccounts, [selectedFromAccount, selectedToAccount]);
 
   /**
+   * Function to submit edit form.
    *
-   * @typedef {Object} SubmitObject
-   * @property {String} name
-   * @property {String} logoUrl
-   * @property {String} website
-   * @property {String} minAllocatedBalance
-   * @property {String} merchantId
-   * @property {String} price
-   * @property {String} ipnSecret
-   * @property {String} trial
-   * @property {boolean} public
-   * @property {Boolean} list
+   * @param {InternalTransferPayload} data Form data received at submit.
+   * @returns {void} None.
    */
-
-  // /**
-  //  * Function to submit edit form.
-  //  *
-  //  * @param {SubmitObject} data Form data received at submit.
-  //  * @returns {void} None.
-  //  */
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     setLoading(true);
-    // const payload = {
-    //   ...data,
-    // };
-    // tradeApi
-    //   .providerEdit(payload)
-    //   .then(() => {
-    //     const payload2 = {
-    //       token: payload.token,
-    //       providerId: payload.providerId,
-    //       version: 2,
-    //       exchangeInternalId: storeSettings.selectedExchange.internalId,
-    //     };
-    //     dispatch(getProvider(payload2, true));
-    //     dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
-    //   })
-    //   .catch((e) => {
-    //     dispatch(showErrorAlert(e));
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    tradeApi
+      .performInternalTransfer(data)
+      .then(() => {
+        dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -140,7 +106,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
                 <Controller
                   control={control}
                   defaultValue={fromAccountList.length ? fromAccountList[0].val : ""}
-                  name="fromAccount"
+                  name="internalIdSrc"
                   render={({ onChange, value }) => (
                     <CustomSelect
                       label={intl.formatMessage({ id: "transfer.internal.form.from" })}
@@ -175,8 +141,8 @@ const InternalTransferForm = ({ selectedExchange }) => {
               <Box className="inputBox">
                 <Controller
                   control={control}
-                  defaultValue={toAccountList.length ? toAccountList[0].val : ""}
-                  name="toAccount"
+                  defaultValue={toAccountList.length > 1 ? toAccountList[1].val : ""}
+                  name="internalIdDest"
                   render={({ onChange, value }) => (
                     <CustomSelect
                       label={intl.formatMessage({
@@ -195,13 +161,19 @@ const InternalTransferForm = ({ selectedExchange }) => {
             </TimelineContent>
           </TimelineItem>
 
+          {errors.internalIdDest && (
+            <span className="errorText">
+              <FormattedMessage id="transfer.internal.error1" />
+            </span>
+          )}
+
           <TimelineItem className="timelineItem">
             <TimelineContent className="timelineContent">
               <Box className="inputBox search">
                 <Controller
                   control={control}
                   defaultValue="BTC"
-                  name="selectedAsset"
+                  name="asset"
                   render={({ onChange, value }) => (
                     <CustomSelect
                       label={intl.formatMessage({ id: "transfer.internal.coin" })}
@@ -266,7 +238,12 @@ const InternalTransferForm = ({ selectedExchange }) => {
         </Timeline>
 
         <Box className="formAction" display="flex" flexDirection="row" justifyContent="center">
-          <CustomButton className="submitButton" loading={loading} type="submit">
+          <CustomButton
+            className="submitButton"
+            disabled={Boolean(Object.keys(errors).length) || loading}
+            loading={loading}
+            type="submit"
+          >
             <FormattedMessage id="accounts.transfer" />
           </CustomButton>
         </Box>

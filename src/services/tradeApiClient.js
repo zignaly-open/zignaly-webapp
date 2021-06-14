@@ -152,9 +152,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
- *
- *
- *
+ * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
  *
  */
 
@@ -2117,6 +2115,22 @@ class TradeApiClient {
    */
   async generateExchangePositionsReport(payload) {
     const endpointPath = `/user/exchanges/${payload.internalExchangeId}/report/positions`;
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Generate user exchange positions report
+   *
+   * @param {InternalTransferPayload} payload Payload to generate position report
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async performInternalTransfer(payload) {
+    const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
+    delete payload.internalIdSrc;
     const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
     return responseData;
   }
