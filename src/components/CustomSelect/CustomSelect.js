@@ -41,7 +41,7 @@ import "./CustomSelect.scss";
  * @property {renderOption} [renderOption] Custom render option function for autocomplete.
  * @property {boolean} [multiple] Multiple options for autocomplete.
  * @property {boolean} [disabled] Disabled.
- * @property {boolean} [placeholder] Placeholder.
+ * @property {string} [placeholder] Placeholder.
  */
 
 /**
