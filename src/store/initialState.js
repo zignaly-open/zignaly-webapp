@@ -482,6 +482,7 @@ const initialState = {
       globalPositionsPerMarket: false,
       globalWhitelist: false,
       balanceSynced: false,
+      activated: false,
     },
     timeFrame: {
       connectedCopyt: null,

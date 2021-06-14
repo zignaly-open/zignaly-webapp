@@ -1924,6 +1924,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {string|boolean} globalWhitelist
  * @property {boolean} globalDelisting
  * @property {boolean} balanceSynced
+ * @property {boolean} activated Flag to mark zignaly subaccount as activated
  */
 
 /**
@@ -1976,6 +1977,7 @@ export function createExchangeConnectionEmptyEntity() {
     globalPositionsPerMarket: false,
     globalWhitelist: false,
     balanceSynced: false,
+    activated: false,
   };
 }
 

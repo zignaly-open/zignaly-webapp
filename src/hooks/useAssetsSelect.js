@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useExchangeAssets from "./useExchangeAssets";
 
 /**
@@ -61,14 +61,6 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
       });
     }
   };
-
-  useEffect(() => {
-    if (assets && !selectedAsset) {
-      // Select BTC by default
-      setSelectedAssetByName(type !== "futures" ? "BTC" : "USDT");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assets]);
 
   return {
     selectedAssetName: selectedAssetData.name,
