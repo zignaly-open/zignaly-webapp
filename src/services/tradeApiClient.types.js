@@ -1068,6 +1068,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} InternalTransferPayload
+ * @property {string} internalIdDest
+ * @property {string} internalIdSrc
+ * @property {number} amount
+ * @property {number} asset
+ */
+
+/**
  * @typedef {Object} Disable2FAConfirmPayload
  * @property {string} apiKey An api key used to connect an exchange to zignaly
  * @property {string} token Reset link code

@@ -11,6 +11,7 @@ import { Settings, Sunset, Sunrise, Repeat, Layers } from "react-feather";
 import CustomToolip from "../../../CustomTooltip";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
+import SyncAltIcon from "@material-ui/icons/SyncAlt";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -106,6 +107,18 @@ const ExchangeAccountTopBar = ({ account }) => {
                 </CustomToolip>
               ) : (
                 <FormattedMessage id="accounts.deposit" />
+              )}
+            </CustomButton>
+            <CustomButton
+              className={isMobile ? "textDefault" : "textPurple"}
+              onClick={() => navigateToPath("transfer", account)}
+            >
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
+                  <SyncAltIcon />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.transfer" />
               )}
             </CustomButton>
             <CustomButton
