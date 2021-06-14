@@ -8,6 +8,7 @@ import ExchangeAccountAdd from "../ExchangeAccountAdd";
 import ModalPathContext from "../ModalPathContext";
 import ExchangeOrders from "../ExchangeOrders";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
+import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
 
 /**
  * Render the content the account exchanges modal depending on the current path.
@@ -31,6 +32,8 @@ const ConnectExchangeViewContent = () => {
       return <ExchangeAccountSettings />;
     case "deposit":
       return <Deposit />;
+    case "transfer":
+      return <Transfer />;
     case "withdraw":
       return <Withdraw />;
     case "convert":

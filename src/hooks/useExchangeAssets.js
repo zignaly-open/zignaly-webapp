@@ -22,20 +22,22 @@ const useExchangeAssets = (internalId, updatedAt) => {
   const dispatch = useDispatch();
 
   const loadData = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalId: internalId ? internalId : "",
-    };
+    if (internalId) {
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        internalId: internalId ? internalId : "",
+      };
 
-    if (storeSession.tradeApi.accessToken) {
-      tradeApi
-        .exchangeAssetsGet(payload)
-        .then((data) => {
-          setAssets(data);
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
-        });
+      if (storeSession.tradeApi.accessToken) {
+        tradeApi
+          .exchangeAssetsGet(payload)
+          .then((data) => {
+            setAssets(data);
+          })
+          .catch((e) => {
+            dispatch(showErrorAlert(e));
+          });
+      }
     }
   };
 
