@@ -20,7 +20,6 @@ import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
 import CustomSelect from "components/CustomSelect";
 import useExchangeAssets from "hooks/useExchangeAssets";
-import useAvailableBalance from "hooks/useAvailableBalance";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
@@ -32,10 +31,9 @@ import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 /**
  * About us compoennt for CT profile.
  *
- * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const InternalTransferForm = ({ selectedExchange }) => {
+const InternalTransferForm = () => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
@@ -47,12 +45,20 @@ const InternalTransferForm = ({ selectedExchange }) => {
     .map((i) => ({ val: i.internalId, label: i.internalName }));
   const fromAccountList = accounts;
   const toAccountList = accounts;
-  const assets = useExchangeAssets(selectedExchange.internalId, new Date());
-  const assetsOptions = Object.keys(assets);
-  const { balance } = useAvailableBalance(selectedExchange);
-  const selectedAsset = watch("selectedAsset", "BTC");
+  const selectedAsset = watch("asset", "BTC");
   const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
   const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
+  const selectedFromAccountObject = storeUserData.exchanges.find(
+    (item) => item.internalId === selectedFromAccount,
+  );
+
+  const assets = useExchangeAssets(selectedFromAccountObject.internalId, null);
+  const assetsOptions = Object.keys(assets)
+    .filter(
+      (a) =>
+        selectedFromAccountObject.exchangeType !== "futures" || ["USDT", "BNB", "BUSD"].includes(a),
+    )
+    .sort();
 
   const validateAccounts = () => {
     if (selectedToAccount === selectedFromAccount) {
@@ -205,7 +211,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
                     <FormattedMessage id="transfer.internal.amount" />
                   </label>
                   <label className="customLabel">
-                    {balance[selectedAsset] || 0}{" "}
+                    {assets[selectedAsset]?.balanceFree || 0}{" "}
                     <FormattedMessage id="transfer.internal.available" />
                   </label>
                 </Box>
