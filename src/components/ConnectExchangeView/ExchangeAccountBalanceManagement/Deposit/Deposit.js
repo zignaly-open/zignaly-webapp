@@ -11,6 +11,7 @@ import BtcIcon from "../../../../images/exchangeAccount/btc.svg";
 import CopyIcon from "../../../../images/exchangeAccount/copy.svg";
 import useExchangeDepositAddress from "../../../../hooks/useExchangeDepositAddress";
 import useAssetsSelect from "../../../../hooks/useAssetsSelect";
+import useActivateSubAccount from "../../../../hooks/useActivateSubAccount";
 import useClipboard from "../../../../hooks/useClipboard";
 import DepositHistoryTable from "./DepositHistoryTable";
 import TransferCoinPicker from "../TransferCoinPicker";
@@ -37,8 +38,11 @@ const Deposit = () => {
     setSelectedNetwork,
   } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType);
 
+  // Activate account if needed
+  useActivateSubAccount(selectedAccount);
+
   const depositAddress = useExchangeDepositAddress(
-    selectedAccount.internalId,
+    selectedAccount.activated ? selectedAccount.internalId : "",
     selectedAssetName,
     selectedNetwork,
   );

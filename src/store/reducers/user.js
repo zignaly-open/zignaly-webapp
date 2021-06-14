@@ -9,6 +9,7 @@ import {
   SET_USER_DATA,
   ENABLE_TWO_FA,
   SET_DAILY_BALANCE_LOADER,
+  ACTIVATE_SUBACCOUNT,
 } from "../actions/user";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -66,6 +67,12 @@ const user = createReducer(initialState.user, {
 
   [SET_DAILY_BALANCE_LOADER]: (state) => {
     state.dailyBalance = { ...state.dailyBalance, loading: true };
+  },
+
+  [ACTIVATE_SUBACCOUNT]: (state, action) => {
+    state.userData.exchanges = state.userData.exchanges.map((e) =>
+      e.internalId === action.payload ? { ...e, activated: true } : e,
+    );
   },
 });
 
