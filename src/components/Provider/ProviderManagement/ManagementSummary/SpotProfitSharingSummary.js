@@ -27,7 +27,7 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       justifyContent="space-evenly"
     >
       <ManagementSummaryCard
-        foot={`${intl.formatMessage({ id: "menu.demo" })}: ${0}`}
+        foot=" "
         icon="followers"
         title={<FormattedMessage id="copyt.management.totalfollowers" />}
         tooltip={intl.formatMessage({ id: "copyt.management.totalfollowers.tooltip" })}
