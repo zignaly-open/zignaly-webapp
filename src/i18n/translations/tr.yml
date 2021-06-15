@@ -1392,6 +1392,8 @@ error.94: "Borsayı kaldırmadan önce kar paylaşım hizmetlerinizin bağlantı
 error.95: "Bakiye tahsisi mümkün olmadı."
 error.96: "Bu eylemi gerçekleştirmenize izin verilmiyor."
 error.97: "Pozisyon azaltılarak kapatıldı."
+error.101: "Exchange already has positions opened"
+error.102: "Exchange still connected to a service"
 form.error.allocatedBalance.reduce: "Tahsis edilen bakiyenizi azaltmak mümkün değil. Bunu yapmak için, hizmet bağlantısını kesmeniz ve tekrar bağlanmanız gerekir."
 form.error.firstname: "İsim gerekli"
 form.error.firstname.length: "İsim 3 harften uzun olmalıdır"

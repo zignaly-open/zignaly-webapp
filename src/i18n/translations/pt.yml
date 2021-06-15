@@ -1363,6 +1363,8 @@ error.94: "Você precisa desconectar seus serviços de participação nos lucros
 error.95: "Não foi possível alocar o saldo."
 error.96: "Você não tem permissão para realizar esta ação."
 error.97: "Posição reduzida a zero."
+error.101: "Exchange already has positions opened"
+error.102: "Exchange still connected to a service"
 form.error.allocatedBalance.reduce: "Não é possível reduzir o saldo alocado. Para fazer isso, você precisa se desconectar do serviço e se conectar novamente."
 form.error.firstname: "Nome é obrigatório"
 form.error.firstname.length: "O nome deve ter mais de 3 letras"

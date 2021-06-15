@@ -1445,6 +1445,8 @@ error.1040: "CH-Exchange connection error"
 error.1041: "CH-Exchange operation failed"
 error.1042: "CH-Insufficient balance"
 error.1043: "CH-Maximum number of requests reached (within 24 hours)"
+error.101: "CH-Exchange already has positions opened"
+error.102: "CH-Exchange still connected to a service"
 
 month.jan: "CH-Jan"
 month.feb: "CH-Feb"

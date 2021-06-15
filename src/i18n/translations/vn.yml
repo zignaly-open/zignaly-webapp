@@ -1134,6 +1134,8 @@ error.83: "Bạn không thể được liệt kê nếu bạn đang quản lý d
 error.84: "Dịch vụ này cần được công khai trước khi đưa lên thị trường"
 error.89: "You need to connect the service before trading it."
 error.97: "The selected exchange account is not connected to the service"
+error.101: "Exchange already has positions opened"
+error.102: "Exchange still connected to a service"
 error.1003: "Mua không thành vì TTL"
 error.1005: "Giá hiện tại dưới giá tối thiểu"
 error.1012: "Không có số tiền tối thiểu"

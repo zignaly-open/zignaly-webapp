@@ -1372,6 +1372,8 @@ error.94: "Debe desconectar sus servicios de profit sharing antes de eliminar el
 error.95: "No fue posible asignar el saldo."
 error.96: "No se le permite realizar esta acción."
 error.97: "La cuenta seleccionada no está conectada al servicio"
+error.101: "Exchange already has positions opened"
+error.102: "Exchange still connected to a service"
 form.error.allocatedBalance.reduce: "No es posible reducir su saldo asignado. Para hacer eso, debe desconectarse del servicio y conectarse nuevamente."
 form.error.firstname: "Se requiere el nombre"
 form.error.firstname.length: "El nombre debe tener más de 3 letras"
