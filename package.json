@@ -193,6 +193,7 @@
     "build": "npm install && npm run reset && gatsby build --prefix-paths",
     "build:package": "tar -C public -zcvf release.tar.gz ./ && rm -rf public/",
     "build:test": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
+    "build:staging": "STAGE=staging GATSBY_API_KEY=\"\" npm run build",
     "build:prod": "STAGE=prod GATSBY_API_KEY=\"\" npm run build",
     "checkall": "npm run stylelint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",

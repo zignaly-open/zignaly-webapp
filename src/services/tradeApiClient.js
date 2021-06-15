@@ -2120,6 +2120,21 @@ class TradeApiClient {
   }
 
   /**
+   * Activate subaccount
+   *
+   * @param {{internalExchangeId: string}} payload Payload
+   *
+   * @returns {Promise<void>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async activateSubaccount(payload) {
+    const endpointPath = `/user/exchanges/${payload.internalExchangeId}/activate`;
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
    * Perform internal transfer for user
    *
    * @param {InternalTransferPayload} payload Payload to perform internal transfer

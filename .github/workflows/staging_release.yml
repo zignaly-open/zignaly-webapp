@@ -3,7 +3,7 @@ name: Deploy To Staging Server
 on:
   push:
     branches:
-      - release/**
+      - staging
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
       - name: Install submodules
         run: git submodule update --init
       - name: Build
-        run: npm run build:prod
+        run: npm run build:staging
       # - name: Integration Tests
       # We can't test production build because it isn't built to use mirage
       # run: npm run cy:ci:prod
@@ -89,4 +89,4 @@ jobs:
           ssh webapp $CMD_RELOAD
         env:
           UNPACK_DIRECTORY: /zignaly/staging.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
-          APP_LINK: /zignaly/staging.zignaly.com-stanging/app
+          APP_LINK: /zignaly/staging.zignaly.com/app

@@ -1349,6 +1349,7 @@ copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 srv.newfollowers: "Nowi obserwujący"
 copyt.canceldisconnecting: "Anuluj rozłączenie"
+copyt.canceldisconnecting.tooltip: "Since you currently have open positions with this service, the soft disconnection process has begun! No more new positions will open, but all previous positions need to be closed to release your funds in your balance."
 # What kind of "entries"?
 copyt.management.cancel: "Anuluj wejścia"
 copyt.management.exit: "Wyjdź z pozycji"

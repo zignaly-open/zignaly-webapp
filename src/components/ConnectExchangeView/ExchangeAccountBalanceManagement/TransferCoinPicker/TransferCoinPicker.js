@@ -33,14 +33,17 @@ const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => 
         labelPlacement="top"
         onChange={onChange}
         options={coins}
+        placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
         search={true}
         value={selectedCoin}
       />
-      <Box className="balanceBox">
-        <BalanceLine amount={asset.balanceTotal} label="deposit.current" unit={selectedCoin} />
-        <BalanceLine amount={asset.balanceLocked} label="deposit.inorder" unit={selectedCoin} />
-        <BalanceLine amount={asset.balanceFree} label="deposit.available" unit={selectedCoin} />
-      </Box>
+      {asset && (
+        <Box className="balanceBox">
+          <BalanceLine amount={asset.balanceTotal} label="deposit.current" unit={selectedCoin} />
+          <BalanceLine amount={asset.balanceLocked} label="deposit.inorder" unit={selectedCoin} />
+          <BalanceLine amount={asset.balanceFree} label="deposit.available" unit={selectedCoin} />
+        </Box>
+      )}
     </Box>
   );
 };
