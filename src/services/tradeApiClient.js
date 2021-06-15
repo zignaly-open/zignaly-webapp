@@ -2145,7 +2145,7 @@ class TradeApiClient {
    */
   async performInternalTransfer(payload) {
     const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
-    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
     return responseData;
   }
 }
