@@ -111,18 +111,6 @@ const ExchangeAccountTopBar = ({ account }) => {
             </CustomButton>
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
-              onClick={() => navigateToPath("transfer", account)}
-            >
-              {isMobile ? (
-                <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
-                  <SyncAltIcon />
-                </CustomToolip>
-              ) : (
-                <FormattedMessage id="accounts.transfer" />
-              )}
-            </CustomButton>
-            <CustomButton
-              className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("withdraw", account)}
             >
               {isMobile ? (
@@ -131,6 +119,18 @@ const ExchangeAccountTopBar = ({ account }) => {
                 </CustomToolip>
               ) : (
                 <FormattedMessage id="accounts.withdraw" />
+              )}
+            </CustomButton>
+            <CustomButton
+              className={isMobile ? "textDefault" : "textPurple"}
+              onClick={() => navigateToPath("transfer", account)}
+            >
+              {isMobile ? (
+                <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
+                  <SyncAltIcon />
+                </CustomToolip>
+              ) : (
+                <FormattedMessage id="accounts.transfer" />
               )}
             </CustomButton>
             <CustomButton

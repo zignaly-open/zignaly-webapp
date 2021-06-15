@@ -12,7 +12,6 @@ import {
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -36,7 +35,6 @@ import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 const InternalTransferForm = () => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
-  const storeSettings = useStoreSettingsSelector();
   const storeUserData = useStoreUserData();
   const { errors, handleSubmit, control, watch, setError } = useForm({ mode: "onChange" });
   const dispatch = useDispatch();
@@ -225,7 +223,7 @@ const InternalTransferForm = () => {
                           </InputAdornment>
                         ),
                       }}
-                      className={"customInput " + (storeSettings.darkStyle ? " dark " : " light ")}
+                      className="customInput"
                       error={!!errors.amount}
                       fullWidth
                       variant="outlined"

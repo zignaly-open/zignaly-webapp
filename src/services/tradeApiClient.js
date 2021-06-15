@@ -2135,9 +2135,9 @@ class TradeApiClient {
   }
 
   /**
-   * Generate user exchange positions report
+   * Perform internal transfer for user
    *
-   * @param {InternalTransferPayload} payload Payload to generate position report
+   * @param {InternalTransferPayload} payload Payload to perform internal transfer
    *
    * @returns {Promise<boolean>} Result
    *
@@ -2145,7 +2145,6 @@ class TradeApiClient {
    */
   async performInternalTransfer(payload) {
     const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
-    delete payload.internalIdSrc;
     const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
     return responseData;
   }

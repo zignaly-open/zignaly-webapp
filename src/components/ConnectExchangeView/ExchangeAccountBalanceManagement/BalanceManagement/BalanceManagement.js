@@ -29,12 +29,12 @@ const BalanceManagement = ({ children }) => {
       title: "accounts.deposit",
     },
     {
-      id: "transfer",
-      title: "accounts.transfer",
-    },
-    {
       id: "withdraw",
       title: "accounts.withdraw",
+    },
+    {
+      id: "transfer",
+      title: "accounts.transfer",
     },
     {
       id: "convert",
