@@ -34,10 +34,7 @@ const ExchangeAccountTopBar = ({ account }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
-
-  const disableConvertButton = () => {
-    return account.exchangeType.toLowerCase() === "futures";
-  };
+  const showConvertButton = account.exchangeType.toLowerCase() === "spot";
 
   return (
     <Box
@@ -133,19 +130,20 @@ const ExchangeAccountTopBar = ({ account }) => {
                 <FormattedMessage id="accounts.transfer" />
               )}
             </CustomButton>
-            <CustomButton
-              className={isMobile ? "textDefault" : "textPurple"}
-              disabled={disableConvertButton()}
-              onClick={() => navigateToPath("convert", account)}
-            >
-              {isMobile ? (
-                <CustomToolip title={<FormattedMessage id="accounts.convert" />}>
-                  <Repeat />
-                </CustomToolip>
-              ) : (
-                <FormattedMessage id="accounts.convert" />
-              )}
-            </CustomButton>
+            {showConvertButton && (
+              <CustomButton
+                className={isMobile ? "textDefault" : "textPurple"}
+                onClick={() => navigateToPath("convert", account)}
+              >
+                {isMobile ? (
+                  <CustomToolip title={<FormattedMessage id="accounts.convert" />}>
+                    <Repeat />
+                  </CustomToolip>
+                ) : (
+                  <FormattedMessage id="accounts.convert" />
+                )}
+              </CustomButton>
+            )}
           </>
         )}
       </Box>

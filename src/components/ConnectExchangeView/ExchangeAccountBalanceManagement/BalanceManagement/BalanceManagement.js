@@ -17,6 +17,7 @@ import ModalPathContext from "../../ModalPathContext";
  */
 const BalanceManagement = ({ children }) => {
   const { pathParams, setTitle, setPathParams } = useContext(ModalPathContext);
+  const { selectedAccount } = pathParams;
 
   useEffect(() => {
     setTitle(pathParams.selectedAccount.internalName);
@@ -36,11 +37,14 @@ const BalanceManagement = ({ children }) => {
       id: "transfer",
       title: "accounts.transfer",
     },
-    {
+  ];
+
+  if (selectedAccount.exchangeType.toLowerCase() === "spot") {
+    tabs.push({
       id: "convert",
       title: "accounts.convert",
-    },
-  ];
+    });
+  }
 
   /**
    * Navigation callback
