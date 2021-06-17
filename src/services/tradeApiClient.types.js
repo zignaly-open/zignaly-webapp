@@ -2866,6 +2866,10 @@ export function providerGetResponseTransform(response) {
   });
   transformed.options.allowClones = checkClones();
   transformed.copyTradingQuote = response.quote || response.copyTradingQuote || "";
+  transformed.exchangeInternalIds =
+    response.exchangeInternalIds && isArray(response.exchangeInternalIds)
+      ? response.exchangeInternalIds
+      : [];
   return transformed;
 }
 
