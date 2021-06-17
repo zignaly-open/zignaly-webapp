@@ -30,9 +30,9 @@ const TraderHeaderInfo = ({ provider }) => {
   const [copyModal, showCopyModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;
-  const selectedExchangeProviderData = provider.exchangeInternalIds
-    ? provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId)
-    : undefined;
+  const selectedExchangeProviderData =
+    provider.exchangeInternalIds &&
+    provider.exchangeInternalIds.find((item) => item.internalId === selectedExchange.internalId);
   const profitsMode = selectedExchangeProviderData ? selectedExchangeProviderData.profitsMode : "";
 
   const handleCopyModalClose = () => {
