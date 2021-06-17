@@ -137,6 +137,10 @@ body {
     padding: 0 10px;
   }
 
+  &.error {
+    border: 1px solid $red;
+  }
+
   div {
     height: 32px;
   }
