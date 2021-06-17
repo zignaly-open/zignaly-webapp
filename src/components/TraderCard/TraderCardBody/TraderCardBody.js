@@ -258,7 +258,13 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
                 title={
                   <FormattedMessage
                     id="srv.closedpos.tooltip"
-                    values={{ count: closedPositions, days: timeFrame }}
+                    values={{
+                      closeCount: closedPositions,
+                      timeframe: timeFrame,
+                      returns: formatFloat2Dec(returns),
+                      openCount: openPositions,
+                      floating: formatFloat2Dec(floating),
+                    }}
                   />
                 }
               >

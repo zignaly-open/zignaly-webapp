@@ -1173,9 +1173,7 @@ function providerItemTransform(providerItem, providerType) {
     item.name = new Date(item.name);
     transformedResponse.closedPositions += item.positions;
   });
-  transformedResponse.returns = transformedResponse.dailyReturns.length
-    ? transformedResponse.dailyReturns[transformedResponse.dailyReturns.length - 1].returns
-    : 0;
+  transformedResponse.returns = providerItem.globalReturn;
 
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),

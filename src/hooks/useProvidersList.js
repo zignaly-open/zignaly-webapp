@@ -196,7 +196,7 @@ const useProvidersList = (options, updatedAt = null) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
-          res = a.returns + a.floating - (b.returns + b.floating);
+          res = a.returns - b.returns;
           break;
         case "DATE":
           res = a.createdAt - b.createdAt;
