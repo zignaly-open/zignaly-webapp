@@ -353,7 +353,7 @@ srv.text.expired: "Abgelaufen"
 srv.text.active: "Active"
 srv.allocated: "Zugewiesen"
 # Hi Franki, the words between curly brakets, we should keep it as they are, because they are variables. Please take it into account. Thanks and regards
-srv.closedpos.tooltip: "Gibt von {count} geschlossenen Positionen während der letzten {Tage} Tage zurück"
+srv.closedpos.tooltip: "Total return of all the positions opened in the last {timeframe} days, taking  into account the {returns} return of {closeCount} positions closed and the {floating} of {openCount} open positions"
 srv.comision: "Provisionsgebühr"
 # The same here. thanks!
 srv.comission.tooltip: "{comission}% des Gewinns aus Positionen, die von diesem Trader  eröffnet wurden."
