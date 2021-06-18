@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useExchangeAssets from "./useExchangeAssets";
 
 /**
@@ -26,7 +26,7 @@ import useExchangeAssets from "./useExchangeAssets";
  */
 const useAssetsSelect = (internalId, type, updatedAt) => {
   const [selectedAssetData, setSelectedAsset] = useState({
-    name: null,
+    name: "BTC",
     network: null,
   });
 
@@ -35,6 +35,15 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
     .filter((a) => type !== "futures" || ["USDT", "BNB", "BUSD"].includes(a))
     .sort();
   const selectedAsset = assets[selectedAssetData.name];
+
+  useEffect(() => {
+    if (assetsList && assetsList.length) {
+      setSelectedAsset({
+        name: assetsList[0],
+        network: assets[assetsList[0]].networks.find((n) => n.isDefault),
+      });
+    }
+  }, [assetsList.length]);
 
   /**
    * @param {string} name name
