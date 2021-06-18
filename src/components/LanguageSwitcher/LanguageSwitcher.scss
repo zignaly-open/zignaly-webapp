@@ -1,21 +1,26 @@
 .languageSwitcher {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: flex-start;
   max-width: 180px;
 
-  button {
-    background-color: transparent;
-    border: 0;
-    padding: 0;
-    width: auto;
+  .langButton {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    justify-content: flex-start;
+    padding: 3px 5px;
+
+    &.selected {
+      border: 1px solid $purpleLight;
+      color: $purpleLight;
+    }
   }
 
-  img {
-    cursor: pointer;
-    margin: 0.4rem;
-    width: 1.4em;
-  }
+  // img {
+  //   cursor: pointer;
+  //   margin: 0.4rem;
+  //   width: 1.4em;
+  // }
 }
