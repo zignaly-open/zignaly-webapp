@@ -40,7 +40,7 @@ const Deposit = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(internalId, selectedAccount.exchangeType);
+  } = useAssetsSelect(internalId, selectedAccount.exchangeType, false);
 
   // Activate account if needed
   useActivateSubAccount(selectedAccount, () => {
@@ -129,7 +129,7 @@ const Deposit = () => {
                     {selectedAsset.networks.length > 1 && (
                       <NetworksToggleGroup
                         networks={selectedAsset.networks.map((n) => n.name)}
-                        selectedNetwork={selectedNetwork.name}
+                        selectedNetwork={selectedNetwork && selectedNetwork.name}
                         setSelectedNetwork={setSelectedNetwork}
                       />
                     )}
