@@ -45,6 +45,7 @@ import {
   providerBalanceResponseTransform,
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
+  assetsAndBalanceResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -153,6 +154,7 @@ import {
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
  * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
+ * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
  *
  */
 
@@ -2147,6 +2149,21 @@ class TradeApiClient {
     const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
     const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
     return responseData;
+  }
+
+  /**
+   * Perform internal transfer for user
+   *
+   * @param {{exchangeInternalId: String}} payload Payload to perform internal transfer
+   *
+   * @returns {Promise<AssetsAndBalanceObject>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getAssetsAndBalance(payload) {
+    const endpointPath = `/user/exchanges/${payload.exchangeInternalId}/assets_and_balance`;
+    const responseData = await this.doRequest(endpointPath, {}, "GET", 2);
+    return assetsAndBalanceResponseTransform(responseData);
   }
 }
 

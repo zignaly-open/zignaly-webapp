@@ -18,8 +18,8 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
 import CustomSelect from "components/CustomSelect";
-import useExchangeAssets from "hooks/useExchangeAssets";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
+import useAssetsAndBalance from "hooks/useAssetsAndBalance";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -36,13 +36,15 @@ const InternalTransferForm = () => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, watch, setError } = useForm({ mode: "onChange" });
+  const { errors, handleSubmit, control, watch, setValue } = useForm({ mode: "onChange" });
   const dispatch = useDispatch();
   const accounts = storeUserData.exchanges
     .filter((item) => item.isBrokerAccount)
     .map((i) => ({ val: i.internalId, label: i.internalName }));
-  const fromAccountList = accounts;
-  const toAccountList = accounts;
+  const [fromAccountList, setFromAccountList] = useState(accounts);
+  const [toAccountList, setToAccountList] = useState(
+    accounts.length > 1 ? accounts.filter((a) => a.val !== accounts[0].val) : [],
+  );
   const selectedAsset = watch("asset", "BTC");
   const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
   const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
@@ -50,21 +52,34 @@ const InternalTransferForm = () => {
     (item) => item.internalId === selectedFromAccount,
   );
 
-  const assets = useExchangeAssets(selectedFromAccountObject.internalId, null);
-  const assetsOptions = Object.keys(assets)
-    .filter(
-      (a) =>
-        selectedFromAccountObject.exchangeType !== "futures" || ["USDT", "BNB", "BUSD"].includes(a),
-    )
-    .sort();
+  const [assetsOptions, setAssetsOptions] = useState([]);
+  const { assets, loading: assetsLoading } = useAssetsAndBalance(
+    selectedFromAccountObject.internalId,
+  );
 
-  const validateAccounts = () => {
-    if (selectedToAccount === selectedFromAccount) {
-      setError("internalIdDest", { type: "manual", message: "" });
+  useEffectSkipFirst(() => {
+    if (assets && selectedFromAccountObject) {
+      const list = Object.keys(assets[selectedFromAccountObject.exchangeType]);
+      setAssetsOptions(list);
+      if (!list.includes(selectedAsset)) {
+        setValue("asset", list[0]);
+      }
     }
-  };
+  }, [assets, selectedFromAccountObject]);
 
-  useEffectSkipFirst(validateAccounts, [selectedFromAccount, selectedToAccount]);
+  useEffectSkipFirst(() => {
+    if (selectedFromAccount) {
+      const list = accounts.filter((a) => a.val !== selectedFromAccount);
+      setToAccountList(list);
+    }
+  }, [selectedFromAccount]);
+
+  useEffectSkipFirst(() => {
+    if (selectedToAccount) {
+      const list = accounts.filter((a) => a.val !== selectedToAccount);
+      setFromAccountList(list);
+    }
+  }, [selectedToAccount]);
 
   /**
    * Function to submit edit form.
@@ -85,6 +100,11 @@ const InternalTransferForm = () => {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  const switchFromAndToAccount = () => {
+    setValue("internalIdDest", selectedFromAccount);
+    setValue("internalIdSrc", selectedToAccount);
   };
 
   return (
@@ -129,7 +149,9 @@ const InternalTransferForm = () => {
 
           <TimelineItem className="timelineItem">
             <TimelineSeparator>
-              <SyncAltIcon className="transferIcon" />
+              <span className="pointer" onClick={switchFromAndToAccount}>
+                <SyncAltIcon className="transferIcon" />
+              </span>
             </TimelineSeparator>
             <TimelineContent className="timelineContent">
               <Box className="inputBox" />
@@ -209,7 +231,7 @@ const InternalTransferForm = () => {
                     <FormattedMessage id="transfer.internal.amount" />
                   </label>
                   <label className="customLabel">
-                    {assets[selectedAsset]?.balanceFree || 0}{" "}
+                    {assets ? assets[selectedFromAccountObject.exchangeType][selectedAsset] : 0}{" "}
                     <FormattedMessage id="transfer.internal.available" />
                   </label>
                 </Box>
@@ -223,8 +245,8 @@ const InternalTransferForm = () => {
                           </InputAdornment>
                         ),
                       }}
-                      className="customInput"
-                      error={!!errors.amount}
+                      className={`customInput ${errors.amount ? "error" : ""}`}
+                      error={Boolean(errors.amount)}
                       fullWidth
                       variant="outlined"
                     />
@@ -234,6 +256,7 @@ const InternalTransferForm = () => {
                   name="amount"
                   rules={{
                     required: true,
+                    max: assets ? assets[selectedFromAccountObject.exchangeType][selectedAsset] : 0,
                   }}
                 />
               </Box>
@@ -244,7 +267,7 @@ const InternalTransferForm = () => {
         <Box className="formAction" display="flex" flexDirection="row" justifyContent="center">
           <CustomButton
             className="submitButton"
-            disabled={Boolean(Object.keys(errors).length) || loading}
+            disabled={Boolean(Object.keys(errors).length) || loading || assetsLoading}
             loading={loading}
             type="submit"
           >

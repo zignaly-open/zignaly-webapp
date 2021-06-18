@@ -3342,6 +3342,26 @@ function createExchangeAssetsEmptyEntity() {
 }
 
 /**
+ * @typedef {Object<string, any> } AssetsAndBalanceObject
+ * @property {Object<string, number>} spot
+ * @property {Object<string, number>} futures
+ */
+
+/**
+ * Transform provider followers list response item to ProviderFollowersListEntity.
+ *
+ * @param {Object} response Trade API get exchange assets list response.
+ * @returns {AssetsAndBalanceObject} Exchange asssets.
+ */
+export function assetsAndBalanceResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return assign({ spot: {}, futures: {} }, response);
+}
+
+/**
  * Create Exchange Deposit Address entity.
  *
  * @param {*} response Trade API user balance raw response.
