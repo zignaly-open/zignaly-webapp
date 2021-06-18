@@ -4,7 +4,8 @@ import { languages } from "../../i18n";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../store/actions/settings";
-import FlagIcon from "components/FlagIcon";
+import { Button } from "@material-ui/core";
+// import FlagIcon from "components/FlagIcon";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -26,30 +27,16 @@ const LanguageSwitcher = () => {
 
   return (
     <div className="languageSwitcher">
-      {languages.map((lang) =>
-        lang.locale === storeSettings.languageCode ? (
-          <FlagIcon
-            className="flag"
-            code={lang.countryCode}
-            key={lang.locale}
-            titleName={lang.label}
-          />
-        ) : (
-          <button
-            data-lang-code={lang.locale}
-            key={lang.locale}
-            onClick={handleLanguageSelection}
-            type="button"
-          >
-            <FlagIcon
-              className="flag"
-              code={lang.countryCode}
-              key={lang.locale}
-              titleName={lang.label}
-            />
-          </button>
-        ),
-      )}
+      {languages.map((lang) => (
+        <Button
+          className={`langButton ${storeSettings.languageCode === lang.locale ? " selected" : ""}`}
+          data-lang-code={lang.locale}
+          key={lang.locale}
+          onClick={handleLanguageSelection}
+        >
+          {lang.label}
+        </Button>
+      ))}
     </div>
   );
 };
