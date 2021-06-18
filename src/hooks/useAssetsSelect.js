@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useExchangeAssets from "./useExchangeAssets";
 
 /**
@@ -21,10 +21,11 @@ import useExchangeAssets from "./useExchangeAssets";
  *
  * @param {string} internalId Exchange account internal id.
  * @param {string} type Exchange type
+ * @param {Boolean} initValues Flag to indicate whether to initialize values or not
  * @param {Date} [updatedAt] Last updated date to force data refresh.
  * @returns {AssetsSelectType} Assets select object data.
  */
-const useAssetsSelect = (internalId, type, updatedAt) => {
+const useAssetsSelect = (internalId, type, initValues, updatedAt) => {
   const [selectedAssetData, setSelectedAsset] = useState({
     name: null,
     network: null,
@@ -61,6 +62,12 @@ const useAssetsSelect = (internalId, type, updatedAt) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (initValues && assets && !selectedAsset) {
+      setSelectedAssetByName(type !== "futures" ? "BTC" : "USDT");
+    }
+  }, [assets]);
 
   return {
     selectedAssetName: selectedAssetData.name,
