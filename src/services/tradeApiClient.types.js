@@ -680,6 +680,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsSinceCopying
  * @property {boolean} CTorPS
  * @property {boolean} copyTrader
+ * @property {boolean} liquidated
  */
 
 /**
@@ -2767,6 +2768,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} isCopyTrading
  * @property {Boolean} key
  * @property {Boolean} list
+ * @property {Boolean} liquidated
  * @property {String} logoUrl
  * @property {Number} minAllocatedBalance
  * @property {String} name

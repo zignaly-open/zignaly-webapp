@@ -685,6 +685,7 @@ srv.payment.docs: "How to get Merchant ID and IPN Secret"
 srv.signalurl: "Signal URL: "
 srv.edit.nameplaceholder: "Enter name"
 srv.edit.urlplaceholder: "Enter url"
+srv.liquidated: "Liquidated"
 
 signalp.title: "SIGNAL-PROVIDERS"
 signalp.subtitle: "Set up automatic trading based on trading signals provided by expert traders."
