@@ -2167,9 +2167,9 @@ class TradeApiClient {
   }
 
   /**
-   * Perform internal transfer for user
+   * Save user's selected lang in backend
    *
-   * @param {{locale: String}} payload Payload to perform internal transfer
+   * @param {{locale: String}} payload Payload to save locale
    *
    * @returns {Promise<Boolean>} Result
    *
