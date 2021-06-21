@@ -30,7 +30,7 @@ const LanguageSwitcher = () => {
           selectMenu: "menu",
         }}
         onChange={handleLanguageSelection}
-        value={storeSettings.languageCode}
+        value={storeSettings.locale}
       >
         {languages.map((lang) => (
           <MenuItem key={lang.locale} value={lang.locale}>

@@ -111,6 +111,15 @@ const migrations = {
       },
     };
   },
+  25: (/** @type {PersistedDefaultState} */ state) => {
+    return {
+      ...state,
+      settings: {
+        ...state.settings,
+        locale: initialState.settings.locale,
+      },
+    };
+  },
 };
 
 const persistConfig = {

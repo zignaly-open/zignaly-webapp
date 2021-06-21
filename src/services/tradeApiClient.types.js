@@ -155,6 +155,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Boolean} array
  * @property {string} ref
  * @property {Boolean} [newPageAB] Flag to indicate the user is using new A/B page.
+ * @property {String} locale selected locale string
  */
 
 /**
@@ -313,6 +314,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} demoExchangeConnected
  * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
+ * @property {string} locale
  */
 
 /**
@@ -1113,6 +1115,7 @@ export function userEntityResponseTransform(response) {
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
+    locale: response.locale,
   };
 }
 

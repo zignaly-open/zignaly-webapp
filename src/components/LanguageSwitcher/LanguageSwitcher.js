@@ -6,9 +6,14 @@ import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../store/actions/settings";
 import { Button } from "@material-ui/core";
 // import FlagIcon from "components/FlagIcon";
+import tradeApi from "../../services/tradeApiClient";
+import { getUserData } from "store/actions/user";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
+import { showErrorAlert } from "store/actions/ui";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   /**
@@ -19,9 +24,15 @@ const LanguageSwitcher = () => {
    */
   const handleLanguageSelection = (event) => {
     const targetElement = event.currentTarget;
-    const languageCode = targetElement.getAttribute("data-lang-code");
-    if (languageCode) {
-      dispatch(changeLanguage(languageCode));
+    const locale = targetElement.getAttribute("data-lang-code");
+    if (locale) {
+      dispatch(changeLanguage(locale));
+      tradeApi
+        .saveLocale({ locale })
+        .then(() => {
+          dispatch(getUserData(storeSession.tradeApi.accessToken, false));
+        })
+        .catch((e) => dispatch(showErrorAlert(e)));
     }
   };
 
@@ -29,7 +40,7 @@ const LanguageSwitcher = () => {
     <div className="languageSwitcher">
       {languages.map((lang) => (
         <Button
-          className={`langButton ${storeSettings.languageCode === lang.locale ? " selected" : ""}`}
+          className={`langButton ${storeSettings.locale === lang.locale ? " selected" : ""}`}
           data-lang-code={lang.locale}
           key={lang.locale}
           onClick={handleLanguageSelection}

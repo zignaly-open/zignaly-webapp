@@ -2165,6 +2165,21 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, {}, "GET", 2);
     return assetsAndBalanceResponseTransform(responseData);
   }
+
+  /**
+   * Perform internal transfer for user
+   *
+   * @param {{locale: String}} payload Payload to perform internal transfer
+   *
+   * @returns {Promise<Boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async saveLocale(payload) {
+    const endpointPath = "/user/save_locale";
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
+    return responseData;
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

@@ -3,6 +3,7 @@
  * @property {String} locale
  * @property {String} label
  * @property {String} countryCode
+ * @property {String} languageCode
  * @property {Boolean=} default
  */
 
@@ -12,39 +13,46 @@
 const LocalizationLanguages = [
   {
     default: true,
-    locale: "en",
+    locale: "en_US",
     label: "English",
     countryCode: "gb",
+    languageCode: "en",
   },
   {
-    locale: "de",
+    locale: "de_DE",
     label: "German",
     countryCode: "de",
+    languageCode: "de",
   },
   {
-    locale: "vn",
+    locale: "vi",
     label: "Tiếng Việt",
     countryCode: "vn",
+    languageCode: "vn",
   },
   {
     locale: "pl",
     label: "Polski",
     countryCode: "pl",
+    languageCode: "pl",
   },
   {
-    locale: "es",
+    locale: "es_ES",
     label: "Español",
     countryCode: "es",
+    languageCode: "es",
   },
   {
-    locale: "fr",
+    locale: "fr_FR",
     label: "French",
     countryCode: "fr",
+    languageCode: "fr",
   },
   {
-    locale: "pt",
+    locale: "pt_PT",
     label: "Portugese",
     countryCode: "pt",
+    languageCode: "pt",
   },
 ];
 
@@ -54,11 +62,13 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     locale: "cs",
     label: "Čeština",
     countryCode: "cz",
+    languageCode: "cz",
   });
   LocalizationLanguages.push({
     locale: "tr",
     label: "Türkçe",
     countryCode: "tr",
+    languageCode: "tr",
   });
 }
 
