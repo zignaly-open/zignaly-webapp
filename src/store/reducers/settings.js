@@ -43,7 +43,7 @@ import { createReducer } from "@reduxjs/toolkit";
  */
 const settings = createReducer(initialState.settings, {
   [SELECT_LANGUAGE]: (state, action) => {
-    state.languageCode = action.payload;
+    state.locale = action.payload;
   },
 
   [SELECT_THEME]: (state, action) => {

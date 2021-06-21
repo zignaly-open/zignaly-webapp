@@ -12,9 +12,11 @@ import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import useABTest from "hooks/useABTest";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
+  const { locale } = useStoreSettingsSelector();
   const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const [ref] = useState("");
   const recaptchaRef = useRef(null);
@@ -61,6 +63,7 @@ const SignupForm = () => {
       gRecaptchaResponse: gRecaptchaResponse,
       terms: data.terms,
       newPageAB,
+      locale,
     };
     dispatch(registerUser(payload, setLoading));
   };
