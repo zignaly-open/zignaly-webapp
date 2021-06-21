@@ -1310,6 +1310,7 @@ function createEmptyProviderEntity() {
     profitsSinceCopying: 0,
     CTorPS: false,
     copyTrader: false,
+    liquidated: false,
   };
 }
 
@@ -4517,6 +4518,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsSinceCopying: 0,
       copyTrader: false,
       CTorPS: false,
+      liquidated: false,
     },
     signalsInfo: [],
   };
