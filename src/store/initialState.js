@@ -695,6 +695,7 @@ const initialState = {
       notificationsPosts: false,
       exchangeInternalIds: [],
       website: "",
+      liquidated: false,
     },
   },
 };
