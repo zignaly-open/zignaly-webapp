@@ -126,7 +126,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 24,
+  version: 25,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui", "views"],
 };
