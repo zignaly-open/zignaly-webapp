@@ -42,7 +42,8 @@ const useAssetsAndBalance = (internalId) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
-        });
+        })
+        .finally(() => setLoading(false));
     }
   };
 

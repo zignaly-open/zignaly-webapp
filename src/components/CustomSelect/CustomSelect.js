@@ -42,6 +42,7 @@ import "./CustomSelect.scss";
  * @property {boolean} [multiple] Multiple options for autocomplete.
  * @property {boolean} [disabled] Disabled.
  * @property {string} [placeholder] Placeholder.
+ * @property {string} [className] Placeholder.
  */
 
 /**
@@ -125,6 +126,7 @@ const CustomSelect = (props) => {
           </Select>
         ) : (
           <Autocomplete
+            className={props.className || ""}
             classes={{
               inputRoot: "searchInputRoot callout1",
               input: "searchInput",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./InternalTransferForm.scss";
-import { Box, TextField, InputAdornment, Typography } from "@material-ui/core";
+import { Box, TextField, InputAdornment, Typography, CircularProgress } from "@material-ui/core";
 import {
   Timeline,
   TimelineContent,
@@ -36,7 +36,9 @@ const InternalTransferForm = () => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, watch, setValue } = useForm({ mode: "onChange" });
+  const { errors, handleSubmit, control, watch, setValue, setError, clearErrors } = useForm({
+    mode: "onChange",
+  });
   const dispatch = useDispatch();
   const accounts = storeUserData.exchanges
     .filter((item) => item.isBrokerAccount)
@@ -45,7 +47,7 @@ const InternalTransferForm = () => {
   const [toAccountList, setToAccountList] = useState(
     accounts.length > 1 ? accounts.filter((a) => a.val !== accounts[0].val) : [],
   );
-  const selectedAsset = watch("asset", "BTC");
+  const selectedAsset = watch("asset", "");
   const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
   const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
   const selectedFromAccountObject = storeUserData.exchanges.find(
@@ -61,9 +63,6 @@ const InternalTransferForm = () => {
     if (assets && selectedFromAccountObject) {
       const list = Object.keys(assets[selectedFromAccountObject.exchangeType]);
       setAssetsOptions(list);
-      if (!list.includes(selectedAsset)) {
-        setValue("asset", list[0]);
-      }
     }
   }, [assets, selectedFromAccountObject]);
 
@@ -88,23 +87,49 @@ const InternalTransferForm = () => {
    * @returns {void} None.
    */
   const onSubmit = (data) => {
-    setLoading(true);
-    tradeApi
-      .performInternalTransfer(data)
-      .then(() => {
-        dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (validateInputs(data)) {
+      setLoading(true);
+      tradeApi
+        .performInternalTransfer(data)
+        .then(() => {
+          dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
+
+  /**
+   * Validate form values
+   *
+   * @param {Object<String, any>} data form data
+   * @returns {boolean} validated or not
+   */
+  const validateInputs = (data) => {
+    let validated = true;
+    Object.keys(data).some((item) => {
+      if (!data[item] || data[item] === 0) {
+        validated = false;
+        setError(item, { type: "manual", message: "" });
+        return false;
+      }
+      return true;
+    });
+    return validated;
   };
 
   const switchFromAndToAccount = () => {
     setValue("internalIdDest", selectedFromAccount);
     setValue("internalIdSrc", selectedToAccount);
+  };
+
+  const setMaxAmount = () => {
+    setValue("amount", assets[selectedFromAccountObject.exchangeType][selectedAsset]);
+    clearErrors();
   };
 
   return (
@@ -187,21 +212,16 @@ const InternalTransferForm = () => {
             </TimelineContent>
           </TimelineItem>
 
-          {errors.internalIdDest && (
-            <span className="errorText">
-              <FormattedMessage id="transfer.internal.error1" />
-            </span>
-          )}
-
           <TimelineItem className="timelineItem">
             <TimelineContent className="timelineContent">
               <Box className="inputBox search">
                 <Controller
                   control={control}
-                  defaultValue="BTC"
+                  defaultValue=""
                   name="asset"
                   render={({ onChange, value }) => (
                     <CustomSelect
+                      className={`${errors.asset ? "error" : ""}`}
                       label={intl.formatMessage({ id: "transfer.internal.coin" })}
                       labelPlacement="top"
                       onChange={(/** @type {string} **/ v) => {
@@ -212,6 +232,7 @@ const InternalTransferForm = () => {
                       value={value}
                     />
                   )}
+                  rules={{ required: true }}
                 />
               </Box>
             </TimelineContent>
@@ -231,7 +252,13 @@ const InternalTransferForm = () => {
                     <FormattedMessage id="transfer.internal.amount" />
                   </label>
                   <label className="customLabel">
-                    {assets ? assets[selectedFromAccountObject.exchangeType][selectedAsset] : 0}{" "}
+                    {assetsLoading ? (
+                      <CircularProgress color="primary" size={22} thickness={6} />
+                    ) : assets ? (
+                      assets[selectedFromAccountObject.exchangeType][selectedAsset]
+                    ) : (
+                      0
+                    )}{" "}
                     <FormattedMessage id="transfer.internal.available" />
                   </label>
                 </Box>
@@ -241,7 +268,9 @@ const InternalTransferForm = () => {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
-                            <FormattedMessage id="transfer.internal.max" />
+                            <span className="pointer" onClick={setMaxAmount}>
+                              <FormattedMessage id="transfer.internal.max" />
+                            </span>
                           </InputAdornment>
                         ),
                       }}
@@ -252,13 +281,18 @@ const InternalTransferForm = () => {
                     />
                   }
                   control={control}
-                  defaultValue={0}
+                  defaultValue=""
                   name="amount"
                   rules={{
                     required: true,
                     max: assets ? assets[selectedFromAccountObject.exchangeType][selectedAsset] : 0,
                   }}
                 />
+                {errors.amount && (
+                  <span className="errorText">
+                    <FormattedMessage id="transfer.internal.error2" />
+                  </span>
+                )}
               </Box>
             </TimelineContent>
           </TimelineItem>
@@ -267,7 +301,7 @@ const InternalTransferForm = () => {
         <Box className="formAction" display="flex" flexDirection="row" justifyContent="center">
           <CustomButton
             className="submitButton"
-            disabled={Boolean(Object.keys(errors).length) || loading || assetsLoading}
+            disabled={Boolean(Object.keys(errors).length) || assetsLoading}
             loading={loading}
             type="submit"
           >
