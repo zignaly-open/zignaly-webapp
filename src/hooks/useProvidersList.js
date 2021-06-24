@@ -196,7 +196,7 @@ const useProvidersList = (options, updatedAt = null) => {
       let res = 0;
       switch (key) {
         case "RETURNS":
-          res = a.returns - b.returns;
+          res = a.globalReturn - b.globalReturn;
           break;
         case "DATE":
           res = a.createdAt - b.createdAt;

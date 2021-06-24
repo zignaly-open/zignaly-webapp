@@ -683,6 +683,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} CTorPS
  * @property {boolean} copyTrader
  * @property {boolean} liquidated
+ * @property {number} globalReturn
  */
 
 /**
@@ -1177,7 +1178,10 @@ function providerItemTransform(providerItem, providerType) {
     item.name = new Date(item.name);
     transformedResponse.closedPositions += item.positions;
   });
-  transformedResponse.returns = providerItem.globalReturn;
+  transformedResponse.returns = transformedResponse.dailyReturns.length
+    ? transformedResponse.dailyReturns[transformedResponse.dailyReturns.length - 1].returns
+    : 0;
+  transformedResponse.globalReturn = providerItem.globalReturn;
 
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),
@@ -1314,6 +1318,7 @@ function createEmptyProviderEntity() {
     CTorPS: false,
     copyTrader: false,
     liquidated: false,
+    globalReturn: 0,
   };
 }
 
@@ -4522,6 +4527,7 @@ export const createEmptyProfileProviderStatsEntity = () => {
       copyTrader: false,
       CTorPS: false,
       liquidated: false,
+      globalReturn: 0,
     },
     signalsInfo: [],
   };
