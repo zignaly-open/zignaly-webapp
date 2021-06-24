@@ -1274,6 +1274,7 @@ transfer.internal.amount: "Amount"
 transfer.internal.max: "Max"
 transfer.internal.coin: "Coin"
 transfer.internal.error1: "Source and Destination accounts cannot be same, please select different accounts"
+transfer.internal.error2: "Please enter an amount below the maximum available amount."
 
 testimonial.review.nelson: "Just wanted to say thank you for putting together a really great platform that is not only easy to use but gives us traders the option of choosing  through some really great signal providers while being customizable as well."
 testimonial.review.krzysztof: "I have used several crypto bots and I need to say that the difference against other platforms I've encountered, it's their level of support, responsiveness and customer service, which is very critical for a trader. keep up the great job!"

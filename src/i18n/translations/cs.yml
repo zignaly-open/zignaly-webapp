@@ -1076,6 +1076,7 @@ transfer.internal.amount: "CH-Amount"
 transfer.internal.max: "CH-Max"
 transfer.internal.coin: "CH-Coin"
 transfer.internal.error1: "CH-Source and Destination accounts cannot be same, please select different accounts"
+transfer.internal.error2: "CH-Please enter an amount below the maximum available amount."
 
 accounts.options.blacklist: "CH-Global Blacklist"
 accounts.options.blacklist.help: "CH-It won't open any position for symbols included here. Insert comma separated symbols. Only symbols are allowed (example: XRPBNB), individual coins will have no effect."

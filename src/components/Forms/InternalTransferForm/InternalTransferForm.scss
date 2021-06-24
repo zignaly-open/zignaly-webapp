@@ -38,6 +38,9 @@
     }
 
     .customLabel {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
       font-size: 14px;
       margin-bottom: 8px;
     }

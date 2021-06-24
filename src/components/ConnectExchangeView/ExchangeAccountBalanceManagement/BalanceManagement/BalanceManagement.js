@@ -3,6 +3,7 @@ import { Box } from "@material-ui/core";
 import { SubNavModalHeader } from "../../../SubNavHeader";
 import "./BalanceManagement.scss";
 import ModalPathContext from "../../ModalPathContext";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 /**
  * @typedef {Object} BalanceManagementPropTypes
@@ -18,6 +19,8 @@ import ModalPathContext from "../../ModalPathContext";
 const BalanceManagement = ({ children }) => {
   const { pathParams, setTitle, setPathParams } = useContext(ModalPathContext);
   const { selectedAccount } = pathParams;
+  const { exchanges } = useStoreUserData();
+  const brokenAccounts = exchanges.filter((item) => item.isBrokerAccount);
 
   useEffect(() => {
     setTitle(pathParams.selectedAccount.internalName);
@@ -33,11 +36,14 @@ const BalanceManagement = ({ children }) => {
       id: "withdraw",
       title: "accounts.withdraw",
     },
-    {
+  ];
+
+  if (brokenAccounts.length > 1) {
+    tabs.push({
       id: "transfer",
       title: "accounts.transfer",
-    },
-  ];
+    });
+  }
 
   if (selectedAccount.exchangeType.toLowerCase() === "spot") {
     tabs.push({

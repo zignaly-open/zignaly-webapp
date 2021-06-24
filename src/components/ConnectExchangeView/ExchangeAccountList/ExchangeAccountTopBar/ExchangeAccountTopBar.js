@@ -12,6 +12,7 @@ import CustomToolip from "../../../CustomTooltip";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
 import SyncAltIcon from "@material-ui/icons/SyncAlt";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -32,9 +33,11 @@ const ExchangeAccountTopBar = ({ account }) => {
   const { navigateToPath } = useContext(ModalPathContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { exchanges } = useStoreUserData();
 
   const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
   const showConvertButton = account.exchangeType.toLowerCase() === "spot";
+  const brokenAccounts = exchanges.filter((item) => item.isBrokerAccount);
 
   return (
     <Box
@@ -118,18 +121,20 @@ const ExchangeAccountTopBar = ({ account }) => {
                 <FormattedMessage id="accounts.withdraw" />
               )}
             </CustomButton>
-            <CustomButton
-              className={isMobile ? "textDefault" : "textPurple"}
-              onClick={() => navigateToPath("transfer", account)}
-            >
-              {isMobile ? (
-                <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
-                  <SyncAltIcon />
-                </CustomToolip>
-              ) : (
-                <FormattedMessage id="accounts.transfer" />
-              )}
-            </CustomButton>
+            {brokenAccounts.length > 1 && (
+              <CustomButton
+                className={isMobile ? "textDefault" : "textPurple"}
+                onClick={() => navigateToPath("transfer", account)}
+              >
+                {isMobile ? (
+                  <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
+                    <SyncAltIcon />
+                  </CustomToolip>
+                ) : (
+                  <FormattedMessage id="accounts.transfer" />
+                )}
+              </CustomButton>
+            )}
             {showConvertButton && (
               <CustomButton
                 className={isMobile ? "textDefault" : "textPurple"}
