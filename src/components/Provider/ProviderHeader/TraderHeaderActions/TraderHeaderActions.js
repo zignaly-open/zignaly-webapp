@@ -45,7 +45,7 @@ const TraderHeaderActions = ({ provider }) => {
         !provider.liquidated ? (
           <CopyTraderButton provider={provider} />
         ) : (
-          <Typography variant="h4" className="red">
+          <Typography className="red" variant="h4">
             <FormattedMessage id="srv.liquidated" />
           </Typography>
         )
