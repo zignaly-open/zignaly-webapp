@@ -32,7 +32,7 @@ const LocalizationLanguages = [
   },
   {
     locale: "pl",
-    label: "Polski",
+    label: "Polskie",
     countryCode: "pl",
     languageCode: "pl",
   },
@@ -44,13 +44,13 @@ const LocalizationLanguages = [
   },
   {
     locale: "fr_FR",
-    label: "French",
+    label: "Française",
     countryCode: "fr",
     languageCode: "fr",
   },
   {
     locale: "pt_PT",
-    label: "Portugese",
+    label: "Português",
     countryCode: "pt",
     languageCode: "pt",
   },
