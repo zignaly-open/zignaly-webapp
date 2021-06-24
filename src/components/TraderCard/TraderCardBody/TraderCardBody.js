@@ -68,6 +68,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     profitSharing,
     CTorPS,
     liquidated,
+    globalReturn,
   } = provider;
 
   /**
@@ -148,7 +149,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     setChartData({ values, labels });
   }, [dailyReturns, followers]);
 
-  const positive = (CTorPS ? returns : newFollowers) >= 0 && !liquidated;
+  const positive = (CTorPS ? globalReturn : newFollowers) >= 0 && !liquidated;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -278,7 +279,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
                 {liquidated ? (
                   intl.formatMessage({ id: "srv.liquidated" })
                 ) : CTorPS ? (
-                  <>{formatFloat2Dec(returns)}%</>
+                  <>{formatFloat2Dec(globalReturn)}%</>
                 ) : (
                   newFollowers
                 )}
