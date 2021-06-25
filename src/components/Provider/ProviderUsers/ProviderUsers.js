@@ -27,7 +27,7 @@ const ProviderUsers = ({ provider }) => {
     setFilters,
     filtersVisibility,
     setFiltersVisibility,
-  } = useProviderUsers(provider.id);
+  } = useProviderUsers(provider);
 
   const embedFilters = () => {
     return (

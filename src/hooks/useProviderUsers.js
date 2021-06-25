@@ -6,6 +6,8 @@ import { showErrorAlert } from "../store/actions/ui";
 import { useIntl } from "react-intl";
 /**
  * @typedef {import('../services/tradeApiClient.types').ProviderFollowersEntity} ProviderFollowersEntity
+ * @typedef {import('../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import('../services/tradeApiClient.types').ProviderEntity} ProviderEntity
  * @typedef {import("../components/CustomSelect/CustomSelect").OptionType} OptionType
  *
  * @typedef {Object} FilterObject
@@ -30,10 +32,10 @@ import { useIntl } from "react-intl";
 
 /**
  *
- * @param {String} providerId Provider ID.
+ * @param {DefaultProviderGetObject | ProviderEntity} provider Provider ID.
  * @returns {HookData} Hook Data.
  */
-const useProviderUsers = (providerId) => {
+const useProviderUsers = (provider) => {
   const storeSession = useStoreSessionSelector();
   const [allUser, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -167,22 +169,24 @@ const useProviderUsers = (providerId) => {
   };
 
   const loadFollowersList = () => {
-    setLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: providerId,
-    };
-    tradeApi
-      .providerFollowersListGet(payload)
-      .then((response) => {
-        setAllUsers(response);
-        filterUsers(response);
-        setLoading(false);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-        setLoading(false);
-      });
+    if (provider.id && provider.isAdmin) {
+      setLoading(true);
+      const payload = {
+        token: storeSession.tradeApi.accessToken,
+        providerId: provider.id,
+      };
+      tradeApi
+        .providerFollowersListGet(payload)
+        .then((response) => {
+          setAllUsers(response);
+          filterUsers(response);
+          setLoading(false);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+          setLoading(false);
+        });
+    }
   };
 
   useEffect(loadFollowersList, []);
