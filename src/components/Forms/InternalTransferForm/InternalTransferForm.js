@@ -48,6 +48,7 @@ const InternalTransferForm = () => {
     accounts.length > 1 ? accounts.filter((a) => a.val !== accounts[0].val) : [],
   );
   const selectedAsset = watch("asset", "");
+  const addedAmount = watch("amount", 0);
   const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
   const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
   const selectedFromAccountObject = storeUserData.exchanges.find(
@@ -60,9 +61,19 @@ const InternalTransferForm = () => {
   );
 
   useEffectSkipFirst(() => {
-    if (assets && selectedFromAccountObject) {
+    if (selectedFromAccountObject) {
       const list = Object.keys(assets[selectedFromAccountObject.exchangeType]);
       setAssetsOptions(list);
+
+      // update asset value when origin account is changed with some pre-selected asset
+      if (selectedAsset) {
+        const found = Object.keys(assets[selectedFromAccountObject.exchangeType]).find(
+          (item) => item === selectedAsset,
+        );
+        if (!found) {
+          setValue("asset", "USDT");
+        }
+      }
     }
   }, [assets, selectedFromAccountObject]);
 
@@ -70,6 +81,7 @@ const InternalTransferForm = () => {
     if (selectedFromAccount) {
       const list = accounts.filter((a) => a.val !== selectedFromAccount);
       setToAccountList(list);
+      clearErrors();
     }
   }, [selectedFromAccount]);
 
@@ -77,8 +89,18 @@ const InternalTransferForm = () => {
     if (selectedToAccount) {
       const list = accounts.filter((a) => a.val !== selectedToAccount);
       setFromAccountList(list);
+      clearErrors();
     }
   }, [selectedToAccount]);
+
+  useEffectSkipFirst(() => {
+    if (
+      selectedAsset &&
+      assets[selectedFromAccountObject.exchangeType][selectedAsset] >= addedAmount
+    ) {
+      clearErrors("amount");
+    }
+  }, [selectedAsset]);
 
   /**
    * Function to submit edit form.
@@ -112,13 +134,19 @@ const InternalTransferForm = () => {
   const validateInputs = (data) => {
     let validated = true;
     Object.keys(data).some((item) => {
-      if (!data[item] || data[item] === 0) {
+      if (!data[item]) {
         validated = false;
         setError(item, { type: "manual", message: "" });
         return false;
       }
       return true;
     });
+
+    if (!data.amount || data.amount <= 0 || isNaN(data.amount)) {
+      validated = false;
+      setError("amount", { type: "manual", message: "" });
+    }
+
     return validated;
   };
 
