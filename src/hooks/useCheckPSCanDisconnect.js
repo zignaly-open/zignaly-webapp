@@ -28,14 +28,14 @@ const useCheckPSCanDisconnect = (provider) => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
   const userData = useStoreUserData();
-  let { list } = useProviderUsers(provider.id);
+  const { list } = useProviderUsers(provider);
   const providerFollowers = list.filter((user) => user.userId !== userData.userId);
 
   const loadPositions = () => {
     if (!provider) return;
 
     if (!provider.disable && provider.profitSharing && provider.isAdmin) {
-      if (providerFollowers.length < 1) {
+      if (!providerFollowers.length) {
         const payload = {
           token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
