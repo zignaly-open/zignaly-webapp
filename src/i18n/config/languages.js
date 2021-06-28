@@ -20,7 +20,7 @@ const LocalizationLanguages = [
   },
   {
     locale: "de_DE",
-    label: "German",
+    label: "Deutsche",
     countryCode: "de",
     languageCode: "de",
   },
