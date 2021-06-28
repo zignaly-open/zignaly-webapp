@@ -29,10 +29,10 @@ import useAssetsAndBalance from "hooks/useAssetsAndBalance";
  */
 /**
  * About us compoennt for CT profile.
- *
+ * @param {DefaultProps} props Default props
  * @returns {JSX.Element} Component JSX.
  */
-const InternalTransferForm = () => {
+const InternalTransferForm = ({ selectedExchange }) => {
   const intl = useIntl();
   const [loading, setLoading] = useState(false);
   const storeUserData = useStoreUserData();
@@ -45,12 +45,12 @@ const InternalTransferForm = () => {
     .map((i) => ({ val: i.internalId, label: i.internalName }));
   const [fromAccountList, setFromAccountList] = useState(accounts);
   const [toAccountList, setToAccountList] = useState(
-    accounts.length > 1 ? accounts.filter((a) => a.val !== accounts[0].val) : [],
+    accounts.length > 1 ? accounts.filter((a) => a.val !== selectedExchange.internalId) : [],
   );
   const selectedAsset = watch("asset", "");
   const addedAmount = watch("amount", 0);
   const selectedToAccount = watch("internalIdDest", toAccountList[0].val);
-  const selectedFromAccount = watch("internalIdSrc", fromAccountList[0].val);
+  const selectedFromAccount = watch("internalIdSrc", selectedExchange.internalId);
   const selectedFromAccountObject = storeUserData.exchanges.find(
     (item) => item.internalId === selectedFromAccount,
   );
@@ -81,6 +81,10 @@ const InternalTransferForm = () => {
     if (selectedFromAccount) {
       const list = accounts.filter((a) => a.val !== selectedFromAccount);
       setToAccountList(list);
+      const found = list.find((item) => item.val === selectedToAccount);
+      if (!found) {
+        setValue("internalIdDest", list[0].val);
+      }
       clearErrors();
     }
   }, [selectedFromAccount]);
@@ -94,11 +98,11 @@ const InternalTransferForm = () => {
   }, [selectedToAccount]);
 
   useEffectSkipFirst(() => {
-    if (
-      selectedAsset &&
-      assets[selectedFromAccountObject.exchangeType][selectedAsset] >= addedAmount
-    ) {
+    const available = assets[selectedFromAccountObject.exchangeType][selectedAsset];
+    if (selectedAsset && addedAmount && addedAmount <= available) {
       clearErrors("amount");
+    } else {
+      setError("amount", { type: "manual", message: "" });
     }
   }, [selectedAsset]);
 
@@ -182,7 +186,7 @@ const InternalTransferForm = () => {
               <Box className="inputBox">
                 <Controller
                   control={control}
-                  defaultValue={fromAccountList.length ? fromAccountList[0].val : ""}
+                  defaultValue={selectedFromAccount}
                   name="internalIdSrc"
                   render={({ onChange, value }) => (
                     <CustomSelect
@@ -220,7 +224,7 @@ const InternalTransferForm = () => {
               <Box className="inputBox">
                 <Controller
                   control={control}
-                  defaultValue={toAccountList.length > 1 ? toAccountList[1].val : ""}
+                  defaultValue={selectedToAccount}
                   name="internalIdDest"
                   render={({ onChange, value }) => (
                     <CustomSelect
@@ -314,6 +318,7 @@ const InternalTransferForm = () => {
                   rules={{
                     required: true,
                     max: assets ? assets[selectedFromAccountObject.exchangeType][selectedAsset] : 0,
+                    pattern: /^$|^[0-9]\d*(?:[.,]\d{0,8})?$/,
                   }}
                 />
                 {errors.amount && (
