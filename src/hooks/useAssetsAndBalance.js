@@ -3,7 +3,7 @@ import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
-import { isArray } from "lodash";
+// import { isArray } from "lodash";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").AssetsAndBalanceObject} AssetsAndBalanceObject
@@ -35,8 +35,8 @@ const useAssetsAndBalance = (internalId) => {
       tradeApi
         .getAssetsAndBalance(payload)
         .then((data) => {
-          setAssets((prevData) => ({
-            spot: !data.spot || isArray(data.spot) ? prevData.spot : data.spot,
+          setAssets(() => ({
+            spot: data.spot,
             futures: data.futures,
           }));
         })

@@ -99,7 +99,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
 
   useEffectSkipFirst(() => {
     const available = assets[selectedFromAccountObject.exchangeType][selectedAsset];
-    if (selectedAsset && addedAmount && addedAmount <= available) {
+    if (selectedAsset && addedAmount <= available) {
       clearErrors("amount");
     } else {
       setError("amount", { type: "manual", message: "" });
@@ -160,7 +160,8 @@ const InternalTransferForm = ({ selectedExchange }) => {
   };
 
   const setMaxAmount = () => {
-    setValue("amount", assets[selectedFromAccountObject.exchangeType][selectedAsset]);
+    const available = assets[selectedFromAccountObject.exchangeType][selectedAsset];
+    setValue("amount", available ? available : 0);
     clearErrors();
   };
 
