@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./InternalTransferForm.scss";
 import { Box, TextField, InputAdornment, Typography, CircularProgress } from "@material-ui/core";
 import {
@@ -89,7 +89,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
     }
   }, [selectedFromAccount]);
 
-  useEffectSkipFirst(() => {
+  useEffect(() => {
     if (selectedToAccount) {
       const list = accounts.filter((a) => a.val !== selectedToAccount);
       setFromAccountList(list);
@@ -313,7 +313,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
                     />
                   }
                   control={control}
-                  defaultValue=""
+                  defaultValue="0"
                   name="amount"
                   rules={{
                     required: true,
