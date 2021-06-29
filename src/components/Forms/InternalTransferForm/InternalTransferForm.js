@@ -99,12 +99,14 @@ const InternalTransferForm = ({ selectedExchange }) => {
 
   useEffectSkipFirst(() => {
     const available = assets[selectedFromAccountObject.exchangeType][selectedAsset];
-    if (selectedAsset && addedAmount <= available) {
-      clearErrors("amount");
-    } else {
-      setError("amount", { type: "manual", message: "" });
+    if (selectedAsset) {
+      if (addedAmount <= available) {
+        clearErrors("amount");
+      } else {
+        setError("amount", { type: "manual", message: "" });
+      }
     }
-  }, [selectedAsset]);
+  }, [selectedAsset, assets]);
 
   /**
    * Function to submit edit form.
@@ -118,7 +120,7 @@ const InternalTransferForm = ({ selectedExchange }) => {
       tradeApi
         .performInternalTransfer(data)
         .then(() => {
-          dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));
+          dispatch(showSuccessAlert("alert.transfer.title", "alert.transfer.body"));
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));

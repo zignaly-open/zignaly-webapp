@@ -744,6 +744,8 @@ alert.management.cancelall.body: "Your request to cancel these positions has bee
 alert.management.exitall.title: "Exited Successfully!"
 alert.management.exitall.body: "Your request to exit these positions has been submitted successfully."
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
+alert.transfer.title: "Transfer Performed"
+alert.transfer.body: "Your transfer has been completed successfully"
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Your API-Key from the provider"
@@ -1518,6 +1520,7 @@ error.1042: "Insufficient balance"
 error.1043: "Maximum number of requests reached (within 24 hours)"
 error.101: "Exchange already has positions opened"
 error.102: "Exchange still connected to a service"
+error.104: "Internal transfer error"
 
 month.jan: "Jan"
 month.feb: "Feb"
