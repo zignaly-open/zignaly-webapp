@@ -1,5 +1,3 @@
-const test = require("postcss-import")();
-
 /**
  * Implement Gatsby's Node APIs in this file.
  *
