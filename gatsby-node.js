@@ -174,7 +174,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   }
 
   config.plugins.push(new CaseSensitivePathsPlugin());
-  config.resolve.plugins.push(new TsconfigPathsPlugin({ extensions: [".js", ".ts", ".tsx"] }));
   config.resolve.fallback = {
     // Webpack removed polyfills
     crypto: require.resolve("crypto-browserify"),
