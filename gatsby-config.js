@@ -22,7 +22,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-sass",
       options: {
-        data: `@import "${__dirname}/src/styles/index";`,
+        additionalData: `@import "${__dirname}/src/styles/index";`,
       },
     },
     "gatsby-plugin-react-helmet",

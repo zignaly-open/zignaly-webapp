@@ -1,3 +1,5 @@
+const test = require("postcss-import")();
+
 /**
  * Implement Gatsby's Node APIs in this file.
  *
@@ -109,14 +111,17 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
             },
           },
         },
+        "css-loader",
         {
           loader: "postcss-loader",
-          options: styles.getPostCssConfig({
-            themeImporter: {
-              themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
-            },
-            minify: true,
-          }),
+          options: {
+            postcssOptions: styles.getPostCssConfig({
+              themeImporter: {
+                themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+              },
+              minify: true,
+            }),
+          },
         },
       ],
     },
@@ -145,7 +150,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     );
   }
 
-  if (stage === "build-javascript") {
+  if (stage === "develop") {
     // Ignore Conflicting css order
     // https://spectrum.chat/gatsby-js/general/having-issue-related-to-chunk-commons-mini-css-extract-plugin~0ee9c456-a37e-472a-a1a0-cc36f8ae6033
     const miniCssExtractPlugin = config.plugins.find(
@@ -172,6 +177,11 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
 
   config.plugins.push(new CaseSensitivePathsPlugin());
   config.resolve.plugins.push(new TsconfigPathsPlugin({ extensions: [".js", ".ts", ".tsx"] }));
+  config.resolve.fallback = {
+    // Webpack removed polyfills
+    crypto: require.resolve("crypto-browserify"),
+    stream: false,
+  };
   // eslint-disable-next-line no-console
   console.log("Webpack build config updated");
   //   console.log(JSON.stringify(config.module.rules, null, 2));
