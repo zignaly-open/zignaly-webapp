@@ -718,6 +718,8 @@ alert.management.exitall.title: "CH-Exited Successfully!"
 alert.management.exitall.body: "CH-Your request to exit these positions has been submitted successfully."
 alert.changeemail.confirm.body: "CH-Your email has been reset. You can now login with new email!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
+alert.transfer.title: "CH-Transfer Performed"
+alert.transfer.body: "CH-Your transfer has been completed successfully"
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "CH-Your API-Key from the provider"
@@ -1448,6 +1450,7 @@ error.1042: "CH-Insufficient balance"
 error.1043: "CH-Maximum number of requests reached (within 24 hours)"
 error.101: "CH-Exchange already has positions opened"
 error.102: "CH-Exchange still connected to a service"
+error.104: "CH-Internal transfer error"
 
 month.jan: "CH-Jan"
 month.feb: "CH-Feb"
