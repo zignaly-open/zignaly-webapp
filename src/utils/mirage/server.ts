@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 const TRADEAPI_URL =
   // @ts-ignore
   window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL") : process.env.GATSBY_TRADEAPI_URL;
+// eslint-disable-line
+console.log(TRADEAPI_URL);
 
 // Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
