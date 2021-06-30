@@ -37,7 +37,7 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       <ManagementSummaryCard
         foot={`BTC: ${formatFloat(summary.totalWalletBTC)}`}
         icon="allocated"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.wallet" />}
         tooltip={intl.formatMessage({ id: "copyt.management.wallet.tooltip" })}
         value={formatFloat2Dec(summary.totalWalletUSDT)}
@@ -46,7 +46,7 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       <ManagementSummaryCard
         foot={`BTC ${formatFloat(summary.totalPnlBTC)}`}
         icon="profit"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.profit" />}
         value={`${formatFloat2Dec(summary.totalPnlUSDT)}`}
         valueColor={summary.totalPnlBTC > 0 ? "green" : summary.totalPnlBTC < 0 ? "red" : ""}
@@ -55,7 +55,7 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       <ManagementSummaryCard
         foot={`BTC ${formatFloat(summary.totalInvestedBTC)}`}
         icon="balance"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.invested" />}
         tooltip={intl.formatMessage({ id: "copyt.management.invested.tooltip" })}
         value={formatFloat2Dec(summary.totalInvestedUSDT)}
