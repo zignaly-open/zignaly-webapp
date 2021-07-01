@@ -449,9 +449,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    const endpointPath = "/fe/api.php?action=login";
-    const responseData = await this.doRequest(endpointPath, payload);
-
+    const responseData = await this.doRequest("/login", payload, "POST", 2);
     return userEntityResponseTransform(responseData);
   }
 
@@ -465,8 +463,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userRegister(payload) {
-    const endpointPath = "/fe/api.php?action=signup";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/signup", payload, "POST", 2);
 
     return userEntityResponseTransform(responseData);
   }
