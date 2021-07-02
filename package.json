@@ -190,7 +190,7 @@
     }
   ],
   "scripts": {
-    "build": "npm install && npm run reset && gatsby build --prefix-paths",
+    "build": "npm install && npm run reset && NODE_OPTIONS=--max-old-space-size gatsby build --prefix-paths",
     "build:package": "tar -C public -zcvf release.tar.gz ./ && rm -rf public/",
     "build:test": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
     "build:staging": "STAGE=staging GATSBY_API_KEY=\"\" npm run build",
