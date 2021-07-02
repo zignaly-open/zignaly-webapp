@@ -19,10 +19,6 @@ jobs:
         run: npm run jslint
       - name: Check Types
         run: npm run tscheck
-      - name: Build
-        run: npm run build:test
-      - name: Integration Tests
-        run: npm run cy:ci:test
       # - name: Test
       #   env:
       #     GATSBY_API_KEY: ${{ secrets.GATSBY_API_KEY }}

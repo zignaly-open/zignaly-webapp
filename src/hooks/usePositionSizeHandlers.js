@@ -7,7 +7,7 @@ import { calculateUnits } from "utils/calculations";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("react-hook-form/dist/types/form").Validate} Validate
+ * @typedef {import("react-hook-form/dist/types").Validate} Validate
  */
 
 /**
