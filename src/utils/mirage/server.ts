@@ -84,7 +84,7 @@ export function makeServer({ environment = "test" } = {}) {
       this.post("/signup", (schema, request) => {
         const attrs = JSON.parse(request.requestBody);
         const { email, firstName } = attrs;
-        const user = schema.db.users.insert({ email, firstName });
+        // const user = schema.db.users.insert({ email, firstName });
         return { token: "testtoken" };
       });
 
@@ -94,8 +94,8 @@ export function makeServer({ environment = "test" } = {}) {
         if (password !== "password123") {
           return new Response(400, {}, { error: { code: 8 } });
         }
-        const response = schema.db.users.findBy({ email });
-        return new Response(200, {}, response);
+        // const user = schema.db.users.findBy({ email });
+        return new Response(200, {}, { token: "testtoken" });
       });
 
       // this.get("/user/providers", (schema, request) => {
