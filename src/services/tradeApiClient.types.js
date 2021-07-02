@@ -3952,9 +3952,20 @@ function createEmptyManagementPositionsEntity() {
 
 /**
  *
+ * @typedef {Object} SpotProviderBalanceEntity
+ * @property {Number} totalFree
+ * @property {Number} totalLocked
+ * @property {Number} totalPnl
+ * @property {Number} totalWallet
+ * @property {Number} abstractPercentage
+ * @property {Number} totalInvested
+ */
+
+/**
+ *
  * @typedef {Object} ManagementBalanceAndPositionsEntity
  * @property {Array<ManagementPositionsEntity>} positions
- * @property {ProviderBalanceEntity} balance
+ * @property {SpotProviderBalanceEntity} balance
  */
 
 /**
@@ -3966,8 +3977,26 @@ function createEmptyManagementPositionsEntity() {
 export function managementBalanceAndPositionsResponseTransform(response) {
   let transformedResponse = createEmptyManagementBalanceAndPositionsEntity();
   transformedResponse.positions = managementPositionsResponseTransform(response.positions);
-  transformedResponse.balance = providerBalanceResponseTransform(response.balance);
+  transformedResponse.balance = createSpotProviderBalanceEntity(response.balance);
   return transformedResponse;
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {SpotProviderBalanceEntity} Provider data points entity.
+ */
+export function createSpotProviderBalanceEntity(response) {
+  return {
+    totalFree: response && response.totalFree ? formatValue(response.totalFree) : 0,
+    totalInvested: response && response.totalInvested ? formatValue(response.totalInvested) : 0,
+    totalLocked: response && response.totalLocked ? formatValue(response.totalLocked) : 0,
+    totalPnl: response && response.totalPnl ? formatValue(response.totalPnl) : 0,
+    totalWallet: response && response.totalWallet ? formatValue(response.totalWallet) : 0,
+    abstractPercentage:
+      response && response.abstractPercentage ? formatValue(response.abstractPercentage) : 0,
+  };
 }
 
 /**
