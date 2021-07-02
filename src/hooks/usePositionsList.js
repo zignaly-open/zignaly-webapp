@@ -305,7 +305,7 @@ const usePositionsList = (
    * Load user positions for a given exchange.
    *
    * @param {string} initiatorExchangeInternalId Exchange that was selected at the moment when fetch was triggered.
-   * @returns {React.EffectCallback} Effect clean callback.
+   * @returns {function():void} Effect clean callback.
    */
   const loadPositions = (initiatorExchangeInternalId) => {
     let cancel = false;

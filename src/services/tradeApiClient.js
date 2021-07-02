@@ -406,7 +406,7 @@ class TradeApiClient {
       this.setRequestAverageLatency(cacheId, elapsedTime);
 
       const parsedJson = await response.json();
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         responseData = parsedJson;
       } else {
         responseData.error = parsedJson;

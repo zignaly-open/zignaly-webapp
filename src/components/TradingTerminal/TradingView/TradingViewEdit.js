@@ -51,13 +51,8 @@ const TradingViewEdit = (props) => {
   const { positionId } = props;
   const tradingViewContext = useTradingViewContext();
   const { setLastPrice, lastPrice, setUpdatedAt } = tradingViewContext;
-  const {
-    instantiateWidget,
-    tradingViewWidget,
-    isSelfHosted,
-    changeSymbol,
-    removeWidget,
-  } = useTradingTerminal(setLastPrice);
+  const { instantiateWidget, tradingViewWidget, isSelfHosted, changeSymbol, removeWidget } =
+    useTradingTerminal(setLastPrice);
 
   const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
   // Raw position entity (for debug)
@@ -252,6 +247,7 @@ const TradingViewEdit = (props) => {
       units: "",
       dcaTargetPricePercentage1: "",
       dcaRebuyPercentage1: "",
+      priceDifference: 0,
     },
   });
 
