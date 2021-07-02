@@ -6,10 +6,10 @@ import { formatFloat, formatFloat2Dec } from "../../../../utils/format";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderBalanceEntity} ProviderBalanceEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").SpotProviderBalanceEntity} SpotProviderBalanceEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Provider Object.
- * @property {ProviderBalanceEntity} summary Provider Object.
+ * @property {SpotProviderBalanceEntity} summary Provider Object.
  */
 
 /**
@@ -35,34 +35,36 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       />
 
       <ManagementSummaryCard
-        foot={`BTC: ${formatFloat(summary.totalWalletBTC)}`}
+        foot=" "
         icon="allocated"
         quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.wallet" />}
         tooltip={intl.formatMessage({ id: "copyt.management.wallet.tooltip" })}
-        value={formatFloat2Dec(summary.totalWalletUSDT)}
+        value={formatFloat2Dec(summary.totalWallet)}
       />
 
       <ManagementSummaryCard
-        foot={`BTC ${formatFloat(summary.totalPnlBTC)}`}
+        foot=" "
         icon="profit"
         quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.profit" />}
-        value={`${formatFloat2Dec(summary.totalPnlUSDT)}`}
-        valueColor={summary.totalPnlBTC > 0 ? "green" : summary.totalPnlBTC < 0 ? "red" : ""}
+        value={`${formatFloat2Dec(summary.totalPnl)}`}
+        valueColor={summary.totalPnl > 0 ? "green" : summary.totalPnl < 0 ? "red" : ""}
       />
 
       <ManagementSummaryCard
-        foot={`BTC ${formatFloat(summary.totalInvestedBTC)}`}
+        foot=" "
         icon="balance"
         quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.invested" />}
         tooltip={intl.formatMessage({ id: "copyt.management.invested.tooltip" })}
-        value={formatFloat2Dec(summary.totalInvestedUSDT)}
+        value={formatFloat2Dec(summary.totalInvested)}
       />
 
       <ManagementSummaryCard
-        foot={`USDT ${formatFloat((summary.totalWalletUSDT * summary.abstractPercentage) / 100)}`}
+        foot={`${provider.copyTradingQuote} ${formatFloat(
+          (summary.totalFree * summary.abstractPercentage) / 100,
+        )}`}
         icon="balance"
         quote="%"
         title={<FormattedMessage id="copyt.management.available" />}
