@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
