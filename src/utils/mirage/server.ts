@@ -1,8 +1,5 @@
 import { createServer, Model, Factory, RestSerializer, Response } from "miragejs";
-import providers from "./fixtures/providers";
 import exchanges from "./fixtures/exchanges";
-import userExchanges from "./fixtures/userExchanges";
-import userData from "./fixtures/userData";
 import pairs from "./fixtures/pairs";
 import dayjs from "dayjs";
 
@@ -59,23 +56,22 @@ export function makeServer({ environment = "test" } = {}) {
     },
 
     fixtures: {
-      providers,
       exchanges,
-      // userExchanges,
-      // userData,
       pairs,
     },
 
     factories: {
-      provider: Factory.extend({}),
+      provider: Factory.extend({
+        name: "Test",
+      }),
       // user: Factory.extend(makeUser()),
       user: userFactory,
     },
 
     // seeds(server) {
+    //   // Not ran in test env
     //   server.loadFixtures();
-    //   //   server.create("user", { name: "Alice" });
-    //   //   server.createList("provider", 5);
+    //   server.create("provider", { name: "PS test" });
     // },
 
     routes() {
@@ -98,9 +94,13 @@ export function makeServer({ environment = "test" } = {}) {
         return new Response(200, {}, { token: "testtoken" });
       });
 
-      // this.get("/user/providers", (schema, request) => {
-      //   return [];
-      // });
+      this.get("/user/providers", (schema, request) => {
+        return [];
+      });
+
+      this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
+        return schema.all("provider");
+      });
 
       this.urlPrefix = TRADEAPI_URL;
       this.namespace = "/fe";
@@ -139,12 +139,6 @@ export function makeServer({ environment = "test" } = {}) {
       // this.post("/tz.php", () => {
       //   return new Response(200);
       // });
-
-      // Allow unhandled requests on the current domain to pass through
-      // Currently used to serve gatsby files
-      this.urlPrefix = "/";
-      this.namespace = "/";
-      // this.passthrough();
     },
   });
 
