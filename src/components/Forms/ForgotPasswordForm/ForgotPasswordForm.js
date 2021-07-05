@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ForgotPasswordForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -7,15 +7,14 @@ import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import Captcha from "../../Captcha";
 import { emailRegex } from "utils/validators";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
-  const recaptchaRef = useRef(null);
   const { errors, handleSubmit, register } = useForm();
   const dispatch = useDispatch();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   /**
    * @typedef {Object} FormData
@@ -26,10 +25,14 @@ const ForgotPasswordForm = () => {
    * Function to submit form.
    *
    * @param {FormData} data Form data.
-   * @returns {void}
+   * @returns {Promise<void>} Promise.
    */
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setLoading(true);
+    let gRecaptchaResponse = "";
+    if (process.env.NODE_ENV === "production") {
+      gRecaptchaResponse = await executeRecaptcha("forgotPassword");
+    }
     const payload = {
       email: data.email,
       array: true,
@@ -99,10 +102,6 @@ const ForgotPasswordForm = () => {
               <FormattedMessage id="security.email.error.invalid" />
             </span>
           )}
-        </Box>
-
-        <Box className="captchaBox">
-          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
         </Box>
 
         <Box className="inputBox">
