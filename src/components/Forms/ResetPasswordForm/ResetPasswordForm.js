@@ -104,7 +104,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
       setLoading(true);
       let gRecaptchaResponse = "";
       if (process.env.NODE_ENV === "production") {
-        gRecaptchaResponse = await executeRecaptcha("forgotPassword");
+        gRecaptchaResponse = await executeRecaptcha("resetPassword");
       }
       const payload = {
         token: code,
