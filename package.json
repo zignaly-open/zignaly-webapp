@@ -44,7 +44,7 @@
     "cypress": "^7.6.0",
     "dayjs": "^1.10.5",
     "dompurify": "^2.2.9",
-    "gatsby": "^3.8.0",
+    "gatsby": "^3.8.1",
     "gatsby-plugin-google-tagmanager": "^3.8.0",
     "gatsby-plugin-layout": "^2.8.0",
     "gatsby-plugin-manifest": "^3.8.0",
@@ -91,13 +91,15 @@
     "@babel/preset-typescript": "^7.14.5",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "@cypress/code-coverage": "^3.9.7",
+    "@cypress/code-coverage": "^3.9.8",
     "@semantic-release/exec": "^5.0.0",
     "@size-limit/preset-app": "^5.0.1",
-    "@storybook/addon-actions": "^6.3.1",
-    "@storybook/addon-essentials": "^6.3.1",
-    "@storybook/addon-links": "^6.3.1",
-    "@storybook/react": "^6.3.1",
+    "@storybook/addon-actions": "^6.3.2",
+    "@storybook/addon-essentials": "^6.3.2",
+    "@storybook/addon-links": "^6.3.2",
+    "@storybook/builder-webpack5": "^6.3.2",
+    "@storybook/manager-webpack5": "^6.3.2",
+    "@storybook/react": "^6.3.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/chai": "^4.2.19",
@@ -143,7 +145,7 @@
     "gatsby-plugin-env-variables": "^2.1.0",
     "gatsby-plugin-sass": "^4.8.0",
     "gatsby-plugin-tsconfig-paths": "^1.0.3",
-    "husky": "^6.0.0",
+    "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
     "include-media": "^1.4.10",
     "jest": "^27.0.6",
@@ -161,7 +163,7 @@
     "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
-    "typescript": "^4.3.4"
+    "typescript": "^4.3.5"
   },
   "commitlint": {
     "extends": [
@@ -216,6 +218,7 @@
     "cy:ci:prod": "STAGE=prod CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:run",
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "chromatic": "npx chromatic --project-token=6646ca70d39c"
   }
 }
