@@ -36,6 +36,3 @@ jobs:
       #   with:
       #     repo-token: ${{ secrets.GITHUB_TOKEN }}
       #     ignore-dev-dependencies: false
-      - name: Check Types
-        # publish Storybook and run visual tests
-        run: npm run chromatic
