@@ -599,8 +599,12 @@ class TradeApiClient {
    */
 
   async userBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchanges/${payload.exchangeInternalId}/balance`,
+      null,
+      "GET",
+      2,
+    );
 
     return userBalanceResponseTransform(responseData);
   }
@@ -614,8 +618,12 @@ class TradeApiClient {
    */
 
   async userEquityGet(payload) {
-    const endpointPath = "/fe/api.php?action=getHistoricalBalance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchanges/${payload.exchangeInternalId}/historical_balance`,
+      payload,
+      "GET",
+      2,
+    );
 
     return userEquityResponseTransform(responseData);
   }
@@ -1148,15 +1156,13 @@ class TradeApiClient {
   /**
    * Get user profile data.
    *
-   * @param {AuthorizationPayload} payload User profile payloaad..
 
    * @returns {Promise<UserEntity>} Returns promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
-  async userDataGet(payload) {
-    const endpointPath = "/fe/api.php?action=getUserData";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async userDataGet() {
+    const responseData = await this.doRequest("/user", null, "GET", 2);
 
     return userEntityResponseTransform(responseData);
   }
@@ -1372,25 +1378,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updatePassword(payload) {
-    const endpointPath = "/fe/api.php?action=changePassword";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/change_password", payload, "POST", 2);
   }
 
   /**
    * Get code and QR code to enable 2FA.
    *
-   * @param {AuthorizationPayload} payload Payload
    * @returns {Promise<Array<string>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async enable2FA1Step(payload) {
-    const endpointPath = "/fe/api.php?action=enable2FA1Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+  async enable2FA1Step() {
+    return this.doRequest("/user/enable_2fa/step1", null, "POST", 2);
   }
 
   /**
@@ -1432,23 +1431,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verify2FA(payload) {
-    const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", 1, payload.token);
-
-    return responseData;
+    return this.doRequest("/user/verify_2fa", payload, "POST", 2);
   }
 
   /**
    * Get user notifications settings.
    *
-   * @param {AuthorizationPayload} payload Payload
    * @returns {Promise<ProfileNotifications>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async getProfileNotifications(payload) {
-    const endpointPath = "/fe/api.php?action=getProfileNotifications";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async getProfileNotifications() {
+    const responseData = await this.doRequest("/user/notifications", null, "GET", 2);
 
     return profileNotificationsResponseTransform(responseData);
   }
@@ -1462,8 +1456,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updateProfileNotifications(payload) {
-    const endpointPath = "/fe/api.php?action=updateProfileNotifications";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/user/notifications", payload, "POST", 2);
 
     return profileNotificationsResponseTransform(responseData);
   }
@@ -1510,10 +1503,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async forgotPasswordStep1(payload) {
-    const endpointPath = "/fe/api.php?action=forgottenPassword1Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/forgotten_password", payload, "POST", 2);
   }
 
   /**
@@ -1571,10 +1561,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailRequest(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailRequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/reset_email", payload, "POST", 2);
   }
 
   /**
@@ -1587,10 +1574,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailVisit(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailVisit";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "reset_email" }, "GET", 2);
   }
 
   /**
@@ -1603,10 +1587,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailConfirm";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/confirm_action/reset_email", payload, "POST", 2);
   }
 
   /**
@@ -1619,10 +1600,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FARequest(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FARequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/disable_2fa", payload, "POST", 2);
   }
 
   /**
@@ -1635,10 +1613,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FAVisit(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FAVisit";
-    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
-
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "disable_2fa" }, "GET", 2);
   }
 
   /**
@@ -1651,10 +1626,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FAConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FAConfirm";
-    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
-
-    return responseData;
+    return this.doRequest("/user/confirm_action/disable_2fa", payload, "POST", 2);
   }
 
   /**
@@ -1698,8 +1670,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userAvailableBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getAvailableBalance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchange/${payload.exchangeInternalId}/available_balance`,
+      payload,
+      "GET",
+      2,
+    );
 
     return userAvailableBalanceResponseTransform(responseData);
   }
@@ -2053,9 +2029,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountRequest(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountRequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user/request_action/delete_account", payload, "POST", 2);
   }
 
   /**
@@ -2068,9 +2042,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "delete_account" }, "GET", 2);
   }
 
   /**
@@ -2083,9 +2055,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountConfirm";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user/confirm_action/delete_account", payload, "POST", 2);
   }
 
   /**

@@ -4,7 +4,6 @@ import { Box } from "@material-ui/core";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import SyncIcon from "@material-ui/icons/Sync";
@@ -23,7 +22,6 @@ import { getDailyUserBalance } from "store/actions/user";
  * @returns {JSX.Element} Component JSX.
  */
 const SyncBalanceButton = ({ selectedExchange, refreshBalance }) => {
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +29,6 @@ const SyncBalanceButton = ({ selectedExchange, refreshBalance }) => {
     if (selectedExchange.internalId) {
       setLoading(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         exchangeInternalId: selectedExchange.internalId,
         force: true,
       };
@@ -40,7 +37,6 @@ const SyncBalanceButton = ({ selectedExchange, refreshBalance }) => {
         .userBalanceGet(payload)
         .then(() => {
           const historicalPayload = {
-            token: storeSession.tradeApi.accessToken,
             exchangeInternalId: selectedExchange.internalId,
           };
           refreshBalance();

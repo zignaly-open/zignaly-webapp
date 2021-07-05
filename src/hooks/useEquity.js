@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -21,12 +20,10 @@ const useEquity = (internalId) => {
     loading: false,
   });
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: internalId,
     };
 
@@ -40,7 +37,7 @@ const useEquity = (internalId) => {
       });
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [internalId]);
 
   return equity;
 };

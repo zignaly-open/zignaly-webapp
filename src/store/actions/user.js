@@ -163,10 +163,7 @@ export const getUserData = (token, loadExchanges = false, callback) => {
   return async (dispatch) => {
     try {
       if (token) {
-        const payload = {
-          token: token,
-        };
-        const responseData = await tradeApi.userDataGet(payload);
+        const responseData = await tradeApi.userDataGet();
         const action = {
           type: SET_USER_DATA,
           payload: responseData,
@@ -177,7 +174,7 @@ export const getUserData = (token, loadExchanges = false, callback) => {
           callback(responseData);
         }
         if (loadExchanges) {
-          dispatch(initUserExchanges(payload.token, responseData.exchanges));
+          dispatch(initUserExchanges(token, responseData.exchanges));
         }
       }
     } catch (e) {

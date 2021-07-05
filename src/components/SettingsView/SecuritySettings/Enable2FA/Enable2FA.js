@@ -31,12 +31,8 @@ const Enable2FA = () => {
   const getCode = () => {
     if (editing) {
       // Get 2FA code.
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-      };
-
       tradeApi
-        .enable2FA1Step(payload)
+        .enable2FA1Step()
         .then((response) => {
           setCode(response[0]);
           setQRCodeImg(response[1]);
