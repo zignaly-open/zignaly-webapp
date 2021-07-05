@@ -128,7 +128,6 @@
     "babel-preset-react-app": "^10.0.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chai": "^4.3.4",
-    "chromatic": "^5.9.2",
     "cypress-dark": "^1.7.14",
     "cypress-dotenv": "^1.2.2",
     "dotenv": "^10.0.0",
@@ -219,7 +218,6 @@
     "cy:ci:prod": "STAGE=prod CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:run",
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "build-storybook": "build-storybook"
   }
 }
