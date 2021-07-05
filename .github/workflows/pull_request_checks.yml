@@ -8,11 +8,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: "14"
+          cache: "npm"
       - name: Dependencies
-        run: npm ci
+        run: npm i
       - name: Check Style Lint
         run: npm run stylelint
       - name: Check JS Lint
