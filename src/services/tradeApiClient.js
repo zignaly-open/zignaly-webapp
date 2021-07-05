@@ -343,19 +343,22 @@ class TradeApiClient {
    * Process API HTTP request.
    *
    * @param {string} endpointPath API endpoint path and action.
-   * @param {*} payload Request payload parameters object.
+   * @param {*} [payload] Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
-   * @param {number} [apiVersion] API to call
+   * @param {number} [apiVersion] API to call (0=CF, 1=old, 2=new)
    * @param {string} [token] Optional authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
-    let baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
-
-    if (payload.CF) {
-      baseUrl = baseUrl.split(apiVersion === 2 ? "/new_api" : "/api")[0];
+    let baseUrl = this.baseUrlv2;
+    if (apiVersion === 1) {
+      // Old api
+      baseUrl = this.baseUrlv1;
+    } else if (apiVersion === 0) {
+      // Cloudflare url
+      baseUrl = baseUrl.split("/new_api")[0];
     }
 
     let requestUrl = baseUrl + endpointPath;
@@ -492,7 +495,6 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    // const endpointPath = "/fe/api.php?action=getSoldPositions2";
     const endpointPath = "/get-sold-positions/";
     const responseData = await this.doRequest(endpointPath, {
       type: "sold",
