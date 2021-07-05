@@ -380,7 +380,9 @@ class TradeApiClient {
     };
 
     if (method === "GET") {
-      requestUrl = `${requestUrl}?${new URLSearchParams(payload)}`;
+      if (payload) {
+        requestUrl += `?${new URLSearchParams(payload)}`;
+      }
     } else {
       options.body = JSON.stringify(payload);
     }
