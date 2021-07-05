@@ -128,6 +128,7 @@
     "babel-preset-react-app": "^10.0.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
     "chai": "^4.3.4",
+    "chromatic": "^5.9.2",
     "cypress-dark": "^1.7.14",
     "cypress-dotenv": "^1.2.2",
     "dotenv": "^10.0.0",
