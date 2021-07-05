@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: npm run build:test
       - name: Integration Tests
-        run: npm run cy:ci:test
+        run: STAGE=test npm run cy:ci
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}

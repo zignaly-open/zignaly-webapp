@@ -107,7 +107,7 @@ const AppLayout = (props) => {
     <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
       <GoogleReCaptchaProvider
         language="en"
-        reCaptchaKey={process.env.RECAPTCHA_KEY}
+        reCaptchaKey={process.env.GATSBY_RECAPTCHA_KEY}
         scriptProps={{
           async: false, // optional, default to false,
           defer: false, // optional, default to false
