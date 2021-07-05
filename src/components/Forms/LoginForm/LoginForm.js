@@ -77,7 +77,7 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     let gRecaptchaResponse = "";
-    if (!isCheckly) {
+    if (!isCheckly && process.env.NODE_ENV === "production") {
       gRecaptchaResponse = await executeRecaptcha("login");
     }
     tradeApi
