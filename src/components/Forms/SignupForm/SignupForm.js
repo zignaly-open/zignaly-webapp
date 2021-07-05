@@ -51,9 +51,9 @@ const SignupForm = () => {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-    let captchaToken = "";
+    let gRecaptchaResponse = "";
     if (!isCheckly) {
-      captchaToken = await executeRecaptcha("signup");
+      gRecaptchaResponse = await executeRecaptcha("signup");
     }
     const payload = {
       projectId: projectId,
@@ -66,7 +66,7 @@ const SignupForm = () => {
       terms: data.terms,
       newPageAB,
       locale,
-      captchaToken,
+      gRecaptchaResponse,
     };
     dispatch(registerUser(payload, setLoading));
   };

@@ -76,12 +76,12 @@ const LoginForm = () => {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-    let captchaToken = "";
+    let gRecaptchaResponse = "";
     if (!isCheckly) {
-      captchaToken = await executeRecaptcha("login");
+      gRecaptchaResponse = await executeRecaptcha("login");
     }
     tradeApi
-      .userLogin({ ...data, captchaToken })
+      .userLogin({ ...data, gRecaptchaResponse })
       .then((response) => {
         setLoginResponse(response);
         check2FA(response);

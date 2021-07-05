@@ -141,7 +141,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} UserLoginPayload
  * @property {string} email
  * @property {string} password
- * @property {string} captchaToken
+ * @property {string} gRecaptchaResponse
  */
 
 /**
@@ -155,7 +155,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} ref
  * @property {Boolean} [newPageAB] Flag to indicate the user is using new A/B page.
  * @property {String} locale selected locale string
- * @property {string} captchaToken
+ * @property {string} gRecaptchaResponse
  */
 
 /**
