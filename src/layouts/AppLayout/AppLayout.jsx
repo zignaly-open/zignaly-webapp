@@ -16,6 +16,7 @@ import translations from "../../i18n/translations";
 import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 /**
  *
@@ -103,19 +104,29 @@ const AppLayout = (props) => {
   }, [href]);
 
   return (
-    <IntlProvider
-      locale={getLanguageCodefromLocale(locale)}
-      messages={messages ? messages : ENMessages}
-    >
-      <StylesProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ErrorAlert />
-          <SuccessAlert />
-          {storeLoader && <Loader />}
-          {children}
-        </ThemeProvider>
-      </StylesProvider>
+    <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
+      <GoogleReCaptchaProvider
+        language="en"
+        reCaptchaKey={process.env.RECAPTCHA_KEY}
+        scriptProps={{
+          async: false, // optional, default to false,
+          defer: false, // optional, default to false
+          appendTo: "head", // optional, default to "head", can be "head" or "body",
+          nonce: undefined, // optional, default undefined
+        }}
+        useEnterprise={false}
+        useRecaptchaNet={true}
+      >
+        <StylesProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ErrorAlert />
+            <SuccessAlert />
+            {storeLoader && <Loader />}
+            {children}
+          </ThemeProvider>
+        </StylesProvider>
+      </GoogleReCaptchaProvider>
     </IntlProvider>
   );
 };

@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import Captcha from "../../Captcha";
 import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
@@ -13,18 +12,18 @@ import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import useABTest from "hooks/useABTest";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
   const [ref] = useState("");
-  const recaptchaRef = useRef(null);
   const formMethods = useForm();
   const { errors, handleSubmit, register, clearErrors, control } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const newPageAB = useABTest();
@@ -48,10 +47,14 @@ const SignupForm = () => {
   /**
    *
    * @param {DataObject} data Data object received byt submitting the form.
-   * @returns {void} None.
+   * @returns {Promise<void>} None.
    */
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setLoading(true);
+    let gRecaptchaResponse = "";
+    if (!isCheckly) {
+      gRecaptchaResponse = await executeRecaptcha("signup");
+    }
     const payload = {
       projectId: projectId,
       firstName: data.firstName,
@@ -60,10 +63,10 @@ const SignupForm = () => {
       subscribe: data.subscribe,
       ref: ref,
       array: true,
-      gRecaptchaResponse: gRecaptchaResponse,
       terms: data.terms,
       newPageAB,
       locale,
+      gRecaptchaResponse,
     };
     dispatch(registerUser(payload, setLoading));
   };
@@ -195,10 +198,6 @@ const SignupForm = () => {
             />
             <span className="termsText">Subscribe to notifications</span>
           </Box>
-        </Box>
-
-        <Box className="captchaBox">
-          {!isCheckly && <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />}
         </Box>
 
         <Box className="inputBox buttonBox">

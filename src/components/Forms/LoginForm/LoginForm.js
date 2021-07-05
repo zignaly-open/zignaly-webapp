@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -7,7 +7,6 @@ import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { startTradeApiSession } from "../../../store/actions/session";
-import Captcha from "../../Captcha";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage, useIntl } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
@@ -15,6 +14,7 @@ import { showErrorAlert } from "../../../store/actions/ui";
 import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -29,13 +29,12 @@ const LoginForm = () => {
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loginResponse, setLoginResponse] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
-  const recaptchaRef = useRef(null);
   const intl = useIntl();
   const { handleSubmit, errors, register } = useForm({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
 
@@ -73,10 +72,14 @@ const LoginForm = () => {
    * Process data submitted in the login form.
    *
    * @param {LoginFormSubmission} data Submission data.
-   * @returns {Void} None.
+   * @returns {Promise<Void>} None.
    */
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setLoading(true);
+    let gRecaptchaResponse = "";
+    if (!isCheckly) {
+      gRecaptchaResponse = await executeRecaptcha("login");
+    }
     tradeApi
       .userLogin({ ...data, gRecaptchaResponse })
       .then((response) => {
@@ -154,10 +157,6 @@ const LoginForm = () => {
               name="password"
             />
             {errors.password && <span className="errorText">{errors.password.message}</span>}
-          </Box>
-
-          <Box className="captchaBox">
-            {!isCheckly && <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />}
           </Box>
 
           <Box className="inputBox">
