@@ -219,6 +219,6 @@
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "chromatic": "npx chromatic --project-token=6646ca70d39c"
+    "chromatic": "chromatic --exit-zero-on-changes"
   }
 }
