@@ -440,11 +440,8 @@ alert.forgotpassword.step1.title: "Solicitud procesada"
 alert.forgotpassword.step1.body: "Se ha enviado un correo electrónico a tu dirección con más instrucciones."
 alert.forgotpassword.step3.body: "Tu contraseña ha sido restablecida. ¡Ahora puedes iniciar sesión con una nueva contraseña!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
-<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
-=======
->>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Su API-Key del proveedor"
 signalp.option.stoploss: "¿Aceptar el valor de Stop Loss de la señal?"
@@ -1277,10 +1274,7 @@ copyt.profitsharing: "Profit Sharing"
 copyt.copytrading: "Copy Trading"
 srv.newfollowers: "Nuevos seguidores"
 copyt.canceldisconnecting: "Cancelar desconexión"
-<<<<<<< HEAD
 copyt.canceldisconnecting.tooltip: "Since you currently have open positions with this service, the soft disconnection process has begun! No more new positions will open, but all previous positions need to be closed to release your funds in your balance."
-=======
->>>>>>> origin/master
 copyt.management.cancel: 'Cancelar positiones "todavía entrando"'
 copyt.management.exit: "Cerrar Posiciones"
 copyt.copy.error4: "No puede conectarse al servicio de Profit Sharing utilizando una cuenta Demo."

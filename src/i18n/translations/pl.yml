@@ -485,11 +485,8 @@ alert.forgotpassword.step1.title: "Żądanie przetworzone"
 alert.forgotpassword.step1.body: "Na podany adres e-mail został wysłany e-mail z dalszymi instrukcjami."
 alert.forgotpassword.step3.body: "Twoje hasło zostało zresetowane. Możesz teraz zalogować się nowym hasłem!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
-<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
-=======
->>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Twój klucz API od dostawcy"
 signalp.option.stoploss: "Zaakceptować wartość Stop Loss pochodzącą z Sygnału?"

@@ -744,11 +744,8 @@ alert.management.cancelall.body: "Your request to cancel these positions has bee
 alert.management.exitall.title: "Exited Successfully!"
 alert.management.exitall.body: "Your request to exit these positions has been submitted successfully."
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
-<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
-=======
->>>>>>> origin/master
 
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Your API-Key from the provider"

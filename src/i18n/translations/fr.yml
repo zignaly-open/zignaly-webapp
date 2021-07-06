@@ -442,11 +442,8 @@ alert.forgotpassword.step1.title: "Demande traitée"
 alert.forgotpassword.step1.body: "Un e-mail a été envoyé à l'adresse e-mail que vous avez fournie pour obtenir des instructions supplémentaires."
 alert.forgotpassword.step3.body: "Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter avec un nouveau mot de passe!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
-<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
-=======
->>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Votre clé API du fournisseur"
 signalp.option.stoploss: "Accepter la valeur d'arrêt du signal?"

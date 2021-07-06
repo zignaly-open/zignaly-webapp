@@ -588,11 +588,8 @@ dashboard.balance.sync.alert: "Your balance has been successfully synchronized w
 copyt.canceldisconnect.title: "Cancel Disconnection"
 copyt.canceldisconnect.body: "Are you sure you want cancel your disconnection and resume copying this service?"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
-<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
-=======
->>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "API-Key của bạn từ nhà cung cấp"
 signalp.option.stoploss: "Chấp nhận giá trị dừng lỗ từ tín hiệu?"
