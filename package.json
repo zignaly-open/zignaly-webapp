@@ -83,7 +83,8 @@
     "whatwg-fetch": "^3.6.2"
   },
   "resolutions": {
-    "moment": "2.24.0"
+    "moment": "2.24.0",
+    "webpack": "5.42.1"
   },
   "devDependencies": {
     "@analytics/segment": "^1.1.0",
