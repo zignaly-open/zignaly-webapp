@@ -26,7 +26,7 @@ if (window.Cypress) {
   createServer({
     environment: "test",
     routes() {
-      for (const domain of [/* "/" */ ...otherDomains]) {
+      for (const domain of ["/", ...otherDomains]) {
         for (const method of methods) {
           this[method](`${domain}/*`, async (schema, request) => {
             let [status, headers, body] = await window.handleFromCypress(request);
@@ -36,8 +36,7 @@ if (window.Cypress) {
       }
 
       // All other requests on the current domain will still pass through
-      // Currently used to serve gatsby files
-      this.passthrough();
+      // this.passthrough();
 
       // If your central server has any calls to passthrough(), you'll need to duplicate them here
       // this.passthrough("https://analytics.google.com");

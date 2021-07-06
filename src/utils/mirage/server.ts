@@ -75,6 +75,9 @@ export function makeServer({ environment = "test" } = {}) {
     // },
 
     routes() {
+      // Let localhost request pass through (gatsby files)
+      this.passthrough();
+
       this.urlPrefix = TRADEAPI_URL_NEW;
 
       this.post("/signup", (schema, request) => {
@@ -105,6 +108,8 @@ export function makeServer({ environment = "test" } = {}) {
       this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
         return schema.all("provider");
       });
+
+      this.passthrough("https://api.segment.io/**");
 
       this.urlPrefix = TRADEAPI_URL;
       this.namespace = "/fe";
