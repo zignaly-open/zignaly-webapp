@@ -604,7 +604,7 @@ class TradeApiClient {
 
   async userBalanceGet(payload) {
     const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { ...payload, token: this.token });
 
     return userBalanceResponseTransform(responseData);
   }
