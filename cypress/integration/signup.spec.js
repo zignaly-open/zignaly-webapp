@@ -46,7 +46,7 @@ describe("Signup", () => {
     cy.get(".errorText").should("contain", "do not match");
   });
 
-  it("redirects after signup", () => {
+  it.only("redirects after signup", () => {
     server.createList("provider", 5);
     cy.get("[name=firstName]").type("Joe");
     cy.get("[name=email]").type("joe@example.com");
