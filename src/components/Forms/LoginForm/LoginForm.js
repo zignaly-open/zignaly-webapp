@@ -15,6 +15,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import CaptchaTerms from "components/Captcha/CaptchaTerms";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -140,7 +141,6 @@ const LoginForm = () => {
             />
             {errors.email && <span className="errorText">{errors.email.message}</span>}
           </Box>
-
           <Box
             alignItems="start"
             className="inputBox"
@@ -158,7 +158,6 @@ const LoginForm = () => {
             />
             {errors.password && <span className="errorText">{errors.password.message}</span>}
           </Box>
-
           <Box className="inputBox">
             <CustomButton
               className={"full submitButton"}
@@ -176,6 +175,7 @@ const LoginForm = () => {
           </Box>
         </Box>
       </form>
+      <CaptchaTerms />
     </>
   );
 };

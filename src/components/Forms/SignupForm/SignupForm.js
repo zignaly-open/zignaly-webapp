@@ -13,6 +13,7 @@ import { emailRegex } from "utils/validators";
 import useABTest from "hooks/useABTest";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import CaptchaTerms from "components/Captcha/CaptchaTerms";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -72,141 +73,144 @@ const SignupForm = () => {
   };
 
   return (
-    <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Box
-        alignItems="center"
-        className="signupForm"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
+    <>
+      <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
         <Box
-          alignItems="start"
-          className="inputBox"
+          alignItems="center"
+          className="signupForm"
           display="flex"
           flexDirection="column"
-          justifyContent="start"
+          justifyContent="center"
         >
-          <label className="customLabel">
-            <FormattedMessage id="security.name" />
-          </label>
-          <TextField
-            className="customInput"
-            error={!!errors.firstName}
-            fullWidth
-            inputRef={register({
-              required: intl.formatMessage({ id: "form.error.firstname" }),
-              minLength: {
-                value: 3,
-                message: intl.formatMessage({ id: "form.error.firstname.length" }),
-              },
-            })}
-            name="firstName"
-            type="text"
-            variant="outlined"
-          />
-          {errors.firstName && <span className="errorText">{errors.firstName.message}</span>}
-        </Box>
-        <Box
-          alignItems="start"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">
-            <FormattedMessage id="security.email" />
-          </label>
-          <TextField
-            className="customInput"
-            error={!!errors.email}
-            fullWidth
-            inputRef={register({
-              required: intl.formatMessage({ id: "security.email.error.empty" }),
-              pattern: {
-                value: emailRegex,
-                message: intl.formatMessage({ id: "security.email.error.invalid" }),
-              },
-            })}
-            name="email"
-            type="email"
-            variant="outlined"
-          />
-          {errors.email && <span className="errorText">{errors.email.message}</span>}
-        </Box>
-
-        <Passwords edit={false} formMethods={formMethods} />
-
-        <Box className="inputBox checkbox">
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <Checkbox
-              className="checkboxInput"
-              defaultChecked={true}
-              inputRef={register({ required: true })}
-              name="terms"
-              onChange={() => clearErrors("terms")}
+          <Box
+            alignItems="start"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <label className="customLabel">
+              <FormattedMessage id="security.name" />
+            </label>
+            <TextField
+              className="customInput"
+              error={!!errors.firstName}
+              fullWidth
+              inputRef={register({
+                required: intl.formatMessage({ id: "form.error.firstname" }),
+                minLength: {
+                  value: 3,
+                  message: intl.formatMessage({ id: "form.error.firstname.length" }),
+                },
+              })}
+              name="firstName"
+              type="text"
+              variant="outlined"
             />
-            <Box
-              className={"termsBox " + (errors.terms ? " error" : "")}
-              display="flex"
-              flexDirection="row"
-              flexWrap="wrap"
-              justifyContent="start"
-            >
-              <FormattedMessage
-                id="signup.agreement"
-                values={{
-                  terms: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/terms"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <FormattedMessage id="signup.terms" />
-                    </a>
-                  ),
-                  privacy: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/privacy"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <FormattedMessage id="signup.privacy" />
-                    </a>
-                  ),
-                }}
+            {errors.firstName && <span className="errorText">{errors.firstName.message}</span>}
+          </Box>
+          <Box
+            alignItems="start"
+            className="inputBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <label className="customLabel">
+              <FormattedMessage id="security.email" />
+            </label>
+            <TextField
+              className="customInput"
+              error={!!errors.email}
+              fullWidth
+              inputRef={register({
+                required: intl.formatMessage({ id: "security.email.error.empty" }),
+                pattern: {
+                  value: emailRegex,
+                  message: intl.formatMessage({ id: "security.email.error.invalid" }),
+                },
+              })}
+              name="email"
+              type="email"
+              variant="outlined"
+            />
+            {errors.email && <span className="errorText">{errors.email.message}</span>}
+          </Box>
+
+          <Passwords edit={false} formMethods={formMethods} />
+
+          <Box className="inputBox checkbox">
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+              <Checkbox
+                className="checkboxInput"
+                defaultChecked={true}
+                inputRef={register({ required: true })}
+                name="terms"
+                onChange={() => clearErrors("terms")}
               />
+              <Box
+                className={"termsBox " + (errors.terms ? " error" : "")}
+                display="flex"
+                flexDirection="row"
+                flexWrap="wrap"
+                justifyContent="start"
+              >
+                <FormattedMessage
+                  id="signup.agreement"
+                  values={{
+                    terms: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/terms"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <FormattedMessage id="signup.terms" />
+                      </a>
+                    ),
+                    privacy: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/privacy"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <FormattedMessage id="signup.privacy" />
+                      </a>
+                    ),
+                  }}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
 
-        <Box className="inputBox checkbox">
-          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
-            <Controller
-              control={control}
-              defaultValue={true}
-              name="subscribe"
-              render={({ onChange, value }) => (
-                <Checkbox
-                  checked={value}
-                  className="checkboxInput"
-                  onChange={(e) => onChange(e.target.checked)}
-                />
-              )}
-            />
-            <span className="termsText">Subscribe to notifications</span>
+          <Box className="inputBox checkbox">
+            <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
+              <Controller
+                control={control}
+                defaultValue={true}
+                name="subscribe"
+                render={({ onChange, value }) => (
+                  <Checkbox
+                    checked={value}
+                    className="checkboxInput"
+                    onChange={(e) => onChange(e.target.checked)}
+                  />
+                )}
+              />
+              <span className="termsText">Subscribe to notifications</span>
+            </Box>
+          </Box>
+
+          <Box className="inputBox buttonBox">
+            <CustomButton className={"full submitButton"} loading={loading} type="submit">
+              <FormattedMessage id="action.signup" />
+            </CustomButton>
           </Box>
         </Box>
-
-        <Box className="inputBox buttonBox">
-          <CustomButton className={"full submitButton"} loading={loading} type="submit">
-            <FormattedMessage id="action.signup" />
-          </CustomButton>
-        </Box>
-      </Box>
-    </form>
+      </form>
+      <CaptchaTerms />
+    </>
   );
 };
 

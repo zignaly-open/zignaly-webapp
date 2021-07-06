@@ -419,3 +419,9 @@ table {
 .textPurple {
   color: var(--purple);
 }
+
+// Hide captcha badge
+/* stylelint-disable selector-class-pattern */
+.grecaptcha-badge {
+  visibility: hidden;
+}
