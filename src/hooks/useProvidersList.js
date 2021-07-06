@@ -72,6 +72,8 @@ const useProvidersList = (options, updatedAt = null) => {
   const { type, connectedOnly, myServices } = options;
   const copyTraders = type === "copy_trading";
   const profitSharing = type === "profit_sharing";
+  const CTorPS = copyTraders || profitSharing;
+  const [providerQuotes, setProviderQuotes] = useState([]);
 
   /**
    * @type {{list: ProvidersCollection, filteredList: ProvidersCollection}} initialState
@@ -103,8 +105,9 @@ const useProvidersList = (options, updatedAt = null) => {
       exchangeId: storeSettings.selectedExchange.exchangeId,
       exchangeType: storeSettings.selectedExchange.exchangeType,
     },
-    !connectedOnly,
+    !CTorPS && !connectedOnly,
   );
+
   const quotes = [
     {
       val: "ALL",
@@ -116,6 +119,28 @@ const useProvidersList = (options, updatedAt = null) => {
       label,
     })),
   );
+
+  /**
+   *
+   * @param {ProvidersCollection} list providers collection
+   * @returns {Array<OptionType>} quotes filter options
+   */
+  const prepareProviderQuotes = (list) => {
+    let quoteList = list.map((provider) => provider.quote);
+    quoteList = [...new Set(quoteList)];
+
+    return [
+      {
+        val: "ALL",
+        label: intl.formatMessage({ id: "fil.allcoins" }),
+      },
+    ].concat(
+      quoteList.map((item) => ({
+        val: item,
+        label: item,
+      })),
+    );
+  };
 
   const exchanges = useExchangesOptions(true);
 
@@ -292,6 +317,9 @@ const useProvidersList = (options, updatedAt = null) => {
 
     method
       .then((responseData) => {
+        if (CTorPS) {
+          setProviderQuotes(prepareProviderQuotes(responseData));
+        }
         setProviders((s) => ({
           ...s,
           list: responseData,
@@ -331,7 +359,7 @@ const useProvidersList = (options, updatedAt = null) => {
     providers: augmentProviders(providers.filteredList),
     timeFrame,
     setTimeFrame,
-    quotes,
+    quotes: CTorPS ? providerQuotes : quotes,
     exchangeTypes,
     filters,
     setFilters,
