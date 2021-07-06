@@ -45,6 +45,7 @@ import {
   providerBalanceResponseTransform,
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
+  assetsAndBalanceResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -152,9 +153,8 @@ import {
  * @typedef {import('./tradeApiClient.types').ProfitSharingBalanceHistory} ProfitSharingBalanceHistory
  * @typedef {import('./tradeApiClient.types').AdjustMarginPayload} AdjustMarginPayload
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
- *
- *
- *
+ * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
+ * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
  *
  */
 
@@ -343,19 +343,22 @@ class TradeApiClient {
    * Process API HTTP request.
    *
    * @param {string} endpointPath API endpoint path and action.
-   * @param {*} payload Request payload parameters object.
+   * @param {*} [payload] Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
-   * @param {number} [apiVersion] API to call
+   * @param {number} [apiVersion] API to call (0=CF, 1=old, 2=new)
    * @param {string} [token] Optional authentication token.
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
-    let baseUrl = apiVersion === 2 ? this.baseUrlv2 : this.baseUrlv1;
-
-    if (payload.CF) {
-      baseUrl = baseUrl.split(apiVersion === 2 ? "/new_api" : "/api")[0];
+    let baseUrl = this.baseUrlv2;
+    if (apiVersion === 1) {
+      // Old api
+      baseUrl = this.baseUrlv1;
+    } else if (apiVersion === 0) {
+      // Cloudflare url
+      baseUrl = baseUrl.split("/new_api")[0];
     }
 
     let requestUrl = baseUrl + endpointPath;
@@ -377,7 +380,9 @@ class TradeApiClient {
     };
 
     if (method === "GET") {
-      requestUrl = `${requestUrl}?${new URLSearchParams(payload)}`;
+      if (payload) {
+        requestUrl += `?${new URLSearchParams(payload)}`;
+      }
     } else {
       options.body = JSON.stringify(payload);
     }
@@ -406,7 +411,7 @@ class TradeApiClient {
       this.setRequestAverageLatency(cacheId, elapsedTime);
 
       const parsedJson = await response.json();
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         responseData = parsedJson;
       } else {
         responseData.error = parsedJson;
@@ -492,7 +497,6 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    // const endpointPath = "/fe/api.php?action=getSoldPositions2";
     const endpointPath = "/get-sold-positions/";
     const responseData = await this.doRequest(endpointPath, {
       type: "sold",
@@ -599,8 +603,12 @@ class TradeApiClient {
    */
 
   async userBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchanges/${payload.exchangeInternalId}/balance`,
+      null,
+      "GET",
+      2,
+    );
 
     return userBalanceResponseTransform(responseData);
   }
@@ -614,8 +622,12 @@ class TradeApiClient {
    */
 
   async userEquityGet(payload) {
-    const endpointPath = "/fe/api.php?action=getHistoricalBalance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchanges/${payload.exchangeInternalId}/historical_balance`,
+      payload,
+      "GET",
+      2,
+    );
 
     return userEquityResponseTransform(responseData);
   }
@@ -1148,15 +1160,13 @@ class TradeApiClient {
   /**
    * Get user profile data.
    *
-   * @param {AuthorizationPayload} payload User profile payloaad..
 
    * @returns {Promise<UserEntity>} Returns promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
-  async userDataGet(payload) {
-    const endpointPath = "/fe/api.php?action=getUserData";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async userDataGet() {
+    const responseData = await this.doRequest("/user", null, "GET", 2);
 
     return userEntityResponseTransform(responseData);
   }
@@ -1372,25 +1382,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updatePassword(payload) {
-    const endpointPath = "/fe/api.php?action=changePassword";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/change_password", payload, "POST", 2);
   }
 
   /**
    * Get code and QR code to enable 2FA.
    *
-   * @param {AuthorizationPayload} payload Payload
    * @returns {Promise<Array<string>>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async enable2FA1Step(payload) {
-    const endpointPath = "/fe/api.php?action=enable2FA1Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+  async enable2FA1Step() {
+    return this.doRequest("/user/enable_2fa/step1", null, "POST", 2);
   }
 
   /**
@@ -1432,23 +1435,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verify2FA(payload) {
-    const endpointPath = "/fe/api.php?action=verify2FA";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", 1, payload.token);
-
-    return responseData;
+    return this.doRequest("/user/verify_2fa", payload, "POST", 2, payload.token);
   }
 
   /**
    * Get user notifications settings.
    *
-   * @param {AuthorizationPayload} payload Payload
    * @returns {Promise<ProfileNotifications>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async getProfileNotifications(payload) {
-    const endpointPath = "/fe/api.php?action=getProfileNotifications";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async getProfileNotifications() {
+    const responseData = await this.doRequest("/user/notifications", null, "GET", 2);
 
     return profileNotificationsResponseTransform(responseData);
   }
@@ -1462,8 +1460,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updateProfileNotifications(payload) {
-    const endpointPath = "/fe/api.php?action=updateProfileNotifications";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/user/notifications", payload, "POST", 2);
 
     return profileNotificationsResponseTransform(responseData);
   }
@@ -1510,10 +1507,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async forgotPasswordStep1(payload) {
-    const endpointPath = "/fe/api.php?action=forgottenPassword1Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/forgotten_password", payload, "POST", 2);
   }
 
   /**
@@ -1571,10 +1565,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailRequest(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailRequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/reset_email", payload, "POST", 2);
   }
 
   /**
@@ -1587,10 +1578,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailVisit(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailVisit";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "reset_email" }, "GET", 2);
   }
 
   /**
@@ -1603,10 +1591,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=resetEmailConfirm";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/confirm_action/reset_email", payload, "POST", 2);
   }
 
   /**
@@ -1619,10 +1604,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FARequest(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FARequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/request_action/disable_2fa", payload, "POST", 2);
   }
 
   /**
@@ -1635,10 +1617,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FAVisit(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FAVisit";
-    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
-
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "disable_2fa" }, "GET", 2);
   }
 
   /**
@@ -1651,10 +1630,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FAConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FAConfirm";
-    const responseData = await this.doRequest(endpointPath, { ...payload, reason: "2FA" });
-
-    return responseData;
+    return this.doRequest("/user/confirm_action/disable_2fa", payload, "POST", 2);
   }
 
   /**
@@ -1698,8 +1674,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userAvailableBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getAvailableBalance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(
+      `/user/exchange/${payload.exchangeInternalId}/available_balance`,
+      payload,
+      "GET",
+      2,
+    );
 
     return userAvailableBalanceResponseTransform(responseData);
   }
@@ -2053,9 +2033,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountRequest(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountRequest";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user/request_action/delete_account", payload, "POST", 2);
   }
 
   /**
@@ -2068,9 +2046,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountVisit";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/visit_link", { ...payload, reason: "delete_account" }, "GET", 2);
   }
 
   /**
@@ -2083,9 +2059,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountConfirm(payload) {
-    const endpointPath = "/fe/api.php?action=deleteAccountConfirm";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user/confirm_action/delete_account", payload, "POST", 2);
   }
 
   /**
@@ -2115,6 +2089,66 @@ class TradeApiClient {
   async generateExchangePositionsReport(payload) {
     const endpointPath = `/user/exchanges/${payload.internalExchangeId}/report/positions`;
     const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Activate subaccount
+   *
+   * @param {{internalExchangeId: string}} payload Payload
+   *
+   * @returns {Promise<void>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async activateSubaccount(payload) {
+    const endpointPath = `/user/exchanges/${payload.internalExchangeId}/activate`;
+    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Perform internal transfer for user
+   *
+   * @param {InternalTransferPayload} payload Payload to perform internal transfer
+   *
+   * @returns {Promise<boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async performInternalTransfer(payload) {
+    const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
+    return responseData;
+  }
+
+  /**
+   * Perform internal transfer for user
+   *
+   * @param {{exchangeInternalId: String}} payload Payload to perform internal transfer
+   *
+   * @returns {Promise<AssetsAndBalanceObject>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getAssetsAndBalance(payload) {
+    const endpointPath = `/user/exchanges/${payload.exchangeInternalId}/assets_and_balance`;
+    const responseData = await this.doRequest(endpointPath, {}, "GET", 2);
+    return assetsAndBalanceResponseTransform(responseData);
+  }
+
+  /**
+   * Save user's selected lang in backend
+   *
+   * @param {{locale: String}} payload Payload to save locale
+   *
+   * @returns {Promise<Boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async saveLocale(payload) {
+    const endpointPath = "/user/save_locale";
+    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
     return responseData;
   }
 }

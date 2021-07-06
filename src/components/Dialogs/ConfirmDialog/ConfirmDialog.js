@@ -13,7 +13,7 @@ import { noop } from "lodash";
  * @property {string} titleTranslationId
  * @property {string} messageTranslationId
  * @property {boolean} visible
- * @property {Object} [values]
+ * @property {Object<string, React.ReactNode>} [values]
  */
 
 /**
@@ -65,7 +65,7 @@ const ConfirmDialog = (props) => {
           <DialogContentText color="textPrimary">
             <FormattedMessage
               id={confirmConfig.messageTranslationId}
-              values={confirmConfig.values ? confirmConfig.values : {}}
+              values={confirmConfig.values}
             />
           </DialogContentText>
         </DialogContent>

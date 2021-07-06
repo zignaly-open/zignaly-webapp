@@ -12,6 +12,7 @@ export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const SET_USER_DATA = "SET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
 export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
+export const ACTIVATE_SUBACCOUNT = "ACTIVATE_SUBACCOUNT";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -162,10 +163,7 @@ export const getUserData = (token, loadExchanges = false, callback) => {
   return async (dispatch) => {
     try {
       if (token) {
-        const payload = {
-          token: token,
-        };
-        const responseData = await tradeApi.userDataGet(payload);
+        const responseData = await tradeApi.userDataGet();
         const action = {
           type: SET_USER_DATA,
           payload: responseData,
@@ -176,7 +174,7 @@ export const getUserData = (token, loadExchanges = false, callback) => {
           callback(responseData);
         }
         if (loadExchanges) {
-          dispatch(initUserExchanges(payload.token, responseData.exchanges));
+          dispatch(initUserExchanges(token, responseData.exchanges));
         }
       }
     } catch (e) {
@@ -195,5 +193,18 @@ export const enable2FA = (twoFAEnable) => {
   return {
     type: ENABLE_TWO_FA,
     payload: twoFAEnable,
+  };
+};
+
+/**
+ * Activate Sub Account
+ *
+ * @param {string} internalExchangeId Exchange account internal id
+ * @returns {Object} Action object.
+ */
+export const activateSubAccount = (internalExchangeId) => {
+  return {
+    type: ACTIVATE_SUBACCOUNT,
+    payload: internalExchangeId,
   };
 };

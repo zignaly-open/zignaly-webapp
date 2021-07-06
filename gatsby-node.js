@@ -62,12 +62,12 @@ exports.onCreatePage = ({ page, actions }) => {
   }
 };
 
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { styles } = require("@ckeditor/ckeditor5-dev-utils");
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const svgCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/;
+const cssCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/;
 // const { StatsWriterPlugin } = require("webpack-stats-plugin");
 
 exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
@@ -83,7 +83,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
       rule.oneOf.forEach((subRule) => {
         if ([String(cssRegex), String(cssModuleRegex)].includes(String(subRule.test))) {
           if (!subRule.exclude) subRule.exclude = [];
-          subRule.exclude.push(/ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/);
+          subRule.exclude.push(cssCKEditorRegex);
         }
       });
     } else if (String(rule.test).includes("svg")) {
@@ -98,7 +98,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
       use: ["raw-loader"],
     },
     {
-      test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+      test: cssCKEditorRegex,
       use: [
         {
           loader: "style-loader",
@@ -109,14 +109,17 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
             },
           },
         },
+        "css-loader",
         {
           loader: "postcss-loader",
-          options: styles.getPostCssConfig({
-            themeImporter: {
-              themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
-            },
-            minify: true,
-          }),
+          options: {
+            postcssOptions: styles.getPostCssConfig({
+              themeImporter: {
+                themePath: require.resolve("@ckeditor/ckeditor5-theme-lark"),
+              },
+              minify: true,
+            }),
+          },
         },
       ],
     },
@@ -145,7 +148,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
     );
   }
 
-  if (stage === "build-javascript") {
+  if (stage === "develop") {
     // Ignore Conflicting css order
     // https://spectrum.chat/gatsby-js/general/having-issue-related-to-chunk-commons-mini-css-extract-plugin~0ee9c456-a37e-472a-a1a0-cc36f8ae6033
     const miniCssExtractPlugin = config.plugins.find(
@@ -171,15 +174,17 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   }
 
   config.plugins.push(new CaseSensitivePathsPlugin());
-  config.resolve.plugins.push(new TsconfigPathsPlugin({ extensions: [".js", ".ts", ".tsx"] }));
+  config.resolve.fallback = {
+    // Webpack removed polyfills
+    crypto: require.resolve("crypto-browserify"),
+    stream: false,
+  };
   // eslint-disable-next-line no-console
   console.log("Webpack build config updated");
-  //   console.log(JSON.stringify(config.module.rules, null, 2));
-  //   console.log(
-  //     config.module.rules.map((c) =>
-  //       c.oneOf ? c.oneOf.map((c2) => String(c2.test)) : String(c.test),
-  //     ),
-  //   );
+  // RegExp.prototype.toJSON = function () {
+  //   return this.source;
+  // };
+  // console.log(JSON.stringify(config.module.rules, null, 2));
   actions.replaceWebpackConfig(config);
 };
 

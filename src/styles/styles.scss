@@ -137,6 +137,10 @@ body {
     padding: 0 10px;
   }
 
+  &.error {
+    border: 1px solid $red;
+  }
+
   div {
     height: 32px;
   }
@@ -414,4 +418,10 @@ table {
 
 .textPurple {
   color: var(--purple);
+}
+
+// Hide captcha badge
+/* stylelint-disable selector-class-pattern */
+.grecaptcha-badge {
+  visibility: hidden;
 }

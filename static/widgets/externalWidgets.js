@@ -47,13 +47,13 @@ script.async = true;
 script.defer = true;
 document.getElementsByTagName("head")[0].appendChild(script);
 
-// user pilot
-let script3 = document.createElement("script");
-script3.type = "text/javascript";
-script3.src = "https://js.userpilot.io/sdk/latest.js";
-script3.id = "userPilot";
-script3.async = true;
-document.getElementsByTagName("head")[0].appendChild(script3);
+// // user pilot
+// let script3 = document.createElement("script");
+// script3.type = "text/javascript";
+// script3.src = "https://js.userpilot.io/sdk/latest.js";
+// script3.id = "userPilot";
+// script3.async = true;
+// document.getElementsByTagName("head")[0].appendChild(script3);
 
 // user report
 let meta1 = document.createElement("meta");

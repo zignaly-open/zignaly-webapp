@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "gatsby";
 import { FormattedMessage } from "react-intl";
-import Captcha from "../../Captcha";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -41,8 +41,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
-  const [gRecaptchaResponse, setCaptchaResponse] = useState("");
-  const recaptchaRef = useRef(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
 
@@ -97,12 +96,16 @@ const ResetPasswordForm = ({ code, setExpired }) => {
    * Data returned at form submition.
    *
    * @param {DataObject} data form data received by the submit method.
-   * @returns {void}
+   * @returns {Promise<void>} Promise
    */
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (data.password === data.repeatPassword) {
       setPasswordDoNotMatch(false);
       setLoading(true);
+      let gRecaptchaResponse = "";
+      if (process.env.NODE_ENV === "production") {
+        gRecaptchaResponse = await executeRecaptcha("resetPassword");
+      }
       const payload = {
         token: code,
         password: data.password,
@@ -213,10 +216,6 @@ const ResetPasswordForm = ({ code, setExpired }) => {
             />
           </FormControl>
           {passwordDoNotMatch && <span className="errorText">Passwords do not match</span>}
-        </Box>
-
-        <Box className="captchaBox">
-          <Captcha onChange={setCaptchaResponse} recaptchaRef={recaptchaRef} />
         </Box>
 
         <Box className="inputBox">

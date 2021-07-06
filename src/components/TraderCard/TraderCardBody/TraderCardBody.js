@@ -67,6 +67,8 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     exchangeInternalIds,
     profitSharing,
     CTorPS,
+    liquidated,
+    globalReturn,
   } = provider;
 
   /**
@@ -147,7 +149,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     setChartData({ values, labels });
   }, [dailyReturns, followers]);
 
-  const positive = (CTorPS ? returns : newFollowers) >= 0;
+  const positive = (CTorPS ? globalReturn : newFollowers) >= 0 && !liquidated;
   let colorClass = "green";
   /**
    * @type {ChartColorOptions} colorsOptions
@@ -252,13 +254,19 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
       <div className="traderCardBody">
         <div className="returnsBox">
           <ConditionalWrapper
-            condition={CTorPS}
+            condition={CTorPS && !liquidated}
             wrapper={(_children) => (
               <CustomToolip
                 title={
                   <FormattedMessage
                     id="srv.closedpos.tooltip"
-                    values={{ count: closedPositions, days: timeFrame }}
+                    values={{
+                      closeCount: closedPositions,
+                      timeframe: timeFrame,
+                      returns: formatFloat2Dec(returns),
+                      openCount: openPositions,
+                      floating: formatFloat2Dec(floating),
+                    }}
                   />
                 }
               >
@@ -268,7 +276,13 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
           >
             <div className="returns">
               <Typography className={colorClass} variant="h4">
-                {CTorPS ? <>{formatFloat2Dec(returns)}%</> : newFollowers}
+                {liquidated ? (
+                  intl.formatMessage({ id: "srv.liquidated" })
+                ) : CTorPS ? (
+                  <>{formatFloat2Dec(globalReturn)}%</>
+                ) : (
+                  newFollowers
+                )}
               </Typography>
               <Typography variant="subtitle1">{`${intl.formatMessage({
                 id: CTorPS ? "sort.return" : "srv.newfollowers",
@@ -278,7 +292,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
             </div>
           </ConditionalWrapper>
 
-          {CTorPS && (
+          {CTorPS && !liquidated && (
             <CustomToolip
               title={
                 <FormattedMessage id="srv.openpos.tooltip" values={{ count: openPositions }} />

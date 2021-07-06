@@ -1,15 +1,15 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Page, PageProps } from './Page';
+import { Page } from './Page';
 import * as HeaderStories from './Header.stories';
 
 export default {
   title: 'Example/Page',
   component: Page,
-} as Meta;
+} as ComponentMeta<typeof Page>;
 
-const Template: Story<PageProps> = (args) => <Page {...args} />;
+const Template: ComponentStory<typeof Page> = (args) => <Page {...args} />;
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {

@@ -23,19 +23,19 @@ describe("Signup", () => {
 
   it("requires valid email", () => {
     cy.get("[name=email]").type("@example.com{enter}");
-    cy.get("form").contains("Sign Up").click();
+    cy.get("form").contains("Register").click();
     cy.get(".errorText").should("contain", "Email should be valid");
   });
 
   it("requires password", () => {
     cy.get("[name=email]").type("joe@example.com");
-    cy.get("form").contains("Sign Up").click();
+    cy.get("form").contains("Register").click();
     cy.get(".errorText").should("contain", "Enter a password");
   });
 
   it("requires strong password", () => {
     cy.get("[name=password]").type("password123");
-    cy.get("form").contains("Sign Up").click();
+    cy.get("form").contains("Register").click();
     cy.get(".errorText").should("contain", "password is weak");
   });
 
@@ -47,10 +47,11 @@ describe("Signup", () => {
   });
 
   it("redirects after signup", () => {
+    server.createList("provider", 5);
     cy.get("[name=firstName]").type("Joe");
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("Pa839.rd#@?873");
     cy.get("[name=repeatPassword]").type("Pa839.rd#@?873{enter}");
-    cy.url().should("eq", Cypress.config("baseUrl") + "/copyTraders");
+    cy.url().should("eq", Cypress.config("baseUrl") + "/profitSharing");
   });
 });

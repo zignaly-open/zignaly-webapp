@@ -30,7 +30,7 @@ const Preferences = () => {
   // const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const canDelete =
-    !exchangeConnections.length || !exchangeConnections.find((item) => item.areKeysValid);
+    !exchangeConnections.length || !exchangeConnections.find((item) => item.activated);
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -46,7 +46,7 @@ const Withdraw = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, updatedAt);
+  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, true, updatedAt);
 
   const onSuccess = () => {
     performWithdraw(formData);

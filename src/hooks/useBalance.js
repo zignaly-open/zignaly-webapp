@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 import { useDispatch } from "react-redux";
@@ -25,8 +24,6 @@ const useBalance = (internalId) => {
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
   const dispatch = useDispatch();
 
-  const storeSession = useStoreSessionSelector();
-
   const refreshBalance = () => {
     setUpdatedAt(new Date());
   };
@@ -35,11 +32,10 @@ const useBalance = (internalId) => {
     setLoading(true);
 
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: internalId,
     };
 
-    if (storeSession.tradeApi.accessToken && internalId) {
+    if (internalId) {
       tradeApi
         .userBalanceGet(payload)
         .then((data) => {
@@ -54,7 +50,7 @@ const useBalance = (internalId) => {
     }
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
+  useEffect(loadData, [internalId, updatedAt]);
 
   return {
     balance: balance,
