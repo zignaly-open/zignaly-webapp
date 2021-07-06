@@ -98,6 +98,10 @@ export function makeServer({ environment = "test" } = {}) {
         return [];
       });
 
+      this.get("/user", (schema, request) => {
+        return getUserData(schema.db.users.all()[0]);
+      });
+
       this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
         return schema.all("provider");
       });
@@ -120,12 +124,6 @@ export function makeServer({ environment = "test" } = {}) {
             break;
           case "getExchangeList":
             response = schema.db.exchanges;
-            break;
-          case "getUserExchanges":
-            response = schema.db.userExchanges;
-            break;
-          case "getUserData":
-            response = getUserData(schema.db.users.all()[0]);
             break;
           case "getPairsNew":
             response = schema.db.pairs;
