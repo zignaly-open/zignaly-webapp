@@ -22,7 +22,7 @@ const Coins = () => {
     setList(data);
   };
 
-  useEffect(initData, [data.length]);
+  useEffect(initData, [assets]);
 
   /**
    * @param {Array<ExchangeAsset>} filtered Filtered equity data.
