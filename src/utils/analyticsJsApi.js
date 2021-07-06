@@ -35,8 +35,7 @@ const analyticsJsApi = () => {
       app: "zignaly",
       plugins: [
         segmentPlugin({
-          writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
-          "Quora Conversion Pixel": false,
+          writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA"
         }),
       ],
     });

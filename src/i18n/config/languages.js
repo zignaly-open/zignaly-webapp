@@ -78,10 +78,7 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     locale: "tr",
     label: "Türkçe",
     countryCode: "tr",
-<<<<<<< HEAD
     languageCode: "tr",
-=======
->>>>>>> origin/master
   });
 }
 
