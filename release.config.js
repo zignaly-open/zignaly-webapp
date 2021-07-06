@@ -2,7 +2,7 @@ module.exports = {
   branches: [
     { name: "master" },
     { name: "develop", channel: "beta", prerelease: "beta" },
-    { name: "staging", channel: "rc", prerelease: 'rc' }
+    { name: "staging", channel: "rc", prerelease: "rc" },
   ],
   plugins: [
     [
@@ -13,9 +13,9 @@ module.exports = {
           { type: "refactor", release: "patch" },
           { type: "style", release: "patch" },
         ],
-        presetConfig: {
-          issuePrefixes: ["ZIG-"],
-        },
+        // presetConfig: {
+        //   issuePrefixes: ["ZIG-"],
+        // },
       },
     ],
     "@semantic-release/release-notes-generator",
