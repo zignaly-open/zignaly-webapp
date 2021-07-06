@@ -99,7 +99,7 @@ export function makeServer({ environment = "test" } = {}) {
       });
 
       this.get("/user", (schema, request) => {
-        return getUserData(schema.db.users.all()[0]);
+        return getUserData(schema.db.users.find(1));
       });
 
       this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
