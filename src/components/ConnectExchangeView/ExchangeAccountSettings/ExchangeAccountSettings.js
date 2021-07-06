@@ -73,10 +73,7 @@ const ExchangeAccountSettings = () => {
   );
 
   const loadAccount = () => {
-    const authorizationPayload = {
-      token: storeSession.tradeApi.accessToken,
-    };
-    tradeApi.userDataGet(authorizationPayload).then((response) => {
+    tradeApi.userDataGet().then((response) => {
       const account = response.exchanges.find((e) => e.internalId === selectedAccount.internalId);
       setPathParams((params) => ({ ...params, selectedAccount: account }));
       setLoading(false);

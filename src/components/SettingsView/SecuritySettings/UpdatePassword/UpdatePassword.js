@@ -9,7 +9,6 @@ import EditIcon from "../../../../images/ct/edit.svg";
 import PasswordInput from "../../../Passwords/PasswordInput";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { navigateLogin } from "services/navigation";
 import { endTradeApiSession } from "store/actions/session";
 import "./UpdatePassword.scss";
@@ -21,7 +20,6 @@ import "./UpdatePassword.scss";
  */
 const UpdatePassword = () => {
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
   const formMethods = useForm({ mode: "onBlur" });
   const { errors, handleSubmit, register, setError } = formMethods;
   const [editing, setEditing] = useState(false);
@@ -44,7 +42,6 @@ const UpdatePassword = () => {
   const submitPassword = (data) => {
     const { currentPassword: password, password: newPassword, repeatPassword } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       password,
       newPassword,
       repeatPassword,
