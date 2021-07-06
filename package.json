@@ -10,7 +10,7 @@
     "url": "git@github.com:zignaly-open/zignaly-webapp.git"
   },
   "dependencies": {
-    "@analytics/segment": "^0.6.0",
+    "@analytics/segment": "^1.1.0",
     "@ckeditor/ckeditor5-autoformat": "^22.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^22.0.0",
     "@ckeditor/ckeditor5-block-quote": "^22.0.0",
@@ -88,7 +88,6 @@
     "webpack": "5.42.1"
   },
   "devDependencies": {
-    "@analytics/segment": "^1.1.0",
     "@babel/core": "^7.14.6",
     "@babel/preset-typescript": "^7.14.5",
     "@commitlint/cli": "^12.1.4",
