@@ -5,12 +5,13 @@ import dayjs from "dayjs";
 
 // Use proper TRADEAPI_URL value.
 // When this file is imported from cypress context we can't access process.env
-// so the env variables are passed to the cypress config object ????
-// const TRADEAPI_URL =
-// window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL") : process.env.GATSBY_TRADEAPI_URL;
-
-const TRADEAPI_URL = process.env.GATSBY_TRADEAPI_URL;
-const TRADEAPI_URL_NEW = process.env.GATSBY_TRADEAPI_URL_NEW;
+// so the env variables are passed to the cypress config object
+const TRADEAPI_URL =
+  // @ts-ignore
+  window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL") : process.env.GATSBY_TRADEAPI_URL;
+const TRADEAPI_URL_NEW =
+  // @ts-ignore
+  window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL_NEW") : process.env.GATSBY_TRADEAPI_URL_NEW;
 
 // Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
