@@ -35,7 +35,7 @@ const analyticsJsApi = () => {
       app: "zignaly",
       plugins: [
         segmentPlugin({
-          writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA"
+          writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
         }),
       ],
     });
