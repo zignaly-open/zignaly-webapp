@@ -929,7 +929,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} TwoFAPayload
  * @property {string} code
- * @property {string} token
+ * @property {string} token User session token
  */
 
 /**

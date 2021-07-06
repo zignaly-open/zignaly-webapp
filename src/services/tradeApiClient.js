@@ -1435,7 +1435,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verify2FA(payload) {
-    return this.doRequest("/user/verify_2fa", payload, "POST", 2);
+    return this.doRequest("/user/verify_2fa", payload, "POST", 2, payload.token);
   }
 
   /**
