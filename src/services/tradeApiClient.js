@@ -603,12 +603,8 @@ class TradeApiClient {
    */
 
   async userBalanceGet(payload) {
-    const responseData = await this.doRequest(
-      `/user/exchanges/${payload.exchangeInternalId}/balance`,
-      null,
-      "GET",
-      2,
-    );
+    const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
+    const responseData = await this.doRequest(endpointPath, payload);
 
     return userBalanceResponseTransform(responseData);
   }
