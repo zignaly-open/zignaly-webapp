@@ -36,7 +36,6 @@ const analyticsJsApi = () => {
       plugins: [
         segmentPlugin({
           writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
-          "Quora Conversion Pixel": false,
         }),
       ],
     });

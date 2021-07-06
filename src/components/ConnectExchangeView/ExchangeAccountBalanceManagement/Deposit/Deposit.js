@@ -11,6 +11,7 @@ import BtcIcon from "../../../../images/exchangeAccount/btc.svg";
 import CopyIcon from "../../../../images/exchangeAccount/copy.svg";
 import useExchangeDepositAddress from "../../../../hooks/useExchangeDepositAddress";
 import useAssetsSelect from "../../../../hooks/useAssetsSelect";
+import useActivateSubAccount from "../../../../hooks/useActivateSubAccount";
 import useClipboard from "../../../../hooks/useClipboard";
 import DepositHistoryTable from "./DepositHistoryTable";
 import TransferCoinPicker from "../TransferCoinPicker";
@@ -25,8 +26,12 @@ import { Alert } from "@material-ui/lab";
 const Deposit = () => {
   const {
     pathParams: { selectedAccount },
+    setPathParams,
   } = useContext(ModalPathContext);
   const copyToClipboard = useClipboard();
+
+  // Initialize exchange internal id if/when account is activated
+  const internalId = selectedAccount.activated ? selectedAccount.internalId : "";
 
   const {
     selectedAssetName,
@@ -35,13 +40,18 @@ const Deposit = () => {
     selectedAsset,
     selectedNetwork,
     setSelectedNetwork,
-  } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType);
+  } = useAssetsSelect(internalId, selectedAccount.exchangeType, false);
 
-  const depositAddress = useExchangeDepositAddress(
-    selectedAccount.internalId,
-    selectedAssetName,
-    selectedNetwork,
-  );
+  // Activate account if needed
+  useActivateSubAccount(selectedAccount, () => {
+    // Update context object
+    setPathParams((params) => ({
+      ...params,
+      selectedAccount: { ...params.selectedAccount, activated: true },
+    }));
+  });
+
+  const depositAddress = useExchangeDepositAddress(internalId, selectedAssetName, selectedNetwork);
 
   const copyAddress = () => {
     if (depositAddress) copyToClipboard(depositAddress.address, "deposit.address.copied");
@@ -74,7 +84,7 @@ const Deposit = () => {
           </Box>
         </Box>
         <Box className="transferBox">
-          {!assetsList.length || !selectedNetwork ? (
+          {!assetsList.length ? (
             <Box
               className="loadProgress"
               display="flex"
@@ -94,7 +104,7 @@ const Deposit = () => {
                 </Typography>
               </Box>
               <Box className="transferColumnsBox" display="flex" flexDirection="row">
-                <Box className="coinColumn">
+                <Box className={`coinColumn ${selectedAsset ? "selected" : ""}`}>
                   <TransferCoinPicker
                     asset={selectedAsset}
                     coins={assetsList}
@@ -102,97 +112,101 @@ const Deposit = () => {
                     onChange={setSelectedAsset}
                     selectedCoin={selectedAssetName}
                   />
-                  <Box className="tipBox">
-                    <img src={TimeIcon} />
-                    <Typography className="bold" variant="body1">
-                      <FormattedMessage id="deposit.waitingtime" />
-                    </Typography>
-                    <Typography variant="body1">
-                      <FormattedMessage id="deposit.processing" />
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box className="networkColumn">
-                  {selectedAsset.networks.length > 1 && (
-                    <NetworksToggleGroup
-                      networks={selectedAsset.networks.map((n) => n.name)}
-                      selectedNetwork={selectedNetwork.name}
-                      setSelectedNetwork={setSelectedNetwork}
-                    />
-                  )}
-                  <Typography className="addressLabel" variant="body1">
-                    {selectedAssetName} <FormattedMessage id="deposit.address" />
-                  </Typography>
-                  <Box display="flex" flexDirection="row">
-                    {selectedNetwork && !selectedNetwork.withdrawEnable ? (
-                      <Alert severity="error">
-                        {selectedNetwork.withdrawDesc || (
-                          <FormattedMessage id="withdraw.notavailable" />
-                        )}
-                      </Alert>
-                    ) : depositAddress ? (
-                      <>
-                        <Typography className="address bold" variant="body1">
-                          {depositAddress.address}
-                        </Typography>
-                        <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
-                      </>
-                    ) : (
-                      <CircularProgress disableShrink size={21} />
-                    )}
-                  </Box>
-                  {depositAddress && depositAddress.tag && (
-                    <Box>
-                      <Typography className="addressLabel" variant="body1">
-                        {selectedAssetName} <FormattedMessage id="withdraw.memo" />
+                  {selectedAsset && (
+                    <Box className="tipBox">
+                      <img src={TimeIcon} />
+                      <Typography className="bold" variant="body1">
+                        <FormattedMessage id="deposit.waitingtime" />
                       </Typography>
-                      <Box display="flex" flexDirection="row">
-                        <Typography className="bold" variant="body1">
-                          {depositAddress.tag}
-                        </Typography>
-                        <img alt="copy" className="copy" onClick={copyMemo} src={CopyIcon} />
-                      </Box>
+                      <Typography variant="body1">
+                        <FormattedMessage id="deposit.processing" />
+                      </Typography>
                     </Box>
                   )}
-                  <Box className="addressButtons" display="flex" flexDirection="row">
-                    <CustomButton
-                      className="bgPurple"
-                      disabled={!depositAddress}
-                      onClick={copyAddress}
-                    >
-                      <Typography className="bold" variant="body1">
-                        <FormattedMessage id="deposit.address.copy" />
-                      </Typography>
-                    </CustomButton>
-                    <Modal
-                      onClose={() => openQRModal(false)}
-                      persist={false}
-                      size="small"
-                      state={isQRModalOpen}
-                    >
-                      <DepositQRCodes address={depositAddress} />
-                    </Modal>
-                    <CustomButton
-                      className="borderPurple textPurple"
-                      disabled={!depositAddress}
-                      onClick={() => openQRModal(true)}
-                    >
-                      <Typography className="bold" variant="body1">
-                        <FormattedMessage id="deposit.address.qr" />
-                      </Typography>
-                    </CustomButton>
-                  </Box>
-                  <TipBox
-                    description="deposit.loss"
-                    icon={BtcIcon}
-                    title={
-                      <FormattedMessage
-                        id="deposit.note.onlysend"
-                        values={{ coin: selectedAssetName }}
-                      />
-                    }
-                  />
                 </Box>
+                {selectedAsset && (
+                  <Box className="networkColumn">
+                    {selectedAsset.networks.length > 1 && (
+                      <NetworksToggleGroup
+                        networks={selectedAsset.networks.map((n) => n.name)}
+                        selectedNetwork={selectedNetwork && selectedNetwork.name}
+                        setSelectedNetwork={setSelectedNetwork}
+                      />
+                    )}
+                    <Typography className="addressLabel" variant="body1">
+                      {selectedAssetName} <FormattedMessage id="deposit.address" />
+                    </Typography>
+                    <Box display="flex" flexDirection="row">
+                      {selectedNetwork && !selectedNetwork.withdrawEnable ? (
+                        <Alert severity="error">
+                          {selectedNetwork.withdrawDesc || (
+                            <FormattedMessage id="withdraw.notavailable" />
+                          )}
+                        </Alert>
+                      ) : depositAddress ? (
+                        <>
+                          <Typography className="address bold" variant="body1">
+                            {depositAddress.address}
+                          </Typography>
+                          <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
+                        </>
+                      ) : (
+                        <CircularProgress disableShrink size={21} />
+                      )}
+                    </Box>
+                    {depositAddress && depositAddress.tag && (
+                      <Box>
+                        <Typography className="addressLabel" variant="body1">
+                          {selectedAssetName} <FormattedMessage id="withdraw.memo" />
+                        </Typography>
+                        <Box display="flex" flexDirection="row">
+                          <Typography className="bold" variant="body1">
+                            {depositAddress.tag}
+                          </Typography>
+                          <img alt="copy" className="copy" onClick={copyMemo} src={CopyIcon} />
+                        </Box>
+                      </Box>
+                    )}
+                    <Box className="addressButtons" display="flex" flexDirection="row">
+                      <CustomButton
+                        className="bgPurple"
+                        disabled={!depositAddress}
+                        onClick={copyAddress}
+                      >
+                        <Typography className="bold" variant="body1">
+                          <FormattedMessage id="deposit.address.copy" />
+                        </Typography>
+                      </CustomButton>
+                      <Modal
+                        onClose={() => openQRModal(false)}
+                        persist={false}
+                        size="small"
+                        state={isQRModalOpen}
+                      >
+                        <DepositQRCodes address={depositAddress} />
+                      </Modal>
+                      <CustomButton
+                        className="borderPurple textPurple"
+                        disabled={!depositAddress}
+                        onClick={() => openQRModal(true)}
+                      >
+                        <Typography className="bold" variant="body1">
+                          <FormattedMessage id="deposit.address.qr" />
+                        </Typography>
+                      </CustomButton>
+                    </Box>
+                    <TipBox
+                      description="deposit.loss"
+                      icon={BtcIcon}
+                      title={
+                        <FormattedMessage
+                          id="deposit.note.onlysend"
+                          values={{ coin: selectedAssetName }}
+                        />
+                      }
+                    />
+                  </Box>
+                )}
               </Box>
               <Alert className="depositTimeAlert" severity="error">
                 <Typography variant="body1">

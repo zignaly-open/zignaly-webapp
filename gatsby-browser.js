@@ -2,8 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Helmet } from "react-helmet";
 import { PersistGate } from "redux-persist/integration/react";
-import { store } from "./src/store/store.js";
-import { persistor } from "./src/store/store.js";
+import { store, persistor } from "./src/store/store.js";
 import { navigateLogin } from "./src/services/navigation";
 import "./src/styles/styles.scss";
 import { verifySessionData } from "./src/utils/auth";
@@ -20,7 +19,7 @@ import { createServer, Response } from "miragejs";
 if (window.Cypress) {
   // If your app makes requests to domains other than / (the current domain), add them
   // here so that they are also proxied from your app to the handleFromCypress function.
-  let otherDomains = [process.env.GATSBY_TRADEAPI_URL + "/"];
+  let otherDomains = [process.env.GATSBY_TRADEAPI_URL, process.env.GATSBY_TRADEAPI_URL_NEW];
   let methods = ["get", "put", "patch", "post", "delete"];
 
   // Proxy API requests to the handleFromCypress function of Cypress

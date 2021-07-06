@@ -76,3 +76,6 @@ release.tar.gz
 # Cypress
 cypress/videos
 cypress/screenshots
+
+# Storybook
+storybook-static

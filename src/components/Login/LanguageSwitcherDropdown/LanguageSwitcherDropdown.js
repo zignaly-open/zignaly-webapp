@@ -5,7 +5,7 @@ import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../../store/actions/settings";
 import { Select, MenuItem } from "@material-ui/core";
-import FlagIcon from "components/FlagIcon";
+// import FlagIcon from "components/FlagIcon";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
@@ -30,11 +30,12 @@ const LanguageSwitcher = () => {
           selectMenu: "menu",
         }}
         onChange={handleLanguageSelection}
-        value={storeSettings.languageCode}
+        value={storeSettings.locale}
       >
         {languages.map((lang) => (
           <MenuItem key={lang.locale} value={lang.locale}>
-            <FlagIcon className="flag" code={lang.countryCode} titleName={lang.label} />
+            {/* <FlagIcon className="flag" code={lang.countryCode} titleName={lang.label} /> */}
+            {lang.label}
           </MenuItem>
         ))}
       </Select>

@@ -1,0 +1,92 @@
+name: Deploy To Staging Server
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build:
+    name: Webapp Staging Release
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_TV_KEY }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Check Style Lint
+        run: npm run stylelint
+      - name: Check JS Lint
+        run: npm run jslint
+      - name: Check Types
+        run: npm run tscheck
+      - name: Test
+        env:
+          GATSBY_API_TEST_USER: ${{ secrets.GATSBY_API_TEST_USER }}
+          GATSBY_API_TEST_PASS: ${{ secrets.GATSBY_API_TEST_PASS }}
+        #run: npm test -- "tradeApiClient"
+        run: echo "skipping tests"
+      - name: Install submodules
+        run: git submodule update --init
+      - name: Build
+        run: npm run build:staging
+      # - name: Integration Tests
+      # We can't test production build because it isn't built to use mirage
+      # run: npm run cy:ci:prod
+      # run: npm run cy:ci
+      - name: Package & Release
+        env:
+          GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
+          GITHUB_AUTHOR_EMAIL: ${{ secrets.GITHUB_AUTHOR_EMAIL }}
+          GITHUB_COMMITTER_NAME: ${{ secrets.GITHUB_COMMITTER_NAME }}
+          GITHUB_COMMITTER_EMAIL: ${{ secrets.GITHUB_COMMITTER_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
+          JIRA_AUTH: ${{ secrets.JIRA_AUTH }}
+        run: npx semantic-release
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/buildbot.key
+          chmod 600 ~/.ssh/buildbot.key
+          cat >>~/.ssh/config <<END
+          Host webapp
+            HostName $SSH_HOST
+            User $SSH_USER
+            Port $SSH_PORT
+            IdentityFile ~/.ssh/buildbot.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
+          SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
+      - name: Prepare Deploy Variables
+        run: |
+          echo "WEBAPP_VERSION=$(cat .semvernext)" >> $GITHUB_ENV
+          echo "WEBAPP_PACKAGE=zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
+          echo $WEBAPP_PACKAGE
+      - name: Deploy Release
+        run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
+      - name: Unpack Release
+        run: |
+          CMD_PREPARE="sudo mkdir -p $UNPACK_DIRECTORY"
+          ssh webapp $CMD_PREPARE
+          CMD_UNPACK="sudo tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY"
+          ssh webapp $CMD_UNPACK
+          CMD_LINK="sudo ln -nsf $UNPACK_DIRECTORY $APP_LINK"
+          ssh webapp $CMD_LINK
+          CMD_RELOAD="sudo /etc/init.d/nginx reload"
+          ssh webapp $CMD_RELOAD
+        env:
+          UNPACK_DIRECTORY: /zignaly/staging.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
+          APP_LINK: /zignaly/staging.zignaly.com/app

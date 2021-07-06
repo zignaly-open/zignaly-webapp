@@ -3,14 +3,13 @@ import { Box } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 import { formatFloat, formatFloat2Dec } from "../../../../utils/format";
-import useProviderFollowersCount from "../../../../hooks/useProviderFollowersCount";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderBalanceEntity} ProviderBalanceEntity
+ * @typedef {import("../../../../services/tradeApiClient.types").SpotProviderBalanceEntity} SpotProviderBalanceEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Provider Object.
- * @property {ProviderBalanceEntity} summary Provider Object.
+ * @property {SpotProviderBalanceEntity} summary Provider Object.
  */
 
 /**
@@ -18,7 +17,6 @@ import useProviderFollowersCount from "../../../../hooks/useProviderFollowersCou
  * @returns {JSX.Element} Component JSX.
  */
 const ProfitSharingSummary = ({ provider, summary }) => {
-  const { counts } = useProviderFollowersCount(provider.id);
   const intl = useIntl();
   return (
     <Box
@@ -29,42 +27,44 @@ const ProfitSharingSummary = ({ provider, summary }) => {
       justifyContent="space-evenly"
     >
       <ManagementSummaryCard
-        foot={`${intl.formatMessage({ id: "menu.demo" })}: ${0}`}
+        foot=" "
         icon="followers"
         title={<FormattedMessage id="copyt.management.totalfollowers" />}
         tooltip={intl.formatMessage({ id: "copyt.management.totalfollowers.tooltip" })}
-        value={counts.followers}
+        value={provider.followers}
       />
 
       <ManagementSummaryCard
-        foot={`BTC: ${formatFloat(summary.totalWalletBTC)}`}
+        foot=" "
         icon="allocated"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.wallet" />}
         tooltip={intl.formatMessage({ id: "copyt.management.wallet.tooltip" })}
-        value={formatFloat2Dec(summary.totalWalletUSDT)}
+        value={formatFloat2Dec(summary.totalWallet)}
       />
 
       <ManagementSummaryCard
-        foot={`BTC ${formatFloat(summary.totalPnlBTC)}`}
+        foot=" "
         icon="profit"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.profit" />}
-        value={`${formatFloat2Dec(summary.totalPnlUSDT)}`}
-        valueColor={summary.totalPnlBTC > 0 ? "green" : summary.totalPnlBTC < 0 ? "red" : ""}
+        value={`${formatFloat2Dec(summary.totalPnl)}`}
+        valueColor={summary.totalPnl > 0 ? "green" : summary.totalPnl < 0 ? "red" : ""}
       />
 
       <ManagementSummaryCard
-        foot={`BTC ${formatFloat(summary.totalInvestedBTC)}`}
+        foot=" "
         icon="balance"
-        quote="USDT"
+        quote={provider.copyTradingQuote}
         title={<FormattedMessage id="copyt.management.invested" />}
         tooltip={intl.formatMessage({ id: "copyt.management.invested.tooltip" })}
-        value={formatFloat2Dec(summary.totalInvestedUSDT)}
+        value={formatFloat2Dec(summary.totalInvested)}
       />
 
       <ManagementSummaryCard
-        foot={`USDT ${formatFloat((summary.totalWalletUSDT * summary.abstractPercentage) / 100)}`}
+        foot={`${provider.copyTradingQuote} ${formatFloat(
+          (summary.totalFree * summary.abstractPercentage) / 100,
+        )}`}
         icon="balance"
         quote="%"
         title={<FormattedMessage id="copyt.management.available" />}

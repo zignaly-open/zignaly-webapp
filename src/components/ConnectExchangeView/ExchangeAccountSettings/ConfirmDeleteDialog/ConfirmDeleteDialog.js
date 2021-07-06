@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -15,11 +15,8 @@ import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { getUserData, removeUserExchange } from "../../../../store/actions/user";
 import { setSelectedExchange } from "../../../../store/actions/settings";
-import { CircularProgress, Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import initialState from "../../../../store/initialState";
-import useConnectedProvidersList from "hooks/useConnectedProvidersList";
-import useAvailableBalance from "hooks/useAvailableBalance";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -43,34 +40,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const storeExchanegeConnections = useStoreUserExchangeConnections();
-  const [positions, setPositions] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { balance } = useAvailableBalance(selectedAccount);
-  const { providers } = useConnectedProvidersList(
-    selectedAccount.internalId,
-    ["profitSharing"],
-    true,
-  );
-
-  const hasConnectedPS = providers && providers.length;
   const dispatch = useDispatch();
-
-  const loadOpenPositions = () => {
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalExchangeId: selectedAccount.internalId,
-    };
-
-    tradeApi
-      .openPositionsGet(payload)
-      .then((response) => {
-        setPositions(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  };
-  useEffect(loadOpenPositions, []);
 
   const deleteExchange = () => {
     setLoading(true);
@@ -111,45 +82,21 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
       });
   };
 
-  const brokerAccountWithFunds =
-    selectedAccount.isBrokerAccount && balance && Object.values(balance).some((item) => item > 0);
-
   return (
     <Dialog onClose={() => onClose()} open={open}>
       <DialogTitle>
         <FormattedMessage id="confirm.deleteexchange.title" />
       </DialogTitle>
-      {!balance || !positions ? (
-        <Box display="flex" flexDirection="row" justifyContent="center" width={1}>
-          <CircularProgress className="loader" />
-        </Box>
-      ) : (
-        <DialogContent>
-          <DialogContentText color="textPrimary">
-            {brokerAccountWithFunds ? (
-              <FormattedMessage id="confirm.deleteexchange.balance" />
-            ) : positions.length ? (
-              <FormattedMessage id="confirm.deleteexchange.openpos" />
-            ) : hasConnectedPS ? (
-              <FormattedMessage id="confirm.deleteexchange.profit" />
-            ) : (
-              <FormattedMessage id="confirm.deleteexchange.message" />
-            )}
-          </DialogContentText>
-        </DialogContent>
-      )}
+      <DialogContent>
+        <DialogContentText color="textPrimary">
+          <FormattedMessage id="confirm.deleteexchange.message" />
+        </DialogContentText>
+      </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={() => onClose()}>
           <FormattedMessage id="confirm.cancel" />
         </Button>
-        <CustomButton
-          className="textPurple"
-          disabled={Boolean(
-            !balance || !positions || brokerAccountWithFunds || positions.length || hasConnectedPS,
-          )}
-          loading={loading}
-          onClick={deleteExchange}
-        >
+        <CustomButton className="textPurple" disabled={loading} onClick={deleteExchange}>
           <FormattedMessage id="confirm.delete" />
         </CustomButton>
       </DialogActions>

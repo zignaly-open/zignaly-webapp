@@ -41,6 +41,8 @@ import "./CustomSelect.scss";
  * @property {renderOption} [renderOption] Custom render option function for autocomplete.
  * @property {boolean} [multiple] Multiple options for autocomplete.
  * @property {boolean} [disabled] Disabled.
+ * @property {string} [placeholder] Placeholder.
+ * @property {string} [className] Placeholder.
  */
 
 /**
@@ -88,6 +90,7 @@ const CustomSelect = (props) => {
     multiple,
     labelPlacement,
     disabled = false,
+    placeholder,
   } = props;
 
   return (
@@ -123,6 +126,7 @@ const CustomSelect = (props) => {
           </Select>
         ) : (
           <Autocomplete
+            className={props.className || ""}
             classes={{
               inputRoot: "searchInputRoot callout1",
               input: "searchInput",
@@ -141,7 +145,9 @@ const CustomSelect = (props) => {
             onChange={(e, val) => onChange(val)}
             openOnFocus={true}
             options={options}
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
+            renderInput={(params) => (
+              <TextField {...params} placeholder={placeholder} variant="outlined" />
+            )}
             renderOption={renderOption}
             size="small"
             value={value}

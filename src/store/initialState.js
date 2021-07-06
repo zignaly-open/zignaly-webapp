@@ -123,7 +123,7 @@
 
 /**
  * @typedef {Object} DefaultStateSettings
- * @property {String} languageCode
+ * @property {String} locale
  * @property {Boolean} darkStyle
  * @property {Object<string, boolean>} disableCacheModal
  * @property {Boolean} balanceBox
@@ -219,7 +219,7 @@ const initialState = {
     appVersion: "",
   },
   settings: {
-    languageCode: "en",
+    locale: "en_US",
     darkStyle: false,
     disableCacheModal: {},
     balanceBox: false,
@@ -482,6 +482,7 @@ const initialState = {
       globalPositionsPerMarket: false,
       globalWhitelist: false,
       balanceSynced: false,
+      activated: false,
     },
     timeFrame: {
       connectedCopyt: null,
@@ -551,6 +552,7 @@ const initialState = {
       exchanges: [],
       // eslint-disable-next-line
       isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
+      locale: "en_US",
     },
   },
   ui: {
@@ -694,6 +696,7 @@ const initialState = {
       notificationsPosts: false,
       exchangeInternalIds: [],
       website: "",
+      liquidated: false,
     },
   },
 };

@@ -13,9 +13,10 @@ import { withPrefix } from "gatsby";
 import useScript from "../../hooks/useScript";
 import { IntlProvider } from "react-intl";
 import translations from "../../i18n/translations";
-// import { mixpanelPageView } from "utils/mixpanelApi";
 import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
+import { getLanguageCodefromLocale } from "i18n";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 /**
  *
@@ -37,13 +38,13 @@ import ENMessages from "../../i18n/translations/en.yml";
 const AppLayout = (props) => {
   const { children, forceLightTheme } = props;
   const [messages, setMessages] = useState(null);
-  const storeSettings = useStoreSettingsSelector();
+  const { darkStyle, locale } = useStoreSettingsSelector();
   const storeUserData = useStoreUserData();
   const storeLoader = useStoreUILoaderSelector();
-  const darkStyle = !forceLightTheme && storeSettings.darkStyle;
-  const options = themeData(darkStyle);
+  const darkTheme = !forceLightTheme && darkStyle;
+  const options = themeData(darkTheme);
   const createTheme = () => createMuiTheme(options);
-  const theme = useMemo(createTheme, [darkStyle]);
+  const theme = useMemo(createTheme, [darkTheme]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -51,29 +52,29 @@ const AppLayout = (props) => {
   // In this case all english data would be overridden to user selected locale, but untranslated
   // (missed in object keys) just stay in english
   useEffect(() => {
-    getMessages(storeSettings.languageCode).then((selectedLanguageMessages) => {
+    getMessages(locale).then((selectedLanguageMessages) => {
       const mergedMessages = Object.assign({}, ENMessages, selectedLanguageMessages);
       setMessages(mergedMessages);
     });
-  }, [storeSettings.languageCode]);
+  }, [locale]);
 
   /**
    *
-   * @param {string} lang languageCode
+   * @param {string} localeValue locale code
    * @returns {Promise<MessageRecord>} returns a record
    */
-  const getMessages = async (lang) => {
-    const data = await translations[lang]();
-    return data;
+  const getMessages = async (localeValue) => {
+    const lang = getLanguageCodefromLocale(localeValue);
+    return await translations[lang]();
   };
 
   useLayoutEffect(() => {
-    document.documentElement.setAttribute("data-theme", darkStyle ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", darkTheme ? "dark" : "light");
     // Avoid Chrome translation, this complements meta tag translation see:
     // https://github.com/facebook/react/issues/11538
     document.documentElement.setAttribute("class", "notranslate");
     document.documentElement.setAttribute("translate", "no");
-  }, [darkStyle]);
+  }, [darkTheme]);
 
   useLayoutEffect(() => {
     if (window.navigator.userAgent.includes("Windows")) {
@@ -98,22 +99,34 @@ const AppLayout = (props) => {
 
   useEffect(() => {
     if (href) {
-      // mixpanelPageView(href);
       analyticsPageView(storeUserData.userId);
     }
   }, [href]);
 
   return (
-    <IntlProvider locale={storeSettings.languageCode} messages={messages ? messages : ENMessages}>
-      <StylesProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ErrorAlert />
-          <SuccessAlert />
-          {storeLoader && <Loader />}
-          {children}
-        </ThemeProvider>
-      </StylesProvider>
+    <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
+      <GoogleReCaptchaProvider
+        language="en"
+        reCaptchaKey={process.env.GATSBY_RECAPTCHA_KEY}
+        scriptProps={{
+          async: false, // optional, default to false,
+          defer: false, // optional, default to false
+          appendTo: "head", // optional, default to "head", can be "head" or "body",
+          nonce: undefined, // optional, default undefined
+        }}
+        useEnterprise={false}
+        useRecaptchaNet={true}
+      >
+        <StylesProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ErrorAlert />
+            <SuccessAlert />
+            {storeLoader && <Loader />}
+            {children}
+          </ThemeProvider>
+        </StylesProvider>
+      </GoogleReCaptchaProvider>
     </IntlProvider>
   );
 };

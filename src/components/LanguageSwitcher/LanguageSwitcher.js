@@ -4,10 +4,16 @@ import { languages } from "../../i18n";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../store/actions/settings";
-import FlagIcon from "components/FlagIcon";
+import { Button } from "@material-ui/core";
+// import FlagIcon from "components/FlagIcon";
+import tradeApi from "../../services/tradeApiClient";
+import { getUserData } from "store/actions/user";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
+import { showErrorAlert } from "store/actions/ui";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
+  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   /**
@@ -18,38 +24,30 @@ const LanguageSwitcher = () => {
    */
   const handleLanguageSelection = (event) => {
     const targetElement = event.currentTarget;
-    const languageCode = targetElement.getAttribute("data-lang-code");
-    if (languageCode) {
-      dispatch(changeLanguage(languageCode));
+    const locale = targetElement.getAttribute("data-lang-code");
+    if (locale) {
+      dispatch(changeLanguage(locale));
+      tradeApi
+        .saveLocale({ locale })
+        .then(() => {
+          dispatch(getUserData(storeSession.tradeApi.accessToken, false));
+        })
+        .catch((e) => dispatch(showErrorAlert(e)));
     }
   };
 
   return (
     <div className="languageSwitcher">
-      {languages.map((lang) =>
-        lang.locale === storeSettings.languageCode ? (
-          <FlagIcon
-            className="flag"
-            code={lang.countryCode}
-            key={lang.locale}
-            titleName={lang.label}
-          />
-        ) : (
-          <button
-            data-lang-code={lang.locale}
-            key={lang.locale}
-            onClick={handleLanguageSelection}
-            type="button"
-          >
-            <FlagIcon
-              className="flag"
-              code={lang.countryCode}
-              key={lang.locale}
-              titleName={lang.label}
-            />
-          </button>
-        ),
-      )}
+      {languages.map((lang) => (
+        <Button
+          className={`langButton ${storeSettings.locale === lang.locale ? " selected" : ""}`}
+          data-lang-code={lang.locale}
+          key={lang.locale}
+          onClick={handleLanguageSelection}
+        >
+          {lang.label}
+        </Button>
+      ))}
     </div>
   );
 };

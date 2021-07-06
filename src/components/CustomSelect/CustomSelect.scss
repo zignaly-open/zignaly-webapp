@@ -31,6 +31,12 @@
   .searchRoot {
     width: 150px;
 
+    &.error {
+      .searchInputRoot {
+        border: 2px solid $red;
+      }
+    }
+
     .searchInputRoot {
       padding: 3px 39px 6px 6px;
     }

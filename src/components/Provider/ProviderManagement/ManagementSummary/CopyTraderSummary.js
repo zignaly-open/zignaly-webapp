@@ -1,7 +1,7 @@
 import React from "react";
 import "./ManagementSummary.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 import { formatFloat2Dec } from "../../../../utils/format";
 import useCTManagementSymmary from "../../../../hooks/useCTManagementSymmary";
@@ -18,7 +18,6 @@ import useCTManagementSymmary from "../../../../hooks/useCTManagementSymmary";
  */
 const CopyTraderSummary = ({ provider }) => {
   const { summaryLoading, summary } = useCTManagementSymmary(provider.id);
-  const intl = useIntl();
   return (
     <>
       {summaryLoading && (
@@ -41,12 +40,10 @@ const CopyTraderSummary = ({ provider }) => {
           justifyContent="space-evenly"
         >
           <ManagementSummaryCard
-            foot={`${intl.formatMessage({ id: "copyt.management.trialing" })}: ${
-              summary.followersTrialing
-            }`}
+            foot=" "
             icon="followers"
             title={<FormattedMessage id="copyt.management.totalfollowers" />}
-            value={summary.totalFollowers}
+            value={provider.followers}
           />
 
           <ManagementSummaryCard

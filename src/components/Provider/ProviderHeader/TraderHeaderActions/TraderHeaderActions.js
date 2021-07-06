@@ -7,6 +7,7 @@ import TrialPeriod from "./TrialPeriod";
 import CloneEdit from "../CloneEdit";
 import ProviderLogo from "../ProviderLogo";
 import FollowProviderButton from "../FollowProviderButton";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} DefaultProps
@@ -41,7 +42,13 @@ const TraderHeaderActions = ({ provider }) => {
         {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>
       {provider.isCopyTrading ? (
-        <CopyTraderButton provider={provider} />
+        !provider.liquidated ? (
+          <CopyTraderButton provider={provider} />
+        ) : (
+          <Typography className="red" variant="h4">
+            <FormattedMessage id="srv.liquidated" />
+          </Typography>
+        )
       ) : (
         <FollowProviderButton provider={provider} />
       )}

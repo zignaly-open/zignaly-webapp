@@ -1,38 +1,37 @@
-{
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true,
-    "jest": true
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+    jest: true,
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
+  settings: {
+    react: {
+      version: "detect",
+    },
   },
-  "globals": {
-    "document": false,
-    "escape": false,
-    "navigator": false,
-    "unescape": false,
-    "window": false,
-    "describe": true,
-    "before": true,
-    "it": true,
-    "expect": true,
-    "sinon": true
+  globals: {
+    document: false,
+    escape: false,
+    navigator: false,
+    unescape: false,
+    window: false,
+    describe: true,
+    before: true,
+    it: true,
+    expect: true,
+    sinon: true,
   },
-  "parser": "babel-eslint",
-  "plugins": [
-    "react-hooks",
-    "formatjs"
-  ],
-  "extends": [
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint", "react-hooks", "formatjs"],
+  extends: [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:cypress/recommended"
+    // "plugin:@typescript-eslint/recommended",
+    "plugin:cypress/recommended",
   ],
-  "rules": {
+  rules: {
     "formatjs/no-offset": "error",
     "formatjs/no-multiple-whitespaces": "error",
     "react/boolean-prop-naming": 2,
@@ -47,10 +46,7 @@
     "react/forbid-elements": 2,
     "react/forbid-foreign-prop-types": 2,
     "react/forbid-prop-types": 0,
-    "react/jsx-boolean-value": [
-      0,
-      "always"
-    ],
+    "react/jsx-boolean-value": [0, "always"],
     "react/jsx-curly-brace-presence": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-first-prop-new-line": 2,
@@ -60,8 +56,8 @@
     "react/jsx-max-depth": [
       2,
       {
-        "max": 9
-      }
+        max: 9,
+      },
     ],
     "react/jsx-no-bind": 0,
     "react/jsx-no-comment-textnodes": 2,
@@ -113,101 +109,73 @@
       2,
       "1tbs",
       {
-        "allowSingleLine": true
-      }
+        allowSingleLine: true,
+      },
     ],
-    "camelcase": [
+    camelcase: [
       1,
       {
-        "properties": "always"
-      }
+        properties: "always",
+      },
     ],
-    "comma-dangle": [
-      0,
-      "always"
-    ],
+    "comma-dangle": [0, "always"],
     "comma-spacing": [
       2,
       {
-        "before": false,
-        "after": true
-      }
+        before: false,
+        after: true,
+      },
     ],
-    "comma-style": [
-      2,
-      "last"
-    ],
-    "complexity": 0,
+    "comma-style": [2, "last"],
+    complexity: 0,
     "consistent-return": 1,
     "consistent-this": 2,
-    "curly": [
-      2,
-      "multi-line"
-    ],
+    curly: [2, "multi-line"],
     "default-case": 2,
-    "dot-location": [
-      2,
-      "property"
-    ],
+    "dot-location": [2, "property"],
     "dot-notation": 2,
     "eol-last": 2,
-    "eqeqeq": [
-      2,
-      "allow-null"
-    ],
+    eqeqeq: [2, "allow-null"],
     "func-names": 2,
     "func-style": 0,
-    "generator-star-spacing": [
-      2,
-      "both"
-    ],
+    "generator-star-spacing": [2, "both"],
     "guard-for-in": 2,
-    "handle-callback-err": [
-      2,
-      "^(err|error|anySpecificError)$"
-    ],
-    "indent": 0,
+    "handle-callback-err": [2, "^(err|error|anySpecificError)$"],
+    indent: 0,
     "key-spacing": [
       2,
       {
-        "beforeColon": false,
-        "afterColon": true
-      }
+        beforeColon: false,
+        afterColon: true,
+      },
     ],
     "keyword-spacing": [
       2,
       {
-        "before": true,
-        "after": true
-      }
+        before: true,
+        after: true,
+      },
     ],
     "linebreak-style": 2,
     "max-depth": 1,
-    "max-len": [
-      0,
-      100,
-      2
-    ],
+    "max-len": [0, 100, 2],
     "max-nested-callbacks": 2,
     "max-params": [
       1,
       {
-        "max": 4
-      }
+        max: 4,
+      },
     ],
     "max-statements": 0,
     "new-cap": [
       2,
       {
-        "newIsCap": true,
-        "capIsNew": false
-      }
+        newIsCap: true,
+        capIsNew: false,
+      },
     ],
     "new-parens": 2,
-    "newline-after-var": [
-      0,
-      "never"
-    ],
+    "newline-after-var": [0, "never"],
     "no-alert": 0,
     "no-array-constructor": 2,
     "no-bitwise": 2,
@@ -240,10 +208,7 @@
     "no-func-assign": 2,
     "no-implied-eval": 2,
     "no-inline-comments": 0,
-    "no-inner-declarations": [
-      2,
-      "functions"
-    ],
+    "no-inner-declarations": [2, "functions"],
     "no-invalid-regexp": 2,
     "no-irregular-whitespace": 2,
     "no-iterator": 2,
@@ -253,17 +218,14 @@
     "no-lonely-if": 2,
     "no-loop-func": 1,
     "no-mixed-requires": 2,
-    "no-mixed-spaces-and-tabs": [
-      2,
-      false
-    ],
+    "no-mixed-spaces-and-tabs": [2, false],
     "no-multi-spaces": 2,
     "no-multi-str": 1,
     "no-multiple-empty-lines": [
       2,
       {
-        "max": 1
-      }
+        max: 1,
+      },
     ],
     "no-native-reassign": 2,
     "no-negated-in-lhs": 2,
@@ -306,10 +268,10 @@
     "no-unused-vars": [
       2,
       {
-        "vars": "all",
-        "varsIgnorePattern": "([Rr]eact|Provider|App|CssBaseline)",
-        "args": "after-used"
-      }
+        vars: "all",
+        varsIgnorePattern: "([Rr]eact|Provider|App|CssBaseline)",
+        args: "after-used",
+      },
     ],
     "no-use-before-define": 0,
     "no-var": 2,
@@ -317,77 +279,47 @@
     "no-warning-comments": 0,
     "no-with": 2,
     "object-curly-spacing": 0,
-    "one-var": [
-      2,
-      "never"
-    ],
+    "one-var": [2, "never"],
     "operator-assignment": 2,
-    "operator-linebreak": [
-      0,
-      "before"
-    ],
-    "padded-blocks": [
-      2,
-      "never"
-    ],
+    "operator-linebreak": [0, "before"],
+    "padded-blocks": [2, "never"],
     "quote-props": 0,
-    "quotes": [
-      2,
-      "double",
-      "avoid-escape"
-    ],
-    "radix": 0,
-    "semi": [
-      2,
-      "always"
-    ],
+    quotes: [2, "double", "avoid-escape"],
+    radix: 0,
+    semi: [2, "always"],
     "semi-spacing": 2,
     "sort-vars": 1,
-    "space-before-blocks": [
-      2,
-      "always"
-    ],
+    "space-before-blocks": [2, "always"],
     "space-before-function-paren": [
       2,
       {
-        "anonymous": "always",
-        "named": "never"
-      }
+        anonymous: "always",
+        named: "never",
+      },
     ],
-    "space-in-parens": [
-      2,
-      "never"
-    ],
+    "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
     "space-unary-ops": [
       2,
       {
-        "words": true,
-        "nonwords": false
-      }
+        words: true,
+        nonwords: false,
+      },
     ],
     "spaced-comment": [
       "error",
       "always",
       {
-        "markers": [
-          "/"
-        ]
-      }
+        markers: ["/"],
+      },
     ],
-    "strict": 2,
+    strict: 2,
     "use-isnan": 2,
     "valid-jsdoc": 2,
     "valid-typeof": 2,
     "vars-on-top": 2,
-    "wrap-iife": [
-      2,
-      "any"
-    ],
+    "wrap-iife": [2, "any"],
     "wrap-regex": 2,
-    "yoda": [
-      2,
-      "never"
-    ]
-  }
-}
+    yoda: [2, "never"],
+  },
+};

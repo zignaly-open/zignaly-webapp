@@ -149,12 +149,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} firstName
  * @property {string} email
  * @property {string} password
- * @property {string} gRecaptchaResponse
  * @property {Boolean} terms
  * @property {Boolean} subscribe
  * @property {Boolean} array
  * @property {string} ref
  * @property {Boolean} [newPageAB] Flag to indicate the user is using new A/B page.
+ * @property {String} locale selected locale string
+ * @property {string} gRecaptchaResponse
  */
 
 /**
@@ -313,6 +314,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} demoExchangeConnected
  * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
+ * @property {string} locale
  */
 
 /**
@@ -342,14 +344,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserBalancePayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {Boolean} [force] Flag to sync balance with exchange.
  */
 
 /**
  * @typedef {Object} UserEquityPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  */
 
@@ -680,6 +680,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {number} profitsSinceCopying
  * @property {boolean} CTorPS
  * @property {boolean} copyTrader
+ * @property {boolean} liquidated
+ * @property {number} globalReturn
  */
 
 /**
@@ -927,7 +929,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} TwoFAPayload
  * @property {string} code
- * @property {string} token
+ * @property {string} token User session token
  */
 
 /**
@@ -1068,6 +1070,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} InternalTransferPayload
+ * @property {string} internalIdDest
+ * @property {string} internalIdSrc
+ * @property {number} amount
+ * @property {number} asset
+ */
+
+/**
  * @typedef {Object} Disable2FAConfirmPayload
  * @property {string} apiKey An api key used to connect an exchange to zignaly
  * @property {string} token Reset link code
@@ -1105,6 +1115,7 @@ export function userEntityResponseTransform(response) {
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
+    locale: response.locale,
   };
 }
 
@@ -1168,6 +1179,7 @@ function providerItemTransform(providerItem, providerType) {
   transformedResponse.returns = transformedResponse.dailyReturns.length
     ? transformedResponse.dailyReturns[transformedResponse.dailyReturns.length - 1].returns
     : 0;
+  transformedResponse.globalReturn = providerItem.globalReturn;
 
   // transformedResponse.dailyReturns = transformedResponse.dailyReturns.sort(
   //   (a, b) => a.name.getTime() - b.name.getTime(),
@@ -1303,6 +1315,8 @@ function createEmptyProviderEntity() {
     profitsSinceCopying: 0,
     CTorPS: false,
     copyTrader: false,
+    liquidated: false,
+    globalReturn: 0,
   };
 }
 
@@ -1916,6 +1930,7 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {string|boolean} globalWhitelist
  * @property {boolean} globalDelisting
  * @property {boolean} balanceSynced
+ * @property {boolean} activated Flag to mark zignaly subaccount as activated
  */
 
 /**
@@ -1968,6 +1983,7 @@ export function createExchangeConnectionEmptyEntity() {
     globalPositionsPerMarket: false,
     globalWhitelist: false,
     balanceSynced: false,
+    activated: false,
   };
 }
 
@@ -2759,6 +2775,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} isCopyTrading
  * @property {Boolean} key
  * @property {Boolean} list
+ * @property {Boolean} liquidated
  * @property {String} logoUrl
  * @property {Number} minAllocatedBalance
  * @property {String} name
@@ -2855,6 +2872,11 @@ export function providerGetResponseTransform(response) {
         : response.options,
   });
   transformed.options.allowClones = checkClones();
+  transformed.copyTradingQuote = response.quote || response.copyTradingQuote || "";
+  transformed.exchangeInternalIds =
+    response.exchangeInternalIds && isArray(response.exchangeInternalIds)
+      ? response.exchangeInternalIds
+      : [];
   return transformed;
 }
 
@@ -3326,6 +3348,26 @@ function createExchangeAssetsEmptyEntity() {
     networks: [],
     coin: "",
   };
+}
+
+/**
+ * @typedef {Object<string, any> } AssetsAndBalanceObject
+ * @property {Object<string, number>} spot
+ * @property {Object<string, number>} futures
+ */
+
+/**
+ * Transform provider followers list response item to ProviderFollowersListEntity.
+ *
+ * @param {Object} response Trade API get exchange assets list response.
+ * @returns {AssetsAndBalanceObject} Exchange asssets.
+ */
+export function assetsAndBalanceResponseTransform(response) {
+  if (!isObject(response)) {
+    throw new Error("Response must be an object with different properties.");
+  }
+
+  return assign({ spot: {}, futures: {} }, response);
 }
 
 /**
@@ -3908,9 +3950,20 @@ function createEmptyManagementPositionsEntity() {
 
 /**
  *
+ * @typedef {Object} SpotProviderBalanceEntity
+ * @property {Number} totalFree
+ * @property {Number} totalLocked
+ * @property {Number} totalPnl
+ * @property {Number} totalWallet
+ * @property {Number} abstractPercentage
+ * @property {Number} totalInvested
+ */
+
+/**
+ *
  * @typedef {Object} ManagementBalanceAndPositionsEntity
  * @property {Array<ManagementPositionsEntity>} positions
- * @property {ProviderBalanceEntity} balance
+ * @property {SpotProviderBalanceEntity} balance
  */
 
 /**
@@ -3922,8 +3975,26 @@ function createEmptyManagementPositionsEntity() {
 export function managementBalanceAndPositionsResponseTransform(response) {
   let transformedResponse = createEmptyManagementBalanceAndPositionsEntity();
   transformedResponse.positions = managementPositionsResponseTransform(response.positions);
-  transformedResponse.balance = providerBalanceResponseTransform(response.balance);
+  transformedResponse.balance = createSpotProviderBalanceEntity(response.balance);
   return transformedResponse;
+}
+
+/**
+ * Create provider data points entity.
+ * @param {*} response .
+ *
+ * @returns {SpotProviderBalanceEntity} Provider data points entity.
+ */
+export function createSpotProviderBalanceEntity(response) {
+  return {
+    totalFree: response && response.totalFree ? formatValue(response.totalFree) : 0,
+    totalInvested: response && response.totalInvested ? formatValue(response.totalInvested) : 0,
+    totalLocked: response && response.totalLocked ? formatValue(response.totalLocked) : 0,
+    totalPnl: response && response.totalPnl ? formatValue(response.totalPnl) : 0,
+    totalWallet: response && response.totalWallet ? formatValue(response.totalWallet) : 0,
+    abstractPercentage:
+      response && response.abstractPercentage ? formatValue(response.abstractPercentage) : 0,
+  };
 }
 
 /**
@@ -4482,6 +4553,8 @@ export const createEmptyProfileProviderStatsEntity = () => {
       profitsSinceCopying: 0,
       copyTrader: false,
       CTorPS: false,
+      liquidated: false,
+      globalReturn: 0,
     },
     signalsInfo: [],
   };
