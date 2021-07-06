@@ -569,8 +569,11 @@ alert.forgotpassword.step1.body: "Für weitere Anweisungen wurde eine E-Mail an 
 alert.forgotpassword.step3.body: "Dein Passwort wurde zurückgesetzt. Sie können sich jetzt mit neuem Passwort anmelden!"
 alert.changeemail.confirm.body: "Your email has been reset. You can now login with new email!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
+<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
+=======
+>>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Ihr API-Schlüssel vom Provider"
 signalp.option.stoploss: "Stop-Loss-Wert vom Signal akzeptieren?"

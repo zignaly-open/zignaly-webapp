@@ -440,8 +440,11 @@ alert.forgotpassword.step1.title: "Pedido Processado"
 alert.forgotpassword.step1.body: "Um e-mail foi enviado para o e-mail fornecido para obter mais instruções."
 alert.forgotpassword.step3.body: "Sua senha foi alterada. Agora você pode fazer o login com uma nova senha!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
+<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
+=======
+>>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Sua chave API do provedor"
 signalp.option.stoploss: "Aceitar o valor de Stop Loss do sinal?"

@@ -448,8 +448,11 @@ alert.forgotpassword.step1.title: "İstek İşlendi"
 alert.forgotpassword.step1.body: "Diğer talimatlar için verdiğiniz e-posta adresine bir ileti gönderildi."
 alert.forgotpassword.step3.body: "Şifreniz sıfırlandı. Yeni şifre ile giriş yapabilirsiniz!"
 alert.positionreport.message: "Request Processed! You will receive an email shortly."
+<<<<<<< HEAD
 alert.transfer.title: "Transfer Performed"
 alert.transfer.body: "Your transfer has been completed successfully"
+=======
+>>>>>>> origin/master
 # SIGNAL PROVIDER OPTIONS
 signalp.option.apikey: "Sağlayıcıdan edindiğiniz API anahtarı"
 signalp.option.stoploss: "Sinyalden gelen Zarar Kes değeri kullanılsın?"
