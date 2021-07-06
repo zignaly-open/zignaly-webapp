@@ -44,7 +44,7 @@ const LocalizationLanguages = [
   },
   {
     locale: "fr_FR",
-    label: "Française",
+    label: "Français",
     countryCode: "fr",
     languageCode: "fr",
   },
