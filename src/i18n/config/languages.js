@@ -58,11 +58,13 @@ const LocalizationLanguages = [
     locale: "fr",
     label: "French",
     countryCode: "fr",
+    languageCode: "pt",
   },
   {
     locale: "pt",
     label: "Portugese",
     countryCode: "pt",
+    languageCode: "pt",
   },
 ];
 
