@@ -497,12 +497,15 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async closedPositionsGet(payload) {
-    const endpointPath = "/get-sold-positions/";
-    const responseData = await this.doRequest(endpointPath, {
-      type: "sold",
-      CF: true, // Flag to indicated whether to request from cloudefar or rest api
-      ...payload,
-    });
+    const responseData = await this.doRequest(
+      "/get-sold-positions/",
+      {
+        type: "sold",
+        ...payload,
+      },
+      "POST",
+      0,
+    );
 
     return positionsShortResponseTransform(responseData);
   }

@@ -22,6 +22,9 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
   require("@cypress/code-coverage/task")(on, config);
 
+  // Log browser console to terminal in case of error
+  require("cypress-terminal-report/src/installLogsPrinter")(on);
+
   // Detect proper env file but it currently only works with dev env
   const appStage = process.env.STAGE || "dev";
 
