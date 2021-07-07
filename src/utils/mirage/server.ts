@@ -110,6 +110,7 @@ export function makeServer({ environment = "test" } = {}) {
       });
 
       this.passthrough("https://api.segment.io/**");
+      this.passthrough("https://*.userpilot.io/**");
 
       this.urlPrefix = TRADEAPI_URL;
       this.namespace = "/fe";
