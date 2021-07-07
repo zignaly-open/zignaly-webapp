@@ -54,18 +54,6 @@ const LocalizationLanguages = [
     countryCode: "pt",
     languageCode: "pt",
   },
-  {
-    locale: "fr",
-    label: "French",
-    countryCode: "fr",
-    languageCode: "pt",
-  },
-  {
-    locale: "pt",
-    label: "Portugese",
-    countryCode: "pt",
-    languageCode: "pt",
-  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
