@@ -10,7 +10,6 @@ import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
-import useABTest from "hooks/useABTest";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
@@ -27,7 +26,6 @@ const SignupForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
-  const newPageAB = useABTest();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -65,7 +63,6 @@ const SignupForm = () => {
       ref: ref,
       array: true,
       terms: data.terms,
-      newPageAB,
       locale,
       gRecaptchaResponse,
     };
