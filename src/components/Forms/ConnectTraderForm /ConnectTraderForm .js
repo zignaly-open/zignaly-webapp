@@ -28,21 +28,6 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
 
   /**
-   * @returns {String} Exchange name to display in the error.
-   */
-  const prepareExchangeName = () => {
-    let name = "";
-    for (let i = 0; i < provider.exchanges.length; i++) {
-      if (provider.exchanges[i + 1]) {
-        name += `${provider.exchanges[i]}/`;
-      } else {
-        name += `${provider.exchanges[i]}`;
-      }
-    }
-    return name;
-  };
-
-  /**
    * Check if selected exchange is compatible with service.
    * @returns {string} Error message
    */
@@ -50,20 +35,6 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
     if (storeUserExchangeConnections.length > 0) {
       if (provider.profitSharing && selectedExchange.paperTrading) {
         return intl.formatMessage({ id: "copyt.copy.error4" });
-      }
-      if (provider.exchanges.length && provider.exchanges[0] !== "") {
-        if (
-          !provider.exchanges.includes(selectedExchange.name.toLowerCase()) ||
-          provider.exchangeType.toLowerCase() !== selectedExchange.exchangeType.toLowerCase()
-        ) {
-          let exchangeName = prepareExchangeName();
-          return intl.formatMessage(
-            { id: "copyt.copy.error1" },
-            {
-              required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
-            },
-          );
-        }
       }
     } else {
       return intl.formatMessage({ id: "copyt.copy.error2" });
