@@ -1601,7 +1601,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FARequest(payload) {
-    return this.doRequest("/user/request_action/disable_2fa", payload, "POST", 2);
+    return this.doRequest("/user/request_action/disable_2fa", null, "POST", 2, payload.token);
   }
 
   /**
