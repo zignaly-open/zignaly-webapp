@@ -1536,10 +1536,7 @@ class TradeApiClient {
    * @return {Promise<"OK">} Promise that resolve boolean result.
    * */
   async forgotPasswordStep2(payload) {
-    const endpointPath = "/fe/api.php?action=forgottenPassword2Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/visit/recovery_password", payload, "GET", 2);
   }
 
   /**
@@ -1552,10 +1549,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async forgotPasswordStep3(payload) {
-    const endpointPath = "/fe/api.php?action=forgottenPassword3Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/confirm_action/forgotten_password", payload, "POST", 2);
   }
 
   /**
@@ -1581,7 +1575,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailVisit(payload) {
-    return this.doRequest("/visit_link", { ...payload, reason: "reset_email" }, "GET", 2);
+    return this.doRequest("/visit/reset_email", payload, "GET", 2);
   }
 
   /**
@@ -1620,7 +1614,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FAVisit(payload) {
-    return this.doRequest("/visit_link", { ...payload, reason: "disable_2fa" }, "GET", 2);
+    return this.doRequest("/visit/disable_2fa", payload, "GET", 2);
   }
 
   /**
@@ -2049,7 +2043,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    return this.doRequest("/visit_link", { ...payload, reason: "delete_account" }, "GET", 2);
+    return this.doRequest("/visit/delete_account", payload, "GET", 2);
   }
 
   /**
