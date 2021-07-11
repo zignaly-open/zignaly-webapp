@@ -142,9 +142,11 @@ const CopyTraderButton = ({ provider }) => {
       <>
         {!disconnecting ? (
           disabled ? (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
+            !provider.liquidated && (
+              <CustomButton className="submitButton" onClick={startCopying}>
+                <FormattedMessage id="copyt.copythistrader" />
+              </CustomButton>
+            )
           ) : !profitSharing && !sameSelectedExchange ? (
             <Box
               alignItems="center"
