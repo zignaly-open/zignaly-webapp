@@ -1471,15 +1471,21 @@ class TradeApiClient {
   /**
    * Function to get provider's open positions.
    *
-   * @param {GetProviderFollowersPayload} payload Provider's open poistions payload.
+   * @param {string} providerId providerId
    *
    * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user position collection.
    *
    * @memberof TradeApiClient
    */
-  async providerOpenPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async providerOpenPositions(providerId) {
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/positions`,
+      {
+        type: "open",
+      },
+      "GET",
+      2,
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -1487,15 +1493,21 @@ class TradeApiClient {
   /**
    * Function to get provider's closed positions.
    *
-   * @param {GetProviderFollowersPayload} payload Provider's closed poistions payload.
+   * @param {string} providerId providerId
    *
    * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user positions collection.
    *
    * @memberof TradeApiClient
    */
-  async providerSoldPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async providerSoldPositions(providerId) {
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/positions`,
+      {
+        type: "closed",
+      },
+      "GET",
+      2,
+    );
 
     return positionsResponseTransform(responseData);
   }

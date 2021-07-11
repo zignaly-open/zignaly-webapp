@@ -179,13 +179,10 @@ const usePositionsList = (
       internalExchangeId: storeSettings.selectedExchange.internalId,
     };
 
-    const providerPayload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-    };
+    const providerId = storeViews.provider.id;
 
     // Skip request if required parameters is empty.
-    if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerPayload.providerId)) {
+    if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerId)) {
       if (positionEntity) {
         // On first load rely on position entity passed by parent to avoid extra request.
         return new Promise((resolve) => {
@@ -202,9 +199,9 @@ const usePositionsList = (
       } else if (type === "open") {
         return tradeApi.openPositionsGet(payload);
       } else if (type === "profileOpen") {
-        return tradeApi.providerOpenPositions(providerPayload);
+        return tradeApi.providerOpenPositions(providerId);
       } else if (type === "profileClosed") {
-        return tradeApi.providerSoldPositions(providerPayload);
+        return tradeApi.providerSoldPositions(providerId);
       }
     }
 
