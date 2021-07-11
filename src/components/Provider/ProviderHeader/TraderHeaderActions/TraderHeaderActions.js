@@ -42,13 +42,14 @@ const TraderHeaderActions = ({ provider }) => {
         {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>
       {provider.isCopyTrading ? (
-        !provider.liquidated ? (
+        <>
           <CopyTraderButton provider={provider} />
-        ) : (
-          <Typography className="red" variant="h4">
-            <FormattedMessage id="srv.liquidated" />
-          </Typography>
-        )
+          {provider.liquidated && (
+            <Typography className="red" variant="h4">
+              <FormattedMessage id="srv.liquidated" />
+            </Typography>
+          )}
+        </>
       ) : (
         <FollowProviderButton provider={provider} />
       )}
