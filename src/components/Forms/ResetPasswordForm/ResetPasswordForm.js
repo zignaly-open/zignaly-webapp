@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -44,6 +44,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
+  const captchaFallback = useRef(null);
 
   /**
    * Main password change state handling.
@@ -90,6 +91,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
    * @typedef {Object} DataObject
    * @property {String} password
    * @property {String} repeatPassword
+   * @property {string} [gRecaptchaResponse] Captcha token fallback
    */
 
   /**
@@ -102,14 +104,17 @@ const ResetPasswordForm = ({ code, setExpired }) => {
     if (data.password === data.repeatPassword) {
       setPasswordDoNotMatch(false);
       setLoading(true);
-      let gRecaptchaResponse = "";
-      if (process.env.NODE_ENV === "production") {
+      let gRecaptchaResponse = data.gRecaptchaResponse || "";
+      let c = 2;
+      if (process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
         gRecaptchaResponse = await executeRecaptcha("resetPassword");
+        c = 3;
       }
       const payload = {
         token: code,
         password: data.password,
         gRecaptchaResponse,
+        c,
       };
       tradeApi
         .forgotPasswordStep3(payload)
@@ -120,7 +125,11 @@ const ResetPasswordForm = ({ code, setExpired }) => {
           navigate("/login");
         })
         .catch((e) => {
-          if (e.code === 48) {
+          if (e.code === 76) {
+            // Use old captcha as fallback
+            captchaFallback.current = (/** @type {string} */ captcha) =>
+              onSubmit({ ...data, gRecaptchaResponse: captcha });
+          } else if (e.code === 48) {
             setExpired(false);
           } else {
             dispatch(showErrorAlert(e));
