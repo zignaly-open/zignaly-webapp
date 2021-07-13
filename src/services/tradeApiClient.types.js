@@ -142,6 +142,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} email
  * @property {string} password
  * @property {string} gRecaptchaResponse
+ * @property {number} c Captcha version number
  */
 
 /**
@@ -155,6 +156,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} ref
  * @property {String} locale selected locale string
  * @property {string} gRecaptchaResponse
+ * @property {number} c Captcha version number
  */
 
 /**
@@ -953,6 +955,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {String} email User's email.
  * @property {Boolean} array Default backend param equal to "true".
  * @property {String} [gRecaptchaResponse] Google captcha response.
+ * @property {number} c Captcha version number
  */
 
 /**
@@ -960,6 +963,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} token
  * @property {String} password
  * @property {String} [gRecaptchaResponse] Google captcha response.
+ * @property {number} c Captcha version number
  */
 
 /**
