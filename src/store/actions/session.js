@@ -67,25 +67,6 @@ export const endTradeApiSession = () => {
 };
 
 /**
- * Set user session.
- *
- * @param {UserRegisterPayload} payload User login payload.
- * @param {React.SetStateAction<*>} setLoading State Action to hide loader.
- * @returns {AppThunk} Thunk action function.
- */
-export const registerUser = (payload, setLoading) => {
-  return async (dispatch) => {
-    try {
-      const responseData = await tradeApi.userRegister(payload);
-      dispatch(startTradeApiSession(responseData, "signup"));
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-      setLoading(false);
-    }
-  };
-};
-
-/**
  * @param {string} token Access token.
  * @returns {AppThunk} Thunk Action.
  */
