@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -6,13 +6,16 @@ import { useForm, Controller } from "react-hook-form";
 import Passwords from "../../Passwords";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../../../store/actions/session";
 import { FormattedMessage, useIntl } from "react-intl";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
+import Captcha from "../../Captcha";
+import { showErrorAlert } from "store/actions/ui";
+import tradeApi from "services/tradeApiClient";
+import { startTradeApiSession } from "store/actions/session";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,7 @@ const SignupForm = () => {
   const hasMounted = useHasMounted();
   const intl = useIntl();
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
 
@@ -41,6 +45,7 @@ const SignupForm = () => {
    * @property {String} email
    * @property {Boolean} subscribe
    * @property {Boolean} terms
+   * @property {string} [gRecaptchaResponse] Captcha token fallback
    */
 
   /**
@@ -50,9 +55,11 @@ const SignupForm = () => {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-    let gRecaptchaResponse = "";
-    if (!isCheckly && process.env.NODE_ENV === "production") {
+    let gRecaptchaResponse = data.gRecaptchaResponse || "";
+    let c = 2;
+    if (!isCheckly && process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
       gRecaptchaResponse = await executeRecaptcha("signup");
+      c = 3;
     }
     const payload = {
       projectId: projectId,
@@ -65,13 +72,31 @@ const SignupForm = () => {
       terms: data.terms,
       locale,
       gRecaptchaResponse,
+      c,
     };
-    dispatch(registerUser(payload, setLoading));
+
+    tradeApi
+      .userRegister(payload)
+      .then((response) => {
+        dispatch(startTradeApiSession(response, "signup"));
+        captchaFallback.current = null;
+      })
+      .catch((e) => {
+        if (e.code === 76) {
+          // Use old captcha as fallback
+          captchaFallback.current = (/** @type {string} */ captcha) =>
+            onSubmit({ ...data, gRecaptchaResponse: captcha });
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+        setLoading(false);
+      });
   };
 
   return (
     <>
       <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Captcha onSuccess={captchaFallback.current} />
         <Box
           alignItems="center"
           className="signupForm"
