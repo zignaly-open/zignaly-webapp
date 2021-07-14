@@ -1,7 +1,6 @@
 import React from "react";
 import "./disable2FA.scss";
 import ConfirmTwoFADisableForm from "../../components/Forms/ConfirmTwoFADisableForm";
-import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import ResetForm from "components/Forms/ResetForm";
@@ -29,11 +28,7 @@ const Disable2FA = ({ token }) => {
           })}`}
         </title>
       </Helmet>
-      <ResetForm
-        code={token}
-        form={ConfirmTwoFADisableForm}
-        verifyCode={(code) => tradeApi.disable2FAVisit({ token: code })}
-      />
+      <ResetForm code={token} form={ConfirmTwoFADisableForm} />
     </>
   );
 };

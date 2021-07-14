@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ResetForm.scss";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNW.svg";
 import { FormattedMessage } from "react-intl";
 import Link from "components/LocalizedLink";
@@ -9,24 +9,10 @@ import Link from "components/LocalizedLink";
  * @param {Object} props Props.
  * @param {string} props.code Reset Code.
  * @param {function} props.form Form component to embed.
- * @param {function(string): Promise<*>} props.verifyCode Method to verify code
  * @returns {JSX.Element} JSx component.
  */
-const ResetForm = ({ code, form: Form, verifyCode }) => {
-  const [loading, setLoading] = useState(true);
+const ResetForm = ({ code, form: Form }) => {
   const [expired, setExpired] = useState(false);
-
-  const verify = () => {
-    verifyCode(code)
-      .catch(() => {
-        setExpired(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  useEffect(verify, [code]);
 
   return (
     <Box
@@ -36,9 +22,7 @@ const ResetForm = ({ code, form: Form, verifyCode }) => {
       flexDirection="column"
       justifyContent="center"
     >
-      {loading ? (
-        <CircularProgress color="primary" size={50} />
-      ) : !expired ? (
+      {!expired ? (
         <>
           <img alt="Zignaly" className="logo" src={Logo} />
           <Form code={code} setExpired={setExpired} />
