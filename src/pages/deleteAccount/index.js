@@ -3,7 +3,6 @@ import "./deleteAccount.scss";
 import ConfirmDeleteAccountForm from "../../components/Forms/ConfirmDeleteAccountForm";
 import { Helmet } from "react-helmet";
 import ResetForm from "components/Forms/ResetForm";
-import tradeApi from "services/tradeApiClient";
 import { useIntl } from "react-intl";
 
 /**
@@ -29,11 +28,7 @@ const DeleteAccount = ({ code }) => {
           })}`}
         </title>
       </Helmet>
-      <ResetForm
-        code={code}
-        form={ConfirmDeleteAccountForm}
-        verifyCode={(c) => tradeApi.deleteAccountVisit({ token: c })}
-      />
+      <ResetForm code={code} form={ConfirmDeleteAccountForm} />
     </>
   );
 };
