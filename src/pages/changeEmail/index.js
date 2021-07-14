@@ -1,6 +1,5 @@
 import React from "react";
 import "./changeEmail.scss";
-import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import ChangeEmailForm from "components/Forms/ChangeEmailForm";
@@ -29,11 +28,7 @@ const ChangeEmail = ({ token }) => {
           })}`}
         </title>
       </Helmet>
-      <ResetForm
-        code={token}
-        form={ChangeEmailForm}
-        verifyCode={(code) => tradeApi.changeEmailVisit({ token: code })}
-      />
+      <ResetForm code={token} form={ChangeEmailForm} />
     </>
   );
 };
