@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import {
   FuturesProfitSharingManagement,
   SpotProfitSharingManagement,
@@ -13,7 +13,7 @@ import {
 
 const CopyTradersManagement = () => {
   const { provider } = useStoreViewsSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const intl = useIntl();
 
   return (

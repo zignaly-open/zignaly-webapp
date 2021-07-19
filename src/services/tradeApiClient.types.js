@@ -350,11 +350,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object} UserEquityPayload
- * @property {String} exchangeInternalId Internal ID of exchange.
- */
-
-/**
  * @typedef {Object} ProviderContractsPayload
  * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.

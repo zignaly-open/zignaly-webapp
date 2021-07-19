@@ -17,13 +17,13 @@ import { CircularProgress } from "@material-ui/core";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import MarginButtons from "../Controls/MarginControl";
 import { Alert } from "@material-ui/lab";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -123,9 +123,8 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
 const StrategyPanel = (props) => {
   const { symbolData } = props;
   const { control, errors, register, watch } = useFormContext();
-  const { selectedExchange } = useStoreSettingsSelector();
   const { formatMessage } = useIntl();
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const { balance, loading } = useAvailableBalance(selectedExchange);
   const baseBalance = (balance && balance[symbolData.unitsAmount]) || 0;
   const quoteBalance = (balance && balance[symbolData.unitsInvestment]) || 0;
@@ -364,7 +363,7 @@ const StrategyPanel = (props) => {
           ) : (
             <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
           ))}
-        {storeSettings.selectedExchange.exchangeType === "futures" && (
+        {selectedExchange.exchangeType === "futures" && (
           <MarginButtons symbolData={symbolData} />
         )}
         {["limit", "multi"].includes(entryStrategy) && (

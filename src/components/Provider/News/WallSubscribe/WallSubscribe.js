@@ -8,7 +8,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { getProvider } from "../../../../store/actions/views";
 import { useDispatch } from "react-redux";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,7 +23,7 @@ import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector
  * @returns {JSX.Element} JSX
  */
 const WallSubscribe = ({ subscribed, providerId }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const [isSubscribed, setSubscribed] = useState(subscribed);
   const dispatch = useDispatch();

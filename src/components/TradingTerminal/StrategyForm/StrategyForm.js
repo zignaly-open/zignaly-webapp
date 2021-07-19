@@ -9,7 +9,7 @@ import { colors } from "../../../services/theme";
 import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
 import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -59,13 +59,12 @@ const StrategyForm = (props) => {
   const isPositionView = isObject(positionEntity);
 
   const { errors, handleSubmit, reset, watch, setValue } = useFormContext();
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
   const { formatMessage } = useIntl();
-  const { selectedExchange } = storeSettings;
 
   /**
    * @type {Object<String, TVChartLine|null>}

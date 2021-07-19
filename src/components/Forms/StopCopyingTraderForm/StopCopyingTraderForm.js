@@ -8,7 +8,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useCheckPSCanDisconnect from "hooks/useCheckPSCanDisconnect";
 
 /**
@@ -27,7 +27,7 @@ import useCheckPSCanDisconnect from "hooks/useCheckPSCanDisconnect";
  */
 const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const [disconnectionType, setDisconnectType] = useState("soft");
   const [loader, setLoader] = useState(false);
   const { canDisconnect, loading: canDisconnectLoading } = useCheckPSCanDisconnect(provider);
