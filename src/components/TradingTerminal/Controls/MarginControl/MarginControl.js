@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import LeverageForm from "../../LeverageForm/LeverageForm";
 import Modal from "../../../Modal";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import "./MarginControl.scss";
 
@@ -24,7 +24,7 @@ const MarginControl = ({ symbolData }) => {
   const leverage = watch("leverage");
   const marginMode = watch("marginMode");
   const [modalVisible, setModalVisible] = useState(false);
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const showCross = selectedExchange.exchangeName.toLowerCase() === "bitmex";
   const leverageEditable =
     marginMode !== "cross" || selectedExchange.exchangeName.toLowerCase() !== "bitmex";

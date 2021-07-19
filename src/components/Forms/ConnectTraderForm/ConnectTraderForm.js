@@ -1,13 +1,14 @@
 import React from "react";
-import "./ConnectTraderForm .scss";
+import "./ConnectTraderForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useIntl } from "react-intl";
 import { Help } from "@material-ui/icons";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import CopyTraderForm from "components/Forms/CopyTraderForm";
 import CopyPSForm from "components/Forms/CopyPSForm";
+import CustomButton from "components/CustomButton";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,7 +24,7 @@ import CopyPSForm from "components/Forms/CopyPSForm";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const intl = useIntl();
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
 
@@ -66,6 +67,23 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
             </Box>
           </Typography>
           <Typography>{wrongExchange}</Typography>
+        </Box>
+      ) : !selectedExchange.activated ? (
+        <Box
+          alignItems="flex-start"
+          className="wrongExchangeBox"
+          display="flex"
+          flexDirection="column"
+        >
+          <Typography className="wrongExchangeTitle" variant="h3">
+            <FormattedMessage id="copyt.activate.title" />
+          </Typography>
+          <Typography>
+            <FormattedMessage id="copyt.activate.desc" />
+          </Typography>
+          <CustomButton className="submitButton" href="#exchangeAccounts">
+            <FormattedMessage id="accounts.deposit" />
+          </CustomButton>
         </Box>
       ) : provider.profitSharing ? (
         <CopyPSForm onClose={onClose} onSuccess={onSuccess} provider={provider} />

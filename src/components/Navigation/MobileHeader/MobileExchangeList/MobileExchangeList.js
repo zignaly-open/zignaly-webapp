@@ -6,6 +6,7 @@ import CloseWhite from "../../../../images/sidebar/closeWhite.svg";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeList from "../../Header/UserExchangeList/ExchangeList";
 import DownIcon from "../../../../images/header/chevron-down.svg";
 
@@ -16,6 +17,7 @@ import DownIcon from "../../../../images/header/chevron-down.svg";
 const MobileExchangeList = () => {
   const [list, showList] = useState(false);
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
 
   return (
     <Box className="mobileExchangeList">
@@ -27,14 +29,14 @@ const MobileExchangeList = () => {
         justifyContent="flex-start"
         onClick={() => showList(true)}
       >
-        <ExchangeIcon exchange={storeSettings.selectedExchange.name.toLowerCase()} size="medium" />
-        <span className="name"> {storeSettings.selectedExchange.internalName} </span>
-        {storeSettings.selectedExchange.paperTrading && (
+        <ExchangeIcon exchange={selectedExchange.name.toLowerCase()} size="medium" />
+        <span className="name"> {selectedExchange.internalName} </span>
+        {selectedExchange.paperTrading && (
           <span className="name">
             (<FormattedMessage id="menu.demo" />){" "}
           </span>
         )}
-        {storeSettings.selectedExchange.isTestnet && (
+        {selectedExchange.isTestnet && (
           <span className="name">
             (<FormattedMessage id="menu.testnet" />){" "}
           </span>

@@ -11,14 +11,14 @@ import {
 } from "../../../components/Balance/AvailableBalance";
 import { useStoreUserDailyBalance } from "../../../hooks/useStoreUserSelector";
 import useBalance from "../../../hooks/useBalance";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useIntl } from "react-intl";
 import BalanceTabs from "../../../components/Balance/BalanceTabs";
 import ProfitLossAnalysis from "../../../components/Balance/ProfitLossAnalysis";
 
 const Balance = () => {
   const dailyBalance = useStoreUserDailyBalance();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const { balance, balanceLoading, refreshBalance } = useBalance(selectedExchange.internalId);
   const intl = useIntl();
 

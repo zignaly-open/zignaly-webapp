@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./settings.scss";
 import { Box, CircularProgress } from "@material-ui/core";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";
 import { Helmet } from "react-helmet";
@@ -27,7 +27,7 @@ import NoSettingsView from "../../../components/Provider/Settings/NoSettingsView
  * @returns {JSX.Element} Position page element.
  */
 const SignalProvidersSettings = ({ quotes, settings, loadData }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const { provider } = useStoreViewsSelector();
   const [settingsView, setSettingsView] = useState(true);
   const loading = !quotes || Object.keys(quotes).length === 0;

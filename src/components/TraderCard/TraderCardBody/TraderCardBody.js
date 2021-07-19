@@ -21,6 +21,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import dayjs from "dayjs";
 import Modal from "../../Modal";
 import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -98,7 +99,8 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     );
   };
 
-  const { darkStyle, selectedExchange } = useStoreSettingsSelector();
+  const { darkStyle } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useExchangesOptions from "./useExchangesOptions";
 import useEffectSkipFirst from "./useEffectSkipFirst";
 import { useIntl } from "react-intl";
@@ -66,8 +67,9 @@ import useConnectedProvidersList from "./useConnectedProvidersList";
  */
 const useProvidersList = (options, updatedAt = null) => {
   const intl = useIntl();
+  const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
-  const internalExchangeId = storeSettings.selectedExchange.internalId;
+  const internalExchangeId = selectedExchange.internalId;
   const dispatch = useDispatch();
   const { type, connectedOnly, myServices } = options;
   const copyTraders = type === "copy_trading";
@@ -102,8 +104,8 @@ const useProvidersList = (options, updatedAt = null) => {
   // Get quotes list unless connected providers only which don't need filters
   const { quoteAssets } = useExchangeQuotes(
     {
-      exchangeId: storeSettings.selectedExchange.exchangeId,
-      exchangeType: storeSettings.selectedExchange.exchangeType,
+      exchangeId: selectedExchange.exchangeId,
+      exchangeType: selectedExchange.exchangeType,
     },
     !CTorPS && !connectedOnly,
   );

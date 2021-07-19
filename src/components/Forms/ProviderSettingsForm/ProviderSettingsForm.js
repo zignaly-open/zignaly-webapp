@@ -15,7 +15,7 @@ import { assign } from "lodash";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import ToggleTextarea from "./ToggleTextarea";
 import ProviderContext from "../../../context/ProviderContext";
 import { checkAllocated } from "utils/helpers";
@@ -43,7 +43,7 @@ import ToggleRadioInput from "./ToggleRadioInput";
 const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
   const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const [loading, setLoading] = useState(false);
   const [takeProfitTargets, setProfitTargets] = useState([]);
   const [reBuyTargets, setBuyTargets] = useState([]);
@@ -116,8 +116,8 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
       reBuyTargets: prepareBuyTargetsPayload(),
       token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
-      exchangeId: storeSettings.selectedExchange.id,
+      internalExchangeId: selectedExchange.internalId,
+      exchangeId: selectedExchange.id,
       version: 2,
       buyTTL: data.buyTTL ? data.buyTTL * 60 : false,
       sellByTTL: data.sellByTTL ? data.sellByTTL * 3600 : false,
