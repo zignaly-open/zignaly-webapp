@@ -17,7 +17,7 @@ import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useConnectedProvidersList from "hooks/useConnectedProvidersList";
 
 /**
@@ -34,7 +34,7 @@ import useConnectedProvidersList from "hooks/useConnectedProvidersList";
 const PrivateAreaLayout = (props) => {
   const { children } = props;
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
   const { setProviderCount } = privateAreaContext;

@@ -14,6 +14,7 @@ import {
   uniqBy,
 } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import useStoreViewsSelector from "./useStoreViewsSelector";
@@ -76,7 +77,7 @@ const usePositionsList = (
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
-  const { selectedExchange } = storeSettings;
+  const selectedExchange = useSelectedExchange();
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
@@ -176,7 +177,7 @@ const usePositionsList = (
   const routeFetchMethod = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
     const providerPayload = {
@@ -282,7 +283,7 @@ const usePositionsList = (
     let requestData = null;
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
     try {

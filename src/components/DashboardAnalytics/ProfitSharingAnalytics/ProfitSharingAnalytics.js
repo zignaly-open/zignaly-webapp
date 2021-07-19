@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import tradeApi from "../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
@@ -56,7 +56,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
       performance: null,
     }),
   );
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
 
   /**
@@ -143,7 +143,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
+      exchangeInternalId: selectedExchange.internalId,
     };
     setBalanceHistoryLoading(true);
 
@@ -244,7 +244,7 @@ const ProfitSharingAnalytics = ({ provider }) => {
               <ProfitSharingEquityChart
                 currentBalance={balanceHistory.currentBalance}
                 data={stats.balance}
-                selectedExchange={storeSettings.selectedExchange}
+                selectedExchange={selectedExchange}
               />
               <ProfitSharingTable data={stats.accounting} />
             </Box>

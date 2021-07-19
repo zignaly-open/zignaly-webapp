@@ -10,7 +10,7 @@ import { useIntl } from "react-intl";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
 import CloneDeleteButton from "../../../components/Provider/ProviderHeader/ProviderDeleteButton";
 import Modal from "../../../components/Modal";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import Options from "../../../components/Provider/Profile/Options";
 import PaymentResponse from "./PaymentResponse";
 
@@ -25,7 +25,7 @@ import PaymentResponse from "./PaymentResponse";
  * @returns {JSX.Element} Component JSX.
  */
 const Profile = ({ provider }) => {
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const intl = useIntl();
   const [paymentModal, showPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
@@ -113,7 +113,7 @@ const Profile = ({ provider }) => {
         )}
         {!provider.isCopyTrading &&
           !provider.disable &&
-          provider.exchangeInternalId === storeSettings.selectedExchange.internalId &&
+          provider.exchangeInternalId === selectedExchange.internalId &&
           checkAvailableOptions() && (
             <Box bgcolor="grid.content" className="optionsBox">
               <Options provider={provider} />

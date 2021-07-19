@@ -35,6 +35,7 @@ import initialState from "store/initialState";
 import Modal from "../../Modal";
 import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
 import { setMarketplaceCacheModal } from "store/actions/settings";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -53,6 +54,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const [paymentBoxAlert, setPaymentBoxAlert] = useState(false);
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
   const { errors, handleSubmit, control, register, setError, watch } = useForm();
@@ -143,7 +145,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             token: payload.token,
             providerId: payload.providerId,
             version: 2,
-            exchangeInternalId: storeSettings.selectedExchange.internalId,
+            exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));
           dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));

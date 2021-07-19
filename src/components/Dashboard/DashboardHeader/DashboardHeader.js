@@ -4,7 +4,7 @@ import { Box, Typography, Tooltip } from "@material-ui/core";
 import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import LinkIcon from "@material-ui/icons/Link";
 import LinkOffIcon from "@material-ui/icons/LinkOff";
 import PrivateAreaContext from "context/PrivateAreaContext";
@@ -22,7 +22,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
  * @returns {JSX.Element} Component JSX.
  */
 const DashboardHeader = ({ path }) => {
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   let links = routesMapping(path).links;
   const { providerCount } = useContext(PrivateAreaContext);
 
@@ -48,18 +48,18 @@ const DashboardHeader = ({ path }) => {
           <FormattedMessage id="dashboard" />
         </Typography>
         <span className="exchangeTitle">
-          <span className="name"> {storeSettings.selectedExchange.internalName} </span>
-          {storeSettings.selectedExchange.paperTrading && (
+          <span className="name"> {selectedExchange.internalName} </span>
+          {selectedExchange.paperTrading && (
             <span className="tag">
               (<FormattedMessage id="menu.demo" />){" "}
             </span>
           )}
-          {storeSettings.selectedExchange.isTestnet && (
+          {selectedExchange.isTestnet && (
             <span className="tag">
               (<FormattedMessage id="menu.testnet" />){" "}
             </span>
           )}
-          {storeSettings.selectedExchange.areKeysValid ? (
+          {selectedExchange.areKeysValid ? (
             <Tooltip placement="top" title={<FormattedMessage id="accounts.exchangeconnected" />}>
               <LinkIcon className="linkOn" />
             </Tooltip>

@@ -59,11 +59,11 @@ const settings = createReducer(initialState.settings, {
   },
 
   [SET_SELECTED_EXCHANGE]: (state, action) => {
-    state.selectedExchange = action.payload;
+    state.selectedExchangeId = action.payload;
   },
 
   [UNSET_SELECTED_EXCHANGE]: (state) => {
-    state.selectedExchange = initialState.settings.selectedExchange;
+    state.selectedExchangeId = null;
   },
 
   [SET_DISPLAY_COLUMN]: (state, action) => {
