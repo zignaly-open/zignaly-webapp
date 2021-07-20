@@ -62,7 +62,7 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     locale: "cs",
     label: "Čeština",
     countryCode: "cz",
-    languageCode: "cz",
+    languageCode: "cs",
   });
   LocalizationLanguages.push({
     locale: "tr",
