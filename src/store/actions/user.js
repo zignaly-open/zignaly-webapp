@@ -24,7 +24,7 @@ export const ACTIVATE_SUBACCOUNT = "ACTIVATE_SUBACCOUNT";
 /**
  * Get user connected exchanges store thunk action.
  *
- * @param {Array<ExchangeConnectionEntity>} responseData Trade API user authorization.
+ * @param {Array<ExchangeConnectionEntity>} responseData User exchanges
  *
  * @returns {AppThunk} Thunk action function.
  */
@@ -32,12 +32,18 @@ const initUserExchanges = (responseData) => {
   return async (dispatch, getState) => {
     try {
       const state = getState();
-      // @ts-ignore
-      const storeSelectedExchange = state.settings.selectedExchange;
-      let selectedExchangeId = storeSelectedExchange?.internalId;
-      if (!selectedExchangeId && responseData.length) {
-        // If no exchange account saved, use the first one
-        selectedExchangeId = responseData[0].internalId;
+      let selectedExchangeId = null;
+      if (responseData.length) {
+        // @ts-ignore
+        const storeSelectedExchange = state.settings.selectedExchange;
+        const selectedExchangeIdSaved = storeSelectedExchange?.internalId;
+        if (responseData.find((e) => e.internalId === selectedExchangeIdSaved)) {
+          // Use last saved selected exchange
+          selectedExchangeId = selectedExchangeIdSaved;
+        } else {
+          // If no exchange account saved, use the first one
+          selectedExchangeId = responseData[0].internalId;
+        }
       }
       dispatch(setSelectedExchange(selectedExchangeId));
 
