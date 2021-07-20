@@ -260,16 +260,27 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
             wrapper={(_children) => (
               <CustomToolip
                 title={
-                  <FormattedMessage
-                    id="srv.closedpos.tooltip"
-                    values={{
-                      closeCount: closedPositions,
-                      timeframe: timeFrame,
-                      returns: formatFloat2Dec(returns),
-                      openCount: openPositions,
-                      floating: formatFloat2Dec(floating),
-                    }}
-                  />
+                  <>
+                    {timeFrame !== 3650 ? (
+                      <FormattedMessage
+                        id="srv.closedpos.tooltip.1a"
+                        values={{
+                          timeframe: timeFrame,
+                        }}
+                      />
+                    ) : (
+                      <FormattedMessage id="srv.closedpos.tooltip.1b" />
+                    )}
+                    <FormattedMessage
+                      id="srv.closedpos.tooltip.2"
+                      values={{
+                        closeCount: closedPositions,
+                        returns: formatFloat2Dec(returns),
+                        openCount: openPositions,
+                        floating: formatFloat2Dec(floating),
+                      }}
+                    />
+                  </>
                 }
               >
                 {_children}
