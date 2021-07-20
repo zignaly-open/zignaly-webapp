@@ -19,6 +19,7 @@ import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
+import { Underline } from "react-feather";
 // import { mixpanelPositionCreated } from "utils/mixpanelApi";
 
 /**
@@ -311,7 +312,10 @@ const StrategyForm = (props) => {
       pair: selectedSymbol.zignalyId,
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
-      stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+      stopLossPercentage:
+        draftPosition.stopLossPercentage !== undefined
+          ? parseFloat(draftPosition.stopLossPercentage)
+          : false,
       stopLossPrice: parseFloat(draftPosition.stopLossPrice),
       stopLossPriority: draftPosition.stopLossPriority || "percentage",
       stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
@@ -321,7 +325,10 @@ const StrategyForm = (props) => {
       sellByTTL: hourToSeconds(sellTTL) || 0,
       takeProfitTargets: composePositionTakeProfitTargets(draftPosition),
       reBuyTargets: composePositionDcaTargets(draftPosition),
-      trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+      trailingStopTriggerPercentage:
+        draftPosition.trailingStopPercentage !== undefined
+          ? parseFloat(draftPosition.trailingStopPercentage)
+          : false,
       trailingStopTriggerPrice: parseFloat(draftPosition.trailingStopPrice) || false,
       trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
       trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
@@ -362,7 +369,10 @@ const StrategyForm = (props) => {
         token: storeSession.tradeApi.accessToken,
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
-        stopLossPercentage: parseFloat(draftPosition.stopLossPercentage) || false,
+        stopLossPercentage:
+          draftPosition.stopLossPercentage !== undefined
+            ? parseFloat(draftPosition.stopLossPercentage)
+            : false,
         stopLossPrice: parseFloat(draftPosition.stopLossPrice),
         stopLossPriority: draftPosition.stopLossPriority || "percentage",
         stopLossFollowsTakeProfit: draftPosition.stopLossType === "stopLossFollowsTakeProfit",
@@ -371,7 +381,10 @@ const StrategyForm = (props) => {
         takeProfitTargets:
           !draftPosition.reduceTargetPercentage && composePositionTakeProfitTargets(draftPosition),
         reBuyTargets: composePositionDcaTargets(draftPosition),
-        trailingStopTriggerPercentage: parseFloat(draftPosition.trailingStopPercentage) || false,
+        trailingStopTriggerPercentage:
+          draftPosition.trailingStopPercentage !== undefined
+            ? parseFloat(draftPosition.trailingStopPercentage)
+            : false,
         trailingStopPercentage: parseFloat(draftPosition.trailingStopDistance) || false,
         trailingStopTriggerPrice: parseFloat(draftPosition.trailingStopPrice) || false,
         trailingStopTriggerPriority: draftPosition.trailingStopTriggerPriority || "percentage",
