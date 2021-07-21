@@ -4,8 +4,8 @@ import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";
-import ConnectTraderForm from "../../../Forms/ConnectTraderForm ";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import ConnectTraderForm from "../../../Forms/ConnectTraderForm";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import ConnectExchange from "../../../Modal/ConnectExchange";
@@ -29,7 +29,7 @@ import SuccessBox from "./SuccessBox";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -142,9 +142,11 @@ const CopyTraderButton = ({ provider }) => {
       <>
         {!disconnecting ? (
           disabled ? (
-            <CustomButton className="submitButton" onClick={startCopying}>
-              <FormattedMessage id="copyt.copythistrader" />
-            </CustomButton>
+            !provider.liquidated && (
+              <CustomButton className="submitButton" onClick={startCopying}>
+                <FormattedMessage id="copyt.copythistrader" />
+              </CustomButton>
+            )
           ) : !profitSharing && !sameSelectedExchange ? (
             <Box
               alignItems="center"

@@ -1,7 +1,6 @@
 import React from "react";
 import "./recover.scss";
 import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
-import tradeApi from "../../services/tradeApiClient";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import ResetForm from "components/Forms/ResetForm";
@@ -29,11 +28,7 @@ const RecoverPassword = ({ token }) => {
           })}`}
         </title>
       </Helmet>
-      <ResetForm
-        code={token}
-        form={ResetPasswordForm}
-        verifyCode={(code) => tradeApi.forgotPasswordStep2({ token: code })}
-      />
+      <ResetForm code={token} form={ResetPasswordForm} />
     </>
   );
 };

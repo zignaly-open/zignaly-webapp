@@ -36,11 +36,8 @@ const SyncBalanceButton = ({ selectedExchange, refreshBalance }) => {
       tradeApi
         .userBalanceGet(payload)
         .then(() => {
-          const historicalPayload = {
-            exchangeInternalId: selectedExchange.internalId,
-          };
           refreshBalance();
-          dispatch(getDailyUserBalance(historicalPayload));
+          dispatch(getDailyUserBalance(selectedExchange.internalId));
           dispatch(showSuccessAlert("", "dashboard.balance.sync.alert"));
         })
         .catch((e) => {

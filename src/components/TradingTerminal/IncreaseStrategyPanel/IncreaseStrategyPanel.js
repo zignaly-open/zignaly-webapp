@@ -16,7 +16,7 @@ import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -41,7 +41,7 @@ const IncreaseStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, register, watch, reset, getValues } = useFormContext();
   const { formatMessage } = useIntl();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const {
     positionSizeChange,
     validateUnits,
@@ -62,9 +62,8 @@ const IncreaseStrategyPanel = (props) => {
   const baseBalance = (balance && balance[symbolData.base]) || 0;
   const quoteBalance = (balance && balance[symbolData.quote]) || 0;
   const entryStrategy = watch("entryStrategy", "limit");
-  const { lastPrice, updatedAt, providerService, setProviderService } = useContext(
-    TradingViewContext,
-  );
+  const { lastPrice, updatedAt, providerService, setProviderService } =
+    useContext(TradingViewContext);
   const providerAllocatedBalance = providerService ? providerService.providerPayableBalance : 0;
   const providerConsumedBalance = providerService ? providerService.providerConsumedBalance : 0;
   const providerConsumedBalancePercentage = providerService

@@ -9,7 +9,7 @@ import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../hooks/usePositionsDataTableCompose";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
@@ -47,7 +47,7 @@ const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const { setOpenCount, setCloseCount, setLogCount } = useContext(PositionsContext);
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
   const persistKey = !isProfile && !positionEntity ? "dashboardPositions" : null;

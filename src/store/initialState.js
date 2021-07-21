@@ -131,7 +131,7 @@
  * @property {SortColumns} sortColumns
  * @property {ResponsiveTables} responsiveTables
  * @property {RowsPerPage} rowsPerPage
- * @property {ExchangeConnectionEntity} selectedExchange
+ * @property {string} selectedExchangeId
  * @property {TimeframeObject} timeFrame
  * @property {SortObject} sort
  * @property {Filters} filters
@@ -224,6 +224,7 @@ const initialState = {
     disableCacheModal: {},
     balanceBox: false,
     rowsPerPage: {},
+    selectedExchangeId: null,
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",
@@ -454,36 +455,6 @@ const initialState = {
     },
     sortColumns: {},
     responsiveTables: {},
-    selectedExchange: {
-      id: "",
-      name: "",
-      exchangeId: "",
-      exchangeName: "",
-      internalId: "",
-      internalName: "",
-      key: false,
-      secret: false,
-      areKeysValid: false,
-      paperTrading: false,
-      exchangeType: "",
-      isTestnet: false,
-      disable: false,
-      positionSize: 0,
-      managed: false,
-      internal: false,
-      isBrokerAccount: false,
-      subAccountId: "",
-      binanceBrokerId: "",
-      checkAuthCount: 0,
-      globalDelisting: false,
-      globalBlacklist: false,
-      globalMaxPositions: false,
-      globalMinVolume: false,
-      globalPositionsPerMarket: false,
-      globalWhitelist: false,
-      balanceSynced: false,
-      activated: false,
-    },
     timeFrame: {
       connectedCopyt: null,
       connectedSignalp: null,

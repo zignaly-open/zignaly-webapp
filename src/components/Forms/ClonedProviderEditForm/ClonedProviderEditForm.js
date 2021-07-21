@@ -11,6 +11,7 @@ import { getProvider } from "../../../store/actions/views";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import "./ClonedProviderEditForm.scss";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -27,6 +28,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 const CopyTraderEditProfileForm = ({ provider, onClose }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const { errors, handleSubmit, control } = useForm({ mode: "all" });
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ const CopyTraderEditProfileForm = ({ provider, onClose }) => {
           token: payload.token,
           providerId: payload.providerId,
           version: 2,
-          exchangeInternalId: storeSettings.selectedExchange.internalId,
+          exchangeInternalId: selectedExchange.internalId,
         };
         dispatch(getProvider(providerPayload, true));
         dispatch(showSuccessAlert("alert.profileedit.title", "alert.profileedit.body"));

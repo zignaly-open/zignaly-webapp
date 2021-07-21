@@ -15,6 +15,7 @@ import useTradingTerminal from "../../../hooks/useTradingTerminal";
 import "./TradingView.scss";
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {any} TVWidget
@@ -41,22 +42,18 @@ const defaultExchangeSymbol = {
 const TradingView = () => {
   const tradingViewContext = useTradingViewContext();
   const { lastPrice, setLastPrice } = tradingViewContext;
-  const {
-    instantiateWidget,
-    tradingViewWidget,
-    changeSymbol,
-    removeWidget,
-    isSelfHosted,
-  } = useTradingTerminal(setLastPrice);
+  const { instantiateWidget, tradingViewWidget, changeSymbol, removeWidget, isSelfHosted } =
+    useTradingTerminal(setLastPrice);
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
   const dispatch = useDispatch();
+  const selectedExchange = useSelectedExchange();
 
   const getMarketData = async () => {
     const marketDataPayload = {
       token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: storeSettings.selectedExchange.internalId,
+      exchangeInternalId: selectedExchange.internalId,
     };
 
     try {
@@ -73,7 +70,7 @@ const TradingView = () => {
    * @returns {string} Exchange name.
    */
   const resolveExchangeName = () => {
-    return storeSettings.selectedExchange.exchangeName || storeSettings.selectedExchange.name;
+    return selectedExchange.exchangeName || selectedExchange.name;
   };
 
   const exchangeName = resolveExchangeName();
@@ -95,7 +92,7 @@ const TradingView = () => {
    */
   const defaultSelectedSymbol = () => {
     const symbolOptions = [
-      storeSettings.tradingTerminal.pair[storeSettings.selectedExchange.exchangeId],
+      storeSettings.tradingTerminal.pair[selectedExchange.exchangeId],
       defaultExchangeSymbol[exchangeName.toLowerCase()],
       defaultExchangeSymbol.fallback,
     ];
@@ -117,9 +114,7 @@ const TradingView = () => {
     }
   }, [symbols]);
 
-  const [selectedExchangeId, setSelectedExchangeId] = useState(
-    storeSettings.selectedExchange.internalId,
-  );
+  const [selectedExchangeId, setSelectedExchangeId] = useState(selectedExchange.internalId);
   const isLoading = tradingViewWidget === null || selectedSymbol === null;
   const isLastPriceLoading = lastPrice === null;
 
@@ -130,13 +125,13 @@ const TradingView = () => {
     getMarketData();
 
     // Reload widget on exchange change
-    if (selectedExchangeId !== storeSettings.selectedExchange.internalId) {
+    if (selectedExchangeId !== selectedExchange.internalId) {
       setLastPrice(null);
       removeWidget();
-      setSelectedExchangeId(storeSettings.selectedExchange.internalId);
+      setSelectedExchangeId(selectedExchangeId);
     }
   };
-  useEffect(onExchangeChange, [storeSettings.selectedExchange.internalId]);
+  useEffect(onExchangeChange, [selectedExchangeId]);
 
   useEffect(() => {
     // Reload widget on theme change
@@ -151,7 +146,7 @@ const TradingView = () => {
     }
 
     const options = {
-      exchange: storeSettings.selectedExchange,
+      exchange: selectedExchange,
       symbolsData: symbols,
       tradeApiToken: storeSession.tradeApi.accessToken,
       symbol: selectedSymbol.tradeViewSymbol,
@@ -176,7 +171,7 @@ const TradingView = () => {
         tradingViewWidget.iframe.contentWindow &&
         selectedSymbol
       ) {
-        changeSymbol(selectedSymbol.tradeViewSymbol, storeSettings.selectedExchange);
+        changeSymbol(selectedSymbol.tradeViewSymbol, selectedExchange);
         clearInterval(checkExist);
       }
     }, 100);
@@ -197,7 +192,7 @@ const TradingView = () => {
   const handleSymbolChange = (selectedOption) => {
     const newSymbol = resolveSymbolData(selectedOption);
     setSelectedSymbol(newSymbol);
-    changeSymbol(newSymbol.tradeViewSymbol, storeSettings.selectedExchange);
+    changeSymbol(newSymbol.tradeViewSymbol, selectedExchange);
   };
 
   const methods = useForm({
@@ -258,7 +253,7 @@ const TradingView = () => {
 };
 
 const TradingViewWrapper = () => {
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeUser = useStoreUserSelector();
 
   if (!storeUser.loaded) {
@@ -275,7 +270,7 @@ const TradingViewWrapper = () => {
     );
   }
 
-  if (!storeSettings.selectedExchange.internalId) {
+  if (!selectedExchange.internalId) {
     return <ConnectExchange />;
   }
 

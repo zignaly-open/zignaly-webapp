@@ -50,7 +50,6 @@ import {
 
 /**
  * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
- * @typedef {import('./tradeApiClient.types').UserEquityPayload} UserEquityPayload
  * @typedef {import('./tradeApiClient.types').UserBalancePayload} UserBalancePayload
  * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
@@ -606,9 +605,11 @@ class TradeApiClient {
    */
 
   async userBalanceGet(payload) {
+    const { exchangeInternalId, ...data } = payload;
+
     const responseData = await this.doRequest(
-      `/user/exchanges/${payload.exchangeInternalId}/balance`,
-      null,
+      `/user/exchanges/${exchangeInternalId}/balance`,
+      data,
       "GET",
       2,
     );
@@ -619,15 +620,15 @@ class TradeApiClient {
   /**
    * Get user's daily balance for an exchange.
    *
-   * @param {UserEquityPayload} payload Get daily balance payload.
+   * @param {string} exchangeInternalId exchangeInternalId
    * @returns {Promise<DefaultDailyBalanceEntity>} Promise that resolves user's daily balance list.
    * @memberof TradeApiClient
    */
 
-  async userEquityGet(payload) {
+  async userEquityGet(exchangeInternalId) {
     const responseData = await this.doRequest(
-      `/user/exchanges/${payload.exchangeInternalId}/historical_balance`,
-      payload,
+      `/user/exchanges/${exchangeInternalId}/historical_balance`,
+      null,
       "GET",
       2,
     );
@@ -1471,15 +1472,21 @@ class TradeApiClient {
   /**
    * Function to get provider's open positions.
    *
-   * @param {GetProviderFollowersPayload} payload Provider's open poistions payload.
+   * @param {string} providerId providerId
    *
    * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user position collection.
    *
    * @memberof TradeApiClient
    */
-  async providerOpenPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async providerOpenPositions(providerId) {
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/positions`,
+      {
+        type: "open",
+      },
+      "GET",
+      2,
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -1487,15 +1494,21 @@ class TradeApiClient {
   /**
    * Function to get provider's closed positions.
    *
-   * @param {GetProviderFollowersPayload} payload Provider's closed poistions payload.
+   * @param {string} providerId providerId
    *
    * @returns {Promise<UserPositionsCollection>} Returns promise that resolved user positions collection.
    *
    * @memberof TradeApiClient
    */
-  async providerSoldPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getSoldPositionsFromProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async providerSoldPositions(providerId) {
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/positions`,
+      {
+        type: "closed",
+      },
+      "GET",
+      2,
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -1664,16 +1677,16 @@ class TradeApiClient {
   /**
    * Get user exchange available balance.
    *
-   * @param {UserEquityPayload} payload Get user balance payload.
+   * @param {string} exchangeInternalId exchangeInternalId
    *
    * @returns {Promise<UserAvailableBalanceObject>} Returns promise that resolved user available balance object.
    *
    * @memberof TradeApiClient
    */
-  async userAvailableBalanceGet(payload) {
+  async userAvailableBalanceGet(exchangeInternalId) {
     const responseData = await this.doRequest(
-      `/user/exchange/${payload.exchangeInternalId}/available_balance`,
-      payload,
+      `/user/exchange/${exchangeInternalId}/available_balance`,
+      null,
       "GET",
       2,
     );
@@ -1700,15 +1713,15 @@ class TradeApiClient {
   /**
    * Function to get exchange open orders.
    *
-   * @param {UserEquityPayload} payload exchange orders payload.
+   * @param {string} exchangeInternalId exchangeInternalId
    *
    * @returns {Promise<Array<ExchangeOpenOrdersObject>>} Returns promise that resolved exchange order object.
    *
    * @memberof TradeApiClient
    */
-  async openOrdersGet(payload) {
+  async openOrdersGet(exchangeInternalId) {
     const endpointPath = "/fe/api.php?action=getOpenOrders";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { exchangeInternalId });
 
     return exchangeOpenOrdersResponseTransform(responseData);
   }
@@ -1732,15 +1745,15 @@ class TradeApiClient {
   /**
    * Function to get exchange contracts.
    *
-   * @param {UserEquityPayload} payload exchange contracts payload.
+   * @param {string} exchangeInternalId exchangeInternalId
    *
    * @returns {Promise<Array<ExchangeContractsObject>>} Returns promise that.
    *
    * @memberof TradeApiClient
    */
-  async exchangeContractsGet(payload) {
+  async exchangeContractsGet(exchangeInternalId) {
     const endpointPath = "/fe/api.php?action=getExchangeContracts";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest(endpointPath, { exchangeInternalId });
 
     return exchangeContractsResponseTransform(responseData);
   }
