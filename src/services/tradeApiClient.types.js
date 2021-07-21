@@ -293,6 +293,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} UserWall
+ * @property {string} cantPostUntil If present, date until which the user can post reply
+ * @property {boolean} banned
+ */
+
+/**
  * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -316,6 +322,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {isTraderType} isTrader
  * @property {Array<ExchangeConnectionEntity>} exchanges
  * @property {string} locale
+ * @property {UserWall} wall
  */
 
 /**
@@ -1114,6 +1121,7 @@ export function userEntityResponseTransform(response) {
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
     locale: response.locale,
+    wall: response.wall,
   };
 }
 

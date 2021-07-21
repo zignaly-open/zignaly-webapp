@@ -11,6 +11,11 @@ import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { navigate as navigateReach } from "@reach/router";
 import { ConfirmDialog } from "../../../Dialogs";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 /**
  * @typedef {import('react').MouseEvent} MouseEvent
@@ -91,6 +96,12 @@ const AddReply = ({ postId, replyId, onReplyAdded }) => {
     navigateReach("#settings-profile");
   };
 
+  let canPost = !storeUserData.wall.banned;
+  const timeUntilCanPost = dayjs(storeUserData.wall.cantPostUntil).diff();
+  if (timeUntilCanPost > 0) {
+    canPost = false;
+  }
+
   return (
     <Box alignItems="center" className="addReply" display="flex">
       <ConfirmDialog
@@ -100,12 +111,23 @@ const AddReply = ({ postId, replyId, onReplyAdded }) => {
       />
       <ProviderLogo defaultImage={ProfileIcon} size="32px" title="" url={storeUserData.imageUrl} />
       <OutlinedInput
-        disabled={loading}
+        disabled={loading || !canPost}
         fullWidth={true}
         multiline={true}
         onChange={(e) => setReply(e.target.value)}
         onKeyDown={keyPress}
-        placeholder={intl.formatMessage({ id: "wall.write.comment" })}
+        placeholder={
+          storeUserData.wall.banned
+            ? intl.formatMessage({ id: "wall.write.banned" })
+            : timeUntilCanPost > 0
+            ? intl.formatMessage(
+                { id: "wall.write.wait" },
+                {
+                  daysLeft: dayjs.duration({ milliseconds: timeUntilCanPost }).humanize(true),
+                },
+              )
+            : intl.formatMessage({ id: "wall.write.comment" })
+        }
         value={reply}
       />
     </Box>

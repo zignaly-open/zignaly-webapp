@@ -2161,6 +2161,46 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
     return responseData;
   }
+
+  /**
+   * Ban user from posting in Wall
+   *
+   * @param {string} userId userId
+   *
+   * @returns {Promise<Boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async wallBanUser(userId) {
+    return this.doRequest(`/wall/user/${userId}/ban`, null, "POST", 2);
+  }
+
+  /**
+   * Unban user from posting in Wall
+   *
+   * @param {string} userId userId
+   *
+   * @returns {Promise<Boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async wallUnbanUser(userId) {
+    return this.doRequest(`/wall/user/${userId}/unban`, null, "POST", 2);
+  }
+
+  /**
+   * Unban user from posting in Wall
+   *
+   * @param {{userId: String, postId: String}} payload Payload
+   *
+   * @returns {Promise<Boolean>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async wallReportUser(payload) {
+    const { userId, ...data } = payload;
+    return this.doRequest(`/wall/user/${userId}/reportSpamUser`, data, "POST", 2);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

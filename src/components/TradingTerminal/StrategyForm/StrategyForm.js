@@ -19,7 +19,6 @@ import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
-import { Underline } from "react-feather";
 // import { mixpanelPositionCreated } from "utils/mixpanelApi";
 
 /**
