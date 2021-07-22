@@ -105,7 +105,10 @@ export const initExternalWidgets = (userData, eventType) => {
   if (gtmEvent) {
     gtmEvent.push(assign(gtmpEventType, userData));
   }
-  analyticsTrigger(userData, eventType);
+  // @ts-ignore
+  if (!window.Cypress) {
+    analyticsTrigger(userData, eventType);
+  }
   if (eventType === "signup") {
     startLiveSession(userData);
   }
