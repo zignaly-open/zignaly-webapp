@@ -42,12 +42,6 @@ jobs:
           SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
           JIRA_AUTH: ${{ secrets.JIRA_AUTH }}
         run: npx semantic-release
-      - name: Prepare Deploy Variables
-        run: |
-          echo "WEBAPP_PACKAGE=zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
-      - name: Unpack Release
-        run: |
-          sudo tar -zxvf $WEBAPP_PACKAGE -C release"
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
         with:
@@ -57,4 +51,4 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1" # optional: defaults to us-east-1
-          SOURCE_DIR: "release" # optional: defaults to entire repository
+          SOURCE_DIR: "public" # optional: defaults to entire repository
