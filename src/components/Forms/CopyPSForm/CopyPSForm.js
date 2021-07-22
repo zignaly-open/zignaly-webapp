@@ -148,7 +148,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   };
 
   let terms = ["ack2", "ack3"];
-  if (selectedExchange.exchangeType === "futures") {
+  if (provider.exchangeType === "futures") {
     // Add terms for futures PS
     terms.unshift("ack1");
   }
