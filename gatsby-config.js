@@ -3,8 +3,6 @@ require("dotenv").config({
   path: `.env.${appStage}`,
 });
 
-// Set base path into environment variable that components can access.
-process.env.GATSBY_BASE_PATH = process.env.NODE_ENV === "production" ? "/app" : "";
 process.env.GATSBY_BUILD_MODE = process.env.NODE_ENV || "dev";
 
 // eslint-disable-next-line no-console
@@ -56,7 +54,7 @@ module.exports = {
       //   },
     },
     {
-      resolve: `gatsby-plugin-tsconfig-paths`,
+      resolve: "gatsby-plugin-tsconfig-paths",
       options: {},
     },
   ],
