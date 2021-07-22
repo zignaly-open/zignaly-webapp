@@ -42,41 +42,19 @@ jobs:
           SEMANTIC_RELEASE_PACKAGE: ${{ secrets.SEMANTIC_RELEASE_PACKAGE }}
           JIRA_AUTH: ${{ secrets.JIRA_AUTH }}
         run: npx semantic-release
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/buildbot.key
-          chmod 600 ~/.ssh/buildbot.key
-          cat >>~/.ssh/config <<END
-          Host webapp
-            HostName $SSH_HOST
-            User $SSH_USER
-            Port $SSH_PORT
-            IdentityFile ~/.ssh/buildbot.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_USER: ${{ secrets.SSH_WEBAPP_USERNAME }}
-          SSH_HOST: ${{ secrets.SSH_WEBAPP_HOST }}
-          SSH_PORT: ${{ secrets.SSH_WEBAPP_PORT }}
       - name: Prepare Deploy Variables
         run: |
-          echo "WEBAPP_VERSION=$(cat .semvernext)" >> $GITHUB_ENV
           echo "WEBAPP_PACKAGE=zignaly-webapp2-$(cat .semvernext).tar.gz" >> $GITHUB_ENV
-          echo $WEBAPP_PACKAGE
-      - name: Deploy Release
-        run: scp $WEBAPP_PACKAGE webapp:/zignaly/artifacts
       - name: Unpack Release
         run: |
-          CMD_PREPARE="sudo mkdir -p $UNPACK_DIRECTORY"
-          ssh webapp $CMD_PREPARE
-          CMD_UNPACK="sudo tar -zxvf /zignaly/artifacts/$WEBAPP_PACKAGE -C $UNPACK_DIRECTORY"
-          ssh webapp $CMD_UNPACK
-          CMD_LINK="sudo ln -nsf $UNPACK_DIRECTORY $APP_LINK"
-          ssh webapp $CMD_LINK
-          CMD_RELOAD="sudo /etc/init.d/nginx reload"
-          ssh webapp $CMD_RELOAD
+          sudo tar -zxvf $WEBAPP_PACKAGE -C release"
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
         env:
-          UNPACK_DIRECTORY: /zignaly/test.zignaly.com/zignaly-webapp2-${{ env.WEBAPP_VERSION }}
-          APP_LINK: /zignaly/test.zignaly.com/app
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_TEST }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1" # optional: defaults to us-east-1
+          SOURCE_DIR: "release" # optional: defaults to entire repository
