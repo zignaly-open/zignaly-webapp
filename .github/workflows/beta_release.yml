@@ -14,6 +14,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
+      - uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_TV_KEY }}
       - name: Install submodules
         run: git submodule update --init
       - name: Install Dependencies
