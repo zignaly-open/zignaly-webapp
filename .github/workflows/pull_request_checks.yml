@@ -12,8 +12,8 @@ jobs:
         with:
           node-version: "14"
           cache: "npm"
-      # - name: Dependencies
-      #   run: npm i
+      - name: Dependencies
+        run: npm i
       - name: Check Style Lint
         run: npm run stylelint
       - name: Check JS Lint
