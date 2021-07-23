@@ -50,7 +50,6 @@ const TakeProfitPanel = (props) => {
   const {
     clearErrors,
     errors,
-    register,
     setValue,
     watch,
     getValues,

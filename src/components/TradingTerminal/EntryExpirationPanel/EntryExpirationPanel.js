@@ -14,7 +14,7 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, register } = useFormContext();
+  const { clearErrors, errors } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**
