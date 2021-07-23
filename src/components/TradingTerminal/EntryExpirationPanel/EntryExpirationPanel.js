@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import { Box, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import "./EntryExpirationPanel.scss";
@@ -13,7 +14,7 @@ import "./EntryExpirationPanel.scss";
  */
 const EntryExpirationPanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, register } = useFormContext();
+  const { clearErrors, errors } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**
@@ -62,13 +63,12 @@ const EntryExpirationPanel = () => {
               labelId="terminal.entryexpiration"
             />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register({
+              <CustomNumberInput
+                name="entryExpiration"
+                rules={{
                   validate: (value) =>
                     value > 0 || formatMessage({ id: "terminal.expiration.limit.zero" }),
-                })}
-                name="entryExpiration"
+                }}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.minutes" />
