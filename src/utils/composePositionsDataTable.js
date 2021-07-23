@@ -586,7 +586,7 @@ export function composeManagementPositionsDataTable(positions, confirmActionHand
     ["col.plpercentage", "profitPercentage"],
     ["col.side", "side"],
     ["col.stoplossprice", "stopLossPrice"],
-    ["col.initialamount", "amount"],
+    ["col.entryamount", "amount"],
     ["col.remainingamount", "remainAmount"],
     ["col.invested", "positionSizeQuote"],
     ["col.tsl", "trailingStopTriggered"],
