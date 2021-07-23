@@ -93,7 +93,9 @@ const PricePercentageControl = ({
             name={price.name}
             onChange={price.onChange}
             rules={{
-              positive: (/** @type {*} */ value) => value >= 0 || price.error,
+              validate: price.validate || {
+                positive: (value) => value >= 0 || price.error,
+              },
             }}
           />
           <Tooltip
