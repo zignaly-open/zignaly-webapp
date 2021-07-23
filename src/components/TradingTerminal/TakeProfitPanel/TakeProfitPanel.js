@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useContext } from "react";
 import { range, size, sum, values } from "lodash";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useFormContext } from "react-hook-form";
-import { Button, Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import { Button, Box, Typography, Switch } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
@@ -18,6 +18,7 @@ import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import PricePercentageControl from "../Controls/PricePercentageControl";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -43,11 +44,8 @@ const TakeProfitPanel = (props) => {
   const targetIndexes = range(1, positionTargetsCardinality + 1, 1);
   const { expanded, expandClass, setExpanded } = useExpandable(positionTargetsCardinality > 0);
   const { greaterThan, validPercentage } = useValidation();
-  const {
-    validateTargetPriceLimits,
-    validateCostLimits,
-    validateUnitsLimits,
-  } = useSymbolLimitsValidate(symbolData);
+  const { validateTargetPriceLimits, validateCostLimits, validateUnitsLimits } =
+    useSymbolLimitsValidate(symbolData);
 
   const {
     clearErrors,
@@ -445,11 +443,11 @@ const TakeProfitPanel = (props) => {
                   labelId="terminal.unitstoexit"
                 />
                 <Box alignItems="center" display="flex">
-                  <OutlinedInput
-                    className="outlineInput"
+                  <CustomNumberInput
                     disabled={isDisabled(targetId)}
-                    error={!!errors[composeTargetPropertyName("exitUnitsPercentage", targetId)]}
-                    inputRef={register(
+                    name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
+                    onChange={() => exitUnitsPercentageChange(targetId)}
+                    rules={
                       fieldsDisabled[composeTargetPropertyName("exitUnitsPercentage", targetId)]
                         ? null
                         : {
@@ -458,21 +456,19 @@ const TakeProfitPanel = (props) => {
                                 validPercentage(value, "terminal.takeprofit.valid.unitspercentage"),
                               sum: validateCumulativePercentage,
                             },
-                          },
-                    )}
-                    name={composeTargetPropertyName("exitUnitsPercentage", targetId)}
-                    onChange={() => exitUnitsPercentageChange(targetId)}
+                          }
+                    }
                   />
                   <div className="currencyBox">%</div>
                 </Box>
                 {!isCopyProvider && (
                   <>
                     <Box alignItems="center" display="flex">
-                      <OutlinedInput
-                        className="outlineInput"
+                      <CustomNumberInput
                         disabled={isDisabled(targetId)}
-                        error={!!errors[composeTargetPropertyName("exitUnits", targetId)]}
-                        inputRef={register(
+                        name={composeTargetPropertyName("exitUnits", targetId)}
+                        onChange={exitUnitsChange}
+                        rules={
                           fieldsDisabled[composeTargetPropertyName("exitUnits", targetId)]
                             ? null
                             : {
@@ -486,10 +482,8 @@ const TakeProfitPanel = (props) => {
                                     validateUnitsLimits(value, "terminal.takeprofit.limit"),
                                   cost: () => validateUnitCostLimits(targetId),
                                 },
-                              },
-                        )}
-                        name={composeTargetPropertyName("exitUnits", targetId)}
-                        onChange={exitUnitsChange}
+                              }
+                        }
                       />
                       <div className="currencyBox">{symbolData.unitsAmount}</div>
                     </Box>

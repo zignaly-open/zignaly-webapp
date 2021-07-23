@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, OutlinedInput, Tooltip } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
+import CustomNumberInput from "../CustomNumberInput/CustomNumberInput";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import "./PricePercentageControl.scss";
@@ -60,16 +61,15 @@ const PricePercentageControl = ({
           display="flex"
           onClick={() => priorityValue === "price" && togglePriority()}
         >
-          <OutlinedInput
-            className="outlineInput"
+          <CustomNumberInput
             disabled={disabled || priorityValue === "price"}
-            inputRef={register({
+            name={percentage.name}
+            onChange={percentage.onChange}
+            rules={{
               validate: percentage.validate || {
                 positive: (value) => value >= 0 || percentage.error,
               },
-            })}
-            name={percentage.name}
-            onChange={percentage.onChange}
+            }}
           />
           <Tooltip
             arrow
@@ -88,16 +88,13 @@ const PricePercentageControl = ({
           display="flex"
           onClick={() => priorityValue !== "price" && togglePriority()}
         >
-          <OutlinedInput
-            className="outlineInput"
+          <CustomNumberInput
             disabled={disabled || priorityValue !== "price"}
-            inputRef={register({
-              validate: price.validate || {
-                positive: (value) => value >= 0 || price.error,
-              },
-            })}
             name={price.name}
             onChange={price.onChange}
+            rules={{
+              positive: (/** @type {*} */ value) => value >= 0 || price.error,
+            }}
           />
           <Tooltip
             arrow

@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { Box } from "@material-ui/core";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import {
-  OutlinedInput,
   FormHelperText,
   Typography,
   Checkbox,
   FormControlLabel,
   Switch,
+  Box,
 } from "@material-ui/core";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -42,7 +42,7 @@ const ReduceStrategyPanel = (props) => {
   const { symbolData, positionEntity } = props;
   const [expand, setExpand] = useState(false);
   const expandClass = expand ? "expanded" : "collapsed";
-  const { control, errors, register, watch, getValues, setValue, reset } = useFormContext();
+  const { control, errors, watch, getValues, setValue, reset } = useFormContext();
   const { formatMessage } = useIntl();
   const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
@@ -159,21 +159,19 @@ const ReduceStrategyPanel = (props) => {
                 labelId="terminal.target"
               />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  error={!!errors.reduceTargetPercentage}
-                  inputRef={register({
+                <CustomNumberInput
+                  name="reduceTargetPercentage"
+                  onChange={reduceTargetPercentageChange}
+                  rules={{
                     validate: (value) =>
                       !isNaN(value) ||
                       formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
-                  })}
-                  name="reduceTargetPercentage"
-                  onChange={reduceTargetPercentageChange}
+                  }}
                 />
                 <div className="currencyBox">%</div>
               </Box>
               <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetPrice} />
+                <CustomNumberInput disabled={true} name="" value={reduceTargetPrice} />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
             </Box>
@@ -194,23 +192,21 @@ const ReduceStrategyPanel = (props) => {
               labelId="terminal.reducestrategy.availablePercentage"
             />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                error={!!errors.reduceAvailablePercentage}
-                inputRef={register({
+              <CustomNumberInput
+                name="reduceAvailablePercentage"
+                onChange={reduceAvailablePercentageChange}
+                rules={{
                   validate: {
                     percentage: (value) =>
                       validPercentage(value, "terminal.reducestrategy.percentage.limit"),
                   },
-                })}
-                name="reduceAvailablePercentage"
-                onChange={reduceAvailablePercentageChange}
+                }}
               />
               <div className="currencyBox">%</div>
             </Box>
             <Box alignItems="flex-start" display="flex" flexDirection="column">
               <Box display="flex" flexDirection="row">
-                <OutlinedInput className="outlineInput" disabled={true} value={reduceTargetUnits} />
+                <CustomNumberInput disabled={true} name="" value={reduceTargetUnits} />
                 <div className="currencyBox">{symbolData.unitsAmount}</div>
               </Box>
               <FormHelperText>
