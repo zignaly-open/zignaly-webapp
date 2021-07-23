@@ -208,11 +208,9 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
                 <FormattedMessage id="srv.edit.delete" />
               </MenuItem>
             )}
-            {canEdit && (
-              <MenuItem onClick={() => setConfirmReportConfig((c) => ({ ...c, visible: true }))}>
-                <FormattedMessage id="wall.report" />
-              </MenuItem>
-            )}
+            <MenuItem onClick={() => setConfirmReportConfig((c) => ({ ...c, visible: true }))}>
+              <FormattedMessage id="wall.report" />
+            </MenuItem>
           </Menu>
         </div>
       </Box>
