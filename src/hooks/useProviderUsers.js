@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import { useIntl } from "react-intl";
@@ -36,7 +35,6 @@ import { useIntl } from "react-intl";
  * @returns {HookData} Hook Data.
  */
 const useProviderUsers = (provider) => {
-  const storeSession = useStoreSessionSelector();
   const [allUser, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(false);

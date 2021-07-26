@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./Contracts.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import ContractsTable from "../../../ConnectExchangeView/ExchangeOrders/Contracts/ContractsTable";
