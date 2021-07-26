@@ -2193,7 +2193,7 @@ class TradeApiClient {
    */
   async wallReportUser(payload) {
     const { userId, ...data } = payload;
-    return this.doRequest(`/wall/user/${userId}/reportSpamUser`, data, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/report_spam`, data, "POST", 2);
   }
 }
 
