@@ -1087,7 +1087,7 @@ class TradeApiClient {
   async providerCopiersGet(payload) {
     const { providerId } = payload;
     const responseData = await this.doRequest(
-      `/providers/${providerId}/followers_chart'`,
+      `/providers/${providerId}/followers_chart`,
       null,
       "GET",
       2,
