@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./Orders.scss";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import OrdersTable from "../../../ConnectExchangeView/ExchangeOrders/Orders/OrdersTable";
@@ -21,14 +20,12 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 const Orders = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
 
   const loadData = () => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedExchange.internalId,
       providerId: provider.id,
     };

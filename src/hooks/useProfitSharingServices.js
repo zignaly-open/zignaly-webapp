@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import { uniqBy } from "lodash";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -18,7 +17,6 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 const useProfitSharingServices = (internalExchangeId) => {
   const [providers, setProviders] = useState([]);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadProviders = () => {
@@ -26,9 +24,7 @@ const useProfitSharingServices = (internalExchangeId) => {
      * @type {ProvidersPayload}
      */
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       type: "connected",
-      ro: true,
       provType: ["profitsharing"],
       timeFrame: 90,
       internalExchangeId,
@@ -45,7 +41,7 @@ const useProfitSharingServices = (internalExchangeId) => {
       });
   };
   // Load providers at init and on timeframe change.
-  useEffect(loadProviders, [storeSession.tradeApi.accessToken, internalExchangeId]);
+  useEffect(loadProviders, [internalExchangeId]);
 
   return providers;
 };

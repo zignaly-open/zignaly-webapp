@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -17,31 +16,26 @@ import { showErrorAlert } from "../store/actions/ui";
  */
 const useExchangeAssets = (internalId, updatedAt) => {
   const [assets, setAssets] = useState({});
-
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
     if (internalId) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
-        internalId: internalId ? internalId : "",
+        internalId: internalId || "",
       };
 
-      if (storeSession.tradeApi.accessToken) {
-        tradeApi
-          .exchangeAssetsGet(payload)
-          .then((data) => {
-            setAssets(data);
-          })
-          .catch((e) => {
-            dispatch(showErrorAlert(e));
-          });
-      }
+      tradeApi
+        .exchangeAssetsGet(payload)
+        .then((data) => {
+          setAssets(data);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
     }
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
+  useEffect(loadData, [internalId, updatedAt]);
 
   return assets;
 };

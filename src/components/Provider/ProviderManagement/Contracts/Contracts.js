@@ -21,14 +21,12 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 const Contracts = ({ provider }) => {
   const [loading, setLoading] = useState(false);
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const [list, setList] = useState([]);
   const dispatch = useDispatch();
 
   const loadData = () => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedExchange.internalId,
       providerId: provider.id,
     };

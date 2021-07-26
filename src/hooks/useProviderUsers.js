@@ -172,7 +172,6 @@ const useProviderUsers = (provider) => {
     if (provider.id && provider.isAdmin) {
       setLoading(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi

@@ -114,7 +114,6 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
     const payload = assign(emptySettings, data, {
       takeProfitTargets: prepareProfitTargetsPayload(),
       reBuyTargets: prepareBuyTargetsPayload(),
-      token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       internalExchangeId: selectedExchange.internalId,
       exchangeId: selectedExchange.id,

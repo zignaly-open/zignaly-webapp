@@ -87,7 +87,6 @@ const TradingViewEdit = (props) => {
    */
   const getMarketData = (positionData) => {
     const marketDataPayload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: positionData.exchangeInternalId,
       exchange: positionData.exchange,
       exchangeType: positionData.exchangeType,
