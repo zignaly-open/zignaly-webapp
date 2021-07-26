@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { useIntl } from "react-intl";
@@ -25,14 +24,12 @@ import { showErrorAlert } from "store/actions/ui";
 const useOwnCopyTraderProviders = (exchangeInternalId) => {
   const [loading, setLoading] = useState(false);
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const [ownCopyTraderProviders, setOwnCopyTradersProviders] = useState([]);
   const { formatMessage } = useIntl();
   const dispatch = useDispatch();
 
   const loadOwnCopyTradersProviders = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: exchangeInternalId || selectedExchange.internalId,
     };
 
@@ -64,10 +61,7 @@ const useOwnCopyTraderProviders = (exchangeInternalId) => {
       });
   };
 
-  useEffect(loadOwnCopyTradersProviders, [
-    selectedExchange.internalId,
-    storeSession.tradeApi.accessToken,
-  ]);
+  useEffect(loadOwnCopyTradersProviders, [selectedExchange.internalId]);
 
   return { ownCopyTraderProviders, loading };
 };

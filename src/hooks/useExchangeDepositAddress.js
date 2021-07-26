@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -23,8 +22,6 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
   );
   const dispatch = useDispatch();
 
-  const storeSession = useStoreSessionSelector();
-
   const loadData = () => {
     if (!internalId || !network || !network.withdrawEnable || !asset) return undefined;
     if (depositAddress) {
@@ -33,7 +30,6 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
     }
 
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalId,
       network: network.network,
       asset,
@@ -57,7 +53,7 @@ const useExchangeDepositAddress = (internalId, asset, network) => {
     };
   };
 
-  useEffect(loadData, [internalId, network, asset, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [internalId, network, asset]);
 
   return depositAddress;
 };

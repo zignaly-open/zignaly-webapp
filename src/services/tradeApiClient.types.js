@@ -175,7 +175,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} GetProviderFollowersPayload
- * @property {string} token user access token.
  * @property {string} providerId provider ID.
  */
 
@@ -339,10 +338,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProviderExchangeSettingsPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {String} providerId
- * @property {Number} version
  */
 
 /**
@@ -358,7 +355,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProviderContractsPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} providerId ID of provider.
  */
@@ -594,11 +590,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersPayload
- * @property {string} token
  * @property {"connected"|"all"} type
  * @property {number} timeFrame
  * @property {Array<'copytraders'|'signal'|'profitsharing'>} provType
- * @property {boolean} [ro] Read only request
  * @property {string} internalExchangeId
  */
 
@@ -3057,7 +3051,6 @@ function createExchangeListEmptyEntity() {
 
 /**
  * @typedef {Object} CopyTradersProvidersOptionsPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId Exchange connection ID associated to the copy trading provider owned services.
  */
 
