@@ -2166,7 +2166,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async wallBanUser(userId) {
-    return this.doRequest(`/wall/user/${userId}/ban`, null, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/ban`, null, "POST", 2);
   }
 
   /**
@@ -2179,7 +2179,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async wallUnbanUser(userId) {
-    return this.doRequest(`/wall/user/${userId}/unban`, null, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/unban`, null, "POST", 2);
   }
 
   /**
