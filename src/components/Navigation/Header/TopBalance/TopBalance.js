@@ -4,12 +4,12 @@ import useUpdatedBalance from "../../../../hooks/useUpdatedBalance";
 import useStoreUIBalanceLoader from "../../../../hooks/useStoreUIBalanceLoader";
 import { useDispatch } from "react-redux";
 import { showBalanceLoader } from "../../../../store/actions/ui";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import SpotBalance from "./SpotBalance";
 import FuturesBalance from "./FuturesBalance";
 
 const TopBalance = () => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const balance = useUpdatedBalance();
   const storeBalanceLoader = useStoreUIBalanceLoader();
   const dispatch = useDispatch();

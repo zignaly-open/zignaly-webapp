@@ -1,13 +1,14 @@
 import React from "react";
-import "./ConnectTraderForm .scss";
+import "./ConnectTraderForm.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useIntl } from "react-intl";
 import { Help } from "@material-ui/icons";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import CopyTraderForm from "components/Forms/CopyTraderForm";
 import CopyPSForm from "components/Forms/CopyPSForm";
+import CustomButton from "components/CustomButton";
 
 /**
  * @typedef {Object} DefaultProps
@@ -23,24 +24,9 @@ import CopyPSForm from "components/Forms/CopyPSForm";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const intl = useIntl();
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
-
-  /**
-   * @returns {String} Exchange name to display in the error.
-   */
-  const prepareExchangeName = () => {
-    let name = "";
-    for (let i = 0; i < provider.exchanges.length; i++) {
-      if (provider.exchanges[i + 1]) {
-        name += `${provider.exchanges[i]}/`;
-      } else {
-        name += `${provider.exchanges[i]}`;
-      }
-    }
-    return name;
-  };
 
   /**
    * Check if selected exchange is compatible with service.
@@ -50,20 +36,6 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
     if (storeUserExchangeConnections.length > 0) {
       if (provider.profitSharing && selectedExchange.paperTrading) {
         return intl.formatMessage({ id: "copyt.copy.error4" });
-      }
-      if (provider.exchanges.length && provider.exchanges[0] !== "") {
-        if (
-          !provider.exchanges.includes(selectedExchange.name.toLowerCase()) ||
-          provider.exchangeType.toLowerCase() !== selectedExchange.exchangeType.toLowerCase()
-        ) {
-          let exchangeName = prepareExchangeName();
-          return intl.formatMessage(
-            { id: "copyt.copy.error1" },
-            {
-              required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
-            },
-          );
-        }
       }
     } else {
       return intl.formatMessage({ id: "copyt.copy.error2" });
@@ -95,6 +67,23 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
             </Box>
           </Typography>
           <Typography>{wrongExchange}</Typography>
+        </Box>
+      ) : !selectedExchange.activated ? (
+        <Box
+          alignItems="flex-start"
+          className="wrongExchangeBox"
+          display="flex"
+          flexDirection="column"
+        >
+          <Typography className="wrongExchangeTitle" variant="h3">
+            <FormattedMessage id="copyt.activate.title" />
+          </Typography>
+          <Typography>
+            <FormattedMessage id="copyt.activate.desc" />
+          </Typography>
+          <CustomButton className="submitButton" href="#exchangeAccounts">
+            <FormattedMessage id="accounts.deposit" />
+          </CustomButton>
         </Box>
       ) : provider.profitSharing ? (
         <CopyPSForm onClose={onClose} onSuccess={onSuccess} provider={provider} />

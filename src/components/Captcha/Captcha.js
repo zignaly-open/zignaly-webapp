@@ -1,16 +1,12 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../store/actions/ui";
-
-/**
- * @typedef {import('react-google-recaptcha').ReCAPTCHAProps['onChange']} OnChange
- */
+import { Modal } from "@material-ui/core";
 
 /**
  * @typedef {Object} CaptchaPropTypes
- * @property {OnChange} onChange Captcha response callback
- * @property {React.MutableRefObject<any>} recaptchaRef Captcha ref
+ * @property {(*)} onSuccess Captcha response callback
  */
 
 /**
@@ -19,14 +15,21 @@ import { showErrorAlert } from "../../store/actions/ui";
  * @param {CaptchaPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const Captcha = ({ onChange, recaptchaRef }) => {
+const Captcha = ({ onSuccess }) => {
+  const [open, setOpen] = useState(Boolean(onSuccess));
   const dispatch = useDispatch();
+  const recaptchaRef = useRef(null);
+
+  useEffect(() => {
+    if (onSuccess) {
+      setOpen(true);
+    }
+  }, [onSuccess]);
 
   const onExpiredReCAPTCHA = () => {
     dispatch(
       showErrorAlert("Your solution to the ReCAPTCHA has expired, please resolve it again."),
     );
-    onChange("");
   };
 
   const onErroredReCAPTCHA = () => {
@@ -37,7 +40,6 @@ const Captcha = ({ onChange, recaptchaRef }) => {
           "Something went wrong with the ReCAPTCHA, try to reload the page if you can't signup.",
         ),
       );
-      onChange("");
     }
   };
 
@@ -49,14 +51,36 @@ const Captcha = ({ onChange, recaptchaRef }) => {
     };
   }
 
+  /**
+   * @param {string} token Captcha
+   * @returns {void}
+   */
+  const onChange = (token) => {
+    setOpen(false);
+    onSuccess(token);
+  };
+
+  if (!open) {
+    return null;
+  }
+
   return (
-    <ReCAPTCHA
-      onChange={onChange}
-      onErrored={onErroredReCAPTCHA}
-      onExpired={onExpiredReCAPTCHA}
-      ref={recaptchaRef}
-      sitekey="6LdORtMUAAAAAGLmbf3TM8plIRorVCEc9pVChix8"
-    />
+    <Modal
+      open={true}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ReCAPTCHA
+        onChange={onChange}
+        onErrored={onErroredReCAPTCHA}
+        onExpired={onExpiredReCAPTCHA}
+        ref={recaptchaRef}
+        sitekey="6LdORtMUAAAAAGLmbf3TM8plIRorVCEc9pVChix8"
+      />
+    </Modal>
   );
 };
 

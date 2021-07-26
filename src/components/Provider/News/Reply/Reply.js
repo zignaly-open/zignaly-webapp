@@ -11,7 +11,7 @@ import { ConfirmDialog } from "../../../Dialogs";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
-import { showErrorAlert } from "../../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { CornerDownRight } from "react-feather";
 
@@ -35,12 +35,30 @@ import { CornerDownRight } from "react-feather";
  */
 const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const initConfirmConfig = {
+  const initConfirmDeleteConfig = {
     titleTranslationId: "wall.delete.reply",
     messageTranslationId: "wall.delete.reply.subtitle",
     visible: false,
   };
-  const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
+  const [confirmDeleteConfig, setConfirmDeleteConfig] = useState(initConfirmDeleteConfig);
+  const initConfirmReportConfig = {
+    titleTranslationId: "wall.report",
+    messageTranslationId: "wall.report.confirm",
+    visible: false,
+  };
+  const [confirmReportConfig, setConfirmReportConfig] = useState(initConfirmReportConfig);
+  const initConfirmBanUserConfig = {
+    titleTranslationId: "wall.ban",
+    messageTranslationId: "wall.ban.confirm",
+    visible: false,
+  };
+  const [confirmBanUserConfig, setConfirmBanUserConfig] = useState(initConfirmBanUserConfig);
+  const initConfirmUnbanUserConfig = {
+    titleTranslationId: "wall.unban",
+    messageTranslationId: "wall.unban.confirm",
+    visible: false,
+  };
+  const [confirmUnbanUserConfig, setConfirmUnbanUserConfig] = useState(initConfirmUnbanUserConfig);
   const userData = useStoreUserData();
   const storeSession = useStoreSessionSelector();
   const canEdit = reply.author.userId === userData.userId || userData.isAdmin;
@@ -81,12 +99,78 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       });
   };
 
+  const reportReply = () => {
+    const payload = {
+      postId: postId,
+      replyId: reply.id,
+      nested: isNested,
+      userId: reply.author.userId,
+    };
+
+    tradeApi
+      .wallReportUser(payload)
+      .then((result) => {
+        if (result) {
+          showSuccessAlert("", "wall.report.done");
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  const banUser = () => {
+    tradeApi
+      .wallBanUser(reply.author.userId)
+      .then((result) => {
+        if (result) {
+          showSuccessAlert("", "wall.ban.done");
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  const unbanUser = () => {
+    tradeApi
+      .wallUnbanUser(reply.author.userId)
+      .then((result) => {
+        if (result) {
+          showSuccessAlert("", "wall.unban.done");
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      });
+  };
+
+  const handleBanClick = () => {
+    const method = !userData.wall.banned ? setConfirmBanUserConfig : setConfirmUnbanUserConfig;
+    method((c) => ({ ...c, visible: true }));
+  };
+
   return (
     <Box className="reply">
       <ConfirmDialog
-        confirmConfig={confirmConfig}
+        confirmConfig={confirmDeleteConfig}
         executeActionCallback={deleteReply}
-        setConfirmConfig={setConfirmConfig}
+        setConfirmConfig={setConfirmDeleteConfig}
+      />
+      <ConfirmDialog
+        confirmConfig={confirmReportConfig}
+        executeActionCallback={reportReply}
+        setConfirmConfig={setConfirmReportConfig}
+      />
+      <ConfirmDialog
+        confirmConfig={confirmBanUserConfig}
+        executeActionCallback={banUser}
+        setConfirmConfig={setConfirmBanUserConfig}
+      />
+      <ConfirmDialog
+        confirmConfig={confirmUnbanUserConfig}
+        executeActionCallback={unbanUser}
+        setConfirmConfig={setConfirmUnbanUserConfig}
       />
       <Box alignItems="center" className="replyHeader" display="flex">
         <div className={reply.author.isFollowing ? "following" : ""}>
@@ -120,8 +204,13 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
               </MenuItem>
             )} */}
             {canEdit && (
-              <MenuItem onClick={() => setConfirmConfig((c) => ({ ...c, visible: true }))}>
+              <MenuItem onClick={() => setConfirmDeleteConfig((c) => ({ ...c, visible: true }))}>
                 <FormattedMessage id="srv.edit.delete" />
+              </MenuItem>
+            )}
+            {canEdit && (
+              <MenuItem onClick={() => setConfirmReportConfig((c) => ({ ...c, visible: true }))}>
+                <FormattedMessage id="wall.report" />
               </MenuItem>
             )}
           </Menu>
@@ -133,9 +222,14 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
           {/* <Typography className="action callout2">
             <FormattedMessage id="wall.like" />
           </Typography> */}
+          {userData.isAdmin && (
+            <Typography className="action callout2" onClick={handleBanClick}>
+              <FormattedMessage id={userData.wall.banned ? "wall.unban" : "wall.ban"} />
+            </Typography>
+          )}
           {showAddReply && (
             <>
-              {/* <span className="sep">·</span> */}
+              {userData.isAdmin && <span className="sep">·</span>}
               <Typography
                 className="action callout2"
                 onClick={() => {

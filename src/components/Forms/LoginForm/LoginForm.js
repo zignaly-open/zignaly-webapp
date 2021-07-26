@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./LoginForm.scss";
 import { Box, TextField } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -16,6 +16,7 @@ import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
+import Captcha from "../../Captcha";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -36,6 +37,7 @@ const LoginForm = () => {
     reValidateMode: "onChange",
   });
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
 
@@ -67,6 +69,7 @@ const LoginForm = () => {
    * @typedef {Object} LoginFormSubmission
    * @property {string} email
    * @property {string} password
+   * @property {string} [gRecaptchaResponse] Captcha token fallback
    */
 
   /**
@@ -77,18 +80,27 @@ const LoginForm = () => {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-    let gRecaptchaResponse = "";
-    if (!isCheckly && process.env.NODE_ENV === "production") {
+    let gRecaptchaResponse = data.gRecaptchaResponse || "";
+    let c = 2;
+    if (!isCheckly && process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
       gRecaptchaResponse = await executeRecaptcha("login");
+      c = 3;
     }
     tradeApi
-      .userLogin({ ...data, gRecaptchaResponse })
+      .userLogin({ ...data, gRecaptchaResponse, c })
       .then((response) => {
         setLoginResponse(response);
         check2FA(response);
+        captchaFallback.current = null;
       })
       .catch((e) => {
-        dispatch(showErrorAlert(e));
+        if (e.code === 76) {
+          // Use old captcha as fallback
+          captchaFallback.current = (/** @type {string} */ captcha) =>
+            onSubmit({ ...data, gRecaptchaResponse: captcha });
+        } else {
+          dispatch(showErrorAlert(e));
+        }
         setLoading(false);
       });
   };
@@ -158,6 +170,7 @@ const LoginForm = () => {
             />
             {errors.password && <span className="errorText">{errors.password.message}</span>}
           </Box>
+          <Captcha onSuccess={captchaFallback.current} />
           <Box className="inputBox">
             <CustomButton
               className={"full submitButton"}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Popover } from "@material-ui/core";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeList from "./ExchangeList";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
@@ -13,7 +13,7 @@ import DownIcon from "../../../../images/header/chevron-down.svg";
 
 const UserExchangeList = () => {
   const [anchorEl, setAnchorEl] = useState(undefined);
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
 
   return (
     <Box className="userExchangeList">
@@ -25,14 +25,14 @@ const UserExchangeList = () => {
         justifyContent="flex-start"
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
-        <ExchangeIcon exchange={storeSettings.selectedExchange.name.toLowerCase()} size="small" />
-        <span className="name"> {storeSettings.selectedExchange.internalName} </span>
-        {storeSettings.selectedExchange.paperTrading && (
+        <ExchangeIcon exchange={selectedExchange.name.toLowerCase()} size="small" />
+        <span className="name"> {selectedExchange.internalName} </span>
+        {selectedExchange.paperTrading && (
           <span className="name">
             (<FormattedMessage id="menu.demo" />){" "}
           </span>
         )}
-        {storeSettings.selectedExchange.isTestnet && (
+        {selectedExchange.isTestnet && (
           <span className="name">
             (<FormattedMessage id="menu.testnet" />){" "}
           </span>

@@ -15,7 +15,7 @@ import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
 import BrowsePage from "./browse";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
-import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  *
@@ -41,7 +41,7 @@ const ProfitSharing = (props) => {
   // On production the application is served through an /app directory, ID position is +1 level.
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
   const providerId = location.pathname.split("/")[idIndex];
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
 
   const loadProvider = () => {

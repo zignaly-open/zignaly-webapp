@@ -23,6 +23,7 @@ import {
 import TradingViewContext from "./TradingViewContext";
 import useTradingViewContext from "hooks/useTradingViewContext";
 import CustomButton from "components/CustomButton";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {any} TVWidget
@@ -62,6 +63,7 @@ const TradingViewEdit = (props) => {
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
@@ -153,7 +155,7 @@ const TradingViewEdit = (props) => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
       positionId,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
     tradeApi
@@ -203,7 +205,7 @@ const TradingViewEdit = (props) => {
     if (!selectedSymbol || tradingViewWidget) return;
 
     const options = {
-      exchange: storeSettings.selectedExchange,
+      exchange: selectedExchange,
       symbolsData: [selectedSymbol],
       tradeApiToken: storeSession.tradeApi.accessToken,
       symbol: positionEntity.tradeViewSymbol,
@@ -301,7 +303,7 @@ const TradingViewEdit = (props) => {
     setRecoverPositionLoading(true);
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
       positionId: positionId,
     };
 

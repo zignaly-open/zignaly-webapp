@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ForgotPasswordForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -15,10 +15,12 @@ const ForgotPasswordForm = () => {
   const { errors, handleSubmit, register } = useForm();
   const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const captchaFallback = useRef(null);
 
   /**
    * @typedef {Object} FormData
    * @property {string} email
+   * @property {string} [gRecaptchaResponse] Captcha token fallback
    */
 
   /**
@@ -29,14 +31,17 @@ const ForgotPasswordForm = () => {
    */
   const onSubmit = async (data) => {
     setLoading(true);
-    let gRecaptchaResponse = "";
-    if (process.env.NODE_ENV === "production") {
+    let gRecaptchaResponse = data.gRecaptchaResponse || "";
+    let c = 2;
+    if (process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
       gRecaptchaResponse = await executeRecaptcha("forgotPassword");
+      c = 3;
     }
     const payload = {
       email: data.email,
       array: true,
       gRecaptchaResponse,
+      c,
     };
     tradeApi
       .forgotPasswordStep1(payload)
@@ -46,7 +51,13 @@ const ForgotPasswordForm = () => {
         );
       })
       .catch((e) => {
-        dispatch(showErrorAlert(e));
+        if (e.code === 76) {
+          // Use old captcha as fallback
+          captchaFallback.current = (/** @type {string} */ captcha) =>
+            onSubmit({ ...data, gRecaptchaResponse: captcha });
+        } else {
+          dispatch(showErrorAlert(e));
+        }
       })
       .finally(() => {
         setLoading(false);

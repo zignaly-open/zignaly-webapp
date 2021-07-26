@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
-import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showBalanceLoader } from "../store/actions/ui";
 import useStoreUIBalanceLoader from "./useStoreUIBalanceLoader";
@@ -19,7 +19,7 @@ import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 const useUpdatedBalance = () => {
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
 
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeBalanceLoader = useStoreUIBalanceLoader();
   const dispatch = useDispatch();
 
@@ -28,12 +28,12 @@ const useUpdatedBalance = () => {
     loadData();
   };
 
-  useEffect(showLoader, [storeSettings.selectedExchange.internalId]);
+  useEffect(showLoader, [selectedExchange.internalId]);
 
   const loadData = () => {
-    if (storeSettings.selectedExchange.internalId) {
+    if (selectedExchange.internalId) {
       const payload = {
-        exchangeInternalId: storeSettings.selectedExchange.internalId,
+        exchangeInternalId: selectedExchange.internalId,
       };
 
       tradeApi

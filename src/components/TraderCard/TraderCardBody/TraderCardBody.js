@@ -21,6 +21,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import dayjs from "dayjs";
 import Modal from "../../Modal";
 import StopCopyingTraderForm from "components/Forms/StopCopyingTraderForm";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../../Graphs/GradientLineChart/GradientLineChart").ChartColorOptions} ChartColorOptions
@@ -98,7 +99,8 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     );
   };
 
-  const { darkStyle, selectedExchange } = useStoreSettingsSelector();
+  const { darkStyle } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
@@ -258,16 +260,27 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
             wrapper={(_children) => (
               <CustomToolip
                 title={
-                  <FormattedMessage
-                    id="srv.closedpos.tooltip"
-                    values={{
-                      closeCount: closedPositions,
-                      timeframe: timeFrame,
-                      returns: formatFloat2Dec(returns),
-                      openCount: openPositions,
-                      floating: formatFloat2Dec(floating),
-                    }}
-                  />
+                  <>
+                    {timeFrame !== 3650 ? (
+                      <FormattedMessage
+                        id="srv.closedpos.tooltip.1a"
+                        values={{
+                          timeframe: timeFrame,
+                        }}
+                      />
+                    ) : (
+                      <FormattedMessage id="srv.closedpos.tooltip.1b" />
+                    )}
+                    <FormattedMessage
+                      id="srv.closedpos.tooltip.2"
+                      values={{
+                        closeCount: closedPositions,
+                        returns: formatFloat2Dec(returns),
+                        openCount: openPositions,
+                        floating: formatFloat2Dec(floating),
+                      }}
+                    />
+                  </>
                 }
               >
                 {_children}

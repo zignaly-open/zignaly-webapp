@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import { Controller, useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @param {Object} props Props
@@ -13,7 +13,7 @@ import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
  */
 const PostOnlyControl = ({ name = "postOnly", disabled = false, exchange }) => {
   const { control } = useFormContext();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
 
   // Check that exchange works with Post Only.
   if (["vcce", "kucoin"].includes((exchange || selectedExchange.exchangeName).toLowerCase())) {

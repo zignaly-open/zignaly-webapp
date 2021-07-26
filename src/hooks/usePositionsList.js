@@ -14,6 +14,7 @@ import {
   uniqBy,
 } from "lodash";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import useStoreViewsSelector from "./useStoreViewsSelector";
@@ -76,7 +77,7 @@ const usePositionsList = (
 ) => {
   const typeRef = useRef(null);
   const storeSettings = useStoreSettingsSelector();
-  const { selectedExchange } = storeSettings;
+  const selectedExchange = useSelectedExchange();
   const storeViews = useStoreViewsSelector();
   const exchangeRef = useRef(selectedExchange.exchangeId);
   const dispatch = useDispatch();
@@ -176,16 +177,13 @@ const usePositionsList = (
   const routeFetchMethod = () => {
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
-    const providerPayload = {
-      token: storeSession.tradeApi.accessToken,
-      providerId: storeViews.provider.id,
-    };
+    const providerId = storeViews.provider.id;
 
     // Skip request if required parameters is empty.
-    if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerPayload.providerId)) {
+    if (!isEmpty(payload.internalExchangeId) || !isEmpty(providerId)) {
       if (positionEntity) {
         // On first load rely on position entity passed by parent to avoid extra request.
         return new Promise((resolve) => {
@@ -202,9 +200,9 @@ const usePositionsList = (
       } else if (type === "open") {
         return tradeApi.openPositionsGet(payload);
       } else if (type === "profileOpen") {
-        return tradeApi.providerOpenPositions(providerPayload);
+        return tradeApi.providerOpenPositions(providerId);
       } else if (type === "profileClosed") {
-        return tradeApi.providerSoldPositions(providerPayload);
+        return tradeApi.providerSoldPositions(providerId);
       }
     }
 
@@ -282,7 +280,7 @@ const usePositionsList = (
     let requestData = null;
     const payload = {
       token: storeSession.tradeApi.accessToken,
-      internalExchangeId: storeSettings.selectedExchange.internalId,
+      internalExchangeId: selectedExchange.internalId,
     };
 
     try {

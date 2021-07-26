@@ -32,13 +32,9 @@ const useAvailableBalance = (selectedExchange, shouldExecute = true) => {
       shouldExecute
     ) {
       setLoading(true);
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-        exchangeInternalId: selectedExchange.internalId,
-      };
 
       tradeApi
-        .userAvailableBalanceGet(payload)
+        .userAvailableBalanceGet(selectedExchange.internalId)
         .then((data) => {
           setBalance(data);
         })

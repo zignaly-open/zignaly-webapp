@@ -23,12 +23,8 @@ const useEquity = (internalId) => {
   const dispatch = useDispatch();
 
   const loadData = () => {
-    const payload = {
-      exchangeInternalId: internalId,
-    };
-
     tradeApi
-      .userEquityGet(payload)
+      .userEquityGet(internalId)
       .then((data) => {
         setEquity(data);
       })
