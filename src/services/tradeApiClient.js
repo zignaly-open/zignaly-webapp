@@ -373,7 +373,7 @@ class TradeApiClient {
       body: null,
       headers: {
         "Content-Type": "application/json",
-        "X-API-KEY": process.env.GATSBY_API_KEY || "",
+        // "X-API-KEY": process.env.GATSBY_API_KEY || "",
         ...(authToken && { Authorization: "Bearer " + authToken }),
       },
     };
@@ -605,14 +605,8 @@ class TradeApiClient {
    */
 
   async userBalanceGet(payload) {
-    const { exchangeInternalId, ...data } = payload;
-
-    const responseData = await this.doRequest(
-      `/user/exchanges/${exchangeInternalId}/balance`,
-      data,
-      "GET",
-      2,
-    );
+    const endpointPath = "/fe/api.php?action=getQuickExchangeSummary";
+    const responseData = await this.doRequest(endpointPath, { ...payload, token: this.token });
 
     return userBalanceResponseTransform(responseData);
   }
