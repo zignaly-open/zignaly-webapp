@@ -16,7 +16,7 @@ import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
-import Captcha from "../../Captcha";
+// import Captcha from "../../Captcha";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -94,13 +94,13 @@ const LoginForm = () => {
         captchaFallback.current = null;
       })
       .catch((e) => {
-        if (e.code === 76) {
-          // Use old captcha as fallback
-          captchaFallback.current = (/** @type {string} */ captcha) =>
-            onSubmit({ ...data, gRecaptchaResponse: captcha });
-        } else {
-          dispatch(showErrorAlert(e));
-        }
+        // if (e.code === 76) {
+        //   // Use old captcha as fallback
+        //   captchaFallback.current = (/** @type {string} */ captcha) =>
+        //     onSubmit({ ...data, gRecaptchaResponse: captcha });
+        // } else {
+        dispatch(showErrorAlert(e));
+        // }
         setLoading(false);
       });
   };
@@ -170,7 +170,7 @@ const LoginForm = () => {
             />
             {errors.password && <span className="errorText">{errors.password.message}</span>}
           </Box>
-          <Captcha onSuccess={captchaFallback.current} />
+          {/* <Captcha onSuccess={captchaFallback.current} /> */}
           <Box className="inputBox">
             <CustomButton
               className={"full submitButton"}
