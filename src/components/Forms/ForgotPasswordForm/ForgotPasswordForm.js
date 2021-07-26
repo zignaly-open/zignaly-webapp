@@ -51,13 +51,13 @@ const ForgotPasswordForm = () => {
         );
       })
       .catch((e) => {
-        if (e.code === 76) {
-          // Use old captcha as fallback
-          captchaFallback.current = (/** @type {string} */ captcha) =>
-            onSubmit({ ...data, gRecaptchaResponse: captcha });
-        } else {
-          dispatch(showErrorAlert(e));
-        }
+        // if (e.code === 76) {
+        //   // Use old captcha as fallback
+        //   captchaFallback.current = (/** @type {string} */ captcha) =>
+        //     onSubmit({ ...data, gRecaptchaResponse: captcha });
+        // } else {
+        dispatch(showErrorAlert(e));
+        // }
       })
       .finally(() => {
         setLoading(false);

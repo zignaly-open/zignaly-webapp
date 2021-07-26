@@ -12,7 +12,7 @@ import { emailRegex } from "utils/validators";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
-import Captcha from "../../Captcha";
+// import Captcha from "../../Captcha";
 import { showErrorAlert } from "store/actions/ui";
 import tradeApi from "services/tradeApiClient";
 import { startTradeApiSession } from "store/actions/session";
@@ -82,13 +82,13 @@ const SignupForm = () => {
         captchaFallback.current = null;
       })
       .catch((e) => {
-        if (e.code === 76) {
-          // Use old captcha as fallback
-          captchaFallback.current = (/** @type {string} */ captcha) =>
-            onSubmit({ ...data, gRecaptchaResponse: captcha });
-        } else {
-          dispatch(showErrorAlert(e));
-        }
+        // if (e.code === 76) {
+        //   // Use old captcha as fallback
+        //   captchaFallback.current = (/** @type {string} */ captcha) =>
+        //     onSubmit({ ...data, gRecaptchaResponse: captcha });
+        // } else {
+        dispatch(showErrorAlert(e));
+        // }
         setLoading(false);
       });
   };
@@ -96,7 +96,7 @@ const SignupForm = () => {
   return (
     <>
       <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Captcha onSuccess={captchaFallback.current} />
+        {/* <Captcha onSuccess={captchaFallback.current} /> */}
         <Box
           alignItems="center"
           className="signupForm"
