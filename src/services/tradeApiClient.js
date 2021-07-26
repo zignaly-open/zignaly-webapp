@@ -816,9 +816,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async baseAssetsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getBaseAssets";
-    const responseData = await this.doRequest(endpointPath, payload);
-
+    const responseData = await this.doRequest("/base_assets", payload, "GET", 2);
     return basesResponseTransform(responseData);
   }
 
@@ -1001,21 +999,24 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async exchangeAdd(payload) {
-    const endpointPath = "/fe/api.php?action=addExchange";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/user/exchanges", payload, "POST", 2);
     return responseData;
   }
 
   /**
    * Delete an exchange.
    *
-   * @param {ExchangeDeletePayload} payload Payload
+   * @param {string} exchangeInternalId exchangeInternalId
    * @returns {Promise<boolean>} Result
    * @memberof TradeApiClient
    */
-  async exchangeDelete(payload) {
-    const endpointPath = "/fe/api.php?action=delNewExchange";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async exchangeDelete(exchangeInternalId) {
+    const responseData = await this.doRequest(
+      `/user/exchanges/${exchangeInternalId}`,
+      null,
+      "DELETE",
+      2,
+    );
     return responseData;
   }
 
@@ -1233,8 +1234,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerBalanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getBalanceForService";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, ...data } = payload;
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/balance`,
+      data,
+      "GET",
+      2,
+    );
 
     return providerBalanceResponseTransform(responseData);
   }
@@ -1292,8 +1298,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async withdraw(payload) {
-    const endpointPath = "/fe/api.php?action=exchangeWithdraw";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalId, ...data } = payload;
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalId}/withdraw`,
+      data,
+      "POST",
+      2,
+    );
 
     return withdrawResponseTransform(responseData);
   }
@@ -1339,8 +1350,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async convert(payload) {
-    const endpointPath = "/fe/api.php?action=exchangeDustTransfer";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalId, ...data } = payload;
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalId}/dust_transfer`,
+      data,
+      "POST",
+      2,
+    );
 
     return convertAssetResponseTransform(responseData);
   }
