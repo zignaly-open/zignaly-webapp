@@ -125,11 +125,12 @@ const ResetPasswordForm = ({ code, setExpired }) => {
           navigate("/login");
         })
         .catch((e) => {
-          if (e.code === 76) {
-            // Use old captcha as fallback
-            captchaFallback.current = (/** @type {string} */ captcha) =>
-              onSubmit({ ...data, gRecaptchaResponse: captcha });
-          } else if (e.code === 48) {
+          // if (e.code === 76) {
+          //   // Use old captcha as fallback
+          //   captchaFallback.current = (/** @type {string} */ captcha) =>
+          //     onSubmit({ ...data, gRecaptchaResponse: captcha });
+          // } else
+          if (e.code === 48) {
             setExpired(false);
           } else {
             dispatch(showErrorAlert(e));
