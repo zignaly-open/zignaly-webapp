@@ -44,11 +44,12 @@ const ReduceStrategyPanel = (props) => {
   const expandClass = expand ? "expanded" : "collapsed";
   const { control, errors, watch, getValues, setValue, reset } = useFormContext();
   const { formatMessage } = useIntl();
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { getEntryPrice } = usePositionEntry(positionEntity);
   const [reduceTargetPrice, setReduceTargetPrice] = useState("");
   const [reduceTargetUnits, setReduceTargetUnits] = useState("");
   const { validPercentage } = useValidation();
   const { updatedAt } = useContext(TradingViewContext);
+  const amount = positionEntity.remainAmount;
 
   /**
    * Handle toggle switch action.
@@ -83,13 +84,12 @@ const ReduceStrategyPanel = (props) => {
   const reduceAvailablePercentageChange = useCallback(() => {
     if (errors.reduceAvailablePercentage) return;
 
-    const units = getEntrySize();
     const draftPosition = getValues();
     const reduceAvailablePercentage = parseFloat(draftPosition.reduceAvailablePercentage);
 
-    const targetUnits = (reduceAvailablePercentage / 100) * units;
+    const targetUnits = (reduceAvailablePercentage / 100) * amount;
     setReduceTargetUnits(targetUnits.toString());
-  }, [errors, getEntrySize, getValues]);
+  }, [errors, amount, getValues]);
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
