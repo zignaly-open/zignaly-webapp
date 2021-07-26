@@ -1121,7 +1121,7 @@ export function userEntityResponseTransform(response) {
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
     locale: response.locale,
-    wall: response.wall,
+    wall: response.wall || {},
   };
 }
 
