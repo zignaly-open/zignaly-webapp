@@ -7,7 +7,7 @@ import Analytics from "./providerAnalytics";
 import Users from "./users";
 import News from "./news";
 import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { useDispatch } from "react-redux";
 import { getProvider, unsetProvider } from "../../store/actions/views";
@@ -45,7 +45,7 @@ import useExchangeQuotes from "hooks/useExchangeQuotes";
 const SignalProviders = (props) => {
   const { location } = props;
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const { provider } = useStoreViewsSelector();
   // On production the application is served through an /app directory, ID position is +1 level.
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;

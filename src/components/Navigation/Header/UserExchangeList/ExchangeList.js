@@ -5,8 +5,7 @@ import { setSelectedExchange } from "../../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { getDailyUserBalance } from "../../../../store/actions/user";
 
 /**
@@ -27,8 +26,7 @@ import { getDailyUserBalance } from "../../../../store/actions/user";
 
 const ExchangeList = (props) => {
   const { onClose } = props;
-  const storeSettings = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
+  const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const dispatch = useDispatch();
 
@@ -40,12 +38,8 @@ const ExchangeList = (props) => {
    * @returns {Void} No return.
    */
   const handleClick = (item) => {
-    dispatch(setSelectedExchange(item));
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      exchangeInternalId: item.internalId,
-    };
-    dispatch(getDailyUserBalance(payload));
+    dispatch(setSelectedExchange(item.internalId));
+    dispatch(getDailyUserBalance(item.internalId));
     if (onClose) {
       onClose();
     }
@@ -58,7 +52,7 @@ const ExchangeList = (props) => {
           <MenuItem
             className={
               "exchangeListItem " +
-              (storeSettings.selectedExchange.internalId === item.internalId ? "selected" : "")
+              (selectedExchange.internalId === item.internalId ? "selected" : "")
             }
             key={index}
             onClick={() => handleClick(item)}

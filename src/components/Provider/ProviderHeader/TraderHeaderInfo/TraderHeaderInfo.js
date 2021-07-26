@@ -9,9 +9,9 @@ import { formatFloat } from "../../../../utils/format";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "../TraderHeaderActions/TrialPeriod";
 import BaseCurrency from "../BaseCurrency";
-import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import SuccessBox from "../CopyTraderButton/SuccessBox";
-import ConnectTraderForm from "../../../Forms/ConnectTraderForm ";
+import ConnectTraderForm from "../../../Forms/ConnectTraderForm";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} DefaultProviderGetObject
@@ -26,7 +26,7 @@ import ConnectTraderForm from "../../../Forms/ConnectTraderForm ";
  * @returns {JSX.Element} JSX Element JSX.
  */
 const TraderHeaderInfo = ({ provider }) => {
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const [copyModal, showCopyModal] = useState(false);
   const [copySuccessModal, showCopySuccessModal] = useState(false);
   const sameSelectedExchange = provider.exchangeInternalId === selectedExchange.internalId;

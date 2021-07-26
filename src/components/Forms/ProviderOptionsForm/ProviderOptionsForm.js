@@ -11,6 +11,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -29,6 +30,7 @@ const ProviderOptionsForm = ({ provider }) => {
   const { watch, handleSubmit, control, errors } = formMethods;
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const storeSession = useStoreSessionSelector();
   const entryDCA = watch("reBuysFromSignal", provider.reBuysFromSignal);
   const takeProfit = watch("takeProfitsFromSignal", provider.takeProfitsFromSignal);
@@ -100,7 +102,7 @@ const ProviderOptionsForm = ({ provider }) => {
           connected: true,
           providerId: provider.id,
           token: storeSession.tradeApi.accessToken,
-          exchangeInternalId: storeSettings.selectedExchange.internalId,
+          exchangeInternalId: selectedExchange.internalId,
         };
         tradeApi
           .providerConnect(payload)
@@ -110,7 +112,7 @@ const ProviderOptionsForm = ({ provider }) => {
                 token: storeSession.tradeApi.accessToken,
                 providerId: provider.id,
                 version: 2,
-                exchangeInternalId: storeSettings.selectedExchange.internalId,
+                exchangeInternalId: selectedExchange.internalId,
               };
 
               dispatch(getProvider(payload2, true));

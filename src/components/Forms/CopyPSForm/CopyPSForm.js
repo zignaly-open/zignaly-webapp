@@ -13,7 +13,7 @@ import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
-import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert } from "../../../store/actions/ui";
@@ -38,7 +38,7 @@ import NumberInput from "../NumberInput";
  */
 const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const [loading, setLoading] = useState(false);
   const [profitsMode, setProfitsMode] = useState(provider.profitsMode || "reinvest");
   const {
@@ -148,7 +148,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   };
 
   let terms = ["ack2", "ack3"];
-  if (selectedExchange.exchangeType === "futures") {
+  if (provider.exchangeType === "futures") {
     // Add terms for futures PS
     terms.unshift("ack1");
   }

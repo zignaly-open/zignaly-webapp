@@ -10,6 +10,7 @@ import { setTerminalProvider, setTerminalPair } from "../../../store/actions/set
 import { useDispatch } from "react-redux";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "./TradingViewContext";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
@@ -37,7 +38,7 @@ const TradingViewHeader = (props) => {
   const { providerService, setProviderService } = useContext(TradingViewContext);
   const providerId = watch("providerService");
   const [symbolsOptions, setSymbolsOptions] = useState(null);
-  const selectedExchange = storeSettings.selectedExchange;
+  const selectedExchange = useSelectedExchange();
 
   const providerOptions = ownCopyTraderProviders.map((provider) => {
     return {
@@ -107,7 +108,7 @@ const TradingViewHeader = (props) => {
   const saveSelectedSymbol = () => {
     dispatch(
       setTerminalPair({
-        exchangeId: storeSettings.selectedExchange.exchangeId,
+        exchangeId: selectedExchange.exchangeId,
         pair: selectedSymbol,
       }),
     );

@@ -47,7 +47,7 @@
     "gatsby": "^3.8.1",
     "gatsby-plugin-google-tagmanager": "^3.8.0",
     "gatsby-plugin-layout": "^2.8.0",
-    "gatsby-plugin-manifest": "^3.8.0",
+    "gatsby-plugin-manifest": "^3.9.0",
     "gatsby-plugin-material-ui": "^3.0.1",
     "gatsby-plugin-react-helmet": "^4.8.0",
     "lodash": "^4.17.21",

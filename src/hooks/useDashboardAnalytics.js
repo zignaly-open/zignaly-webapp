@@ -10,6 +10,7 @@ import useFilters from "./useFilters";
 import { toNumber } from "lodash";
 import useStoreSessionSelector from "./useStoreSessionSelector";
 import useExchangeQuotes from "./useExchangeQuotes";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -43,6 +44,7 @@ import useExchangeQuotes from "./useExchangeQuotes";
 const useDashboardAnalytics = (providerId) => {
   const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const [stats, setStats] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -51,14 +53,14 @@ const useDashboardAnalytics = (providerId) => {
   const timeFrames = useDashboardAnalyticsTimeframeOptions();
 
   const { quoteAssets } = useExchangeQuotes({
-    exchangeId: storeSettings.selectedExchange.exchangeId,
-    exchangeType: storeSettings.selectedExchange.exchangeType,
+    exchangeId: selectedExchange.exchangeId,
+    exchangeType: selectedExchange.exchangeType,
   });
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
 
   const { providers, providersLoading } = useConnectedProvidersList(
-    storeSettings.selectedExchange.internalId,
+    selectedExchange.internalId,
     ["copyTrading", "profitSharing", "signalProvider"],
     false,
   );
@@ -138,7 +140,7 @@ const useDashboardAnalytics = (providerId) => {
         timeFrameFormat: timeFrmaeFormatList.includes(filters.timeFrame)
           ? filters.timeFrame
           : "lastXDays",
-        internalExchangeId: storeSettings.selectedExchange.internalId,
+        internalExchangeId: selectedExchange.internalId,
       };
       tradeApi
         .profitStatsGet(payload)
@@ -159,7 +161,7 @@ const useDashboardAnalytics = (providerId) => {
     filters.provider.val,
     filters.quote,
     filters.timeFrame,
-    storeSettings.selectedExchange.internalId,
+    selectedExchange.internalId,
     storeSession.tradeApi.accessToken,
     providersLoading,
   ]);

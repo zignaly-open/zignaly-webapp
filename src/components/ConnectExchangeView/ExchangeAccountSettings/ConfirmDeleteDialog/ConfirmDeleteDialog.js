@@ -16,7 +16,6 @@ import { useDispatch } from "react-redux";
 import { getUserData, removeUserExchange } from "../../../../store/actions/user";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import CustomButton from "../../../CustomButton";
-import initialState from "../../../../store/initialState";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
@@ -56,15 +55,13 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
       .exchangeDelete(payload)
       .then(() => {
         dispatch(removeUserExchange(selectedAccount.internalId));
-        if (storeSettings.selectedExchange.internalId === selectedAccount.internalId) {
+        if (storeSettings.selectedExchangeId === selectedAccount.internalId) {
           // Current selected exchange has been deleted so reset to first one
           const newSelectedExchange = storeExchanegeConnections.find(
             (e) => e.internalId !== selectedAccount.internalId,
           );
           dispatch(
-            setSelectedExchange(
-              newSelectedExchange ? newSelectedExchange : initialState.settings.selectedExchange,
-            ),
+            setSelectedExchange(newSelectedExchange ? newSelectedExchange.internalId : null),
           );
         }
         setPathParams({

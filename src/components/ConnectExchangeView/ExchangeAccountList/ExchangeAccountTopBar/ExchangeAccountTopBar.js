@@ -3,7 +3,7 @@ import { Box, useMediaQuery, Typography, Tooltip } from "@material-ui/core";
 import "./ExchangeAccountTopBar.scss";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeIcon from "../../../ExchangeIcon";
 import CustomButton from "../../../CustomButton";
 import { useTheme } from "@material-ui/core/styles";
@@ -29,13 +29,13 @@ import { useStoreUserData } from "hooks/useStoreUserSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountTopBar = ({ account }) => {
-  const storeSettings = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const { navigateToPath } = useContext(ModalPathContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { exchanges } = useStoreUserData();
 
-  const selectedExchangeInternalId = storeSettings.selectedExchange.internalId;
+  const selectedExchangeInternalId = selectedExchange.internalId;
   const showConvertButton = account.exchangeType.toLowerCase() === "spot";
   const brokenAccounts = exchanges.filter((item) => item.isBrokerAccount);
 

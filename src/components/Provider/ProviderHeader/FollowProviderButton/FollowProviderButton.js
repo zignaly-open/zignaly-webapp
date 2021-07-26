@@ -8,7 +8,7 @@ import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
-import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 // import { userPilotProviderEnabled } from "../../../../utils/userPilotApi";
@@ -27,7 +27,7 @@ import ConnectExchange from "../../../Modal/ConnectExchange";
  */
 const FollowProviderButton = ({ provider }) => {
   const storeSession = useStoreSessionSelector();
-  const { selectedExchange } = useStoreSettingsSelector();
+  const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [connectModal, showConnectModal] = useState(false);
   const dispatch = useDispatch();
