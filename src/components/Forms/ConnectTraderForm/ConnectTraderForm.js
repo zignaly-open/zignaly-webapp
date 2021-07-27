@@ -29,15 +29,56 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
   const storeUserExchangeConnections = useStoreUserExchangeConnections();
 
   /**
+   * @returns {String} Exchange name to display in the error.
+   */
+  const prepareExchangeName = () => {
+    let name = "";
+    for (let i = 0; i < provider.exchanges.length; i++) {
+      if (provider.exchanges[i + 1]) {
+        name += `${provider.exchanges[i]}/`;
+      } else {
+        name += `${provider.exchanges[i]}`;
+      }
+    }
+    return name;
+  };
+
+  /**
    * Check if selected exchange is compatible with service.
    * @returns {string} Error message
    */
   const checkWrongExchange = () => {
     if (storeUserExchangeConnections.length > 0) {
       if (provider.profitSharing && selectedExchange.paperTrading) {
+        // Demo account
         return intl.formatMessage({ id: "copyt.copy.error4" });
       }
+      if (provider.exchanges.length) {
+        const correctExchange = provider.exchanges.includes(selectedExchange.name.toLowerCase());
+        const correctType =
+          provider.exchangeType.toLowerCase() === selectedExchange.exchangeType.toLowerCase();
+
+        if (!correctExchange && provider.profitSharing) {
+          // PS need a zignaly account
+          return intl.formatMessage(
+            { id: "copyt.copy.error1" },
+            {
+              required: "Zignaly",
+            },
+          );
+        } else if (!correctExchange || (!correctType && !provider.profitSharing)) {
+          // CT or SP: Wrong exchange or type
+          let exchangeName = prepareExchangeName();
+          return intl.formatMessage(
+            { id: "copyt.copy.error1" },
+            {
+              required: `${exchangeName.toUpperCase()} ${provider.exchangeType.toUpperCase()}`,
+            },
+          );
+        }
+      }
     } else {
+      // No account
       return intl.formatMessage({ id: "copyt.copy.error2" });
     }
     return "";
