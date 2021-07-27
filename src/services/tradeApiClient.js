@@ -1177,8 +1177,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerPerformanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderPerformance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/performance`,
+      null,
+      "GET",
+      2,
+    );
 
     return providerPerformanceResponseTransform(responseData);
   }

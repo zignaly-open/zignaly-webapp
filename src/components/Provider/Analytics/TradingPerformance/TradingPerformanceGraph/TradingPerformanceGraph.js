@@ -1,7 +1,7 @@
 import React from "react";
 import "./TradingPerformanceGraph.scss";
 import BarChart from "../../../../Graphs/BarChart";
-import { formatPrice } from "../../../../../utils/formatters";
+import { formatNumber } from "utils/formatters";
 import { Box, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 
@@ -16,7 +16,6 @@ import { useTheme } from "@material-ui/core/styles";
  * @typedef {Object} DefaultQuarter
  * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} total
- * @property {Number} id
  */
 
 /**
@@ -69,7 +68,7 @@ const PerformanceGraph = ({ quarter, unit = "%" }) => {
    * @returns {string} Tooltip text.
    */
   const tooltipFormat = (tooltipItems /* data */) =>
-    `${formatPrice(tooltipItems[isMobile ? "xLabel" : "yLabel"])}${unit}`;
+    `${formatNumber(tooltipItems[isMobile ? "xLabel" : "yLabel"], 2)}${unit}`;
 
   return (
     <Box className="tradingPerformanceGraph">

@@ -36,7 +36,6 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
     {
       weeklyStats: [],
       total: 0,
-      id: 0,
       label: "",
     },
   );
@@ -96,7 +95,9 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
         positions: data ? data.positions : 0,
       };
 
-      if (lastQuarter && lastQuarter.id === currentQuarterId) {
+      const quarterLabel = `'${weekDate.year().toString().slice(2)} Q${currentQuarterId}`;
+
+      if (lastQuarter && lastQuarter.label === quarterLabel) {
         // Add weekly stats to current quarter
         lastQuarter.weeklyStats.push(weekStats);
         lastQuarter.total += weekStats.return;
@@ -105,8 +106,7 @@ const TradingPerformance = ({ performance, unit = "%" }) => {
         _quarters.push({
           weeklyStats: [weekStats],
           total: returns,
-          id: currentQuarterId,
-          label: `'${weekDate.year().toString().slice(2)} Q${currentQuarterId}`,
+          label: quarterLabel,
         });
       }
     });

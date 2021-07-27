@@ -16,7 +16,6 @@ dayjs.extend(isSameOrBefore);
  * @typedef {Object} DefaultQuarter
  * @property {Array<DefaultProviderPerformanceWeeklyStats>} weeklyStats
  * @property {Number} total
- * @property {Number} id
  * @property {String} label
  */
 
@@ -38,18 +37,6 @@ dayjs.extend(isSameOrBefore);
 
 const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
   const decimalPlaces = unit === "BTC" ? 8 : 2;
-  /**
-   * Function to select a quarter.
-   *
-   * @param {Number} id id of the quarter on which user clicks.
-   * @returns {void} None.
-   */
-  const handleChange = (id) => {
-    let found = list.find((item) => item.id === id);
-    if (found) {
-      onChange(found);
-    }
-  };
 
   return (
     <Box
@@ -85,12 +72,12 @@ const WeeklyData = ({ list, selected, onChange, unit = "%" }) => {
         {list.map((item, index) => (
           <Box
             alignItems="center"
-            className={"quarterBox " + (selected.id === item.id ? "selected" : "")}
+            className={"quarterBox " + (selected === item ? "selected" : "")}
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
             key={index}
-            onClick={() => handleChange(item.id)}
+            onClick={() => onChange(item)}
           >
             <Typography className="quaterLabel" variant="h3">
               {item.label}
