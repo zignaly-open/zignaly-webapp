@@ -29,8 +29,8 @@ jobs:
         run: echo "skipping tests"
       - name: Build
         run: npm run build:test
-      - name: Integration Tests
-        run: STAGE=test npm run cy:ci
+      # - name: Integration Tests
+      #   run: STAGE=test npm run cy:ci
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
