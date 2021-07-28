@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import Table from "../../../../Table";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
@@ -27,12 +26,10 @@ import "./WithdrawHistoryTable.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
-  const storeSession = useStoreSessionSelector();
   const [withdraws, setWithdraws] = useState(null);
   const dispatch = useDispatch();
   const loadData = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalId,
     };
 
@@ -46,7 +43,7 @@ const WithdrawHistoryTable = ({ internalId, updatedAt }) => {
       });
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken, updatedAt]);
+  useEffect(loadData, [internalId, updatedAt]);
 
   /**
    * @type {Array<MUIDataTableColumn>} Table columns

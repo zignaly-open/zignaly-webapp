@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import { Box, Typography, Switch } from "@material-ui/core";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import "./AutoclosePanel.scss";
@@ -13,7 +14,7 @@ import "./AutoclosePanel.scss";
  */
 const AutoclosePanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
-  const { clearErrors, errors, register } = useFormContext();
+  const { clearErrors, errors } = useFormContext();
   const { formatMessage } = useIntl();
 
   /**
@@ -62,13 +63,12 @@ const AutoclosePanel = () => {
               labelId="terminal.timeautoclose"
             />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register({
+              <CustomNumberInput
+                name="autoclose"
+                rules={{
                   validate: (value) =>
                     value > 0 || formatMessage({ id: "terminal.autoclose.limit.zero" }),
-                })}
-                name="autoclose"
+                }}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.hours" />

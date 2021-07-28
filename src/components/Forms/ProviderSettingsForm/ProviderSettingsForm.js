@@ -12,7 +12,6 @@ import ToggleSelectInput from "./SelectInput";
 import ToggleTargetFields from "./ToggleTargetFields";
 import { creatEmptySettingsEntity } from "../../../services/tradeApiClient.types";
 import { assign } from "lodash";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
@@ -41,7 +40,6 @@ import ToggleRadioInput from "./ToggleRadioInput";
  */
 
 const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
-  const storeSession = useStoreSessionSelector();
   const storeViews = useStoreViewsSelector();
   const selectedExchange = useSelectedExchange();
   const [loading, setLoading] = useState(false);
@@ -114,7 +112,6 @@ const ProviderSettingsForm = ({ settings, quotes, onUpdate }) => {
     const payload = assign(emptySettings, data, {
       takeProfitTargets: prepareProfitTargetsPayload(),
       reBuyTargets: prepareBuyTargetsPayload(),
-      token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       internalExchangeId: selectedExchange.internalId,
       exchangeId: selectedExchange.id,

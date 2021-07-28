@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -21,22 +20,17 @@ const useExchangeList = (shouldExecute = true) => {
   const [loading, setLoading] = useState(false);
   const [exchanges, setExchanges] = useState([]);
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
   const { exchangeList, setExchangeList } = useContext(PrivateAreaContext);
 
   const loadData = () => {
-    if (storeSession.tradeApi.accessToken && shouldExecute) {
+    if (shouldExecute) {
       if (exchangeList && exchangeList.length) {
         setExchanges(exchangeList);
         return;
       }
       setLoading(true);
-      const payload = {
-        token: storeSession.tradeApi.accessToken,
-      };
-
       tradeApi
-        .exchangeListGet(payload)
+        .exchangeListGet()
         .then((data) => {
           const zignalyIndex = data.findIndex((e) => e.name.toLowerCase() === "zignaly");
           if (zignalyIndex) {
@@ -56,7 +50,7 @@ const useExchangeList = (shouldExecute = true) => {
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, shouldExecute]);
+  useEffect(loadData, [shouldExecute]);
 
   return {
     exchanges: exchanges,

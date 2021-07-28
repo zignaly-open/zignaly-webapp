@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../../Table";
 import { Box, CircularProgress } from "@material-ui/core";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../../services/tradeApiClient";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";
@@ -26,12 +25,10 @@ import "./DepositHistoryTable.scss";
  * @returns {JSX.Element} Component JSX.
  */
 const DepositHistoryTable = ({ internalId }) => {
-  const storeSession = useStoreSessionSelector();
   const [deposits, setDeposits] = useState(null);
   const dispatch = useDispatch();
   const loadData = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalId,
     };
 
@@ -45,7 +42,7 @@ const DepositHistoryTable = ({ internalId }) => {
       });
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [internalId]);
 
   /**
    * @type {Array<MUIDataTableColumn>} Table columns

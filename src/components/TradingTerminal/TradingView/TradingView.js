@@ -52,7 +52,6 @@ const TradingView = () => {
 
   const getMarketData = async () => {
     const marketDataPayload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedExchange.internalId,
     };
 

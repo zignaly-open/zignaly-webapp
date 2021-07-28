@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import { Box, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
@@ -11,6 +11,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import PricePercentageControl from "../Controls/PricePercentageControl";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -40,7 +41,6 @@ const TrailingStopPanel = (props) => {
     clearErrors,
     errors,
     getValues,
-    register,
     trigger,
     setValue,
     watch,
@@ -231,15 +231,14 @@ const TrailingStopPanel = (props) => {
           <Box>
             <HelperLabel descriptionId="terminal.distance.help" labelId="terminal.distance" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
+              <CustomNumberInput
+                allowNegative={true}
                 disabled={fieldsDisabled.trailingStopDistance}
-                error={!!errors.trailingStopDistance}
-                inputRef={register({
+                name="trailingStopDistance"
+                rules={{
                   validate: (value) =>
                     lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
-                })}
-                name="trailingStopDistance"
+                }}
               />
               <div className="currencyBox">%</div>
             </Box>

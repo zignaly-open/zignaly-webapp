@@ -44,15 +44,10 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
 
   const deleteExchange = () => {
     setLoading(true);
-    const payload = {
-      token: storeSession.tradeApi.accessToken,
-      internalId: selectedAccount.internalId,
-    };
-
     setPathParams((state) => ({ ...state, isLoading: true }));
 
     tradeApi
-      .exchangeDelete(payload)
+      .exchangeDelete(selectedAccount.internalId)
       .then(() => {
         dispatch(removeUserExchange(selectedAccount.internalId));
         if (storeSettings.selectedExchangeId === selectedAccount.internalId) {

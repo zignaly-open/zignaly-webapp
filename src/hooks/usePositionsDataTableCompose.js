@@ -994,7 +994,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
         renderFunction: renderStopLossPrice,
       },
       {
-        columnId: "col.initialamount",
+        columnId: "col.entryamount",
         propertyName: "amount",
         renderFunction: renderAmount,
       },
