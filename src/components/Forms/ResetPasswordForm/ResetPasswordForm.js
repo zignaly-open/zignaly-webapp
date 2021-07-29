@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "gatsby";
 import { FormattedMessage } from "react-intl";
-// import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 /**
  * @typedef {Object} PositionPageProps
@@ -44,7 +44,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
-  const captchaFallback = useRef(null);
+  // const captchaFallback = useRef(null);
 
   /**
    * Main password change state handling.

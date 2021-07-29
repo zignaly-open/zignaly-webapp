@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ForgotPasswordForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
