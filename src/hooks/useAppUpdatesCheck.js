@@ -88,7 +88,7 @@ const useAppUpdatesCheck = (enableInterval = true) => {
         return true;
       }
     } catch (e) {
-      showErrorAlert(e);
+      // Not supported for cypress
     }
 
     return false;
