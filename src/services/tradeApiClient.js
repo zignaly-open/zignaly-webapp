@@ -536,13 +536,18 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providersGet(payload) {
-    const responseData = await this.doRequest("/user/providers", {
-      payload,
-      version:
-        payload.provType.includes("copytraders") || payload.provType.includes("profitsharing")
-          ? 3
-          : 2,
-    });
+    const responseData = await this.doRequest(
+      "/user/providers",
+      {
+        ...payload,
+        version:
+          payload.provType.includes("copytraders") || payload.provType.includes("profitsharing")
+            ? 3
+            : 2,
+      },
+      "GET",
+      2,
+    );
 
     return providersResponseTransform(responseData);
   }
