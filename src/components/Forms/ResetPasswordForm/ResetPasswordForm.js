@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
 import { navigate } from "gatsby";
 import { FormattedMessage } from "react-intl";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+// import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 /**
  * @typedef {Object} PositionPageProps

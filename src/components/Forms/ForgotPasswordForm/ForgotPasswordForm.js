@@ -15,7 +15,7 @@ const ForgotPasswordForm = () => {
   const { errors, handleSubmit, register } = useForm();
   const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const captchaFallback = useRef(null);
+  // const captchaFallback = useRef(null);
 
   /**
    * @typedef {Object} FormData
