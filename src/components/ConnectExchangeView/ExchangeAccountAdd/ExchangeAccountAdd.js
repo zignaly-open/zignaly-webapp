@@ -12,8 +12,6 @@ import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { getUserData } from "../../../store/actions/user";
-// import { userPilotExchangeConnected } from "../../../utils/userPilotApi";
-// import { mixpanelExchangeConnected } from "utils/mixpanelApi";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
