@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ResetPasswordForm.scss";
 import {
   Box,
@@ -44,7 +44,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
   const dispatch = useDispatch();
-  const captchaFallback = useRef(null);
+  // const captchaFallback = useRef(null);
 
   /**
    * Main password change state handling.

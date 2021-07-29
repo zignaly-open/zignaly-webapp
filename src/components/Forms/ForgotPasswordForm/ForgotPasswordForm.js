@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./ForgotPasswordForm.scss";
 import { Box, TextField, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -15,7 +15,7 @@ const ForgotPasswordForm = () => {
   const { errors, handleSubmit, register } = useForm();
   const dispatch = useDispatch();
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const captchaFallback = useRef(null);
+  // const captchaFallback = useRef(null);
 
   /**
    * @typedef {Object} FormData
