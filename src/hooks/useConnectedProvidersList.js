@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -24,10 +23,9 @@ const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecut
   const [providersLoading, setProvidersLoading] = useState(true);
   const [list, setList] = useState(null);
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
 
   const loadData = () => {
-    if (shouldExecute && storeSession.tradeApi.accessToken) {
+    if (shouldExecute) {
       setProvidersLoading(true);
       const payload = {
         ...(internalId && { internalExchangeId: internalId }),
@@ -59,7 +57,7 @@ const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecut
     setList(providerAssets);
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, internalId, shouldExecute]);
+  useEffect(loadData, [internalId, shouldExecute]);
 
   return { providers: list, providersLoading: providersLoading };
 };
