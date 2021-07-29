@@ -103,7 +103,7 @@ export const initExternalWidgets = (userData, eventType) => {
   };
 
   // @ts-ignore
-  if (gtmEvent && !window.Cypress) {
+  if (gtmEvent) {
     gtmEvent.push(assign(gtmpEventType, userData));
   }
 

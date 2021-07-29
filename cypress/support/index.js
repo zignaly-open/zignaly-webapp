@@ -21,8 +21,6 @@ import "cypress-dark";
 
 import "@cypress/code-coverage/support";
 
-require("cypress-terminal-report/src/installLogsCollector")();
-
 // Define a proxy method for mirage
 Cypress.on("window:before:load", (win) => {
   win.handleFromCypress = (request) => {
