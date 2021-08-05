@@ -10,7 +10,7 @@ import { useIntl } from "react-intl";
  * @typedef {Object} PricePercentage
  * @property {string} name
  * @property {function(*):*} onChange
- * @property {function(string): boolean} [validate]
+ * @property {function(string): boolean|string} [validate]
  * @property {string} [error]
  */
 

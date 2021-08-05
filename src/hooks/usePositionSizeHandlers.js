@@ -4,6 +4,8 @@ import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
 import { calculateUnits } from "utils/calculations";
+import { isArray } from "lodash";
+import { composePositionDcaTargets } from "components/TradingTerminal/StrategyForm/StrategyForm";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -73,6 +75,33 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     return true;
   }
+
+  /**
+   * Validate that the amount bought is enough to be sold at given price
+   *
+   * @param {number} amount Cost amount.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateSellAmount = (amount) => {
+    const rebuyTargets = composePositionDcaTargets(getValues());
+    if (isArray(rebuyTargets) && rebuyTargets.length) {
+      // Skip check when DCA for now
+      return true;
+    }
+
+    const limitsCost = contractType === "inverse" ? limits.amount : limits.cost;
+
+    // Skip validation when data not available.
+    if (!limitsCost) {
+      return true;
+    }
+
+    if (limitsCost.min && amount < limitsCost.min) {
+      return formatMessage({ id: "terminal.sell.mincost" }, { value: limitsCost.min });
+    }
+
+    return true;
+  };
 
   /**
    * Validate that units is within limits.
@@ -249,6 +278,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     validatePositionSize,
     validatePrice,
     validateUnits,
+    validateSellAmount,
   };
 };
 

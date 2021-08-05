@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { isNumber } from "lodash";
+import { isNumber, some } from "lodash";
 import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
@@ -10,9 +10,9 @@ import useValidation from "../../../hooks/useValidation";
 import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./StopLossPanel.scss";
 import CustomSelect from "../../CustomSelect";
-import { some } from "lodash";
 import PricePercentageControl from "../Controls/PricePercentageControl";
 import StopLossStatus from "../StopLossStatus/StopLossStatus";
+import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -38,18 +38,14 @@ const StopLossPanel = (props) => {
     ? isNumber(positionEntity.stopLossPrice) && isNumber(positionEntity.stopLossPercentage)
     : false;
   const { expanded, expandClass, setExpanded } = useExpandable(existsStopLoss);
-  const {
-    clearErrors,
-    errors,
-    getValues,
-    register,
-    setValue,
-    watch,
-    trigger,
-    control,
-  } = useFormContext();
+  const { clearErrors, errors, getValues, register, setValue, watch, trigger, control } =
+    useFormContext();
   const { lessThan } = useValidation();
-  const { getEntryPrice, getEntryPricePercentChange } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntryPricePercentChange, getEntrySizeQuote } =
+    usePositionEntry(positionEntity);
+  const entrySizeQuote = getEntrySizeQuote();
+  const { validateSellAmount } = usePositionSizeHandlers(symbolData);
+
   const { formatMessage } = useIntl();
   // Strategy panels inputs to observe for changes.
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
@@ -99,20 +95,31 @@ const StopLossPanel = (props) => {
   /**
    * Validate target percentage limits.
    *
-   * @returns {boolean} true if validation pass, false otherwise.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
     const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
-    return lessThan(
+    let valid = lessThan(
       stopLossPercentage,
       pricePercentChange,
       entryType,
       "terminal.stoploss.valid.percentage",
       { value: pricePercentChange },
     );
+
+    if (valid && stopLossPercentage) {
+      const unitsSold = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
+      valid = validateSellAmount(unitsSold);
+    }
+
+    return valid;
   }
+
+  useEffect(() => {
+    trigger("stopLossPercentage");
+  }, [entrySizeQuote]);
 
   /**
    * Calculate price based on percentage when value is changed.
