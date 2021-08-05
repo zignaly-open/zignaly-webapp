@@ -10,8 +10,9 @@ import { useIntl } from "react-intl";
  * @typedef {Object} PricePercentage
  * @property {string} name
  * @property {function(*):*} onChange
- * @property {function(string): boolean} [validate]
+ * @property {function(string): boolean|string} [validate]
  * @property {string} [error]
+ * @property {boolean} [allowNegative]
  */
 
 /**
@@ -62,6 +63,7 @@ const PricePercentageControl = ({
           onClick={() => priorityValue === "price" && togglePriority()}
         >
           <CustomNumberInput
+            allowNegative={percentage.allowNegative}
             disabled={disabled || priorityValue === "price"}
             name={percentage.name}
             onChange={percentage.onChange}

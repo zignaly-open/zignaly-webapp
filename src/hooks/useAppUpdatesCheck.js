@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { showErrorAlert } from "../store/actions/ui";
 import { withPrefix } from "gatsby";
 import { setAppVersion } from "../store/actions/session";
 import { minToMillisec } from "../utils/timeConvert";
