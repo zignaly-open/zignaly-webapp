@@ -30,7 +30,7 @@ const analyticsJsApi = () => {
   let analytics = null;
 
   // @ts-ignore
-  if (process.env.NODE_ENV === "production" && !window.Cypress) {
+  if (process.env.GATSBY_ENABLE_TRACKING && !window.Cypress) {
     // @ts-ignore
     analytics = Analytics({
       app: "zignaly",
