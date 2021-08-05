@@ -91,7 +91,7 @@ const TrailingStopPanel = (props) => {
     let valid = greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage");
     if (valid) {
       const stopLossPercentage = parseFloat(value);
-      if (stopLossPercentage) {
+      if (stopLossPercentage && entrySizeQuote) {
         const amountSoldTrigger = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
         const amountSold = (amountSoldTrigger * (100 + trailingStopDistance)) / 100;
         valid = validateSellAmount(amountSold);

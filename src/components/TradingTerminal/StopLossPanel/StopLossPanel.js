@@ -109,7 +109,7 @@ const StopLossPanel = (props) => {
       { value: pricePercentChange },
     );
 
-    if (valid && stopLossPercentage) {
+    if (valid && entrySizeQuote && stopLossPercentage) {
       const unitsSold = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
       valid = validateSellAmount(unitsSold);
     }
@@ -237,6 +237,7 @@ const StopLossPanel = (props) => {
                 name: "stopLossPercentage",
                 validate: validateStopLossPercentageLimits,
                 onChange: stopLossPercentageChange,
+                allowNegative: true,
               }}
               price={{
                 name: "stopLossPrice",

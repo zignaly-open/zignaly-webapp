@@ -21,6 +21,7 @@ import { composePositionDcaTargets } from "components/TradingTerminal/StrategyFo
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
  * @property {function(string, string?): string|boolean} validatePrice
+ * @property {function(number): string|boolean} validateSellAmount
  * @property {Validate} validateUnits
  */
 

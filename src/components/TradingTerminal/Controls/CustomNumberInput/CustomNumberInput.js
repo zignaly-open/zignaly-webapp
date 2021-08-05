@@ -85,7 +85,7 @@ const CustomNumberInput = (props) => {
     formattedVal = formattedVal.replace(" ", "");
 
     // Check valid number
-    if (!isNaN(formattedVal)) {
+    if (!isNaN(formattedVal) || formattedVal === "-") {
       // Check negative
       if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
     }
