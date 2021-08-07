@@ -1806,6 +1806,8 @@ class TradeApiClient {
     const responseData = await this.doRequest(
       `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`,
       payload,
+      "GET",
+      2,
     );
 
     return exchangeOpenOrdersResponseTransform(responseData);
