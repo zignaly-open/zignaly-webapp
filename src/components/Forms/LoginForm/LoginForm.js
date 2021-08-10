@@ -53,7 +53,7 @@ const LoginForm = () => {
    * @returns {void} None.
    */
   const check2FA = (response) => {
-    if (response.ask2FA) {
+    if (response.ask2FA || response.isUnknownDevice) {
       showTwoFAModal(true);
       setLoading(false);
     } else {

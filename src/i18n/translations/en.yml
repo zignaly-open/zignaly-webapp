@@ -1669,3 +1669,7 @@ wall.write.banned: "You are not allowed to comment"
 wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 wall.write.: "You are not allowed to comment"
+
+# IP Filtering
+security.check_known_device.title: New Device Verification
+security.check_known_device.input: Input code that sent by email

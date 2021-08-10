@@ -322,6 +322,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Array<ExchangeConnectionEntity>} exchanges
  * @property {string} locale
  * @property {UserWall} wall
+ * @property {boolean} isUnknownDevice
  */
 
 /**
@@ -930,6 +931,18 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} VerifyKnownDevice
+ * @property {string} code
+ * @property {string} token User session token
+ */
+
+
+/**
+ * @typedef {Object} ResendKnownDeviceVerificationCode
+ * @property {string} token User session token
+ */
+
+/**
  * @typedef {Object} ChangeEmailRequestPayload
  * @property {String} token User session token
  * @property {String} [code] two FA code.
@@ -1116,6 +1129,7 @@ export function userEntityResponseTransform(response) {
       : [],
     locale: response.locale,
     wall: response.wall,
+    isUnknownDevice: response.isUnknownDevice,
   };
 }
 

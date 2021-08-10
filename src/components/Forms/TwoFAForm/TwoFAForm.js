@@ -32,6 +32,11 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const dispatch = useDispatch();
 
+  let is2FAVerified = false;
+  let isKnownDeviceVerified = false;
+
+  console.log(data);
+
   /**
    * Function to verify code.
    *
@@ -45,6 +50,16 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
       submitCode(code);
     }
   };
+
+  /**
+   * Function to verify known device code.
+   *
+   * @param {String} code verification code.
+   * @returns {void} None.
+   */
+  const verifyKnownDeviceCode = (code) => {
+    submitKnownDeviceCode(code);
+  }
 
   /**
    * Function to submit code to backend.
@@ -61,7 +76,36 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
     tradeApi
       .verify2FA(payload)
       .then(() => {
-        onSuccess();
+        is2FAVerified = true;
+        if (! data.isUnknownDevice || isKnownDeviceVerified) {
+          onSuccess();
+        }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+        setLoading(false);
+      });
+  };
+
+  /**
+   * Function to submit known device code to backend.
+   *
+   * @param {String} code verification code.
+   * @returns {void} None.
+   */
+  const submitKnownDeviceCode = (code) => {
+    setLoading(true);
+    const payload = {
+      code: code,
+      token: data.token,
+    };
+    tradeApi
+      .verifyKnownDevice(payload)
+      .then(() => {
+        isKnownDeviceVerified = true;
+        if (is2FAVerified || data.ask2FA == false) {
+          onSuccess();
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -81,7 +125,7 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
         <ResetTwoFAForm token={data.token} />
       </Modal>
       {loading && <CircularProgress color="primary" size={40} />}
-      {!loading && (
+      {!loading && data.ask2FA && (
         <>
           <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
             <Typography variant="h3">
@@ -101,6 +145,23 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
             </span>
           </Typography>
         </>
+      )}
+
+      {!loading && data.isUnknownDevice && (
+        <>
+        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
+          <Typography variant="h3">
+            <FormattedMessage id="security.check_known_device.title" />
+          </Typography>
+          <label className="customLabel">
+            <Typography>
+              <FormattedMessage id="security.check_known_device.input" />
+            </Typography>
+          </label>
+          {/* @ts-ignore */}
+          <ReactCodeInput className="inputBox" fields={6} onComplete={verifyKnownDeviceCode} />
+        </Box>
+      </>
       )}
     </Box>
   );

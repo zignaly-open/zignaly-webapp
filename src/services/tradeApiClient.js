@@ -154,6 +154,8 @@ import {
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
  * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
  * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
+ * @typedef {import('./tradeApiClient.types').VerifyKnownDevicePayload} VerifyKnownDevicePayload
+ * @typedef {import('./tradeApiClient.types').ResendKnownDeviceVerificationCodePayload} ResendKnownDeviceVerificationCodePayload
  *
  */
 
@@ -1502,6 +1504,30 @@ class TradeApiClient {
    */
   async verify2FA(payload) {
     return this.doRequest("/user/verify_2fa", payload, "POST", 2, payload.token);
+  }
+
+  /**
+   * Verify if known device code is valid.
+   *
+   * @param {VerifyKnownDevicePayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async verifyKnownDevice(payload) {
+    return this.doRequest("/known_device/verify", payload, "POST", 2, payload.token);
+  }
+
+  /**
+   * Resend code for known device
+   *
+   * @param {ResendKnownDeviceVerificationCodePayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+   async resendKnownDeviceCode(payload) {
+    return this.doRequest("/known_device/resend_code", payload, "POST", 2, payload.token);
   }
 
   /**
