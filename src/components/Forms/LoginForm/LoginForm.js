@@ -116,7 +116,7 @@ const LoginForm = () => {
         <ForgotPasswordForm />
       </Modal>
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm data={loginResponse} onSuccess={onSuccess} />
+        <TwoFAForm data={loginResponse} onComplete={onSuccess} verifySessionCode={true} />
       </Modal>
       <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box

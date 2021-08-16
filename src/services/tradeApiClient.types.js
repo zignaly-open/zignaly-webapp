@@ -322,7 +322,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Array<ExchangeConnectionEntity>} exchanges
  * @property {string} locale
  * @property {UserWall} wall
- * @property {boolean} isUnknownDevice
+ * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  */
 
 /**
@@ -927,18 +927,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} TwoFAPayload
  * @property {string} code
- * @property {string} token User session token
- */
-
-/**
- * @typedef {Object} VerifyKnownDevice
- * @property {string} code
- * @property {string} token User session token
- */
-
-
-/**
- * @typedef {Object} ResendKnownDeviceVerificationCode
  * @property {string} token User session token
  */
 

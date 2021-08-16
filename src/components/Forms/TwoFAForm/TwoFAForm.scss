@@ -1,9 +1,17 @@
 .twoFAForm {
   padding: 60px 75px;
 
+  .unknownDeviceBox:not(:first-child) {
+    margin-top: 52px;
+  }
+
   h3 {
     font-size: 27px;
     margin-bottom: 40px;
+  }
+
+  .customLabel {
+    text-transform: capitalize;
   }
 
   .inputBox {

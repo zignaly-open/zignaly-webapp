@@ -17,8 +17,8 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {Function} [onSuccess]
  * @property {Function} [onComplete]
+ * @property {boolean} [verifySessionCode] For login/signup, call verify2FA endpoint.
  * @property {UserEntity} data
  */
 
@@ -27,39 +27,12 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const TwoFAForm = ({ onSuccess, data, onComplete }) => {
+const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
   const [loading, setLoading] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
+  const [is2FAVerified, setIs2FAVerified] = useState(!data.ask2FA);
+  const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(!data.isUnknownDevice);
   const dispatch = useDispatch();
-
-  let is2FAVerified = false;
-  let isKnownDeviceVerified = false;
-
-  console.log(data);
-
-  /**
-   * Function to verify code.
-   *
-   * @param {String} code verification code.
-   * @returns {void} None.
-   */
-  const verifyCode = (code) => {
-    if (onComplete) {
-      onComplete(code);
-    } else {
-      submitCode(code);
-    }
-  };
-
-  /**
-   * Function to verify known device code.
-   *
-   * @param {String} code verification code.
-   * @returns {void} None.
-   */
-  const verifyKnownDeviceCode = (code) => {
-    submitKnownDeviceCode(code);
-  }
 
   /**
    * Function to submit code to backend.
@@ -68,7 +41,15 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
    * @returns {void} None.
    */
   const submitCode = (code) => {
-    setLoading(true);
+    if (!verifySessionCode) {
+      onComplete(code);
+      return;
+    }
+
+    if (isKnownDeviceVerified) {
+      setLoading(true);
+    }
+
     const payload = {
       code: code,
       token: data.token,
@@ -76,9 +57,9 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
     tradeApi
       .verify2FA(payload)
       .then(() => {
-        is2FAVerified = true;
-        if (! data.isUnknownDevice || isKnownDeviceVerified) {
-          onSuccess();
+        setIs2FAVerified(true);
+        if (isKnownDeviceVerified) {
+          onComplete();
         }
       })
       .catch((e) => {
@@ -94,7 +75,10 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
    * @returns {void} None.
    */
   const submitKnownDeviceCode = (code) => {
-    setLoading(true);
+    if (is2FAVerified) {
+      setLoading(true);
+    }
+
     const payload = {
       code: code,
       token: data.token,
@@ -102,9 +86,9 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
     tradeApi
       .verifyKnownDevice(payload)
       .then(() => {
-        isKnownDeviceVerified = true;
-        if (is2FAVerified || data.ask2FA == false) {
-          onSuccess();
+        setIsKnownDeviceVerified(true);
+        if (is2FAVerified) {
+          onComplete();
         }
       })
       .catch((e) => {
@@ -137,7 +121,7 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
               </Typography>
             </label>
             {/* @ts-ignore */}
-            <ReactCodeInput className="inputBox" fields={6} onComplete={verifyCode} />
+            <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
           </Box>
           <Typography>
             <span className="link" onClick={() => showResetTwoFAModal(true)}>
@@ -148,20 +132,24 @@ const TwoFAForm = ({ onSuccess, data, onComplete }) => {
       )}
 
       {!loading && data.isUnknownDevice && (
-        <>
-        <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
+        <Box
+          alignItems="center"
+          className="unknownDeviceBox"
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+        >
           <Typography variant="h3">
-            <FormattedMessage id="security.check_known_device.title" />
+            <FormattedMessage id="security.device.title" />
           </Typography>
           <label className="customLabel">
             <Typography>
-              <FormattedMessage id="security.check_known_device.input" />
+              <FormattedMessage id="security.device.input" />
             </Typography>
           </label>
           {/* @ts-ignore */}
-          <ReactCodeInput className="inputBox" fields={6} onComplete={verifyKnownDeviceCode} />
+          <ReactCodeInput className="inputBox" fields={6} onComplete={submitKnownDeviceCode} />
         </Box>
-      </>
       )}
     </Box>
   );

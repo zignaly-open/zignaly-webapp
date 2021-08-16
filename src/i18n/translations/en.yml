@@ -1236,6 +1236,8 @@ security.2fa.scan: "Scan the QR Code below"
 security.2fa.title: "2 Factor Authentication"
 security.2fa.unavailable: "Security verification unavailable?"
 security.2fa.wrongcode: "Wrong code"
+security.device.title: "New Device Verification"
+security.device.input: "Input your new device verification code"
 security.note: "Please note"
 security.password: "Password"
 security.password.current: "Current Password"
@@ -1669,7 +1671,3 @@ wall.write.banned: "You are not allowed to comment"
 wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 wall.write.: "You are not allowed to comment"
-
-# IP Filtering
-security.check_known_device.title: New Device Verification
-security.check_known_device.input: Input code that sent by email
