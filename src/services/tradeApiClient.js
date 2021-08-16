@@ -1505,6 +1505,30 @@ class TradeApiClient {
   }
 
   /**
+   * Verify if known device code is valid.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async verifyKnownDevice(payload) {
+    return this.doRequest("/known_device/verify", payload, "POST", 2, payload.token);
+  }
+
+  /**
+   * Resend code for known device
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async resendKnownDeviceCode(payload) {
+    return this.doRequest("/known_device/resend_code", payload, "POST", 2, payload.token);
+  }
+
+  /**
    * Get user notifications settings.
    *
    * @returns {Promise<ProfileNotifications>} Returns promise.
