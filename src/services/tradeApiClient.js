@@ -1519,13 +1519,13 @@ class TradeApiClient {
   /**
    * Resend code for known device
    *
-   * @param {TwoFAPayload} payload Payload
+   * @param {string} token Session token
    * @returns {Promise<Boolean>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async resendKnownDeviceCode(payload) {
-    return this.doRequest("/known_device/resend_code", payload, "POST", 2, payload.token);
+  async resendKnownDeviceCode(token) {
+    return this.doRequest("/known_device/resend", null, "POST", 2, token);
   }
 
   /**
