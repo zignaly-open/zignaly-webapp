@@ -4,7 +4,7 @@ import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import Modal from "../../Modal";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
@@ -28,7 +28,9 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
  * @returns {JSX.Element} JSx component.
  */
 const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
-  const [loading, setLoading] = useState(false);
+  const [verifyingDevice, setVerifyingDevice] = useState(false);
+  const [verifying2FA, setVerifying2FA] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const [is2FAVerified, setIs2FAVerified] = useState(!data.ask2FA);
   const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(!data.isUnknownDevice);
@@ -40,15 +42,13 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
    * @param {String} code verification code.
    * @returns {void} None.
    */
-  const submitCode = (code) => {
+  const submit2FACode = (code) => {
     if (!verifySessionCode) {
       onComplete(code);
       return;
     }
 
-    if (isKnownDeviceVerified) {
-      setLoading(true);
-    }
+    setVerifying2FA(true);
 
     const payload = {
       code: code,
@@ -64,7 +64,9 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-        setLoading(false);
+      })
+      .finally(() => {
+        setVerifying2FA(false);
       });
   };
 
@@ -75,9 +77,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
    * @returns {void} None.
    */
   const submitKnownDeviceCode = (code) => {
-    if (is2FAVerified) {
-      setLoading(true);
-    }
+    setVerifyingDevice(true);
 
     const payload = {
       code: code,
@@ -93,7 +93,26 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-        setLoading(false);
+      })
+      .finally(() => {
+        setVerifyingDevice(false);
+      });
+  };
+
+  const resendCode = () => {
+    if (sendingCode) return;
+
+    setSendingCode(true);
+    tradeApi
+      .resendKnownDeviceCode(data.token)
+      .then(() => {
+        dispatch(showSuccessAlert("", "security.device.resent"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setSendingCode(false);
       });
   };
 
@@ -108,48 +127,74 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       <Modal onClose={() => showResetTwoFAModal(false)} size="small" state={resetTwoFAModal}>
         <ResetTwoFAForm token={data.token} />
       </Modal>
-      {loading && <CircularProgress color="primary" size={40} />}
-      {!loading && data.ask2FA && (
+      {isKnownDeviceVerified && is2FAVerified && <CircularProgress color="primary" size={40} />}
+      {!isKnownDeviceVerified && (
         <>
-          <Box alignItems="center" display="flex" flexDirection="column" justifyContent="start">
-            <Typography variant="h3">
-              <FormattedMessage id="security.2fa.title" />
+          <Box
+            alignItems="center"
+            className="verifyBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            <Typography align="center" variant="h3">
+              <FormattedMessage id="security.device.title" />
             </Typography>
+            <label className="customLabel">
+              <Typography>
+                <FormattedMessage id="security.device.input" />
+              </Typography>
+            </label>
+            {/* @ts-ignore */}
+            <ReactCodeInput
+              className="inputBox"
+              fields={6}
+              loading={verifyingDevice}
+              onComplete={submitKnownDeviceCode}
+            />
+            <Box alignItems="center" className="linkBox" display="flex">
+              <Typography className="link" onClick={resendCode}>
+                <FormattedMessage id="security.device.resend" />
+              </Typography>
+              {sendingCode && <CircularProgress className="spinner" color="primary" size={18} />}
+            </Box>
+          </Box>
+        </>
+      )}
+      {!is2FAVerified && (
+        <>
+          <Box
+            alignItems="center"
+            className="faBox"
+            display="flex"
+            flexDirection="column"
+            justifyContent="start"
+          >
+            {!data.isUnknownDevice && (
+              <Typography variant="h3">
+                <FormattedMessage id="security.2fa.title" />
+              </Typography>
+            )}
             <label className="customLabel">
               <Typography>
                 <FormattedMessage id="security.2fa.input" />
               </Typography>
             </label>
             {/* @ts-ignore */}
-            <ReactCodeInput className="inputBox" fields={6} onComplete={submitCode} />
+            <ReactCodeInput
+              autoFocus={!data.isUnknownDevice}
+              className="inputBox"
+              fields={6}
+              loading={verifying2FA}
+              onComplete={submit2FACode}
+            />
           </Box>
-          <Typography>
+          <Typography className="linkBox">
             <span className="link" onClick={() => showResetTwoFAModal(true)}>
               <FormattedMessage id="security.2fa.unavailable" />
             </span>
           </Typography>
         </>
-      )}
-
-      {!loading && data.isUnknownDevice && (
-        <Box
-          alignItems="center"
-          className="unknownDeviceBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <Typography variant="h3">
-            <FormattedMessage id="security.device.title" />
-          </Typography>
-          <label className="customLabel">
-            <Typography>
-              <FormattedMessage id="security.device.input" />
-            </Typography>
-          </label>
-          {/* @ts-ignore */}
-          <ReactCodeInput className="inputBox" fields={6} onComplete={submitKnownDeviceCode} />
-        </Box>
       )}
     </Box>
   );

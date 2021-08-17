@@ -1,34 +1,44 @@
 .twoFAForm {
   padding: 60px 75px;
 
-  .unknownDeviceBox:not(:first-child) {
-    margin-top: 52px;
+  .faBox:not(:first-child) {
+    margin-top: 42px;
   }
 
   h3 {
     font-size: 27px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
 
-  .customLabel {
-    text-transform: capitalize;
+  .verifyBox,
+  .faBox {
+    .callout1 {
+      margin: 12px 0 20px;
+    }
   }
 
   .inputBox {
-    margin-bottom: 40px;
     width: fit-content;
+  }
+
+  .linkBox {
+    height: 18px;
+    margin: 20px 0 40px;
   }
 
   .link {
     font-size: 11px;
     font-weight: 600;
-    margin-bottom: 40px;
     text-transform: uppercase;
   }
 
   .codeInput {
     text-align: center;
     width: auto;
+  }
+
+  .spinner {
+    margin-left: 4px;
   }
 }
 
