@@ -38,10 +38,3 @@ Cypress.on("window:before:load", (win) => {
     });
   };
 });
-
-Cypress.on("uncaught:exception", (err) => {
-  // eslint-disable-next-line no-console
-  console.log(err);
-  // Ignore: Cannot read property 'message' of null
-  return false;
-});
