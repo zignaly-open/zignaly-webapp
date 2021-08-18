@@ -17,7 +17,7 @@ import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";

@@ -2840,6 +2840,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} profitSharing
  * @property {Number} profitsShare
  * @property {String} profitsMode
+ * @property {Number} maxDrawdown
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
@@ -4050,6 +4051,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} quote
  * @property {boolean} [profitSharing]
  * @property {number} [profitsShare]
+ * @property {number} [maxDrawdown]
  */
 
 /**

@@ -11,7 +11,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import PricePercentageControl from "../Controls/PricePercentageControl";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
 
 /**

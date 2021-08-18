@@ -12,7 +12,7 @@ import {
 import Alert from "@material-ui/lab/Alert";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
 import SocialSelect from "./SocialSelect";
@@ -36,6 +36,7 @@ import Modal from "../../Modal";
 import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
 import { setMarketplaceCacheModal } from "store/actions/settings";
 import useSelectedExchange from "hooks/useSelectedExchange";
+import CustomNumberInput from "../CustomNumberInput";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -75,6 +76,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
   const [cacheModal, showCacheModal] = useState(false);
   const [submittedFormData, setSubmittedFormData] = useState(null);
+  const intl = useIntl();
 
   const loadPositions = () => {
     if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
@@ -638,28 +640,52 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </Box>
               )}
               {provider.isCopyTrading && provider.profitSharing && (
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="copyt.profitsharing.percentage" />
-                  </label>
-                  <TextField
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                    }}
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.profitsShare ? "error" : "")
-                    }
-                    defaultValue={provider.profitsShare}
-                    error={!!errors.profitsShare}
-                    fullWidth
-                    inputRef={register({ required: true })}
-                    name="profitsShare"
-                    type="text"
-                    variant="outlined"
-                  />
-                </Box>
+                <>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.percentage" />
+                    </label>
+                    <TextField
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      }}
+                      className={
+                        "customInput " +
+                        (storeSettings.darkStyle ? " dark " : " light ") +
+                        (errors.profitsShare ? "error" : "")
+                      }
+                      defaultValue={provider.profitsShare}
+                      error={!!errors.profitsShare}
+                      fullWidth
+                      inputRef={register({ required: true })}
+                      name="profitsShare"
+                      type="text"
+                      variant="outlined"
+                    />
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                    </label>
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
+                      name="maxDrawdown"
+                      rules={{
+                        validate: {
+                          max: (val) =>
+                            val <= 100 &&
+                            (!provider.maxDrawdown ||
+                              val <= provider.maxDrawdown ||
+                              intl.formatMessage({
+                                id: "copyt.profitsharing.maxDrawdown.max",
+                              })),
+                        },
+                      }}
+                      suffix="%"
+                    />
+                  </Box>
+                </>
               )}
               {!provider.profitSharing && (
                 <Box

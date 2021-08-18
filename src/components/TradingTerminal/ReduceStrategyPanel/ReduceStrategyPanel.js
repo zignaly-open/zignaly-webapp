@@ -10,7 +10,7 @@ import {
   Switch,
   Box,
 } from "@material-ui/core";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
