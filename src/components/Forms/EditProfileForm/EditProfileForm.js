@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Tooltip, Checkbox, InputAdornment } from "@material-ui/core";
+import { Box, TextField, Typography, Tooltip, Checkbox } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CustomSelect from "components/CustomSelect";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -530,44 +530,48 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className={"customLabel"}>
-                  <FormattedMessage id="srv.edit.title" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.name ? "error" : "")
+              {provider.privacy === "unlisted" && (
+                <>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className={"customLabel"}>
+                      <FormattedMessage id="srv.edit.title" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.name ? "error" : "")
+                          }
+                          error={!!errors.profitsShare}
+                          fullWidth
+                          variant="outlined"
+                        />
                       }
-                      error={!!errors.profitsShare}
-                      fullWidth
-                      variant="outlined"
+                      control={control}
+                      defaultValue={provider.name}
+                      name="name"
+                      rules={{
+                        required: true,
+                        maxLength: 50,
+                        minLength: 5,
+                      }}
                     />
-                  }
-                  control={control}
-                  defaultValue={provider.name}
-                  name="name"
-                  rules={{
-                    required: true,
-                    maxLength: 50,
-                    minLength: 5,
-                  }}
-                />
-                {errors.name && (
-                  <span className="errorText">
-                    <FormattedMessage id="form.error.name.length" />
-                  </span>
-                )}
-              </Box>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.logo" />
-                </label>
-                <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
-              </Box>
+                    {errors.name && (
+                      <span className="errorText">
+                        <FormattedMessage id="form.error.name.length" />
+                      </span>
+                    )}
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.logo" />
+                    </label>
+                    <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
+                  </Box>
+                </>
+              )}
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.website" />

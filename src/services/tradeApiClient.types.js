@@ -2843,6 +2843,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} maxDrawdown
  * @property {Number} maxAllocatedBalance
  * @property {Number} maxPositions
+ * @property {String} privacy
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
