@@ -626,22 +626,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <label className="customLabel">
                       <FormattedMessage id="copyt.profitsharing.percentage" />
                     </label>
-                    <TextField
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                      }}
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.profitsShare ? "error" : "")
-                      }
-                      defaultValue={provider.profitsShare}
-                      error={!!errors.profitsShare}
-                      fullWidth
-                      inputRef={register({ required: true })}
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
                       name="profitsShare"
-                      type="text"
-                      variant="outlined"
+                      rules={{ required: true }}
+                      defaultValue={provider.profitsShare}
+                      suffix="%"
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
@@ -664,6 +655,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         },
                       }}
                       suffix="%"
+                      defaultValue={provider.maxDrawdown}
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
@@ -674,13 +666,20 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                       control={control}
                       errors={errors}
                       name="maxAllocatedBalance"
+                      defaultValue={provider.maxAllocatedBalance}
+                      suffix={provider.copyTradingQuote}
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className="customLabel">
                       <FormattedMessage id="copyt.profitsharing.maxPositions" />
                     </label>
-                    <CustomNumberInput control={control} errors={errors} name="maxPositions" />
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
+                      name="maxPositions"
+                      defaultValue={provider.maxPositions}
+                    />
                   </Box>
                 </>
               )}
