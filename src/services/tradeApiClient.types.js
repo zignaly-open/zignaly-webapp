@@ -680,6 +680,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} copyTrader
  * @property {boolean} liquidated
  * @property {number} globalReturn
+ * @property {Number} maxDrawdown
+ * @property {Number} maxAllocatedBalance
+ * @property {Number} maxPositions
+ * @property {String} privacy
+ * @property {Boolean} verified KYC passed
  */
 
 /**
@@ -1319,6 +1324,11 @@ function createEmptyProviderEntity() {
     copyTrader: false,
     liquidated: false,
     globalReturn: 0,
+    maxAllocatedBalance: 0,
+    maxPositions: 0,
+    maxDrawdown: 0,
+    privacy: "",
+    verified: true,
   };
 }
 

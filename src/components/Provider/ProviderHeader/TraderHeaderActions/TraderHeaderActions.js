@@ -1,6 +1,7 @@
 import React from "react";
 import "./TraderHeaderActions.scss";
 import { Box, Typography, Hidden } from "@material-ui/core";
+import VerifiedIcon from "components/Provider/VerifiedIcon";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
@@ -38,7 +39,10 @@ const TraderHeaderActions = ({ provider }) => {
         justifyContent="flex-start"
       >
         <ProviderLogo size="40px" title={provider.name} url={provider.logoUrl} />
-        <Typography variant="h1">{provider.name}</Typography>
+        <Typography variant="h1">
+          {provider.name}
+          {provider.verified && <VerifiedIcon />}
+        </Typography>
         {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>
       {provider.isCopyTrading ? (
