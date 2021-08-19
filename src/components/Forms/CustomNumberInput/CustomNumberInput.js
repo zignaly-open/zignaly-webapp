@@ -118,18 +118,10 @@ const CustomNumberInput = (props) => {
       control={control}
       defaultValue={defaultValue}
       name={name}
-      transform={{
-        // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
-        output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
-          // Convert to number for easier validation
-          const output = parseInt(e.target.value, 10);
-          return isNaN(output) ? 0 : output;
-        },
-      }}
       render={({ onChange: _onChange, value }) => (
         <OutlinedInput
-          endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
           className="customInput outlineInput"
+          endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
           error={!!errors[name]}
           name={name}
           onChange={(e) => {
@@ -147,6 +139,14 @@ const CustomNumberInput = (props) => {
         />
       )}
       rules={rules}
+      transform={{
+        // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+        output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+          // Convert to number for easier validation
+          const output = parseInt(e.target.value, 10);
+          return isNaN(output) ? 0 : output;
+        },
+      }}
     />
   );
 };

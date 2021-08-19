@@ -425,3 +425,12 @@ table {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+.disabled {
+  cursor: default;
+  opacity: 0.5;
+
+  &:active {
+    pointer-events: none;
+  }
+}
