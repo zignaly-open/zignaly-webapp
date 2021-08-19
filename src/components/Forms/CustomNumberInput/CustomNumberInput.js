@@ -114,40 +114,43 @@ const CustomNumberInput = (props) => {
 
   // todo: we could add sign prefix here
   return (
-    <Controller
-      control={control}
-      defaultValue={defaultValue}
-      name={name}
-      render={({ onChange: _onChange, value }) => (
-        <OutlinedInput
-          className="customInput outlineInput"
-          endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
-          error={!!errors[name]}
-          name={name}
-          onChange={(e) => {
-            const val = handleChangeNumber(e);
-            if (val !== null) {
-              // Format event value
-              e.target.value = val;
-              _onChange(e);
-              // Callback
-              if (onChange) onChange(e);
-            }
-          }}
-          value={value}
-          {...others}
-        />
-      )}
-      rules={rules}
-      transform={{
-        // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
-        output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
-          // Convert to number for easier validation
-          const output = parseInt(e.target.value, 10);
-          return isNaN(output) ? 0 : output;
-        },
-      }}
-    />
+    <>
+      <Controller
+        control={control}
+        defaultValue={defaultValue}
+        name={name}
+        render={({ onChange: _onChange, value }) => (
+          <OutlinedInput
+            className="customInput outlineInput"
+            endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
+            error={!!errors[name]}
+            name={name}
+            onChange={(e) => {
+              const val = handleChangeNumber(e);
+              if (val !== null) {
+                // Format event value
+                e.target.value = val;
+                _onChange(e);
+                // Callback
+                if (onChange) onChange(e);
+              }
+            }}
+            value={value}
+            {...others}
+          />
+        )}
+        rules={rules}
+        transform={{
+          // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+          output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+            // Convert to number for easier validation
+            const output = parseInt(e.target.value, 10);
+            return isNaN(output) ? 0 : output;
+          },
+        }}
+      />
+      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+    </>
   );
 };
 

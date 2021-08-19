@@ -672,6 +672,19 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                       name="maxAllocatedBalance"
                       defaultValue={provider.maxAllocatedBalance}
                       suffix={provider.copyTradingQuote}
+                      rules={{
+                        validate: {
+                          max: (val) =>
+                            provider.verified ||
+                            val <= 50000 ||
+                            intl.formatMessage(
+                              {
+                                id: "srv.edit.maxAllocatedBalance.max",
+                              },
+                              { max: 50000 },
+                            ),
+                        },
+                      }}
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">

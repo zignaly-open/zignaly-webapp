@@ -693,6 +693,7 @@ srv.edit.privacy: "Privacy"
 srv.edit.privacy.unlisted: "Unlisted"
 srv.edit.privacy.listedProfile: "Listed in Profile"
 srv.edit.privacy.listedMarketplace: "Listed in Marketplace"
+srv.edit.maxAllocatedBalance.max: "Maximum allocated balance is limited to {max} for services not verified"
 srv.liquidated: "Liquidated"
 
 signalp.title: "SIGNAL-PROVIDERS"

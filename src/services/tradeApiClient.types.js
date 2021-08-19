@@ -2844,6 +2844,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Number} maxAllocatedBalance
  * @property {Number} maxPositions
  * @property {String} privacy
+ * @property {Boolean} verified KYC passed
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  */
