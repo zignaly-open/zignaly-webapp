@@ -87,9 +87,8 @@ const PerformanceOverview = ({ provider }) => {
                 <Typography variant="h4">
                   {`${formatPrice(provider.performance.totalBalance, "", " ", true)}`}
                   {provider.maxAllocatedBalance &&
-                    ` / ${formatPrice(provider.maxAllocatedBalance, "", " ", true)} ${
-                      provider.copyTradingQuote
-                    }`}
+                    ` / ${formatPrice(provider.maxAllocatedBalance, "", " ", true)}`}
+                  {` ${provider.copyTradingQuote}`}
                 </Typography>
               </Box>
             )}

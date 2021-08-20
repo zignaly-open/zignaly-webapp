@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Tooltip, Checkbox } from "@material-ui/core";
+import { Box, TextField, Typography, Tooltip, Checkbox, FormHelperText } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CustomSelect from "components/CustomSelect";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -94,8 +94,16 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   }, []);
 
   const privacyOptions = [
-    { label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }), val: "unlisted" },
-    { label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }), val: "listed_profile" },
+    {
+      label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }),
+      val: "unlisted",
+      disabled: provider.privacy !== "unlisted",
+    },
+    {
+      label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }),
+      val: "listed_profile",
+      disabled: provider.privacy !== "unlisted",
+    },
     {
       label: intl.formatMessage({ id: "srv.edit.privacy.listedMarketplace" }),
       val: "listed_marketplace",
@@ -838,6 +846,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   <FormattedMessage id="srv.edit.privacy" />
                 </label>
                 <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} />
+                {provider.privacy === "unlisted" && privacy !== "unlisted" && (
+                  <FormHelperText>
+                    <FormattedMessage id="srv.edit.privacy.definitive" />
+                  </FormHelperText>
+                )}
               </Box>
             </Box>
           </Box>

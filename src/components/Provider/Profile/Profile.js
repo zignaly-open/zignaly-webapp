@@ -40,14 +40,14 @@ const Profile = ({ provider }) => {
 
   useEffect(() => {
     // Measure column heights to know where to add Other Services component.
-    if (refLeftColumn.current.clientHeight) {
+    if (refLeftColumn.current && refRightColumn.current) {
       setTimeout(() => {
         setLeftColumnBigger(
           !isMobile && refLeftColumn.current.clientHeight > refRightColumn.current.clientHeight,
         );
       }, 0);
     }
-  }, [isMobile]);
+  }, [isMobile, refLeftColumn.current, refRightColumn.current]);
 
   const checkPaymentStatus = () => {
     if (typeof window !== "undefined") {

@@ -136,37 +136,38 @@ const TraderHeaderInfo = ({ provider }) => {
         )}
       </Hidden>
 
-      {provider.isCopyTrading && (
-        <Typography className="allocated" variant="h4">
-          {!provider.disable ? (
-            <>
-              <FormattedMessage id="srv.allocated" />
-              <b>
-                {formatFloat(provider.allocatedBalance)}{" "}
-                {provider.copyTradingQuote ? provider.copyTradingQuote.toUpperCase() : ""}
-              </b>
-            </>
-          ) : (
-            !provider.profitSharing && (
+      {provider.isCopyTrading &&
+        Boolean(provider.allocatedBalance || provider.minAllocatedBalance) && (
+          <Typography className="allocated" variant="h4">
+            {!provider.disable ? (
               <>
-                <FormattedMessage id="srv.minimum" />
+                <FormattedMessage id="srv.allocated" />
                 <b>
-                  {formatFloat(provider.minAllocatedBalance)}{" "}
+                  {formatFloat(provider.allocatedBalance)}{" "}
                   {provider.copyTradingQuote ? provider.copyTradingQuote.toUpperCase() : ""}
                 </b>
               </>
-            )
-          )}
-          {(sameSelectedExchange || selectedExchangeProviderData) && !provider.disable && (
-            <img
-              alt="zignaly"
-              className="editIcon"
-              onClick={() => showCopyModal(true)}
-              src={EditIcon}
-            />
-          )}
-        </Typography>
-      )}
+            ) : (
+              !provider.profitSharing && (
+                <>
+                  <FormattedMessage id="srv.minimum" />
+                  <b>
+                    {formatFloat(provider.minAllocatedBalance)}{" "}
+                    {provider.copyTradingQuote ? provider.copyTradingQuote.toUpperCase() : ""}
+                  </b>
+                </>
+              )
+            )}
+            {(sameSelectedExchange || selectedExchangeProviderData) && !provider.disable && (
+              <img
+                alt="zignaly"
+                className="editIcon"
+                onClick={() => showCopyModal(true)}
+                src={EditIcon}
+              />
+            )}
+          </Typography>
+        )}
 
       <Typography className="traderType" variant="h4">
         <span>
