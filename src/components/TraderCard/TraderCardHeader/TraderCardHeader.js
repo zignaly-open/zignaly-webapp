@@ -43,7 +43,7 @@ const TraderCardHeader = ({ provider }) => {
           <Link className="name" to={providerLink}>
             <Typography variant="h4">
               {name}
-              {verified && <VerifiedIcon />}
+              {true && <VerifiedIcon />}
             </Typography>
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}

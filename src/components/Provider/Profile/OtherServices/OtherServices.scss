@@ -1,0 +1,35 @@
+.otherServices {
+  margin-top: 20px;
+  min-height: inherit;
+  padding: 30px 20px;
+  width: 100%;
+
+  .otherServicesBody {
+    margin-top: 20px;
+  }
+
+  .link:not(:first-child) h4 {
+    margin-top: 5px;
+  }
+}
+
+@include media("<=sm") {
+  .otherServices {
+    padding: 20px;
+
+    h3 {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: center;
+      width: 100%;
+
+      .expandIcon {
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+      }
+    }
+  }
+}

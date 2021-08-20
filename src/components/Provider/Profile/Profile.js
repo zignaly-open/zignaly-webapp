@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./Profile.scss";
 import { Box } from "@material-ui/core";
 import AboutUs from "../../../components/Provider/Profile/AboutUs";
 import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";
 import Performance from "../../../components/Provider/Profile/Performance";
+import OtherServices from "../../../components/Provider/Profile/OtherServices";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import CloneProviderButton from "../../../components/Provider/ProviderHeader/CloneProviderButton";
@@ -13,6 +14,8 @@ import Modal from "../../../components/Modal";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import Options from "../../../components/Provider/Profile/Options";
 import PaymentResponse from "./PaymentResponse";
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 
 /**
  * @typedef {Object} DefaultProps
@@ -29,6 +32,22 @@ const Profile = ({ provider }) => {
   const intl = useIntl();
   const [paymentModal, showPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState("");
+  const refLeftColumn = useRef(null);
+  const refRightColumn = useRef(null);
+  const [leftColumnBigger, setLeftColumnBigger] = useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    // Measure column heights to know where to add Other Services component.
+    if (refLeftColumn.current.clientHeight) {
+      setTimeout(() => {
+        setLeftColumnBigger(
+          !isMobile && refLeftColumn.current.clientHeight > refRightColumn.current.clientHeight,
+        );
+      }, 0);
+    }
+  }, [isMobile]);
 
   const checkPaymentStatus = () => {
     if (typeof window !== "undefined") {
@@ -94,32 +113,42 @@ const Profile = ({ provider }) => {
       <Modal onClose={handleClose} size="small" state={paymentModal}>
         <PaymentResponse status={paymentStatus} />
       </Modal>
-      <Box className="leftColumn">
+      <div className="leftColumn" ref={refLeftColumn}>
         <Box bgcolor="grid.content" className="aboutBox">
           <AboutUs provider={provider} />
         </Box>
         <Box bgcolor="grid.content" className="strategyBox">
           <Strategy provider={provider} />
         </Box>
-      </Box>
-      <Box className="rightColumn">
+        {leftColumnBigger === false && (
+          <Box bgcolor="grid.content" className="Box">
+            <OtherServices provider={provider} />
+          </Box>
+        )}
+      </div>
+      <div className="rightColumn" ref={refRightColumn}>
         <Box bgcolor="grid.content" className="whoWeAreBox">
           <WhoWeAre provider={provider} />
         </Box>
-        {provider.isCopyTrading && (
+        {provider.isCopyTrading ? (
           <Box bgcolor="grid.content" className="performanceBox">
             <Performance provider={provider} />
           </Box>
-        )}
-        {!provider.isCopyTrading &&
+        ) : (
           !provider.disable &&
           provider.exchangeInternalId === selectedExchange.internalId &&
           checkAvailableOptions() && (
             <Box bgcolor="grid.content" className="optionsBox">
               <Options provider={provider} />
             </Box>
-          )}
-      </Box>
+          )
+        )}
+        {leftColumnBigger && (
+          <Box bgcolor="grid.content" className="Box">
+            <OtherServices provider={provider} />
+          </Box>
+        )}
+      </div>
       {!provider.profitSharing &&
         !provider.disable &&
         !provider.isClone &&
