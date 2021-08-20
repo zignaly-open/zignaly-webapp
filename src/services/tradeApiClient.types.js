@@ -1325,10 +1325,10 @@ function createEmptyProviderEntity() {
     liquidated: false,
     globalReturn: 0,
     maxAllocatedBalance: 0,
-    maxPositions: 0,
-    maxDrawdown: 0,
+    maxPositions: null,
+    maxDrawdown: null,
     privacy: "",
-    verified: true,
+    verified: false,
   };
 }
 
@@ -2795,7 +2795,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} public
  * @property {DefaultProviderUserPaymentObject} userPaymentInfo
  * @property {String} website
- * @property {Number} allocatedBalance
+ * @property {Number} allocatedBalance User's allocated balance
  * @property {DefaultProviderAllocatedUpdatedAtObject} allocatedBalanceUpdatedAt
  * @property {Boolean} balanceFilter
  * @property {String} createdAt
@@ -3012,6 +3012,7 @@ function createEmptyProviderGetEntity() {
     profitsShare: 0,
     profitsMode: "",
     exchangeInternalIds: [{}],
+    verified: false,
   };
 }
 

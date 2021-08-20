@@ -55,34 +55,31 @@ const TraderHeaderInfo = ({ provider }) => {
       flexDirection="row"
       justifyContent="flex-start"
     >
-      <Typography className="base" variant="h4">
-        <span>
-          {provider.isCopyTrading ? (
-            <FormattedMessage id="srv.basecurrency" />
-          ) : (
-            <FormattedMessage id="srv.edit.quotes" />
-          )}
-        </span>
-        <BaseCurrency provider={provider} />
-      </Typography>
+      {provider.isCopyTrading && (
+        <Typography className="base" variant="h4">
+          <span>
+            {provider.isCopyTrading ? (
+              <FormattedMessage id="fil.quote" />
+            ) : (
+              <FormattedMessage id="srv.edit.quotes" />
+            )}
+          </span>
+          <BaseCurrency provider={provider} />
+        </Typography>
+      )}
 
-      <Typography className="trade" variant="h4">
-        <span>
-          <FormattedMessage id="copyt.trading" />
-        </span>
-        <Box className="imageBox">
-          {provider.exchanges.map((item, index) => (
-            <ExchangeIcon exchange={item} key={index} size="small" />
-          ))}
-        </Box>
-      </Typography>
-
-      <Typography className="type" variant="h4">
-        <span>
-          <FormattedMessage id="accounts.exchange.type" />
-        </span>
-        <b>{provider.exchangeType ? provider.exchangeType.toUpperCase() : ""}</b>
-      </Typography>
+      {!provider.profitSharing && (
+        <Typography className="trade" variant="h4">
+          <span>
+            <FormattedMessage id="copyt.trading" />
+          </span>
+          <Box className="imageBox">
+            {provider.exchanges.map((item, index) => (
+              <ExchangeIcon exchange={item} key={index} size="small" />
+            ))}
+          </Box>
+        </Typography>
+      )}
 
       <Typography className="copiers" variant="h4">
         <span>
@@ -96,25 +93,35 @@ const TraderHeaderInfo = ({ provider }) => {
       </Typography>
 
       {provider.profitSharing ? (
-        <Tooltip
-          placement="top"
-          title={
-            <FormattedMessage
-              id="copyt.successfee.tootltip"
-              values={{
-                providerShare: provider.profitsShare,
-                userShare: 100 - provider.profitsShare,
-              }}
-            />
-          }
-        >
-          <Typography className="price" variant="h4">
-            <span>
-              <FormattedMessage id="copyt.successfee" />
-            </span>
-            <b>{`${provider.profitsShare}%`}</b>
-          </Typography>
-        </Tooltip>
+        <>
+          <Tooltip
+            placement="top"
+            title={
+              <FormattedMessage
+                id="copyt.successfee.tootltip"
+                values={{
+                  providerShare: provider.profitsShare,
+                  userShare: 100 - provider.profitsShare,
+                }}
+              />
+            }
+          >
+            <Typography className="price" variant="h4">
+              <span>
+                <FormattedMessage id="copyt.successfee" />
+              </span>
+              <b>{`${provider.profitsShare}%`}</b>
+            </Typography>
+          </Tooltip>
+          {provider.maxDrawdown && (
+            <Typography className="traderType" variant="h4">
+              <span>
+                <FormattedMessage id="copyt.profitsharing.maxDrawdown.short" />
+              </span>
+              <b>{provider.maxDrawdown}%</b>
+            </Typography>
+          )}
+        </>
       ) : (
         <Typography className="price" variant="h4">
           <span>
@@ -161,21 +168,22 @@ const TraderHeaderInfo = ({ provider }) => {
         </Typography>
       )}
 
-      {provider.isCopyTrading && (
-        <Typography className="traderType" variant="h4">
-          <span>
-            <FormattedMessage id="accounts.exchange.type" />
-          </span>
-          <b>
-            {provider.profitSharing ? (
-              <FormattedMessage id="copyt.profitsharing" />
-            ) : (
-              <FormattedMessage id="copyt.copytrading" />
-            )}
-            {provider.profitSharing && profitsMode && ` / ${profitsMode}`}
-          </b>
-        </Typography>
-      )}
+      <Typography className="traderType" variant="h4">
+        <span>
+          <FormattedMessage id="accounts.exchange.type" />
+        </span>
+        <b>
+          {provider.profitSharing ? (
+            <FormattedMessage id="copyt.profitsharing" />
+          ) : provider.isCopyTrading ? (
+            <FormattedMessage id="copyt.copytrading" />
+          ) : (
+            <FormattedMessage id="srv.signalProvider" />
+          )}
+          {provider.exchangeType && ` (${provider.exchangeType.toUpperCase()})`}
+          {provider.profitSharing && profitsMode && ` / ${profitsMode}`}
+        </b>
+      </Typography>
 
       <Hidden smUp>
         {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (

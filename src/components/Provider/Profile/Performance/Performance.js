@@ -3,6 +3,7 @@ import "./Performance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { formatCurrency } from "../../../../utils/format";
+import { formatPrice } from "utils/formatters";
 import PerformanceGraph from "./PerformanceGraph";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -81,11 +82,14 @@ const PerformanceOverview = ({ provider }) => {
                 justifyContent="space-between"
               >
                 <Typography variant="body1">
-                  {provider.copyTradingQuote}&nbsp;
-                  <FormattedMessage id="accounts.balance" />
+                  <FormattedMessage id="copyt.management.totalallocated" />
                 </Typography>
-                <Typography className="green" variant="h4">
-                  {formatCurrency(provider.performance.totalBalance)}
+                <Typography variant="h4">
+                  {`${formatPrice(provider.performance.totalBalance, "", " ", true)}`}
+                  {provider.maxAllocatedBalance &&
+                    ` / ${formatPrice(provider.maxAllocatedBalance, "", " ", true)} ${
+                      provider.copyTradingQuote
+                    }`}
                 </Typography>
               </Box>
             )}
@@ -101,7 +105,7 @@ const PerformanceOverview = ({ provider }) => {
                 <FormattedMessage id="srv.totalvol" />
               </Typography>
               <Typography variant="h4">
-                {formatCurrency(provider.performance.totalTradingVolume)}{" "}
+                {formatPrice(provider.performance.totalTradingVolume, "", " ", true)}{" "}
                 {provider.copyTradingQuote}
               </Typography>
             </Box>

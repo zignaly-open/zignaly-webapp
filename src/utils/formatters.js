@@ -22,7 +22,7 @@ export const formatNumber = (value, precision = 8) => {
  * @param {number} [precision=2] Fractional digits precision.
  * @returns {string} String numeric value with added thousands separator chars.
  */
-export const addThousandsSeparator = (value, separator = " ", precision = 2) => {
+export const addThousandsSeparator = (value, separator = " ", precision = 2, compact = false) => {
   const valueNumber = parseFloat(value);
 
   if (typeof valueNumber === "number") {
@@ -30,6 +30,10 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2) => 
       new Intl.NumberFormat("en-US", {
         minimumFractionDigits: precision,
         maximumFractionDigits: precision,
+        ...(compact && {
+          notation: "compact",
+          compactDisplay: "short",
+        }),
       }).format(valueNumber),
     );
 
@@ -50,7 +54,7 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2) => 
  *
  * @returns {string} Formatter price for display.
  */
-export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") => {
+export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ", compact = false) => {
   const priceFloat = typeof price === "string" ? parseFloat(price) : price;
   if (isNaN(priceFloat)) {
     return nanDisplay;
@@ -62,7 +66,7 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
     precision = 2;
   }
 
-  return addThousandsSeparator(formattedPrice, thousandSeparator, precision);
+  return addThousandsSeparator(formattedPrice, thousandSeparator, precision, compact);
 };
 
 /**
