@@ -124,7 +124,7 @@ const CustomSelect = (props) => {
    * @returns {void}
    */
   const handleChange = (val) => {
-    if (typeof options === "object") {
+    if (typeof options === "object" && options.length && typeof options[0] === "object") {
       // @ts-ignore
       const found = options.find((o) => o.val === val);
       // Ignore disabled option. We use a fake .disabled class otherwise it blocks the tooltip.

@@ -77,7 +77,7 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ", co
  * @return {string} url
  */
 export const prefixLinkForXSS = (url) => {
-  if (!url.startsWith("http")) {
+  if (url && !url.startsWith("http")) {
     return "https://" + url;
   }
   return url;

@@ -16,13 +16,14 @@ import SocialLink from "../SocialLink";
  * @param {Object} props Props
  * @param {string} props.name Name
  * @param {string} props.logoUrl Logo
+ * @param {string} props.url Url
  * @param {boolean} props.verified Verified
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderName = ({ name, logoUrl, verified }) => (
+const ProviderName = ({ name, logoUrl, verified, url }) => (
   <Box alignItems="center" className="providerName" display="flex">
     <ProviderLogo size="40px" title={name} url={logoUrl} />
-    <Link className="link" to="">
+    <Link className="link" to={url}>
       <Typography variant="h4">
         {name}
         {verified && <VerifiedIcon />}
@@ -129,10 +130,30 @@ const WhoWeAre = ({ provider }) => {
               </Typography>
 
               <Box display="flex" flexWrap="wrap">
-                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
-                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
-                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
-                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+                <ProviderName
+                  logoUrl={provider.logoUrl}
+                  name={provider.name}
+                  verified={true}
+                  url={provider.providerLink}
+                />
+                <ProviderName
+                  logoUrl={provider.logoUrl}
+                  name={provider.name}
+                  verified={true}
+                  url={provider.providerLink}
+                />
+                <ProviderName
+                  logoUrl={provider.logoUrl}
+                  name={provider.name}
+                  verified={true}
+                  url={provider.providerLink}
+                />
+                <ProviderName
+                  logoUrl={provider.logoUrl}
+                  name={provider.name}
+                  verified={true}
+                  url={provider.providerLink}
+                />
               </Box>
             </Box>
           </Box>

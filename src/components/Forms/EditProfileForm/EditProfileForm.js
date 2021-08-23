@@ -97,12 +97,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     {
       label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }),
       val: "unlisted",
-      disabled: provider.privacy !== "unlisted",
+      disabled: provider.privacy && provider.privacy !== "unlisted",
     },
     {
       label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }),
       val: "listed_profile",
-      disabled: provider.privacy !== "unlisted",
     },
     {
       label: intl.formatMessage({ id: "srv.edit.privacy.listedMarketplace" }),
@@ -632,44 +631,48 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   />
                 </Box>
               )}
-              {provider.isCopyTrading && provider.profitSharing && (
+              {provider.isCopyTrading && (
                 <>
-                  <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className="customLabel">
-                      <FormattedMessage id="copyt.profitsharing.percentage" />
-                    </label>
-                    <CustomNumberInput
-                      control={control}
-                      defaultValue={provider.profitsShare}
-                      errors={errors}
-                      name="profitsShare"
-                      rules={{ required: true }}
-                      suffix="%"
-                    />
-                  </Box>
-                  <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className="customLabel">
-                      <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
-                    </label>
-                    <CustomNumberInput
-                      control={control}
-                      defaultValue={provider.maxDrawdown}
-                      errors={errors}
-                      name="maxDrawdown"
-                      rules={{
-                        validate: {
-                          max: (val) =>
-                            val <= 100 &&
-                            (!provider.maxDrawdown ||
-                              val <= provider.maxDrawdown ||
-                              intl.formatMessage({
-                                id: "copyt.profitsharing.maxDrawdown.max",
-                              })),
-                        },
-                      }}
-                      suffix="%"
-                    />
-                  </Box>
+                  {provider.profitSharing && (
+                    <>
+                      <Box className="inputBox" display="flex" flexDirection="column">
+                        <label className="customLabel">
+                          <FormattedMessage id="copyt.profitsharing.percentage" />
+                        </label>
+                        <CustomNumberInput
+                          control={control}
+                          defaultValue={provider.profitsShare}
+                          errors={errors}
+                          name="profitsShare"
+                          rules={{ required: true }}
+                          suffix="%"
+                        />
+                      </Box>
+                      <Box className="inputBox" display="flex" flexDirection="column">
+                        <label className="customLabel">
+                          <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                        </label>
+                        <CustomNumberInput
+                          control={control}
+                          defaultValue={provider.maxDrawdown}
+                          errors={errors}
+                          name="maxDrawdown"
+                          rules={{
+                            validate: {
+                              max: (val) =>
+                                val <= 100 &&
+                                (!provider.maxDrawdown ||
+                                  val <= provider.maxDrawdown ||
+                                  intl.formatMessage({
+                                    id: "copyt.profitsharing.maxDrawdown.max",
+                                  })),
+                            },
+                          }}
+                          suffix="%"
+                        />
+                      </Box>
+                    </>
+                  )}
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className="customLabel">
                       <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance" />
