@@ -2,22 +2,40 @@ import React, { Fragment } from "react";
 import "./WhoWeAre.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import FacebookIcon from "../../../../images/ct/facebook.svg";
-import TwitterIcon from "../../../../images/ct/twitter.svg";
-import DiscordIcon from "../../../../images/ct/discord.svg";
-import LinkedinIcon from "../../../../images/ct/linkedin.svg";
-import TelegramIcon from "../../../../images/ct/telegram.svg";
-import EmailIcon from "@material-ui/icons/Email";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 import FlagIcon from "components/FlagIcon";
 import { prefixLinkForXSS } from "utils/formatters";
+import { Link } from "gatsby";
+import VerifiedIcon from "components/Provider/VerifiedIcon";
+import ProviderLogo from "components/Provider/ProviderHeader/ProviderLogo";
+import SocialLink from "../SocialLink";
+
+/**
+ * @param {Object} props Props
+ * @param {string} props.name Name
+ * @param {string} props.logoUrl Logo
+ * @param {boolean} props.verified Verified
+ * @returns {JSX.Element} Component JSX.
+ */
+const ProviderName = ({ name, logoUrl, verified }) => (
+  <Box alignItems="center" className="providerName" display="flex">
+    <ProviderLogo size="40px" title={name} url={logoUrl} />
+    <Link className="link" to="">
+      <Typography variant="h4">
+        {name}
+        {verified && <VerifiedIcon />}
+      </Typography>
+    </Link>
+  </Box>
+);
 
 /**
  * @typedef {Object} DefaultProps
  * @property {import('../../../../services/tradeApiClient.types').DefaultProviderGetObject} provider
  */
+
 /**
  * Who we are compoennt for CT profile.
  *
@@ -26,18 +44,6 @@ import { prefixLinkForXSS } from "utils/formatters";
  */
 const WhoWeAre = ({ provider }) => {
   const { show, setShow, isMobile } = useProfileBoxShow();
-
-  /**
-   * Function to redirect to social links.
-   *
-   * @param {String} link Link of the social accound.
-   * @returns {void} None.
-   */
-  const redirectToSocial = (link) => {
-    if (typeof window !== "undefined") {
-      window.open(prefixLinkForXSS(link), "_blank");
-    }
-  };
 
   return (
     <Box
@@ -106,64 +112,26 @@ const WhoWeAre = ({ provider }) => {
             >
               {provider.social &&
                 provider.social.length > 0 &&
-                provider.social.map((item, index) => (
+                provider.social.map((social, index) => (
                   <Fragment key={index}>
-                    {item.network && item.network.toLowerCase() === "facebook" && (
-                      <img
-                        alt="faceook-icon"
-                        className="icon"
-                        onClick={() => redirectToSocial(item.link)}
-                        src={FacebookIcon}
-                      />
-                    )}
-                    {item.network && item.network.toLowerCase() === "twitter" && (
-                      <img
-                        alt="twitter-icon"
-                        className="icon"
-                        onClick={() => redirectToSocial(item.link)}
-                        src={TwitterIcon}
-                      />
-                    )}
-                    {item.network && item.network.toLowerCase() === "linkedin" && (
-                      <img
-                        alt="linkedin-icon"
-                        className="icon"
-                        onClick={() => redirectToSocial(item.link)}
-                        src={LinkedinIcon}
-                      />
-                    )}
-                    {item.network && item.network.toLowerCase() === "telegram" && (
-                      <img
-                        alt="tttt-icon"
-                        className="icon"
-                        onClick={() => redirectToSocial(item.link)}
-                        src={TelegramIcon}
-                      />
-                    )}
-                    {item.network && item.network.toLowerCase() === "discord" && (
-                      <img
-                        alt="discord-icon"
-                        className="icon"
-                        onClick={() => redirectToSocial(item.link)}
-                        src={DiscordIcon}
-                      />
-                    )}
-                    {item.network && item.network.toLowerCase() === "email" && (
-                      <a href={"mailto:" + item.link} rel="noreferrer" target="_blank">
-                        <EmailIcon className="icon" />
-                      </a>
+                    {social.network && (
+                      <SocialLink type={social.network.toLowerCase()} url={social.link} />
                     )}
                   </Fragment>
                 ))}
             </Box>
+            <Link className="link" target="_blank" to={prefixLinkForXSS(provider.website)}>
+              <Typography>{provider.website}</Typography>
+            </Link>
+            <Box className="otherServicesBox">
+              <Typography variant="h3">
+                <FormattedMessage id="srv.otherServices" />
+              </Typography>
+
+              <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+              <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+            </Box>
           </Box>
-          <Typography
-            className="website"
-            onClick={() => redirectToSocial(provider.website)}
-            variant="body1"
-          >
-            {provider.website}
-          </Typography>
         </>
       )}
     </Box>

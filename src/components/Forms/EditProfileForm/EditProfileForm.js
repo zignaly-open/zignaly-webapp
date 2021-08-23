@@ -640,10 +640,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     </label>
                     <CustomNumberInput
                       control={control}
+                      defaultValue={provider.profitsShare}
                       errors={errors}
                       name="profitsShare"
                       rules={{ required: true }}
-                      defaultValue={provider.profitsShare}
                       suffix="%"
                     />
                   </Box>
@@ -653,6 +653,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     </label>
                     <CustomNumberInput
                       control={control}
+                      defaultValue={provider.maxDrawdown}
                       errors={errors}
                       name="maxDrawdown"
                       rules={{
@@ -667,7 +668,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         },
                       }}
                       suffix="%"
-                      defaultValue={provider.maxDrawdown}
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
@@ -676,10 +676,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     </label>
                     <CustomNumberInput
                       control={control}
+                      defaultValue={provider.maxAllocatedBalance}
                       errors={errors}
                       name="maxAllocatedBalance"
-                      defaultValue={provider.maxAllocatedBalance}
-                      suffix={provider.copyTradingQuote}
                       rules={{
                         validate: {
                           max: (val) =>
@@ -693,6 +692,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                             ),
                         },
                       }}
+                      suffix={provider.copyTradingQuote}
                     />
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
@@ -701,9 +701,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     </label>
                     <CustomNumberInput
                       control={control}
+                      defaultValue={provider.maxPositions}
                       errors={errors}
                       name="maxPositions"
-                      defaultValue={provider.maxPositions}
                     />
                   </Box>
                 </>

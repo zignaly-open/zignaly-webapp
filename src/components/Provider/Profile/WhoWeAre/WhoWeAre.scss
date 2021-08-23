@@ -3,9 +3,12 @@
   padding: 30px 20px;
   width: 100%;
 
-  .website {
-    color: var(--purple);
-    cursor: pointer;
+  .providerName {
+    margin-bottom: 12px;
+
+    a {
+      margin-left: 10px;
+    }
   }
 
   .topBox {
@@ -43,14 +46,14 @@
 
     .socialBox {
       .icon {
-        color: var(--purple);
-        cursor: pointer;
-        height: 39px;
         margin-bottom: 20px;
         margin-right: 30px;
-        width: 39px;
       }
     }
+  }
+
+  .otherServicesBox {
+    margin-top: 30px;
   }
 }
 
@@ -83,9 +86,7 @@
         flex-wrap: wrap;
 
         .icon {
-          height: 30px;
           margin-right: 12px;
-          width: 30px;
         }
       }
     }

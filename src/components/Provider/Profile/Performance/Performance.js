@@ -2,7 +2,6 @@ import React from "react";
 import "./Performance.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
-import { formatCurrency } from "../../../../utils/format";
 import { formatPrice } from "utils/formatters";
 import PerformanceGraph from "./PerformanceGraph";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";

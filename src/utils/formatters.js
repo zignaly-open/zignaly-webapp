@@ -20,6 +20,7 @@ export const formatNumber = (value, precision = 8) => {
  * @param {string} value String numeric value.
  * @param {string} [separator=" "] Thousands separator character.
  * @param {number} [precision=2] Fractional digits precision.
+ * @param {boolean} [compact=false] Abbreviate big numbers
  * @returns {string} String numeric value with added thousands separator chars.
  */
 export const addThousandsSeparator = (value, separator = " ", precision = 2, compact = false) => {
@@ -51,6 +52,7 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2, com
  * @param {number|string} price Price to format.
  * @param {string} [nanDisplay] Value to display when price is NaN.
  * @param {string} [thousandSeparator] Character to use for thousand separator.
+ * @param {boolean} [compact=false] Abbreviate big numbers
  *
  * @returns {string} Formatter price for display.
  */
