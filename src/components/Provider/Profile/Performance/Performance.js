@@ -81,11 +81,17 @@ const PerformanceOverview = ({ provider }) => {
                 justifyContent="space-between"
               >
                 <Typography variant="body1">
-                  <FormattedMessage id="copyt.management.totalallocated" />
+                  <FormattedMessage
+                    id={
+                      isNaN(provider.maxAllocatedBalance)
+                        ? "copyt.management.totalallocated"
+                        : "copyt.management.totalallocated.withmax"
+                    }
+                  />
                 </Typography>
                 <Typography variant="h4">
                   {`${formatPrice(provider.performance.totalBalance, "", " ", true)}`}
-                  {provider.maxAllocatedBalance &&
+                  {!isNaN(provider.maxAllocatedBalance) &&
                     ` / ${formatPrice(provider.maxAllocatedBalance, "", " ", true)}`}
                   {` ${provider.copyTradingQuote}`}
                 </Typography>
