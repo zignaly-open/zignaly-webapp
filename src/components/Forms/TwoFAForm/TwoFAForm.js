@@ -124,76 +124,81 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       flexDirection="column"
       justifyContent="center"
     >
-      <Modal onClose={() => showResetTwoFAModal(false)} size="small" state={resetTwoFAModal}>
+      {resetTwoFAModal ? (
         <ResetTwoFAForm token={data.token} />
-      </Modal>
-      {isKnownDeviceVerified && is2FAVerified && <CircularProgress color="primary" size={40} />}
-      {!isKnownDeviceVerified && (
+      ) : (
         <>
-          <Box
-            alignItems="center"
-            className="verifyBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="start"
-          >
-            <Typography align="center" variant="h3">
-              <FormattedMessage id="security.device.title" />
-            </Typography>
-            <label className="customLabel">
-              <Typography>
-                <FormattedMessage id="security.device.input" />
+          {isKnownDeviceVerified && is2FAVerified && <CircularProgress color="primary" size={40} />}
+          {!isKnownDeviceVerified && (
+            <>
+              <Box
+                alignItems="center"
+                className="verifyBox"
+                display="flex"
+                flexDirection="column"
+                justifyContent="start"
+              >
+                <Typography align="center" variant="h3">
+                  <FormattedMessage id="security.device.title" />
+                </Typography>
+                <label className="customLabel">
+                  <Typography>
+                    <FormattedMessage id="security.device.input" />
+                  </Typography>
+                </label>
+                {/* @ts-ignore */}
+                <ReactCodeInput
+                  className="inputBox"
+                  fields={6}
+                  loading={verifyingDevice}
+                  onComplete={submitKnownDeviceCode}
+                />
+                <Box alignItems="center" className="linkBox" display="flex">
+                  <Typography className="link" onClick={resendCode}>
+                    <FormattedMessage id="security.device.resend" />
+                  </Typography>
+                  {sendingCode && (
+                    <CircularProgress className="spinner" color="primary" size={18} />
+                  )}
+                </Box>
+              </Box>
+            </>
+          )}
+          {!is2FAVerified && (
+            <>
+              <Box
+                alignItems="center"
+                className="faBox"
+                display="flex"
+                flexDirection="column"
+                justifyContent="start"
+              >
+                {!data.isUnknownDevice && (
+                  <Typography variant="h3">
+                    <FormattedMessage id="security.2fa.title" />
+                  </Typography>
+                )}
+                <label className="customLabel">
+                  <Typography>
+                    <FormattedMessage id="security.2fa.input" />
+                  </Typography>
+                </label>
+                {/* @ts-ignore */}
+                <ReactCodeInput
+                  autoFocus={!data.isUnknownDevice}
+                  className="inputBox"
+                  fields={6}
+                  loading={verifying2FA}
+                  onComplete={submit2FACode}
+                />
+              </Box>
+              <Typography className="linkBox">
+                <span className="link" onClick={() => showResetTwoFAModal(true)}>
+                  <FormattedMessage id="security.2fa.unavailable" />
+                </span>
               </Typography>
-            </label>
-            {/* @ts-ignore */}
-            <ReactCodeInput
-              className="inputBox"
-              fields={6}
-              loading={verifyingDevice}
-              onComplete={submitKnownDeviceCode}
-            />
-            <Box alignItems="center" className="linkBox" display="flex">
-              <Typography className="link" onClick={resendCode}>
-                <FormattedMessage id="security.device.resend" />
-              </Typography>
-              {sendingCode && <CircularProgress className="spinner" color="primary" size={18} />}
-            </Box>
-          </Box>
-        </>
-      )}
-      {!is2FAVerified && (
-        <>
-          <Box
-            alignItems="center"
-            className="faBox"
-            display="flex"
-            flexDirection="column"
-            justifyContent="start"
-          >
-            {!data.isUnknownDevice && (
-              <Typography variant="h3">
-                <FormattedMessage id="security.2fa.title" />
-              </Typography>
-            )}
-            <label className="customLabel">
-              <Typography>
-                <FormattedMessage id="security.2fa.input" />
-              </Typography>
-            </label>
-            {/* @ts-ignore */}
-            <ReactCodeInput
-              autoFocus={!data.isUnknownDevice}
-              className="inputBox"
-              fields={6}
-              loading={verifying2FA}
-              onComplete={submit2FACode}
-            />
-          </Box>
-          <Typography className="linkBox">
-            <span className="link" onClick={() => showResetTwoFAModal(true)}>
-              <FormattedMessage id="security.2fa.unavailable" />
-            </span>
-          </Typography>
+            </>
+          )}
         </>
       )}
     </Box>
