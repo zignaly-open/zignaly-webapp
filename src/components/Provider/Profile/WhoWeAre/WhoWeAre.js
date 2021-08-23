@@ -128,8 +128,12 @@ const WhoWeAre = ({ provider }) => {
                 <FormattedMessage id="srv.otherServices" />
               </Typography>
 
-              <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
-              <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+              <Box display="flex" flexWrap="wrap">
+                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+                <ProviderName logoUrl={provider.logoUrl} name={provider.name} verified={true} />
+              </Box>
             </Box>
           </Box>
         </>
