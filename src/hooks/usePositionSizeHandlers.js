@@ -170,7 +170,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
-  const realInvestmentChange = useCallback(() => {
+  const realInvestmentChange = () => {
     if (errors.realInvestment) return;
 
     const draftPosition = getValues();
@@ -181,7 +181,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         updateUnits(positionSize);
       }
     });
-  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
+  };
 
   /**
    * @param {number} positionSize .
@@ -199,7 +199,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     }
   };
 
-  const positionSizeChange = useCallback(() => {
+  const positionSizeChange = () => {
     if (errors.positionSize) return;
 
     const draftPosition = getValues();
@@ -208,19 +208,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
-  }, [
-    errors,
-    currentPrice,
-    getValues,
-    setValue,
-    trigger,
-    leverage,
-    multiplier,
-    entryStrategy,
-    currentPriceShort,
-  ]);
+  };
 
-  const positionSizePercentageChange = useCallback(() => {
+  const positionSizePercentageChange = () => {
     if (errors.positionSizePercentage) return;
 
     const draftPosition = getValues();
@@ -228,7 +218,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const positionSize = (positionSizePercentage * providerAllocatedBalance) / 100;
     setValue("positionSizeAllocated", positionSize.toFixed(8));
-  }, [errors, getValues, setValue, providerAllocatedBalance]);
+  };
 
   const unitsChange = () => {
     const draftPosition = getValues();
