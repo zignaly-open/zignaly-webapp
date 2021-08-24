@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
@@ -227,12 +227,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     let positionSize = units * currentPrice;
     if (selectedSymbol.contractType === "inverse") {
-      positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+      positionSize = (units / currentPrice) * multiplier;
     } else if (
       selectedSymbol.contractType === "quanto" ||
       selectedSymbol.contractType === "linear"
     ) {
-      positionSize *= selectedSymbol.multiplier;
+      positionSize *= multiplier;
     }
 
     setValue("positionSize", positionSize.toFixed(8));
