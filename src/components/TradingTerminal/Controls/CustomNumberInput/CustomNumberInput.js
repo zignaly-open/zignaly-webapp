@@ -109,8 +109,12 @@ const CustomNumberInput = (props) => {
               // Format event value
               e.target.value = val;
               _onChange(e);
-              // Callback
-              if (onChange) onChange(e);
+
+              if (onChange) {
+                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                // Even with useCallback, it wasn't working with CustomNumberInput.
+                setTimeout(() => onChange(e), 0);
+              }
             }
           }}
           value={value}

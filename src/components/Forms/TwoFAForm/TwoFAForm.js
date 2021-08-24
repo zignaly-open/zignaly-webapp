@@ -5,7 +5,6 @@ import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import Modal from "../../Modal";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
