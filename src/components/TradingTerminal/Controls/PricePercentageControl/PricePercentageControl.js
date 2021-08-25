@@ -72,6 +72,7 @@ const PricePercentageControl = ({
                 positive: (value) => value >= 0 || percentage.error,
               },
             }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow
@@ -86,7 +87,9 @@ const PricePercentageControl = ({
         </Box>
         <Box
           alignItems="center"
-          className={`pricePercentageInput ${priorityValue !== "price" ? "disabled" : ""}`}
+          className={`pricePercentageInput ${disabled ? "readOnly" : ""} ${
+            priorityValue !== "price" ? "disabled" : ""
+          }`}
           display="flex"
           onClick={() => priorityValue !== "price" && togglePriority()}
         >
@@ -99,6 +102,7 @@ const PricePercentageControl = ({
                 positive: (value) => value >= 0 || price.error,
               },
             }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow

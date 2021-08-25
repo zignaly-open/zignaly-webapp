@@ -265,6 +265,7 @@ const TrailingStopPanel = (props) => {
                   validate: (value) =>
                     lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
                 }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">%</div>
             </Box>

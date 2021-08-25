@@ -81,7 +81,7 @@ const ReduceStrategyPanel = (props) => {
    *
    * @returns {void}
    */
-  const reduceAvailablePercentageChange = useCallback(() => {
+  const reduceAvailablePercentageChange = () => {
     if (errors.reduceAvailablePercentage) return;
 
     const draftPosition = getValues();
@@ -89,7 +89,7 @@ const ReduceStrategyPanel = (props) => {
 
     const targetUnits = (reduceAvailablePercentage / 100) * amount;
     setReduceTargetUnits(targetUnits.toString());
-  }, [errors, amount, getValues]);
+  };
 
   // Watched inputs that affect components.
   const reduceRecurring = watch("reduceRecurring");
@@ -167,6 +167,7 @@ const ReduceStrategyPanel = (props) => {
                       !isNaN(value) ||
                       formatMessage({ id: "terminal.reducestrategy.percentage.error" }),
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">%</div>
               </Box>
@@ -201,6 +202,7 @@ const ReduceStrategyPanel = (props) => {
                       validPercentage(value, "terminal.reducestrategy.percentage.limit"),
                   },
                 }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">%</div>
             </Box>
