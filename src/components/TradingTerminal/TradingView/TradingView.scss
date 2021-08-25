@@ -11,6 +11,11 @@
 
     @include media("<=sm") {
       flex-direction: column;
+      padding: 10px;
+      margin-bottom: 10px;
+      &>.symbolsSelector {
+        margin: 0;
+      }
     }
   }
 
