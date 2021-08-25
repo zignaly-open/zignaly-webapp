@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
@@ -170,7 +170,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
-  const realInvestmentChange = useCallback(() => {
+  const realInvestmentChange = () => {
     if (errors.realInvestment) return;
 
     const draftPosition = getValues();
@@ -181,7 +181,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         updateUnits(positionSize);
       }
     });
-  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
+  };
 
   /**
    * @param {number} positionSize .
@@ -199,7 +199,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     }
   };
 
-  const positionSizeChange = useCallback(() => {
+  const positionSizeChange = () => {
     if (errors.positionSize) return;
 
     const draftPosition = getValues();
@@ -208,19 +208,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
-  }, [
-    errors,
-    currentPrice,
-    getValues,
-    setValue,
-    trigger,
-    leverage,
-    multiplier,
-    entryStrategy,
-    currentPriceShort,
-  ]);
+  };
 
-  const positionSizePercentageChange = useCallback(() => {
+  const positionSizePercentageChange = () => {
     if (errors.positionSizePercentage) return;
 
     const draftPosition = getValues();
@@ -228,7 +218,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const positionSize = (positionSizePercentage * providerAllocatedBalance) / 100;
     setValue("positionSizeAllocated", positionSize.toFixed(8));
-  }, [errors, getValues, setValue, providerAllocatedBalance]);
+  };
 
   const unitsChange = () => {
     const draftPosition = getValues();
@@ -237,12 +227,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     let positionSize = units * currentPrice;
     if (selectedSymbol.contractType === "inverse") {
-      positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+      positionSize = (units / currentPrice) * multiplier;
     } else if (
       selectedSymbol.contractType === "quanto" ||
       selectedSymbol.contractType === "linear"
     ) {
-      positionSize *= selectedSymbol.multiplier;
+      positionSize *= multiplier;
     }
 
     setValue("positionSize", positionSize.toFixed(8));
