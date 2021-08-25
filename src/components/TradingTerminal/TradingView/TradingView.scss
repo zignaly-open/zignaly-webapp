@@ -71,7 +71,6 @@
     @include media(">=sm", "<=1215px") {
       flex: 0 0 100%;
       height: 500px;
-      margin-bottom: 15px;
     }
 
     @include media(">=lg") {
