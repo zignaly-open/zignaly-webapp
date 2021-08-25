@@ -5,7 +5,10 @@
       fieldset,
       .currencyBox {
         cursor: pointer;
-        opacity: 0.6;
+
+        &:active {
+          pointer-events: all;
+        }
       }
     }
   }

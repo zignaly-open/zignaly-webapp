@@ -259,6 +259,7 @@ const TrailingStopPanel = (props) => {
             <Box alignItems="center" display="flex">
               <CustomNumberInput
                 allowNegative={true}
+                showErrorMessage={false}
                 disabled={fieldsDisabled.trailingStopDistance}
                 name="trailingStopDistance"
                 rules={{

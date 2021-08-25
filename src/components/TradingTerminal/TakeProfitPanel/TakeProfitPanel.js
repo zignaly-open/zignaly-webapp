@@ -457,6 +457,7 @@ const TakeProfitPanel = (props) => {
                             },
                           }
                     }
+                    showErrorMessage={false}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
@@ -483,6 +484,7 @@ const TakeProfitPanel = (props) => {
                                 },
                               }
                         }
+                        showErrorMessage={false}
                       />
                       <div className="currencyBox">{symbolData.unitsAmount}</div>
                     </Box>

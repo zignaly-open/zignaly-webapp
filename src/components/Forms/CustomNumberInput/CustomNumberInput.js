@@ -66,6 +66,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
  * @property {Control} [control]
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
+ * @property {boolean} [showErrorMessage]
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -83,6 +84,7 @@ const CustomNumberInput = (props) => {
     suffix,
     errors,
     control,
+    showErrorMessage = true,
     ...others
   } = props;
   const context = useFormContext();
@@ -149,7 +151,9 @@ const CustomNumberInput = (props) => {
           },
         }}
       />
-      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+      {showErrorMessage && errors[name] && (
+        <span className="errorText">{errors[name].message}</span>
+      )}
     </>
   );
 };
