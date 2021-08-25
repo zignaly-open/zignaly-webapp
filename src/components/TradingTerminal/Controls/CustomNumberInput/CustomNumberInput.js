@@ -60,6 +60,10 @@ import { OutlinedInput } from "@material-ui/core";
  * @property {function} [onChange] Change callback
  * @property {ValidationRules} [rules] Change callback
  * @property {boolean} [allowNegative] Allow negative numbers
+ * @property {Control} [control]
+ * @property {FieldErrors} [errors]
+ * @property {boolean} [error]
+ * @property {boolean} [showErrorMessage]
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -68,8 +72,23 @@ import { OutlinedInput } from "@material-ui/core";
  * @returns {JSX.Element} JSX
  */
 const CustomNumberInput = (props) => {
-  const { name, defaultValue = "", onChange, rules, allowNegative = false, ...others } = props;
-  const { errors, control } = useFormContext();
+  let {
+    name,
+    defaultValue = "",
+    onChange,
+    rules,
+    allowNegative = false,
+    suffix,
+    errors,
+    control,
+    showErrorMessage = true,
+    ...others
+  } = props;
+  const context = useFormContext();
+  if (!control) {
+    control = context.control;
+    errors = context.errors;
+  }
 
   /**
    * @param {React.ChangeEvent<*>} e Event
@@ -94,35 +113,49 @@ const CustomNumberInput = (props) => {
 
   // todo: we could add sign prefix here
   return (
-    <Controller
-      control={control}
-      defaultValue={defaultValue}
-      name={name}
-      render={({ onChange: _onChange, value }) => (
-        <OutlinedInput
-          className="outlineInput"
-          error={!!errors[name]}
-          name={name}
-          onChange={(e) => {
-            const val = handleChangeNumber(e);
-            if (val !== null) {
-              // Format event value
-              e.target.value = val;
-              _onChange(e);
-
-              if (onChange) {
-                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
-                // Even with useCallback, it wasn't working with CustomNumberInput.
-                setTimeout(() => onChange(e), 0);
+    <>
+      <Controller
+        control={control}
+        defaultValue={defaultValue}
+        name={name}
+        render={({ onChange: _onChange, value }) => (
+          <OutlinedInput
+            className="customInput outlineInput"
+            endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
+            error={!!errors[name]}
+            name={name}
+            onChange={(e) => {
+              const val = handleChangeNumber(e);
+              if (val !== null) {
+                // Format event value
+                e.target.value = val;
+                _onChange(e);
+                // Callback
+                if (onChange) {
+                  // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                  // Even with useCallback, it wasn't working with CustomNumberInput.
+                  setTimeout(() => onChange(e), 0);
+                }
               }
-            }
-          }}
-          value={value}
-          {...others}
-        />
+            }}
+            value={value}
+            {...others}
+          />
+        )}
+        rules={rules}
+        transform={{
+          // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+          output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+            // Convert to number for easier validation
+            const output = parseInt(e.target.value, 10);
+            return isNaN(output) ? 0 : output;
+          },
+        }}
+      />
+      {showErrorMessage && errors[name] && (
+        <span className="errorText">{errors[name].message}</span>
       )}
-      rules={rules}
-    />
+    </>
   );
 };
 
