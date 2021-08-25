@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { OutlinedInput } from "@material-ui/core";
+import { OutlinedInput, InputAdornment } from "@material-ui/core";
 // import MaskedInput from "@biproxi/react-text-mask";
 // import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
@@ -50,6 +50,8 @@ import { OutlinedInput } from "@material-ui/core";
 
 /**
  * @typedef {import("react-hook-form/dist/types").ValidationRules} ValidationRules
+ * * @typedef {import("react-hook-form/dist/types").Control} Control
+ * @typedef {import("react-hook-form/dist/types/form").FieldErrors} FieldErrors
  * @typedef {import("@material-ui/core/Input").InputProps} InputProps
  */
 
@@ -59,6 +61,7 @@ import { OutlinedInput } from "@material-ui/core";
  * @property {string|number} [defaultValue] defaultValue
  * @property {function} [onChange] Change callback
  * @property {ValidationRules} [rules] Change callback
+ * @property {string} [suffix] Suffix
  * @property {boolean} [allowNegative] Allow negative numbers
  * @property {Control} [control]
  * @property {FieldErrors} [errors]
