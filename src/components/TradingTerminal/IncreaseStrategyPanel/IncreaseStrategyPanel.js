@@ -161,13 +161,13 @@ const IncreaseStrategyPanel = (props) => {
               <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
               <Box alignItems="center" display="flex">
                 <CustomNumberInput
-                  showErrorMessage={false}
                   defaultValue={lastPrice}
                   name="price"
                   onChange={priceChange}
                   rules={{
                     validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
