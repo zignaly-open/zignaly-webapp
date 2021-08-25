@@ -107,7 +107,7 @@ const useTargetGroup = (groupName, defaultCardinality = 1) => {
    * @return {string} Target group ID (cardinality);
    */
   function getGroupTargetId(event) {
-    const targetElement = event.currentTarget;
+    const targetElement = event.target;
     const targetGroup = targetElement.closest(".targetGroup");
     const targetId = targetGroup.getAttribute("data-target-id");
 
