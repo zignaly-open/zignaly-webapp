@@ -24,10 +24,7 @@ const ProviderName = ({ name, logoUrl, verified, url }) => (
   <Box alignItems="center" className="providerName" display="flex">
     <ProviderLogo size="40px" title={name} url={logoUrl} />
     <Link className="link" to={url}>
-      <Typography variant="h4">
-        {name}
-        {verified && <VerifiedIcon />}
-      </Typography>
+      <Typography variant="h4">{name}</Typography>
     </Link>
   </Box>
 );

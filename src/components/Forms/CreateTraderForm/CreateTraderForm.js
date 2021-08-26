@@ -15,6 +15,7 @@ import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 import { getUserData } from "store/actions/user";
+import CustomNumberInput from "../CustomNumberInput";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -290,7 +291,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
           {step === 3 && (
             <>
               <Typography variant="h3">
-                <FormattedMessage id="copyt.laststep" />
+                <FormattedMessage id="copyt.lastStep" />
               </Typography>
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel" htmlFor="name">
@@ -317,29 +318,47 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                 {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
               </Box>
               {selectedModel === MODEL_PROFIT_SHARING && (
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="copyt.profitsharing.percentage" />
-                  </label>
-                  <OutlinedInput
-                    className="customInput"
-                    error={!!errors.profitsShare}
-                    inputProps={{
-                      min: 0,
-                      step: 0.01,
-                    }}
-                    inputRef={register({
-                      validate: (value) =>
-                        (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
-                        intl.formatMessage({ id: "form.error.profitsharing" }),
-                    })}
-                    name="profitsShare"
-                    type="number"
-                  />
-                  {errors.profitsShare && (
-                    <span className="errorText">{errors.profitsShare.message}</span>
-                  )}
-                </Box>
+                <>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.percentage" />
+                    </label>
+                    <OutlinedInput
+                      className="customInput"
+                      error={!!errors.profitsShare}
+                      inputProps={{
+                        min: 0,
+                        step: 0.01,
+                      }}
+                      inputRef={register({
+                        validate: (value) =>
+                          (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
+                          intl.formatMessage({ id: "form.error.profitsharing" }),
+                      })}
+                      name="profitsShare"
+                      type="number"
+                    />
+                    {errors.profitsShare && (
+                      <span className="errorText">{errors.profitsShare.message}</span>
+                    )}
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                    </label>
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
+                      name="maxDrawdown"
+                      rules={{
+                        validate: {
+                          max: (val) => val <= 100,
+                        },
+                      }}
+                      suffix="%"
+                    />
+                  </Box>
+                </>
               )}
               <CustomButton
                 className="bgPurple bold"

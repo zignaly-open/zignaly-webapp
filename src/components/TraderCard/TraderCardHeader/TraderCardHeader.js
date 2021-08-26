@@ -1,7 +1,6 @@
 import React from "react";
 import "./TraderCardHeader.scss";
 import { Typography } from "@material-ui/core";
-import VerifiedIcon from "components/Provider/VerifiedIcon";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
@@ -37,14 +36,11 @@ const TraderCardHeader = ({ provider }) => {
 
   return (
     <div className="traderCardHeader">
-      <ProviderLogo size="40px" title={name} url={logoUrl} />
+      <ProviderLogo size="40px" title={name} url={logoUrl} verified={true} />
       <div className="traderCardHeaderTitleBox">
         <div className="nameBox">
           <Link className="name" to={providerLink}>
-            <Typography variant="h4">
-              {name}
-              {true && <VerifiedIcon />}
-            </Typography>
+            <Typography variant="h4">{name}</Typography>
           </Link>
           {/* {!disable && <img alt="zignaly" className="connectedIcon" src={ConnectedIcon} />} */}
           {profitSharing ? (
