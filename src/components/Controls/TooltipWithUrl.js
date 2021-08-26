@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
  * @param {string} props.url Url
  * @returns {JSX.Element} JSX
  */
-export const TooltipWithUrl = ({ message, url }) => {
+const TooltipWithUrl = ({ message, url }) => {
   return (
     <Box alignItems="flex-start" display="flex" flexDirection="column" justifyContent="flex-start">
       <span>
@@ -22,3 +22,5 @@ export const TooltipWithUrl = ({ message, url }) => {
     </Box>
   );
 };
+
+export default TooltipWithUrl;

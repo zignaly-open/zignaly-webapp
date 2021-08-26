@@ -12,6 +12,7 @@ import { FormattedMessage } from "react-intl";
 import { withStyles } from "@material-ui/core/styles";
 import "./PrivacySlider.scss";
 import usePrevious from "hooks/usePrevious";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 const options = {
   0: "unlisted",
@@ -46,6 +47,7 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
   const [showMarketPlaceModal, setShowMarketPlaceModal] = useState(false);
   const previousValue = usePrevious(value);
   const valueNumber = getKey(value);
+  const { darkStyle } = useStoreSettingsSelector();
 
   /**
    * @param {React.ChangeEvent<{}>} event Event
@@ -80,7 +82,7 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
     },
   ];
 
-  const IOSSlider = withStyles({
+  const StyledSlider = withStyles({
     root: {
       // color: "#3880ff",
       // height: 2,
@@ -104,11 +106,11 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
       // },
     },
     markLabelActive: {
-      color: "rgba(255, 255, 255, 0.7)",
+      color: darkStyle ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.54)",
       // Hack to only set the selected value in bold, not previous ones
       [`&[data-index="${valueNumber}"]`]: {
         fontWeight: 700,
-        color: "rgba(255, 255, 255, 0.94)",
+        color: darkStyle ? "rgba(255, 255, 255, 0.94)" : "#191927",
       },
       // "&:not(.MuiSlider-markLabelActive ~ .MuiSlider-markLabelActive)": {
       //   fontWeight: 400,
@@ -183,9 +185,6 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
                   <FormattedMessage id="srv.edit.list.2.tooltip" />
                 </li>
                 <li>
-                  <FormattedMessage id="srv.edit.list.3.tooltip" />
-                </li>
-                <li>
                   <FormattedMessage id="srv.edit.list.4.tooltip" />
                 </li>
               </ul>
@@ -198,19 +197,16 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <IOSSlider
-        aria-labelledby="discrete-slider-custom"
-        // getAriaLabel={valuetext}
-        // getAriaValueText={valuetext}
-        onChange={handleChange}
-        onChangeCommitted={handleChange}
-        value={valueNumber}
+      <StyledSlider
+        aria-labelledby="privacy-slider"
         className="privacySlider"
-        // defaultValue={[1, 2]}
         marks={privacyMarks}
         max={2}
+        onChange={handleChange}
+        // defaultValue={[1, 2]}
+        onChangeCommitted={handleChange}
         step={1}
-        // track={false}
+        value={valueNumber}
         valueLabelDisplay="off"
       />
     </>

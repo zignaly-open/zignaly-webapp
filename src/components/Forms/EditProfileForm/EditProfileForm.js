@@ -876,11 +876,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 </label>
                 <Box display="flex" justifyContent="center" width="100%">
                   <PrivacySlider
-                    value={privacy}
                     onChange={setPrivacy}
                     options={{
                       unlistedDisabled: provider.privacy && provider.privacy !== "unlisted",
                     }}
+                    value={privacy}
                   />
                 </Box>
                 {/* <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} /> */}
