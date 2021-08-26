@@ -69,6 +69,7 @@ const EntryExpirationPanel = () => {
                   validate: (value) =>
                     value > 0 || formatMessage({ id: "terminal.expiration.limit.zero" }),
                 }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.minutes" />

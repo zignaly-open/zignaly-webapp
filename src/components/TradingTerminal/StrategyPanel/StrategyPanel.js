@@ -56,6 +56,7 @@ const PriceControl = ({ multiSide, symbolData }) => {
           rules={{
             validate: (price) => validatePrice(price, multiSide),
           }}
+          showErrorMessage={false}
         />
         <div className="currencyBox">{symbolData.quote}</div>
       </Box>
@@ -90,6 +91,7 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
           rules={{
             validate: validateUnits,
           }}
+          showErrorMessage={false}
         />
         <div className="currencyBox">{symbolData.unitsAmount}</div>
       </Box>
@@ -212,6 +214,7 @@ const StrategyPanel = (props) => {
                 rules={{
                   validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                 }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
@@ -243,6 +246,7 @@ const StrategyPanel = (props) => {
               <CustomNumberInput
                 name="realInvestment"
                 onChange={realInvestmentChange}
+                showErrorMessage={false}
                 placeholder={"0"}
               />
               <div className="currencyBox">{symbolData.unitsInvestment}</div>
@@ -306,6 +310,7 @@ const StrategyPanel = (props) => {
                       (value > 0 && value <= 100) ||
                       formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">%</div>
               </Box>
