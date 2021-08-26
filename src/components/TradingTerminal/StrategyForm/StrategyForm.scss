@@ -9,8 +9,8 @@
 
   @include media(">=sm", "<=1215px") {
     flex: 0 0 100%;
-    padding: 8px;
     margin-bottom: 0;
+    padding: 8px;
   }
 
   @include media(">=lg") {
