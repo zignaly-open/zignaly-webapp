@@ -276,6 +276,7 @@ const StrategyPanel = (props) => {
                   required: formatMessage({ id: "terminal.positionsize.required" }),
                   validate: validatePositionSize,
                 }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
