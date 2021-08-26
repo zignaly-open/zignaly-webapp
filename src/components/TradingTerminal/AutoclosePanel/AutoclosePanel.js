@@ -63,13 +63,7 @@ const AutoclosePanel = () => {
               labelId="terminal.timeautoclose"
             />
             <Box alignItems="center" display="flex">
-              <CustomNumberInput
-                name="autoclose"
-                rules={{
-                  validate: (value) =>
-                    value > 0 || formatMessage({ id: "terminal.autoclose.limit.zero" }),
-                }}
-              />
+              <CustomNumberInput name="autoclose" />
               <div className="currencyBox">
                 <FormattedMessage id="terminal.hours" />
               </div>
