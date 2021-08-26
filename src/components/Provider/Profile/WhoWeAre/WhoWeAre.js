@@ -130,26 +130,26 @@ const WhoWeAre = ({ provider }) => {
                 <ProviderName
                   logoUrl={provider.logoUrl}
                   name={provider.name}
-                  verified={true}
                   url={provider.providerLink}
+                  verified={true}
                 />
                 <ProviderName
                   logoUrl={provider.logoUrl}
                   name={provider.name}
-                  verified={true}
                   url={provider.providerLink}
+                  verified={true}
                 />
                 <ProviderName
                   logoUrl={provider.logoUrl}
                   name={provider.name}
-                  verified={true}
                   url={provider.providerLink}
+                  verified={true}
                 />
                 <ProviderName
                   logoUrl={provider.logoUrl}
                   name={provider.name}
-                  verified={true}
                   url={provider.providerLink}
+                  verified={true}
                 />
               </Box>
             </Box>

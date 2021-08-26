@@ -98,7 +98,7 @@ const TraderHeaderInfo = ({ provider }) => {
             placement="top"
             title={
               <FormattedMessage
-                id="copyt.successfee.tootltip"
+                id="copyt.successfee.tooltip"
                 values={{
                   providerShare: provider.profitsShare,
                   userShare: 100 - provider.profitsShare,

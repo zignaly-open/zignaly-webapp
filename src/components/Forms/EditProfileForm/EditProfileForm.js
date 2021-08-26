@@ -33,6 +33,7 @@ import CustomNumberInput from "../CustomNumberInput";
 import { TooltipWithUrl } from "components/Controls/TooltipWithUrl";
 import HelpIcon from "@material-ui/icons/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
+import PrivacySlider from "./PrivacySlider";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -96,24 +97,24 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     );
   }, []);
 
-  const privacyOptions = [
-    {
-      label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }),
-      val: "unlisted",
-      disabled: provider.privacy && provider.privacy !== "unlisted",
-    },
-    {
-      label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }),
-      val: "listed_profile",
-    },
-    {
-      label: intl.formatMessage({ id: "srv.edit.privacy.listedMarketplace" }),
-      val: "listed_marketplace",
-      tooltip: <TooltipMarketPlace />,
-      disabled: true,
-    },
-  ];
-  const [privacy, setPrivacy] = useState(privacyOptions[0].val);
+  // const privacyOptions = [
+  //   {
+  //     label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }),
+  //     val: "unlisted",
+  //     disabled: provider.privacy && provider.privacy !== "unlisted",
+  //   },
+  //   {
+  //     label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }),
+  //     val: "listed_profile",
+  //   },
+  //   {
+  //     label: intl.formatMessage({ id: "srv.edit.privacy.listedMarketplace" }),
+  //     val: "listed_marketplace",
+  //     tooltip: <TooltipMarketPlace />,
+  //     disabled: true,
+  //   },
+  // ];
+  const [privacy, setPrivacy] = useState("unlisted");
 
   const loadPositions = () => {
     if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
@@ -639,9 +640,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   {provider.profitSharing && (
                     <>
                       <Box className="inputBox" display="flex" flexDirection="column">
-                        <label className="customLabel">
-                          <FormattedMessage id="copyt.profitsharing.percentage" />
-                        </label>
+                        <Tooltip interactive placement="top" title="">
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.percentage" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
                         <CustomNumberInput
                           control={control}
                           defaultValue={provider.profitsShare}
@@ -866,12 +870,21 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   </Box>
                 </Box>
               )}
-              <Box className="inputBox" display="flex" flexDirection="column">
+              <Box className="privacyBox" display="flex" flexDirection="column">
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.privacy" />
                 </label>
-                <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} />
-                {provider.privacy === "unlisted" && privacy !== "unlisted" && (
+                <Box display="flex" justifyContent="center" width="100%">
+                  <PrivacySlider
+                    value={privacy}
+                    onChange={setPrivacy}
+                    options={{
+                      unlistedDisabled: provider.privacy && provider.privacy !== "unlisted",
+                    }}
+                  />
+                </Box>
+                {/* <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} /> */}
+                {(!provider.privacy || provider.privacy === "unlisted") && privacy !== "unlisted" && (
                   <FormHelperText>
                     <FormattedMessage id="srv.edit.privacy.definitive" />
                   </FormHelperText>

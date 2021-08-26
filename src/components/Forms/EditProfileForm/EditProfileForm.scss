@@ -45,6 +45,11 @@
     }
   }
 
+  .privacySlider {
+    margin: 0 32px 42px;
+    width: 100%;
+  }
+
   .inputBox {
     margin-bottom: 16px;
     width: calc(50% - 40px);
@@ -78,6 +83,11 @@
         }
       }
     }
+  }
+
+  .privacyBox {
+    margin-bottom: 16px;
+    width: 100%;
   }
 
   .leftColumn,

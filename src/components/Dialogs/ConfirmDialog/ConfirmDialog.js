@@ -22,6 +22,7 @@ import { noop } from "lodash";
  * @property {ConfirmDialogConfig} confirmConfig Current dialog configuration.
  * @property {Function} executeActionCallback Callback to execute when the action is confirmed.
  * @property {Function} [executeCancelCallback] Callback to execute when the action is cancelled.
+ * @property {Boolean} [showCancel]
  */
 
 /**
@@ -36,6 +37,7 @@ const ConfirmDialog = (props) => {
     confirmConfig,
     executeActionCallback = noop,
     executeCancelCallback = noop,
+    showCancel = true,
   } = props;
 
   const handleClose = () => {
@@ -58,9 +60,11 @@ const ConfirmDialog = (props) => {
   return (
     <div>
       <Dialog onClose={handleClose} open={confirmConfig.visible}>
-        <DialogTitle>
-          <FormattedMessage id={confirmConfig.titleTranslationId} />
-        </DialogTitle>
+        {confirmConfig.messageTranslationId && (
+          <DialogTitle>
+            <FormattedMessage id={confirmConfig.titleTranslationId} />
+          </DialogTitle>
+        )}
         <DialogContent>
           <DialogContentText color="textPrimary">
             <FormattedMessage
@@ -70,9 +74,11 @@ const ConfirmDialog = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus color="secondary" onClick={triggerCancelCallback}>
-            <FormattedMessage id="confirm.cancel" />
-          </Button>
+          {showCancel && (
+            <Button autoFocus color="secondary" onClick={triggerCancelCallback}>
+              <FormattedMessage id="confirm.cancel" />
+            </Button>
+          )}
           <Button color="secondary" onClick={triggerActionCallback}>
             <FormattedMessage id="confirm.accept" />
           </Button>
