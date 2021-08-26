@@ -120,19 +120,20 @@ const CustomSelect = (props) => {
 
   /**
    * Handle change
-   * @param {*} val Value
+   * @param {*} option Option
    * @returns {void}
    */
-  const handleChange = (val) => {
+  const handleChange = (option) => {
+    const val = extractVal(option);
     if (typeof options === "object" && options.length && typeof options[0] === "object") {
       // @ts-ignore
       const found = options.find((o) => o.val === val);
       // Ignore disabled option. We use a fake .disabled class otherwise it blocks the tooltip.
       // @ts-ignore
-      if (found.disabled) return;
+      if (found && found.disabled) return;
     }
 
-    onChange(val);
+    onChange(option);
   };
 
   return (

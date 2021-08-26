@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import HelpIcon from "@material-ui/icons/Help";
+import { TooltipWithUrl } from "components/Controls/TooltipWithUrl";
 
 /**
  * @typedef {Object} TooltipObject
@@ -14,27 +15,6 @@ import HelpIcon from "@material-ui/icons/Help";
  * @property {JSX.Element} value
  * @property {TooltipObject} [tooltip]
  */
-
-/**
- * Render a part of the equity bar
- *
- * @param {TooltipObject} props Component props.
- * @returns {JSX.Element} JSX
- */
-export const TooltipWithUrl = ({ message, url }) => {
-  return (
-    <Box alignItems="flex-start" display="flex" flexDirection="column" justifyContent="flex-start">
-      <span>
-        <FormattedMessage id={message} />
-      </span>
-      {url && (
-        <a className="anchor" href={url} rel="noreferrer" target="_blank">
-          <FormattedMessage id="srv.moreinfo" />
-        </a>
-      )}
-    </Box>
-  );
-};
 
 /**
  * Render a part of the equity bar

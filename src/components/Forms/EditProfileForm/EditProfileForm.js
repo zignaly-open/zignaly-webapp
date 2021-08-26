@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Tooltip, Checkbox, FormHelperText } from "@material-ui/core";
+import { Box, TextField, Typography, Checkbox, FormHelperText, Tooltip } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CustomSelect from "components/CustomSelect";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -30,6 +30,9 @@ import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
 import { setMarketplaceCacheModal } from "store/actions/settings";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import CustomNumberInput from "../CustomNumberInput";
+import { TooltipWithUrl } from "components/Controls/TooltipWithUrl";
+import HelpIcon from "@material-ui/icons/Help";
+import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -649,15 +652,31 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         />
                       </Box>
                       <Box className="inputBox" display="flex" flexDirection="column">
-                        <label className="customLabel">
-                          <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
-                        </label>
+                        <Tooltip
+                          interactive
+                          placement="top"
+                          title={
+                            <TooltipWithUrl
+                              message="copyt.profitsharing.maxDrawdown.tooltip"
+                              url={highWaterMarkInfoUrl}
+                            />
+                          }
+                        >
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
+
                         <CustomNumberInput
                           control={control}
                           defaultValue={provider.maxDrawdown}
                           errors={errors}
                           name="maxDrawdown"
                           rules={{
+                            required: intl.formatMessage({
+                              id: "copyt.profitsharing.maxDrawdown.required",
+                            }),
                             validate: {
                               max: (val) =>
                                 val <= 100 &&
@@ -670,6 +689,9 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           }}
                           suffix="%"
                         />
+                        <FormHelperText>
+                          <FormattedMessage id="copyt.profitsharing.maxDrawdown.definitive" />
+                        </FormHelperText>
                       </Box>
                     </>
                   )}
