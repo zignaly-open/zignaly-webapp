@@ -50,7 +50,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
 
 /**
  * @typedef {import("react-hook-form/dist/types").ValidationRules} ValidationRules
- * @typedef {import("react-hook-form/dist/types").Control} Control
+ * * @typedef {import("react-hook-form/dist/types").Control} Control
  * @typedef {import("react-hook-form/dist/types/form").FieldErrors} FieldErrors
  * @typedef {import("@material-ui/core/Input").InputProps} InputProps
  */
@@ -66,6 +66,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
  * @property {Control} [control]
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
+ * @property {boolean} [showErrorMessage]
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -83,6 +84,7 @@ const CustomNumberInput = (props) => {
     suffix,
     errors,
     control,
+    showErrorMessage = true,
     ...others
   } = props;
   const context = useFormContext();
@@ -132,7 +134,11 @@ const CustomNumberInput = (props) => {
                 e.target.value = val;
                 _onChange(e);
                 // Callback
-                if (onChange) onChange(e);
+                if (onChange) {
+                  // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                  // Even with useCallback, it wasn't working with CustomNumberInput.
+                  setTimeout(() => onChange(e), 0);
+                }
               }
             }}
             value={value}
@@ -149,7 +155,9 @@ const CustomNumberInput = (props) => {
           },
         }}
       />
-      {errors[name] && <span className="errorText">{errors[name].message}</span>}
+      {showErrorMessage && errors[name] && (
+        <span className="errorText">{errors[name].message}</span>
+      )}
     </>
   );
 };

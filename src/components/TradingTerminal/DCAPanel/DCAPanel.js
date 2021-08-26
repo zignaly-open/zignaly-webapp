@@ -469,6 +469,7 @@ const DCAPanel = (props) => {
                   );
                 },
               }}
+              showErrorMessage={false}
             />
             <div className="currencyBox">%</div>
           </Box>
@@ -492,6 +493,7 @@ const DCAPanel = (props) => {
                   );
                 },
               }}
+              showErrorMessage={false}
             />
             <div className="currencyBox">{symbolData.quote}</div>
           </Box>
@@ -516,6 +518,7 @@ const DCAPanel = (props) => {
                       },
                     }
               }
+              showErrorMessage={false}
             />
             <div className="currencyBox">%</div>
           </Box>
