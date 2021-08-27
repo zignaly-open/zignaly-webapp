@@ -49,7 +49,6 @@ const CopyTradersAnalytics = ({ provider }) => {
   const [increasePercentage, setIncreasePercentage] = useState(0);
 
   const payload = {
-    token: storeSession.tradeApi.accessToken,
     providerId: provider.id,
   };
 

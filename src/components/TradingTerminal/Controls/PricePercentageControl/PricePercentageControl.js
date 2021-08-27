@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, OutlinedInput, Tooltip } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
+import CustomNumberInput from "../CustomNumberInput/CustomNumberInput";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import "./PricePercentageControl.scss";
@@ -9,8 +10,9 @@ import { useIntl } from "react-intl";
  * @typedef {Object} PricePercentage
  * @property {string} name
  * @property {function(*):*} onChange
- * @property {function(string): boolean} [validate]
+ * @property {function(string): boolean|string} [validate]
  * @property {string} [error]
+ * @property {boolean} [allowNegative]
  */
 
 /**
@@ -60,16 +62,17 @@ const PricePercentageControl = ({
           display="flex"
           onClick={() => priorityValue === "price" && togglePriority()}
         >
-          <OutlinedInput
-            className="outlineInput"
+          <CustomNumberInput
+            allowNegative={percentage.allowNegative}
             disabled={disabled || priorityValue === "price"}
-            inputRef={register({
+            name={percentage.name}
+            onChange={percentage.onChange}
+            rules={{
               validate: percentage.validate || {
                 positive: (value) => value >= 0 || percentage.error,
               },
-            })}
-            name={percentage.name}
-            onChange={percentage.onChange}
+            }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow
@@ -84,20 +87,22 @@ const PricePercentageControl = ({
         </Box>
         <Box
           alignItems="center"
-          className={`pricePercentageInput ${priorityValue !== "price" ? "disabled" : ""}`}
+          className={`pricePercentageInput ${disabled ? "readOnly" : ""} ${
+            priorityValue !== "price" ? "disabled" : ""
+          }`}
           display="flex"
           onClick={() => priorityValue !== "price" && togglePriority()}
         >
-          <OutlinedInput
-            className="outlineInput"
+          <CustomNumberInput
             disabled={disabled || priorityValue !== "price"}
-            inputRef={register({
+            name={price.name}
+            onChange={price.onChange}
+            rules={{
               validate: price.validate || {
                 positive: (value) => value >= 0 || price.error,
               },
-            })}
-            name={price.name}
-            onChange={price.onChange}
+            }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow

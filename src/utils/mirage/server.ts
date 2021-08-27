@@ -105,6 +105,14 @@ export function makeServer({ environment = "test" } = {}) {
         return getUserData(schema.db.users.find(1));
       });
 
+      this.get("/exchanges", (schema, request) => {
+        return schema.db.exchanges;
+      });
+
+      this.get("/providers", (schema, request) => {
+        return schema.db.providers;
+      });
+
       this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
         return schema.all("provider");
       });
@@ -124,12 +132,6 @@ export function makeServer({ environment = "test" } = {}) {
             break;
           case "getQuoteAssets":
             response = ["USDT", "BTC", "USD", "BNB"];
-            break;
-          case "getProviderList2":
-            response = schema.db.providers;
-            break;
-          case "getExchangeList":
-            response = schema.db.exchanges;
             break;
           case "getPairsNew":
             response = schema.db.pairs;

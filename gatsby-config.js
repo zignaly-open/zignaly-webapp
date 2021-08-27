@@ -56,7 +56,7 @@ module.exports = {
       //   },
     },
     {
-      resolve: `gatsby-plugin-tsconfig-paths`,
+      resolve: "gatsby-plugin-tsconfig-paths",
       options: {},
     },
   ],

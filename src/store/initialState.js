@@ -525,6 +525,7 @@ const initialState = {
       isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
       locale: "en_US",
       wall: { banned: false, cantPostUntil: null },
+      isUnknownDevice: false,
     },
   },
   ui: {

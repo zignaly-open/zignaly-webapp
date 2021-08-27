@@ -1,9 +1,11 @@
-import { useEffect, useCallback, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import { simulateInputChangeEvent } from "../utils/events";
 import { useIntl } from "react-intl";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
 import { calculateUnits } from "utils/calculations";
+import { isArray } from "lodash";
+import { composePositionDcaTargets } from "components/TradingTerminal/StrategyForm/StrategyForm";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -19,6 +21,7 @@ import { calculateUnits } from "utils/calculations";
  * @property {React.ChangeEventHandler} unitsChange
  * @property {Validate} validatePositionSize
  * @property {function(string, string?): string|boolean} validatePrice
+ * @property {function(number): string|boolean} validateSellAmount
  * @property {Validate} validateUnits
  */
 
@@ -73,6 +76,33 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     return true;
   }
+
+  /**
+   * Validate that the amount bought is enough to be sold at given price
+   *
+   * @param {number} amount Cost amount.
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateSellAmount = (amount) => {
+    const rebuyTargets = composePositionDcaTargets(getValues());
+    if (isArray(rebuyTargets) && rebuyTargets.length) {
+      // Skip check when DCA for now
+      return true;
+    }
+
+    const limitsCost = contractType === "inverse" ? limits.amount : limits.cost;
+
+    // Skip validation when data not available.
+    if (!limitsCost) {
+      return true;
+    }
+
+    if (limitsCost.min && amount < limitsCost.min) {
+      return formatMessage({ id: "terminal.sell.mincost" }, { value: limitsCost.min });
+    }
+
+    return true;
+  };
 
   /**
    * Validate that units is within limits.
@@ -140,7 +170,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     return true;
   }
 
-  const realInvestmentChange = useCallback(() => {
+  const realInvestmentChange = () => {
     if (errors.realInvestment) return;
 
     const draftPosition = getValues();
@@ -151,7 +181,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
         updateUnits(positionSize);
       }
     });
-  }, [errors, currentPrice, leverage, getValues, multiplier, entryStrategy, currentPriceShort]);
+  };
 
   /**
    * @param {number} positionSize .
@@ -169,7 +199,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     }
   };
 
-  const positionSizeChange = useCallback(() => {
+  const positionSizeChange = () => {
     if (errors.positionSize) return;
 
     const draftPosition = getValues();
@@ -178,19 +208,9 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const realInvestment = parseFloat(draftPosition.positionSize) / leverage;
     setValue("realInvestment", realInvestment.toFixed(8));
-  }, [
-    errors,
-    currentPrice,
-    getValues,
-    setValue,
-    trigger,
-    leverage,
-    multiplier,
-    entryStrategy,
-    currentPriceShort,
-  ]);
+  };
 
-  const positionSizePercentageChange = useCallback(() => {
+  const positionSizePercentageChange = () => {
     if (errors.positionSizePercentage) return;
 
     const draftPosition = getValues();
@@ -198,7 +218,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     const positionSize = (positionSizePercentage * providerAllocatedBalance) / 100;
     setValue("positionSizeAllocated", positionSize.toFixed(8));
-  }, [errors, getValues, setValue, providerAllocatedBalance]);
+  };
 
   const unitsChange = () => {
     const draftPosition = getValues();
@@ -207,12 +227,12 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
 
     let positionSize = units * currentPrice;
     if (selectedSymbol.contractType === "inverse") {
-      positionSize = (units / currentPrice) * selectedSymbol.multiplier;
+      positionSize = (units / currentPrice) * multiplier;
     } else if (
       selectedSymbol.contractType === "quanto" ||
       selectedSymbol.contractType === "linear"
     ) {
-      positionSize *= selectedSymbol.multiplier;
+      positionSize *= multiplier;
     }
 
     setValue("positionSize", positionSize.toFixed(8));
@@ -249,6 +269,7 @@ const usePositionSizeHandlers = (selectedSymbol, defaultLeverage = null) => {
     validatePositionSize,
     validatePrice,
     validateUnits,
+    validateSellAmount,
   };
 };
 

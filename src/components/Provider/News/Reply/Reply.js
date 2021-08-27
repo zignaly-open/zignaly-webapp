@@ -35,6 +35,7 @@ import { CornerDownRight } from "react-feather";
  */
 const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [banned, setBanned] = useState(reply.author.banned);
   const initConfirmDeleteConfig = {
     titleTranslationId: "wall.delete.reply",
     messageTranslationId: "wall.delete.reply.subtitle",
@@ -111,7 +112,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallReportUser(payload)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.report.done");
+          dispatch(showSuccessAlert("", "wall.report.done"));
         }
       })
       .catch((e) => {
@@ -124,7 +125,8 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallBanUser(reply.author.userId)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.ban.done");
+          dispatch(showSuccessAlert("", "wall.ban.done"));
+          setBanned(true);
         }
       })
       .catch((e) => {
@@ -137,7 +139,8 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallUnbanUser(reply.author.userId)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.unban.done");
+          dispatch(showSuccessAlert("", "wall.unban.done"));
+          setBanned(false);
         }
       })
       .catch((e) => {
@@ -146,7 +149,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   };
 
   const handleBanClick = () => {
-    const method = !userData.wall.banned ? setConfirmBanUserConfig : setConfirmUnbanUserConfig;
+    const method = !banned ? setConfirmBanUserConfig : setConfirmUnbanUserConfig;
     method((c) => ({ ...c, visible: true }));
   };
 
@@ -208,11 +211,9 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
                 <FormattedMessage id="srv.edit.delete" />
               </MenuItem>
             )}
-            {canEdit && (
-              <MenuItem onClick={() => setConfirmReportConfig((c) => ({ ...c, visible: true }))}>
-                <FormattedMessage id="wall.report" />
-              </MenuItem>
-            )}
+            <MenuItem onClick={() => setConfirmReportConfig((c) => ({ ...c, visible: true }))}>
+              <FormattedMessage id="wall.report" />
+            </MenuItem>
           </Menu>
         </div>
       </Box>
@@ -224,7 +225,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
           </Typography> */}
           {userData.isAdmin && (
             <Typography className="action callout2" onClick={handleBanClick}>
-              <FormattedMessage id={userData.wall.banned ? "wall.unban" : "wall.ban"} />
+              <FormattedMessage id={banned ? "wall.unban" : "wall.ban"} />
             </Typography>
           )}
           {showAddReply && (

@@ -4,14 +4,20 @@ import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import { OutlinedInput, FormHelperText, FormControl, Switch, Typography } from "@material-ui/core";
+import {
+  FormHelperText,
+  FormControl,
+  Switch,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
 import useOwnCopyTraderProviders from "../../../hooks/useOwnCopyTraderProviders";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
-import { CircularProgress } from "@material-ui/core";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
@@ -145,7 +151,7 @@ const IncreaseStrategyPanel = (props) => {
             <FormControl>
               <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput className="outlineInput" inputRef={register} name="stopPrice" />
+                <CustomNumberInput name="stopPrice" />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
             </FormControl>
@@ -154,15 +160,14 @@ const IncreaseStrategyPanel = (props) => {
             <FormControl>
               <HelperLabel descriptionId="terminal.price.help" labelId="terminal.price" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
+                <CustomNumberInput
                   defaultValue={lastPrice}
-                  error={!!errors.price}
-                  inputRef={register({
-                    validate: (value) => !isNaN(value) && parseFloat(value) > 0,
-                  })}
                   name="price"
                   onChange={priceChange}
+                  rules={{
+                    validate: (value) => !isNaN(value) && parseFloat(value) > 0,
+                  }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -175,14 +180,14 @@ const IncreaseStrategyPanel = (props) => {
             <FormControl>
               <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  inputRef={register({
-                    validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
-                  })}
+                <CustomNumberInput
                   name="realInvestment"
                   onChange={realInvestmentChange}
                   placeholder={"0"}
+                  rules={{
+                    validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
+                  }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
@@ -203,15 +208,14 @@ const IncreaseStrategyPanel = (props) => {
                 labelId="terminal.position.size"
               />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  error={!!errors.positionSize}
-                  inputRef={register({
-                    validate: validatePositionSize,
-                  })}
+                <CustomNumberInput
                   name="positionSize"
                   onChange={positionSizeChange}
                   placeholder={"0"}
+                  rules={{
+                    validate: validatePositionSize,
+                  }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
@@ -236,25 +240,22 @@ const IncreaseStrategyPanel = (props) => {
               />
               <Box className="positionSizePercentage" display="flex" flexDirection="row">
                 <Box display="flex" flexDirection="row">
-                  <OutlinedInput
-                    className="outlineInput"
-                    error={!!errors.positionSizePercentage}
-                    inputRef={register({
+                  <CustomNumberInput
+                    name="positionSizePercentage"
+                    onChange={positionSizePercentageChange}
+                    placeholder={"0"}
+                    rules={{
                       required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                       validate: (value) =>
                         (value > 0 && value <= 100) ||
                         formatMessage({ id: "terminal.positionsize.valid.percentage" }),
-                    })}
-                    name="positionSizePercentage"
-                    onChange={positionSizePercentageChange}
-                    placeholder={"0"}
+                    }}
+                    showErrorMessage={false}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
                 <Box display="flex" flexDirection="row">
-                  <OutlinedInput
-                    className="outlineInput"
-                    inputRef={register}
+                  <CustomNumberInput
                     name="positionSizeAllocated"
                     placeholder={"0"}
                     readOnly={true}
@@ -289,15 +290,14 @@ const IncreaseStrategyPanel = (props) => {
             <FormControl>
               <HelperLabel descriptionId="terminal.units.help" labelId="terminal.units" />
               <Box alignItems="center" display="flex">
-                <OutlinedInput
-                  className="outlineInput"
-                  error={!!errors.units}
-                  inputRef={register({
-                    validate: validateUnits,
-                  })}
+                <CustomNumberInput
                   name="units"
                   onChange={unitsChange}
                   placeholder={"0"}
+                  rules={{
+                    validate: validateUnits,
+                  }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsAmount}</div>
               </Box>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, OutlinedInput, Typography, Switch } from "@material-ui/core";
+import { Box, Typography, Switch } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
@@ -11,6 +11,8 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import PricePercentageControl from "../Controls/PricePercentageControl";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -40,7 +42,6 @@ const TrailingStopPanel = (props) => {
     clearErrors,
     errors,
     getValues,
-    register,
     trigger,
     setValue,
     watch,
@@ -56,10 +57,12 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan } = useValidation();
-  const { getEntryPrice } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
+  const entrySizeQuote = getEntrySizeQuote();
   const isClosed = positionEntity ? positionEntity.closed : false;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
   const strategyPrice = watch("price");
+  const { validateSellAmount } = usePositionSizeHandlers(symbolData);
 
   const getFieldsDisabledStatus = () => {
     const isTriggered = positionEntity ? positionEntity.trailingStopTriggered : false;
@@ -77,6 +80,30 @@ const TrailingStopPanel = (props) => {
   };
 
   const fieldsDisabled = getFieldsDisabledStatus();
+
+  /**
+   * Validate target percentage limits.
+   *
+   * @param {string} value stopLossPercentage
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validatePercentage = (value) => {
+    let valid = greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage");
+    if (valid) {
+      const stopLossPercentage = parseFloat(value);
+      if (stopLossPercentage && entrySizeQuote) {
+        const amountSoldTrigger = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
+        const amountSold = (amountSoldTrigger * (100 + trailingStopDistance)) / 100;
+        valid = validateSellAmount(amountSold);
+      }
+    }
+
+    return valid;
+  };
+
+  useEffect(() => {
+    trigger("trailingStopPercentage");
+  }, [entrySizeQuote, trailingStopDistance]);
 
   /**
    * Calculate price based on percentage when value is changed.
@@ -216,8 +243,7 @@ const TrailingStopPanel = (props) => {
             labelId="terminal.trailingstop"
             percentage={{
               name: "trailingStopPercentage",
-              validate: (value) =>
-                greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage"),
+              validate: validatePercentage,
               onChange: trailingStopPercentageChange,
             }}
             price={{
@@ -231,15 +257,15 @@ const TrailingStopPanel = (props) => {
           <Box>
             <HelperLabel descriptionId="terminal.distance.help" labelId="terminal.distance" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
+              <CustomNumberInput
+                allowNegative={true}
                 disabled={fieldsDisabled.trailingStopDistance}
-                error={!!errors.trailingStopDistance}
-                inputRef={register({
+                name="trailingStopDistance"
+                rules={{
                   validate: (value) =>
                     lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
-                })}
-                name="trailingStopDistance"
+                }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">%</div>
             </Box>

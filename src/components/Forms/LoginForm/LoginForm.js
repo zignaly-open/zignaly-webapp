@@ -53,7 +53,7 @@ const LoginForm = () => {
    * @returns {void} None.
    */
   const check2FA = (response) => {
-    if (response.ask2FA) {
+    if (response.ask2FA || response.isUnknownDevice) {
       showTwoFAModal(true);
       setLoading(false);
     } else {
@@ -116,7 +116,7 @@ const LoginForm = () => {
         <ForgotPasswordForm />
       </Modal>
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm data={loginResponse} onSuccess={onSuccess} />
+        <TwoFAForm data={loginResponse} onComplete={onSuccess} verifySessionCode={true} />
       </Modal>
       <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box

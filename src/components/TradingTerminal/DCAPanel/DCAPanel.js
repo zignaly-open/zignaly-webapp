@@ -5,7 +5,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import {
   Button,
   Box,
-  OutlinedInput,
   Typography,
   Switch,
   RadioGroup,
@@ -28,6 +27,7 @@ import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 import { formatPrice } from "utils/formatters";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -98,12 +98,8 @@ const DCAPanel = (props) => {
     };
   };
 
-  const {
-    dcaRebuyDoneCount,
-    dcaAllIndexes,
-    dcaRebuyIndexes,
-    dcaIncreaseIndexes,
-  } = resolveDcaIndexes();
+  const { dcaRebuyDoneCount, dcaAllIndexes, dcaRebuyIndexes, dcaIncreaseIndexes } =
+    resolveDcaIndexes();
   const [activeDcaIncreaseIndexes, setActiveDCAIncreaseIndexes] = useState(dcaIncreaseIndexes);
   const positionTargetsCardinality = positionEntity
     ? Math.max(dcaIncreaseIndexes.length ? 0 : 1, size(dcaRebuyIndexes))
@@ -120,11 +116,8 @@ const DCAPanel = (props) => {
     setTargetPropertyValue,
   } = useTargetGroup("dca", positionTargetsCardinality);
 
-  const {
-    validateTargetPriceLimits,
-    validateCostLimits,
-    validateUnitsLimits,
-  } = useSymbolLimitsValidate(symbolData);
+  const { validateTargetPriceLimits, validateCostLimits, validateUnitsLimits } =
+    useSymbolLimitsValidate(symbolData);
 
   const isClosed = positionEntity ? positionEntity.closed : false;
   const isDoneTargetReached = cardinality >= 1 && cardinality - 1 < dcaRebuyDoneCount;
@@ -457,11 +450,11 @@ const DCAPanel = (props) => {
             type="hidden"
           />
           <Box alignItems="center" display={getDCAPriority(targetId) !== "price" ? "flex" : "none"}>
-            <OutlinedInput
-              className="outlineInput"
+            <CustomNumberInput
+              allowNegative={true}
               disabled={isDisabled(targetId)}
-              error={!!errors[composeTargetPropertyName("targetPricePercentage", targetId)]}
-              inputRef={register({
+              name={composeTargetPropertyName("targetPricePercentage", targetId)}
+              rules={{
                 validate: (value) => {
                   if (
                     fieldsDisabled[composeTargetPropertyName("targetPricePercentage", targetId)] ||
@@ -475,18 +468,17 @@ const DCAPanel = (props) => {
                     validateDCAPriceLimit
                   );
                 },
-              })}
-              name={composeTargetPropertyName("targetPricePercentage", targetId)}
+              }}
+              showErrorMessage={false}
             />
             <div className="currencyBox">%</div>
           </Box>
           {displayTargetFieldErrors("targetPricePercentage", targetId)}
           <Box alignItems="center" display={getDCAPriority(targetId) === "price" ? "flex" : "none"}>
-            <OutlinedInput
-              className="outlineInput"
+            <CustomNumberInput
               disabled={isDisabled(targetId)}
-              error={!!errors[composeTargetPropertyName("rebuyPrice", targetId)]}
-              inputRef={register({
+              name={composeTargetPropertyName("rebuyPrice", targetId)}
+              rules={{
                 validate: (value) => {
                   if (
                     fieldsDisabled[composeTargetPropertyName("rebuyPrice", targetId)] ||
@@ -500,19 +492,18 @@ const DCAPanel = (props) => {
                     validateTargetPriceLimits(parseFloat(value), "terminal.dca.limit")
                   );
                 },
-              })}
-              name={composeTargetPropertyName("rebuyPrice", targetId)}
+              }}
+              showErrorMessage={false}
             />
             <div className="currencyBox">{symbolData.quote}</div>
           </Box>
           {displayTargetFieldErrors("rebuyPrice", targetId)}
           <HelperLabel descriptionId="terminal.rebuy.help" labelId="terminal.rebuy" />
           <Box alignItems="center" display="flex">
-            <OutlinedInput
-              className="outlineInput"
+            <CustomNumberInput
               disabled={isDisabled(targetId)}
-              error={!!errors[composeTargetPropertyName("rebuyPercentage", targetId)]}
-              inputRef={register(
+              name={composeTargetPropertyName("rebuyPercentage", targetId)}
+              rules={
                 fieldsDisabled[composeTargetPropertyName("rebuyPercentage", targetId)]
                   ? null
                   : {
@@ -525,9 +516,9 @@ const DCAPanel = (props) => {
                         limit: () => validateUnits(targetId),
                         cost: () => validateUnitCostLimits(targetId),
                       },
-                    },
-              )}
-              name={composeTargetPropertyName("rebuyPercentage", targetId)}
+                    }
+              }
+              showErrorMessage={false}
             />
             <div className="currencyBox">%</div>
           </Box>

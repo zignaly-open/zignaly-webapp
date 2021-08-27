@@ -5,7 +5,6 @@ import HelperLabel from "../HelperLabel/HelperLabel";
 import {
   Button,
   Box,
-  OutlinedInput,
   Typography,
   FormControlLabel,
   Checkbox,
@@ -13,6 +12,7 @@ import {
   Tooltip,
   Switch,
 } from "@material-ui/core";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 import { RemoveCircle, Help } from "@material-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
@@ -147,19 +147,15 @@ const ReduceOrders = (props) => {
           />
           <ReduceOrderStatus labelId="terminal.status" order={order} />
           <Box alignItems="center" className="percentageBox" display="flex">
-            <OutlinedInput
-              className="outlineInput"
+            <CustomNumberInput
               disabled={true}
+              name=""
               value={formatFloat2Dec(order.targetPercentage)}
             />
             <div className="currencyBox">%</div>
           </Box>
           <Box alignItems="center" className="valueBox" display="flex">
-            <OutlinedInput
-              className="outlineInput"
-              disabled={true}
-              value={formatPrice(order.price)}
-            />
+            <CustomNumberInput disabled={true} name="" value={formatPrice(order.price)} />
             <div className="currencyBox">{positionEntity.quote}</div>
           </Box>
         </Box>
@@ -169,19 +165,15 @@ const ReduceOrders = (props) => {
             labelId="terminal.reducestrategy.availablePercentage"
           />
           <Box alignItems="center" className="percentageBox" display="flex">
-            <OutlinedInput
-              className="outlineInput"
+            <CustomNumberInput
               disabled={true}
+              name=""
               value={formatFloat2Dec(order.availablePercentage)}
             />
             <div className="currencyBox">%</div>
           </Box>
           <Box alignItems="center" className="valueBox" display="flex">
-            <OutlinedInput
-              className="outlineInput"
-              disabled={true}
-              value={formatPrice(order.amount)}
-            />
+            <CustomNumberInput disabled={true} name="" value={formatPrice(order.amount)} />
             <div className="currencyBox">{positionEntity.base}</div>
           </Box>
         </Box>

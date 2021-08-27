@@ -7,13 +7,12 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Typography,
+  CircularProgress,
 } from "@material-ui/core";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { CircularProgress } from "@material-ui/core";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";
@@ -21,6 +20,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
+import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
 import MarginButtons from "../Controls/MarginControl";
 import { Alert } from "@material-ui/lab";
 import useSelectedExchange from "hooks/useSelectedExchange";
@@ -36,7 +36,7 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  * @returns {JSX.Element} JSX
  */
 const PriceControl = ({ multiSide, symbolData }) => {
-  const { errors, register, watch } = useFormContext();
+  const { errors, watch } = useFormContext();
   const entryStrategy = watch("entryStrategy");
   const { lastPrice } = useContext(TradingViewContext);
 
@@ -44,19 +44,19 @@ const PriceControl = ({ multiSide, symbolData }) => {
 
   const name = multiSide === "short" ? "priceShort" : "price";
   const label = entryStrategy === "multi" ? `terminal.price.${multiSide}` : "terminal.price";
+
   return (
     <FormControl>
       <HelperLabel descriptionId="terminal.price.help" labelId={label} />
       <Box alignItems="center" display="flex">
-        <OutlinedInput
-          className="outlineInput"
+        <CustomNumberInput
           defaultValue={lastPrice}
-          error={!!errors[name]}
-          inputRef={register({
-            validate: (price) => validatePrice(price, multiSide),
-          })}
           name={name}
           onChange={priceChange}
+          rules={{
+            validate: (price) => validatePrice(price, multiSide),
+          }}
+          showErrorMessage={false}
         />
         <div className="currencyBox">{symbolData.quote}</div>
       </Box>
@@ -74,7 +74,7 @@ const PriceControl = ({ multiSide, symbolData }) => {
  * @returns {JSX.Element} JSX
  */
 const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
-  const { errors, register, watch } = useFormContext();
+  const { errors, watch } = useFormContext();
   const { unitsChange, validateUnits } = usePositionSizeHandlers(symbolData);
   const entryStrategy = watch("entryStrategy");
   const name = multiSide === "short" ? "unitsShort" : "units";
@@ -83,16 +83,15 @@ const UnitsControl = ({ multiSide, symbolData, loading, baseBalance }) => {
     <FormControl>
       <HelperLabel descriptionId="terminal.units.help" labelId={label} />
       <Box alignItems="center" display="flex">
-        <OutlinedInput
-          className="outlineInput"
-          error={Boolean(errors[name])}
-          inputRef={register({
-            validate: validateUnits,
-          })}
+        <CustomNumberInput
           name={name}
           onChange={unitsChange}
           placeholder={"0"}
           readOnly={entryStrategy === "multi"}
+          rules={{
+            validate: validateUnits,
+          }}
+          showErrorMessage={false}
         />
         <div className="currencyBox">{symbolData.unitsAmount}</div>
       </Box>
@@ -210,13 +209,12 @@ const StrategyPanel = (props) => {
           <FormControl>
             <HelperLabel descriptionId="terminal.stopprice.help" labelId="terminal.stopprice" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                error={!!errors.stopPrice}
-                inputRef={register({
-                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
-                })}
+              <CustomNumberInput
                 name="stopPrice"
+                rules={{
+                  validate: (value) => !isNaN(value) && parseFloat(value) > 0,
+                }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.quote}</div>
             </Box>
@@ -245,12 +243,11 @@ const StrategyPanel = (props) => {
           <FormControl>
             <HelperLabel descriptionId="terminal.realinvest.help" labelId="terminal.realinvest" />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                inputRef={register}
+              <CustomNumberInput
                 name="realInvestment"
                 onChange={realInvestmentChange}
                 placeholder={"0"}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
@@ -271,16 +268,15 @@ const StrategyPanel = (props) => {
               labelId="terminal.position.size"
             />
             <Box alignItems="center" display="flex">
-              <OutlinedInput
-                className="outlineInput"
-                error={!!errors.positionSize}
-                inputRef={register({
-                  required: formatMessage({ id: "terminal.positionsize.required" }),
-                  validate: validatePositionSize,
-                })}
+              <CustomNumberInput
                 name="positionSize"
                 onChange={positionSizeChange}
                 placeholder={"0"}
+                rules={{
+                  required: formatMessage({ id: "terminal.positionsize.required" }),
+                  validate: validatePositionSize,
+                }}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>
@@ -305,29 +301,22 @@ const StrategyPanel = (props) => {
             />
             <Box className="positionSizePercentage" display="flex" flexDirection="row">
               <Box display="flex" flexDirection="row">
-                <OutlinedInput
-                  className="outlineInput"
-                  error={!!errors.positionSizePercentage}
-                  inputRef={register({
+                <CustomNumberInput
+                  name="positionSizePercentage"
+                  onChange={positionSizePercentageChange}
+                  placeholder={"0"}
+                  rules={{
                     required: formatMessage({ id: "terminal.positionsize.percentage.required" }),
                     validate: (value) =>
                       (value > 0 && value <= 100) ||
                       formatMessage({ id: "terminal.positionsize.valid.percentage" }),
-                  })}
-                  name="positionSizePercentage"
-                  onChange={positionSizePercentageChange}
-                  placeholder={"0"}
+                  }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">%</div>
               </Box>
               <Box display="flex" flexDirection="row">
-                <OutlinedInput
-                  className="outlineInput"
-                  inputRef={register}
-                  name="positionSizeAllocated"
-                  placeholder={"0"}
-                  readOnly={true}
-                />
+                <CustomNumberInput name="positionSizeAllocated" placeholder={"0"} readOnly={true} />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
             </Box>
@@ -363,9 +352,7 @@ const StrategyPanel = (props) => {
           ) : (
             <UnitsControl baseBalance={baseBalance} loading={loading} symbolData={symbolData} />
           ))}
-        {selectedExchange.exchangeType === "futures" && (
-          <MarginButtons symbolData={symbolData} />
-        )}
+        {selectedExchange.exchangeType === "futures" && <MarginButtons symbolData={symbolData} />}
         {["limit", "multi"].includes(entryStrategy) && (
           <Box alignItems="center" display="flex" flexDirection="row" justifyContent="start">
             <PostOnlyControl />

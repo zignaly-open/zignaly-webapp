@@ -98,10 +98,8 @@ const SignalProviders = (props) => {
       quotesAvailable
     ) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
         internalExchangeId: selectedExchange.internalId,
-        version: 2,
       };
       tradeApi
         .providerExchangeSettingsGet(payload)
