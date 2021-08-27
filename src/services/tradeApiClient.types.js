@@ -1016,6 +1016,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} userName
  * @property {string} imageUrl
  * @property {string} isFollowing Flag indicating if author is following provider
+ * @property {boolean} banned
  */
 
 /**
