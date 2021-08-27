@@ -1117,8 +1117,8 @@ export function userEntityResponseTransform(response) {
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
     locale: response.locale,
-    wall: response.wall,
     isUnknownDevice: response.isUnknownDevice,
+    wall: response.wall || {},
   };
 }
 
