@@ -246,8 +246,8 @@ const StrategyPanel = (props) => {
               <CustomNumberInput
                 name="realInvestment"
                 onChange={realInvestmentChange}
-                showErrorMessage={false}
                 placeholder={"0"}
+                showErrorMessage={false}
               />
               <div className="currencyBox">{symbolData.unitsInvestment}</div>
             </Box>

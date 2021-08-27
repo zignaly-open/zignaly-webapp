@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, Typography, Switch } from "@material-ui/core";
 import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
@@ -15,7 +15,6 @@ import "./AutoclosePanel.scss";
 const AutoclosePanel = () => {
   const { expanded, expandClass, setExpanded } = useExpandable();
   const { clearErrors, errors } = useFormContext();
-  const { formatMessage } = useIntl();
 
   /**
    * Display property errors.
