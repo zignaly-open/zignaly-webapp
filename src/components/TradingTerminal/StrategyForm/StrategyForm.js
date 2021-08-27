@@ -19,7 +19,6 @@ import CustomButton from "../../CustomButton";
 import SidebarEditPanels from "./SidebarEditPanels";
 import SidebarCreatePanels from "./SidebarCreatePanels";
 import "./StrategyForm.scss";
-// import { mixpanelPositionCreated } from "utils/mixpanelApi";
 
 /**
  * @typedef {any} TVWidget
@@ -31,6 +30,50 @@ import "./StrategyForm.scss";
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
  */
+
+/**
+ * Compose position DCA targets payload chunk.
+ *
+ * @param {Object<string, any>} draftPosition React hook form submission values.
+ * @returns {PositionDCATargets|boolean} Create position payload.
+ */
+export const composePositionDcaTargets = (draftPosition) => {
+  /**
+   * @type {PositionDCATargets}
+   */
+  const dcaTargets = [];
+
+  /**
+   * Compose a DCA target item for a given index.
+   *
+   * @param {Number} targetId Target index.
+   * @return {Void} None.
+   */
+  const composeTargetItem = (targetId) => {
+    const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
+    const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
+    const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
+    const pricePriority = draftPosition[`dcaRebuyPriority${targetId}`];
+    const postOnly = draftPosition[`dcaPostOnly${targetId}`];
+    // const pricePriority = draftPosition.DCAPriority;
+
+    if (targetRebuyPercentage) {
+      dcaTargets.push({
+        targetId,
+        priceTargetPercentage: parseFloat(targetPricePercentage),
+        priceTarget: parseFloat(targetRebuyPrice),
+        pricePriority,
+        amountPercentage: parseFloat(targetRebuyPercentage),
+        postOnly,
+      });
+    }
+  };
+
+  range(1, 51, 1).forEach(composeTargetItem);
+  range(1000, 1051, 1).forEach(composeTargetItem);
+
+  return isEmpty(dcaTargets) ? false : dcaTargets;
+};
 
 /**
  * @typedef {Object} StrategyFormProps
@@ -199,50 +242,6 @@ const StrategyForm = (props) => {
     });
 
     return isEmpty(takeProfitTargets) ? false : takeProfitTargets;
-  };
-
-  /**
-   * Compose position DCA targets payload chunk.
-   *
-   * @param {Object<string, any>} draftPosition React hook form submission values.
-   * @returns {PositionDCATargets|boolean} Create position payload.
-   */
-  const composePositionDcaTargets = (draftPosition) => {
-    /**
-     * @type {PositionDCATargets}
-     */
-    const dcaTargets = [];
-
-    /**
-     * Compose a DCA target item for a given index.
-     *
-     * @param {Number} targetId Target index.
-     * @return {Void} None.
-     */
-    const composeTargetItem = (targetId) => {
-      const targetPricePercentage = draftPosition[`dcaTargetPricePercentage${targetId}`];
-      const targetRebuyPercentage = draftPosition[`dcaRebuyPercentage${targetId}`];
-      const targetRebuyPrice = draftPosition[`dcaRebuyPrice${targetId}`];
-      const pricePriority = draftPosition[`dcaRebuyPriority${targetId}`];
-      const postOnly = draftPosition[`dcaPostOnly${targetId}`];
-      // const pricePriority = draftPosition.DCAPriority;
-
-      if (targetRebuyPercentage) {
-        dcaTargets.push({
-          targetId,
-          priceTargetPercentage: parseFloat(targetPricePercentage),
-          priceTarget: parseFloat(targetRebuyPrice),
-          pricePriority,
-          amountPercentage: parseFloat(targetRebuyPercentage),
-          postOnly,
-        });
-      }
-    };
-
-    range(1, 51, 1).forEach(composeTargetItem);
-    range(1000, 1051, 1).forEach(composeTargetItem);
-
-    return isEmpty(dcaTargets) ? false : dcaTargets;
   };
 
   /**

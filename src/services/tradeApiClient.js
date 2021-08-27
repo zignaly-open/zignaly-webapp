@@ -1505,6 +1505,30 @@ class TradeApiClient {
   }
 
   /**
+   * Verify if known device code is valid.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async verifyKnownDevice(payload) {
+    return this.doRequest("/known_device/verify", payload, "POST", 2, payload.token);
+  }
+
+  /**
+   * Resend code for known device
+   *
+   * @param {string} token Session token
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async resendKnownDeviceCode(token) {
+    return this.doRequest("/known_device/resend", null, "POST", 2, token);
+  }
+
+  /**
    * Get user notifications settings.
    *
    * @returns {Promise<ProfileNotifications>} Returns promise.
@@ -1806,6 +1830,8 @@ class TradeApiClient {
     const responseData = await this.doRequest(
       `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`,
       payload,
+      "GET",
+      2,
     );
 
     return exchangeOpenOrdersResponseTransform(responseData);

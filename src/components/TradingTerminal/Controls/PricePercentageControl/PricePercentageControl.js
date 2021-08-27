@@ -10,8 +10,9 @@ import { useIntl } from "react-intl";
  * @typedef {Object} PricePercentage
  * @property {string} name
  * @property {function(*):*} onChange
- * @property {function(string): boolean} [validate]
+ * @property {function(string): boolean|string} [validate]
  * @property {string} [error]
+ * @property {boolean} [allowNegative]
  */
 
 /**
@@ -62,6 +63,7 @@ const PricePercentageControl = ({
           onClick={() => priorityValue === "price" && togglePriority()}
         >
           <CustomNumberInput
+            allowNegative={percentage.allowNegative}
             disabled={disabled || priorityValue === "price"}
             name={percentage.name}
             onChange={percentage.onChange}
@@ -70,6 +72,7 @@ const PricePercentageControl = ({
                 positive: (value) => value >= 0 || percentage.error,
               },
             }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow
@@ -84,7 +87,9 @@ const PricePercentageControl = ({
         </Box>
         <Box
           alignItems="center"
-          className={`pricePercentageInput ${priorityValue !== "price" ? "disabled" : ""}`}
+          className={`pricePercentageInput ${disabled ? "readOnly" : ""} ${
+            priorityValue !== "price" ? "disabled" : ""
+          }`}
           display="flex"
           onClick={() => priorityValue !== "price" && togglePriority()}
         >
@@ -97,6 +102,7 @@ const PricePercentageControl = ({
                 positive: (value) => value >= 0 || price.error,
               },
             }}
+            showErrorMessage={false}
           />
           <Tooltip
             arrow

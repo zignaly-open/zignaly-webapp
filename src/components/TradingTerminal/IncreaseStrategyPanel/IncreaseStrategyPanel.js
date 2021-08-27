@@ -167,6 +167,7 @@ const IncreaseStrategyPanel = (props) => {
                   rules={{
                     validate: (value) => !isNaN(value) && parseFloat(value) > 0,
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.quote}</div>
               </Box>
@@ -186,6 +187,7 @@ const IncreaseStrategyPanel = (props) => {
                   rules={{
                     validate: (value) => !isNaN(value) && parseFloat(value) >= 0,
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
@@ -213,6 +215,7 @@ const IncreaseStrategyPanel = (props) => {
                   rules={{
                     validate: validatePositionSize,
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsInvestment}</div>
               </Box>
@@ -247,6 +250,7 @@ const IncreaseStrategyPanel = (props) => {
                         (value > 0 && value <= 100) ||
                         formatMessage({ id: "terminal.positionsize.valid.percentage" }),
                     }}
+                    showErrorMessage={false}
                   />
                   <div className="currencyBox">%</div>
                 </Box>
@@ -293,6 +297,7 @@ const IncreaseStrategyPanel = (props) => {
                   rules={{
                     validate: validateUnits,
                   }}
+                  showErrorMessage={false}
                 />
                 <div className="currencyBox">{symbolData.unitsAmount}</div>
               </Box>

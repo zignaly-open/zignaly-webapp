@@ -13,23 +13,27 @@ const liveSessionTrackID = "4c9e2f89.fe420345";
  * @returns {void} None.
  */
 export const startLiveSession = (responseData) => {
-  ls.init(liveSessionTrackID);
-  ls.identify({
-    name: responseData.firstName,
-    email: responseData.email,
-    params: {
-      userId: responseData.userId,
-      exchangeConnected: responseData.binanceConnected,
-      providerEnabled: responseData.providerEnable,
-      openCount: responseData.buysCount,
-      closeCount: responseData.sellsCount,
-      hasActivated: responseData.hasActivated,
-    },
-  });
-  ls.newPageView();
+  if (process.env.GATSBY_ENABLE_TRACKING) {
+    ls.init(liveSessionTrackID);
+    ls.identify({
+      name: responseData.firstName,
+      email: responseData.email,
+      params: {
+        userId: responseData.userId,
+        exchangeConnected: responseData.binanceConnected,
+        providerEnabled: responseData.providerEnable,
+        openCount: responseData.buysCount,
+        closeCount: responseData.sellsCount,
+        hasActivated: responseData.hasActivated,
+      },
+    });
+    ls.newPageView();
+  }
 };
 
 export const endLiveSession = () => {
-  ls.init(liveSessionTrackID);
-  ls.invalidateSession();
+  if (process.env.GATSBY_ENABLE_TRACKING) {
+    ls.init(liveSessionTrackID);
+    ls.invalidateSession();
+  }
 };

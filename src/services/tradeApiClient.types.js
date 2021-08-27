@@ -322,6 +322,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Array<ExchangeConnectionEntity>} exchanges
  * @property {string} locale
  * @property {UserWall} wall
+ * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  */
 
 /**
@@ -1116,6 +1117,7 @@ export function userEntityResponseTransform(response) {
       : [],
     locale: response.locale,
     wall: response.wall,
+    isUnknownDevice: response.isUnknownDevice,
   };
 }
 
