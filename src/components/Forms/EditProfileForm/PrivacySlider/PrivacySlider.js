@@ -126,10 +126,10 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
     // },
     track: {
       height: 4,
-      ...(valueNumber > 0 && {
-        left: "50% !important",
-        width: `${valueNumber > 1 ? "50%" : "0%"} !important`,
-      }),
+      // ...(valueNumber > 0 && {
+      //   left: "50% !important",
+      //   width: `${valueNumber > 1 ? "50%" : "0%"} !important`,
+      // }),
     },
     rail: {
       height: 4,
