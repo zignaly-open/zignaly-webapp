@@ -12,6 +12,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * @property {function} getEntrySize
  * @property {function} getEntrySizeQuote
  * @property {function} getEntryPricePercentChange
+ * @property {function} getProfitPercentage
  */
 
 /**
@@ -60,6 +61,20 @@ function usePositionEntry(positionEntity) {
   };
 
   /**
+   * Get position profit percentage.
+   * Unlike priceDifference, it will be positive for profits in SHORT position.
+   *
+   * @returns {number} Price difference.
+   */
+  const getProfitPercentage = () => {
+    if (positionEntity) {
+      return positionEntity.profitPercentage || 0;
+    }
+
+    return 0;
+  };
+
+  /**
    * Resolve position entry size (base) for new or existing position.
    *
    * @returns {number} Base entry size.
@@ -85,7 +100,13 @@ function usePositionEntry(positionEntity) {
     return parseFloat(positionSize) || 0;
   };
 
-  return { getEntryPrice, getEntryPricePercentChange, getEntrySize, getEntrySizeQuote };
+  return {
+    getEntryPrice,
+    getEntryPricePercentChange,
+    getEntrySize,
+    getEntrySizeQuote,
+    getProfitPercentage,
+  };
 }
 
 export default usePositionEntry;
