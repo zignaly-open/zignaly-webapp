@@ -63,7 +63,7 @@ const PricePercentageControl = ({
           onClick={() => priorityValue === "price" && togglePriority()}
         >
           <CustomNumberInput
-            allowNegative={percentage.allowNegative}
+            allowNegative={Boolean(percentage.allowNegative)}
             disabled={disabled || priorityValue === "price"}
             name={percentage.name}
             onChange={percentage.onChange}
