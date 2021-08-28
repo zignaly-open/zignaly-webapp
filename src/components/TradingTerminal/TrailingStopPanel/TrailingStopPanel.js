@@ -57,7 +57,8 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan } = useValidation();
-  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote, getProfitPercentage } =
+    usePositionEntry(positionEntity);
   const entrySizeQuote = getEntrySizeQuote();
   const isClosed = positionEntity ? positionEntity.closed : false;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
@@ -88,8 +89,16 @@ const TrailingStopPanel = (props) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validatePercentage = (value) => {
-    let valid = greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage");
-    if (valid) {
+    const profitPercentage = formatFloat2Dec(getProfitPercentage());
+
+    let valid = greaterThan(
+      value,
+      profitPercentage,
+      entryType,
+      "terminal.trailingstop.valid.percentage",
+      { value: profitPercentage },
+    );
+    if (valid === true) {
       const stopLossPercentage = parseFloat(value);
       if (stopLossPercentage && entrySizeQuote) {
         const amountSoldTrigger = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
@@ -245,6 +254,8 @@ const TrailingStopPanel = (props) => {
               name: "trailingStopPercentage",
               validate: validatePercentage,
               onChange: trailingStopPercentageChange,
+              // allowNegative: entryType.toUpperCase() === "SHORT",
+              allowNegative: true,
             }}
             price={{
               name: "trailingStopPrice",

@@ -283,6 +283,8 @@ const TradingViewEdit = (props) => {
         "reBuyTargets",
         "positionSizeQuote",
         "reduceOrders",
+        // todo: we could use profitPercentage price here, to update validation for stop loss etc.
+        // If there are no more issues of panels reloading everytime.
         // "sellPrice",
       ];
       const propagateChange = !isEqual(
@@ -294,6 +296,7 @@ const TradingViewEdit = (props) => {
         setPositionEntity(newPositionEntity);
       }
 
+      // todo: doesn't seem to do anything
       methods.setValue("priceDifference", newPositionEntity.priceDifference);
     }
   };
