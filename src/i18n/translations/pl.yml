@@ -1415,8 +1415,8 @@ terminal.takeprofit.valid.pricepercentage.greater: "Wartość procentowa Profit 
 terminal.takeprofit.valid.pricepercentage.lower: "Wartość procentowa Profit Target musi być liczbą mniejszą niż 0."
 terminal.trailingstop.limit.zero.lower: "Odległość dla zlecenia Trailing Stop musi być liczbą mniejszą niż 0."
 terminal.trailingstop.limit.zero.greater: "Odległość dla zlecenia Trailing Stop musi być liczbą większą niż 0."
-terminal.trailingstop.valid.percentage.greater: "Procent dla zlecenia Trailing Stop musi być liczbą większą niż 0."
-terminal.trailingstop.valid.percentage.lower: "Procent dla zlecenia Trailing Stop musi być liczbą mniejszą niż 0."
+terminal.trailingstop.valid.percentage.greater: "Procent dla zlecenia Trailing Stop musi być liczbą większą niż {value}."
+terminal.trailingstop.valid.percentage.lower: "Procent dla zlecenia Trailing Stop musi być liczbą mniejszą niż {value}."
 terminal.provider.available: "Dostępne:"
 accounts.exchange.api.tip.bitmex: "- Otwórz {url}\n - Zaloguj się do BitMEX\n - Nadaj kluczowi API nazwę\n - Ustaw uprawnienia klucza na „Order”\n - Kliknij utwórz klucz API\n - Po zakończeniu skopiuj klucze API nowo utworzonego API z powrotem do odpowiednich pól wejściowych powyżej\n - Gotowe!"
 accounts.exchange.api.tip.ascendex: "- Open {url}\n
