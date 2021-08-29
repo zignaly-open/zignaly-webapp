@@ -81,7 +81,7 @@ const TakeProfitPanel = (props) => {
     (providerService && providerService.providerId !== "1") ||
     (positionEntity && positionEntity.isCopyTrader);
 
-  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySize, getProfitPercentage } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const disableRemoveAction = isReadOnly || isTargetLocked;
@@ -342,6 +342,25 @@ const TakeProfitPanel = (props) => {
     return null;
   };
 
+  /**
+   * Validate target percentage limits.
+   *
+   * @param {string} value targetPricePercentage
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateTargetPricePercentage = (value) => {
+    const profitPercentage = formatFloat2Dec(getProfitPercentage());
+
+    let valid = greaterThan(
+      value,
+      profitPercentage,
+      entryType,
+      "terminal.takeprofit.valid.pricepercentage",
+      { value: profitPercentage },
+    );
+    return valid;
+  };
+
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -371,9 +390,9 @@ const TakeProfitPanel = (props) => {
                   labelId="terminal.target"
                   percentage={{
                     name: composeTargetPropertyName("targetPricePercentage", targetId),
-                    validate: (value) =>
-                      greaterThan(value, 0, entryType, "terminal.takeprofit.valid.pricepercentage"),
+                    validate: validateTargetPricePercentage,
                     onChange: targetPricePercentageChange,
+                    allowNegative: true,
                   }}
                   price={{
                     name: composeTargetPropertyName("targetPrice", targetId),
