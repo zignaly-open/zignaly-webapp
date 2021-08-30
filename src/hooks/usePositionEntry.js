@@ -53,6 +53,7 @@ function usePositionEntry(positionEntity) {
    * @returns {number} Price difference.
    */
   const getEntryPricePercentChange = () => {
+    // todo: priceDifference is always undefined, I think.
     if (positionEntity) {
       return priceDifference || positionEntity.priceDifference || 0;
     }
@@ -62,13 +63,13 @@ function usePositionEntry(positionEntity) {
 
   /**
    * Get position profit percentage.
-   * Unlike priceDifference, it will be positive for profits in SHORT position.
+   * Unlike priceDifference, it includes leverage and will be positive for profits in SHORT position.
    *
    * @returns {number} Price difference.
    */
   const getProfitPercentage = () => {
     if (positionEntity) {
-      return positionEntity.profitPercentage || 0;
+      return positionEntity.profitPercentage;
     }
 
     return 0;
