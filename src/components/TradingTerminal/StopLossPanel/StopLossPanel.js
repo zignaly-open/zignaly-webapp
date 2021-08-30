@@ -171,11 +171,11 @@ const StopLossPanel = (props) => {
   const initStopLoss = () => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
-        updateStopLoss();
         setValue("stopLossPriority", positionEntity.stopLossPriority);
         setValue("stopLossPrice", formatPrice(positionEntity.stopLossPrice, "", ""));
         setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
       }
+      updateStopLoss();
     } else {
       setValue("stopLossPrice", "");
       if (errors.stopLossPercentage) {
