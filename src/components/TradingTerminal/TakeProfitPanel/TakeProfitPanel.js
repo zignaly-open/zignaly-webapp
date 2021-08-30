@@ -349,7 +349,8 @@ const TakeProfitPanel = (props) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validateTargetPricePercentage = (value) => {
-    const profitPercentage = formatFloat2Dec(getProfitPercentage());
+    // const profitPercentage = formatFloat2Dec(getProfitPercentage());
+    const profitPercentage = 0;
 
     let valid = greaterThan(
       value,

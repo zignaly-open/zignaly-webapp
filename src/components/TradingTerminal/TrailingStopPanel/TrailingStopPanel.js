@@ -89,7 +89,8 @@ const TrailingStopPanel = (props) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validatePercentage = (value) => {
-    const profitPercentage = formatFloat2Dec(getProfitPercentage());
+    // const profitPercentage = formatFloat2Dec(getProfitPercentage());
+    const profitPercentage = 0;
 
     let valid = greaterThan(
       value,
