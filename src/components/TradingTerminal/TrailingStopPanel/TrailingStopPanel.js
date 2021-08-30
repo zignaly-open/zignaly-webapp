@@ -56,8 +56,7 @@ const TrailingStopPanel = (props) => {
   const trailingStopPercentage = parseFloat(trailingStopPercentageRaw);
   const { validateTargetPriceLimits } = useSymbolLimitsValidate(symbolData);
   const { lessThan, greaterThan } = useValidation();
-  const { getEntryPrice, getEntrySizeQuote, getProfitPercentage } =
-    usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const entrySizeQuote = getEntrySizeQuote();
   const isClosed = positionEntity ? positionEntity.closed : false;
   const entryType = positionEntity ? positionEntity.side : watch("entryType");
@@ -89,19 +88,19 @@ const TrailingStopPanel = (props) => {
    */
   const validatePercentage = (value) => {
     const stopLossPercentage = parseFloat(value);
-    const profitPercentage = getProfitPercentage();
 
-    let valid = greaterThan(
-      value,
-      profitPercentage,
-      entryType,
-      "terminal.trailingstop.valid.percentage",
-      { value: format2Dec(profitPercentage) },
-    );
+    let valid = true;
+    if (positionEntity) {
+      greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage", {
+        value: 0,
+      });
+    }
+
     if (valid === true) {
       if (stopLossPercentage && entrySizeQuote) {
         const amountSoldTrigger = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
         const amountSold = (amountSoldTrigger * (100 + trailingStopDistance)) / 100;
+        // @ts-ignore
         valid = validateSellAmount(amountSold);
       }
     }
