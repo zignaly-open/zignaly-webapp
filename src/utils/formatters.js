@@ -16,6 +16,7 @@ export const formatNumber = (value, precision = 8) => {
 
 /**
  * Round number
+ // https://www.jacklmoore.com/notes/rounding-in-javascript/
  *
  * @template T
  * @param {T} value Number to round.

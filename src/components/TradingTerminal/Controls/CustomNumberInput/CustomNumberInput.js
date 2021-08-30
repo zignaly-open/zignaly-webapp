@@ -117,12 +117,13 @@ const CustomNumberInput = (props) => {
   };
 
   const transform = {
+    // https://github.com/react-hook-form/react-hook-form/issues/615
     input: (/** @type {number} */ value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
-    output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
-      // Convert to number for easier validation
-      const output = parseInt(e.target.value, 10);
-      return isNaN(output) ? 0 : output;
-    },
+    // output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+    //   // Convert to number for easier validation
+    //   const output = parseInt(e.target.value, 10);
+    //   return isNaN(output) ? 0 : output;
+    // },
   };
 
   // todo: we could add sign prefix here
@@ -138,24 +139,41 @@ const CustomNumberInput = (props) => {
             endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
             error={!!errors[name]}
             name={name}
-            type="number"
             onChange={(e) => {
-              // @ts-ignore
-              const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
+              const val = e.target.value;
+              const valNumber = parseFloat(val) || 0;
+              // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
               // or transform.output(e)
 
-              // if (val !== null) {
+              if (!allowNegative) {
+                if (val === "-") {
+                  // Remove negative sign alone
+                  e.target.value = "";
+                } else if (valNumber < 0) {
+                  // Force positive number
+                  e.target.value = Math.abs(valNumber).toString();
+                }
+              }
+
               // Format event value
-              _onChange(val);
+              if (format === "number") {
+                // @ts-ignore
+                e.target.value = valNumber;
+              }
+
+              _onChange(e);
+
+              // if (val !== null) {
               // Callback
               if (onChange) {
-                e.target.value = val;
+                // e.target.value = val;
                 // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
                 // Even with useCallback, it wasn't working with CustomNumberInput.
                 setTimeout(() => onChange(e), 0);
               }
               // }
             }}
+            type="number"
             value={format !== "number" ? value : transform.input(value)}
             {...others}
           />
