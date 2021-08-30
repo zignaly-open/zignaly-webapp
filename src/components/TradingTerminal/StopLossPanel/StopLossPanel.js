@@ -2,8 +2,7 @@ import React, { useEffect, useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber, some } from "lodash";
 import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
-import { formatFloat2Dec } from "../../../utils/format";
-import { formatPrice } from "../../../utils/formatters";
+import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import useValidation from "../../../hooks/useValidation";
@@ -100,14 +99,15 @@ const StopLossPanel = (props) => {
   function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const profitPercentage = formatFloat2Dec(getProfitPercentage());
+    const profitPercentage =
+      entryType.toUpperCase() === "SHORT" ? -getProfitPercentage() : getProfitPercentage();
 
     let valid = lessThan(
       stopLossPercentage,
       profitPercentage,
       entryType,
       "terminal.stoploss.valid.percentage",
-      { value: profitPercentage },
+      { value: format2Dec(profitPercentage) },
     );
 
     if (valid === true && entrySizeQuote && stopLossPercentage) {
@@ -159,7 +159,7 @@ const StopLossPanel = (props) => {
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
-      setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      setValue("stopLossPercentage", format2Dec(stopLossPercentage));
     } else {
       setValue("stopLossPercentage", "");
     }
@@ -170,7 +170,7 @@ const StopLossPanel = (props) => {
   const initStopLoss = () => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
-        setValue("stopLossPercentage", formatFloat2Dec(positionEntity.stopLossPercentage));
+        setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
         setValue("stopLossPriority", positionEntity.stopLossPriority);
         setValue("stopLossPrice", formatPrice(positionEntity.stopLossPrice, "", ""));
       }
@@ -200,8 +200,8 @@ const StopLossPanel = (props) => {
     } else {
       // When SL come from backend rely on the existing sign and value.
       // Otherwise use the custom SL value and apply the sign corresponding to entry type.
-      const newValue = formatFloat2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
-      setValue("stopLossPercentage", formatFloat2Dec(newValue));
+      const newValue = format2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
+      setValue("stopLossPercentage", format2Dec(newValue));
       // todo: simulateInputChangeEvent
     }
   };
