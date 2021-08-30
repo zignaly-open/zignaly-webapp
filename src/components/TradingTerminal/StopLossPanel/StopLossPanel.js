@@ -171,11 +171,11 @@ const StopLossPanel = (props) => {
   const initStopLoss = () => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
-        updateStopLoss();
         setValue("stopLossPriority", positionEntity.stopLossPriority);
         setValue("stopLossPrice", formatPrice(positionEntity.stopLossPrice, "", ""));
         setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
       }
+      updateStopLoss();
     } else {
       setValue("stopLossPrice", "");
       if (errors.stopLossPercentage) {
@@ -196,7 +196,8 @@ const StopLossPanel = (props) => {
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (isNaN(stopLossPercentage)) {
+    if (!isNumber(stopLossPercentage)) {
+      // todo: not working due to input type=number
       setValue("stopLossPercentage", sign);
     } else {
       // When SL come from backend rely on the existing sign and value.
