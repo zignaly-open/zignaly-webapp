@@ -15,6 +15,34 @@ export const formatNumber = (value, precision = 8) => {
 };
 
 /**
+ * Round number
+ *
+ * @template T
+ * @param {T} value Number to round.
+ * @param {number} [decimals=8] Decimals precision.
+ *
+ * @returns {T} Rounded number.
+ */
+export const round = (value, decimals) => {
+  // @ts-ignore
+  const valueNumber = typeof value === "number" ? value : parseFloat(value);
+
+  if (decimals === undefined) {
+    if (valueNumber > 1 || valueNumber < -1) {
+      // Default 2 decimals for numbers > 1
+      decimals = 2;
+    } else {
+      decimals = 8;
+    }
+  }
+
+  // @ts-ignore
+  const roundedNumber = Number(Math.round(valueNumber + "e" + decimals) + "e-" + decimals);
+  // @ts-ignore
+  return typeof value === "number" ? roundedNumber : roundedNumber.toString();
+};
+
+/**
  * Add thousands separator in string numeric value.
  *
  * @param {string} value String numeric value.

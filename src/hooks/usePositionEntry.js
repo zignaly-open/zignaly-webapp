@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
+import { round } from "utils/formatters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -68,7 +69,7 @@ function usePositionEntry(positionEntity) {
    */
   const getProfitPercentage = () => {
     if (positionEntity) {
-      return positionEntity.profitPercentage || 0;
+      return round(positionEntity.profitPercentage, 2) || 0;
     }
 
     return 0;

@@ -464,8 +464,12 @@ const DCAPanel = (props) => {
                   }
 
                   return (
-                    lessThan(value, 0, entryType, "terminal.dca.valid.pricepercentage") ||
-                    validateDCAPriceLimit
+                    lessThan(
+                      parseFloat(value),
+                      0,
+                      entryType,
+                      "terminal.dca.valid.pricepercentage",
+                    ) || validateDCAPriceLimit
                   );
                 },
               }}

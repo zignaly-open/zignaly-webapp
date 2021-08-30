@@ -67,6 +67,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
  * @property {boolean} [showErrorMessage]
+ * @property {string} [format="string"] Pass "number" to set/get value as number.
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -85,6 +86,7 @@ const CustomNumberInput = (props) => {
     errors,
     control,
     showErrorMessage = true,
+    format = "string",
     ...others
   } = props;
   const context = useFormContext();
@@ -114,6 +116,15 @@ const CustomNumberInput = (props) => {
     return null;
   };
 
+  const transform = {
+    input: (/** @type {number} */ value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+    output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+      // Convert to number for easier validation
+      const output = parseInt(e.target.value, 10);
+      return isNaN(output) ? 0 : output;
+    },
+  };
+
   // todo: we could add sign prefix here
   return (
     <>
@@ -123,37 +134,33 @@ const CustomNumberInput = (props) => {
         name={name}
         render={({ onChange: _onChange, value }) => (
           <OutlinedInput
-            className="customInput outlineInput"
+            className="customInput outlineInput inputNoArrows"
             endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
             error={!!errors[name]}
             name={name}
+            type="number"
             onChange={(e) => {
-              const val = handleChangeNumber(e);
-              if (val !== null) {
-                // Format event value
+              // @ts-ignore
+              const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
+              // or transform.output(e)
+
+              // if (val !== null) {
+              // Format event value
+              _onChange(val);
+              // Callback
+              if (onChange) {
                 e.target.value = val;
-                _onChange(e);
-                // Callback
-                if (onChange) {
-                  // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
-                  // Even with useCallback, it wasn't working with CustomNumberInput.
-                  setTimeout(() => onChange(e), 0);
-                }
+                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                // Even with useCallback, it wasn't working with CustomNumberInput.
+                setTimeout(() => onChange(e), 0);
               }
+              // }
             }}
-            value={value}
+            value={format !== "number" ? value : transform.input(value)}
             {...others}
           />
         )}
         rules={rules}
-        transform={{
-          // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
-          output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
-            // Convert to number for easier validation
-            const output = parseInt(e.target.value, 10);
-            return isNaN(output) ? 0 : output;
-          },
-        }}
       />
       {showErrorMessage && errors[name] && (
         <span className="errorText">{errors[name].message}</span>
