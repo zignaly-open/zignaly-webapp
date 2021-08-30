@@ -95,26 +95,26 @@ const CustomNumberInput = (props) => {
     errors = context.errors;
   }
 
-  /**
-   * @param {React.ChangeEvent<*>} e Event
-   * @returns {string} Formatted number
-   */
-  const handleChangeNumber = (e) => {
-    const val = e.target.value;
-    if (val === "") return "";
+  // /**
+  //  * @param {React.ChangeEvent<*>} e Event
+  //  * @returns {string} Formatted number
+  //  */
+  // const handleChangeNumber = (e) => {
+  //   const val = e.target.value;
+  //   if (val === "") return "";
 
-    // Remove commas
-    let formattedVal = val.replace(",", "");
-    // Remove spaces
-    formattedVal = formattedVal.replace(" ", "");
+  //   // Remove commas
+  //   let formattedVal = val.replace(",", "");
+  //   // Remove spaces
+  //   formattedVal = formattedVal.replace(" ", "");
 
-    // Check valid number
-    if (!isNaN(formattedVal) || formattedVal === "-") {
-      // Check negative
-      if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
-    }
-    return null;
-  };
+  //   // Check valid number
+  //   if (!isNaN(formattedVal) || formattedVal === "-") {
+  //     // Check negative
+  //     if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
+  //   }
+  //   return null;
+  // };
 
   const transform = {
     // https://github.com/react-hook-form/react-hook-form/issues/615

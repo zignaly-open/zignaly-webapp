@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, Typography, Switch } from "@material-ui/core";
-import { formatPrice, round } from "../../../utils/formatters";
+import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
@@ -96,7 +96,7 @@ const TrailingStopPanel = (props) => {
       profitPercentage,
       entryType,
       "terminal.trailingstop.valid.percentage",
-      { value: round(profitPercentage, 2) },
+      { value: format2Dec(profitPercentage) },
     );
     if (valid === true) {
       if (stopLossPercentage && entrySizeQuote) {
@@ -148,7 +148,7 @@ const TrailingStopPanel = (props) => {
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       // Update trailing stop percentage
       const newTrailingStopPercentage = (priceDiff / price) * 100;
-      setValue("trailingStopPercentage", round(newTrailingStopPercentage, 2));
+      setValue("trailingStopPercentage", format2Dec(newTrailingStopPercentage));
     } else {
       setValue("trailingStopPercentage", "");
     }
@@ -158,8 +158,8 @@ const TrailingStopPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     if (expanded) {
-      const newPercentage = round(Math.abs(trailingStopPercentage), 2);
-      const newDistance = round(Math.abs(trailingStopDistance), 2);
+      const newPercentage = format2Dec(Math.abs(trailingStopPercentage));
+      const newDistance = format2Dec(Math.abs(trailingStopDistance));
       const percentageSign = entryType === "SHORT" ? "-" : "";
       const distanceSign = entryType === "SHORT" ? "" : "-";
 

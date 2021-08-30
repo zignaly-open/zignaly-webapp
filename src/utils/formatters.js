@@ -42,6 +42,15 @@ export const round = (value, decimals) => {
 };
 
 /**
+ * Round number with 2 decimals
+ *
+ * @param {string|number} value Number to round.
+ *
+ * @returns {string} Rounded number as string.
+ */
+export const format2Dec = (value) => round(value, 2);
+
+/**
  * Add thousands separator in string numeric value.
  *
  * @param {string} value String numeric value.
