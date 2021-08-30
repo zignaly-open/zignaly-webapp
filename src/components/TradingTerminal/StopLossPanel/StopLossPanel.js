@@ -196,7 +196,8 @@ const StopLossPanel = (props) => {
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (isNaN(stopLossPercentage)) {
+    if (!isNumber(stopLossPercentage)) {
+      // todo: not working due to input type=number
       setValue("stopLossPercentage", sign);
     } else {
       // When SL come from backend rely on the existing sign and value.
