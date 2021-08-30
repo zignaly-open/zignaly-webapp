@@ -80,7 +80,7 @@ const TakeProfitPanel = (props) => {
     (providerService && providerService.providerId !== "1") ||
     (positionEntity && positionEntity.isCopyTrader);
 
-  const { getEntryPrice, getEntrySize, getProfitPercentage } = usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySize } = usePositionEntry(positionEntity);
   const targetsDone = positionEntity ? positionEntity.takeProfitTargetsCountSuccess : 0;
   const isTargetLocked = positionEntity ? cardinality === targetsDone : false;
   const disableRemoveAction = isReadOnly || isTargetLocked;
@@ -348,14 +348,12 @@ const TakeProfitPanel = (props) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validateTargetPricePercentage = (value) => {
-    const profitPercentage = getProfitPercentage();
-
     let valid = greaterThan(
       parseFloat(value),
-      profitPercentage,
+      0,
       entryType,
       "terminal.takeprofit.valid.pricepercentage",
-      { value: format2Dec(profitPercentage) },
+      { value: 0 },
     );
     return valid;
   };
