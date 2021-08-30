@@ -30,7 +30,7 @@ const SidebarEditPanels = (props) => {
 
   return (
     <>
-      <TakeProfitPanel
+      {/* <TakeProfitPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
         symbolData={selectedSymbol}
@@ -39,13 +39,13 @@ const SidebarEditPanels = (props) => {
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
         symbolData={selectedSymbol}
-      />
+      /> */}
       <StopLossPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
         symbolData={selectedSymbol}
       />
-      <TrailingStopPanel
+      {/* <TrailingStopPanel
         isReadOnly={isReadOnly}
         positionEntity={positionEntity}
         symbolData={selectedSymbol}
@@ -56,7 +56,7 @@ const SidebarEditPanels = (props) => {
       <ReduceOrders isReadOnly={isReadOnly} positionEntity={positionEntity} />
       {!isReadOnly && (
         <ReduceStrategyPanel positionEntity={positionEntity} symbolData={selectedSymbol} />
-      )}
+      )} */}
     </>
   );
 };
