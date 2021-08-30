@@ -41,8 +41,7 @@ const StopLossPanel = (props) => {
   const { clearErrors, errors, getValues, register, setValue, watch, trigger, control } =
     useFormContext();
   const { lessThan } = useValidation();
-  const { getEntryPrice, getProfitPercentage, getEntrySizeQuote } =
-    usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const entrySizeQuote = getEntrySizeQuote();
   const { validateSellAmount } = usePositionSizeHandlers(symbolData);
 
@@ -100,19 +99,20 @@ const StopLossPanel = (props) => {
   function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const profitPercentage =
-      entryType.toUpperCase() === "SHORT" ? -getProfitPercentage() : getProfitPercentage();
+    // const profitPercentage =
+    //   entryType.toUpperCase() === "SHORT" ? -getProfitPercentage() : getProfitPercentage();
+    let valid = true;
 
-    let valid = lessThan(
-      stopLossPercentage,
-      profitPercentage,
-      entryType,
-      "terminal.stoploss.valid.percentage",
-      { value: format2Dec(profitPercentage) },
-    );
+    if (!positionEntity) {
+      // Check sign when creating a position.
+      valid = lessThan(stopLossPercentage, 0, entryType, "terminal.stoploss.valid.percentage", {
+        value: 0,
+      });
+    }
 
     if (valid === true && entrySizeQuote && stopLossPercentage) {
       const unitsSold = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
+      // @ts-ignore
       valid = validateSellAmount(unitsSold);
     }
 
