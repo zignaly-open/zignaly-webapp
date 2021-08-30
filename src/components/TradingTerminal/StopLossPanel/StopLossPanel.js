@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber, some } from "lodash";
 import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
@@ -12,6 +12,7 @@ import CustomSelect from "../../CustomSelect";
 import PricePercentageControl from "../Controls/PricePercentageControl";
 import StopLossStatus from "../StopLossStatus/StopLossStatus";
 import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -118,7 +119,7 @@ const StopLossPanel = (props) => {
     return valid;
   }
 
-  useEffect(() => {
+  useEffectSkipFirst(() => {
     trigger("stopLossPercentage");
   }, [entrySizeQuote]);
 
@@ -127,7 +128,7 @@ const StopLossPanel = (props) => {
    *
    * @return {Void} None.
    */
-  const stopLossPercentageChange = useCallback(() => {
+  const stopLossPercentageChange = () => {
     if (errors.stopLossPercentage) return;
 
     const draftPosition = getValues();
@@ -142,14 +143,14 @@ const StopLossPanel = (props) => {
     }
 
     trigger("stopLossPrice");
-  }, [errors, getEntryPrice, getValues, setValue, trigger]);
+  };
 
   /**
    * Calculate percentage based on price when value is changed.
    *
    * @return {Void} None.
    */
-  const stopLossPriceChange = useCallback(() => {
+  const stopLossPriceChange = () => {
     if (errors.stopLossPrice) return;
 
     const draftPosition = getValues();
@@ -165,16 +166,16 @@ const StopLossPanel = (props) => {
     }
 
     trigger("stopLossPercentage");
-  }, [errors, getEntryPrice, getValues, setValue, trigger]);
+  };
 
   const initStopLoss = () => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
-        setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
+        updateStopLoss();
         setValue("stopLossPriority", positionEntity.stopLossPriority);
         setValue("stopLossPrice", formatPrice(positionEntity.stopLossPrice, "", ""));
+        setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
       }
-      updateStopLoss();
     } else {
       setValue("stopLossPrice", "");
       if (errors.stopLossPercentage) {
