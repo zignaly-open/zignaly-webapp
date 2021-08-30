@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
-import { round } from "utils/formatters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -54,6 +53,7 @@ function usePositionEntry(positionEntity) {
    * @returns {number} Price difference.
    */
   const getEntryPricePercentChange = () => {
+    // todo: priceDifference is always undefined, I think.
     if (positionEntity) {
       return priceDifference || positionEntity.priceDifference || 0;
     }
@@ -63,13 +63,13 @@ function usePositionEntry(positionEntity) {
 
   /**
    * Get position profit percentage.
-   * Unlike priceDifference, it will be positive for profits in SHORT position.
+   * Unlike priceDifference, it includes leverage and will be positive for profits in SHORT position.
    *
    * @returns {number} Price difference.
    */
   const getProfitPercentage = () => {
     if (positionEntity) {
-      return round(positionEntity.profitPercentage, 2) || 0;
+      return positionEntity.profitPercentage;
     }
 
     return 0;

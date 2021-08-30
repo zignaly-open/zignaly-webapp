@@ -18,11 +18,10 @@ export const formatNumber = (value, precision = 8) => {
  * Round number
  // https://www.jacklmoore.com/notes/rounding-in-javascript/
  *
- * @template T
- * @param {T} value Number to round.
+ * @param {string|number} value Number to round.
  * @param {number} [decimals=8] Decimals precision.
  *
- * @returns {T} Rounded number.
+ * @returns {string} Rounded number as string.
  */
 export const round = (value, decimals) => {
   // @ts-ignore
@@ -39,8 +38,7 @@ export const round = (value, decimals) => {
 
   // @ts-ignore
   const roundedNumber = Number(Math.round(valueNumber + "e" + decimals) + "e-" + decimals);
-  // @ts-ignore
-  return typeof value === "number" ? roundedNumber : roundedNumber.toString();
+  return roundedNumber.toString();
 };
 
 /**
