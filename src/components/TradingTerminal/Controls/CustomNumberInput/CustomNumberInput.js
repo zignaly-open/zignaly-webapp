@@ -141,7 +141,6 @@ const CustomNumberInput = (props) => {
             name={name}
             onChange={(e) => {
               const val = e.target.value;
-              console.log("c", val);
               const valNumber = parseFloat(val) || 0;
               // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
               // or transform.output(e)
