@@ -95,26 +95,26 @@ const CustomNumberInput = (props) => {
     errors = context.errors;
   }
 
-  // /**
-  //  * @param {React.ChangeEvent<*>} e Event
-  //  * @returns {string} Formatted number
-  //  */
-  // const handleChangeNumber = (e) => {
-  //   const val = e.target.value;
-  //   if (val === "") return "";
+  /**
+   * @param {React.ChangeEvent<*>} e Event
+   * @returns {string} Formatted number
+   */
+  const handleChangeNumber = (e) => {
+    const val = e.target.value;
+    if (val === "") return "";
 
-  //   // Remove commas
-  //   let formattedVal = val.replace(",", "");
-  //   // Remove spaces
-  //   formattedVal = formattedVal.replace(" ", "");
+    // Replace commas
+    let formattedVal = val.replace(",", ".");
+    // Remove spaces
+    formattedVal = formattedVal.replace(" ", "");
 
-  //   // Check valid number
-  //   if (!isNaN(formattedVal) || formattedVal === "-") {
-  //     // Check negative
-  //     if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
-  //   }
-  //   return null;
-  // };
+    // Check valid number
+    if (!isNaN(formattedVal) || formattedVal === "-") {
+      // Check negative
+      if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
+    }
+    return null;
+  };
 
   const transform = {
     // https://github.com/react-hook-form/react-hook-form/issues/615
@@ -140,7 +140,14 @@ const CustomNumberInput = (props) => {
             error={!!errors[name]}
             name={name}
             onChange={(e) => {
-              const val = e.target.value;
+              const val = handleChangeNumber(e);
+              // Ignore if invalid character
+              if (val === null) return;
+
+              // Apply formatted value
+              e.target.value = val;
+
+              // const val = e.target.value;
               const valNumber = parseFloat(val) || 0;
               // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
               // or transform.output(e)
@@ -173,7 +180,7 @@ const CustomNumberInput = (props) => {
               }
               // }
             }}
-            type="number"
+            // type="number"
             value={format !== "number" ? value : transform.input(value)}
             {...others}
           />
