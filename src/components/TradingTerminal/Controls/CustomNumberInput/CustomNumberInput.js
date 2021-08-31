@@ -168,7 +168,6 @@ const CustomNumberInput = (props) => {
                 e.target.value = valNumber;
               }
 
-              console.log(val, e.target.value);
               _onChange(e);
 
               // if (val !== null) {
