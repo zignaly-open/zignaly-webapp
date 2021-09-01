@@ -9,7 +9,7 @@ import { verifySessionData } from "./src/utils/auth";
 import { navigate } from "gatsby";
 import "whatwg-fetch";
 import tradeApi from "services/tradeApiClient";
-// import { makeServer } from "utils/mirage/server";
+import { makeServer } from "utils/mirage/server";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
@@ -43,8 +43,10 @@ if (window.Cypress) {
     },
   });
 } else if (process.env.NODE_ENV === "development") {
-  // Use mirage server for local development
-  // makeServer({ environment: "development" });
+  if (process.env.MIRAGE === "true") {
+    // Use mirage server for local development
+    makeServer({ environment: "development" });
+  }
 }
 
 export const wrapRootElement = ({ element }) => {
@@ -122,7 +124,6 @@ export const onInitialClientRender = () => {
     } else if (isPrivateArea) {
       // Redirect to login when navigating private pages with expired session.
       navigateLogin();
-      console.log("a");
     }
   }
 

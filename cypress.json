@@ -5,5 +5,8 @@
   "videoUploadOnPasses": false,
   "env": {
     "token": "testtoken"
+  },
+  "e2e": {
+    "defaultCommandTimeout": 12000
   }
 }

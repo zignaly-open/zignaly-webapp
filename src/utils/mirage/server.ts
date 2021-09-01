@@ -1,4 +1,4 @@
-import { createServer, Model, Factory, RestSerializer, Response } from "miragejs";
+import { createServer, Model, Factory, RestSerializer, Response, trait, belongsTo } from "miragejs";
 import exchanges from "./fixtures/exchanges";
 import pairs from "./fixtures/pairs";
 import dayjs from "dayjs";
@@ -26,22 +26,61 @@ let ApplicationSerializer = RestSerializer.extend({
 
 const userFactory = Factory.extend({
   "2FAEnable": false,
-  // withReminders: trait({
-  //   afterCreate(list, server) {
-  //     server.createList("reminder", 5, { list });
-  //   },
-  // }),
+  // afterCreate(user, server) {
+  // server.createList("providerConnection", 5, { user });
+  // },
+  exchanges: [
+    {
+      activated: true,
+      exchangeId: "5e662c1c3e3b24c186ed9c21",
+      exchangeName: "Zignaly",
+      exchangeType: "spot",
+      internal: true,
+      internalId: "Zignaly1585927408_5e8754f065080",
+      internalName: "Zignaly account",
+      isBrokerAccount: true,
+      name: "Zignaly",
+    },
+    {
+      activated: true,
+      exchangeId: "5e662c1c3e3b24c186ed9c21",
+      exchangeName: "Zignaly",
+      exchangeType: "spot",
+      internal: true,
+      internalId: "Zignaly1185927111_068018f065acb",
+      internalName: "Zignaly account",
+      isBrokerAccount: true,
+      name: "Zignaly",
+    },
+    {
+      activated: false,
+      exchangeId: "5e662c1c3e3b24c186ed9c21",
+      exchangeName: "Zignaly",
+      exchangeType: "spot",
+      internal: true,
+      internalId: "Zignaly1598187408_6acb54f060181",
+      internalName: "Zignaly account",
+      isBrokerAccount: true,
+      name: "Zignaly",
+    },
+  ],
 });
 
-const getUserData = (user: any) => ({
+export const getUserData = (user: any) => ({
   ...user,
   isTrader: { copy_trading: true, profit_sharing: true, signal_providers: true },
+});
+
+const composeProvider = (p) => ({
+  ...p,
+  // disable:
 });
 
 export function makeServer({ environment = "test" } = {}) {
   let server = createServer({
     environment,
 
+    // Custom id with 24 chars
     identityManagers: { application: IdManager } as any,
 
     serializers: {
@@ -52,9 +91,12 @@ export function makeServer({ environment = "test" } = {}) {
       user: Model,
       exchange: Model,
       provider: Model,
-      userExchange: Model,
       userData: Model,
       pair: Model,
+      providerConnection: Model.extend({
+        user: belongsTo("user"),
+        provider: belongsTo("provider"),
+      }),
       // user: Model.extend({
       //   // campaigns: hasMany(),
       //   // owner: belongsTo("user"),
@@ -70,9 +112,8 @@ export function makeServer({ environment = "test" } = {}) {
     factories: {
       provider: Factory.extend({
         name: faker.commerce.productName(),
-        // id: faker.random.alphaNumeric(24),
         exchanges: ["zignaly"],
-        disable: true,
+        exchangeType: "spot",
         logoUrl: null,
         isClone: false,
         isCopyTrading: true,
@@ -127,12 +168,29 @@ export function makeServer({ environment = "test" } = {}) {
         return new Response(200, {}, { token: Cypress.env("token") });
       });
 
+      // Connected services
       this.get("/user/providers", (schema, request) => {
-        return [];
+        return schema.db.providerConnections.where({}).map((p) => {
+          const provider = schema.db.providers.find(p.providerId);
+          return {
+            connected: true,
+            exchangeInternalId: "Zignaly1585927408_5e8754f075080",
+            // exchangeInternalIds: [],
+            id: provider.id,
+            name: provider.name,
+          };
+        });
       });
 
       this.get("/user", (schema, request) => {
+        // todo
         return getUserData(schema.db.users.find(1));
+      });
+
+      this.get("/user/exchange/:exchangeInternalId/available_balance", (schema, request) => {
+        return {
+          USDT: 10,
+        };
       });
 
       this.get("/exchanges", (schema, request) => {
@@ -140,7 +198,7 @@ export function makeServer({ environment = "test" } = {}) {
       });
 
       this.get("/providers?", (schema, request) => {
-        return schema.db.providers;
+        return schema.all("provider").map((p) => composeProvider);
       });
 
       this.get("/providers/profit_sharing/:timeframe", (schema, request) => {
@@ -189,6 +247,66 @@ export function makeServer({ environment = "test" } = {}) {
     server.loadFixtures();
     // Log network requests (disabled by default for test environment)
     server.logging = true;
+
+    // server.create("exchage", [
+    //   {
+    //     id: "5e662c1c3e3b24c186ed9c24",
+    //     name: "Zignaly",
+    //     enabled: true,
+    //     requiredAuthFields: [],
+    //     testNet: ["futures"],
+    //     type: ["spot", "futures"],
+    //     features: [],
+    //   },
+    //   {
+    //     id: "5b13fee5b233f6004cb8b884",
+    //     name: "Binance",
+    //     enabled: true,
+    //     requiredAuthFields: ["key", "secret"],
+    //     testNet: ["futures"],
+    //     type: ["spot", "futures"],
+    //     features: [],
+    //   },
+    //   {
+    //     id: "606a32546fc218b34f08539d",
+    //     name: "AscendEX",
+    //     enabled: true,
+    //     enabledInTest: true,
+    //     requiredAuthFields: ["key", "secret"],
+    //     testNet: [],
+    //     type: ["spot"],
+    //     features: [],
+    //   },
+    //   {
+    //     id: "5d66ba813e3b24c1867d2103",
+    //     name: "BitMEX",
+    //     enabled: true,
+    //     enabledInTest: true,
+    //     requiredAuthFields: ["key", "secret"],
+    //     testNet: ["futures"],
+    //     type: ["futures"],
+    //     features: { hasPostOnly: true },
+    //   },
+    //   {
+    //     id: "5dc14f932f2826b3b6970fa8",
+    //     name: "KuCoin",
+    //     enabled: true,
+    //     requiredAuthFields: ["key", "secret", "password"],
+    //     testNet: [],
+    //     type: ["spot"],
+    //     features: [],
+    //   },
+    //   {
+    //     id: "5fb6466f687988f13db12c7a",
+    //     name: "VCCE",
+    //     enabled: true,
+    //     enabledInTest: true,
+    //     requiredAuthFields: ["key", "secret"],
+    //     testNet: [],
+    //     type: ["spot"],
+    //     features: [],
+    //   },
+    // ]);
   }
 
   return server;

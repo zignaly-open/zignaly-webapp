@@ -586,14 +586,14 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers list.
+   * Get providers connected by user.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
-  async providersListGet(payload) {
+  async providersUserGet(payload) {
     const endpointPath = "/user/providers";
     const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
