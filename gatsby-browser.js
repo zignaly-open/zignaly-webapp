@@ -122,6 +122,7 @@ export const onInitialClientRender = () => {
     } else if (isPrivateArea) {
       // Redirect to login when navigating private pages with expired session.
       navigateLogin();
+      console.log("a");
     }
   }
 

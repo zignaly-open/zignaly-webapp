@@ -2,6 +2,8 @@ import { createServer, Model, Factory, RestSerializer, Response } from "miragejs
 import exchanges from "./fixtures/exchanges";
 import pairs from "./fixtures/pairs";
 import dayjs from "dayjs";
+import faker from "faker";
+import IdManager from "./IdManager";
 
 // Use proper TRADEAPI_URL value.
 // When this file is imported from cypress context we can't access process.env
@@ -12,6 +14,9 @@ const TRADEAPI_URL =
 const TRADEAPI_URL_NEW =
   // @ts-ignore
   window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL_NEW") : process.env.GATSBY_TRADEAPI_URL_NEW;
+
+// eslint-disable-next-line no-console
+console.log(`Mocking ${TRADEAPI_URL_NEW}`);
 
 // Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
@@ -36,6 +41,8 @@ const getUserData = (user: any) => ({
 export function makeServer({ environment = "test" } = {}) {
   let server = createServer({
     environment,
+
+    identityManagers: { application: IdManager } as any,
 
     serializers: {
       application: ApplicationSerializer,
@@ -62,7 +69,30 @@ export function makeServer({ environment = "test" } = {}) {
 
     factories: {
       provider: Factory.extend({
-        name: "Test",
+        name: faker.commerce.productName(),
+        // id: faker.random.alphaNumeric(24),
+        exchanges: ["zignaly"],
+        disable: true,
+        logoUrl: null,
+        isClone: false,
+        isCopyTrading: true,
+        createdAt: "",
+        public: true,
+        returns: 2,
+        floating: 10,
+        options: {},
+        website: "",
+        exchangeInternalIds: [],
+        profitMode: "",
+        profitsShare: 5,
+        profitSharing: true,
+        followers: 10,
+        strategy: "",
+        about: "",
+        team: [],
+        social: [],
+        minAllocatedBalance: 0,
+        maxAllocatedBalance: 50,
       }),
       // user: Factory.extend(makeUser()),
       user: userFactory,
@@ -83,18 +113,18 @@ export function makeServer({ environment = "test" } = {}) {
       this.post("/signup", (schema, request) => {
         const attrs = JSON.parse(request.requestBody);
         const { email, firstName } = attrs;
-        // const user = schema.db.users.insert({ email, firstName });
-        return { token: "testtoken" };
+        schema.db.users.insert({ email, firstName });
+        return { token: Cypress.env("token") };
       });
 
       this.post("/login", (schema, request) => {
         const attrs = JSON.parse(request.requestBody);
         const { email, password } = attrs;
-        if (password !== "password123") {
+        const user = schema.db.users.findBy({ email });
+        if (!user || user.password !== password) {
           return new Response(400, {}, { error: { code: 8 } });
         }
-        // const user = schema.db.users.findBy({ email });
-        return new Response(200, {}, { token: "testtoken" });
+        return new Response(200, {}, { token: Cypress.env("token") });
       });
 
       this.get("/user/providers", (schema, request) => {
@@ -109,7 +139,7 @@ export function makeServer({ environment = "test" } = {}) {
         return schema.db.exchanges;
       });
 
-      this.get("/providers", (schema, request) => {
+      this.get("/providers?", (schema, request) => {
         return schema.db.providers;
       });
 
@@ -128,13 +158,19 @@ export function makeServer({ environment = "test" } = {}) {
         let status = 200;
         switch (request.queryParams.action) {
           case "getSessionData":
-            response = { status: "active", validUntil: dayjs().add(2, "h").unix() };
+            response = { status: "active", validUntil: dayjs().add(2, "h").valueOf() };
             break;
           case "getQuoteAssets":
             response = ["USDT", "BTC", "USD", "BNB"];
             break;
           case "getPairsNew":
             response = schema.db.pairs;
+            break;
+          case "getProvider": {
+            const { providerId, exchangeInternalId } = JSON.parse(request.requestBody);
+            response = schema.db.providers.findBy({ id: providerId });
+            break;
+          }
           default:
             break;
         }

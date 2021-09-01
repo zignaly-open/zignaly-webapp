@@ -33,7 +33,7 @@ describe("Login", () => {
   });
 
   it("redirects if correct login", () => {
-    server.create("user", { email: "joe@example.com" });
+    server.create("user", { email: "joe@example.com", password: "password123" });
 
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("password123");

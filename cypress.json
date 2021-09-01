@@ -2,5 +2,8 @@
   "theme": "dark",
   "baseUrl": "http://localhost:3000",
   "projectId": "dyoy3r",
-  "videoUploadOnPasses": false
+  "videoUploadOnPasses": false,
+  "env": {
+    "token": "testtoken"
+  }
 }

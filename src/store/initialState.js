@@ -672,6 +672,7 @@ const initialState = {
       liquidated: false,
     },
   },
+  ...(typeof window !== "undefined" && window.Cypress && window.initialState),
 };
 
 export default initialState;
