@@ -56,7 +56,7 @@ describe("Connect to a Provider", () => {
       //   // todo
       // });
 
-      it.only("should warn about wrong exchange account", () => {
+      it("should warn about wrong exchange account", () => {
         const exchangeBinance = user.exchanges.find(
           (e) => e.exchangeName.toLowerCase() === "binance",
         );
@@ -112,18 +112,26 @@ describe("Connect to a Provider", () => {
         cy.findByText(/Go to My Exchange Accounts/i).should("exist");
       });
     });
-  });
 
-  // describe("Already connected", () => {
-  //   it("can disconnect to a service", () => {
-  //     cy.get("button")
-  //       .contains(/Copy this trader/i)
-  //       .click();
-  //     cy.get("button")
-  //       .contains(/Go to My Exchange Accounts/i)
-  //       .should("exist");
-  //   });
-  // });
+    describe("Connected to a provider", () => {
+      beforeEach(() => {
+        server = makeServer({ environment: "test" });
+        const provider = server.create("provider");
+        user = server.create("user");
+        server.create("providerConnection", { user, provider });
+
+        cy.visit(`/profitSharing/${provider.id}`, {
+          onBeforeLoad: (win) => {
+            win.initialState = initialAuthData(user.attrs);
+          },
+        });
+      });
+
+      it.only("can disconnect to a service", () => {
+        cy.get("button").contains(/Stop/i).should("exist");
+      });
+    });
+  });
 
   afterEach(() => {
     server.shutdown();

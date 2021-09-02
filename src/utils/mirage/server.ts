@@ -69,7 +69,7 @@ const userFactory = Factory.extend({
       exchangeName: "Binance",
       exchangeType: "spot",
       internal: true,
-      internalId: "Zignaly9828187401_6acb54faba182",
+      internalId: "Zignaly9828187401_acb54faba182",
       internalName: "Binance Account",
       isBrokerAccount: true,
       name: "Binance",
@@ -83,10 +83,15 @@ export const getUserData = (user: any) => ({
   isTrader: { copy_trading: true, profit_sharing: true, signal_providers: true },
 });
 
-const composeProvider = (p) => ({
-  ...p,
-  // disable:
-});
+const composeProvider = (p, schema) => {
+  const user = schema.db.users.where({})[0];
+  const connected = schema.db.providerConnections.findBy({ userId: user.id, providerId: p.id });
+
+  return {
+    ...p,
+    disable: !connected,
+  };
+};
 
 export function makeServer({ environment = "test" } = {}) {
   let server = createServer({
@@ -239,7 +244,8 @@ export function makeServer({ environment = "test" } = {}) {
             break;
           case "getProvider": {
             const { providerId, exchangeInternalId } = JSON.parse(request.requestBody);
-            response = schema.db.providers.findBy({ id: providerId });
+            const provider = schema.db.providers.findBy({ id: providerId });
+            response = composeProvider(provider, schema);
             break;
           }
           default:
