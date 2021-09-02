@@ -35,7 +35,7 @@ describe("Connect to a Provider", () => {
 
       it("should asks to deposit if exchange account is not activated", () => {
         const exchangeNotActivated = user.exchanges.find((e) => !e.activated);
-        dispatch(setSelectedExchange(exchangeNotActivated));
+        dispatch(setSelectedExchange(exchangeNotActivated.internalId));
 
         cy.get("button")
           .contains(/Copy this trader/i)
@@ -45,9 +45,22 @@ describe("Connect to a Provider", () => {
           .should("exist");
       });
 
-      it("should warn about wrong exchange account type", () => {
-        const exchangeSpot = user.exchanges.find((e) => e.exchangeType === "spot");
-        dispatch(setSelectedExchange(exchangeSpot));
+      it("should allow to connect to spot PS with a zignaly futures account", () => {
+        const exchangeSpot = user.exchanges.find((e) => e.exchangeType === "futures");
+        dispatch(setSelectedExchange(exchangeSpot.internalId));
+
+        cy.findByPlaceholderText(/amount/i).should("exist");
+      });
+
+      // it("should forbid connecting to spot CT with a zignaly futures account", () => {
+      //   // todo
+      // });
+
+      it.only("should warn about wrong exchange account", () => {
+        const exchangeBinance = user.exchanges.find(
+          (e) => e.exchangeName.toLowerCase() === "binance",
+        );
+        dispatch(setSelectedExchange(exchangeBinance.internalId));
 
         cy.get("button")
           .contains(/Copy this trader/i)
@@ -55,6 +68,26 @@ describe("Connect to a Provider", () => {
         cy.get("h3")
           .contains(/Wrong Exchange/i)
           .should("exist");
+      });
+
+      it("should connect to a provider", () => {
+        cy.get("button")
+          .contains(/Copy this trader/i)
+          .click();
+
+        // Enter amount and submit
+        cy.findByPlaceholderText(/amount/i).type(10);
+        cy.get("button[type='submit']").click();
+
+        // Check terms
+        cy.get('[type="checkbox"]').check();
+
+        // Type transfer and continue
+        cy.get("button[type='submit']").should("be.disabled");
+        cy.get("input[name='transfer']").type("transfer");
+        cy.get("button[type='submit']").click();
+
+        cy.findByText(/Transfer made/i).should("exist");
       });
     });
 
