@@ -17,7 +17,7 @@ const initializeAuthData = (user) => ({
   },
   settings: {
     ...initialState.settings,
-    selectedExchangeId: user.exchanges.length ? user.exchanges[0].internalId : null,
+    selectedExchangeId: user?.exchanges.length ? user.exchanges[0].internalId : null,
   },
 });
 

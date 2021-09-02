@@ -24,7 +24,7 @@ describe("List Providers", () => {
 
     cy.visit("/profitSharing", {
       onBeforeLoad: (win) => {
-        win.initialState = initialAuthData;
+        win.initialState = initialAuthData();
       },
     });
   });
