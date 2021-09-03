@@ -380,7 +380,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} PositionsListPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {boolean} [extendedStatuses] Flag to get log positions with all possibles status.
  */

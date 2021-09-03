@@ -350,7 +350,7 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
+  async doRequest(endpointPath, payload, method = "POST", apiVersion = 2, token) {
     let baseUrl = this.baseUrlv2;
     if (apiVersion === 1) {
       // Old api
@@ -453,7 +453,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    const responseData = await this.doRequest("/login", payload, "POST", 2);
+    const responseData = await this.doRequest("/login", payload, "POST");
     return userEntityResponseTransform(responseData);
   }
 
@@ -467,7 +467,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userRegister(payload) {
-    const responseData = await this.doRequest("/signup", payload, "POST", 2);
+    const responseData = await this.doRequest("/signup", payload, "POST");
 
     return userEntityResponseTransform(responseData);
   }
@@ -481,9 +481,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async openPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
-
+    const { internalExchangeId, ...data } = payload;
+    const responseData = await this.doRequest(`/user/exchange/${internalExchangeId}`, data, "GET");
     return positionsResponseTransform(responseData);
   }
 
