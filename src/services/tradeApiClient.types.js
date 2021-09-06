@@ -298,6 +298,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} LoginResponse
+ * @property {string} token User access token.
+ * @property {boolean} isUnknownDevice
+ * @property {boolean} ask2FA
+ * @property {boolean} disabled Account disabled due to too many incorrect login
+ */
+
+/**
  * @typedef {Object} UserEntity
  * @property {string} token User access token.
  * @property {string} firstName User first name.
@@ -4260,7 +4268,6 @@ const createEmptyAvailableBalanceEntity = () => {
 /**
  *
  * @typedef {Object} SessionResponseObject
- * @property {String} status
  * @property {Number} validUntil
  */
 
@@ -4272,7 +4279,6 @@ const createEmptyAvailableBalanceEntity = () => {
  */
 export function sessionDataResponseTransform(response) {
   return {
-    status: response.status,
     validUntil: response.validUntil * 1000,
   };
 }

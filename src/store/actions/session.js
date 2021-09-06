@@ -17,14 +17,14 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
  * @typedef {import("../../services/tradeApiClient.types").UserRegisterPayload} UserRegisterPayload
- * @typedef {import("../../services/tradeApiClient.types").UserEntity} UserEntity
+ * @typedef {import("../../services/tradeApiClient.types").LoginResponse} LoginResponse
  * @typedef {import("../../services/tradeApiClient.types").TwoFAPayload} TwoFAPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  * @typedef {import('redux').AnyAction} AnyAction
  */
 
 /**
- * @param {UserEntity} response User login payload.
+ * @param {LoginResponse} response User login payload.
  * @param {'login'|'signup'} eventType User event.
  * @returns {AppThunk} return action object.
  */
