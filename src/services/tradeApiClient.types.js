@@ -300,8 +300,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} LoginResponse
  * @property {string} token User access token.
- * @property {boolean} isUnknownDevice
- * @property {boolean} ask2FA
+ * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} ask2FA Indicates if 2FA should be asked.
  * @property {boolean} disabled Account disabled due to too many incorrect login
  */
 
@@ -331,6 +331,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} locale
  * @property {UserWall} wall
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} disabled Account disabled due to too many incorrect login
  */
 
 /**
@@ -1126,6 +1127,7 @@ export function userEntityResponseTransform(response) {
       : [],
     locale: response.locale,
     isUnknownDevice: response.isUnknownDevice,
+    disabled: response.disabled,
     wall: response.wall || {},
   };
 }
