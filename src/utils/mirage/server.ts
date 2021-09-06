@@ -15,9 +15,6 @@ const TRADEAPI_URL_NEW =
   // @ts-ignore
   window?.Cypress ? Cypress.env("GATSBY_TRADEAPI_URL_NEW") : process.env.GATSBY_TRADEAPI_URL_NEW;
 
-// eslint-disable-next-line no-console
-console.log(`Mocking ${TRADEAPI_URL_NEW}`);
-
 // Serializer matching our backend format
 let ApplicationSerializer = RestSerializer.extend({
   root: false,
@@ -94,6 +91,9 @@ const composeProvider = (p, schema) => {
 };
 
 export function makeServer({ environment = "test" } = {}) {
+  // eslint-disable-next-line no-console
+  console.log(`Mocking ${TRADEAPI_URL_NEW}`);
+
   let server = createServer({
     environment,
 
@@ -330,3 +330,38 @@ export function makeServer({ environment = "test" } = {}) {
 
   return server;
 }
+
+export const setup = () => {
+  if (window.Cypress) {
+    // If your app makes requests to domains other than / (the current domain), add them
+    // here so that they are also proxied from your app to the handleFromCypress function.
+    let otherDomains = [process.env.GATSBY_TRADEAPI_URL, process.env.GATSBY_TRADEAPI_URL_NEW];
+    let methods = ["get", "put", "patch", "post", "delete"];
+
+    // Proxy API requests to the handleFromCypress function of Cypress
+    createServer({
+      environment: "test",
+      routes() {
+        for (const domain of ["/", ...otherDomains]) {
+          for (const method of methods) {
+            this[method](`${domain}/*`, async (schema, request) => {
+              let [status, headers, body] = await window.handleFromCypress(request);
+              return new Response(status, headers, body);
+            });
+          }
+        }
+
+        // All other requests on the current domain will still pass through
+        // this.passthrough();
+
+        // If your central server has any calls to passthrough(), you'll need to duplicate them here
+        // this.passthrough("https://analytics.google.com");
+      },
+    });
+  } else if (process.env.NODE_ENV === "development") {
+    if (process.env.MIRAGE === "true") {
+      // Use mirage server for local development
+      makeServer({ environment: "development" });
+    }
+  }
+};

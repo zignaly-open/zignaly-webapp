@@ -32,7 +32,6 @@ We crafted this app using Gatsby https://github.com/gatsbyjs/gatsby, a modern we
 - Lodash as our general JS utilities to simplify code simplicity and readability.
 - React Intl for UI internationalization https://formatjs.io/docs/react-intl/#the-react-intl-module
 - Material UI icons and React Feather for our icons UI.
-- Moment JS https://github.com/moment/moment for dates parsing / formatting.
 - ChartJS https://github.com/chartjs/Chart.js for our analytics / performance charts.
 - Trade API Client, is a JS implementation of Zignaly Trade API client that allow you to control copy trader / signal provider subscriptions, statistics, positions management, balance, withdraw, settings among other stuff at your Zignaly account. You can find the implementation at `src/services/tradeApiClient.js`
 
