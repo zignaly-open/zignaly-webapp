@@ -7,7 +7,6 @@ import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../store/actions/ui";
 import ConnectExchange from "../../Modal/ConnectExchange";
@@ -44,7 +43,6 @@ const TradingView = () => {
   const { lastPrice, setLastPrice } = tradingViewContext;
   const { instantiateWidget, tradingViewWidget, changeSymbol, removeWidget, isSelfHosted } =
     useTradingTerminal(setLastPrice);
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const [symbols, setSymbols] = useState(/** @type {MarketSymbolsCollection} */ (null));
   const dispatch = useDispatch();
@@ -147,7 +145,6 @@ const TradingView = () => {
     const options = {
       exchange: selectedExchange,
       symbolsData: symbols,
-      tradeApiToken: storeSession.tradeApi.accessToken,
       symbol: selectedSymbol.tradeViewSymbol,
       darkStyle: storeSettings.darkStyle,
     };

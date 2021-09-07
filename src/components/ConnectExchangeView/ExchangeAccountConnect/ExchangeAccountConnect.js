@@ -90,7 +90,6 @@ const ExchangeAccountConnect = () => {
   const submitForm = (data) => {
     const { key, secret, password } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType,

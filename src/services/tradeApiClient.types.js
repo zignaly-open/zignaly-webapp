@@ -49,7 +49,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CreatePositionPayload
- * @property {string} token Authorization token.
  * @property {string} pair Currency pair i.e. "USDT BTC".
  * @property {number} limitPrice Order limit price.
  * @property {string} positionSizeQuote Quote (currency) that represent the position size.
@@ -109,7 +108,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * Payload to update existing position, the size could be increased passing optional parameters.
  *
  * @typedef {Object} UpdatePositionPayload
- * @property {string} token Authorization token.
  * @property {string} positionId positionId
  * @property {number} [limitPrice] Order limit price.
  * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
@@ -161,7 +159,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserExchangeAssetsPayload
- * @property {string} token
  * @property {string} internalId
  */
 
@@ -178,7 +175,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectTraderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} allocatedBalance
  * @property {String} exchangeInternalId
@@ -188,7 +184,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectProviderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} exchangeInternalId
  * @property {Boolean} connected
@@ -231,7 +226,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} DisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} disconnectionType Disconnection type.
  * @property {String} internalExchangeId Internal Id of connected exchange.
@@ -239,7 +233,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelDisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} internalExchangeId Internal Id of connected exchange.
  */
@@ -251,7 +244,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} EditProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -272,7 +264,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} EditClonedProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -336,11 +327,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object} AuthorizationPayload
- * @property {string} token User access token.
- */
-
-/**
  * @typedef {Object} ProviderExchangeSettingsPayload
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {String} providerId
@@ -365,7 +351,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelOrderPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
  * @property {String} symbol symbol.
@@ -374,7 +359,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelContractPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} amount amount.
  * @property {String} symbol symbol.
@@ -388,12 +372,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object & AuthorizationPayload} ReadOnlyPayload
- * @property {boolean} ro
- */
-
-/**
- * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
+ * @typedef {Object} BaseAssetsPayload
  * @property {string} quote
  */
 
@@ -628,7 +607,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersStatsPayload
- * @property {string} token
  * @property {string} quote
  * @property {string} base
  * @property {string} timeFrame
@@ -848,10 +826,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Boolean} includeOpenPositions
  * @property {String} providerId
  * @property {String} quote
- * @property {Boolean} ro
  * @property {Number | Boolean} timeFrame
  * @property {String} timeFrameFormat
- * @property {String} token
  * @property {String} internalExchangeId
  */
 
@@ -882,7 +858,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ModifySubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Number} days
@@ -890,7 +865,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelSubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Boolean} cancel
@@ -984,10 +958,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} QuotesAssetsGetPayload
- * @property {boolean} ro
- * @property {string} token
  * @property {string} [exchangeInternalId] Exchange Internal ID
- * @property {number} version version of endpoint
  * @property {string} [exchangeId] Exchange ID
  * @property {string} [exchangeType] Exchange type
  */

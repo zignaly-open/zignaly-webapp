@@ -106,7 +106,6 @@ const ExchangeAccountSettings = () => {
   const submitForm = async (data) => {
     const { internalName, key, secret, password } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeId: selectedAccount.exchangeId,
       internalId: selectedAccount.internalId,
       internalName,

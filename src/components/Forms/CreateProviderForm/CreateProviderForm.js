@@ -92,7 +92,6 @@ const CreateProviderForm = () => {
       projectId: "z01",
       providerId: CREATE_PROVIDER_ID,
       version: 2,
-      token: storeSession.tradeApi.accessToken,
     };
     tradeApi
       .providerCreate(payload)

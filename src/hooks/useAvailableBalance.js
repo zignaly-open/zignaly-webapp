@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -20,17 +19,11 @@ import { showErrorAlert } from "../store/actions/ui";
 const useAvailableBalance = (selectedExchange, shouldExecute = true) => {
   const [balance, setBalance] = useState({});
   const [loading, setLoading] = useState(false);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
     // Skip balance fetch for paper trading exchanges.
-    if (
-      storeSession.tradeApi.accessToken &&
-      selectedExchange.internalId &&
-      !selectedExchange.paperTrading &&
-      shouldExecute
-    ) {
+    if (selectedExchange.internalId && !selectedExchange.paperTrading && shouldExecute) {
       setLoading(true);
 
       tradeApi
@@ -47,7 +40,7 @@ const useAvailableBalance = (selectedExchange, shouldExecute = true) => {
     }
   };
 
-  useEffect(loadData, [selectedExchange.internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [selectedExchange.internalId]);
 
   return { balance, loading };
 };

@@ -5,7 +5,6 @@ import Posts from "../Posts";
 import WallSubscribe from "../WallSubscribe";
 import "./Wall.scss";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 
@@ -26,13 +25,11 @@ import { useDispatch } from "react-redux";
  * @returns {JSX.Element} JSX
  */
 const Wall = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const [posts, setPosts] = useState(/** @type {Array<Post>} */ (null));
   const dispatch = useDispatch();
 
   const loadPosts = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
     };
 

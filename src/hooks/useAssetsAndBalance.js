@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -22,11 +21,10 @@ const useAssetsAndBalance = (internalId) => {
   const [assets, setAssets] = useState({ spot: {}, futures: {} });
   const [loading, setLoading] = useState(false);
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
-    if (storeSession.tradeApi.accessToken && internalId) {
+    if (internalId) {
       setLoading(true);
       const payload = {
         exchangeInternalId: internalId,
@@ -47,7 +45,7 @@ const useAssetsAndBalance = (internalId) => {
     }
   };
 
-  useEffect(loadData, [internalId, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [internalId]);
 
   return {
     assets,

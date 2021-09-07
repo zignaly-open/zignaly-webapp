@@ -6,7 +6,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useInterval from "../../../hooks/useInterval";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
@@ -23,7 +22,6 @@ import useStoreSessionSelector from "hooks/useStoreSessionSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
-  const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +30,6 @@ const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
   const loadBalanceAndPositions = () => {
     if (provider.id) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi

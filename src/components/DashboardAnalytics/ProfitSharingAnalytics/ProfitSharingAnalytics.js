@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -37,7 +36,6 @@ import { retainInfoUrl, highWaterMarkInfoUrl } from "../../../utils/affiliateURL
  * @returns {JSX.Element} JSX
  */
 const ProfitSharingAnalytics = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const [balanceHistory, setBalanceHistory] = useState(
     /** @type {ProfitSharingBalanceHistory} */ (null),
   );
@@ -141,7 +139,6 @@ const ProfitSharingAnalytics = ({ provider }) => {
 
   const getProfitSharingBalanceHistory = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       exchangeInternalId: selectedExchange.internalId,
     };

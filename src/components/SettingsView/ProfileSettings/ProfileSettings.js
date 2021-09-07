@@ -37,7 +37,6 @@ const ProfileSettings = () => {
   const submitForm = (data) => {
     const { userName } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       userName,
       imageUrl,
     };

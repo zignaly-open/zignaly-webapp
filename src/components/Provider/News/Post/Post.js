@@ -7,7 +7,6 @@ import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import { formatDate } from "../../../../utils/format";
 import DOMPurify from "dompurify";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";

@@ -7,7 +7,6 @@ import { navigate as navigateReach } from "@reach/router";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import "./CreatePost.scss";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import Editor from "../../../Editor";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -26,7 +25,6 @@ import { useDispatch } from "react-redux";
  */
 const CreatePost = ({ providerId, onCreated }) => {
   const storeUserData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState("");
   const [allowReplies, setAllowReplies] = useState(true);
@@ -39,7 +37,6 @@ const CreatePost = ({ providerId, onCreated }) => {
       setIsLoading(true);
 
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId,
         content,
         allowReplies,

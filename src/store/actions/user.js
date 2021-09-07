@@ -16,7 +16,6 @@ export const ACTIVATE_SUBACCOUNT = "ACTIVATE_SUBACCOUNT";
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserEntity} UserEntity
- * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  * @typedef {import('redux').AnyAction} AnyAction
  */

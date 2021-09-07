@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -30,25 +29,16 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
   const { quotesMap, setQuotesMapData } = useContext(PrivateAreaContext);
   const mapKey = `${exchangeData.exchangeId}-${exchangeData.exchangeType}`;
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
-    if (
-      shouldExecute &&
-      storeSession.tradeApi.accessToken &&
-      exchangeData.exchangeId &&
-      exchangeData.exchangeType
-    ) {
+    if (shouldExecute && exchangeData.exchangeId && exchangeData.exchangeType) {
       if (quotesMap[mapKey]) {
         setQuotes(quotesMap[mapKey]);
         return;
       }
       setLoading(true);
       let payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
-        version: 2,
         exchangeId: exchangeData.exchangeId,
         exchangeType: exchangeData.exchangeType,
       };
@@ -70,12 +60,7 @@ const useExchangeQuotes = (exchangeData, shouldExecute = true) => {
     }
   };
 
-  useEffect(loadData, [
-    storeSession.tradeApi.accessToken,
-    exchangeData.exchangeId,
-    exchangeData.exchangeType,
-    shouldExecute,
-  ]);
+  useEffect(loadData, [exchangeData.exchangeId, exchangeData.exchangeType, shouldExecute]);
 
   return {
     quoteAssets: quoteAssets,

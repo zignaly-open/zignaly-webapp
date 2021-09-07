@@ -7,7 +7,6 @@ import { Link } from "gatsby";
 import { ConfirmDialog } from "../../../../Dialogs";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import { showErrorAlert } from "../../../../../store/actions/ui";
 import { Delete } from "react-feather";
 import { FormattedMessage } from "react-intl";
@@ -40,7 +39,6 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const ContractsTable = ({ title, list, loadData, selectedAccount, provider, persistKey }) => {
-  const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState("");
 
@@ -79,7 +77,6 @@ const ContractsTable = ({ title, list, loadData, selectedAccount, provider, pers
     setLoading(true);
     const contract = list.find((item) => item.id === position);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeInternalId: selectedAccount.internalId,
       symbol: contract.symbol,
       amount: contract.amount.toString(),
