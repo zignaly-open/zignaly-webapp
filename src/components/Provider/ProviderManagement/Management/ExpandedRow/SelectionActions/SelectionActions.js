@@ -5,7 +5,7 @@ import CustomButton from "../../../../../CustomButton";
 import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../../../../store/actions/ui";
 import tradeApi from "../../../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../../../hooks/useStoreSessionSelector";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -26,7 +26,7 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} JSX component.
  */
 const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values }) => {
-  const storeSession = useStoreSessionSelector();
+  const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
 
   /**
@@ -60,7 +60,6 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
       allSelectedSubPositions.forEach((item) => {
         if (item.status === 1) {
           let payload = {
-            token: storeSession.tradeApi.accessToken,
             positionId: item.positionId,
           };
           let promise = tradeApi.positionCancel(payload);
@@ -72,8 +71,9 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
       allSelectedSubPositions.forEach((item) => {
         if (item.status !== 1) {
           let payload = {
-            token: storeSession.tradeApi.accessToken,
             positionId: item.positionId,
+            // todo: check
+            internalExchangeId: selectedExchange.internalId,
           };
           let promise = tradeApi.positionExit(payload);
           promiseArray.push(promise);

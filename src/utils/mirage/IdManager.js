@@ -1,3 +1,4 @@
+// @ts-nocheck
 import faker from "faker";
 
 export default class {

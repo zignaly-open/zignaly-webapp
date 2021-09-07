@@ -102,7 +102,6 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
   const { darkStyle } = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
-  const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [canDisable, setCanDisable] = useState(!disable);
   const [stopCopyingModal, showStopCopyingModal] = useState(false);
@@ -189,9 +188,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     setLoading(true);
     const payload = {
       disable: true,
-      token: storeSession.tradeApi.accessToken,
       providerId: providerId,
-      type: "connected",
     };
 
     tradeApi

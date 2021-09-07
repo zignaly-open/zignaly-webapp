@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createServer, Model, Factory, RestSerializer, Response, trait, belongsTo } from "miragejs";
 import exchanges from "./fixtures/exchanges";
 import pairs from "./fixtures/pairs";
@@ -332,6 +333,7 @@ export function makeServer({ environment = "test" } = {}) {
 }
 
 export const setup = () => {
+  // @ts-ignore
   if (window.Cypress) {
     // If your app makes requests to domains other than / (the current domain), add them
     // here so that they are also proxied from your app to the handleFromCypress function.
@@ -344,7 +346,9 @@ export const setup = () => {
       routes() {
         for (const domain of ["/", ...otherDomains]) {
           for (const method of methods) {
+            // @ts-ignore
             this[method](`${domain}/*`, async (schema, request) => {
+              // @ts-ignore
               let [status, headers, body] = await window.handleFromCypress(request);
               return new Response(status, headers, body);
             });
