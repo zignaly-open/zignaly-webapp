@@ -3,11 +3,10 @@ import { useSelector, shallowEqual } from "react-redux";
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../store/initialState").UserObject} UserObject
- * @typedef {UserObject["userData"]} UserDataObject
- * @typedef {UserDataObject["exchanges"]} UserExchangeConnections
  * @typedef {UserObject["balance"]} UserExchangeBalance
  * @typedef {UserObject["dailyBalance"]} UserExchangeDailyBalance
  * @typedef {UserObject["userData"]} UserEntity
+ * @typedef {UserEntity["exchanges"]} UserExchangeConnections
  *
  */
 

@@ -526,6 +526,7 @@ const initialState = {
       locale: "en_US",
       wall: { banned: false, cantPostUntil: null },
       isUnknownDevice: false,
+      disabled: false,
     },
   },
   ui: {
