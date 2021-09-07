@@ -65,6 +65,7 @@ import {
  * @typedef {import('./tradeApiClient.types').ProvidersStatsCollection} ProvidersStatsCollection
  * @typedef {import('./tradeApiClient.types').ProvidersStatsPayload} ProvidersStatsPayload
  * @typedef {import('./tradeApiClient.types').UserLoginPayload} UserLoginPayload
+ * @typedef {import('./tradeApiClient.types').LoginResponse} LoginResponse
  * @typedef {import('./tradeApiClient.types').UserRegisterPayload} UserRegisterPayload
  * @typedef {import('./tradeApiClient.types').UserEntity} UserEntity
  * @typedef {import('./tradeApiClient.types').UserPositionsCollection} UserPositionsCollection
@@ -448,13 +449,12 @@ class TradeApiClient {
    *
    * @param {UserLoginPayload} payload User login payload
    *
-   * @returns {Promise<UserEntity>} Promise that resolves user entity.
+   * @returns {Promise<LoginResponse>} Promise that resolves user entity.
    *
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    const responseData = await this.doRequest("/login", payload, "POST");
-    return userEntityResponseTransform(responseData);
+    return this.doRequest("/login", payload, "POST", 2);
   }
 
   /**
@@ -1500,7 +1500,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verify2FA(payload) {
-    return this.doRequest("/user/verify_2fa", payload, "POST", 2, payload.token);
+    const { token, ...data } = payload;
+    return this.doRequest("/user/verify_2fa", data, "POST", 2, token);
   }
 
   /**
@@ -1512,7 +1513,21 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verifyKnownDevice(payload) {
-    return this.doRequest("/known_device/verify", payload, "POST", 2, payload.token);
+    const { token, ...data } = payload;
+    return this.doRequest("/known_device/verify", data, "POST", 2, token);
+  }
+
+  /**
+   * Unlock account after blocked.
+   *
+   * @param {TwoFAPayload} payload Payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async enableAccount(payload) {
+    const { token, ...data } = payload;
+    return this.doRequest("/user/verify_code/enable_user", data, "POST", 2, token);
   }
 
   /**
