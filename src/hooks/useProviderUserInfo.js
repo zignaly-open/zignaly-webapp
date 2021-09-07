@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -28,13 +27,10 @@ const useProviderUserInfo = (providerId) => {
   };
   const [providerUserInfo, setProviderUserInfo] = useState(initialState);
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadData = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
-      ro: true,
       providerId,
       exchangeInternalId: selectedExchange.internalId,
     };
@@ -49,7 +45,7 @@ const useProviderUserInfo = (providerId) => {
       });
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, providerId]);
+  useEffect(loadData, [providerId]);
 
   let profitPerc = 0;
   if (providerUserInfo.profitsSinceCopying && providerUserInfo.allocatedBalance) {

@@ -8,7 +8,6 @@ import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
 import { toNumber } from "lodash";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import useExchangeQuotes from "./useExchangeQuotes";
 import useSelectedExchange from "hooks/useSelectedExchange";
 
@@ -42,7 +41,6 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  * @returns {ProviderStatsData} Profile profit stats and filtering objects.
  */
 const useDashboardAnalytics = (providerId) => {
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
   const [stats, setStats] = useState([]);
@@ -129,8 +127,6 @@ const useDashboardAnalytics = (providerId) => {
       setLoading(true);
       const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
       const payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
         quote: filters.quote,
         timeFrame: !timeFrmaeFormatList.includes(filters.timeFrame)
           ? toNumber(filters.timeFrame)
@@ -162,7 +158,6 @@ const useDashboardAnalytics = (providerId) => {
     filters.quote,
     filters.timeFrame,
     selectedExchange.internalId,
-    storeSession.tradeApi.accessToken,
     providersLoading,
   ]);
 

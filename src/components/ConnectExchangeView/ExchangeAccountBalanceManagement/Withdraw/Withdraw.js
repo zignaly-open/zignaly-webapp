@@ -13,7 +13,6 @@ import { formatFloat } from "../../../../utils/format";
 import { formatNumber } from "../../../../utils/formatters";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import WithdrawHistoryTable from "./WithdrawHistoryTable";
@@ -29,7 +28,6 @@ const Withdraw = () => {
     pathParams: { selectedAccount },
   } = useContext(ModalPathContext);
   const { handleSubmit, register, errors, watch, reset } = useForm({ mode: "onBlur" });
-  const storeSession = useStoreSessionSelector();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +64,6 @@ const Withdraw = () => {
    */
   const performWithdraw = (data) => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalId: selectedAccount.internalId,
       asset: selectedAssetName,
       network: selectedNetwork.network,

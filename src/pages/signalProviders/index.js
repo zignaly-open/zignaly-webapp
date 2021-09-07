@@ -6,7 +6,6 @@ import Settings from "./settings";
 import Analytics from "./providerAnalytics";
 import Users from "./users";
 import News from "./news";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import { useDispatch } from "react-redux";
@@ -44,7 +43,6 @@ import useExchangeQuotes from "hooks/useExchangeQuotes";
 
 const SignalProviders = (props) => {
   const { location } = props;
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const { provider } = useStoreViewsSelector();
   // On production the application is served through an /app directory, ID position is +1 level.
@@ -68,7 +66,6 @@ const SignalProviders = (props) => {
     const loadProvider = async () => {
       dispatch(unsetProvider());
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: providerId,
         version: 2,
         exchangeInternalId: selectedExchange.internalId,

@@ -104,7 +104,6 @@ const CreateTraderForm = ({ isCopyTrading }) => {
       exchangeType,
       profitSharing,
       ...(profitSharing && { profitsShare: parseFloat(data.profitsShare) }),
-      token: storeSession.tradeApi.accessToken,
     };
 
     tradeApi

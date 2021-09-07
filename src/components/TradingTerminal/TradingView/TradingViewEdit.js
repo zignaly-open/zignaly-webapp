@@ -6,7 +6,6 @@ import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
@@ -61,7 +60,6 @@ const TradingViewEdit = (props) => {
   const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
   const [recoverPositionLoading, setRecoverPositionLoading] = useState(false);
   const [exchange, setExchange] = useState(createExchangeConnectionEmptyEntity());
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -205,7 +203,6 @@ const TradingViewEdit = (props) => {
     const options = {
       exchange: selectedExchange,
       symbolsData: [selectedSymbol],
-      tradeApiToken: storeSession.tradeApi.accessToken,
       symbol: positionEntity.tradeViewSymbol,
       darkStyle: storeSettings.darkStyle,
     };
@@ -303,7 +300,6 @@ const TradingViewEdit = (props) => {
   const recoverPositionAsSupportUser = () => {
     setRecoverPositionLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
       positionId: positionId,
     };

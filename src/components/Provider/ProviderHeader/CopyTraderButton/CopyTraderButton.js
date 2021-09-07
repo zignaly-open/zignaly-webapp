@@ -11,7 +11,6 @@ import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserS
 import ConnectExchange from "../../../Modal/ConnectExchange";
 import StopCopyingTraderForm from "../../../Forms/StopCopyingTraderForm";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
@@ -30,7 +29,6 @@ import SuccessBox from "./SuccessBox";
  */
 const CopyTraderButton = ({ provider }) => {
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [copyModal, showCopyModal] = useState(false);
@@ -100,7 +98,6 @@ const CopyTraderButton = ({ provider }) => {
   const cancelDisconnect = () => {
     showCancelDisconnectLoader(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       internalExchangeId: selectedExchange.internalId,
     };
@@ -108,7 +105,6 @@ const CopyTraderButton = ({ provider }) => {
       .providerCancelDisconnect(payload)
       .then(() => {
         const providerPayload = {
-          token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
           version: 2,
           exchangeInternalId: selectedExchange.internalId,

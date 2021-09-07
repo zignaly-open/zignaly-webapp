@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -24,13 +23,11 @@ const useCTManagementSymmary = (providerId) => {
   const [summary, setSummary] = useState(emptyObject);
   const [loading, setLoading] = useState(true);
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   const loadSummary = () => {
     if (providerId) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: providerId,
       };
       tradeApi

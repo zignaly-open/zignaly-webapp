@@ -10,7 +10,6 @@ import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
 import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
@@ -103,7 +102,6 @@ const StrategyForm = (props) => {
 
   const { errors, handleSubmit, reset, watch, setValue } = useFormContext();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
@@ -306,7 +304,6 @@ const StrategyForm = (props) => {
     const sellTTL = parseFloat(draftPosition.autoclose);
 
     return {
-      token: storeSession.tradeApi.accessToken,
       pair: selectedSymbol.zignalyId,
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
@@ -364,7 +361,6 @@ const StrategyForm = (props) => {
 
     return assign(
       {
-        token: storeSession.tradeApi.accessToken,
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage:

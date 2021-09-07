@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import "./Management.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
@@ -21,7 +20,6 @@ import ManagementTable from "./ManagementTable";
  * @returns {JSX.Element} Component JSX.
  */
 const Management = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
   const [allPositions, setAllPositions] = useState([]);
   const [positionsLoading, setPositionsLoading] = useState(true);
@@ -30,7 +28,6 @@ const Management = ({ provider }) => {
   const loadPositions = () => {
     if (provider.id) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi

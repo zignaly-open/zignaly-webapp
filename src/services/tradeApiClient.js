@@ -14,7 +14,6 @@ import {
   basesResponseTransform,
   connectedProviderUserInfoResponseTransform,
   providerGetResponseTransform,
-  serverTimeResponseTransform,
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
   providerCopiersResponseTransform,
@@ -48,7 +47,6 @@ import {
 } from "./tradeApiClient.types";
 
 /**
- * @typedef {import('./tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('./tradeApiClient.types').UserBalancePayload} UserBalancePayload
  * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
@@ -783,24 +781,6 @@ class TradeApiClient {
   /**
    * @typedef {import('./tradeApiClient.types').ServerTime} ServerTime
    */
-
-  /**
-   * Get Trade API server time.
-   *
-   * This endpoint is useful when client local time needs to be compared with
-   * Trade API server time. Note that server time uses UTC.
-   *
-   * @param {AuthorizationPayload} payload User authorization.
-   * @returns {Promise<ServerTime>} Promise that resolves server time value object.
-   *
-   * @memberof TradeApiClient
-   */
-  async serverTimeGet(payload) {
-    const endpointPath = "/fe/ohlc.php?action=fetchTime";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return serverTimeResponseTransform(responseData);
-  }
 
   /**
    * Get user exchange connection market data coins pairs (symbols).
@@ -1667,7 +1647,7 @@ class TradeApiClient {
   /**
    * Function to verify token received by completing step 1 of password change.
    *
-   * @param {AuthorizationPayload} payload Password change token verification payload.
+   * @param {{token: string}} payload Password change token verification payload.
    *
    * @return {Promise<"OK">} Promise that resolve boolean result.
    * */
@@ -1730,7 +1710,7 @@ class TradeApiClient {
   /**
    * Request 2FA Disable
    *
-   * @param {AuthorizationPayload} payload Request Payload
+   * @param {{token: string}} payload Request Payload
    *
    * @returns {Promise<"OK">} Returns promise.
    *
@@ -1743,7 +1723,7 @@ class TradeApiClient {
   /**
    * Visit 2FA reset link.
    *
-   * @param {AuthorizationPayload} payload Request Payload
+   * @param {{token: string}} payload Request Payload
    *
    * @returns {Promise<"OK">} Returns promise.
    *
@@ -2211,7 +2191,7 @@ class TradeApiClient {
   /**
    * Recover position
    *
-   * @param {{token: string, internalExchangeId: string, positionId: string}} payload Payload to recover position
+   * @param {{internalExchangeId: string, positionId: string}} payload Payload to recover position
    *
    * @returns {Promise<boolean>} Result
    *
