@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import PositionFilters from "../PositionFilters";
 import NoPositions from "../NoPositions";
 import usePositionsList from "../../../hooks/usePositionsList";
@@ -46,7 +45,6 @@ import PositionsReportModal from "./PositionsReportModal";
 const PositionsTable = (props) => {
   const { type, isProfile, positionEntity = null, notifyPositionsUpdate = null } = props;
   const { setOpenCount, setCloseCount, setLogCount } = useContext(PositionsContext);
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const userData = useStoreUserData();
   const dispatch = useDispatch();
@@ -157,7 +155,7 @@ const PositionsTable = (props) => {
       tradeApi
         .positionClose({
           positionId: positionId,
-          token: storeSession.tradeApi.accessToken,
+          internalExchangeId: selectedExchange.internalId,
         })
         .then(() => {
           dispatch(showSuccessAlert("", "dashboard.positions.action.cancel"));
@@ -171,7 +169,6 @@ const PositionsTable = (props) => {
       tradeApi
         .positionCancel({
           positionId: positionId,
-          token: storeSession.tradeApi.accessToken,
         })
         .then(() => {
           dispatch(showSuccessAlert("", "dashboard.positions.action.abort"));
@@ -185,7 +182,7 @@ const PositionsTable = (props) => {
       tradeApi
         .positionExit({
           positionId: positionId,
-          token: storeSession.tradeApi.accessToken,
+          internalExchangeId: selectedExchange.internalId,
         })
         .then(() => {
           dispatch(showSuccessAlert("", "dashboard.positions.action.exit"));

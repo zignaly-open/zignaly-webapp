@@ -40,7 +40,7 @@ export const startTradeApiSession = (response, eventType) => {
     };
 
     dispatch(action);
-    dispatch(refreshSessionData(response.token));
+    dispatch(refreshSessionData());
     dispatch(getUserData(response.token, true, (data) => initExternalWidgets(data, eventType)));
   };
 };
@@ -68,16 +68,12 @@ export const endTradeApiSession = () => {
 };
 
 /**
- * @param {string} token Access token.
  * @returns {AppThunk} Thunk Action.
  */
-export const refreshSessionData = (token) => {
+export const refreshSessionData = () => {
   return async (dispatch) => {
     try {
-      const payload = {
-        token: token,
-      };
-      const responseData = await tradeApi.sessionDataGet(payload);
+      const responseData = await tradeApi.sessionDataGet();
       const action = {
         type: REFRESH_SESSION_DATA,
         payload: responseData,

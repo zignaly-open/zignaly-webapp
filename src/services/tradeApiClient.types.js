@@ -96,13 +96,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
+ * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
 /**
  * @typedef {Object} PositionGetPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
  * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
@@ -111,6 +110,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  *
  * @typedef {Object} UpdatePositionPayload
  * @property {string} token Authorization token.
+ * @property {string} positionId positionId
  * @property {number} [limitPrice] Order limit price.
  * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
  * @property {number} [positionSize] Position size.
@@ -167,9 +167,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} GetProviderPayload
- * @property {string} token user's access token
  * @property {string} providerId Provider ID
- * @property {Number} version api endpoint version number.
  * @property {String} exchangeInternalId internal Id of selected exchange.
  */
 
@@ -228,10 +226,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} DisableProviderPayload
- * @property {string} token
  * @property {string} providerId
- * @property {String} type
- * @property {Boolean} disable
  */
 
 /**
@@ -251,7 +246,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} DeleteProviderPayload
- * @property {string} token
  * @property {string} providerId
  */
 
@@ -389,7 +383,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} PositionsListPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {boolean} [extendedStatuses] Flag to get log positions with all possibles status.
  */
@@ -793,7 +786,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
+ * @typedef {Object} ConnectedProviderUserInfoPayload
  * @property {string} providerId
  * @property {string} exchangeInternalId
  */
@@ -865,8 +858,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} ProfileProviderStatsPayload
  * @property {String} providerId
- * @property {Boolean} ro
- * @property {String} token
  */
 
 /**
@@ -1045,6 +1036,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} AddReplyPayload
  * @property {string} postId
+ * @property {string} providerId
  * @property {string} [replyId] If replying to a comment
  * @property {string} content
  */

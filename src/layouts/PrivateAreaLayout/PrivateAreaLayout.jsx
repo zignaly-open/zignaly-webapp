@@ -13,7 +13,6 @@ import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
 import { ConfirmDialog } from "../../components/Dialogs";
 import useInterval from "../../hooks/useInterval";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
@@ -33,7 +32,6 @@ import useConnectedProvidersList from "hooks/useConnectedProvidersList";
  */
 const PrivateAreaLayout = (props) => {
   const { children } = props;
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
@@ -49,7 +47,7 @@ const PrivateAreaLayout = (props) => {
   }, [providers]);
 
   const updateSession = () => {
-    dispatch(refreshSessionData(storeSession.tradeApi.accessToken));
+    dispatch(refreshSessionData());
   };
 
   useInterval(updateSession, minToMillisec(60), true);

@@ -15,7 +15,6 @@ import {
   connectedProviderUserInfoResponseTransform,
   providerGetResponseTransform,
   serverTimeResponseTransform,
-  coinRayTokenResponseTransform,
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
   providerCopiersResponseTransform,
@@ -351,7 +350,7 @@ class TradeApiClient {
    *
    * @memberof TradeApiClient
    */
-  async doRequest(endpointPath, payload, method = "POST", apiVersion = 1, token) {
+  async doRequest(endpointPath, payload, method = "POST", apiVersion = 2, token) {
     let baseUrl = this.baseUrlv2;
     if (apiVersion === 1) {
       // Old api
@@ -454,7 +453,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    return await this.doRequest("/login", payload, "POST", 2);
+    return this.doRequest("/login", payload, "POST", 2);
   }
 
   /**
@@ -467,7 +466,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userRegister(payload) {
-    const responseData = await this.doRequest("/signup", payload, "POST", 2);
+    const responseData = await this.doRequest("/signup", payload, "POST");
 
     return userEntityResponseTransform(responseData);
   }
@@ -481,9 +480,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async openPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getOpenPositions";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
-
+    const { internalExchangeId } = payload;
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions`,
+      { type: "open" },
+      "GET",
+    );
     return positionsResponseTransform(responseData);
   }
 
@@ -518,11 +520,16 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async logPositionsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getClosedPositions";
-    const responseData = await this.doRequest(endpointPath, {
-      type: "log",
-      ...payload,
-    });
+    const { internalExchangeId, ...data } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions`,
+      {
+        type: "log",
+        ...data,
+      },
+      "GET",
+    );
 
     return positionsResponseTransform(responseData);
   }
@@ -586,14 +593,14 @@ class TradeApiClient {
   }
 
   /**
-   * Get providers list.
+   * Get providers connected by user.
    *
    * @param {ProvidersListPayload} payload Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
    */
-  async providersListGet(payload) {
+  async providersUserGet(payload) {
     const endpointPath = "/user/providers";
     const responseData = await this.doRequest(endpointPath, payload, "GET", 2);
 
@@ -651,8 +658,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async positionClose(payload) {
-    const endpointPath = "/fe/api.php?action=closePosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalExchangeId, positionId } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions/${positionId}/close`,
+      null,
+    );
 
     return positionItemTransform(responseData);
   }
@@ -669,8 +680,11 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async positionExit(payload) {
-    const endpointPath = "/fe/api.php?action=sellPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalExchangeId, positionId } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions/${positionId}/sell`,
+    );
 
     return positionItemTransform(responseData);
   }
@@ -680,15 +694,15 @@ class TradeApiClient {
    *
    * Performs a cancellation of position entry if order has not been executed yet in the exchange.
    *
-   * @param {PositionActionPayload} payload Position action payload.
+   * @param {{positionId: string}} payload Payload
    *
    * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
   async positionCancel(payload) {
-    const endpointPath = "/fe/api.php?action=cancelBuy";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { positionId } = payload;
+    const responseData = await this.doRequest(`/cancelBuy/${positionId}`);
 
     return positionItemTransform(responseData);
   }
@@ -703,8 +717,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async positionGet(payload) {
-    const endpointPath = "/fe/api.php?action=getPosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const { internalExchangeId, positionId } = payload;
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions/${positionId}`,
+      null,
+      "GET",
+    );
 
     return positionItemTransform(responseData);
   }
@@ -718,9 +736,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async positionRawGet(payload) {
-    const endpointPath = "/fe/api.php?action=getRawPosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
-    return responseData;
+    const { internalExchangeId, positionId } = payload;
+    return this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions/${positionId}`,
+      { raw: true },
+      "GET",
+    );
   }
 
   /**
@@ -738,8 +759,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async quotesAssetsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getQuoteAssets";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/quote_assets", payload, "GET");
 
     return quotesResponseTransform(responseData);
   }
@@ -754,8 +774,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, ...data } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}`, data);
 
     return providerGetResponseTransform(responseData);
   }
@@ -780,21 +800,6 @@ class TradeApiClient {
     const responseData = await this.doRequest(endpointPath, payload);
 
     return serverTimeResponseTransform(responseData);
-  }
-
-  /**
-   * Get a coinray access token for the authenticated user.
-   *
-   * @param {AuthorizationPayload} payload User Trade API authorization.
-   * @returns {Promise<CoinRayToken>} Promise that resolves CoinRay token object.
-   *
-   * @memberof TradeApiClient
-   */
-  async coinRayTokenGet(payload) {
-    const endpointPath = "/fe/api.php?action=getCoinRayToken";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return coinRayTokenResponseTransform(responseData);
   }
 
   /**
@@ -870,8 +875,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async connectedProviderUserInfoGet(payload) {
-    const endpointPath = "/fe/api.php?action=getCurrentAllocatedAndProfitSinceFollowing";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { exchangeInternalId, providerId, ...data } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/exchanges/${exchangeInternalId}/providers/${providerId}/allocated_and_profit`,
+      data,
+      "GET",
+    );
 
     return connectedProviderUserInfoResponseTransform(responseData);
   }
@@ -886,10 +896,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async traderConnect(payload) {
-    const endpointPath = "/fe/api.php?action=connectService";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { exchangeInternalId, providerId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/user/exchanges/${exchangeInternalId}/providers/${providerId}/connect_service`,
+      data,
+      "POST",
+    );
   }
 
   /**
@@ -902,10 +915,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerConnect(payload) {
-    const endpointPath = "/fe/api.php?action=connectService";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { exchangeInternalId, providerId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/user/exchanges/${exchangeInternalId}/providers/${providerId}/connect_service`,
+      data,
+      "POST",
+    );
   }
 
   /**
@@ -918,10 +934,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerDisable(payload) {
-    const endpointPath = "/fe/api.php?action=toggleProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    const { providerId } = payload;
+    return this.doRequest(`/user/providers/${providerId}/disconnect_service`);
   }
 
   /**
@@ -935,10 +949,12 @@ class TradeApiClient {
    */
 
   async providerDisconnect(payload) {
-    const endpointPath = "/fe/api.php?action=disconnectProfitSharingService";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalExchangeId, providerId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/user/exchanges/${internalExchangeId}/providers/${providerId}/disconnect_service`,
+      data,
+    );
   }
 
   /**
@@ -952,10 +968,12 @@ class TradeApiClient {
    */
 
   async providerCancelDisconnect(payload) {
-    const endpointPath = "/fe/api.php?action=cancelDisconnecting";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { internalExchangeId, providerId } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/user/exchanges/${internalExchangeId}/providers/${providerId}/cancel_disconnect`,
+      payload,
+    );
   }
 
   /**
@@ -968,10 +986,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerDelete(payload) {
-    const endpointPath = "/fe/api.php?action=deleteProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    const { providerId } = payload;
+    return this.doRequest(`/user/providers/${providerId}`, null, "DELETE");
   }
 
   /**
@@ -1026,13 +1042,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async exchangeDelete(exchangeInternalId) {
-    const responseData = await this.doRequest(
-      `/user/exchanges/${exchangeInternalId}`,
-      null,
-      "DELETE",
-      2,
-    );
-    return responseData;
+    return this.doRequest(`/user/exchanges/${exchangeInternalId}`, null, "DELETE", 2);
   }
 
   /**
@@ -1043,9 +1053,9 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async exchangeUpdate(payload) {
-    const endpointPath = "/fe/api.php?action=updateNewExchange";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { internalId, ...data } = payload;
+
+    return this.doRequest(`/user/exchanges/${internalId}`, data, "POST");
   }
 
   /**
@@ -1058,8 +1068,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerEdit(payload) {
-    const endpointPath = "/fe/api.php?action=editProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, ...data } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}`, data, "POST");
 
     return providerGetResponseTransform(responseData);
   }
@@ -1074,8 +1084,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async clonedProviderEdit(payload) {
-    const endpointPath = "/fe/api.php?action=editProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, ...data } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}`, data, "POST");
 
     return providerGetResponseTransform(responseData);
   }
@@ -1151,10 +1161,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async manualPositionCreate(payload) {
-    const endpointPath = "/fe/api.php?action=createManualPosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
-
-    return responseData;
+    const { internalExchangeId, ...data } = payload;
+    return this.doRequest(`/user/exchanges/${internalExchangeId}/positions`, data);
   }
 
   /**
@@ -1167,10 +1175,9 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async manualPositionUpdate(payload) {
-    const endpointPath = "/fe/api.php?action=updatePosition";
-    const responseData = await this.doRequest(endpointPath, { ...payload, version: 2 });
+    const { internalExchangeId, positionId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(`/user/exchanges/${internalExchangeId}/positions/${positionId}`, data);
   }
 
   /**
@@ -1182,8 +1189,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerPerformanceGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderPerformance";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/performance`,
+      payload,
+      "GET",
+    );
 
     return providerPerformanceResponseTransform(responseData);
   }
@@ -1254,8 +1266,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerCopyTradingDataPointsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getCopyTradingDataPoints";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}/data_points`);
 
     return providerDataPointsResponseTransform(responseData);
   }
@@ -1291,8 +1303,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerFollowersCountGet(payload) {
-    const endpointPath = "/fe/api.php?action=getFollowersForProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/followers_chart`,
+      payload,
+      "GET",
+    );
 
     return providerFollowersCountResponseTransform(responseData);
   }
@@ -1365,10 +1381,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async modifySubscription(payload) {
-    const endpointPath = "/fe/api.php?action=modifyFollowerSubscriptionDuration";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, followerId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/user/provider/${providerId}/followers/${followerId}/modify_subscription`,
+      data,
+      "POST",
+    );
   }
 
   /**
@@ -1381,10 +1400,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async cancelSubscription(payload) {
-    const endpointPath = "/fe/api.php?action=cancelFollowerSubscription";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, followerId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(
+      `/providers/${providerId}/followers/${followerId}/cancel_subscription`,
+      data,
+    );
   }
 
   /**
@@ -1417,8 +1438,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerManagementPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getCopyTradingPositions";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, ...data } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}/positions`, data);
 
     return managementPositionsResponseTransform(responseData);
   }
@@ -1433,8 +1454,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerManagementBalanceAndPositions(payload) {
-    const endpointPath = "/fe/api.php?action=getBalanceAndPositionsForService";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/balance_and_positions`,
+      null,
+      "GET",
+    );
 
     return managementBalanceAndPositionsResponseTransform(responseData);
   }
@@ -1459,7 +1484,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async enable2FA1Step() {
-    return this.doRequest("/user/enable_2fa/step1", null, "POST", 2);
+    return this.doRequest("/user/enable_2fa/step1", null, "POST");
   }
 
   /**
@@ -1471,10 +1496,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async enable2FA2Step(payload) {
-    const endpointPath = "/fe/api.php?action=enable2FA2Step";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/enable_2fa/step2", payload);
   }
 
   /**
@@ -1486,10 +1508,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async disable2FA(payload) {
-    const endpointPath = "/fe/api.php?action=disable2FA";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    return this.doRequest("/user/disable_2fa", payload);
   }
 
   /**
@@ -1636,8 +1655,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async copyTraderCreate(payload) {
-    const endpointPath = "/fe/api.php?action=createCopyTrader";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/user/providers", payload);
 
     return providerCreateResponseTransform(responseData);
   }
@@ -1753,8 +1771,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerCreate(payload) {
-    const endpointPath = "/fe/api.php?action=createProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const responseData = await this.doRequest("/user/providers", payload);
 
     return providerCreateResponseTransform(responseData);
   }
@@ -1769,8 +1786,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async cloneProvider(payload) {
-    const endpointPath = "/fe/api.php?action=cloneProvider";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(`/providers/${providerId}/clone`, payload);
 
     return cloneProviderResponseTransform(responseData);
   }
@@ -1796,17 +1813,14 @@ class TradeApiClient {
   }
 
   /**
-   * Get sesstion state.
-   *
-   * @param {AuthorizationPayload} payload Clone provider payload.
+   * Get session state.
    *
    * @returns {Promise<SessionResponseObject>} Returns promise that resolved session response object.
    *
    * @memberof TradeApiClient
    */
-  async sessionDataGet(payload) {
-    const endpointPath = "/fe/api.php?action=getSessionData";
-    const responseData = await this.doRequest(endpointPath, payload);
+  async sessionDataGet() {
+    const responseData = await this.doRequest("/user/session", null, "GET", 2);
 
     return sessionDataResponseTransform(responseData);
   }
@@ -1903,10 +1917,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async cancelExchangeOrder(payload) {
-    const endpointPath = "/fe/api.php?action=cancelOrder";
-    const responseData = await this.doRequest(endpointPath, payload);
-
-    return responseData;
+    const { exchangeInternalId, orderId, ...data } = payload;
+    return this.doRequest(`/user/exchanges/${exchangeInternalId}/orders/${orderId}`, data);
   }
 
   /**
@@ -1919,10 +1931,9 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async cancelExchangeContract(payload) {
-    const endpointPath = "/fe/api.php?action=reduceContract";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { exchangeInternalId, ...data } = payload;
 
-    return responseData;
+    return this.doRequest(`/user/exchanges/${exchangeInternalId}/reduce_contract`, data);
   }
 
   /**
@@ -1935,8 +1946,13 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async profitStatsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProfitStatsNew";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, internalExchangeId, ...data } = payload;
+
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/providers/${providerId}/stats`,
+      data,
+      "GET",
+    );
 
     return profitStatsResponseTransform(responseData);
   }
@@ -1951,8 +1967,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async profileProviderStatsGet(payload) {
-    const endpointPath = "/fe/api.php?action=getProviderStats2";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId } = payload;
+    const responseData = await this.doRequest(`/user/providers/${providerId}/stats`, "GET");
 
     return profileProviderStatsResponseTransform(responseData);
   }
@@ -1982,39 +1998,36 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async createPost(payload) {
-    const endpointPath = "/fe/api.php?action=createPost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { providerId, ...data } = payload;
+    return this.doRequest(`/wall/${providerId}/posts`, data);
   }
 
   /**
    * Edit post.
    *
-   * @param {{postId: string, content: string}} payload Edit Post payload.
+   * @param {{postId: string, content: string, providerId: string}} payload Edit Post payload.
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async editPost(payload) {
-    const endpointPath = "/fe/api.php?action=editPost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { providerId, postId, ...data } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}`, data);
   }
 
   /**
    * Get post.
    *
-   * @param {{postId: string}} payload Edit Post payload.
+   * @param {{postId: string, providerId: string}} payload Edit Post payload.
    *
    * @returns {Promise<Post>} Result
    *
    * @memberof TradeApiClient
    */
   async getPost(payload) {
-    const endpointPath = "/fe/api.php?action=getPost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { providerId, postId } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}`, null, "GET");
   }
 
   /**
@@ -2027,39 +2040,36 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async getPosts(payload) {
-    const endpointPath = "/fe/api.php?action=getPosts";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { providerId } = payload;
+    return this.doRequest(`/wall/${providerId}/posts`, null, "GET");
   }
 
   /**
    * Approve post.
    *
-   * @param {{postId: string}} payload Approve post payload
+   * @param {{postId: string, providerId: string}} payload Approve post payload
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async approvePost(payload) {
-    const endpointPath = "/fe/api.php?action=approvePost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { postId, providerId } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}/approve`);
   }
 
   /**
    * Unapprove post.
    *
-   * @param {{postId: string}} payload Unapprove post payload
+   * @param {{postId: string, providerId: string}} payload Unapprove post payload
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async unapprovePost(payload) {
-    const endpointPath = "/fe/api.php?action=unapprovePost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { postId, providerId } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}/unapprove`);
   }
 
   /**
@@ -2072,39 +2082,36 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async addReply(payload) {
-    const endpointPath = "/fe/api.php?action=addReply";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { postId, providerId, ...data } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}/replies`, data);
   }
 
   /**
    * Delete Post.
    *
-   * @param {{postId: string}} payload Payload
+   * @param {{postId: string, providerId: string}} payload Payload
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async deletePost(payload) {
-    const endpointPath = "/fe/api.php?action=deletePost";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { postId, providerId } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}`, null, "DELETE");
   }
 
   /**
    * Delete Reply.
    *
-   * @param {{postId: string, replyId: string, nested: boolean}} payload Payload
+   * @param {{postId: string, replyId: string, nested: boolean, providerId: string}} payload Payload
    *
    * @returns {Promise<boolean>} Result
    *
    * @memberof TradeApiClient
    */
   async deleteReply(payload) {
-    const endpointPath = "/fe/api.php?action=deleteReply";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { postId, providerId, replyId, ...data } = payload;
+    return this.doRequest(`/wall/${providerId}/posts/${postId}/replies/${replyId}`, data, "DELETE");
   }
 
   /**
@@ -2117,9 +2124,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updatePostsNotifications(payload) {
-    const endpointPath = "/fe/api.php?action=updatePostsNotifications";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { providerId, ...data } = payload;
+    return this.doRequest(`/user/providers/${providerId}/notifications`, data);
   }
 
   /**
@@ -2132,8 +2138,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async getProfitSharingBalanceHistory(payload) {
-    const endpointPath = "/fe/api.php?action=getProfitSharingBalanceHistory";
-    const responseData = await this.doRequest(endpointPath, payload);
+    const { providerId, exchangeInternalId } = payload;
+    const responseData = await this.doRequest(
+      `/user/exchanges/${exchangeInternalId}/providers/${providerId}/profit_sharing_balance_history`,
+      null,
+      "GET",
+    );
     return profitSharingBalanceHistoryResponseTransform(responseData);
   }
 
@@ -2147,9 +2157,12 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async transferMargin(payload) {
-    const endpointPath = "/fe/api.php?action=transferMargin";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { internalExchangeId, positionId, ...data } = payload;
+
+    return this.doRequest(
+      `/user/exchanges/${internalExchangeId}/positions/${positionId}/transfer_margin`,
+      data,
+    );
   }
 
   /**
@@ -2162,7 +2175,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountRequest(payload) {
-    return this.doRequest("/user/request_action/delete_account", payload, "POST", 2);
+    return this.doRequest("/user/request_action/delete_account", payload, "POST");
   }
 
   /**
@@ -2175,7 +2188,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountVisit(payload) {
-    return this.doRequest("/visit/delete_account", payload, "GET", 2);
+    return this.doRequest("/visit/delete_account", payload, "GET");
   }
 
   /**
@@ -2188,7 +2201,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async deleteAccountConfirm(payload) {
-    return this.doRequest("/user/confirm_action/delete_account", payload, "POST", 2);
+    return this.doRequest("/user/confirm_action/delete_account", payload, "POST");
   }
 
   /**
@@ -2201,9 +2214,8 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async recoverPosition(payload) {
-    const endpointPath = "/fe/api.php?action=recoverPosition";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    const { internalExchangeId, positionId } = payload;
+    return this.doRequest(`/user/exchanges/${internalExchangeId}/positions/${positionId}/recover`);
   }
 
   /**
@@ -2217,8 +2229,7 @@ class TradeApiClient {
    */
   async generateExchangePositionsReport(payload) {
     const endpointPath = `/user/exchanges/${payload.internalExchangeId}/report/positions`;
-    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
-    return responseData;
+    return this.doRequest(endpointPath, {}, "POST");
   }
 
   /**
@@ -2232,8 +2243,7 @@ class TradeApiClient {
    */
   async activateSubaccount(payload) {
     const endpointPath = `/user/exchanges/${payload.internalExchangeId}/activate`;
-    const responseData = await this.doRequest(endpointPath, {}, "POST", 2);
-    return responseData;
+    return this.doRequest(endpointPath, {}, "POST");
   }
 
   /**
@@ -2247,8 +2257,7 @@ class TradeApiClient {
    */
   async performInternalTransfer(payload) {
     const endpointPath = `/user/exchanges/${payload.internalIdSrc}/internal_transfer`;
-    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
-    return responseData;
+    return this.doRequest(endpointPath, payload, "POST");
   }
 
   /**
@@ -2277,8 +2286,7 @@ class TradeApiClient {
    */
   async saveLocale(payload) {
     const endpointPath = "/user/save_locale";
-    const responseData = await this.doRequest(endpointPath, payload, "POST", 2);
-    return responseData;
+    return this.doRequest(endpointPath, payload, "POST");
   }
 
   /**
@@ -2291,7 +2299,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async wallBanUser(userId) {
-    return this.doRequest(`/wall/users/${userId}/ban`, null, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/ban`, null, "POST");
   }
 
   /**
@@ -2304,7 +2312,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async wallUnbanUser(userId) {
-    return this.doRequest(`/wall/users/${userId}/unban`, null, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/unban`, null, "POST");
   }
 
   /**
@@ -2318,7 +2326,7 @@ class TradeApiClient {
    */
   async wallReportUser(payload) {
     const { userId, ...data } = payload;
-    return this.doRequest(`/wall/users/${userId}/report_spam`, data, "POST", 2);
+    return this.doRequest(`/wall/users/${userId}/report_spam`, data, "POST");
   }
 }
 

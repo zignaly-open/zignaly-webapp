@@ -176,7 +176,6 @@ const usePositionsList = (
    */
   const routeFetchMethod = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
     };
 
