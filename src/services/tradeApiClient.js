@@ -15,7 +15,6 @@ import {
   connectedProviderUserInfoResponseTransform,
   providerGetResponseTransform,
   serverTimeResponseTransform,
-  coinRayTokenResponseTransform,
   exchangeMarketDataResponseTransform,
   exchangeListResponseTransform,
   providerCopiersResponseTransform,
@@ -481,10 +480,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async openPositionsGet(payload) {
-    const { internalExchangeId, ...data } = payload;
+    const { internalExchangeId } = payload;
     const responseData = await this.doRequest(
       `/user/exchanges/${internalExchangeId}/positions`,
-      data,
+      { type: "open" },
       "GET",
     );
     return positionsResponseTransform(responseData);
@@ -1952,6 +1951,7 @@ class TradeApiClient {
     const responseData = await this.doRequest(
       `/user/exchanges/${internalExchangeId}/providers/${providerId}/stats`,
       data,
+      "GET",
     );
 
     return profitStatsResponseTransform(responseData);
