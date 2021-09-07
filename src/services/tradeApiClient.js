@@ -775,7 +775,7 @@ class TradeApiClient {
    */
   async providerGet(payload) {
     const { providerId, ...data } = payload;
-    const responseData = await this.doRequest(`/user/providers/${providerId}`, data);
+    const responseData = await this.doRequest(`/user/providers/${providerId}`, data, "GET");
 
     return providerGetResponseTransform(responseData);
   }
