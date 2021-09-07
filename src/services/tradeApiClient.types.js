@@ -4083,29 +4083,6 @@ function createEmptyProfileNotificationsEntity() {
  */
 
 /**
- * Transform Create Provider response.
- *
- * @param {*} response Trade API create provider response.
- * @returns {NewProviderEntity} Provider
- */
-export function providerCreateResponseTransform(response) {
-  const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = response._id
-    ? response._id.$oid || response._id
-    : response.providerId
-    ? response.providerId
-    : "";
-  const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
-  // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyNewProviderEntity, response, {
-    id: normalizedId,
-    userId: normalizeduserId,
-  });
-
-  return transformedResponse;
-}
-
-/**
  * Create an empty Created Provider Entity
  * @returns {NewProviderEntity} New Provider entity.
  */

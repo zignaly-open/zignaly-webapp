@@ -30,7 +30,6 @@ import {
   convertAssetResponseTransform,
   managementPositionsResponseTransform,
   profileNotificationsResponseTransform,
-  providerCreateResponseTransform,
   sessionDataResponseTransform,
   exchangeOpenOrdersResponseTransform,
   exchangeContractsResponseTransform,
@@ -1639,9 +1638,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async copyTraderCreate(payload) {
-    const responseData = await this.doRequest("/user/providers", payload);
-
-    return providerCreateResponseTransform(responseData);
+    return this.doRequest("/user/providers", payload);
   }
 
   /**
@@ -1665,7 +1662,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async forgotPasswordStep3(payload) {
-    return this.doRequest("/user/confirm_action/forgotten_password", payload, "POST", 2);
+    return this.doRequest("/user/confirm_action/forgotten_password", payload, "POST");
   }
 
   /**
@@ -1678,7 +1675,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async changeEmailRequest(payload) {
-    return this.doRequest("/user/request_action/reset_email", payload, "POST", 2);
+    return this.doRequest("/user/request_action/reset_email", payload, "POST");
   }
 
   /**
@@ -1755,9 +1752,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerCreate(payload) {
-    const responseData = await this.doRequest("/user/providers", payload);
-
-    return providerCreateResponseTransform(responseData);
+    return this.doRequest("/user/providers", payload);
   }
 
   /**
