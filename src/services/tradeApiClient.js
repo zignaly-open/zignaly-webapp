@@ -1439,7 +1439,11 @@ class TradeApiClient {
    */
   async providerManagementPositions(payload) {
     const { providerId, ...data } = payload;
-    const responseData = await this.doRequest(`/user/providers/${providerId}/positions`, data);
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/positions`,
+      data,
+      "GET",
+    );
 
     return managementPositionsResponseTransform(responseData);
   }
