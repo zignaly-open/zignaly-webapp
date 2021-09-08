@@ -24,4 +24,22 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import faker from "faker";
 import "@testing-library/cypress/add-commands";
+
+Cypress.Commands.add("mock", () => {
+  // todo: mockConnectedProviders here by passing optional providers?
+  cy.intercept("*/symbols*", { fixture: "symbols.json" });
+});
+
+Cypress.Commands.add("mockConnectedProviders", (providers) => {
+  const connectedProviders = providers.map((p) => ({
+    connected: true,
+    exchangeInternalId: `Zignaly${faker.random.alphaNumeric(10)}_${faker.random.alphaNumeric(13)}`,
+    // exchangeInternalIds: [],
+    id: p.id,
+    name: p.name,
+  }));
+
+  cy.intercept("GET", "*/user/providers*", connectedProviders).as("mockedUserProviders");
+});

@@ -38,3 +38,7 @@ Cypress.on("window:before:load", (win) => {
     });
   };
 });
+
+Cypress.on("test:before:run", () => {
+  // called before
+});

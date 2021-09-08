@@ -224,6 +224,32 @@ export function makeServer({ environment = "test" } = {}) {
         return schema.all("provider");
       });
 
+      this.get("/symbols", (schema, request) => {
+        // let exchangeInternalId = { request.params };
+        return schema.db.pairs;
+      });
+
+      // this.get("/user/exchanges/:exchangeInternalId/providers_option", (schema) => {
+      //   const providers = [{ providerId: 1, providerName: "Manual Trading", providerQuote: false }];
+
+      //   const connectedProviders = schema.db.providerConnections.where({}).map((p) => {
+      //     const provider = schema.db.providers.find(p.providerId);
+      //     return {
+      //       providerId: provider.id,
+      //       providerName: provider.name,
+      //       providerQuote: provider.quote,
+      //       providerPayableBalance: 50,
+      //       providerAvailableBalance: 50,
+      //       providerConsumedBalance: 0,
+      //       providerConsumedBalancePercentage: 0,
+      //       providerAllocatedBalance: 50,
+      //     };
+      //   });
+
+      //   providers.push(connectedProviders);
+      //   return providers;
+      // });
+
       this.passthrough("https://api.segment.io/**");
       this.passthrough("https://*.userpilot.io/**");
 
@@ -234,14 +260,8 @@ export function makeServer({ environment = "test" } = {}) {
         let response = {};
         let status = 200;
         switch (request.queryParams.action) {
-          case "getSessionData":
-            response = { status: "active", validUntil: dayjs().add(2, "h").valueOf() };
-            break;
           case "getQuoteAssets":
             response = ["USDT", "BTC", "USD", "BNB"];
-            break;
-          case "getPairsNew":
-            response = schema.db.pairs;
             break;
           case "getProvider": {
             const { providerId, exchangeInternalId } = JSON.parse(request.requestBody);

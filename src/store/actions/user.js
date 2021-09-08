@@ -6,7 +6,7 @@ export const REMOVE_USER = "REMOVE_USER_ACTION";
 export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
-export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
+export const SET_DAILY_USER_BALANCE = "SET_DAILY_USER_BALANCE";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const SET_USER_DATA = "SET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
@@ -47,9 +47,9 @@ const initUserExchanges = (responseData) => {
       dispatch(setSelectedExchange(selectedExchangeId));
 
       // If the user has any exchange account, query balance
-      if (responseData.length > 0) {
-        dispatch(getDailyUserBalance(selectedExchangeId));
-      }
+      // if (responseData.length > 0) {
+      //   dispatch(getDailyUserBalance(selectedExchangeId));
+      // }
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -96,7 +96,7 @@ export const getDailyUserBalance = (exchangeInternalId) => {
       });
       const response = await tradeApi.userEquityGet(exchangeInternalId);
       const action = {
-        type: GET_DAILY_USER_BALANCE,
+        type: SET_DAILY_USER_BALANCE,
         payload: response,
       };
       dispatch(action);
