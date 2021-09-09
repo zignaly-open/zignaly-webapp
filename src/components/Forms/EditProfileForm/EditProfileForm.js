@@ -139,7 +139,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         .then(() => {
           const payload2 = {
             providerId: payload.providerId,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));

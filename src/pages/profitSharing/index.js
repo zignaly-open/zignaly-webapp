@@ -7,7 +7,6 @@ import Analytics from "./providerAnalytics";
 import Users from "./users";
 import Positions from "./positions";
 import News from "./news";
-import useStoreSessionSelector from "../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
@@ -36,7 +35,6 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  */
 const ProfitSharing = (props) => {
   const { location } = props;
-  const { tradeApi } = useStoreSessionSelector();
   const { provider } = useStoreViewsSelector();
   // On production the application is served through an /app directory, ID position is +1 level.
   const idIndex = process.env.GATSBY_BASE_PATH === "" ? 2 : 3;
@@ -48,9 +46,7 @@ const ProfitSharing = (props) => {
     if (providerId && providerId.length === 24) {
       dispatch(unsetProvider());
       const payload = {
-        token: tradeApi.accessToken,
         providerId: providerId,
-        version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
       dispatch(getProvider(payload, true));

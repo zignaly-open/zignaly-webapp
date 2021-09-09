@@ -8,6 +8,8 @@ export const makeFakeUser = (override?: NestedPartial<IDeepObj>): IDeepObj => {
     id: faker.random.alphaNumeric(24),
     email: faker.internet.email(),
     "2FAEnable": false,
+    // eslint-disable-next-line
+    isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
     exchanges: [
       {
         activated: true,

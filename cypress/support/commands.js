@@ -26,13 +26,11 @@
 
 import faker from "faker";
 import "@testing-library/cypress/add-commands";
+import dayjs from "dayjs";
 
-Cypress.Commands.add("mock", () => {
-  // todo: mockConnectedProviders here by passing optional providers?
+Cypress.Commands.add("mock", ({ providers = [] } = {}) => {
   cy.intercept("*/symbols*", { fixture: "symbols.json" });
-});
 
-Cypress.Commands.add("mockConnectedProviders", (providers) => {
   const connectedProviders = providers.map((p) => ({
     connected: true,
     exchangeInternalId: `Zignaly${faker.random.alphaNumeric(10)}_${faker.random.alphaNumeric(13)}`,
@@ -42,4 +40,32 @@ Cypress.Commands.add("mockConnectedProviders", (providers) => {
   }));
 
   cy.intercept("GET", "*/user/providers*", connectedProviders).as("mockedUserProviders");
+  // cy.intercept("GET", "*/user/providers/*", (req) => {
+  //   req.continue((res) => {
+  //     res.send({ error: { code: 8 } });
+  //   });
+  // }).as("mockedUserProvider");
+  cy.intercept("GET", "*/exchanges", { fixture: "exchanges.json" });
+  cy.intercept("GET", "*/user/exchange/*/available_balance", { USDT: 50 });
+});
+
+// Cypress.Commands.add("mockConnectedProviders", (providers) => {
+//   const connectedProviders = providers.map((p) => ({
+//     connected: true,
+//     exchangeInternalId: `Zignaly${faker.random.alphaNumeric(10)}_${faker.random.alphaNumeric(13)}`,
+//     // exchangeInternalIds: [],
+//     id: p.id,
+//     name: p.name,
+//   }));
+
+//   cy.intercept("GET", "*/user/providers*", connectedProviders).as("mockedUserProviders");
+// });
+
+Cypress.Commands.add("mockSession", (user) => {
+  cy.intercept("GET", "*/user/session", { validUntil: dayjs().add(2, "h").valueOf() });
+  cy.intercept("GET", "*/user", user);
+});
+
+Cypress.Commands.add("mockProviders", (providers) => {
+  cy.intercept("GET", "*/providers/profit_sharing/*", providers).as("mockedProviders");
 });

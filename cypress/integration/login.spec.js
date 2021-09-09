@@ -3,6 +3,7 @@
 import { makeServer } from "utils/mirage/server";
 import { makeFakeUser } from "../factories/user";
 import dayjs from "dayjs";
+import { makeProvider } from "../factories/provider";
 
 /**
  * @typedef {import('miragejs/server').Server} Server
@@ -47,12 +48,11 @@ describe("Login", () => {
     cy.get(".errorAlert").should("contain", "Wrong credentials");
   });
 
-  it.only("redirects if correct login", () => {
+  it("redirects if correct login", () => {
     // server.create("user", { email: "joe@example.com", password: "password123" });
-    cy.intercept("GET", "*/user/session", { validUntil: dayjs().add(2, "h").valueOf() });
-    cy.intercept("GET", "*/user", user);
+    cy.mock();
+    cy.mockSession(user);
     cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
-    cy.intercept("GET", "*/user/providers*", []);
 
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("password123");

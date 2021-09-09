@@ -217,8 +217,7 @@
     "cy:open-dev": "CYPRESS_baseUrl=http://localhost:3000 npm run cy:open",
     "cy:open-build": "CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:open",
     "cy:run": "cypress run",
-    "cy:run:record": "cypress run --record --key=c6eac74f-5095-4c82-979c-5f97c8ebcdd9",
-    "cy:ci": "CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:run:record",
+    "cy:ci": "CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:run",
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"

@@ -206,7 +206,7 @@ export function makeServer({ environment = "test" } = {}) {
         return getUserData(schema.db.users.find(1));
       });
 
-      this.get("/user/exchange/:exchangeInternalId/available_balance", (schema, request) => {
+      this.get("/user/exchange/*/available_balance", (schema, request) => {
         return {
           USDT: 10,
         };

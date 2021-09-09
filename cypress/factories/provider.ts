@@ -1,7 +1,10 @@
 import faker from "faker";
 import { merge } from "lodash";
 
-export const makeProvider = (override?: NestedPartial<IDeepObj>): IDeepObj => {
+export const makeProvider = (
+  override?: NestedPartial<IDeepObj>,
+  { profitSharing } = {},
+): IDeepObj => {
   const seed: IDeepObj = {
     id: faker.random.alphaNumeric(24),
     name: faker.commerce.productName(),
@@ -28,6 +31,10 @@ export const makeProvider = (override?: NestedPartial<IDeepObj>): IDeepObj => {
     minAllocatedBalance: 0,
     maxAllocatedBalance: 50,
     copyTradingQuote: "USDT",
+    ...(profitSharing && {
+      profitSharing: true,
+      isCopyTrading: true,
+    }),
   };
   return merge(seed, override);
 };

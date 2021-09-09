@@ -33,10 +33,8 @@ describe("Trading Terminal", () => {
     cy.intercept("GET", "*/user/exchanges/*/providers_option*", providerOptions).as(
       "mockedProviderOptions",
     );
-    cy.intercept("GET", "*/user/exchange/*/available_balance", { USDT: 10 });
 
-    cy.mock();
-    cy.mockConnectedProviders([provider]);
+    cy.mock({ providers: [provider] });
 
     const user = makeFakeUser({
       // deleted: true,

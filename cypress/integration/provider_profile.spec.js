@@ -2,6 +2,8 @@
 
 import { makeServer } from "utils/mirage/server";
 import { setSelectedExchange } from "../../src/store/actions/settings";
+import { makeProvider } from "../factories/provider";
+import { makeFakeUser } from "../factories/user";
 import initialAuthData from "../fixtures/authState";
 
 const dispatch = (action) => cy.window().its("store").invoke("dispatch", action);
@@ -21,14 +23,19 @@ describe("Connect to a Provider", () => {
   describe("Test connection", () => {
     describe("Has exchange accounts", () => {
       beforeEach(() => {
-        server = makeServer({ environment: "test" });
-        const provider = server.create("provider");
-        user = server.create("user");
+        // server = makeServer({ environment: "test" });
+        // const provider = server.create("provider");
+        // user = server.create("user");
         // server.create("providerConnection", { user, provider });
+        user = makeFakeUser();
+        const provider = makeProvider();
+        cy.mock();
+        cy.intercept("GET", "**/user/providers/*", provider).as("mockedUserProvider");
+        cy.intercept("POST", "**/exchanges/*/providers/*/connect_service", "true");
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {
-            win.initialState = initialAuthData(user.attrs);
+            win.initialState = initialAuthData(user);
           },
         });
       });
@@ -40,7 +47,7 @@ describe("Connect to a Provider", () => {
         cy.get("button")
           .contains(/Copy this trader/i)
           .click();
-        cy.get("button")
+        cy.get("a")
           .contains(/Deposit/i)
           .should("exist");
       });
@@ -49,6 +56,9 @@ describe("Connect to a Provider", () => {
         const exchangeSpot = user.exchanges.find((e) => e.exchangeType === "futures");
         dispatch(setSelectedExchange(exchangeSpot.internalId));
 
+        cy.get("button")
+          .contains(/Copy this trader/i)
+          .click();
         cy.findByPlaceholderText(/amount/i).should("exist");
       });
 
@@ -70,7 +80,7 @@ describe("Connect to a Provider", () => {
           .should("exist");
       });
 
-      it("should connect to a provider", () => {
+      it.only("should connect to a provider", () => {
         cy.get("button")
           .contains(/Copy this trader/i)
           .click();
@@ -93,12 +103,16 @@ describe("Connect to a Provider", () => {
 
     describe("No exchange accounts", () => {
       beforeEach(() => {
-        server = makeServer({ environment: "test" });
-        const provider = server.create("provider");
-        user = server.create("user");
-        user.update({
-          exchanges: [],
-        });
+        // server = makeServer({ environment: "test" });
+        // const provider = server.create("provider");
+        // user = server.create("user");
+        // user.update({
+        //   exchanges: [],
+        // });
+        user = makeFakeUser();
+        const provider = makeProvider();
+        cy.mock();
+        cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {
@@ -115,10 +129,14 @@ describe("Connect to a Provider", () => {
 
     describe("Connected to a provider", () => {
       beforeEach(() => {
-        server = makeServer({ environment: "test" });
-        const provider = server.create("provider");
-        user = server.create("user");
-        server.create("providerConnection", { user, provider });
+        // server = makeServer({ environment: "test" });
+        // const provider = server.create("provider");
+        // user = server.create("user");
+        // server.create("providerConnection", { user, provider });
+        user = makeFakeUser();
+        const provider = makeProvider();
+        cy.mock();
+        cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {
@@ -127,13 +145,13 @@ describe("Connect to a Provider", () => {
         });
       });
 
-      it.only("can disconnect to a service", () => {
+      it("can disconnect to a service", () => {
         cy.get("button").contains(/Stop/i).should("exist");
       });
     });
   });
 
   afterEach(() => {
-    server.shutdown();
+    // server.shutdown();
   });
 });
