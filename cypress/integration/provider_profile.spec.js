@@ -80,7 +80,7 @@ describe("Connect to a Provider", () => {
           .should("exist");
       });
 
-      it.only("should connect to a provider", () => {
+      it("should connect to a provider", () => {
         cy.get("button")
           .contains(/Copy this trader/i)
           .click();
@@ -116,7 +116,7 @@ describe("Connect to a Provider", () => {
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {
-            win.initialState = initialAuthData(user.attrs);
+            win.initialState = initialAuthData(user);
           },
         });
       });
@@ -140,7 +140,7 @@ describe("Connect to a Provider", () => {
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {
-            win.initialState = initialAuthData(user.attrs);
+            win.initialState = initialAuthData(user);
           },
         });
       });

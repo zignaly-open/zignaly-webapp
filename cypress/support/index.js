@@ -38,7 +38,3 @@ import "@cypress/code-coverage/support";
 //     });
 //   };
 // });
-
-Cypress.on("test:before:run", () => {
-  // called before tests
-});

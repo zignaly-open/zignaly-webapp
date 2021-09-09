@@ -22,14 +22,14 @@ describe("Login", () => {
     user = makeFakeUser({ email: "joe@example.com", password: "password123" });
     cy.visit("/");
     cy.intercept("POST", "*/login", (req) => {
-      req.continue((res) => {
-        const { email, password } = req.body;
-        if (email === user.email && password === user.password) {
-          res.send(200, { token: Cypress.env("token") });
-        } else {
-          res.send(400, { error: { code: 8 } });
-        }
-      });
+      // req.continue((res) => {
+      const { email, password } = req.body;
+      if (email === user.email && password === user.password) {
+        req.send(200, { token: Cypress.env("token") });
+      } else {
+        req.send(400, { error: { code: 8 } });
+      }
+      // });
     });
   });
 

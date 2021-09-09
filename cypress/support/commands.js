@@ -29,6 +29,12 @@ import "@testing-library/cypress/add-commands";
 import dayjs from "dayjs";
 
 Cypress.Commands.add("mock", ({ providers = [] } = {}) => {
+  // Check that nothing reaches real api
+  // We coud use Cypress.Server.defaults if there wasn't a bug: https://github.com/cypress-io/cypress/issues/5289
+  cy.intercept({ url: `${Cypress.env("GATSBY_TRADEAPI_URL_NEW")}/**` }, (req) => {
+    throw new Error(`${req.url} was not stubbed.`);
+  });
+
   cy.intercept("*/symbols*", { fixture: "symbols.json" });
 
   const connectedProviders = providers.map((p) => ({
