@@ -47,7 +47,9 @@ const ForgotPasswordForm = () => {
       .forgotPasswordStep1(payload)
       .then(() => {
         dispatch(
-          showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step1.body"),
+          dispatch(
+            showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step1.body"),
+          ),
         );
       })
       .catch((e) => {

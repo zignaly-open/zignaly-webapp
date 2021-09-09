@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 
 /**
@@ -15,26 +14,20 @@ import tradeApi from "../services/tradeApiClient";
 const useBaseAssets = (quote) => {
   const [bases, setBases] = useState({});
 
-  const storeSession = useStoreSessionSelector();
-
   const loadData = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
-      ro: true,
       quote,
     };
 
-    if (storeSession.tradeApi.accessToken) {
-      tradeApi
-        .baseAssetsGet(payload)
-        .then((data) => {
-          setBases(data);
-        })
-        .catch(() => {});
-    }
+    tradeApi
+      .baseAssetsGet(payload)
+      .then((data) => {
+        setBases(data);
+      })
+      .catch(() => {});
   };
 
-  useEffect(loadData, [quote, storeSession.tradeApi.accessToken]);
+  useEffect(loadData, [quote]);
 
   return bases;
 };

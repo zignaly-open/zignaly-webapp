@@ -67,6 +67,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
  * @property {boolean} [showErrorMessage]
+ * @property {string} [format="string"] Pass "number" to set/get value as number.
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -85,6 +86,7 @@ const CustomNumberInput = (props) => {
     errors,
     control,
     showErrorMessage = true,
+    format = "string",
     ...others
   } = props;
   const context = useFormContext();
@@ -101,8 +103,8 @@ const CustomNumberInput = (props) => {
     const val = e.target.value;
     if (val === "") return "";
 
-    // Remove commas
-    let formattedVal = val.replace(",", "");
+    // Replace commas
+    let formattedVal = val.replace(",", ".");
     // Remove spaces
     formattedVal = formattedVal.replace(" ", "");
 
@@ -114,6 +116,16 @@ const CustomNumberInput = (props) => {
     return null;
   };
 
+  const transform = {
+    // https://github.com/react-hook-form/react-hook-form/issues/615
+    input: (/** @type {number} */ value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+    // output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
+    //   // Convert to number for easier validation
+    //   const output = parseInt(e.target.value, 10);
+    //   return isNaN(output) ? 0 : output;
+    // },
+  };
+
   // todo: we could add sign prefix here
   return (
     <>
@@ -123,37 +135,57 @@ const CustomNumberInput = (props) => {
         name={name}
         render={({ onChange: _onChange, value }) => (
           <OutlinedInput
-            className="customInput outlineInput"
+            className="customInput outlineInput inputNoArrows"
             endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
             error={!!errors[name]}
             name={name}
             onChange={(e) => {
               const val = handleChangeNumber(e);
-              if (val !== null) {
-                // Format event value
-                e.target.value = val;
-                _onChange(e);
-                // Callback
-                if (onChange) {
-                  // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
-                  // Even with useCallback, it wasn't working with CustomNumberInput.
-                  setTimeout(() => onChange(e), 0);
+              // Ignore if invalid character
+              if (val === null) return;
+
+              // Apply formatted value
+              e.target.value = val;
+
+              // const val = e.target.value;
+              const valNumber = parseFloat(val) || 0;
+              // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
+              // or transform.output(e)
+
+              if (!allowNegative) {
+                if (val === "-") {
+                  // Remove negative sign alone
+                  e.target.value = "";
+                } else if (valNumber < 0) {
+                  // Force positive number
+                  e.target.value = Math.abs(valNumber).toString();
                 }
               }
+
+              // Format event value
+              if (format === "number") {
+                // @ts-ignore
+                e.target.value = valNumber;
+              }
+
+              _onChange(e);
+
+              // if (val !== null) {
+              // Callback
+              if (onChange) {
+                // e.target.value = val;
+                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                // Even with useCallback, it wasn't working with CustomNumberInput.
+                setTimeout(() => onChange(e), 0);
+              }
+              // }
             }}
-            value={value}
+            // type="number"
+            value={format !== "number" ? value : transform.input(value)}
             {...others}
           />
         )}
         rules={rules}
-        transform={{
-          // input: (value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
-          output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
-            // Convert to number for easier validation
-            const output = parseInt(e.target.value, 10);
-            return isNaN(output) ? 0 : output;
-          },
-        }}
       />
       {showErrorMessage && errors[name] && (
         <span className="errorText">{errors[name].message}</span>

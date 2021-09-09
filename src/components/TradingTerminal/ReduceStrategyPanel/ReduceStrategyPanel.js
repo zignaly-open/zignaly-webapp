@@ -160,6 +160,7 @@ const ReduceStrategyPanel = (props) => {
               />
               <Box alignItems="center" display="flex">
                 <CustomNumberInput
+                  allowNegative={true}
                   name="reduceTargetPercentage"
                   onChange={reduceTargetPercentageChange}
                   rules={{

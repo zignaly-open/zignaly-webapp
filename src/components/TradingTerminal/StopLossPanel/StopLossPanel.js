@@ -1,9 +1,8 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber, some } from "lodash";
 import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
-import { formatFloat2Dec } from "../../../utils/format";
-import { formatPrice } from "../../../utils/formatters";
+import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import useValidation from "../../../hooks/useValidation";
@@ -13,6 +12,7 @@ import CustomSelect from "../../CustomSelect";
 import PricePercentageControl from "../Controls/PricePercentageControl";
 import StopLossStatus from "../StopLossStatus/StopLossStatus";
 import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
@@ -41,8 +41,7 @@ const StopLossPanel = (props) => {
   const { clearErrors, errors, getValues, register, setValue, watch, trigger, control } =
     useFormContext();
   const { lessThan } = useValidation();
-  const { getEntryPrice, getEntryPricePercentChange, getEntrySizeQuote } =
-    usePositionEntry(positionEntity);
+  const { getEntryPrice, getEntrySizeQuote } = usePositionEntry(positionEntity);
   const entrySizeQuote = getEntrySizeQuote();
   const { validateSellAmount } = usePositionSizeHandlers(symbolData);
 
@@ -100,24 +99,27 @@ const StopLossPanel = (props) => {
   function validateStopLossPercentageLimits() {
     const draftPosition = getValues();
     const stopLossPercentage = parseFloat(draftPosition.stopLossPercentage);
-    const pricePercentChange = formatFloat2Dec(getEntryPricePercentChange());
-    let valid = lessThan(
-      stopLossPercentage,
-      pricePercentChange,
-      entryType,
-      "terminal.stoploss.valid.percentage",
-      { value: pricePercentChange },
-    );
+    // const profitPercentage =
+    //   entryType.toUpperCase() === "SHORT" ? -getProfitPercentage() : getProfitPercentage();
+    let valid = true;
 
-    if (valid && entrySizeQuote && stopLossPercentage) {
+    if (!positionEntity) {
+      // Check sign when creating a position.
+      valid = lessThan(stopLossPercentage, 0, entryType, "terminal.stoploss.valid.percentage", {
+        value: 0,
+      });
+    }
+
+    if (valid === true && entrySizeQuote && stopLossPercentage) {
       const unitsSold = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
+      // @ts-ignore
       valid = validateSellAmount(unitsSold);
     }
 
     return valid;
   }
 
-  useEffect(() => {
+  useEffectSkipFirst(() => {
     trigger("stopLossPercentage");
   }, [entrySizeQuote]);
 
@@ -126,7 +128,7 @@ const StopLossPanel = (props) => {
    *
    * @return {Void} None.
    */
-  const stopLossPercentageChange = useCallback(() => {
+  const stopLossPercentageChange = () => {
     if (errors.stopLossPercentage) return;
 
     const draftPosition = getValues();
@@ -141,14 +143,14 @@ const StopLossPanel = (props) => {
     }
 
     trigger("stopLossPrice");
-  }, [errors, getEntryPrice, getValues, setValue, trigger]);
+  };
 
   /**
    * Calculate percentage based on price when value is changed.
    *
    * @return {Void} None.
    */
-  const stopLossPriceChange = useCallback(() => {
+  const stopLossPriceChange = () => {
     if (errors.stopLossPrice) return;
 
     const draftPosition = getValues();
@@ -158,20 +160,20 @@ const StopLossPanel = (props) => {
 
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       const stopLossPercentage = (priceDiff / price) * 100;
-      setValue("stopLossPercentage", formatFloat2Dec(stopLossPercentage));
+      setValue("stopLossPercentage", format2Dec(stopLossPercentage));
     } else {
       setValue("stopLossPercentage", "");
     }
 
     trigger("stopLossPercentage");
-  }, [errors, getEntryPrice, getValues, setValue, trigger]);
+  };
 
   const initStopLoss = () => {
     if (expanded) {
       if (positionEntity && positionEntity.stopLossPercentage) {
-        setValue("stopLossPercentage", formatFloat2Dec(positionEntity.stopLossPercentage));
         setValue("stopLossPriority", positionEntity.stopLossPriority);
         setValue("stopLossPrice", formatPrice(positionEntity.stopLossPrice, "", ""));
+        setValue("stopLossPercentage", format2Dec(positionEntity.stopLossPercentage));
       }
       updateStopLoss();
     } else {
@@ -194,13 +196,14 @@ const StopLossPanel = (props) => {
       parseFloat(draftPosition.stopLossPercentage) || initialStopLossPercentage;
     const sign = entryType === "SHORT" ? "" : "-";
 
-    if (isNaN(stopLossPercentage)) {
+    if (!isNumber(stopLossPercentage)) {
+      // todo: not working due to input type=number
       setValue("stopLossPercentage", sign);
     } else {
       // When SL come from backend rely on the existing sign and value.
       // Otherwise use the custom SL value and apply the sign corresponding to entry type.
-      const newValue = formatFloat2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
-      setValue("stopLossPercentage", formatFloat2Dec(newValue));
+      const newValue = format2Dec(initialStopLossPercentage || Math.abs(stopLossPercentage));
+      setValue("stopLossPercentage", format2Dec(newValue));
       // todo: simulateInputChangeEvent
     }
   };

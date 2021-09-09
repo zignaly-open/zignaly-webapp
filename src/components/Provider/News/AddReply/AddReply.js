@@ -6,7 +6,7 @@ import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import "./AddReply.scss";
 import { useIntl } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
 import { navigate as navigateReach } from "@reach/router";
@@ -36,7 +36,7 @@ dayjs.extend(relativeTime);
  */
 const AddReply = ({ postId, replyId, onReplyAdded }) => {
   const storeUserData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const [reply, setReply] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const AddReply = ({ postId, replyId, onReplyAdded }) => {
       setConfirmConfig((c) => ({ ...c, visible: true }));
     } else {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
+        providerId: storeViews.provider.id,
         postId,
         ...(replyId ? { replyId } : {}),
         content: reply,

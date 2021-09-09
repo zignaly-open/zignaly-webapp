@@ -9,7 +9,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
 import SocialSelect from "./SocialSelect";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../store/actions/views";
@@ -53,7 +52,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [paymentBoxAlert, setPaymentBoxAlert] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
   const { errors, handleSubmit, control, register, setError } = useForm();
   const [about, setAbout] = useState(provider.about);
@@ -119,7 +117,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const loadPositions = () => {
     if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi
@@ -173,7 +170,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         team: prepareTeamData(),
         about: about,
         strategy: strategy,
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
         options: preparePayloadOptions(data),
         logoUrl,
@@ -182,7 +178,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         .providerEdit(payload)
         .then(() => {
           const payload2 = {
-            token: payload.token,
             providerId: payload.providerId,
             version: 2,
             exchangeInternalId: selectedExchange.internalId,

@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
 import TradingPerformance from "../../../components/Provider/Analytics/TradingPerformance";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import GraphLabels from "../../../components/Balance/TotalEquity/GraphLabels";
 import MoreInfo from "../../../components/Provider/Analytics/MoreInfo";
 import { useDispatch } from "react-redux";
@@ -28,7 +27,6 @@ import ProviderStats from "./ProviderStats";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTradersAnalytics = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const emptyPerformance = {
     closePositions: 0,
     openPositions: 0,
@@ -50,12 +48,6 @@ const CopyTradersAnalytics = ({ provider }) => {
 
   const payload = {
     providerId: provider.id,
-  };
-
-  const statsPayload = {
-    token: storeSession.tradeApi.accessToken,
-    providerId: provider.id,
-    ro: true,
   };
 
   const getProviderPerformance = () => {
@@ -81,7 +73,7 @@ const CopyTradersAnalytics = ({ provider }) => {
     if (!provider.isCopyTrading) {
       setStatsLoading(true);
       tradeApi
-        .profileProviderStatsGet(statsPayload)
+        .profileProviderStatsGet(payload)
         .then((response) => {
           setStats(response);
         })

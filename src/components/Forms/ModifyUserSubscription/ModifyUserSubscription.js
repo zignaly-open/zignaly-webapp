@@ -6,7 +6,6 @@ import { FormattedMessage } from "react-intl";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../store/actions/ui";
@@ -26,7 +25,6 @@ import { showErrorAlert } from "../../../store/actions/ui";
 
 const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
   const storeViews = useStoreViewsSelector();
-  const storeSession = useStoreSessionSelector();
   const [days, setDays] = useState(1);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -39,7 +37,6 @@ const ModifyUserSubscription = ({ followerId, onClose, loadData }) => {
   const onSubmit = () => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       followerId: followerId,
       days: days,

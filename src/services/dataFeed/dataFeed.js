@@ -34,7 +34,6 @@ import { isEmpty, last } from "lodash";
  * @typedef {Object} DataFeedOptions
  * @property {ExchangeConnectionEntity} exchange
  * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
- * @property {string} tradeApiToken
  */
 
 /**
@@ -52,7 +51,6 @@ class DataFeed {
    */
   constructor(options) {
     this.symbolsData = options.symbolsData || null;
-    this.tradeApiToken = options.tradeApiToken;
     this.exchange = options.exchange.exchangeName || "";
     this.baseUrl = process.env.GATSBY_TRADEAPI_URL.replace("/api", "");
 

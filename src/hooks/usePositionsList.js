@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
 import {
@@ -107,7 +106,6 @@ const usePositionsList = (
   };
   const [positions, setPositions] = useState(defaultPositionsState);
   const positionsAll = positions[type] || [];
-  const storeSession = useStoreSessionSelector();
   const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
 
   const extractPairOptions = () => {
@@ -176,7 +174,6 @@ const usePositionsList = (
    */
   const routeFetchMethod = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
     };
 
@@ -279,7 +276,6 @@ const usePositionsList = (
   const fallbackLogPositionsAllStatuses = async () => {
     let requestData = null;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
     };
 
@@ -361,12 +357,7 @@ const usePositionsList = (
   };
 
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
-  useEffect(loadPositionsForExchange, [
-    type,
-    filters.status,
-    storeSession.tradeApi.accessToken,
-    selectedExchange.internalId,
-  ]);
+  useEffect(loadPositionsForExchange, [type, filters.status, selectedExchange.internalId]);
 
   /**
    * Load a specific position by ID.
@@ -376,7 +367,6 @@ const usePositionsList = (
    */
   const loadPosition = (initiatorExchangeInternalId) => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
       internalExchangeId: selectedExchange.internalId,
     };

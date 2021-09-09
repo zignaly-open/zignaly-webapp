@@ -3,7 +3,7 @@
 // import { throttle } from "lodash";
 // import tradeApi from "../services/tradeApiClient";
 // import useStoreSettingsSelector from "./useStoreSettingsSelector";
-// import useStoreSessionSelector from "./useStoreSessionSelector";
+//
 // import { mapExchangeConnectionToCoinRayId } from "../tradingView/tradingViewOptions";
 // import { useDispatch } from "react-redux";
 // import { showErrorAlert } from "../store/actions/ui";

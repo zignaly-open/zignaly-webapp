@@ -130,7 +130,6 @@ const ExchangeAccountAdd = ({ demo }) => {
     } = data;
 
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType: _exchangeType,

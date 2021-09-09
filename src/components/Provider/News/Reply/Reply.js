@@ -9,7 +9,7 @@ import AddReply from "../AddReply";
 import { MoreHoriz } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -35,6 +35,7 @@ import { CornerDownRight } from "react-feather";
  */
 const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [banned, setBanned] = useState(reply.author.banned);
   const initConfirmDeleteConfig = {
     titleTranslationId: "wall.delete.reply",
     messageTranslationId: "wall.delete.reply.subtitle",
@@ -60,7 +61,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   };
   const [confirmUnbanUserConfig, setConfirmUnbanUserConfig] = useState(initConfirmUnbanUserConfig);
   const userData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const canEdit = reply.author.userId === userData.userId || userData.isAdmin;
   const dispatch = useDispatch();
   const isNested = !showAddReply;
@@ -81,10 +82,10 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
 
   const deleteReply = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       postId: postId,
       replyId: reply.id,
       nested: isNested,
+      providerId: storeViews.provider.id,
     };
 
     tradeApi
@@ -111,7 +112,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallReportUser(payload)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.report.done");
+          dispatch(showSuccessAlert("", "wall.report.done"));
         }
       })
       .catch((e) => {
@@ -124,7 +125,8 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallBanUser(reply.author.userId)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.ban.done");
+          dispatch(showSuccessAlert("", "wall.ban.done"));
+          setBanned(true);
         }
       })
       .catch((e) => {
@@ -137,7 +139,8 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
       .wallUnbanUser(reply.author.userId)
       .then((result) => {
         if (result) {
-          showSuccessAlert("", "wall.unban.done");
+          dispatch(showSuccessAlert("", "wall.unban.done"));
+          setBanned(false);
         }
       })
       .catch((e) => {
@@ -146,7 +149,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   };
 
   const handleBanClick = () => {
-    const method = !userData.wall.banned ? setConfirmBanUserConfig : setConfirmUnbanUserConfig;
+    const method = !banned ? setConfirmBanUserConfig : setConfirmUnbanUserConfig;
     method((c) => ({ ...c, visible: true }));
   };
 
@@ -222,7 +225,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
           </Typography> */}
           {userData.isAdmin && (
             <Typography className="action callout2" onClick={handleBanClick}>
-              <FormattedMessage id={userData.wall.banned ? "wall.unban" : "wall.ban"} />
+              <FormattedMessage id={banned ? "wall.unban" : "wall.ban"} />
             </Typography>
           )}
           {showAddReply && (

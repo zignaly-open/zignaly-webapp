@@ -434,3 +434,17 @@ table {
     pointer-events: none;
   }
 }
+
+.inputNoArrows {
+  /* stylelint-disable property-no-vendor-prefix */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable property-no-vendor-prefix */
+}

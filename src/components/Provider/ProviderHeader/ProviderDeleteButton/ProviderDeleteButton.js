@@ -4,7 +4,6 @@ import { Box, Tooltip, Typography } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
@@ -22,7 +21,6 @@ import { ConfirmDialog } from "../../../Dialogs";
  * @returns {JSX.Element} Component JSX.
  */
 const ProviderDeleteButton = ({ provider, disabled }) => {
-  const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -50,7 +48,6 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   const deleteProvider = async () => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
     };
     await tradeApi

@@ -22,6 +22,7 @@ import CaptchaTerms from "components/Captcha/CaptchaTerms";
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
  * @typedef {import("../../../store/initialState").DefaultStateSession} StateSessionType
  * @typedef {import("../../../services/tradeApiClient.types").UserEntity} UserEntity
+ * @typedef {import("../../../services/tradeApiClient.types").LoginResponse} LoginResponse
  *
  */
 
@@ -49,11 +50,11 @@ const LoginForm = () => {
 
   /**
    *
-   * @param {UserEntity} response User login response.
+   * @param {LoginResponse} response User login response.
    * @returns {void} None.
    */
   const check2FA = (response) => {
-    if (response.ask2FA || response.isUnknownDevice) {
+    if (response.ask2FA || response.isUnknownDevice || response.disabled) {
       showTwoFAModal(true);
       setLoading(false);
     } else {
@@ -118,6 +119,7 @@ const LoginForm = () => {
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
         <TwoFAForm data={loginResponse} onComplete={onSuccess} verifySessionCode={true} />
       </Modal>
+
       <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>
         <Box
           alignItems="center"

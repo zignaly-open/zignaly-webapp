@@ -6,8 +6,7 @@ import { Button, Box, Typography, Switch } from "@material-ui/core";
 import { AddCircle, RemoveCircle } from "@material-ui/icons";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import ProfitTargetStatus from "../ProfitTargetStatus/ProfitTargetStatus";
-import { formatFloat2Dec } from "../../../utils/format";
-import { formatPrice } from "../../../utils/formatters";
+import { formatPrice, format2Dec } from "../../../utils/formatters";
 import useExpandable from "../../../hooks/useExpandable";
 import useTargetGroup from "../../../hooks/useTargetGroup";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -163,7 +162,7 @@ const TakeProfitPanel = (props) => {
 
     const priceDiff = targetPrice - price;
     const targetPercentage = (priceDiff / price) * 100;
-    setValue(pricePercentageProperty, formatFloat2Dec(targetPercentage));
+    setValue(pricePercentageProperty, format2Dec(targetPercentage));
 
     trigger(pricePercentageProperty);
   };
@@ -239,7 +238,7 @@ const TakeProfitPanel = (props) => {
     if (units > 0 && exitUnits > 0) {
       const unitsDiff = units - exitUnits;
       const unitsPercentage = (1 - unitsDiff / units) * 100;
-      setValue(unitsPercentageProperty, formatFloat2Dec(unitsPercentage));
+      setValue(unitsPercentageProperty, format2Dec(unitsPercentage));
     } else {
       setValue(unitsPercentageProperty, "");
     }
@@ -250,9 +249,9 @@ const TakeProfitPanel = (props) => {
       targetIndexes.forEach((index) => {
         // Initialization: populate with position targets values
         const profitTarget = positionEntity.takeProfitTargets[index];
-        const priceTargetPercentage = formatFloat2Dec(profitTarget.priceTargetPercentage);
+        const priceTargetPercentage = format2Dec(profitTarget.priceTargetPercentage);
         const priceTarget = formatPrice(profitTarget.priceTarget, "", "");
-        const amountPercentage = formatFloat2Dec(profitTarget.amountPercentage);
+        const amountPercentage = format2Dec(profitTarget.amountPercentage);
         setTargetPropertyValue("targetPricePercentage", index, priceTargetPercentage);
         setTargetPropertyValue("targetPrice", index, priceTarget);
         setTargetPropertyValue("priority", index, profitTarget.pricePriority);
@@ -286,7 +285,7 @@ const TakeProfitPanel = (props) => {
     // Apply correct sign depending on entry type (Short/Long)
     cardinalityRange.forEach((targetId) => {
       const currentValue = getTargetPropertyValue("targetPricePercentage", targetId);
-      const newValue = formatFloat2Dec(Math.abs(currentValue));
+      const newValue = format2Dec(Math.abs(currentValue));
       const sign = entryType === "SHORT" ? "-" : "";
 
       if (isNaN(currentValue)) {
@@ -342,6 +341,23 @@ const TakeProfitPanel = (props) => {
     return null;
   };
 
+  /**
+   * Validate target percentage limits.
+   *
+   * @param {string} value targetPricePercentage
+   * @returns {boolean|string} true if validation pass, error message otherwise.
+   */
+  const validateTargetPricePercentage = (value) => {
+    let valid = greaterThan(
+      parseFloat(value),
+      0,
+      entryType,
+      "terminal.takeprofit.valid.pricepercentage",
+      { value: 0 },
+    );
+    return valid;
+  };
+
   return (
     <Box className={`panel takeProfitPanel ${expandClass}`}>
       <Box alignItems="center" className="panelHeader" display="flex" flexDirection="row">
@@ -371,9 +387,9 @@ const TakeProfitPanel = (props) => {
                   labelId="terminal.target"
                   percentage={{
                     name: composeTargetPropertyName("targetPricePercentage", targetId),
-                    validate: (value) =>
-                      greaterThan(value, 0, entryType, "terminal.takeprofit.valid.pricepercentage"),
+                    validate: validateTargetPricePercentage,
                     onChange: targetPricePercentageChange,
+                    allowNegative: true,
                   }}
                   price={{
                     name: composeTargetPropertyName("targetPrice", targetId),

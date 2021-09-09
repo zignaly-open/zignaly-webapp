@@ -27,7 +27,11 @@
       ]
     },
     "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "cypress",
+      "@testing-library/cypress"
+    ]
   },
   "include": [
     "./src/**/*",

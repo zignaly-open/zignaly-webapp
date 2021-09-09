@@ -132,7 +132,7 @@ const migrations = {
       },
     };
   },
-  28: (/** @type {PersistedDefaultState} */ state) => {
+  29: (/** @type {PersistedDefaultState} */ state) => {
     return {
       ...state,
       user: {
@@ -150,7 +150,7 @@ const persistConfig = {
   key: "zignaly-webapp2",
   storage,
   stateReconciler: autoMergeLevel2,
-  version: 28,
+  version: 29,
   migrate: createMigrate(migrations, { debug: false }),
   blacklist: ["ui", "views"],
 };
@@ -158,3 +158,10 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 export const persistor = persistStore(store);
+
+// expose store when run in Cypress
+// @ts-ignore
+if (typeof window !== "undefined" && window.Cypress) {
+  // @ts-ignore
+  window.store = store;
+}

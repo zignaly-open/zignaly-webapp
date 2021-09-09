@@ -20,7 +20,6 @@ import CustomButton from "components/CustomButton";
 import { ConfirmDialog } from "components/Dialogs";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import tradeApi from "services/tradeApiClient";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { endTradeApiSession } from "store/actions/session";
 import { navigateLogin } from "services/navigation";
@@ -34,7 +33,6 @@ const Preferences = () => {
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const storeSession = useStoreSessionSelector();
 
   /**
    * @typedef {import("components/Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -64,7 +62,6 @@ const Preferences = () => {
   const startDeleteAccountProcess = (code = null) => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       ...(code && { code }),
     };
     tradeApi

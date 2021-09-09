@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { Box, Typography, Switch } from "@material-ui/core";
-import { formatFloat2Dec } from "../../../utils/format";
-import { formatPrice } from "../../../utils/formatters";
+import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
@@ -88,12 +87,20 @@ const TrailingStopPanel = (props) => {
    * @returns {boolean|string} true if validation pass, error message otherwise.
    */
   const validatePercentage = (value) => {
-    let valid = greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage");
-    if (valid) {
-      const stopLossPercentage = parseFloat(value);
+    const stopLossPercentage = parseFloat(value);
+
+    let valid = true;
+    if (positionEntity) {
+      greaterThan(value, 0, entryType, "terminal.trailingstop.valid.percentage", {
+        value: 0,
+      });
+    }
+
+    if (valid === true) {
       if (stopLossPercentage && entrySizeQuote) {
         const amountSoldTrigger = (entrySizeQuote * (100 + stopLossPercentage)) / 100;
         const amountSold = (amountSoldTrigger * (100 + trailingStopDistance)) / 100;
+        // @ts-ignore
         valid = validateSellAmount(amountSold);
       }
     }
@@ -140,7 +147,7 @@ const TrailingStopPanel = (props) => {
     if (!isNaN(priceDiff) && priceDiff !== 0) {
       // Update trailing stop percentage
       const newTrailingStopPercentage = (priceDiff / price) * 100;
-      setValue("trailingStopPercentage", formatFloat2Dec(newTrailingStopPercentage));
+      setValue("trailingStopPercentage", format2Dec(newTrailingStopPercentage));
     } else {
       setValue("trailingStopPercentage", "");
     }
@@ -150,8 +157,8 @@ const TrailingStopPanel = (props) => {
 
   const chainedPriceUpdates = () => {
     if (expanded) {
-      const newPercentage = formatFloat2Dec(Math.abs(trailingStopPercentage));
-      const newDistance = formatFloat2Dec(Math.abs(trailingStopDistance));
+      const newPercentage = format2Dec(Math.abs(trailingStopPercentage));
+      const newDistance = format2Dec(Math.abs(trailingStopDistance));
       const percentageSign = entryType === "SHORT" ? "-" : "";
       const distanceSign = entryType === "SHORT" ? "" : "-";
 
@@ -245,6 +252,8 @@ const TrailingStopPanel = (props) => {
               name: "trailingStopPercentage",
               validate: validatePercentage,
               onChange: trailingStopPercentageChange,
+              // allowNegative: entryType.toUpperCase() === "SHORT",
+              allowNegative: true,
             }}
             price={{
               name: "trailingStopPrice",
@@ -263,7 +272,7 @@ const TrailingStopPanel = (props) => {
                 name="trailingStopDistance"
                 rules={{
                   validate: (value) =>
-                    lessThan(value, 0, entryType, "terminal.trailingstop.limit.zero"),
+                    lessThan(parseFloat(value), 0, entryType, "terminal.trailingstop.limit.zero"),
                 }}
                 showErrorMessage={false}
               />

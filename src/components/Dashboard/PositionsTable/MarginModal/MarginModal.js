@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import CustomButton from "../../../CustomButton";
 import tradeApiClient from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -40,7 +39,6 @@ const MarginModal = ({ position, onClose }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const intl = useIntl();
   const { register, handleSubmit, errors } = useForm();
   const { balance, balanceLoading } = useBalance(selectedExchange.internalId);
@@ -72,7 +70,6 @@ const MarginModal = ({ position, onClose }) => {
       internalExchangeId: selectedExchange.internalId,
       positionId: position.positionId,
       amount: parseFloat(amount) * (mode === "ADD" ? 1 : -1),
-      token: storeSession.tradeApi.accessToken,
     };
     setLoading(true);
 

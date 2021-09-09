@@ -5,7 +5,6 @@ import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
@@ -30,7 +29,6 @@ import { Help } from "@material-ui/icons";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const [actionLoading, setActionLoading] = useState(false);
   const [profitsMode, setProfitsMode] = useState(
@@ -71,7 +69,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
           allocatedBalance: data.allocatedBalance,
           balanceFilter: true,
           connected: provider.connected ? provider.connected : false,
-          token: storeSession.tradeApi.accessToken,
           providerId: provider.id,
           exchangeInternalId: selectedExchange.internalId,
           ...(provider.profitSharing && {
@@ -82,7 +79,6 @@ const CopyTraderForm = ({ provider, onClose, onSuccess }) => {
           .traderConnect(payload)
           .then(() => {
             const payload2 = {
-              token: storeSession.tradeApi.accessToken,
               providerId: provider.id,
               version: 2,
               exchangeInternalId: selectedExchange.internalId,

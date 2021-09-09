@@ -12,6 +12,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * @property {function} getEntrySize
  * @property {function} getEntrySizeQuote
  * @property {function} getEntryPricePercentChange
+ * @property {function} getProfitPercentage
  */
 
 /**
@@ -52,8 +53,23 @@ function usePositionEntry(positionEntity) {
    * @returns {number} Price difference.
    */
   const getEntryPricePercentChange = () => {
+    // todo: priceDifference is always undefined, I think.
     if (positionEntity) {
       return priceDifference || positionEntity.priceDifference || 0;
+    }
+
+    return 0;
+  };
+
+  /**
+   * Get position profit percentage.
+   * Unlike priceDifference, it includes leverage and will be positive for profits in SHORT position.
+   *
+   * @returns {number} Price difference.
+   */
+  const getProfitPercentage = () => {
+    if (positionEntity) {
+      return positionEntity.profitPercentage;
     }
 
     return 0;
@@ -85,7 +101,13 @@ function usePositionEntry(positionEntity) {
     return parseFloat(positionSize) || 0;
   };
 
-  return { getEntryPrice, getEntryPricePercentChange, getEntrySize, getEntrySizeQuote };
+  return {
+    getEntryPrice,
+    getEntryPricePercentChange,
+    getEntrySize,
+    getEntrySizeQuote,
+    getProfitPercentage,
+  };
 }
 
 export default usePositionEntry;

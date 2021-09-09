@@ -17,7 +17,6 @@ import AscendexDataFeed from "services/dataFeed/ascendexDataFeed";
 
 /**
  * @typedef {Object} WidgetOptions
- * @property {String} tradeApiToken Trade API access token.
  * @property {MarketSymbolsCollection} symbolsData Exchange market symbols data.
  * @property {string} symbol Crypto currency symbol.
  * @property {boolean} darkStyle Dark style flag.
@@ -134,11 +133,10 @@ const createDataFeed = (options) => {
  * @returns {ChartingLibraryWidgetOptions} Data feed options.
  */
 export function createWidgetOptions(options) {
-  const { exchange, symbolsData, symbol, tradeApiToken, darkStyle } = options;
+  const { exchange, symbolsData, symbol, darkStyle } = options;
   const dataFeedOptions = {
     exchange,
     symbolsData,
-    tradeApiToken,
   };
   const feed = createDataFeed(dataFeedOptions);
 

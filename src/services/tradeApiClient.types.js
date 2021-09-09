@@ -49,7 +49,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CreatePositionPayload
- * @property {string} token Authorization token.
  * @property {string} pair Currency pair i.e. "USDT BTC".
  * @property {number} limitPrice Order limit price.
  * @property {string} positionSizeQuote Quote (currency) that represent the position size.
@@ -96,13 +95,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
+ * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
 /**
  * @typedef {Object} PositionGetPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
  * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
@@ -110,7 +108,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * Payload to update existing position, the size could be increased passing optional parameters.
  *
  * @typedef {Object} UpdatePositionPayload
- * @property {string} token Authorization token.
+ * @property {string} positionId positionId
  * @property {number} [limitPrice] Order limit price.
  * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
  * @property {number} [positionSize] Position size.
@@ -161,15 +159,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserExchangeAssetsPayload
- * @property {string} token
  * @property {string} internalId
  */
 
 /**
  * @typedef {Object} GetProviderPayload
- * @property {string} token user's access token
  * @property {string} providerId Provider ID
- * @property {Number} version api endpoint version number.
  * @property {String} exchangeInternalId internal Id of selected exchange.
  */
 
@@ -180,7 +175,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectTraderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} allocatedBalance
  * @property {String} exchangeInternalId
@@ -190,7 +184,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectProviderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} exchangeInternalId
  * @property {Boolean} connected
@@ -228,15 +221,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} DisableProviderPayload
- * @property {string} token
  * @property {string} providerId
- * @property {String} type
- * @property {Boolean} disable
  */
 
 /**
  * @typedef {Object} DisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} disconnectionType Disconnection type.
  * @property {String} internalExchangeId Internal Id of connected exchange.
@@ -244,20 +233,17 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelDisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} internalExchangeId Internal Id of connected exchange.
  */
 
 /**
  * @typedef {Object} DeleteProviderPayload
- * @property {string} token
  * @property {string} providerId
  */
 
 /**
  * @typedef {Object} EditProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -278,7 +264,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} EditClonedProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -295,6 +280,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} UserWall
  * @property {string} cantPostUntil If present, date until which the user can post reply
  * @property {boolean} banned
+ */
+
+/**
+ * @typedef {Object} LoginResponse
+ * @property {string} token User access token.
+ * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} ask2FA Indicates if 2FA should be asked.
+ * @property {boolean} disabled Account disabled due to too many incorrect login
  */
 
 /**
@@ -323,6 +316,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} locale
  * @property {UserWall} wall
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} disabled Account disabled due to too many incorrect login
  */
 
 /**
@@ -330,11 +324,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} finished
  * @property {boolean} paused
  * @property {string} step
- */
-
-/**
- * @typedef {Object} AuthorizationPayload
- * @property {string} token User access token.
  */
 
 /**
@@ -362,7 +351,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelOrderPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
  * @property {String} symbol symbol.
@@ -371,7 +359,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelContractPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} amount amount.
  * @property {String} symbol symbol.
@@ -380,18 +367,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} PositionsListPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {boolean} [extendedStatuses] Flag to get log positions with all possibles status.
  */
 
 /**
- * @typedef {Object & AuthorizationPayload} ReadOnlyPayload
- * @property {boolean} ro
- */
-
-/**
- * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
+ * @typedef {Object} BaseAssetsPayload
  * @property {string} quote
  */
 
@@ -626,7 +607,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersStatsPayload
- * @property {string} token
  * @property {string} quote
  * @property {string} base
  * @property {string} timeFrame
@@ -789,7 +769,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
+ * @typedef {Object} ConnectedProviderUserInfoPayload
  * @property {string} providerId
  * @property {string} exchangeInternalId
  */
@@ -851,18 +831,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Boolean} includeOpenPositions
  * @property {String} providerId
  * @property {String} quote
- * @property {Boolean} ro
  * @property {Number | Boolean} timeFrame
  * @property {String} timeFrameFormat
- * @property {String} token
  * @property {String} internalExchangeId
  */
 
 /**
  * @typedef {Object} ProfileProviderStatsPayload
  * @property {String} providerId
- * @property {Boolean} ro
- * @property {String} token
  */
 
 /**
@@ -887,7 +863,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ModifySubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Number} days
@@ -895,7 +870,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelSubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Boolean} cancel
@@ -989,10 +963,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} QuotesAssetsGetPayload
- * @property {boolean} ro
- * @property {string} token
  * @property {string} [exchangeInternalId] Exchange Internal ID
- * @property {number} version version of endpoint
  * @property {string} [exchangeId] Exchange ID
  * @property {string} [exchangeType] Exchange type
  */
@@ -1021,6 +992,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} userName
  * @property {string} imageUrl
  * @property {string} isFollowing Flag indicating if author is following provider
+ * @property {boolean} banned
  */
 
 /**
@@ -1040,6 +1012,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} AddReplyPayload
  * @property {string} postId
+ * @property {string} providerId
  * @property {string} [replyId] If replying to a comment
  * @property {string} content
  */
@@ -1121,8 +1094,9 @@ export function userEntityResponseTransform(response) {
       ? userExchangeConnectionResponseTransform(response.exchanges)
       : [],
     locale: response.locale,
-    wall: response.wall,
     isUnknownDevice: response.isUnknownDevice,
+    disabled: response.disabled,
+    wall: response.wall || {},
   };
 }
 
@@ -4126,29 +4100,6 @@ function createEmptyProfileNotificationsEntity() {
  */
 
 /**
- * Transform Create Provider response.
- *
- * @param {*} response Trade API create provider response.
- * @returns {NewProviderEntity} Provider
- */
-export function providerCreateResponseTransform(response) {
-  const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = response._id
-    ? response._id.$oid || response._id
-    : response.providerId
-    ? response.providerId
-    : "";
-  const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
-  // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyNewProviderEntity, response, {
-    id: normalizedId,
-    userId: normalizeduserId,
-  });
-
-  return transformedResponse;
-}
-
-/**
  * Create an empty Created Provider Entity
  * @returns {NewProviderEntity} New Provider entity.
  */
@@ -4276,7 +4227,6 @@ const createEmptyAvailableBalanceEntity = () => {
 /**
  *
  * @typedef {Object} SessionResponseObject
- * @property {String} status
  * @property {Number} validUntil
  */
 
@@ -4288,7 +4238,6 @@ const createEmptyAvailableBalanceEntity = () => {
  */
 export function sessionDataResponseTransform(response) {
   return {
-    status: response.status,
     validUntil: response.validUntil * 1000,
   };
 }
