@@ -1,5 +1,5 @@
-import { merge } from "lodash";
 import faker from "faker";
+import merge from "../../src/utils/merge";
 
 // makeExchange
 

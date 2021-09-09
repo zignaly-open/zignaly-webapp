@@ -109,7 +109,7 @@ describe("Connect to a Provider", () => {
         // user.update({
         //   exchanges: [],
         // });
-        user = makeFakeUser();
+        user = makeFakeUser({ exchanges: [] });
         const provider = makeProvider();
         cy.mock();
         cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
@@ -135,8 +135,10 @@ describe("Connect to a Provider", () => {
         // server.create("providerConnection", { user, provider });
         user = makeFakeUser();
         const provider = makeProvider();
-        cy.mock();
-        cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
+        cy.mock({ connectedProviders: [provider] });
+        cy.intercept("GET", "*/user/providers/*", { ...provider, disable: false }).as(
+          "mockedUserProvider",
+        );
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win) => {

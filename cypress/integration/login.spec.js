@@ -25,9 +25,9 @@ describe("Login", () => {
       // req.continue((res) => {
       const { email, password } = req.body;
       if (email === user.email && password === user.password) {
-        req.send(200, { token: Cypress.env("token") });
+        req.reply(200, { token: Cypress.env("token") });
       } else {
-        req.send(400, { error: { code: 8 } });
+        req.reply(400, { error: { code: 8 } });
       }
       // });
     });
@@ -50,7 +50,7 @@ describe("Login", () => {
 
   it("redirects if correct login", () => {
     // server.create("user", { email: "joe@example.com", password: "password123" });
-    cy.mock();
+    cy.mock({ enableStubbedCheck: false });
     cy.mockSession(user);
     cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 

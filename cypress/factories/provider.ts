@@ -1,5 +1,5 @@
 import faker from "faker";
-import { merge } from "lodash";
+import merge from "../../src/utils/merge";
 
 export const makeProvider = (
   override?: NestedPartial<IDeepObj>,

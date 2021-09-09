@@ -27,18 +27,14 @@ describe("Trading Terminal", () => {
     // }).as("mockedProviderOptions");
 
     const provider = makeProvider();
+    cy.mock({ connectedProviders: [provider] });
+
     const providerOptions = makeProviderOptions([provider]);
     // cy.intercept("*/symbols*", { fixture: "symbols.json" });
-
     cy.intercept("GET", "*/user/exchanges/*/providers_option*", providerOptions).as(
       "mockedProviderOptions",
     );
-
-    cy.mock({ providers: [provider] });
-
-    const user = makeFakeUser({
-      // deleted: true,
-    });
+    const user = makeFakeUser();
 
     cy.visit("/tradingTerminal", {
       onBeforeLoad: (win) => {
