@@ -1,8 +1,15 @@
 import faker from "faker";
 import merge from "../../src/utils/merge";
 
-export const makeProvider = (override?: NestedPartial<IDeepObj>, { type } = {}): IDeepObj => {
-  const seed: IDeepObj = {
+interface MakeProviderOptions {
+  type?: string;
+}
+
+export const makeProvider = (
+  override?: Partial<Provider>,
+  { type }: MakeProviderOptions = {},
+): Provider => {
+  const seed: Provider = {
     id: faker.random.alphaNumeric(24),
     name: faker.commerce.productName(),
     exchanges: ["zignaly"],
@@ -16,7 +23,6 @@ export const makeProvider = (override?: NestedPartial<IDeepObj>, { type } = {}):
     options: {},
     website: "",
     exchangeInternalIds: [],
-    profitMode: "",
     followers: 10,
     strategy: "",
     about: "",
@@ -25,11 +31,12 @@ export const makeProvider = (override?: NestedPartial<IDeepObj>, { type } = {}):
     copyTradingQuote: "USDT",
     minAllocatedBalance: 0,
     maxAllocatedBalance: 50,
+    profitSharing: true,
+    isCopyTrading: true,
     ...(type === "profitSharing"
       ? {
-          profitSharing: true,
-          isCopyTrading: true,
           profitsShare: 5,
+          profitMode: "reinvest",
         }
       : type === "copyTrader"
       ? {
@@ -41,10 +48,18 @@ export const makeProvider = (override?: NestedPartial<IDeepObj>, { type } = {}):
           isCopyTrading: false,
         }),
   };
-  return merge(seed, override);
+  return merge(seed, override) as Provider;
 };
 
-const makeOption = (p) => ({
+export const makeCopyTrader = (override: Partial<Provider>) => {
+  return makeProvider({
+    ...override,
+    profitSharing: false,
+    isCopyTrading: true,
+  });
+};
+
+const makeOption = (p: Provider) => ({
   providerId: p.id,
   providerName: p.name,
   providerQuote: "USDT",
@@ -55,10 +70,10 @@ const makeOption = (p) => ({
   providerAllocatedBalance: 180,
 });
 
-export const makeProviderOptions = (providers) => {
-  const options = [
+export const makeProviderOptions = (providers: Provider[]) => {
+  const options: TerminalProviderOption[] = [
     {
-      providerId: 1,
+      providerId: "1",
       providerName: "Manual Trading",
       providerQuote: false,
     },

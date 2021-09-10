@@ -1,12 +1,11 @@
 import faker from "faker";
 import merge from "../../src/utils/merge";
 
-// makeExchange
-
-export const makeFakeUser = (override?: NestedPartial<IDeepObj>): IDeepObj => {
-  const seed: IDeepObj = {
+export const makeFakeUser = (override?: Partial<User>): User => {
+  const seed: User = {
     id: faker.random.alphaNumeric(24),
     email: faker.internet.email(),
+    firstName: faker.name.findName(),
     "2FAEnable": false,
     // eslint-disable-next-line
     isTrader: { copy_trading: false, profit_sharing: false, signal_providers: false },
@@ -58,5 +57,5 @@ export const makeFakeUser = (override?: NestedPartial<IDeepObj>): IDeepObj => {
       },
     ],
   };
-  return merge(seed, override);
+  return merge(seed, override) as User;
 };

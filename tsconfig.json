@@ -34,9 +34,9 @@
     ]
   },
   "include": [
-    "./src/**/*",
+    "src/**/*",
+    "cypress/**/*",
     "types/global.d.ts",
-    "static/widgets/dashly.js"
   ],
   "exclude": [
     "node_modules",

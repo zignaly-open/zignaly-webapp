@@ -37,7 +37,7 @@ describe("Trading Terminal", () => {
     const user = makeFakeUser();
 
     cy.visit("/tradingTerminal", {
-      onBeforeLoad: (win) => {
+      onBeforeLoad: (win: any) => {
         win.initialState = initialAuthData(user);
       },
     });

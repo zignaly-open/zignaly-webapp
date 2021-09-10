@@ -54,13 +54,13 @@ describe("Signup", () => {
     // server.createList("provider", 5);
     const email = "joe@example.com";
     const password = "Pa839.rd#@?873";
-    const name = "Joe";
-    cy.get("[name=firstName]").type(name);
+    const firstName = "Joe";
+    cy.get("[name=firstName]").type(firstName);
     cy.get("[name=email]").type(email);
     cy.get("[name=password]").type(password);
     cy.get("[name=repeatPassword]").type(`${password}{enter}`);
 
-    const user = makeFakeUser({ email, password, name });
+    const user = makeFakeUser({ email, firstName });
     cy.mockSession(user);
     cy.mock();
 

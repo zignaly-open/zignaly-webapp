@@ -5,22 +5,10 @@ import { makeProvider } from "../factories/provider";
 import { makeFakeUser } from "../factories/user";
 import initialAuthData from "../fixtures/authState";
 
-/**
- * @typedef {import('miragejs/server').Server} Server
- */
-
 describe("List Providers", () => {
-  /**
-   * @type {Server}
-   */
-  let server;
-
-  let providers;
+  let providers: Provider[];
 
   beforeEach(() => {
-    // server = makeServer({ environment: "test" });
-    // server.create("user");
-    // server.createList("provider", 10);
     providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
     cy.mock({ connectedProviders: providers.slice(0, 2) });
     cy.mockProviders(providers);
@@ -31,14 +19,10 @@ describe("List Providers", () => {
 
     const user = makeFakeUser();
     cy.visit("/profitSharing", {
-      onBeforeLoad: (win) => {
+      onBeforeLoad: (win: any) => {
         win.initialState = initialAuthData(user);
       },
     });
-  });
-
-  afterEach(() => {
-    // server.shutdown();
   });
 
   it("renders all services", () => {
@@ -50,7 +34,6 @@ describe("List Providers", () => {
     cy.get(".traderCard")
       .contains(/View Trader/i)
       .click();
-    // const provider = server.db.providers.where({})[0];
     cy.get("h1").contains(`${providers[0].name}`).should("exist");
   });
 });

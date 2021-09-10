@@ -1,40 +1,25 @@
 /// <reference types="cypress" />
 
-import { makeServer } from "utils/mirage/server";
 import { setSelectedExchange } from "../../src/store/actions/settings";
 import { makeProvider } from "../factories/provider";
 import { makeFakeUser } from "../factories/user";
 import initialAuthData from "../fixtures/authState";
-
-const dispatch = (action) => cy.window().its("store").invoke("dispatch", action);
-
-/**
- * @typedef {import('miragejs/server').Server} Server
- */
+import dispatch from "../utils/dispatch";
 
 describe("Connect to a Provider", () => {
-  /**
-   * @type {Server}
-   */
-  let server;
-
-  let user;
+  let user: User;
 
   describe("Test connection", () => {
     describe("Has exchange accounts", () => {
       beforeEach(() => {
-        // server = makeServer({ environment: "test" });
-        // const provider = server.create("provider");
-        // user = server.create("user");
-        // server.create("providerConnection", { user, provider });
         user = makeFakeUser();
-        const provider = makeProvider();
+        const provider = makeProvider({ id: "a" });
         cy.mock();
         cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
         cy.intercept("POST", "**/exchanges/*/providers/*/connect_service", "true");
 
         cy.visit(`/profitSharing/${provider.id}`, {
-          onBeforeLoad: (win) => {
+          onBeforeLoad: (win: any) => {
             win.initialState = initialAuthData(user);
           },
         });
@@ -99,7 +84,7 @@ describe("Connect to a Provider", () => {
           .click();
 
         // Enter amount and submit
-        cy.findByPlaceholderText(/amount/i).type(10);
+        cy.findByPlaceholderText(/amount/i).type("10");
         cy.get("button[type='submit']").click();
 
         // Check terms
@@ -117,7 +102,7 @@ describe("Connect to a Provider", () => {
         cy.get("button")
           .contains(/Copy this trader/i)
           .click();
-        cy.findByPlaceholderText(/amount/i).type(100);
+        cy.findByPlaceholderText(/amount/i).type("100");
         cy.contains(/you do not have enough/i).should("exist");
         cy.get("button[type='submit']").should("be.disabled");
       });
@@ -128,7 +113,7 @@ describe("Connect to a Provider", () => {
           .click();
 
         // Enter amount and submit
-        cy.findByPlaceholderText(/amount/i).type(10);
+        cy.findByPlaceholderText(/amount/i).type("10");
         cy.get("button[type='submit']").click();
 
         // Check only first checkbox
@@ -153,7 +138,7 @@ describe("Connect to a Provider", () => {
         cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
 
         cy.visit(`/profitSharing/${provider.id}`, {
-          onBeforeLoad: (win) => {
+          onBeforeLoad: (win: any) => {
             win.initialState = initialAuthData(user);
           },
         });
@@ -179,7 +164,7 @@ describe("Connect to a Provider", () => {
         );
 
         cy.visit(`/profitSharing/${provider.id}`, {
-          onBeforeLoad: (win) => {
+          onBeforeLoad: (win: any) => {
             win.initialState = initialAuthData(user);
           },
         });

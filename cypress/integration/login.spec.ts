@@ -5,36 +5,20 @@ import { makeFakeUser } from "../factories/user";
 import dayjs from "dayjs";
 import { makeProvider } from "../factories/provider";
 
-/**
- * @typedef {import('miragejs/server').Server} Server
- */
-
 describe("Login", () => {
-  /**
-   * @type {Server}
-   */
-  let server;
-
-  let user;
+  let user: User;
 
   beforeEach(() => {
-    // server = makeServer({ environment: "test" });
-    user = makeFakeUser({ email: "joe@example.com", password: "password123" });
+    user = makeFakeUser({ email: "joe@example.com" });
     cy.visit("/");
     cy.intercept("POST", "*/login", (req) => {
-      // req.continue((res) => {
       const { email, password } = req.body;
-      if (email === user.email && password === user.password) {
+      if (email === user.email && password === "password123") {
         req.reply(200, { token: Cypress.env("token") });
       } else {
         req.reply(400, { error: { code: 8 } });
       }
-      // });
     });
-  });
-
-  afterEach(() => {
-    // server.shutdown();
   });
 
   it("requires password", () => {
