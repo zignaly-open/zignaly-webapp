@@ -68,7 +68,19 @@ STAGE=test npm run develop
 
 The webapp is now running at `localhost:3000`. In order to login to the private area pages you will need to create a Zignaly account at https://zignaly.com/app/signup
 
-Once you have a username and password you will be able to login and start browsing copy traders and signal providers pages. To create and manage positions you will need to connect a Binance or KuCoin exchange or preferably for development purposes we recommend you to connect a paper trading exchange that you can use to experiment with trading without risk real money.
+## Testing
+
+To run the integration tests with cypress:
+
+```sh
+npm run cy:run
+```
+
+To open the cypress testing interface that allows to visually see the tests:
+
+```sh
+npm run cy:open
+```
 
 ## Contributing
 
