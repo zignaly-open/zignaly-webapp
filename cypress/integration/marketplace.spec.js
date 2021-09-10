@@ -21,7 +21,7 @@ describe("List Providers", () => {
     // server = makeServer({ environment: "test" });
     // server.create("user");
     // server.createList("provider", 10);
-    providers = [...Array(10)].map(() => makeProvider({}, { profitSharing: true }));
+    providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
     cy.mock({ connectedProviders: providers.slice(0, 2) });
     cy.mockProviders(providers);
 

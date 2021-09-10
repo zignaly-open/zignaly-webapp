@@ -30,7 +30,7 @@ describe("Connect to a Provider", () => {
         user = makeFakeUser();
         const provider = makeProvider();
         cy.mock();
-        cy.intercept("GET", "**/user/providers/*", provider).as("mockedUserProvider");
+        cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
         cy.intercept("POST", "**/exchanges/*/providers/*/connect_service", "true");
 
         cy.visit(`/profitSharing/${provider.id}`, {
@@ -53,7 +53,7 @@ describe("Connect to a Provider", () => {
       });
 
       it("should allow to connect to spot PS with a zignaly futures account", () => {
-        const exchangeSpot = user.exchanges.find((e) => e.exchangeType === "futures");
+        const exchangeSpot = user.exchanges.find((e) => e.exchangeType === "spot");
         dispatch(setSelectedExchange(exchangeSpot.internalId));
 
         cy.get("button")
@@ -62,11 +62,24 @@ describe("Connect to a Provider", () => {
         cy.findByPlaceholderText(/amount/i).should("exist");
       });
 
-      // it("should forbid connecting to spot CT with a zignaly futures account", () => {
-      //   // todo
-      // });
+      it("should forbid connecting to spot CT with a zignaly futures account", () => {
+        const exchangeFutures = user.exchanges.find((e) => e.exchangeType === "futures");
+        dispatch(setSelectedExchange(exchangeFutures.internalId));
 
-      it("should warn about wrong exchange account", () => {
+        const providerCT = makeProvider({ exchangeType: "spot" }, { type: "copyTrader" });
+        cy.intercept("GET", "**/user/providers/*", providerCT).as("mockedProvider");
+        cy.visit(`/copyTraders/${providerCT.id}`);
+
+        cy.get("button")
+          .contains(/Copy this trader/i)
+          .click();
+
+        cy.get("h3")
+          .contains(/Wrong Exchange/i)
+          .should("exist");
+      });
+
+      it("should forbid connecting to PS with a binance account", () => {
         const exchangeBinance = user.exchanges.find(
           (e) => e.exchangeName.toLowerCase() === "binance",
         );
@@ -98,6 +111,31 @@ describe("Connect to a Provider", () => {
         cy.get("button[type='submit']").click();
 
         cy.findByText(/Transfer made/i).should("exist");
+      });
+
+      it("should check amount before copying a provider", () => {
+        cy.get("button")
+          .contains(/Copy this trader/i)
+          .click();
+        cy.findByPlaceholderText(/amount/i).type(100);
+        cy.contains(/you do not have enough/i).should("exist");
+        cy.get("button[type='submit']").should("be.disabled");
+      });
+
+      it("should agree to terms before submitting", () => {
+        cy.get("button")
+          .contains(/Copy this trader/i)
+          .click();
+
+        // Enter amount and submit
+        cy.findByPlaceholderText(/amount/i).type(10);
+        cy.get("button[type='submit']").click();
+
+        // Check only first checkbox
+        cy.get('[type="checkbox"]').first().check();
+        cy.get("input[name='transfer']").type("transfer");
+
+        cy.get("button[type='submit']").should("be.disabled");
       });
     });
 

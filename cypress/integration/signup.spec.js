@@ -64,7 +64,7 @@ describe("Signup", () => {
     cy.mockSession(user);
     cy.mock();
 
-    const providers = [...Array(10)].map(() => makeProvider({}, { profitSharing: true }));
+    const providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
     cy.mockProviders(providers);
 
     cy.url().should("eq", Cypress.config("baseUrl") + "/profitSharing");

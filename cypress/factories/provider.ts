@@ -1,10 +1,7 @@
 import faker from "faker";
 import merge from "../../src/utils/merge";
 
-export const makeProvider = (
-  override?: NestedPartial<IDeepObj>,
-  { profitSharing } = {},
-): IDeepObj => {
+export const makeProvider = (override?: NestedPartial<IDeepObj>, { type } = {}): IDeepObj => {
   const seed: IDeepObj = {
     id: faker.random.alphaNumeric(24),
     name: faker.commerce.productName(),
@@ -12,7 +9,6 @@ export const makeProvider = (
     exchangeType: "spot",
     logoUrl: null,
     isClone: false,
-    isCopyTrading: true,
     createdAt: "",
     public: true,
     returns: 2,
@@ -21,20 +17,29 @@ export const makeProvider = (
     website: "",
     exchangeInternalIds: [],
     profitMode: "",
-    profitsShare: 5,
-    profitSharing: true,
     followers: 10,
     strategy: "",
     about: "",
     team: [],
     social: [],
+    copyTradingQuote: "USDT",
     minAllocatedBalance: 0,
     maxAllocatedBalance: 50,
-    copyTradingQuote: "USDT",
-    ...(profitSharing && {
-      profitSharing: true,
-      isCopyTrading: true,
-    }),
+    ...(type === "profitSharing"
+      ? {
+          profitSharing: true,
+          isCopyTrading: true,
+          profitsShare: 5,
+        }
+      : type === "copyTrader"
+      ? {
+          profitSharing: false,
+          isCopyTrading: true,
+        }
+      : {
+          profitSharing: false,
+          isCopyTrading: false,
+        }),
   };
   return merge(seed, override);
 };
