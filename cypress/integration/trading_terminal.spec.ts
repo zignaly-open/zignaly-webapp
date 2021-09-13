@@ -20,21 +20,17 @@ describe("Trading Terminal", () => {
     // server = makeServer({ environment: "test" });
     // const user = server.create("user");
     // const provider = server.create("provider");
-
-    // cy.intercept("POST", "/users").as("signup");
-    // cy.intercept("GET", "/user/exchanges/:exchangeInternalId/providers_option", {
-    //   fixture: "providers_option.json",
-    // }).as("mockedProviderOptions");
-
     const provider = makeProvider();
     cy.mock({ connectedProviders: [provider] });
+    const user = makeFakeUser();
 
+    // Stub provider options
     const providerOptions = makeProviderOptions([provider]);
-    // cy.intercept("*/symbols*", { fixture: "symbols.json" });
     cy.intercept("GET", "*/user/exchanges/*/providers_option*", providerOptions).as(
       "mockedProviderOptions",
     );
-    const user = makeFakeUser();
+    // Stub create position
+    cy.intercept("POST", "*/user/exchanges/*/positions", "true");
 
     cy.visit("/tradingTerminal", {
       onBeforeLoad: (win: any) => {
@@ -49,5 +45,13 @@ describe("Trading Terminal", () => {
 
   it("renders trading panels with submit button", () => {
     cy.get("button[type='submit']", { timeout: 20000 }).should("be.visible");
+  });
+
+  it("check for correct values", () => {
+    cy.get("input").type("100");
+    cy.get("button[type='submit']").click();
+
+    cy.get("input[name='positionSize']").parent().should("have.class", "Mui-error");
+    cy.contains(/Position size value is required/i).should("exist");
   });
 });
