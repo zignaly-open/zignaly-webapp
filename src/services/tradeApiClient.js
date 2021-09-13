@@ -1753,7 +1753,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerCreate(payload) {
-    return this.doRequest("/user/providers", payload);
+    return this.doRequest("/user/signal_providers", payload);
   }
 
   /**
