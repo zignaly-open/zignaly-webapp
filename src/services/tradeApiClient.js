@@ -500,6 +500,7 @@ class TradeApiClient {
       {
         type: "sold",
         ...payload,
+        token: this.token,
       },
       "POST",
       0,
