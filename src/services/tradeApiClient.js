@@ -1963,9 +1963,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updateUser(payload) {
-    const endpointPath = "/fe/api.php?action=updateUser";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user", payload);
   }
 
   /**
