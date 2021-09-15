@@ -32,7 +32,7 @@ const LocalizationLanguages = [
   },
   {
     locale: "pl",
-    label: "Polskie",
+    label: "Polski",
     countryCode: "pl",
     languageCode: "pl",
   },
