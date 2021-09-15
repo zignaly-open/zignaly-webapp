@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Box } from "@material-ui/core";
+import React, { useContext, useState, useEffect } from "react";
+import { Box, TextField } from "@material-ui/core";
 import "./ExchangeAccountList.scss";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import ExchangeAccountData from "./ExchangeAccountData";
@@ -12,6 +12,7 @@ import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import LazyLoad from "react-lazyload";
 import useExchangeList from "../../../hooks/useExchangeList";
+import useSelectedExchange from "hooks/useSelectedExchange";
 import { getExchangeNamesCombined } from "../../../utils/helpers";
 
 /**
@@ -37,6 +38,18 @@ const ExchangeAccountList = ({ demo }) => {
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
   const hasDemoAccounts = exchangeConnections.find((e) => e.paperTrading || e.isTestnet);
+  
+  const selectedExchange = useSelectedExchange();
+  const [search, setSearch] = useState('');
+  const [filteredUserExchanges, setFilteredUserExchanges] = useState([]);
+
+  useEffect(() => {
+    setFilteredUserExchanges(exchangeConnections
+      .filter((item) => item.paperTrading || item.isTestnet ? demo : !demo)
+      .filter((item) => item.internalName.toLowerCase().search(search) != -1)
+      .sort((item) => item.internalId === selectedExchange.internalId ? -1 : 0)
+    );
+  }, [selectedExchange, search, demo])
 
   const tabs = [
     {
@@ -64,7 +77,17 @@ const ExchangeAccountList = ({ demo }) => {
 
   return (
     <Box className="exchangeAccountList">
-      <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
+      <Box className="exchangeAccountNavContainer" display="flex" flexDirection="row">
+        <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
+        <TextField 
+          className="customInput searchInput"
+          variant="outlined"
+          placeholder="Search ..."
+          onChange={e => setSearch(e.target.value)}
+          // placeholder={intl.formatMessage({ id: "srv.browse" })}
+        />
+      </Box>
+
       {!userExchanges.length ? (
         !demo ? (
           <NoRealAccount />
@@ -73,7 +96,7 @@ const ExchangeAccountList = ({ demo }) => {
         )
       ) : (
         <Box className={`exchangeAccountContainer ${currentPath}`}>
-          {userExchanges.map((account) => (
+          {filteredUserExchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
               <LazyLoad height={400} overflow={true} scrollContainer=".modal">
                 <ExchangeAccountTopBar account={account} />

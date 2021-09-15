@@ -2,6 +2,21 @@
   padding-bottom: 12px;
   width: 100%;
 
+  .exchangeAccountNavContainer {
+    width: 100%;
+
+    .subNavHeader {
+      width: 100%;
+    }
+
+    .searchInput {
+      border-bottom: solid 2px var(--border-color);
+      height: 100%;
+      padding: 12px;
+      width: 300px;
+    }
+  }
+
   .exchangeAccountContainer {
     padding: 0 10px;
 
