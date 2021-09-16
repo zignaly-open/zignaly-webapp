@@ -29,12 +29,17 @@ jobs:
         run: echo "skipping tests"
       - name: Build
         run: npm run build:test
-      - name: Integration Tests
-        continue-on-error: true
-        record: true
-        run: STAGE=test npm run cy:ci
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      # - name: Integration Tests
+      #   continue-on-error: true
+      #   uses: cypress-io/github-action@v2
+      #   with:
+      #     start: npm run cy:ci
+      #     record: true
+      #   env:
+      #     # pass the Dashboard record key as an environment variable
+      #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      #     # pass GitHub token to allow accurately detecting a build vs a re-run build
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
