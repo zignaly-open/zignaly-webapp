@@ -500,6 +500,7 @@ class TradeApiClient {
       {
         type: "sold",
         ...payload,
+        token: this.token,
       },
       "POST",
       0,
@@ -1752,7 +1753,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerCreate(payload) {
-    return this.doRequest("/user/providers", payload);
+    return this.doRequest("/user/signal_providers", payload);
   }
 
   /**
@@ -1962,9 +1963,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async updateUser(payload) {
-    const endpointPath = "/fe/api.php?action=updateUser";
-    const responseData = await this.doRequest(endpointPath, payload);
-    return responseData;
+    return this.doRequest("/user", payload);
   }
 
   /**
