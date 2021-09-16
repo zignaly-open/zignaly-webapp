@@ -107,8 +107,11 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
     if (sendingCode) return;
 
     setSendingCode(true);
-    tradeApi
-      .resendKnownDeviceCode(data.token)
+    const method = data.isUnknownDevice
+      ? tradeApi.resendKnownDeviceCode(data.token)
+      : tradeApi.resendCode({ reason: "enable_user", token: data.token });
+
+    method
       .then(() => {
         dispatch(showSuccessAlert("", "security.device.resent"));
       })
@@ -169,16 +172,14 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
                   loading={verifyingDevice}
                   onComplete={submitKnownDeviceCode}
                 />
-                {!data.disabled && (
-                  <Box alignItems="center" className="linkBox" display="flex">
-                    <Typography className="link" onClick={resendCode}>
-                      <FormattedMessage id="security.device.resend" />
-                    </Typography>
-                    {sendingCode && (
-                      <CircularProgress className="spinner" color="primary" size={18} />
-                    )}
-                  </Box>
-                )}
+                <Box alignItems="center" className="linkBox" display="flex">
+                  <Typography className="link" onClick={resendCode}>
+                    <FormattedMessage id="security.device.resend" />
+                  </Typography>
+                  {sendingCode && (
+                    <CircularProgress className="spinner" color="primary" size={18} />
+                  )}
+                </Box>
               </Box>
             </>
           )}
