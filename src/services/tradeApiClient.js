@@ -1548,6 +1548,18 @@ class TradeApiClient {
   }
 
   /**
+   * Resend code.
+   *
+   * @param {{reason: string, token: string}} payload
+   * @returns {Promise<Boolean>} Returns promise.
+   *
+   * @memberof TradeApiClient
+   */
+  async resendCode(payload) {
+    return this.doRequest(`/user/resend_code/${payload.reason}`, null, "POST", 2, payload.token);
+  }
+
+  /**
    * Get user notifications settings.
    *
    * @returns {Promise<ProfileNotifications>} Returns promise.
