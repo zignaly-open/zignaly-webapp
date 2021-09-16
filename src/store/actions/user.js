@@ -109,29 +109,26 @@ export const getDailyUserBalance = (exchangeInternalId) => {
 /**
  * Get user data store thunk action.
  *
- * @param {string} token User's access token
  * @param {boolean} [loadExchanges] Load user exchanges
  * @param {function(UserEntity): *} [callback] Callback function
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const getUserData = (token, loadExchanges = false, callback) => {
+export const getUserData = (loadExchanges = false, callback) => {
   return async (dispatch) => {
     try {
-      if (token) {
-        const responseData = await tradeApi.userDataGet();
-        const action = {
-          type: SET_USER_DATA,
-          payload: responseData,
-        };
+      const responseData = await tradeApi.userDataGet();
+      const action = {
+        type: SET_USER_DATA,
+        payload: responseData,
+      };
 
-        dispatch(action);
-        if (callback) {
-          callback(responseData);
-        }
-        if (loadExchanges) {
-          dispatch(initUserExchanges(responseData.exchanges));
-        }
+      dispatch(action);
+      if (callback) {
+        callback(responseData);
+      }
+      if (loadExchanges) {
+        dispatch(initUserExchanges(responseData.exchanges));
       }
     } catch (e) {
       dispatch(showErrorAlert(e));

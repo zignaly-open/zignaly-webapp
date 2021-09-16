@@ -2332,6 +2332,17 @@ class TradeApiClient {
   async getProvidersForAUser(userId) {
     return this.doRequest(`/user/${userId}/providers`, null, "GET");
   }
+
+  /**
+   * Verify user
+   *
+   * @returns {Promise<{}>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async verifyUser() {
+    return this.doRequest("/user/verify", null, "POST");
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

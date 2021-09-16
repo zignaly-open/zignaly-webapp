@@ -30,6 +30,7 @@ const getKey = (value) => Object.keys(options).find((k) => options[k] === value)
 /**
  * @typedef {Object} Options
  * @property {boolean} unlistedDisabled
+ * @property {boolean} listMarketplaceDisabled
  */
 
 /**
@@ -39,7 +40,11 @@ const getKey = (value) => Object.keys(options).find((k) => options[k] === value)
  * @param {Options} props.options options
  * @returns {JSX.Element} JSX
  */
-const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
+const PrivacySlider = ({
+  onChange,
+  value,
+  options: { unlistedDisabled, listMarketplaceDisabled },
+}) => {
   // Using an array of values (to select Profile + MarketPlace) causes issue:
   // No event when switching between them
   // Hard to style Profile as not bold, no thumb
@@ -59,7 +64,9 @@ const PrivacySlider = ({ onChange, value, options: { unlistedDisabled } }) => {
       onChange(options[newValue]);
     } else if (newValue === 2) {
       onChange(options[newValue]);
-      setShowMarketPlaceModal(true);
+      if (listMarketplaceDisabled) {
+        setShowMarketPlaceModal(true);
+      }
     }
   };
 

@@ -157,6 +157,7 @@ const WhoWeAre = ({ provider }) => {
                 <Box display="flex" flexWrap="wrap">
                   {otherProviders.map((otherProvider) => (
                     <ProviderName
+                      key={otherProvider.id}
                       logoUrl={otherProvider.logoUrl}
                       name={otherProvider.name}
                       url={providerLink(
@@ -165,7 +166,6 @@ const WhoWeAre = ({ provider }) => {
                         provider.profitSharing,
                       )}
                       verified={otherProvider.verified}
-                      key={otherProvider.id}
                     />
                   ))}
                 </Box>

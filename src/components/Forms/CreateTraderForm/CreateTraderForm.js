@@ -11,7 +11,6 @@ import {
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateTrader } from "../../../store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -49,7 +48,6 @@ const CreateTraderForm = ({ isCopyTrading }) => {
   const [exchange, setExchange] = useState(/** @type {ExchangeListEntity} **/ (null));
   const [exchangeType, setExchangeType] = useState(null);
   const [step, setStep] = useState(1);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
   let { exchanges } = useExchangeList();
@@ -126,7 +124,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
         navigate(profileLink);
         dispatch(showCreateTrader(false));
         // Refresh user data to show My Services tab
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

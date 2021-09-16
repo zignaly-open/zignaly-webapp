@@ -6,7 +6,6 @@ import CustomSelect from "../../CustomSelect";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import ExchangeAccountForm, { CustomInput, CustomSwitch } from "../ExchangeAccountForm";
@@ -30,7 +29,6 @@ const ExchangeAccountAdd = ({ demo }) => {
   const { handleSubmit, register, control, setValue, watch, setError } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
   const {
     pathParams: { previousPath },
     setPathParams,
@@ -147,7 +145,7 @@ const ExchangeAccountAdd = ({ demo }) => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
-        dispatch(getUserData(storeSession.tradeApi.accessToken, true));
+        dispatch(getUserData(true));
         // mixpanelExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         // userPilotExchangeConnected(payload.isPaperTrading ? "demo" : "real");
         return true;

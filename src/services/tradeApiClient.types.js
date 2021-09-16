@@ -317,6 +317,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {UserWall} wall
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  * @property {boolean} disabled Account disabled due to too many incorrect login
+ * @property {boolean} verified User identity verified
  */
 
 /**
@@ -1097,6 +1098,7 @@ export function userEntityResponseTransform(response) {
     isUnknownDevice: response.isUnknownDevice,
     disabled: response.disabled,
     wall: response.wall || {},
+    verified: false,
   };
 }
 
