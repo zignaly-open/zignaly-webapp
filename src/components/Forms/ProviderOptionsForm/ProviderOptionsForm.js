@@ -107,7 +107,6 @@ const ProviderOptionsForm = ({ provider }) => {
             if (response) {
               const payload2 = {
                 providerId: provider.id,
-                version: 2,
                 exchangeInternalId: selectedExchange.internalId,
               };
 

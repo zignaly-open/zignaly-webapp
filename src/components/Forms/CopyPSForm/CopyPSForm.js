@@ -127,7 +127,6 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
         .then(() => {
           const payloadProvider = {
             providerId: provider.id,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payloadProvider, false));

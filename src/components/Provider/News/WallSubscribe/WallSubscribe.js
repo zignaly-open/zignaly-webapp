@@ -39,7 +39,6 @@ const WallSubscribe = ({ subscribed, providerId }) => {
           setSubscribed(!isSubscribed);
           const payload2 = {
             providerId,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));

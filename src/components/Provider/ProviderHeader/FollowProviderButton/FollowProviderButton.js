@@ -48,7 +48,6 @@ const FollowProviderButton = ({ provider }) => {
         .then(() => {
           const payload2 = {
             providerId: provider.id,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));
@@ -78,7 +77,6 @@ const FollowProviderButton = ({ provider }) => {
         .then(() => {
           const payload2 = {
             providerId: provider.id,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));

@@ -29,8 +29,12 @@ jobs:
         run: echo "skipping tests"
       - name: Build
         run: npm run build:test
-      # - name: Integration Tests
-      # run: STAGE=test npm run cy:ci
+      - name: Integration Tests
+        continue-on-error: true
+        record: true
+        run: STAGE=test npm run cy:ci
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}

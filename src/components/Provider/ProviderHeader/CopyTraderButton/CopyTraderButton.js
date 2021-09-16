@@ -106,7 +106,6 @@ const CopyTraderButton = ({ provider }) => {
       .then(() => {
         const providerPayload = {
           providerId: provider.id,
-          version: 2,
           exchangeInternalId: selectedExchange.internalId,
         };
         dispatch(getProvider(providerPayload, true));

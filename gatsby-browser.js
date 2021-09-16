@@ -12,11 +12,11 @@ import tradeApi from "services/tradeApiClient";
 // import { createHistory } from "@reach/router";
 // const history = typeof window !== "undefined" ? createHistory(window) : null;
 
-if (window.Cypress || process.env.MIRAGE === "true") {
-  import("utils/mirage/server").then((server) => {
-    server.setup();
-  });
-}
+// if (window.Cypress || process.env.MIRAGE === "true") {
+//   import("utils/mirage/server").then((server) => {
+//     server.setup();
+//   });
+// }
 
 // Handle Mirage server
 

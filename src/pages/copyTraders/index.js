@@ -47,7 +47,6 @@ const CopyTraders = (props) => {
       dispatch(unsetProvider());
       const payload = {
         providerId: providerId,
-        version: 2,
         exchangeInternalId: selectedExchange.internalId,
       };
       dispatch(getProvider(payload, true));

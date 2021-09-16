@@ -43,7 +43,6 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
   const refreshProvider = () => {
     const getProviderPayload = {
       providerId: provider.id,
-      version: 2,
       exchangeInternalId: selectedExchange.internalId,
     };
     dispatch(getProvider(getProviderPayload, true));
