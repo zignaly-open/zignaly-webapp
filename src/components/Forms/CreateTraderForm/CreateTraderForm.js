@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./CreateTraderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress, TextField } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  OutlinedInput,
+  CircularProgress,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -16,6 +23,9 @@ import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsEx
 import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 import { getUserData } from "store/actions/user";
 import CustomNumberInput from "../CustomNumberInput";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
+import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
+import HelpIcon from "@material-ui/icons/Help";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -342,9 +352,21 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                     )}
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className="customLabel">
-                      <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
-                    </label>
+                    <Tooltip
+                      interactive
+                      placement="top"
+                      title={
+                        <TooltipWithUrl
+                          message="copyt.profitsharing.maxDrawdown.tooltip"
+                          url={highWaterMarkInfoUrl}
+                        />
+                      }
+                    >
+                      <label className="customLabel">
+                        <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                        <HelpIcon className="helpIcon" />
+                      </label>
+                    </Tooltip>
                     <CustomNumberInput
                       control={control}
                       errors={errors}
@@ -353,6 +375,9 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                         validate: {
                           max: (val) => val <= 100,
                         },
+                        required: intl.formatMessage({
+                          id: "copyt.profitsharing.maxDrawdown.required",
+                        }),
                       }}
                       suffix="%"
                     />
