@@ -1,6 +1,6 @@
 import React from "react";
 import LogoIcon from "../../../../images/logo/logoIcon.svg";
-// import DefaultProviderLogo from "../../../images/defaultProviderLogo.png";
+import VerifiedIcon from "components/Provider/VerifiedIcon";
 import LazyLoad from "react-lazyload";
 import "./ProviderLogo.scss";
 
@@ -10,6 +10,7 @@ import "./ProviderLogo.scss";
  * @property {string} size logo size
  * @property {string} title logo title
  * @property {string} [defaultImage] Placeholder image.
+ * @property {boolean} [verified]
  */
 
 /**
@@ -18,7 +19,7 @@ import "./ProviderLogo.scss";
  * @param {ProviderLogoPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon }) => {
+const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon, verified }) => {
   /**
    * Function to handle image url loading error.
    *
@@ -41,6 +42,7 @@ const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon }) => {
       placeholder={
         <img className="providerLogo" height={size} src={defaultImage} title={title} width={size} />
       }
+      style={{ position: "relative" }}
     >
       <img
         className="providerLogo"
@@ -50,6 +52,7 @@ const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon }) => {
         title={title}
         width={size}
       />
+      {verified && <VerifiedIcon />}
     </LazyLoad>
   );
 };

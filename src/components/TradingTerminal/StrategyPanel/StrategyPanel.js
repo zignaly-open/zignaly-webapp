@@ -20,7 +20,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import "./StrategyPanel.scss";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import MarginButtons from "../Controls/MarginControl";
 import { Alert } from "@material-ui/lab";
 import useSelectedExchange from "hooks/useSelectedExchange";

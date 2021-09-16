@@ -20,6 +20,17 @@
       flex-direction: column;
       height: 40px;
       justify-content: space-between;
+      padding: 1px 0;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      h6 {
+        font-size: 9px;
+        opacity: 0.55;
+      }
     }
   }
 

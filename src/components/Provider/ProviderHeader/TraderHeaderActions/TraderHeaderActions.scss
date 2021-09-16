@@ -8,14 +8,17 @@
 
     .providerLogo {
       height: 40px;
-      margin-right: 16px;
       width: 40px;
     }
 
     h1 {
-      margin-right: 16px;
-      word-break: break-all;
+      margin: 0 16px;
     }
+  }
+
+  .verifiedIcon {
+    font-size: 18px;
+    right: -4px;
   }
 
   h4 {

@@ -13,6 +13,12 @@ import TraderHeaderInfo from "./TraderHeaderInfo";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import ProviderContext from "../../../context/ProviderContext";
 import { FormattedMessage } from "react-intl";
+import { ConfirmDialog } from "components/Dialogs";
+import { navigate } from "@reach/router";
+
+/**
+ * @typedef {import('../../../utils/routesMapping').NavigationLink} NavigationLink
+ */
 
 /**
  * Provides the navigation bar for the opened provider.
@@ -23,27 +29,46 @@ const ProviderHeader = () => {
   const { provider } = useStoreViewsSelector();
   const selectedExchange = useSelectedExchange();
   const providerId = typeof window !== "undefined" ? location.pathname.split("/")[2] : "";
-  const [links, setLinks] = useState([]);
+  const [links, setLinks] = useState(/** @type {Array<NavigationLink>} */ ([]));
   const { hasAllocated } = useContext(ProviderContext);
+  const [confirmConfig, setConfirmConfig] = useState({
+    titleTranslationId: "",
+    messageTranslationId: "",
+    visible: false,
+  });
 
   useEffect(() => {
-    const data = provider.isCopyTrading
+    const routes = provider.isCopyTrading
       ? !provider.profitSharing
         ? createTraderRoutes(providerId, provider)
         : createProfitSharingRoutes(providerId, provider)
       : createProviderRoutes(providerId, provider, selectedExchange);
     if (!provider.isCopyTrading) {
-      data.links.some((item) => {
-        if (item.to.includes("settings")) {
-          item.tooltip = !hasAllocated ? <FormattedMessage id="srv.settings.tooltip" /> : "";
-          return true;
+      routes.links.forEach((item) => {
+        if (item.to.includes("settings") && !hasAllocated) {
+          item.tooltip = <FormattedMessage id="srv.settings.tooltip" />;
         }
-        return false;
       });
     }
-    setLinks(data ? data.links : []);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLinks(routes ? routes.links : []);
   }, [provider, selectedExchange.internalId, hasAllocated]);
+
+  useEffect(() => {
+    if (!provider.maxAllocatedBalance && provider.isAdmin) {
+      setConfirmConfig({
+        visible: true,
+        titleTranslationId: "copyt.profitsharing.maxDrawdown.modal.title",
+        messageTranslationId: "copyt.profitsharing.maxDrawdown.modal",
+      });
+    }
+  }, []);
+
+  const handleMaxDrawdown = () => {
+    const editLink = links.find((l) => l.id === "srv.edit");
+    if (editLink) {
+      navigate(editLink.to);
+    }
+  };
 
   const checkAccess = () => {
     // Reset focus: https://github.com/ReactTraining/react-router/issues/5210
@@ -58,6 +83,11 @@ const ProviderHeader = () => {
       flexDirection="column"
       justifyContent="flex-start"
     >
+      <ConfirmDialog
+        confirmConfig={confirmConfig}
+        executeActionCallback={handleMaxDrawdown}
+        setConfirmConfig={setConfirmConfig}
+      />
       <TraderHeaderActions provider={provider} />
       <TraderHeaderInfo provider={provider} />
       <SubNavHeader links={links} />

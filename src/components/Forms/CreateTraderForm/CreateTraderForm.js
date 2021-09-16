@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./CreateTraderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress, TextField } from "@material-ui/core";
+import {
+  Box,
+  Typography,
+  OutlinedInput,
+  CircularProgress,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -15,6 +22,10 @@ import ExchangeIcon from "../../ExchangeIcon";
 import ToggleButtonsExchangeType from "../../ConnectExchangeView/ToggleButtonsExchangeType";
 import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 import { getUserData } from "store/actions/user";
+import CustomNumberInput from "../CustomNumberInput";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
+import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
+import HelpIcon from "@material-ui/icons/Help";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;
@@ -289,7 +300,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
           {step === 3 && (
             <>
               <Typography variant="h3">
-                <FormattedMessage id="copyt.laststep" />
+                <FormattedMessage id="copyt.lastStep" />
               </Typography>
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel" htmlFor="name">
@@ -316,29 +327,62 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                 {errors && errors.name && <span className="errorText">{errors.name.message}</span>}
               </Box>
               {selectedModel === MODEL_PROFIT_SHARING && (
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="copyt.profitsharing.percentage" />
-                  </label>
-                  <OutlinedInput
-                    className="customInput"
-                    error={!!errors.profitsShare}
-                    inputProps={{
-                      min: 0,
-                      step: 0.01,
-                    }}
-                    inputRef={register({
-                      validate: (value) =>
-                        (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
-                        intl.formatMessage({ id: "form.error.profitsharing" }),
-                    })}
-                    name="profitsShare"
-                    type="number"
-                  />
-                  {errors.profitsShare && (
-                    <span className="errorText">{errors.profitsShare.message}</span>
-                  )}
-                </Box>
+                <>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.percentage" />
+                    </label>
+                    <OutlinedInput
+                      className="customInput"
+                      error={!!errors.profitsShare}
+                      inputProps={{
+                        min: 0,
+                        step: 0.01,
+                      }}
+                      inputRef={register({
+                        validate: (value) =>
+                          (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
+                          intl.formatMessage({ id: "form.error.profitsharing" }),
+                      })}
+                      name="profitsShare"
+                      type="number"
+                    />
+                    {errors.profitsShare && (
+                      <span className="errorText">{errors.profitsShare.message}</span>
+                    )}
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <Tooltip
+                      interactive
+                      placement="top"
+                      title={
+                        <TooltipWithUrl
+                          message="copyt.profitsharing.maxDrawdown.tooltip"
+                          url={highWaterMarkInfoUrl}
+                        />
+                      }
+                    >
+                      <label className="customLabel">
+                        <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                        <HelpIcon className="helpIcon" />
+                      </label>
+                    </Tooltip>
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
+                      name="maxDrawdown"
+                      rules={{
+                        validate: {
+                          max: (val) => val <= 100,
+                        },
+                        required: intl.formatMessage({
+                          id: "copyt.profitsharing.maxDrawdown.required",
+                        }),
+                      }}
+                      suffix="%"
+                    />
+                  </Box>
+                </>
               )}
               <CustomButton
                 className="bgPurple bold"

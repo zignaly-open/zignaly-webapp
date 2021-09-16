@@ -12,7 +12,7 @@ import {
   Tooltip,
   Switch,
 } from "@material-ui/core";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import { RemoveCircle, Help } from "@material-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";

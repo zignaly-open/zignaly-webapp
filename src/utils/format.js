@@ -69,49 +69,6 @@ export const toCamelCaseKeys = (obj) => {
 };
 
 /**
- * Function to format a number according to unit places.
- *
- * @param {Number} value Number to format.
- * @returns {String} Returns formatted unit value string.
- */
-export const formatCurrency = (value) => {
-  /**
-   * Function to get unit places of a number.
-   *
-   * @param {Number} n Number to ghet unit places.
-   * @returns {Number} Unit places of the number.
-   */
-  function log10(n) {
-    return Math.round((100 * Math.log(n)) / Math.log(10)) / 100;
-  }
-  const numberLength = Math.round(log10(value));
-  switch (numberLength) {
-    case 1:
-      return `${formatFloat2Dec(value)}`;
-    case 2:
-      return `${formatFloat2Dec(value)}`;
-    case 3:
-      return `${formatFloat2Dec(value)}`;
-    case 4:
-      return `${formatFloat2Dec(value)}`;
-    case 5:
-      return `${formatFloat2Dec(value)}`;
-    case 6:
-      return `${formatFloat2Dec(value / 1000000)} Million`;
-    case 7:
-      return `${formatFloat2Dec(value / 1000000)}. Million`;
-    case 8:
-      return `${formatFloat2Dec(value / 1000000)} Million`;
-    case 9:
-      return `${formatFloat2Dec(value / 1000000)} Million`;
-    case 10:
-      return `${formatFloat2Dec(value / 1000000)} Million`;
-    default:
-      return `${formatFloat2Dec(value)}`;
-  }
-};
-
-/**
  * Function to format seconds to readable duration
  *
  * @param {Number} time Time received in seconds format.
