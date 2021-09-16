@@ -32,6 +32,7 @@ import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 import HelpIcon from "@material-ui/icons/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 import PrivacySlider from "./PrivacySlider";
+import { ConfirmDialog } from "components/Dialogs";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -69,6 +70,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [cacheModal, showCacheModal] = useState(false);
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const intl = useIntl();
+
+  const [verifyModalConfig, setVerifyModalConfig] = useState({
+    titleTranslationId: "Verify user",
+    messageTranslationId: "Mark this user as verified?",
+    visible: false,
+  });
 
   const [privacy, setPrivacy] = useState("unlisted");
 
@@ -354,6 +361,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       dispatch(setMarketplaceCacheModal(storeUserData.userId));
     }
     updateData(submittedFormData);
+  };
+
+  const verifyUser = () => {
+    tradeApi.verifyUser().then(() => {
+      dispatch(showSuccessAlert("", "User verified"));
+    });
   };
 
   return (
@@ -847,6 +860,23 @@ const CopyTraderEditProfileForm = ({ provider }) => {
           </Box>
 
           <Box className="formAction" display="flex" flexDirection="row" justifyContent="flex-end">
+            <ConfirmDialog
+              confirmConfig={verifyModalConfig}
+              executeActionCallback={verifyUser}
+              setConfirmConfig={setVerifyModalConfig}
+            />
+
+            {storeUserData.isAdmin && (
+              <CustomButton
+                className="text"
+                disabled={provider.verified}
+                loading={loading}
+                onClick={() => setVerifyModalConfig((c) => ({ ...c, visible: true }))}
+              >
+                {provider.verified ? "User Verified" : "Verify User"}
+              </CustomButton>
+            )}
+
             <ProviderDeleteButton disabled={!checkIfCanBeDeleted()} provider={provider} />
 
             <CustomButton className={"full submitButton"} loading={loading} type="submit">

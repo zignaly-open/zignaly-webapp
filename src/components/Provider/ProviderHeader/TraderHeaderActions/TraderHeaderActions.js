@@ -38,7 +38,12 @@ const TraderHeaderActions = ({ provider }) => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <ProviderLogo size="40px" title={provider.name} url={provider.logoUrl} />
+        <ProviderLogo
+          size="40px"
+          title={provider.name}
+          url={provider.logoUrl}
+          verified={provider.verified}
+        />
         <Typography variant="h1">{provider.name}</Typography>
         {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>

@@ -41,7 +41,7 @@ export const startTradeApiSession = (response, eventType) => {
 
     dispatch(action);
     dispatch(refreshSessionData());
-    dispatch(getUserData(response.token, true, (data) => initExternalWidgets(data, eventType)));
+    dispatch(getUserData(true, (data) => initExternalWidgets(data, eventType)));
   };
 };
 

@@ -9,7 +9,6 @@ import ExchangeAccountForm, {
 } from "../ExchangeAccountForm";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
@@ -37,7 +36,6 @@ const ExchangeAccountSettings = () => {
     setPathParams,
   } = useContext(ModalPathContext);
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
   const intl = useIntl();
 
   const {
@@ -123,7 +121,7 @@ const ExchangeAccountSettings = () => {
     return tradeApi
       .exchangeUpdate(payload)
       .then(() => {
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
         setTempMessage(<FormattedMessage id={"accounts.settings.saved"} />);
         return true;
       })

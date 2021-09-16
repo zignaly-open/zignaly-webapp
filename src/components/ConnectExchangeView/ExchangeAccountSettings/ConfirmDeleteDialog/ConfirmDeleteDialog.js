@@ -8,7 +8,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ModalPathContext from "../../ModalPathContext";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import { showErrorAlert } from "../../../../store/actions/ui";
@@ -36,7 +35,6 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
     pathParams: { selectedAccount, previousPath },
     setPathParams,
   } = useContext(ModalPathContext);
-  const storeSession = useStoreSessionSelector();
   const storeSettings = useStoreSettingsSelector();
   const storeExchanegeConnections = useStoreUserExchangeConnections();
   const [loading, setLoading] = useState(false);
@@ -64,7 +62,7 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
           currentPath: previousPath,
         });
         onClose();
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

@@ -2324,12 +2324,12 @@ class TradeApiClient {
   /**
    * Verify user
    *
-   * @returns {Promise<*>} Result
+   * @returns {Promise<{}>} Result
    *
    * @memberof TradeApiClient
    */
   async verifyUser() {
-    return this.doRequest("user/verify", null, "POST");
+    return this.doRequest("/user/verify", null, "POST");
   }
 }
 
