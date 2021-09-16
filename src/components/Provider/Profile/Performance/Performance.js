@@ -7,6 +7,7 @@ import PerformanceGraph from "./PerformanceGraph";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
+import { isNumber } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -83,7 +84,7 @@ const PerformanceOverview = ({ provider }) => {
                 <Typography variant="body1">
                   <FormattedMessage
                     id={
-                      isNaN(provider.maxAllocatedBalance)
+                      isNumber(provider.maxAllocatedBalance)
                         ? "copyt.management.totalallocated"
                         : "copyt.management.totalallocated.withmax"
                     }
@@ -91,7 +92,7 @@ const PerformanceOverview = ({ provider }) => {
                 </Typography>
                 <Typography variant="h4">
                   {`${formatPrice(provider.performance.totalBalance, "", " ", true)}`}
-                  {!isNaN(provider.maxAllocatedBalance) &&
+                  {isNumber(provider.maxAllocatedBalance) &&
                     ` / ${formatPrice(provider.maxAllocatedBalance, "", " ", true)}`}
                   {` ${provider.copyTradingQuote}`}
                 </Typography>

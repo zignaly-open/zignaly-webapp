@@ -10,6 +10,7 @@ import "./ProviderLogo.scss";
  * @property {string} size logo size
  * @property {string} title logo title
  * @property {string} [defaultImage] Placeholder image.
+ * @property {boolean} [verified]
  */
 
 /**
@@ -51,7 +52,7 @@ const ProviderLogo = ({ url, size, title, defaultImage = LogoIcon, verified }) =
         title={title}
         width={size}
       />
-      {true && <VerifiedIcon />}
+      {verified && <VerifiedIcon />}
     </LazyLoad>
   );
 };

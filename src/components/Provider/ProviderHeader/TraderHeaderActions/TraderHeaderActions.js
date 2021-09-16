@@ -8,6 +8,7 @@ import CloneEdit from "../CloneEdit";
 import ProviderLogo from "../ProviderLogo";
 import FollowProviderButton from "../FollowProviderButton";
 import { FormattedMessage } from "react-intl";
+import { isNumber } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -48,7 +49,8 @@ const TraderHeaderActions = ({ provider }) => {
             <Typography className="red" variant="h4">
               <FormattedMessage id="srv.liquidated" />
             </Typography>
-          ) : provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
+          ) : isNumber(provider.maxAllocatedBalance) &&
+            provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
             <Typography className="red" variant="h4">
               <FormattedMessage id="srv.maxAllocationReached" />
             </Typography>

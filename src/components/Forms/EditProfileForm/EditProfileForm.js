@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
 import { Box, TextField, Typography, Checkbox, FormHelperText, Tooltip } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import CustomSelect from "components/CustomSelect";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -29,7 +28,7 @@ import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
 import { setMarketplaceCacheModal } from "store/actions/settings";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import CustomNumberInput from "../CustomNumberInput";
-import { TooltipWithUrl } from "components/Controls/TooltipWithUrl";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 import HelpIcon from "@material-ui/icons/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 import PrivacySlider from "./PrivacySlider";
@@ -71,47 +70,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const intl = useIntl();
 
-  const TooltipMarketPlace = useCallback(() => {
-    return (
-      <Box display="flex" flexDirection="column">
-        <Typography variant="h5">
-          <FormattedMessage id="srv.edit.list.tooltip" />
-        </Typography>
-        <ul>
-          <li>
-            <FormattedMessage id="srv.edit.list.1.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.2.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.3.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.4.tooltip" />
-          </li>
-        </ul>
-      </Box>
-    );
-  }, []);
-
-  // const privacyOptions = [
-  //   {
-  //     label: intl.formatMessage({ id: "srv.edit.privacy.unlisted" }),
-  //     val: "unlisted",
-  //     disabled: provider.privacy && provider.privacy !== "unlisted",
-  //   },
-  //   {
-  //     label: intl.formatMessage({ id: "srv.edit.privacy.listedProfile" }),
-  //     val: "listed_profile",
-  //   },
-  //   {
-  //     label: intl.formatMessage({ id: "srv.edit.privacy.listedMarketplace" }),
-  //     val: "listed_marketplace",
-  //     tooltip: <TooltipMarketPlace />,
-  //     disabled: true,
-  //   },
-  // ];
   const [privacy, setPrivacy] = useState("unlisted");
 
   const loadPositions = () => {

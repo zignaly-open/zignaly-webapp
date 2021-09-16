@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import HelpIcon from "@material-ui/icons/Help";
-import { TooltipWithUrl } from "components/Controls/TooltipWithUrl";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 
 /**
  * @typedef {Object} TooltipObject

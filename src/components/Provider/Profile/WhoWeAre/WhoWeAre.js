@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import "./WhoWeAre.scss";
 import { Box, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -8,9 +8,23 @@ import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 import FlagIcon from "components/FlagIcon";
 import { prefixLinkForXSS } from "utils/formatters";
 import { Link } from "gatsby";
-import VerifiedIcon from "components/Provider/VerifiedIcon";
 import ProviderLogo from "components/Provider/ProviderHeader/ProviderLogo";
 import SocialLink from "../SocialLink";
+import tradeApi from "services/tradeApiClient";
+
+/**
+ * @param {string} providerId providerId
+ * @param {boolean} copyTrading copyTrading
+ * @param {boolean} profitSharing profitSharing
+ * @returns {string} Url
+ */
+const providerLink = (providerId, copyTrading, profitSharing) => {
+  if (copyTrading) {
+    return profitSharing ? `/profitSharing/${providerId}` : `/copyTraders/${providerId}`;
+  }
+
+  return `/signalProviders/${providerId}`;
+};
 
 /**
  * @param {Object} props Props
@@ -22,12 +36,16 @@ import SocialLink from "../SocialLink";
  */
 const ProviderName = ({ name, logoUrl, verified, url }) => (
   <Box alignItems="center" className="providerName" display="flex">
-    <ProviderLogo size="40px" title={name} url={logoUrl} />
+    <ProviderLogo size="40px" title={name} url={logoUrl} verified={verified} />
     <Link className="link" to={url}>
       <Typography variant="h4">{name}</Typography>
     </Link>
   </Box>
 );
+
+/**
+ * @typedef {import('../../../../services/tradeApiClient.types').UserAllProviders} UserAllProviders
+ */
 
 /**
  * @typedef {Object} DefaultProps
@@ -42,6 +60,15 @@ const ProviderName = ({ name, logoUrl, verified, url }) => (
  */
 const WhoWeAre = ({ provider }) => {
   const { show, setShow, isMobile } = useProfileBoxShow();
+  const [otherProviders, setOtherProviders] = useState(
+    /** @type {Array<UserAllProviders>} */ (null),
+  );
+
+  useEffect(() => {
+    tradeApi.getProvidersForAUser(provider.userId).then((res) => {
+      setOtherProviders(res.filter((p) => p.id !== provider.id));
+    });
+  }, []);
 
   return (
     <Box
@@ -121,38 +148,29 @@ const WhoWeAre = ({ provider }) => {
             <Link className="link" target="_blank" to={prefixLinkForXSS(provider.website)}>
               <Typography>{provider.website}</Typography>
             </Link>
-            <Box className="otherServicesBox">
-              <Typography variant="h3">
-                <FormattedMessage id="srv.otherServices" />
-              </Typography>
+            {otherProviders && (
+              <Box className="otherServicesBox">
+                <Typography variant="h3">
+                  <FormattedMessage id="srv.otherServices" />
+                </Typography>
 
-              <Box display="flex" flexWrap="wrap">
-                <ProviderName
-                  logoUrl={provider.logoUrl}
-                  name={provider.name}
-                  url={provider.providerLink}
-                  verified={true}
-                />
-                <ProviderName
-                  logoUrl={provider.logoUrl}
-                  name={provider.name}
-                  url={provider.providerLink}
-                  verified={true}
-                />
-                <ProviderName
-                  logoUrl={provider.logoUrl}
-                  name={provider.name}
-                  url={provider.providerLink}
-                  verified={true}
-                />
-                <ProviderName
-                  logoUrl={provider.logoUrl}
-                  name={provider.name}
-                  url={provider.providerLink}
-                  verified={true}
-                />
+                <Box display="flex" flexWrap="wrap">
+                  {otherProviders.map((otherProvider) => (
+                    <ProviderName
+                      logoUrl={otherProvider.logoUrl}
+                      name={otherProvider.name}
+                      url={providerLink(
+                        otherProvider.id,
+                        provider.isCopyTrading,
+                        provider.profitSharing,
+                      )}
+                      verified={otherProvider.verified}
+                      key={otherProvider.id}
+                    />
+                  ))}
+                </Box>
               </Box>
-            </Box>
+            )}
           </Box>
         </>
       )}

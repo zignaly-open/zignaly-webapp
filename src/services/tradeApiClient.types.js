@@ -1298,7 +1298,7 @@ function createEmptyProviderEntity() {
     copyTrader: false,
     liquidated: false,
     globalReturn: 0,
-    maxAllocatedBalance: 0,
+    maxAllocatedBalance: null,
     maxPositions: null,
     maxDrawdown: null,
     privacy: "",
@@ -2831,6 +2831,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} verified KYC passed
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
+ * @property {string} userId
  */
 
 /**
@@ -4522,6 +4523,11 @@ export const createEmptyProfileProviderStatsEntity = () => {
       CTorPS: false,
       liquidated: false,
       globalReturn: 0,
+      maxAllocatedBalance: null,
+      maxPositions: null,
+      maxDrawdown: null,
+      privacy: "unlisted",
+      verified: false,
     },
     signalsInfo: [],
   };
@@ -4569,3 +4575,12 @@ export function profitSharingBalanceHistoryResponseTransform(response) {
     })),
   };
 }
+
+/**
+ * @typedef {Object} UserAllProviders
+ * @property {string} id
+ * @property {string} name
+ * @property {string} logoUrl
+ * @property {string} privacy
+ * @property {boolean} verified
+ */
