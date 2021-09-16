@@ -138,7 +138,8 @@ const CopyTraderButton = ({ provider }) => {
       <>
         {!disconnecting ? (
           disabled ? (
-            !provider.liquidated && (
+            !provider.liquidated &&
+            provider.performance.totalBalance < provider.maxAllocatedBalance && (
               <CustomButton className="submitButton" onClick={startCopying}>
                 <FormattedMessage id="copyt.copythistrader" />
               </CustomButton>

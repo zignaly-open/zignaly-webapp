@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
-import {
-  Box,
-  TextField,
-  Typography,
-  Switch,
-  Tooltip,
-  Checkbox,
-  InputAdornment,
-} from "@material-ui/core";
+import { Box, TextField, Typography, Checkbox, FormHelperText, Tooltip } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import CountrySelect from "./CountrySelect";
 import SocialSelect from "./SocialSelect";
@@ -35,6 +27,11 @@ import Modal from "../../Modal";
 import MarketplaceCacheMessage from "./MarketplaceCacheMessage";
 import { setMarketplaceCacheModal } from "store/actions/settings";
 import useSelectedExchange from "hooks/useSelectedExchange";
+import CustomNumberInput from "../CustomNumberInput";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
+import HelpIcon from "@material-ui/icons/Help";
+import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
+import PrivacySlider from "./PrivacySlider";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -55,7 +52,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, register, setError, watch } = useForm();
+  const { errors, handleSubmit, control, register, setError } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
@@ -67,12 +64,13 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const dispatch = useDispatch();
   const [aboutTab, setAboutTab] = useState("write");
   const [strategyTab, setStrategyTab] = useState("write");
-  const listSwitch = watch("list", provider.list);
-  const publicSwitch = watch("public", provider.public);
   const baseURL = process.env.GATSBY_TRADEAPI_URL;
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
   const [cacheModal, showCacheModal] = useState(false);
   const [submittedFormData, setSubmittedFormData] = useState(null);
+  const intl = useIntl();
+
+  const [privacy, setPrivacy] = useState("unlisted");
 
   const loadPositions = () => {
     if (provider.id && provider.isCopyTrading && !provider.profitSharing) {
@@ -307,29 +305,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     setSocialError(value);
   };
 
-  const disableListingSwitch = () => {
-    if (storeUserData.isAdmin) {
-      return false;
-    }
-    if (listSwitch) {
-      return false;
-    }
-    return true;
-  };
-
-  const disablePulicSwitch = () => {
-    if (storeUserData.isAdmin) {
-      return false;
-    }
-    if (provider.followers > 1) {
-      if (!publicSwitch) {
-        return false;
-      }
-      return true;
-    }
-    return false;
-  };
-
   /**
    * @param {string} url Logo url.
    * @returns {void}
@@ -380,30 +355,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       dispatch(setMarketplaceCacheModal(storeUserData.userId));
     }
     updateData(submittedFormData);
-  };
-
-  const GetListedTooltip = () => {
-    return (
-      <Box display="flex" flexDirection="column">
-        <Typography variant="h5">
-          <FormattedMessage id="srv.edit.list.tooltip" />
-        </Typography>
-        <ul>
-          <li>
-            <FormattedMessage id="srv.edit.list.1.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.2.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.3.tooltip" />
-          </li>
-          <li>
-            <FormattedMessage id="srv.edit.list.4.tooltip" />
-          </li>
-        </ul>
-      </Box>
-    );
   };
 
   return (
@@ -543,44 +494,48 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className={"customLabel"}>
-                  <FormattedMessage id="srv.edit.title" />
-                </label>
-                <Controller
-                  as={
-                    <TextField
-                      className={
-                        "customInput " +
-                        (storeSettings.darkStyle ? " dark " : " light ") +
-                        (errors.name ? "error" : "")
+              {provider.privacy === "unlisted" && (
+                <>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className={"customLabel"}>
+                      <FormattedMessage id="srv.edit.title" />
+                    </label>
+                    <Controller
+                      as={
+                        <TextField
+                          className={
+                            "customInput " +
+                            (storeSettings.darkStyle ? " dark " : " light ") +
+                            (errors.name ? "error" : "")
+                          }
+                          error={!!errors.profitsShare}
+                          fullWidth
+                          variant="outlined"
+                        />
                       }
-                      error={!!errors.profitsShare}
-                      fullWidth
-                      variant="outlined"
+                      control={control}
+                      defaultValue={provider.name}
+                      name="name"
+                      rules={{
+                        required: true,
+                        maxLength: 50,
+                        minLength: 5,
+                      }}
                     />
-                  }
-                  control={control}
-                  defaultValue={provider.name}
-                  name="name"
-                  rules={{
-                    required: true,
-                    maxLength: 50,
-                    minLength: 5,
-                  }}
-                />
-                {errors.name && (
-                  <span className="errorText">
-                    <FormattedMessage id="form.error.name.length" />
-                  </span>
-                )}
-              </Box>
-              <Box className="inputBox" display="flex" flexDirection="column">
-                <label className="customLabel">
-                  <FormattedMessage id="srv.edit.logo" />
-                </label>
-                <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
-              </Box>
+                    {errors.name && (
+                      <span className="errorText">
+                        <FormattedMessage id="form.error.name.length" />
+                      </span>
+                    )}
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="srv.edit.logo" />
+                    </label>
+                    <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
+                  </Box>
+                </>
+              )}
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.website" />
@@ -610,6 +565,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   <span className="errorText">url should be valid. (eg: https://zignaly.com)</span>
                 )}
               </Box>
+              <Box className="inputBox" />
               {provider.isCopyTrading && !provider.profitSharing && (
                 <Box className="inputBox" display="flex" flexDirection="column">
                   <label className="customLabel">
@@ -632,29 +588,107 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   />
                 </Box>
               )}
-              {provider.isCopyTrading && provider.profitSharing && (
-                <Box className="inputBox" display="flex" flexDirection="column">
-                  <label className="customLabel">
-                    <FormattedMessage id="copyt.profitsharing.percentage" />
-                  </label>
-                  <TextField
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                    }}
-                    className={
-                      "customInput " +
-                      (storeSettings.darkStyle ? " dark " : " light ") +
-                      (errors.profitsShare ? "error" : "")
-                    }
-                    defaultValue={provider.profitsShare}
-                    error={!!errors.profitsShare}
-                    fullWidth
-                    inputRef={register({ required: true })}
-                    name="profitsShare"
-                    type="text"
-                    variant="outlined"
-                  />
-                </Box>
+              {provider.isCopyTrading && (
+                <>
+                  {provider.profitSharing && (
+                    <>
+                      <Box className="inputBox" display="flex" flexDirection="column">
+                        <Tooltip interactive placement="top" title="">
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.percentage" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
+                        <CustomNumberInput
+                          control={control}
+                          defaultValue={provider.profitsShare}
+                          errors={errors}
+                          name="profitsShare"
+                          rules={{ required: true }}
+                          suffix="%"
+                        />
+                      </Box>
+                      <Box className="inputBox" display="flex" flexDirection="column">
+                        <Tooltip
+                          interactive
+                          placement="top"
+                          title={
+                            <TooltipWithUrl
+                              message="copyt.profitsharing.maxDrawdown.tooltip"
+                              url={highWaterMarkInfoUrl}
+                            />
+                          }
+                        >
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.maxDrawdown" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
+
+                        <CustomNumberInput
+                          control={control}
+                          defaultValue={provider.maxDrawdown}
+                          errors={errors}
+                          name="maxDrawdown"
+                          rules={{
+                            required: intl.formatMessage({
+                              id: "copyt.profitsharing.maxDrawdown.required",
+                            }),
+                            validate: {
+                              max: (val) =>
+                                val <= 100 &&
+                                (!provider.maxDrawdown ||
+                                  val <= provider.maxDrawdown ||
+                                  intl.formatMessage({
+                                    id: "copyt.profitsharing.maxDrawdown.max",
+                                  })),
+                            },
+                          }}
+                          suffix="%"
+                        />
+                        <FormHelperText>
+                          <FormattedMessage id="copyt.profitsharing.maxDrawdown.definitive" />
+                        </FormHelperText>
+                      </Box>
+                    </>
+                  )}
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance" />
+                    </label>
+                    <CustomNumberInput
+                      control={control}
+                      defaultValue={provider.maxAllocatedBalance}
+                      errors={errors}
+                      name="maxAllocatedBalance"
+                      rules={{
+                        validate: {
+                          max: (val) =>
+                            provider.verified ||
+                            val <= 50000 ||
+                            intl.formatMessage(
+                              {
+                                id: "srv.edit.maxAllocatedBalance.max",
+                              },
+                              { max: 50000 },
+                            ),
+                        },
+                      }}
+                      suffix={provider.copyTradingQuote}
+                    />
+                  </Box>
+                  <Box className="inputBox" display="flex" flexDirection="column">
+                    <label className="customLabel">
+                      <FormattedMessage id="copyt.profitsharing.maxPositions" />
+                    </label>
+                    <CustomNumberInput
+                      control={control}
+                      defaultValue={provider.maxPositions}
+                      errors={errors}
+                      name="maxPositions"
+                    />
+                  </Box>
+                </>
               )}
               {!provider.profitSharing && (
                 <Box
@@ -789,68 +823,25 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   </Box>
                 </Box>
               )}
-
-              <Box
-                alignItems="center"
-                className="inputBox switches"
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-                width="100%"
-              >
-                <Tooltip
-                  placement="top"
-                  title={
-                    <Typography variant="h5">
-                      <FormattedMessage id="srv.edit.public.tooltip" />
-                    </Typography>
-                  }
-                >
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.public" />
-                  </label>
-                </Tooltip>
-
-                <Controller
-                  control={control}
-                  defaultValue={provider.public}
-                  name="public"
-                  render={({ onChange, value }) => (
-                    <Switch
-                      checked={value}
-                      disabled={disablePulicSwitch()}
-                      onChange={(e) => onChange(e.target.checked)}
-                    />
-                  )}
-                />
-              </Box>
-              <Box
-                alignItems="center"
-                className="inputBox switches"
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-                width="100%"
-              >
-                <Tooltip placement="top" title={<GetListedTooltip />}>
-                  <label className="customLabel">
-                    <FormattedMessage id="srv.edit.list" />
-                  </label>
-                </Tooltip>
-
-                <Controller
-                  control={control}
-                  defaultValue={provider.list}
-                  name="list"
-                  render={({ onChange, onBlur, value }) => (
-                    <Switch
-                      checked={value}
-                      disabled={disableListingSwitch()}
-                      onBlur={onBlur}
-                      onChange={(e) => onChange(e.target.checked)}
-                    />
-                  )}
-                />
+              <Box className="privacyBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.privacy" />
+                </label>
+                <Box display="flex" justifyContent="center" width="100%">
+                  <PrivacySlider
+                    onChange={setPrivacy}
+                    options={{
+                      unlistedDisabled: provider.privacy && provider.privacy !== "unlisted",
+                    }}
+                    value={privacy}
+                  />
+                </Box>
+                {/* <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} /> */}
+                {(!provider.privacy || provider.privacy === "unlisted") && privacy !== "unlisted" && (
+                  <FormHelperText>
+                    <FormattedMessage id="srv.edit.privacy.definitive" />
+                  </FormHelperText>
+                )}
               </Box>
             </Box>
           </Box>

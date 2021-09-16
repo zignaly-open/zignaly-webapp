@@ -1,7 +1,16 @@
 import React from "react";
-import { FormControl, Box, Select, MenuItem, Typography, TextField } from "@material-ui/core";
+import {
+  FormControl,
+  Box,
+  Select,
+  MenuItem,
+  Typography,
+  TextField,
+  Tooltip,
+} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import "./CustomSelect.scss";
+import ConditionalWrapper from "../ConditionalWrapper";
 
 /**
  * @typedef {import("@material-ui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
@@ -11,6 +20,8 @@ import "./CustomSelect.scss";
  * @typedef {Object} OptionType
  * @property {string} label Option label.
  * @property {string|number} val Option value.
+ * @property {boolean} [disabled] Disabled.
+ * @property {React.ReactNode|string} [tooltip] Tooltip.
  */
 
 /**
@@ -53,6 +64,20 @@ import "./CustomSelect.scss";
 export const extractVal = (option) => (typeof option === "object" ? option.val : option);
 
 /**
+ * Extract tooltip from option item
+ * @param {Option} option option
+ * @returns {React.ReactNode|string} value
+ */
+export const extractTooltip = (option) => (typeof option === "object" ? option.tooltip : null);
+
+/**
+ * Extract disabled value from option item
+ * @param {Option} option option
+ * @returns {React.ReactNode|string} value
+ */
+export const extractDisabled = (option) => (typeof option === "object" ? option.disabled : null);
+
+/**
  * Extract label from option item
  * @param {Option} option option
  * @param {Options} [options] Options array to find the label by value.
@@ -93,6 +118,24 @@ const CustomSelect = (props) => {
     placeholder,
   } = props;
 
+  /**
+   * Handle change
+   * @param {*} option Option
+   * @returns {void}
+   */
+  const handleChange = (option) => {
+    const val = extractVal(option);
+    if (typeof options === "object" && options.length && typeof options[0] === "object") {
+      // @ts-ignore
+      const found = options.find((o) => o.val === val);
+      // Ignore disabled option. We use a fake .disabled class otherwise it blocks the tooltip.
+      // @ts-ignore
+      if (found && found.disabled) return;
+    }
+
+    onChange(option);
+  };
+
   return (
     <Box
       alignItems="center"
@@ -114,13 +157,26 @@ const CustomSelect = (props) => {
             }}
             disabled={disabled}
             displayEmpty={true}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             value={value}
             variant="outlined"
           >
             {options.map((option, index) => (
-              <MenuItem key={index} value={extractVal(option)}>
-                {extractLabel(option)}
+              <MenuItem
+                className={extractDisabled(option) ? "disabled" : null}
+                key={index}
+                value={extractVal(option)}
+              >
+                <ConditionalWrapper
+                  condition={Boolean(extractTooltip(option))}
+                  wrapper={(_children) => (
+                    <Tooltip placement="top" title={extractTooltip(option)}>
+                      <span>{_children}</span>
+                    </Tooltip>
+                  )}
+                >
+                  <>{extractLabel(option)}</>
+                </ConditionalWrapper>
               </MenuItem>
             ))}
           </Select>
@@ -142,7 +198,7 @@ const CustomSelect = (props) => {
               return optionVal === val;
             }}
             multiple={multiple}
-            onChange={(e, val) => onChange(val)}
+            onChange={(e, val) => handleChange(val)}
             openOnFocus={true}
             options={options}
             renderInput={(params) => (

@@ -94,32 +94,32 @@ const Profile = ({ provider }) => {
       <Modal onClose={handleClose} size="small" state={paymentModal}>
         <PaymentResponse status={paymentStatus} />
       </Modal>
-      <Box className="leftColumn">
+      <div className="leftColumn">
         <Box bgcolor="grid.content" className="aboutBox">
           <AboutUs provider={provider} />
         </Box>
         <Box bgcolor="grid.content" className="strategyBox">
           <Strategy provider={provider} />
         </Box>
-      </Box>
-      <Box className="rightColumn">
+      </div>
+      <div className="rightColumn">
         <Box bgcolor="grid.content" className="whoWeAreBox">
           <WhoWeAre provider={provider} />
         </Box>
-        {provider.isCopyTrading && (
+        {provider.isCopyTrading ? (
           <Box bgcolor="grid.content" className="performanceBox">
             <Performance provider={provider} />
           </Box>
-        )}
-        {!provider.isCopyTrading &&
+        ) : (
           !provider.disable &&
           provider.exchangeInternalId === selectedExchange.internalId &&
           checkAvailableOptions() && (
             <Box bgcolor="grid.content" className="optionsBox">
               <Options provider={provider} />
             </Box>
-          )}
-      </Box>
+          )
+        )}
+      </div>
       {!provider.profitSharing &&
         !provider.disable &&
         !provider.isClone &&

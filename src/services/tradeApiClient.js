@@ -151,6 +151,7 @@ import {
  * @typedef {import('./tradeApiClient.types').Disable2FAConfirmPayload} Disable2FAConfirmPayload
  * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
  * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
+ * @typedef {import('./tradeApiClient.types').UserAllProviders} UserAllProviders
  *
  */
 
@@ -2305,6 +2306,19 @@ class TradeApiClient {
   async wallReportUser(payload) {
     const { userId, ...data } = payload;
     return this.doRequest(`/wall/users/${userId}/report_spam`, data, "POST");
+  }
+
+  /**
+   * Get all providers for a user
+   *
+   * @param {string} userId userId
+   *
+   * @returns {Promise<Array<UserAllProviders>>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getProvidersForAUser(userId) {
+    return this.doRequest(`/user/${userId}/providers`, null, "GET");
   }
 }
 

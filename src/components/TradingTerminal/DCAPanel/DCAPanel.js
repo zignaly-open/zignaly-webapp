@@ -27,7 +27,7 @@ import useDeepCompareEffect from "../../../hooks/useDeepCompareEffect";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 import { formatPrice } from "utils/formatters";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol

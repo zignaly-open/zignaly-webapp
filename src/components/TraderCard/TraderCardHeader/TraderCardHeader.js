@@ -31,11 +31,12 @@ const TraderCardHeader = ({ provider }) => {
     profitsShare,
     profitSharing,
     providerLink,
+    verified,
   } = provider;
 
   return (
     <div className="traderCardHeader">
-      <ProviderLogo size="40px" title={name} url={logoUrl} />
+      <ProviderLogo size="40px" title={name} url={logoUrl} verified={true} />
       <div className="traderCardHeaderTitleBox">
         <div className="nameBox">
           <Link className="name" to={providerLink}>
