@@ -75,17 +75,17 @@ const PrivacySlider = ({
       value: 0,
       label: (
         <span className={unlistedDisabled ? "disabled" : ""}>
-          <FormattedMessage id="srv.edit.privacy.unlisted" />
+          <FormattedMessage id="srv.edit.visibility.unlisted" />
         </span>
       ),
     },
     {
       value: 1,
-      label: <FormattedMessage id="srv.edit.privacy.listedProfile" />,
+      label: <FormattedMessage id="srv.edit.visibility.listedProfile" />,
     },
     {
       value: 2,
-      label: <FormattedMessage id="srv.edit.privacy.listedMarketplace" />,
+      label: <FormattedMessage id="srv.edit.visibility.listedMarketplace" />,
     },
   ];
 

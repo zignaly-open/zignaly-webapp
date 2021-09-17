@@ -13,9 +13,11 @@ describe("Connect to a Provider", () => {
     describe("Has exchange accounts", () => {
       beforeEach(() => {
         user = makeFakeUser();
-        const provider = makeProvider({ id: "a" });
+        const provider = makeProvider({ userId: user.id });
+        const provider2 = makeProvider({ userId: user.id });
         cy.mock();
         cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
+        cy.intercept("GET", "**/user/*/providers", [provider2]).as("mockedOtherProviders");
         cy.intercept("POST", "**/exchanges/*/providers/*/connect_service", "true");
 
         cy.visit(`/profitSharing/${provider.id}`, {

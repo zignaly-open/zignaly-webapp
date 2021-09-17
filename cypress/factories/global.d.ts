@@ -33,6 +33,8 @@ interface Provider {
   copyTradingQuote: string;
   minAllocatedBalance: number;
   maxAllocatedBalance: number;
+  verified: boolean;
+  userId: string;
 }
 
 interface TerminalProviderOption {
