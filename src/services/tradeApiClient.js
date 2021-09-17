@@ -2343,6 +2343,17 @@ class TradeApiClient {
   async verifyUser() {
     return this.doRequest("/user/verify", null, "POST");
   }
+
+  /**
+   * Verify user
+   *
+   * @returns {Promise<{}>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async unverifyUser() {
+    return this.doRequest("/user/unverify", null, "POST");
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

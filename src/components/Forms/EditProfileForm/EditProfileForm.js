@@ -77,11 +77,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const signalUrl = `${baseURL}/signals.php?key=${provider.key}`;
   const [cacheModal, showCacheModal] = useState(false);
   const [submittedFormData, setSubmittedFormData] = useState(null);
+  const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
-    titleTranslationId: "Verify user",
-    messageTranslationId: "Mark this user as verified?",
+    titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
+    messageTranslationId: provider.verified
+      ? "Unmark this user as verified?"
+      : "Mark this user as verified?",
     visible: false,
   });
 
@@ -372,9 +375,17 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const verifyUser = () => {
-    tradeApi.verifyUser().then(() => {
-      dispatch(showSuccessAlert("", "User verified"));
-    });
+    const method = provider.verified ? tradeApi.verifyUser() : tradeApi.unverifyUser();
+    setVerifying(true);
+
+    method
+      .then(() => {
+        provider.verified = !provider.verified;
+        dispatch(showSuccessAlert("", provider.verified ? "User verified" : "User unverified"));
+      })
+      .finally(() => {
+        setVerifying(false);
+      });
   };
 
   /**
@@ -917,11 +928,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
             {storeUserData.isAdmin && (
               <CustomButton
                 className="text"
-                disabled={provider.verified}
-                loading={loading}
+                loading={verifying}
                 onClick={() => setVerifyModalConfig((c) => ({ ...c, visible: true }))}
               >
-                {provider.verified ? "User Verified" : "Verify User"}
+                {provider.verified ? "Unverify User" : "Verify User"}
               </CustomButton>
             )}
 
