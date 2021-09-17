@@ -837,7 +837,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
               )}
               <Box className="privacyBox" display="flex" flexDirection="column">
                 <label className="customLabel">
-                  <FormattedMessage id="srv.edit.privacy" />
+                  <FormattedMessage id="srv.edit.visibility" />
                 </label>
                 <Box display="flex" justifyContent="center" width="100%">
                   <PrivacySlider
@@ -852,7 +852,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 {/* <CustomSelect onChange={setPrivacy} options={privacyOptions} value={privacy} /> */}
                 {(!provider.privacy || provider.privacy === "unlisted") && privacy !== "unlisted" && (
                   <FormHelperText>
-                    <FormattedMessage id="srv.edit.privacy.definitive" />
+                    <FormattedMessage id="srv.edit.visibility.definitive" />
                   </FormHelperText>
                 )}
               </Box>
