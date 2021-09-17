@@ -707,7 +707,6 @@ signalp.subtitle2: "This is only recommended for advanced users."
 
 signalp.listeners: "Followers"
 signalp.copierslast7: "Copiers last 7 days"
-signalp.listenthisprovider: "Follow this provider"
 signalp.peoplelistening: "People following this provider"
 signalp.performance: "Signal Providers' Performance"
 signalp.positionsize: "Position Size"

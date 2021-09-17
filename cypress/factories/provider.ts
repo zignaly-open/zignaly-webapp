@@ -7,11 +7,13 @@ interface MakeProviderOptions {
 
 export const makeProvider = (
   override?: Partial<Provider>,
-  { type }: MakeProviderOptions = {},
+  { type = "profitSharing" }: MakeProviderOptions = {},
 ): Provider => {
   const seed: Provider = {
     id: faker.random.alphaNumeric(24),
     name: faker.commerce.productName(),
+    userId: faker.random.alphaNumeric(24),
+    verified: false,
     exchanges: ["zignaly"],
     exchangeType: "spot",
     logoUrl: null,
