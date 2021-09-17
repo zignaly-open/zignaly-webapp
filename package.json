@@ -216,7 +216,6 @@
     "cy:open": "cypress open",
     "cy:open-dev": "CYPRESS_baseUrl=http://localhost:3000 npm run cy:open",
     "cy:open-build": "CYPRESS_baseUrl=http://localhost:9000/app start-server-and-test serve http://localhost:9000/app cy:open",
-    "cy:ci": "CYPRESS_baseUrl=http://localhost:9000/app serve",
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
