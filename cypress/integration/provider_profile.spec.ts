@@ -138,6 +138,7 @@ describe("Connect to a Provider", () => {
         const provider = makeProvider();
         cy.mock();
         cy.intercept("GET", "*/user/providers/*", provider).as("mockedUserProvider");
+        cy.intercept("GET", "**/user/*/providers", []).as("mockedOtherProviders");
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win: any) => {
@@ -164,6 +165,7 @@ describe("Connect to a Provider", () => {
         cy.intercept("GET", "*/user/providers/*", { ...provider, disable: false }).as(
           "mockedUserProvider",
         );
+        cy.intercept("GET", "**/user/*/providers", []).as("mockedOtherProviders");
 
         cy.visit(`/profitSharing/${provider.id}`, {
           onBeforeLoad: (win: any) => {
