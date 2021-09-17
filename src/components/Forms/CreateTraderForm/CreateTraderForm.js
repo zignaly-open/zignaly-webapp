@@ -7,6 +7,7 @@ import {
   CircularProgress,
   TextField,
   Tooltip,
+  FormHelperText,
 } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
@@ -58,7 +59,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
     control,
     register,
     setValue,
-    formState: { isValid },
+    formState: { isValid, dirtyFields },
   } = useForm({ mode: "onChange" });
 
   if (exchanges) {
@@ -327,9 +328,16 @@ const CreateTraderForm = ({ isCopyTrading }) => {
               {selectedModel === MODEL_PROFIT_SHARING && (
                 <>
                   <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className="customLabel">
-                      <FormattedMessage id="copyt.profitsharing.percentage" />
-                    </label>
+                    <Tooltip
+                      interactive
+                      placement="top"
+                      title={<FormattedMessage id="copyt.profitsharing.percentage.tooltip" />}
+                    >
+                      <label className="customLabel">
+                        <FormattedMessage id="copyt.profitsharing.percentage" />
+                        <HelpIcon className="helpIcon" />
+                      </label>
+                    </Tooltip>
                     <OutlinedInput
                       className="customInput"
                       error={!!errors.profitsShare}
@@ -366,12 +374,18 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                       </label>
                     </Tooltip>
                     <CustomNumberInput
+                      allowNegative={true}
                       control={control}
+                      defaultValue="-"
                       errors={errors}
                       name="maxDrawdown"
                       rules={{
                         validate: {
-                          max: (val) => val <= 100,
+                          max: (val) =>
+                            (val <= -5 && val >= -100) ||
+                            intl.formatMessage({
+                              id: "copyt.profitsharing.maxDrawdown.range",
+                            }),
                         },
                         required: intl.formatMessage({
                           id: "copyt.profitsharing.maxDrawdown.required",
@@ -379,6 +393,11 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                       }}
                       suffix="%"
                     />
+                    {dirtyFields.maxDrawdown && (
+                      <FormHelperText>
+                        <FormattedMessage id="copyt.profitsharing.maxDrawdown.definitive" />
+                      </FormHelperText>
+                    )}
                   </Box>
                 </>
               )}

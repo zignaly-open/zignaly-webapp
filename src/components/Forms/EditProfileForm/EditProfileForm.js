@@ -54,7 +54,14 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
   const storeUserData = useStoreUserData();
-  const { errors, handleSubmit, control, register, setError } = useForm();
+  const {
+    errors,
+    handleSubmit,
+    control,
+    register,
+    setError,
+    formState: { dirtyFields },
+  } = useForm();
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
@@ -626,7 +633,11 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   {provider.profitSharing && (
                     <>
                       <Box className="inputBox" display="flex" flexDirection="column">
-                        <Tooltip interactive placement="top" title="">
+                        <Tooltip
+                          interactive
+                          placement="top"
+                          title={<FormattedMessage id="copyt.profitsharing.percentage.tooltip" />}
+                        >
                           <label className="customLabel">
                             <FormattedMessage id="copyt.profitsharing.percentage" />
                             <HelpIcon className="helpIcon" />
@@ -672,14 +683,30 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           }}
                           suffix="%"
                         />
-                        <FormHelperText>
-                          <FormattedMessage id="copyt.profitsharing.maxDrawdown.definitive" />
-                        </FormHelperText>
+                        {dirtyFields.maxDrawdown && (
+                          <FormHelperText>
+                            <FormattedMessage id="copyt.profitsharing.maxDrawdown.definitive" />
+                          </FormHelperText>
+                        )}
                       </Box>
                       <Box className="inputBox" display="flex" flexDirection="column">
-                        <label className="customLabel">
-                          <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance" />
-                        </label>
+                        <Tooltip
+                          interactive
+                          placement="top"
+                          title={
+                            <>
+                              <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance.tooltip" />
+                              {!provider.verified && (
+                                <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance.kyc" />
+                              )}
+                            </>
+                          }
+                        >
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.maxAllocatedBalance" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
                         <CustomNumberInput
                           control={control}
                           defaultValue={provider.maxAllocatedBalance}
@@ -702,9 +729,16 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         />
                       </Box>
                       <Box className="inputBox" display="flex" flexDirection="column">
-                        <label className="customLabel">
-                          <FormattedMessage id="copyt.profitsharing.maxPositions" />
-                        </label>
+                        <Tooltip
+                          interactive
+                          placement="top"
+                          title={<FormattedMessage id="copyt.profitsharing.maxPositions.tooltip" />}
+                        >
+                          <label className="customLabel">
+                            <FormattedMessage id="copyt.profitsharing.maxPositions" />
+                            <HelpIcon className="helpIcon" />
+                          </label>
+                        </Tooltip>
                         <CustomNumberInput
                           control={control}
                           defaultValue={provider.maxPositions}
