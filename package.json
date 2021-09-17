@@ -206,7 +206,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"src/**/*.{js,jsx}\"",
     "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx}\"",
-    "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJas",
+    "tscheck": "env FORCE_COLOR=1 tsc --resolveJsonModule --allowJs",
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve --prefix-paths",

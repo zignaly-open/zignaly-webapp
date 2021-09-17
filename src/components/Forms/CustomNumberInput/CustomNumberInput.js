@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { OutlinedInput, InputAdornment } from "@material-ui/core";
+import { isNil, isNumber } from "lodash";
 // import MaskedInput from "@biproxi/react-text-mask";
 // import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
@@ -118,7 +119,8 @@ const CustomNumberInput = (props) => {
 
   const transform = {
     // https://github.com/react-hook-form/react-hook-form/issues/615
-    input: (/** @type {number} */ value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+    input: (/** @type {number} */ value) =>
+      !isNumber(value) || value === 0 ? "" : value.toString(), // incoming input value
     // output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
     //   // Convert to number for easier validation
     //   const output = parseInt(e.target.value, 10);
@@ -131,7 +133,8 @@ const CustomNumberInput = (props) => {
     <>
       <Controller
         control={control}
-        defaultValue={defaultValue}
+        // Empty string if null/undefined value, to avoid swtiching from uncontrolled to controlled
+        defaultValue={isNil(defaultValue) ? "" : defaultValue}
         name={name}
         render={({ onChange: _onChange, value }) => (
           <OutlinedInput
@@ -174,7 +177,7 @@ const CustomNumberInput = (props) => {
               // Callback
               if (onChange) {
                 // e.target.value = val;
-                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+                // Call callback asynchronously to avoid react-hook-form outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
                 // Even with useCallback, it wasn't working with CustomNumberInput.
                 setTimeout(() => onChange(e), 0);
               }

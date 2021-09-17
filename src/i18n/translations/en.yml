@@ -819,6 +819,7 @@ copyt.profitsharing.maxDrawdown.modal: "Due to the new measures introduced by Zi
 copyt.profitsharing.maxDrawdown.required: "The maximum drawdown is required, for risk management purposes"
 copyt.profitsharing.maxDrawdown.tooltip: "The drawdown measures the lowest point of the account after its most recent high-water mark. The high-water mark is the highest value the account has reached."
 copyt.profitsharing.maxDrawdown.max: "Maximun drawdown can only be reduced."
+copyt.profitsharing.maxDrawdown.range: "Maximun drawdown must be between -5 and -100."
 copyt.profitsharing.maxPositions: "Maximum Positions"
 copyt.profitsharing.percentage: "Profit Sharing Percentage"
 copyt.profitsharing.service: "Profit Sharing"
