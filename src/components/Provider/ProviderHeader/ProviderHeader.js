@@ -14,7 +14,7 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 import ProviderContext from "../../../context/ProviderContext";
 import { FormattedMessage } from "react-intl";
 import { ConfirmDialog } from "components/Dialogs";
-import { navigate } from "@reach/router";
+import { navigate } from "gatsby";
 
 /**
  * @typedef {import('../../../utils/routesMapping').NavigationLink} NavigationLink
@@ -66,6 +66,7 @@ const ProviderHeader = () => {
   const handleMaxDrawdown = () => {
     const editLink = links.find((l) => l.id === "srv.edit");
     if (editLink) {
+      console.log(editLink.to);
       navigate(editLink.to);
     }
   };
