@@ -32,14 +32,22 @@ const providerLink = (providerId, copyTrading, profitSharing) => {
  * @param {string} props.logoUrl Logo
  * @param {string} props.url Url
  * @param {boolean} props.verified Verified
+ * @param {boolean} props.liquidated liquidated
  * @returns {JSX.Element} Component JSX.
  */
-const ProviderName = ({ name, logoUrl, verified, url }) => (
+const ProviderName = ({ name, logoUrl, verified, url, liquidated }) => (
   <Box alignItems="center" className="providerName" display="flex">
     <ProviderLogo size="40px" title={name} url={logoUrl} verified={verified} />
-    <Link className="link" to={url}>
-      <Typography variant="h4">{name}</Typography>
-    </Link>
+    <Box display="flex" flexDirection="column">
+      <Link className="link" to={url}>
+        <Typography variant="h4">{name}</Typography>
+      </Link>
+      {liquidated && (
+        <Typography className="subtitle">
+          <FormattedMessage id="srv.liquidated" />
+        </Typography>
+      )}
+    </Box>
   </Box>
 );
 
@@ -166,6 +174,7 @@ const WhoWeAre = ({ provider }) => {
                         provider.profitSharing,
                       )}
                       verified={otherProvider.verified}
+                      liquidated={otherProvider.liquidated}
                     />
                   ))}
                 </Box>

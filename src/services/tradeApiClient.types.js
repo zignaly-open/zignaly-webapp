@@ -4585,4 +4585,5 @@ export function profitSharingBalanceHistoryResponseTransform(response) {
  * @property {string} logoUrl
  * @property {string} privacy
  * @property {boolean} verified
+ * @property {boolean} liquidated
  */

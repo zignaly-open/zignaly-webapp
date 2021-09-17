@@ -8,7 +8,7 @@
     margin-bottom: 14px;
     padding-right: 12px;
 
-    a {
+    > div {
       margin-left: 10px;
     }
   }
@@ -56,6 +56,12 @@
 
   .otherServicesBox {
     margin-top: 30px;
+    width: 100%;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    opacity: 0.8;
   }
 }
 
