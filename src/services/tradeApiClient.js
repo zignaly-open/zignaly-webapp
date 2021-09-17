@@ -1761,7 +1761,7 @@ class TradeApiClient {
    * Create a new signal provider.
    *
    * @param {ProviderCreatePayload} payload Provider Create payload.
-   * @returns {Promise<NewProviderEntity>} Returns promise.
+   * @returns {Promise<{providerId: string}>} Returns promise.
    *
    * @memberof TradeApiClient
    */
