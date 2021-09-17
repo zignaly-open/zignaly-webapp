@@ -54,7 +54,7 @@ const ProviderHeader = () => {
   }, [provider, selectedExchange.internalId, hasAllocated]);
 
   useEffect(() => {
-    if (!provider.maxAllocatedBalance && provider.isAdmin) {
+    if (provider.profitSharing && !provider.maxDrawdown && provider.isAdmin) {
       setConfirmConfig({
         visible: true,
         titleTranslationId: "copyt.profitsharing.maxDrawdown.modal.title",
@@ -66,7 +66,6 @@ const ProviderHeader = () => {
   const handleMaxDrawdown = () => {
     const editLink = links.find((l) => l.id === "srv.edit");
     if (editLink) {
-      console.log(editLink.to);
       navigate(editLink.to);
     }
   };
