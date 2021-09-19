@@ -25,7 +25,7 @@ const options = {
  * @returns {number} key
  */
 // @ts-ignore
-const getKey = (value) => Object.keys(options).find((k) => options[k] === value);
+const getKey = (value) => parseInt(Object.keys(options).find((k) => options[k] === value));
 
 /**
  * @typedef {Object} Options
