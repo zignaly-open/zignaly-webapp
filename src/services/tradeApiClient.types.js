@@ -4586,4 +4586,6 @@ export function profitSharingBalanceHistoryResponseTransform(response) {
  * @property {string} privacy
  * @property {boolean} verified
  * @property {boolean} liquidated
+ * @property {boolean} isCopyTrading
+ * @property {boolean} profitSharing
  */

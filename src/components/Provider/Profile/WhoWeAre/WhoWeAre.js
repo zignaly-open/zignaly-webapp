@@ -170,8 +170,8 @@ const WhoWeAre = ({ provider }) => {
                       name={otherProvider.name}
                       url={providerLink(
                         otherProvider.id,
-                        provider.isCopyTrading,
-                        provider.profitSharing,
+                        otherProvider.isCopyTrading,
+                        otherProvider.profitSharing,
                       )}
                       verified={otherProvider.verified}
                       liquidated={otherProvider.liquidated}
