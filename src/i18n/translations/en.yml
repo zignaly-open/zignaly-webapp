@@ -594,6 +594,7 @@ copyt.copy.error2: "You need to add an exchange in order to copy this trader."
 copyt.copy.error3: "You do not have enough {quote} to start copying this trader."
 copyt.copy.error4: "You cannot connect to Profit Sharing service using a Demo account."
 copyt.copy.error5: "You do not have enough {quote} to increase your allocated balance."
+copyt.copy.error.max: "The maximum allocated balance for the service is {max} {quote}"
 
 srv.followprovider: "Follow this provider"
 srv.stopfollowing: "Stop Following"

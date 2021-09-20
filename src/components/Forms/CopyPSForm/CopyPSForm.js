@@ -80,6 +80,17 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
       return intl.formatMessage({ id: "form.error.allocatedBalance.reduce" });
     }
 
+    // Check maxAllocated
+    if (
+      provider.maxAllocatedBalance &&
+      newAllocated + provider.allocatedBalance > provider.maxAllocatedBalance
+    ) {
+      return intl.formatMessage(
+        { id: "copyt.copy.error.max" },
+        { max: provider.maxAllocatedBalance, quote: provider.copyTradingQuote },
+      );
+    }
+
     if (!balanceLoading) {
       // Balance checks
       if (provider.disable && quoteBalance < newAllocated) {
