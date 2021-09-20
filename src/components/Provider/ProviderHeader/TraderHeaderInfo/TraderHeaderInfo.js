@@ -114,12 +114,17 @@ const TraderHeaderInfo = ({ provider }) => {
             </Typography>
           </Tooltip>
           {provider.maxDrawdown && (
-            <Typography className="traderType" variant="h4">
-              <span>
-                <FormattedMessage id="copyt.profitsharing.maxDrawdown.short" />
-              </span>
-              <b>{provider.maxDrawdown}%</b>
-            </Typography>
+            <Tooltip
+              placement="top"
+              title={<FormattedMessage id="copyt.profitsharing.maxDrawdown.usertooltip" />}
+            >
+              <Typography className="traderType" variant="h4">
+                <span>
+                  <FormattedMessage id="copyt.profitsharing.maxDrawdown.short" />
+                </span>
+                <b>{provider.maxDrawdown}%</b>
+              </Typography>
+            </Tooltip>
           )}
         </>
       ) : (

@@ -647,10 +647,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         <Tooltip
                           interactive
                           placement="top"
-                          title={<FormattedMessage id="copyt.profitsharing.percentage.tooltip" />}
+                          title={<FormattedMessage id="copyt.successfee.tooltip" />}
                         >
                           <label className="customLabel">
-                            <FormattedMessage id="copyt.profitsharing.percentage" />
+                            <FormattedMessage id="copyt.successfee" />
                             <HelpIcon className="helpIcon" />
                           </label>
                         </Tooltip>

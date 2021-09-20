@@ -331,31 +331,24 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                     <Tooltip
                       interactive
                       placement="top"
-                      title={<FormattedMessage id="copyt.profitsharing.percentage.tooltip" />}
+                      title={<FormattedMessage id="profitsharing.successFee.tooltip" />}
                     >
                       <label className="customLabel">
-                        <FormattedMessage id="copyt.profitsharing.percentage" />
+                        <FormattedMessage id="copyt.successfee" />
                         <HelpIcon className="helpIcon" />
                       </label>
                     </Tooltip>
-                    <OutlinedInput
-                      className="customInput"
-                      error={!!errors.profitsShare}
-                      inputProps={{
-                        min: 0,
-                        step: 0.01,
-                      }}
-                      inputRef={register({
-                        validate: (value) =>
-                          (!isNaN(value) && parseFloat(value) >= 0 && parseFloat(value) < 100) ||
-                          intl.formatMessage({ id: "form.error.profitsharing" }),
-                      })}
+                    <CustomNumberInput
+                      control={control}
+                      errors={errors}
                       name="profitsShare"
-                      type="number"
+                      rules={{
+                        validate: (value) =>
+                          (parseFloat(value) >= 0 && parseFloat(value) < 100) ||
+                          intl.formatMessage({ id: "form.error.profitsharing" }),
+                      }}
+                      suffix="%"
                     />
-                    {errors.profitsShare && (
-                      <span className="errorText">{errors.profitsShare.message}</span>
-                    )}
                   </Box>
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <Tooltip
