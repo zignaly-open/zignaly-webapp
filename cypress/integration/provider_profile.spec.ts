@@ -21,6 +21,12 @@ describe("Connect to a Provider", () => {
         cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
         cy.intercept("GET", "**/user/*/providers", [provider2]).as("mockedOtherProviders");
         cy.intercept("POST", "**/exchanges/*/providers/*/connect_service", "true");
+
+        cy.visit(`/profitSharing/${provider.id}`, {
+          onBeforeLoad: (win: any) => {
+            win.initialState = initialAuthData(user);
+          },
+        });
       });
 
       it("should asks to deposit if exchange account is not activated", () => {
@@ -96,16 +102,20 @@ describe("Connect to a Provider", () => {
         cy.findByText(/Transfer made/i).should("exist");
       });
 
-      it("should check user balance before copying a provider", () => {
+      it("should check amount before copying a provider", () => {
         cy.get("button")
           .contains(/Copy this trader/i)
           .click();
+        cy.findByPlaceholderText(/amount/i).type("0");
+        cy.get("button[type='submit']").should("be.disabled");
+
+        cy.findByPlaceholderText(/amount/i).clear();
         cy.findByPlaceholderText(/amount/i).type("100");
         cy.contains(/you do not have enough/i).should("exist");
         cy.get("button[type='submit']").should("be.disabled");
       });
 
-      it.only("should check max balance before copying a provider", () => {
+      it("should check max balance before copying a provider", () => {
         provider.allocatedBalance = 90;
         provider.maxAllocatedBalance = 100;
         cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");

@@ -76,6 +76,10 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
   const validateAmount = (val) => {
     const newAllocated = parseFloat(val);
 
+    if (!newAllocated) {
+      return false;
+    }
+
     if (!provider.disable && newAllocated < provider.allocatedBalance) {
       return intl.formatMessage({ id: "form.error.allocatedBalance.reduce" });
     }
