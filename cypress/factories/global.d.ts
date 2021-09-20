@@ -31,6 +31,7 @@ interface Provider {
   team: any[];
   social: any[];
   copyTradingQuote: string;
+  allocatedBalance: number;
   minAllocatedBalance: number;
   maxAllocatedBalance: number;
   verified: boolean;
