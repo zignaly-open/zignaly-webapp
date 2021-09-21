@@ -121,6 +121,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @property {String} trial
    * @property {boolean} public
    * @property {Boolean} list
+   * @property {string} maxPositions
    */
 
   /**
@@ -149,6 +150,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         providerId: provider.id,
         options: preparePayloadOptions(data),
         logoUrl,
+        maxPositions: data.maxPositions === "" ? null : data.maxPositions,
       };
       tradeApi
         .providerEdit(payload)
@@ -647,10 +649,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                         <Tooltip
                           interactive
                           placement="top"
-                          title={<FormattedMessage id="copyt.profitsharing.percentage.tooltip" />}
+                          title={<FormattedMessage id="copyt.successfee.tooltip" />}
                         >
                           <label className="customLabel">
-                            <FormattedMessage id="copyt.profitsharing.percentage" />
+                            <FormattedMessage id="copyt.successfee" />
                             <HelpIcon className="helpIcon" />
                           </label>
                         </Tooltip>
@@ -754,7 +756,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           control={control}
                           defaultValue={provider.maxPositions}
                           errors={errors}
-                          format="number"
                           name="maxPositions"
                         />
                       </Box>
