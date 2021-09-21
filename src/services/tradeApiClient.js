@@ -1961,7 +1961,7 @@ class TradeApiClient {
    */
   async profileProviderStatsGet(payload) {
     const { providerId } = payload;
-    const responseData = await this.doRequest(`/user/providers/${providerId}/stats`, "GET");
+    const responseData = await this.doRequest(`/user/providers/${providerId}/stats`, null, "GET");
 
     return profileProviderStatsResponseTransform(responseData);
   }

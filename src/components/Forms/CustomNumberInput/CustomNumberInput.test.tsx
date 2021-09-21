@@ -1,5 +1,4 @@
-import React, { ReactElement } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import React from "react";
 import { renderWithReactHookForm, screen, fireEvent } from "test-utils";
 import CustomNumberInput from "./index";
 import userEvent from "@testing-library/user-event";
