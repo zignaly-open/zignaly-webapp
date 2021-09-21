@@ -213,6 +213,18 @@ interface PositionBase {
    */
   takeProfitTargetsCountSuccess: number;
   /**
+   * Rebuy / DCA targets that was executed with failures counter.
+   */
+  reBuyTargetsCountFail: number;
+  /**
+   * Rebuy / DCA targets not yet reached and not executed counter.
+   */
+  reBuyTargetsCountPending: number;
+  /**
+   * Rebuy / DCA targets succesfully executed counter.
+   */
+  reBuyTargetsCountSuccess: number;
+  /**
    * Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
    */
   trailingStopPercentage: number;
@@ -476,18 +488,6 @@ interface PositionClosed extends PositionBase {
 }
 
 interface PositionOpen extends PositionBase {
-  /**
-   * Rebuy / DCA targets that was executed with failures counter.
-   */
-  reBuyTargetsCountFail: number;
-  /**
-   * Rebuy / DCA targets not yet reached and not executed counter.
-   */
-  reBuyTargetsCountPending: number;
-  /**
-   * Rebuy / DCA targets succesfully executed counter.
-   */
-  reBuyTargetsCountSuccess: number;
   /**
    * Unrealized profit / loss amount expressed in quote currency.
    */
