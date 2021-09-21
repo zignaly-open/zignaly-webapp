@@ -119,8 +119,7 @@ const CustomNumberInput = (props) => {
 
   const transform = {
     // https://github.com/react-hook-form/react-hook-form/issues/615
-    input: (/** @type {number} */ value) =>
-      !isNumber(value) || value === 0 ? "" : value.toString(), // incoming input value
+    input: (/** @type {number} */ value) => (isNil(value) ? "" : value.toString()), // incoming input value
     // output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
     //   // Convert to number for easier validation
     //   const output = parseInt(e.target.value, 10);
@@ -151,7 +150,7 @@ const CustomNumberInput = (props) => {
               e.target.value = val;
 
               // const val = e.target.value;
-              const valNumber = parseFloat(val) || 0;
+              const valNumber = parseFloat(val);
               // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
               // or transform.output(e)
 
@@ -167,11 +166,10 @@ const CustomNumberInput = (props) => {
 
               // Format event value
               if (format === "number") {
-                // @ts-ignore
-                e.target.value = valNumber;
+                _onChange(valNumber);
+              } else {
+                _onChange(e);
               }
-
-              _onChange(e);
 
               // if (val !== null) {
               // Callback

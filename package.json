@@ -102,8 +102,10 @@
     "@storybook/manager-webpack5": "^6.3.5",
     "@storybook/react": "^6.3.5",
     "@testing-library/cypress": "^8.0.0",
+    "@testing-library/dom": "^8.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
     "@types/chai": "^4.2.21",
     "@types/chart.js": "^2.9.34",
     "@types/dompurify": "^2.2.3",
@@ -167,6 +169,7 @@
     "stylelint-config-sass-guidelines": "^8.0.0",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.3.5"
   },
   "commitlint": {
@@ -211,7 +214,7 @@
     "reset": "rm -rf .cache/ public/ types/",
     "stylelint": "stylelint '**/*.scss'",
     "serve": "gatsby serve --prefix-paths",
-    "test": "STAGE=test jest -- tradeApiClient",
+    "test": "jest",
     "test:ui": "jest --testPathIgnorePatterns node_modules .cache types tradeApiClient",
     "test:coverage": "npm run test:ui -- --coverage",
     "cy:open": "cypress open",
