@@ -16,6 +16,7 @@ import { getProvider } from "../../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { ConfirmDialog } from "../../../Dialogs";
 import SuccessBox from "./SuccessBox";
+import { isNil } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -138,7 +139,8 @@ const CopyTraderButton = ({ provider }) => {
         {!disconnecting ? (
           disabled ? (
             !provider.liquidated &&
-            provider.performance.totalBalance < provider.maxAllocatedBalance && (
+            (isNil(provider.maxAllocatedBalance) ||
+              provider.performance.totalBalance < provider.maxAllocatedBalance) && (
               <CustomButton className="submitButton" onClick={startCopying}>
                 <FormattedMessage id="copyt.copythistrader" />
               </CustomButton>

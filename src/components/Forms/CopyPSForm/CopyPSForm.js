@@ -21,6 +21,7 @@ import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
+import { isNil } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -86,7 +87,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
 
     // Check maxAllocated
     if (
-      provider.maxAllocatedBalance &&
+      !isNil(provider.maxAllocatedBalance) &&
       newAllocated + provider.allocatedBalance > provider.maxAllocatedBalance
     ) {
       return intl.formatMessage(
