@@ -108,9 +108,9 @@ describe("CustomNumberInput type=number", () => {
   beforeEach(() => {
     component = renderWithReactHookForm(
       <CustomNumberInput
-        type="number"
         defaultValue={null}
         name="maxPositions"
+        type="number"
         // onChange={(e) => {
         //   value = e.target.value;
         // }}

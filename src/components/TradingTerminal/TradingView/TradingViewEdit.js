@@ -72,6 +72,7 @@ const TradingViewEdit = (props) => {
    * @returns {Void} None.
    */
   const initializePosition = (responseData) => {
+    console.log(JSON.stringify(responseData));
     setPosition(responseData);
   };
 

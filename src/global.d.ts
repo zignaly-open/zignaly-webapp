@@ -107,7 +107,7 @@ interface ProfitTarget {
   postOnly: boolean;
 }
 
-interface Position {
+interface PositionBase {
   /**
    * DCA/Rebuy targets.
    */
@@ -157,18 +157,6 @@ interface Position {
    */
   buyTTL: number;
   /**
-   * Close date represented in unix time epoch seconds.
-   */
-  closeDate: number;
-  /**
-   * Exchange transaction fees.
-   */
-  fees: number;
-  /**
-   * Exchange transaction funding fees.
-   */
-  fundingFees: number;
-  /**
    * Flag to indicate if it is a profit sharing service position.
    */
   profitSharing: boolean;
@@ -176,14 +164,6 @@ interface Position {
    * Futures position leverage level, X times real position size borrowed from exchange.
    */
   leverage: number;
-  /**
-   * Net profit amount.
-   */
-  netProfit: number;
-  /**
-   * Net percentage profit.
-   */
-  netProfitPercentage: number;
   /**
    * Profit style (coloring) based on gain/loss.
    */
@@ -200,18 +180,6 @@ interface Position {
    * Profit amount without fees substraction.
    */
   profit: number;
-  /**
-   * Rebuy / DCA targets that was executed with failures counter.
-   */
-  reBuyTargetsCountFail: number;
-  /**
-   * Rebuy / DCA targets not yet reached and not executed counter.
-   */
-  reBuyTargetsCountPending: number;
-  /**
-   * Rebuy / DCA targets succesfully executed counter.
-   */
-  reBuyTargetsCountSuccess: number;
   /**
    * Invested amount percentage that is still in risk relative to current price and exit protections (stop loss / trailing stop).
    */
@@ -285,6 +253,10 @@ interface Position {
    */
   closeDateReadable: string;
   /**
+   * Allocated copy trading balance when the trade was open.
+   */
+  currentAllocatedBalance: number;
+  /**
    * Exchange name where position was filled.
    */
   exchange: string;
@@ -327,7 +299,7 @@ interface Position {
   /**
    * Position size in base currency.
    */
-  positionSize: string;
+  positionSize: number;
   /**
    * Percentage gain/loss of the position based on current price in relation to entry price.
    */
@@ -417,14 +389,6 @@ interface Position {
    */
   subPositions: number;
   /**
-   * Percentage return from copy trader service allocated balance.
-   */
-  returnFromAllocated: number;
-  /**
-   * Percentage return from copy trader service invested balance.
-   */
-  returnFromInvestment: number;
-  /**
    * Price difference from entry price.
    */
   priceDifference: number;
@@ -433,21 +397,9 @@ interface Position {
    */
   priceDifferenceStyle: string;
   /**
-   * Unrealized profit / loss amount expressed in quote currency.
-   */
-  unrealizedProfitLosses: number;
-  /**
-   * Unrealized profit / loss percentage.
-   */
-  unrealizedProfitLossesPercentage: number;
-  /**
    * Unrealized profit style (coloring) based on gain/loss.
    */
   unrealizedProfitStyle: string;
-  /**
-   * Allocated copy trading balance when the trade was open.
-   */
-  currentAllocatedBalance: number;
   /**
    * % of the balance that was allocated (Copy Traders).
    */
@@ -491,3 +443,59 @@ interface Position {
   stopLossOrderId: string;
   isolated: boolean;
 }
+
+interface PositionClosed extends PositionBase {
+  /**
+   * Close date represented in unix time epoch seconds.
+   */
+  closeDate: number;
+  /**
+   * Exchange transaction fees.
+   */
+  fees: number;
+  /**
+   * Exchange transaction funding fees.
+   */
+  fundingFees: number;
+  /**
+   * Net profit amount.
+   */
+  netProfit: string;
+  /**
+   * Net percentage profit.
+   */
+  netProfitPercentage: number;
+  /**
+   * Percentage return from copy trader service allocated balance.
+   */
+  returnFromAllocated: number;
+  /**
+   * Percentage return from copy trader service invested balance.
+   */
+  returnFromInvestment: number;
+}
+
+interface PositionOpen extends PositionBase {
+  /**
+   * Rebuy / DCA targets that was executed with failures counter.
+   */
+  reBuyTargetsCountFail: number;
+  /**
+   * Rebuy / DCA targets not yet reached and not executed counter.
+   */
+  reBuyTargetsCountPending: number;
+  /**
+   * Rebuy / DCA targets succesfully executed counter.
+   */
+  reBuyTargetsCountSuccess: number;
+  /**
+   * Unrealized profit / loss amount expressed in quote currency.
+   */
+  unrealizedProfitLosses: number;
+  /**
+   * Unrealized profit / loss percentage.
+   */
+  unrealizedProfitLossesPercentage: number;
+}
+
+type Position = PositionOpen & PositionClosed;
