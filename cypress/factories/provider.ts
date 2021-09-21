@@ -33,7 +33,7 @@ export const makeProvider = (
     copyTradingQuote: "USDT",
     allocatedBalance: 100,
     minAllocatedBalance: 0,
-    maxAllocatedBalance: 50000,
+    maxAllocatedBalance: null,
     profitSharing: true,
     isCopyTrading: true,
     ...(type === "profitSharing"
