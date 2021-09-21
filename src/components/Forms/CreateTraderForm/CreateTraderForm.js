@@ -24,7 +24,7 @@ import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 import { getUserData } from "store/actions/user";
 import CustomNumberInput from "../CustomNumberInput";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
-import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
+import { highWaterMarkInfoUrl, psCreateInfoUrl } from "utils/affiliateURLs";
 import HelpIcon from "@material-ui/icons/Help";
 
 const MODEL_PROFIT_SHARING = 0;
@@ -358,7 +358,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                       title={
                         <TooltipWithUrl
                           message="copyt.profitsharing.maxDrawdown.tooltip"
-                          url={highWaterMarkInfoUrl}
+                          url={psCreateInfoUrl}
                         />
                       }
                     >
