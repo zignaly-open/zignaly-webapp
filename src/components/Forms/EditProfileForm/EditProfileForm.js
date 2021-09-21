@@ -61,7 +61,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
     register,
     setError,
     formState: { dirtyFields },
-  } = useForm();
+  } = useForm({ mode: "onChange" });
   const [about, setAbout] = useState(provider.about);
   const [strategy, setStrategy] = useState(provider.strategy);
   const [selectedCountires, setSelectedCountries] = useState(provider.team);
@@ -401,7 +401,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       return intl.formatMessage({
         id: "copyt.profitsharing.maxDrawdown.range",
       });
-    } else if (isNumber(provider.maxDrawdown) && val > provider.maxDrawdown) {
+    } else if (val < provider.maxDrawdown) {
       return intl.formatMessage({
         id: "copyt.profitsharing.maxDrawdown.max",
       });
