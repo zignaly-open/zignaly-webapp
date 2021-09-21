@@ -49,6 +49,24 @@ describe("CustomNumberInput", () => {
     userEvent.clear(elem);
     expect(elem).toHaveValue("");
   });
+
+  it("remove spaces from pasted numbers", () => {
+    const elem = screen.getByRole("textbox");
+    fireEvent.change(elem, { target: { value: "123 000" } });
+    expect(elem).toHaveValue("123000");
+  });
+
+  it("replace comma from pasted numbers", () => {
+    const elem = screen.getByRole("textbox");
+    fireEvent.change(elem, { target: { value: "123,45" } });
+    expect(elem).toHaveValue("123.45");
+  });
+
+  it("replace comma when typing", () => {
+    const elem = screen.getByRole("textbox");
+    userEvent.type(elem, "123,45");
+    expect(elem).toHaveValue("123.45");
+  });
 });
 
 describe("CustomNumberInput negative", () => {
@@ -110,4 +128,37 @@ describe("CustomNumberInput type=number", () => {
     expect(elem).toHaveValue(100);
     // expect(value).toHaveValue(100);
   });
+
+  it("disallow negative value", () => {
+    const elem = component.container.querySelector("input");
+    userEvent.type(elem, "-100");
+
+    expect(elem).toHaveValue(100);
+  });
+
+  it("can be null", () => {
+    const elem = component.container.querySelector("input");
+    userEvent.type(elem, "10");
+    userEvent.clear(elem);
+    expect(elem).toHaveValue(null);
+  });
+
+  // Scenarios below cannot work with type=number
+  // it("remove spaces from pasted numbers", () => {
+  //   const elem = component.container.querySelector("input");
+  //   fireEvent.change(elem, { target: { value: "123 000" } });
+  //   expect(elem).toHaveValue(123000);
+  // });
+
+  // it("replace comma from pasted numbers", () => {
+  //   const elem = component.container.querySelector("input");
+  //   fireEvent.change(elem, { target: { value: "123,45" } });
+  //   expect(elem).toHaveValue(123.45);
+  // });
+
+  // it("replace comma when typing", () => {
+  //   const elem = component.container.querySelector("input");
+  //   userEvent.type(elem, "123,45");
+  //   expect(elem).toHaveValue(123.45);
+  // });
 });
