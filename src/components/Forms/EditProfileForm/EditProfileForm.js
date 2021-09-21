@@ -377,7 +377,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   };
 
   const verifyUser = () => {
-    const method = provider.verified ? tradeApi.verifyUser() : tradeApi.unverifyUser();
+    const method = provider.verified ? tradeApi.unverifyUser() : tradeApi.verifyUser();
     setVerifying(true);
 
     method
