@@ -33,7 +33,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 import PrivacySlider from "./PrivacySlider";
 import { ConfirmDialog } from "components/Dialogs";
-import { isNil, isNumber } from "lodash";
+import { isNil } from "lodash";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions

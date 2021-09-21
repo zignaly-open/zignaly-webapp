@@ -23,7 +23,6 @@ import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
- * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
  * @typedef {import("../store/initialState").Filters} Filters
@@ -63,7 +62,7 @@ import useFilters from "./useFilters";
  * Encapsulates the data fetch from Trade API and local state handling.
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
- * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
+ * @param {Position|null} [positionEntity] Position entity (optional) to narrow data to single position.
  * @param {function} [notifyPositionsUpdate] Callback to notify the updated positions list.
  * @param {"dashboardPositions"} [persistKey] Key to persist filters to store.
  * @returns {HookPositionsListData} Positions collection.

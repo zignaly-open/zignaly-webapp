@@ -6,11 +6,12 @@
     // to avoid clashing with Jest types
     "types": [
       "cypress",
-      "@testing-library/cypress"
+      "@testing-library/cypress",
     ]
   },
   "include": [
     "../node_modules/cypress",
-    "./**/*.ts"
+    "./**/*.ts",
+    "../src/global.d.ts"
   ]
 }

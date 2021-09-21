@@ -50,7 +50,6 @@ import {
  * @typedef {import('./tradeApiClient.types').ProviderContractsPayload} ProviderContractsPayload
  * @typedef {import('./tradeApiClient.types').PositionActionPayload} PositionActionPayload
  * @typedef {import('./tradeApiClient.types').PositionGetPayload} PositionGetPayload
- * @typedef {import('./tradeApiClient.types').PositionEntity} PositionEntity
  * @typedef {import('./tradeApiClient.types').PositionsListPayload} PositionsListPayload
  * @typedef {import('./tradeApiClient.types').ProvidersCollection} ProvidersCollection
  * @typedef {import('./tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
@@ -652,7 +651,7 @@ class TradeApiClient {
    * This action will detach the position monitoring from Zignaly but will continue open in the exchange.
    *
    * @param {PositionActionPayload} payload Position action payload.
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   * @returns {Promise<Position>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -674,7 +673,7 @@ class TradeApiClient {
    *
    * @param {PositionActionPayload} payload Position action payload.
    *
-   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
+   * @returns {Promise<Position>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -695,7 +694,7 @@ class TradeApiClient {
    *
    * @param {{positionId: string}} payload Payload
    *
-   * @returns {Promise<PositionEntity>} Promise that resolve the affected position entity.
+   * @returns {Promise<Position>} Promise that resolve the affected position entity.
    *
    * @memberof TradeApiClient
    */
@@ -711,7 +710,7 @@ class TradeApiClient {
    *
    * @param {PositionGetPayload} payload Position action payload.
    *
-   * @returns {Promise<PositionEntity>} Promise that resolve user affected position entity.
+   * @returns {Promise<Position>} Promise that resolve user affected position entity.
    *
    * @memberof TradeApiClient
    */

@@ -6,13 +6,9 @@ import { Help } from "@material-ui/icons";
 import "./DCATargetStatus.scss";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ReBuyTarget} RebuyTarget
- */
-
-/**
  * @typedef {Object} DCATargetLabelProps
  * @property {string} labelId Status label translation text ID.
- * @property {RebuyTarget} dcaTarget Position take profit target.
+ * @property {ReBuyTarget} dcaTarget Position take profit target.
  */
 
 /**

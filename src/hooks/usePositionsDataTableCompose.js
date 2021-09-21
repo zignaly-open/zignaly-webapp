@@ -15,9 +15,8 @@ import EditIcon from "images/ct/edit.svg";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
- * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
- * @typedef {keyof PositionEntity} PositionEntityKeys
+ * @typedef {keyof Position} PositionKeys
  *
  */
 
@@ -682,7 +681,7 @@ export function usePositionDataTableCompose(positions, confirmActionHandler, ope
   /**
    * Compose formatted price with currency symbol element.
    *
-   * @param {PositionEntityKeys} propertyName Position entity property to retrieve the price to display.
+   * @param {PositionKeys} propertyName Position entity property to retrieve the price to display.
    * @param {number} dataIndex Data entity index.
    * @returns {JSX.Element} Composed JSX element.
    */

@@ -31,13 +31,12 @@ import CustomNumberInput from "components/Forms/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} DCAPanelProps
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
@@ -292,7 +291,7 @@ const DCAPanel = (props) => {
     return null;
   };
 
-  const initValuesFromPositionEntity = () => {
+  const initValuesFromPosition = () => {
     if (positionEntity) {
       // Sync any DCA increase update with local state.
       if (!isEqual(activeDcaIncreaseIndexes, dcaIncreaseIndexes)) {
@@ -315,7 +314,7 @@ const DCAPanel = (props) => {
   useDeepCompareEffect(() => {
     if (expanded) {
       if (positionEntity) {
-        initValuesFromPositionEntity();
+        initValuesFromPosition();
       } else {
         chainedPriceUpdates();
       }

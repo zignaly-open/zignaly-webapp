@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { OutlinedInput, InputAdornment } from "@material-ui/core";
-import { isNil, isNumber } from "lodash";
+import { isNil } from "lodash";
 import isNumeric from "utils/isNumeric";
 // import MaskedInput from "@biproxi/react-text-mask";
 // import createNumberMask from "text-mask-addons/dist/createNumberMask";

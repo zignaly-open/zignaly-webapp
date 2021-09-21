@@ -26,13 +26,12 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} positionEntity Position entity.
+ * @property {Position} positionEntity Position entity.
  */
 
 /**

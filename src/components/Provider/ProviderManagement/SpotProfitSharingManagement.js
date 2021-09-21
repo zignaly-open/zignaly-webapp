@@ -8,7 +8,6 @@ import useInterval from "../../../hooks/useInterval";
 import { useDispatch } from "react-redux";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
@@ -51,11 +50,11 @@ const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
    * Function to prepare list of the table.
    *
    * @param {Array<ManagementPositionsEntity>} positions transformed data from backend.
-   * @returns {Array<PositionEntity>} Array of position entities.
+   * @returns {Array<Position>} Array of position entities.
    */
   const prepareTableList = (positions) => {
     /**
-     * @type {Array<PositionEntity>}
+     * @type {Array<Position>}
      */
     let list = [];
     positions.forEach((item) => {

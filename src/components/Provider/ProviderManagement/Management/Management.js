@@ -8,7 +8,6 @@ import { Box, CircularProgress } from "@material-ui/core";
 import ManagementTable from "./ManagementTable";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
@@ -49,11 +48,11 @@ const Management = ({ provider }) => {
    * Function to prepare list of the table.
    *
    * @param {Array<ManagementPositionsEntity>} data default data from backend.
-   * @returns {Array<PositionEntity>} Array of position entities.
+   * @returns {Array<Position>} Array of position entities.
    */
   const prepareTableList = (data) => {
     /**
-     * @type {Array<PositionEntity>}
+     * @type {Array<Position>}
      */
     let list = [];
     data.forEach((item) => {

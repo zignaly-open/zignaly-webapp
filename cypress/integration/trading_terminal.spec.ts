@@ -20,8 +20,6 @@ describe("Trading Terminal", () => {
     cy.intercept("GET", "*/user/exchanges/*/providers_option*", providerOptions).as(
       "mockedProviderOptions",
     );
-    // Stub create position
-    cy.intercept("POST", "*/user/exchanges/*/positions", "true");
 
     cy.visit("/tradingTerminal", {
       onBeforeLoad: (win: any) => {
@@ -43,7 +41,7 @@ describe("Trading Terminal", () => {
       cy.contains(/Position size value is required/i).should("exist");
     });
 
-    it.only("should fill proper values", () => {
+    it("should fill proper values", () => {
       const exchangeFutures = user.exchanges.find((e) => e.exchangeType === "futures");
       dispatch(setSelectedExchange(exchangeFutures.internalId));
       const positionSize = 50;
@@ -135,6 +133,16 @@ describe("Trading Terminal", () => {
       cy.get("input[name='trailingStopPercentage']").type("10");
       cy.get("input[name='trailingStopDistance']").type("-5");
       cy.get("input[name='trailingStopPrice']").should("be.ok");
+    });
+  });
+
+  describe("Create Position", () => {
+    it.only("should create a position", () => {
+      // Stub create position
+      cy.intercept("POST", "*/user/exchanges/*/positions", "true");
+
+      cy.get("input[name='positionSize']").type("50");
+      cy.get("button[type='submit']").click();
     });
   });
 });
