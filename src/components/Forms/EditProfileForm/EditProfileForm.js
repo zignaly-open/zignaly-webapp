@@ -401,7 +401,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       return intl.formatMessage({
         id: "copyt.profitsharing.maxDrawdown.range",
       });
-    } else if (val < provider.maxDrawdown) {
+    } else if (!isNil(provider.maxDrawdown) && val < provider.maxDrawdown) {
       return intl.formatMessage({
         id: "copyt.profitsharing.maxDrawdown.max",
       });
