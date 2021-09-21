@@ -121,7 +121,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
    * @property {String} trial
    * @property {boolean} public
    * @property {Boolean} list
-   * @property {string} maxPositions
+   * @property {number} maxPositions
    */
 
   /**
@@ -141,6 +141,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
       }
       setLoading(true);
       setPaymentBoxAlert(false);
+      console.log(typeof data.maxPositions, data.maxPositions);
+
       const payload = {
         ...data,
         social: prepareSocialData(),
@@ -150,7 +152,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         providerId: provider.id,
         options: preparePayloadOptions(data),
         logoUrl,
-        maxPositions: data.maxPositions === "" ? null : data.maxPositions,
+        maxPositions: data.maxPositions || null,
       };
       tradeApi
         .providerEdit(payload)
@@ -757,6 +759,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           defaultValue={provider.maxPositions}
                           errors={errors}
                           name="maxPositions"
+                          type="number"
                         />
                       </Box>
                     </>
