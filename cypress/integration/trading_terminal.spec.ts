@@ -140,17 +140,37 @@ describe("Trading Terminal", () => {
   describe("Create Position", () => {
     // beforeEach(() => {});
 
-    it("should create a position", () => {
-      const position = makeOpenPosition();
+    it("should create a position with filled values", () => {
+      const position = makeOpenPosition({ positionSizeQuote: 50 });
       // Stub create position
-      cy.intercept("POST", "*/user/exchanges/*/positions", JSON.stringify(position.positionId));
+      cy.intercept("POST", "*/user/exchanges/*/positions", JSON.stringify(position.positionId)).as(
+        "createManualPosition",
+      );
+
       // Get position
       cy.intercept("GET", `*/user/exchanges/Zignaly*/positions/${position.positionId}`, position);
 
-      cy.get("input[name='positionSize']").type("50");
+      // Fill form
+      cy.get("input[name='positionSize']").type(position.positionSizeQuote.toString());
+
+      // Submit
       cy.get("button[type='submit']").click();
+
+      // Assert request
+      cy.wait("@createManualPosition").its("request.body").should("deep.include", {
+        positionSize: 50,
+        pair: "BTCUSDT",
+        positionSizeQuote: "USDT",
+        providerId: 1,
+        leverage: 1,
+        side: "LONG",
+      });
+
       cy.url().should("eq", `${Cypress.config("baseUrl")}/position/${position.positionId}`);
+
+      // Assert page
       cy.get("button[type='submit']").contains(/Update Position/i);
+      cy.get("table").contains("USDT 50.00");
     });
   });
 });
