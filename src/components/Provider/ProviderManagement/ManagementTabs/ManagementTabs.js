@@ -13,11 +13,10 @@ import ManagementTable from "../Management/ManagementTable";
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
- * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {Object} DefaultProps
  * @property {DefaultProviderGetObject} provider Balance
  * @property {ExchangeConnectionEntity} selectedExchange Selected exchange account.
- * @property {Array<PositionEntity>} [tablePositions] management table positions
+ * @property {Array<Position>} [tablePositions] management table positions
  * @property {Array<ManagementPositionsEntity>} [allPositions] all positions with subpositions for management table
  * @property {Function} [loadData] reload positions data.
  */

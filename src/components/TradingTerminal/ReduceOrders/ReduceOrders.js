@@ -22,11 +22,6 @@ import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../services/tradeApiClient.types").ReduceOrder} ReduceOrder
- */
-
-/**
  * @typedef {Object} ReduceOrderStatusProps
  * @property {string} labelId Status label translation text ID.
  * @property {ReduceOrder} order Position reduce order.
@@ -69,7 +64,7 @@ const ReduceOrderStatus = (props) => {
 
 /**
  * @typedef {Object} ReduceOrdersProps
- * @property {PositionEntity} positionEntity Position entity for position edit trading view.
+ * @property {Position} positionEntity Position entity for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 

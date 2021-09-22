@@ -3,7 +3,6 @@ import { useFormContext } from "react-hook-form";
 import TradingViewContext from "components/TradingTerminal/TradingView/TradingViewContext";
 
 /**
- * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
@@ -22,7 +21,7 @@ import TradingViewContext from "components/TradingTerminal/TradingView/TradingVi
  * - From buyPrice on existing position.
  * - From strategy price input in new positions.
  *
- * @param {PositionEntity} positionEntity Position entity.
+ * @param {Position} positionEntity Position entity.
  * @returns {PositionEntryHook} Position entry hook object.
  */
 function usePositionEntry(positionEntity) {

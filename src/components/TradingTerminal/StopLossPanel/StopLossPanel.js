@@ -16,13 +16,12 @@ import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} StopLossPanel
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 

@@ -33,7 +33,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 import PrivacySlider from "./PrivacySlider";
 import { ConfirmDialog } from "components/Dialogs";
-import { isNil, isNumber } from "lodash";
+import { isNil } from "lodash";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderOptions} DefaultProviderOptions
@@ -741,7 +741,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           suffix={provider.copyTradingQuote}
                         />
                       </Box>
-                      <Box className="inputBox" display="flex" flexDirection="column">
+                      {/* <Box className="inputBox" display="flex" flexDirection="column">
                         <Tooltip
                           interactive
                           placement="top"
@@ -758,7 +758,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           errors={errors}
                           name="maxPositions"
                         />
-                      </Box>
+                      </Box> */}
                     </>
                   )}
                 </>

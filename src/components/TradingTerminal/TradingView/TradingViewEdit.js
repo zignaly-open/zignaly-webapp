@@ -26,7 +26,6 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {any} TVWidget
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbolsCollection} MarketSymbolsCollection
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
@@ -54,7 +53,7 @@ const TradingViewEdit = (props) => {
   const { instantiateWidget, tradingViewWidget, isSelfHosted, changeSymbol, removeWidget } =
     useTradingTerminal(setLastPrice);
 
-  const [positionEntity, setPositionEntity] = useState(/** @type {PositionEntity} */ (null));
+  const [positionEntity, setPosition] = useState(/** @type {Position} */ (null));
   // Raw position entity (for debug)
   const [positionRawData, setPositionRawData] = useState(/** @type {*} */ (null));
   const [selectedSymbol, setSelectedSymbol] = useState(/** @type {MarketSymbol} */ (null));
@@ -69,17 +68,18 @@ const TradingViewEdit = (props) => {
   /**
    * Initialize state variables that depend on loaded position.
    *
-   * @param {PositionEntity} responseData Position entity retrieved from Trade API response.
+   * @param {Position} responseData Position entity retrieved from Trade API response.
    * @returns {Void} None.
    */
   const initializePosition = (responseData) => {
-    setPositionEntity(responseData);
+    console.log(JSON.stringify(responseData));
+    setPosition(responseData);
   };
 
   /**
    * Load position symbol exchange market data.
    *
-   * @param {PositionEntity} positionData The position entity to load dependent data for.
+   * @param {Position} positionData The position entity to load dependent data for.
    *
    * @returns {Void} None.
    */
@@ -271,7 +271,7 @@ const TradingViewEdit = (props) => {
    */
   const processPositionsUpdate = (positionsList) => {
     if (isArray(positionsList)) {
-      const newPositionEntity = positionsList[0];
+      const newPosition = positionsList[0];
       const compareFields = [
         "updating",
         "closed",
@@ -285,15 +285,15 @@ const TradingViewEdit = (props) => {
       ];
       const propagateChange = !isEqual(
         pick(positionEntity, compareFields),
-        pick(newPositionEntity, compareFields),
+        pick(newPosition, compareFields),
       );
 
       if (propagateChange) {
-        setPositionEntity(newPositionEntity);
+        setPosition(newPosition);
       }
 
       // todo: doesn't seem to do anything
-      methods.setValue("priceDifference", newPositionEntity.priceDifference);
+      methods.setValue("priceDifference", newPosition.priceDifference);
     }
   };
 

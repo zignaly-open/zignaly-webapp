@@ -24,7 +24,7 @@ import useExchangeQuotes from "../../../hooks/useExchangeQuotes";
 import { getUserData } from "store/actions/user";
 import CustomNumberInput from "../CustomNumberInput";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
-import { highWaterMarkInfoUrl, psCreateInfoUrl } from "utils/affiliateURLs";
+import { psCreateInfoUrl } from "utils/affiliateURLs";
 import HelpIcon from "@material-ui/icons/Help";
 
 const MODEL_PROFIT_SHARING = 0;

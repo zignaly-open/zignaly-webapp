@@ -5,6 +5,7 @@ import { makeFakeUser } from "../factories/user";
 import { makeProvider, makeProviderOptions } from "../factories/provider";
 import dispatch from "../utils/dispatch";
 import { setSelectedExchange } from "../../src/store/actions/settings";
+import { makeOpenPosition } from "../factories/position";
 
 describe("Trading Terminal", () => {
   let user: User;
@@ -20,8 +21,6 @@ describe("Trading Terminal", () => {
     cy.intercept("GET", "*/user/exchanges/*/providers_option*", providerOptions).as(
       "mockedProviderOptions",
     );
-    // Stub create position
-    cy.intercept("POST", "*/user/exchanges/*/positions", "true");
 
     cy.visit("/tradingTerminal", {
       onBeforeLoad: (win: any) => {
@@ -43,7 +42,7 @@ describe("Trading Terminal", () => {
       cy.contains(/Position size value is required/i).should("exist");
     });
 
-    it.only("should fill proper values", () => {
+    it("should fill proper values", () => {
       const exchangeFutures = user.exchanges.find((e) => e.exchangeType === "futures");
       dispatch(setSelectedExchange(exchangeFutures.internalId));
       const positionSize = 50;
@@ -135,6 +134,23 @@ describe("Trading Terminal", () => {
       cy.get("input[name='trailingStopPercentage']").type("10");
       cy.get("input[name='trailingStopDistance']").type("-5");
       cy.get("input[name='trailingStopPrice']").should("be.ok");
+    });
+  });
+
+  describe("Create Position", () => {
+    // beforeEach(() => {});
+
+    it("should create a position", () => {
+      const position = makeOpenPosition();
+      // Stub create position
+      cy.intercept("POST", "*/user/exchanges/*/positions", JSON.stringify(position.positionId));
+      // Get position
+      cy.intercept("GET", `*/user/exchanges/Zignaly*/positions/${position.positionId}`, position);
+
+      cy.get("input[name='positionSize']").type("50");
+      cy.get("button[type='submit']").click();
+      cy.url().should("eq", `${Cypress.config("baseUrl")}/position/${position.positionId}`);
+      cy.get("button[type='submit']").contains(/Update Position/i);
     });
   });
 });

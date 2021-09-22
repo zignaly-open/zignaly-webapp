@@ -15,13 +15,12 @@ import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} TrailingStopPanel
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 

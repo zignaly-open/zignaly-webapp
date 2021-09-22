@@ -23,7 +23,6 @@ import PositionsReportModal from "./PositionsReportModal";
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  * @typedef {import("../../../hooks/usePositionsList").PositionsCollectionType} PositionsCollectionType
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} ProviderEntity
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  */
@@ -31,7 +30,7 @@ import PositionsReportModal from "./PositionsReportModal";
 /**
  * @typedef {Object} PositionsTableProps
  * @property {PositionsCollectionType} type
- * @property {PositionEntity} [positionEntity]
+ * @property {Position} [positionEntity]
  * @property {function} [notifyPositionsUpdate]
  * @property {Boolean} [isProfile]
  */

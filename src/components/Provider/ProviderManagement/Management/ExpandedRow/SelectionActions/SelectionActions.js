@@ -11,7 +11,6 @@ import { FormattedMessage } from "react-intl";
 /**
  *
  * @typedef {import('../../../../../../services/tradeApiClient.types').ManagementPositionsEntity} ManagementPositionsEntity
- * @typedef {import("../../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {Object} DefaultProps
  * @property {Array<ManagementPositionsEntity>} values
  * @property {Array<String>} selectedRows
@@ -30,11 +29,11 @@ const SelectionActions = ({ selectedRows, setSelectedRows, setLoading, values })
   const dispatch = useDispatch();
 
   /**
-   * @returns {Array<PositionEntity>} Position Collection.
+   * @returns {Array<Position>} Position Collection.
    */
   const getAllSelectedSubPositions = () => {
     /**
-     * @type {Array<PositionEntity>}
+     * @type {Array<Position>}
      */
     let allSubPositions = [];
     values.forEach((item) => {

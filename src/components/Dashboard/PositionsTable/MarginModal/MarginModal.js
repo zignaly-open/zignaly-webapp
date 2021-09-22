@@ -20,12 +20,8 @@ import { formatNumber } from "utils/formatters";
 import useBalance from "hooks/useBalance";
 
 /**
- * @typedef {import("services/tradeApiClient.types").PositionEntity} PositionEntity
- */
-
-/**
  * @typedef {Object} MarginModalProps
- * @property {PositionEntity} position
+ * @property {Position} position
  * @property {function} onClose
  */
 /**

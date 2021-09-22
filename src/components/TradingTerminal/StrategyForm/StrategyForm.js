@@ -24,7 +24,6 @@ import "./StrategyForm.scss";
  * @typedef {any} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
@@ -79,7 +78,7 @@ export const composePositionDcaTargets = (draftPosition) => {
  * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {MarketSymbol} selectedSymbol
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
  */
 

@@ -14,7 +14,6 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
@@ -22,7 +21,7 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {Object} PositionsTableProps
- * @property {Array<PositionEntity>} list
+ * @property {Array<Position>} list
  * @property {Array<ManagementPositionsEntity>} allPositions
  * @property {React.SetStateAction<*>} setLoading
  * @property {DefaultProviderGetObject} provider
