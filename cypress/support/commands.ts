@@ -38,7 +38,7 @@ Cypress.Commands.add(
   ({ connectedProviders = [], enableStubbedCheck = true }: MockOptions = {}) => {
     if (enableStubbedCheck) {
       // Check that nothing reaches real api
-      // We coud use Cypress.Server.defaults if there wasn't a bug: https://github.com/cypress-io/cypress/issues/5289
+      // We could use Cypress.Server.defaults if there wasn't a bug: https://github.com/cypress-io/cypress/issues/5289
       // Warning: Not detecting stubbed calls `beforeEach` when called from `it`.
       cy.intercept({ url: `${Cypress.env("GATSBY_TRADEAPI_URL_NEW")}/**` }, (req) => {
         throw new Error(`${req.url} was not stubbed.`);

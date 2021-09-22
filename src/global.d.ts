@@ -125,10 +125,6 @@ interface PositionBase {
    */
   realInvestment: number;
   /**
-   * Flag that indicates if accounting is already calculated for a closed position.
-   */
-  accounting: boolean;
-  /**
    * Flag that indicate when a position is closed.
    */
   closed: boolean;

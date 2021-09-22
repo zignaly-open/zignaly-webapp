@@ -56,9 +56,9 @@ export const makeProvider = (
 
 export const makeCopyTrader = (override: Partial<Provider>) => {
   return makeProvider({
-    ...override,
     profitSharing: false,
     isCopyTrading: true,
+    ...override,
   });
 };
 

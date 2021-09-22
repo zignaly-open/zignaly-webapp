@@ -329,5 +329,11 @@ module.exports = {
         "no-unused-vars": "off",
       },
     },
+    {
+      files: ["*.spec.ts"],
+      rules: {
+        "no-unused-expressions": "off",
+      },
+    },
   ],
 };
