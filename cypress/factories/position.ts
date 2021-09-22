@@ -65,7 +65,6 @@ export const makePosition = (override?: Partial<Position>): Position => {
 
 export const makeClosedPosition = (override?: Partial<Position>) => {
   return makePosition({
-    ...override,
     closed: true,
     status: 40,
     type: "closed",
@@ -80,16 +79,17 @@ export const makeClosedPosition = (override?: Partial<Position>) => {
     profit: -15.8676,
     profitPercentage: -16.98,
     returnFromInvestment: -17.16,
+    ...override,
   });
 };
 
 export const makeOpenPosition = (override?: Partial<Position>) => {
   return makePosition({
-    ...override,
     closed: false,
     status: 9,
     type: "open",
     unrealizedProfitLosses: -4.607999999999998,
     unrealizedProfitLossesPercentage: -18.46,
+    ...override,
   });
 };
