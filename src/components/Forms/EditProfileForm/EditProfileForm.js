@@ -661,7 +661,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           defaultValue={provider.profitsShare}
                           errors={errors}
                           name="profitsShare"
-                          rules={{ required: true }}
+                          rules={{
+                            validate: (value) =>
+                              value === "0" ||
+                              (parseFloat(value) >= 5 && parseFloat(value) < 100) ||
+                              intl.formatMessage({ id: "form.error.profitsharing" }),
+                          }}
                           suffix="%"
                         />
                       </Box>
