@@ -17,17 +17,16 @@ import useSymbolLimitsValidate from "../../../hooks/useSymbolLimitsValidate";
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import PricePercentageControl from "../Controls/PricePercentageControl";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} TakeProfitPanelProps
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 
@@ -244,7 +243,7 @@ const TakeProfitPanel = (props) => {
     }
   };
 
-  const initValuesFromPositionEntity = () => {
+  const initValuesFromPosition = () => {
     if (positionEntity) {
       targetIndexes.forEach((index) => {
         // Initialization: populate with position targets values
@@ -264,7 +263,7 @@ const TakeProfitPanel = (props) => {
   useEffect(() => {
     if (expanded) {
       if (positionEntity) {
-        initValuesFromPositionEntity();
+        initValuesFromPosition();
       } else {
         chainedPriceUpdates();
       }

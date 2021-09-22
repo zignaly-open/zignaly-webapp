@@ -4,7 +4,6 @@ import { Box, Typography, Tooltip } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../../store/actions/views";
 import ExchangeIcon from "../../../ExchangeIcon";
@@ -26,7 +25,6 @@ import ConnectExchange from "../../../Modal/ConnectExchange";
  * @returns {JSX.Element} Component JSX.
  */
 const FollowProviderButton = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [connectModal, showConnectModal] = useState(false);
@@ -41,7 +39,6 @@ const FollowProviderButton = ({ provider }) => {
     if (exchangeConnections.length) {
       setLoader(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
         connected: false,
         exchangeInternalId: selectedExchange.internalId,
@@ -50,9 +47,7 @@ const FollowProviderButton = ({ provider }) => {
         .providerConnect(payload)
         .then(() => {
           const payload2 = {
-            token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));
@@ -74,7 +69,6 @@ const FollowProviderButton = ({ provider }) => {
       setLoader(true);
       const payload = {
         disable: true,
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
         type: "connected",
       };
@@ -82,9 +76,7 @@ const FollowProviderButton = ({ provider }) => {
         .providerDisable(payload)
         .then(() => {
           const payload2 = {
-            token: storeSession.tradeApi.accessToken,
             providerId: provider.id,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));

@@ -6,7 +6,7 @@ export const REMOVE_USER = "REMOVE_USER_ACTION";
 export const GET_USER_BALANCE = "GET_USER_BALANCE_ACTION";
 export const SET_USER_BALANCE_LOADER = "SET_USER_BALANCE_LOADER_ACTION";
 export const REMOVE_USER_BALANCE = "REMOVE_USER_BALANCE_ACTION";
-export const GET_DAILY_USER_BALANCE = "GET_DAILY_USER_BALANCE_ACTION";
+export const SET_DAILY_USER_BALANCE = "SET_DAILY_USER_BALANCE";
 export const REMOVE_USER_EXCHANGE = "REMOVE_USER_EXCHANGE";
 export const SET_USER_DATA = "SET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
@@ -16,7 +16,6 @@ export const ACTIVATE_SUBACCOUNT = "ACTIVATE_SUBACCOUNT";
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import('../../services/tradeApiClient.types').UserEntity} UserEntity
- * @typedef {import('../../services/tradeApiClient.types').AuthorizationPayload} AuthorizationPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
  * @typedef {import('redux').AnyAction} AnyAction
  */
@@ -48,9 +47,9 @@ const initUserExchanges = (responseData) => {
       dispatch(setSelectedExchange(selectedExchangeId));
 
       // If the user has any exchange account, query balance
-      if (responseData.length > 0) {
-        dispatch(getDailyUserBalance(selectedExchangeId));
-      }
+      // if (responseData.length > 0) {
+      //   dispatch(getDailyUserBalance(selectedExchangeId));
+      // }
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
@@ -97,7 +96,7 @@ export const getDailyUserBalance = (exchangeInternalId) => {
       });
       const response = await tradeApi.userEquityGet(exchangeInternalId);
       const action = {
-        type: GET_DAILY_USER_BALANCE,
+        type: SET_DAILY_USER_BALANCE,
         payload: response,
       };
       dispatch(action);
@@ -110,29 +109,26 @@ export const getDailyUserBalance = (exchangeInternalId) => {
 /**
  * Get user data store thunk action.
  *
- * @param {string} token User's access token
  * @param {boolean} [loadExchanges] Load user exchanges
  * @param {function(UserEntity): *} [callback] Callback function
  *
  * @returns {AppThunk} Thunk action function.
  */
-export const getUserData = (token, loadExchanges = false, callback) => {
+export const getUserData = (loadExchanges = false, callback) => {
   return async (dispatch) => {
     try {
-      if (token) {
-        const responseData = await tradeApi.userDataGet();
-        const action = {
-          type: SET_USER_DATA,
-          payload: responseData,
-        };
+      const responseData = await tradeApi.userDataGet();
+      const action = {
+        type: SET_USER_DATA,
+        payload: responseData,
+      };
 
-        dispatch(action);
-        if (callback) {
-          callback(responseData);
-        }
-        if (loadExchanges) {
-          dispatch(initUserExchanges(responseData.exchanges));
-        }
+      dispatch(action);
+      if (callback) {
+        callback(responseData);
+      }
+      if (loadExchanges) {
+        dispatch(initUserExchanges(responseData.exchanges));
       }
     } catch (e) {
       dispatch(showErrorAlert(e));

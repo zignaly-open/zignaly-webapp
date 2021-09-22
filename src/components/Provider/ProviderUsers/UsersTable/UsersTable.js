@@ -9,7 +9,6 @@ import ModifyUserSubscription from "../../../Forms/ModifyUserSubscription";
 import { formatDate, formatFloat, formatFloat2Dec } from "../../../../utils/format";
 import { ConfirmDialog } from "../../../Dialogs";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
@@ -49,7 +48,6 @@ const UsersTable = ({
   setFiltersVisibility,
 }) => {
   const storeViews = useStoreViewsSelector();
-  const storeSession = useStoreSessionSelector();
   const intl = useIntl();
 
   /**
@@ -338,7 +336,6 @@ const UsersTable = ({
   const toggleSubscription = () => {
     setLoading(true);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: storeViews.provider.id,
       followerId: followerId,
       cancel: actionType === "cancel",

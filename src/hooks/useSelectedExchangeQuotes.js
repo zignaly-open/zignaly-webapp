@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
@@ -17,14 +16,10 @@ import { showErrorAlert } from "../store/actions/ui";
 const useSelectedExchangeQuotes = (exchangeInternalId, shouldExecute = true) => {
   const [quotes, setQuotes] = useState({});
 
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const loadData = () => {
     if (shouldExecute && exchangeInternalId) {
       let payload = {
-        token: storeSession.tradeApi.accessToken,
-        ro: true,
-        version: 2,
         exchangeInternalId: exchangeInternalId,
       };
 
@@ -39,7 +34,7 @@ const useSelectedExchangeQuotes = (exchangeInternalId, shouldExecute = true) => 
     }
   };
 
-  useEffect(loadData, [storeSession.tradeApi.accessToken, exchangeInternalId, shouldExecute]);
+  useEffect(loadData, [exchangeInternalId, shouldExecute]);
 
   return quotes;
 };

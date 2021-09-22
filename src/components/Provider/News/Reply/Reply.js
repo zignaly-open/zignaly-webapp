@@ -9,7 +9,7 @@ import AddReply from "../AddReply";
 import { MoreHoriz } from "@material-ui/icons";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -61,7 +61,7 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
   };
   const [confirmUnbanUserConfig, setConfirmUnbanUserConfig] = useState(initConfirmUnbanUserConfig);
   const userData = useStoreUserData();
-  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const canEdit = reply.author.userId === userData.userId || userData.isAdmin;
   const dispatch = useDispatch();
   const isNested = !showAddReply;
@@ -82,10 +82,10 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
 
   const deleteReply = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       postId: postId,
       replyId: reply.id,
       nested: isNested,
+      providerId: storeViews.provider.id,
     };
 
     tradeApi

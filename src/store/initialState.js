@@ -526,6 +526,7 @@ const initialState = {
       locale: "en_US",
       wall: { banned: false, cantPostUntil: null },
       isUnknownDevice: false,
+      disabled: false,
     },
   },
   ui: {
@@ -672,6 +673,8 @@ const initialState = {
       liquidated: false,
     },
   },
+  // @ts-ignore
+  ...(typeof window !== "undefined" && window.Cypress && window.initialState),
 };
 
 export default initialState;

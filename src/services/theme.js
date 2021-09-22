@@ -254,7 +254,6 @@ const theme = (darkStyle) => {
         // this is for sidebar link but we can use it anywhere else as well (Callout 1)
         fontSize: "14px",
         fontWeight: 400,
-        textTransform: "capitalize",
         lineHeight: 1.43,
         letterSpacing: "0.53px",
       },
@@ -313,9 +312,10 @@ const theme = (darkStyle) => {
             borderColor: darkStyle ? colors.lighterBlackBorder : "rgba(0, 0, 0, 0.3)",
           },
           // Override border for inputs inside a modal with dark theme
-          "[data-theme='dark'] .modal &:not($focused):not(.Mui-error):not(:hover) $notchedOutline": {
-            borderColor: "rgba(255, 255, 255, 0.23)",
-          },
+          "[data-theme='dark'] .modal &:not($focused):not(.Mui-error):not(:hover) $notchedOutline":
+            {
+              borderColor: "rgba(255, 255, 255, 0.23)",
+            },
           "[data-theme='dark'] .modal &:not($focused):not(.Mui-error):hover $notchedOutline": {
             borderColor: "rgba(255, 255, 255, 0.4)",
           },

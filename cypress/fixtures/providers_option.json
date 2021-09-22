@@ -1,0 +1,37 @@
+[
+  {
+    "providerId": 1,
+    "providerName": "Manual Trading",
+    "providerQuote": false
+  },
+  {
+    "providerId": "608d7d744a8496544e788649",
+    "providerName": "Test Chris",
+    "providerQuote": "USDT",
+    "providerPayableBalance": 50,
+    "providerAvailableBalance": 50,
+    "providerConsumedBalance": 0,
+    "providerConsumedBalancePercentage": 0,
+    "providerAllocatedBalance": 50
+  },
+  {
+    "providerId": "5f2836dbfc86966cb8291c71",
+    "providerName": "Test Chris 2",
+    "providerQuote": "USDT",
+    "providerPayableBalance": 100,
+    "providerAvailableBalance": 100,
+    "providerConsumedBalance": 0,
+    "providerConsumedBalancePercentage": 0,
+    "providerAllocatedBalance": 100
+  },
+  {
+    "providerId": "60f15891e8cbe2455d57c726",
+    "providerName": "test chris",
+    "providerQuote": "USDT",
+    "providerPayableBalance": 179.2811184496,
+    "providerAvailableBalance": 179.2811184496,
+    "providerConsumedBalance": 0,
+    "providerConsumedBalancePercentage": 0,
+    "providerAllocatedBalance": 180
+  }
+]

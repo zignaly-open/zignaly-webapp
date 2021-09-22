@@ -10,7 +10,7 @@ import {
   Switch,
   Box,
 } from "@material-ui/core";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
 import usePositionEntry from "../../../hooks/usePositionEntry";
@@ -23,13 +23,12 @@ import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} StrategyPanelProps
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} positionEntity Position entity.
+ * @property {Position} positionEntity Position entity.
  */
 
 /**

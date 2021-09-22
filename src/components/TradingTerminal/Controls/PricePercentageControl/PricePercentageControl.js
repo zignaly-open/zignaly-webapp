@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Tooltip } from "@material-ui/core";
-import CustomNumberInput from "../CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import "./PricePercentageControl.scss";

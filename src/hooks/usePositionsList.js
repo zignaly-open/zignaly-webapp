@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import useStoreSessionSelector from "./useStoreSessionSelector";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
 import {
@@ -24,7 +23,6 @@ import useFilters from "./useFilters";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
- * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {"open" | "closed" | "log" | "profileOpen" | "profileClosed"} PositionsCollectionType
  * @typedef {import('../components/CustomSelect/CustomSelect').OptionType} OptionType
  * @typedef {import("../store/initialState").Filters} Filters
@@ -64,7 +62,7 @@ import useFilters from "./useFilters";
  * Encapsulates the data fetch from Trade API and local state handling.
  *
  * @param {PositionsCollectionType} type Collection type to fetch.
- * @param {PositionEntity|null} [positionEntity] Position entity (optional) to narrow data to single position.
+ * @param {Position|null} [positionEntity] Position entity (optional) to narrow data to single position.
  * @param {function} [notifyPositionsUpdate] Callback to notify the updated positions list.
  * @param {"dashboardPositions"} [persistKey] Key to persist filters to store.
  * @returns {HookPositionsListData} Positions collection.
@@ -107,7 +105,6 @@ const usePositionsList = (
   };
   const [positions, setPositions] = useState(defaultPositionsState);
   const positionsAll = positions[type] || [];
-  const storeSession = useStoreSessionSelector();
   const [filtersVisibility, setFiltersVisibility] = useState(!isMobile);
 
   const extractPairOptions = () => {
@@ -176,7 +173,6 @@ const usePositionsList = (
    */
   const routeFetchMethod = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
     };
 
@@ -279,7 +275,6 @@ const usePositionsList = (
   const fallbackLogPositionsAllStatuses = async () => {
     let requestData = null;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalExchangeId: selectedExchange.internalId,
     };
 
@@ -361,12 +356,7 @@ const usePositionsList = (
   };
 
   const loadPositionsForExchange = partial(loadPositions, selectedExchange.internalId);
-  useEffect(loadPositionsForExchange, [
-    type,
-    filters.status,
-    storeSession.tradeApi.accessToken,
-    selectedExchange.internalId,
-  ]);
+  useEffect(loadPositionsForExchange, [type, filters.status, selectedExchange.internalId]);
 
   /**
    * Load a specific position by ID.
@@ -376,7 +366,6 @@ const usePositionsList = (
    */
   const loadPosition = (initiatorExchangeInternalId) => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       positionId: positionEntity.positionId,
       internalExchangeId: selectedExchange.internalId,
     };

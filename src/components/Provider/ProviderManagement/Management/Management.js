@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import "./Management.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
@@ -9,7 +8,6 @@ import { Box, CircularProgress } from "@material-ui/core";
 import ManagementTable from "./ManagementTable";
 
 /**
- * @typedef {import("../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {Object} DefaultProps
@@ -21,7 +19,6 @@ import ManagementTable from "./ManagementTable";
  * @returns {JSX.Element} Component JSX.
  */
 const Management = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
   const [allPositions, setAllPositions] = useState([]);
   const [positionsLoading, setPositionsLoading] = useState(true);
@@ -30,7 +27,6 @@ const Management = ({ provider }) => {
   const loadPositions = () => {
     if (provider.id) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi
@@ -52,11 +48,11 @@ const Management = ({ provider }) => {
    * Function to prepare list of the table.
    *
    * @param {Array<ManagementPositionsEntity>} data default data from backend.
-   * @returns {Array<PositionEntity>} Array of position entities.
+   * @returns {Array<Position>} Array of position entities.
    */
   const prepareTableList = (data) => {
     /**
-     * @type {Array<PositionEntity>}
+     * @type {Array<Position>}
      */
     let list = [];
     data.forEach((item) => {

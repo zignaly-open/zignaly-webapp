@@ -4,7 +4,6 @@ import { Box } from "@material-ui/core";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { navigate } from "gatsby";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
@@ -20,7 +19,6 @@ import { showErrorAlert } from "../../../../store/actions/ui";
  * @returns {JSX.Element} Component JSX.
  */
 const CloneProviderButton = ({ provider }) => {
-  const storeSession = useStoreSessionSelector();
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
 
@@ -42,7 +40,6 @@ const CloneProviderButton = ({ provider }) => {
     try {
       setLoader(true);
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       const response = await tradeApi.cloneProvider(payload);

@@ -4,7 +4,6 @@ import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/c
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showCreateProvider } from "../../../store/actions/ui";
 import { getUserData } from "store/actions/user";
@@ -23,7 +22,6 @@ const CREATE_PROVIDER_ID = "5b13fd81b233f6004cb8b882";
 
 const CreateProviderForm = () => {
   const [loading, setLoading] = useState(false);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -92,16 +90,15 @@ const CreateProviderForm = () => {
       projectId: "z01",
       providerId: CREATE_PROVIDER_ID,
       version: 2,
-      token: storeSession.tradeApi.accessToken,
     };
     tradeApi
       .providerCreate(payload)
       .then((response) => {
-        const profileLink = `/signalProviders/${response.id}/edit`;
+        const profileLink = `/signalProviders/${response.providerId}/edit`;
         navigate(profileLink);
         dispatch(showCreateProvider(false));
         // Refresh user data to show My Services tab
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

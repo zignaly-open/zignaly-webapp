@@ -74,7 +74,7 @@ const Enable2FA = () => {
         dispatch(enable2FA(!twoFAEnabled));
         const msg = twoFAEnabled ? "security.2fa.disable.success" : "security.2fa.enable.success";
         dispatch(showSuccessAlert("Success", intl.formatMessage({ id: msg })));
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
         // if (!twoFAEnabled) {
         //   navigate("/login");
         // }

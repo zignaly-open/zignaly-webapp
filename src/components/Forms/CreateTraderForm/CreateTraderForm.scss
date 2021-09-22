@@ -1,6 +1,16 @@
 .createTraderForm {
   padding: 32px 24px 0;
 
+  .helpIcon {
+    font-size: 18px;
+    margin-left: 5px;
+  }
+
+  .customLabel {
+    align-items: center;
+    display: flex;
+  }
+
   .loaderBox {
     margin: 0 auto;
   }

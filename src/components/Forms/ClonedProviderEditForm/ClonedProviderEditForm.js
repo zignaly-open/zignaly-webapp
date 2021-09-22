@@ -4,7 +4,6 @@ import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../store/actions/views";
@@ -29,7 +28,6 @@ const CopyTraderEditProfileForm = ({ provider, onClose }) => {
   const [loading, setLoading] = useState(false);
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const { errors, handleSubmit, control } = useForm({ mode: "all" });
   const dispatch = useDispatch();
 
@@ -50,16 +48,13 @@ const CopyTraderEditProfileForm = ({ provider, onClose }) => {
     setLoading(true);
     const payload = {
       ...data,
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
     };
     tradeApi
       .clonedProviderEdit(payload)
       .then(() => {
         const providerPayload = {
-          token: payload.token,
           providerId: payload.providerId,
-          version: 2,
           exchangeInternalId: selectedExchange.internalId,
         };
         dispatch(getProvider(providerPayload, true));

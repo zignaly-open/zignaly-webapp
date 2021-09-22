@@ -5,7 +5,6 @@ import { useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import useExchangeList from "../../../hooks/useExchangeList";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import { CustomInput } from "../ExchangeAccountForm";
@@ -41,7 +40,6 @@ const ExchangeAccountConnect = () => {
   } = useFormContext();
   const intl = useIntl();
   const dispatch = useDispatch();
-  const storeSession = useStoreSessionSelector();
   const {
     setTitle,
     setTempMessage,
@@ -90,7 +88,6 @@ const ExchangeAccountConnect = () => {
   const submitForm = (data) => {
     const { key, secret, password } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       exchangeId: selectedExchange.id,
       internalName,
       exchangeType,
@@ -108,7 +105,7 @@ const ExchangeAccountConnect = () => {
       .exchangeAdd(payload)
       .then(() => {
         setTempMessage(<FormattedMessage id={"accounts.connected.success"} />);
-        dispatch(getUserData(storeSession.tradeApi.accessToken, true));
+        dispatch(getUserData(true));
         resetToPath(previousPath);
       })
       .catch((e) => {

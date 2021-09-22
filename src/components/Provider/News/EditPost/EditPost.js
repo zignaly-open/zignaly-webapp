@@ -4,7 +4,7 @@ import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import "./EditPost.scss";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
+import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import Editor from "../../../Editor";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
  * @returns {JSX.Element} JSX
  */
 const EditPost = ({ post, onUpdated }) => {
-  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState(post.content);
   const dispatch = useDispatch();
@@ -35,8 +35,8 @@ const EditPost = ({ post, onUpdated }) => {
     setIsLoading(true);
 
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       postId: post.id,
+      providerId: storeViews.provider.id,
       content,
     };
 

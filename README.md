@@ -32,7 +32,6 @@ We crafted this app using Gatsby https://github.com/gatsbyjs/gatsby, a modern we
 - Lodash as our general JS utilities to simplify code simplicity and readability.
 - React Intl for UI internationalization https://formatjs.io/docs/react-intl/#the-react-intl-module
 - Material UI icons and React Feather for our icons UI.
-- Moment JS https://github.com/moment/moment for dates parsing / formatting.
 - ChartJS https://github.com/chartjs/Chart.js for our analytics / performance charts.
 - Trade API Client, is a JS implementation of Zignaly Trade API client that allow you to control copy trader / signal provider subscriptions, statistics, positions management, balance, withdraw, settings among other stuff at your Zignaly account. You can find the implementation at `src/services/tradeApiClient.js`
 
@@ -69,7 +68,19 @@ STAGE=test npm run develop
 
 The webapp is now running at `localhost:3000`. In order to login to the private area pages you will need to create a Zignaly account at https://zignaly.com/app/signup
 
-Once you have a username and password you will be able to login and start browsing copy traders and signal providers pages. To create and manage positions you will need to connect a Binance or KuCoin exchange or preferably for development purposes we recommend you to connect a paper trading exchange that you can use to experiment with trading without risk real money.
+## Testing
+
+To run the integration tests with cypress:
+
+```sh
+npm run cy:run
+```
+
+To open the cypress testing interface that allows to visually see the tests:
+
+```sh
+npm run cy:open
+```
 
 ## Contributing
 

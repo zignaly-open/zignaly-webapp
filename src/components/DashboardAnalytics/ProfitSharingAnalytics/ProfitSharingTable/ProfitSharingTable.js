@@ -8,7 +8,7 @@ import AccountingFilter from "../AccountingFilter";
 import { Box, Tooltip } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import { pnlRetainInfoUrl } from "utils/affiliateURLs";
-import { TooltipWithUrl } from "components/TotalEquityBar/EquityPart/EquityPart";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 
 /**
  * @typedef {import("../../../../services/tradeApiClient.types").ProfitSharingBalanceEntry} ProfitSharingBalanceEntry

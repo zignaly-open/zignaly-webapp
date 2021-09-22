@@ -7,12 +7,12 @@ import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import { formatDate } from "../../../../utils/format";
 import DOMPurify from "dompurify";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import { MoreHoriz } from "@material-ui/icons";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
+import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import Modal from "../../../Modal";
 import EditPost from "../EditPost";
 import AddReply from "../AddReply";
@@ -73,7 +73,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
   const content = embedMedias(originalContent);
   const [isApproving, setApproving] = useState(false);
   const [editPostModal, setEditPostModal] = useState(false);
-  const storeSession = useStoreSessionSelector();
+  const storeViews = useStoreViewsSelector();
   const dispatch = useDispatch();
   const userData = useStoreUserData();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -173,8 +173,8 @@ const Post = ({ post: _post, onPostDeleted }) => {
     setApproving(true);
 
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       postId: post.id,
+      providerId: storeViews.provider.id,
     };
 
     const method = approve ? tradeApi.approvePost(payload) : tradeApi.unapprovePost(payload);
@@ -195,8 +195,8 @@ const Post = ({ post: _post, onPostDeleted }) => {
 
   const deletePost = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       postId: post.id,
+      providerId: storeViews.provider.id,
     };
 
     tradeApi

@@ -5,7 +5,6 @@ import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";
 import CustomButton from "../../CustomButton";
 import { useForm } from "react-hook-form";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import UploadImage from "../../UploadImage";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -17,7 +16,6 @@ import ChangeEmailButton from "./ChangeEmailButton";
 const ProfileSettings = () => {
   const storeUserData = useStoreUserData();
   const { handleSubmit, register, errors } = useForm();
-  const storeSession = useStoreSessionSelector();
   const [updating, setUpdating] = useState(false);
   const [imageUrl, setImageUrl] = useState(storeUserData.imageUrl);
   const intl = useIntl();
@@ -37,7 +35,6 @@ const ProfileSettings = () => {
   const submitForm = (data) => {
     const { userName } = data;
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       userName,
       imageUrl,
     };
@@ -48,7 +45,7 @@ const ProfileSettings = () => {
       .updateUser(payload)
       .then(() => {
         dispatch(showSuccessAlert("Success", "accounts.settings.saved"));
-        dispatch(getUserData(storeSession.tradeApi.accessToken));
+        dispatch(getUserData());
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

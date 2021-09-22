@@ -1,6 +1,8 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { OutlinedInput, InputAdornment } from "@material-ui/core";
+import { isNil } from "lodash";
+import isNumeric from "utils/isNumeric";
 // import MaskedInput from "@biproxi/react-text-mask";
 // import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
@@ -50,7 +52,7 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
 
 /**
  * @typedef {import("react-hook-form/dist/types").ValidationRules} ValidationRules
- * * @typedef {import("react-hook-form/dist/types").Control} Control
+ * @typedef {import("react-hook-form/dist/types").Control} Control
  * @typedef {import("react-hook-form/dist/types/form").FieldErrors} FieldErrors
  * @typedef {import("@material-ui/core/Input").InputProps} InputProps
  */
@@ -67,7 +69,6 @@ import { OutlinedInput, InputAdornment } from "@material-ui/core";
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
  * @property {boolean} [showErrorMessage]
- * @property {string} [format="string"] Pass "number" to set/get value as number.
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -86,7 +87,7 @@ const CustomNumberInput = (props) => {
     errors,
     control,
     showErrorMessage = true,
-    format = "string",
+    type = "text",
     ...others
   } = props;
   const context = useFormContext();
@@ -97,28 +98,41 @@ const CustomNumberInput = (props) => {
 
   /**
    * @param {React.ChangeEvent<*>} e Event
+   * @param {function} _onChange React Hook Form onChange callback
    * @returns {string} Formatted number
    */
-  const handleChangeNumber = (e) => {
-    const val = e.target.value;
-    if (val === "") return "";
-
+  const handleChange = (e, _onChange) => {
     // Replace commas
-    let formattedVal = val.replace(",", ".");
+    let val = e.target.value.replace(",", ".");
     // Remove spaces
-    formattedVal = formattedVal.replace(" ", "");
+    val = val.replace(" ", "");
 
-    // Check valid number
-    if (!isNaN(formattedVal) || formattedVal === "-") {
-      // Check negative
-      if (allowNegative || parseFloat(formattedVal) >= 0) return formattedVal;
+    // Disallow non numbers while allowing '-'
+    if (val !== "" && !isNumeric(val) && (val !== "-" || !allowNegative)) {
+      return;
     }
-    return null;
+
+    // Fix sign
+    if (!allowNegative && parseFloat(val) < 0) {
+      val = Math.abs(parseFloat(val)).toString();
+    }
+
+    // Update value
+    _onChange(type === "number" ? (val === "" ? null : parseFloat(val)) : val);
+    // _onChange(type === "number" ? (val === "" ? null : parseFloat(val)) : val);
+
+    // Custom Callback
+    if (onChange) {
+      // e.target.value = val;
+      // Call callback asynchronously to avoid react-hook-form outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
+      // Even with useCallback, it wasn't working with CustomNumberInput.
+      setTimeout(() => onChange(e), 0);
+    }
   };
 
   const transform = {
     // https://github.com/react-hook-form/react-hook-form/issues/615
-    input: (/** @type {number} */ value) => (isNaN(value) || value === 0 ? "" : value.toString()), // incoming input value
+    input: (/** @type {number} */ value) => (isNil(value) ? "" : value.toString()), // incoming input value
     // output: (/** @type {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} */ e) => {
     //   // Convert to number for easier validation
     //   const output = parseInt(e.target.value, 10);
@@ -131,7 +145,8 @@ const CustomNumberInput = (props) => {
     <>
       <Controller
         control={control}
-        defaultValue={defaultValue}
+        // Empty string if null/undefined value, to avoid swtiching from uncontrolled to controlled
+        defaultValue={isNil(defaultValue) ? "" : defaultValue}
         name={name}
         render={({ onChange: _onChange, value }) => (
           <OutlinedInput
@@ -139,49 +154,9 @@ const CustomNumberInput = (props) => {
             endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
             error={!!errors[name]}
             name={name}
-            onChange={(e) => {
-              const val = handleChangeNumber(e);
-              // Ignore if invalid character
-              if (val === null) return;
-
-              // Apply formatted value
-              e.target.value = val;
-
-              // const val = e.target.value;
-              const valNumber = parseFloat(val) || 0;
-              // const val = format !== "number" ? handleChangeNumber(e) : e.target.valueAsNumber;
-              // or transform.output(e)
-
-              if (!allowNegative) {
-                if (val === "-") {
-                  // Remove negative sign alone
-                  e.target.value = "";
-                } else if (valNumber < 0) {
-                  // Force positive number
-                  e.target.value = Math.abs(valNumber).toString();
-                }
-              }
-
-              // Format event value
-              if (format === "number") {
-                // @ts-ignore
-                e.target.value = valNumber;
-              }
-
-              _onChange(e);
-
-              // if (val !== null) {
-              // Callback
-              if (onChange) {
-                // e.target.value = val;
-                // Call callback asynchronously to avoid outdated errors issue https://github.com/react-hook-form/react-hook-form/issues/2875
-                // Even with useCallback, it wasn't working with CustomNumberInput.
-                setTimeout(() => onChange(e), 0);
-              }
-              // }
-            }}
-            // type="number"
-            value={format !== "number" ? value : transform.input(value)}
+            onChange={(e) => handleChange(e, _onChange)}
+            type={type}
+            value={type !== "number" ? value : transform.input(value)}
             {...others}
           />
         )}

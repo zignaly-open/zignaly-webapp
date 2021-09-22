@@ -1,13 +1,12 @@
 import { assert } from "chai";
 
 /**
- * @typedef {import("../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * Position entity object structure standard assertions.
  *
- * @param {PositionEntity} positionEntity Position entity to check.
+ * @param {Position} positionEntity Position entity to check.
  * @return {Void} None.
  */
 export function positionEntityStructureAssertions(positionEntity) {

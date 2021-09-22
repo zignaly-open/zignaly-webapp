@@ -6,10 +6,8 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../store/actions/ui";
 import useInterval from "../../../hooks/useInterval";
 import { useDispatch } from "react-redux";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
@@ -23,7 +21,6 @@ import useStoreSessionSelector from "hooks/useStoreSessionSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
-  const storeSession = useStoreSessionSelector();
   const [tablePositions, setTablePositions] = useState([]);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +29,6 @@ const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
   const loadBalanceAndPositions = () => {
     if (provider.id) {
       const payload = {
-        token: storeSession.tradeApi.accessToken,
         providerId: provider.id,
       };
       tradeApi
@@ -54,11 +50,11 @@ const SpotProfitSharingManagement = ({ provider, selectedExchange }) => {
    * Function to prepare list of the table.
    *
    * @param {Array<ManagementPositionsEntity>} positions transformed data from backend.
-   * @returns {Array<PositionEntity>} Array of position entities.
+   * @returns {Array<Position>} Array of position entities.
    */
   const prepareTableList = (positions) => {
     /**
-     * @type {Array<PositionEntity>}
+     * @type {Array<Position>}
      */
     let list = [];
     positions.forEach((item) => {
