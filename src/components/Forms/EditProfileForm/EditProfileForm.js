@@ -79,7 +79,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
-      const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
+  const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
@@ -549,7 +549,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              {(canEditName && (
+              {canEditName && (
                 <>
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className={"customLabel"}>
