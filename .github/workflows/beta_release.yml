@@ -12,12 +12,12 @@ jobs:
         uses: actions/checkout@v1
       - name: Configure deployment folder
         run: |
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' appspec.yml
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' scripts/configure_app.sh
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' scripts/change_permission.sh
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' scripts/move_symlink.sh
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' scripts/prepare_release.sh
-            sed -i -e 's/{directory}/${{ secrets.STAGING_RELEASE_DIR }}/g' scripts/delete_old_release.sh
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' appspec.yml
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' scripts/configure_app.sh
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' scripts/change_permission.sh
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' scripts/move_symlink.sh
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' scripts/prepare_release.sh
+            sed -i -e 's/{directory}/${{ secrets.TEST_RELEASE_DIR }}/g' scripts/delete_old_release.sh
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
