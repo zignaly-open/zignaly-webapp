@@ -79,6 +79,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
+      const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
@@ -150,7 +151,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         providerId: provider.id,
         options: preparePayloadOptions(data),
-        ...(provider.privacy === "unlisted" && { logoUrl, name: data.name }),
+        ...(canEditName && { logoUrl, name: data.name }),
         privacy,
       };
       tradeApi
@@ -548,7 +549,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              {provider.privacy === "unlisted" && (
+              {(canEditName && (
                 <>
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className={"customLabel"}>
