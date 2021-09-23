@@ -150,7 +150,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         providerId: provider.id,
         options: preparePayloadOptions(data),
-        logoUrl,
+        ...(privacy === "unlisted" && { logoUrl, name: data.name }),
         privacy,
       };
       tradeApi
