@@ -38,10 +38,12 @@ interface Provider {
   allocatedBalance: number;
   minAllocatedBalance: number;
   maxAllocatedBalance: number;
+  maxDrawdown: number;
   verified: boolean;
   userId: string;
   isAdmin: boolean;
   options: ProviderOptions;
+  privacy: "unlisted" | "listed_profile" | "listed_marketplace";
 }
 
 interface TerminalProviderOption {

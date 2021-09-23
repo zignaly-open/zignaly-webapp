@@ -1,15 +1,44 @@
 /// <reference types="cypress" />
 
+import { readyException } from "cypress/types/jquery";
 import { setSelectedExchange } from "../../src/store/actions/settings";
 import { makeProvider } from "../factories/provider";
 import { makeFakeUser } from "../factories/user";
 import initialAuthData from "../fixtures/authState";
 import dispatch from "../utils/dispatch";
 
-describe("Provider Profile", () => {
-  let user: User;
+const mockEditProvider = (provider: Provider) => {
+  cy.intercept("POST", "**/user/providers/*", (req) => {
+    // Update provider object
+    provider = {
+      ...provider,
+      ...req.body,
+    };
 
+    // Return new provider although currently we reload the page
+    req.reply(provider);
+    return provider;
+  })
+    .as("editProvider")
+    .intercept("GET", "**/user/providers/*", (req) => {
+      // Mock updated provider
+      req.reply(provider);
+    })
+    .as("getProvider");
+};
+
+const saveData = () => {
+  cy.get("button")
+    .contains(/Save Data/i)
+    .click();
+  cy.get("button")
+    .contains(/Accept/i)
+    .click();
+};
+
+describe("Provider Profile", () => {
   describe("Has exchange accounts", () => {
+    let user: User;
     let provider: Provider;
 
     beforeEach(() => {
@@ -158,7 +187,7 @@ describe("Provider Profile", () => {
       // user.update({
       //   exchanges: [],
       // });
-      user = makeFakeUser({ exchanges: [] });
+      const user = makeFakeUser({ exchanges: [] });
       const provider = makeProvider();
       cy.mock();
       cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
@@ -183,7 +212,7 @@ describe("Provider Profile", () => {
       // const provider = server.create("provider");
       // user = server.create("user");
       // server.create("providerConnection", { user, provider });
-      user = makeFakeUser();
+      const user = makeFakeUser();
       const provider = makeProvider();
       cy.mock({ connectedProviders: [provider] });
       cy.intercept("GET", "*/user/providers/*", { ...provider, disable: false }).as(
@@ -203,29 +232,132 @@ describe("Provider Profile", () => {
     });
   });
 
-  describe("Edit provider", () => {
-    beforeEach(() => {
-      user = makeFakeUser({ isAdmin: false });
-      const provider = makeProvider({ isAdmin: true });
-      cy.mock();
-      cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
+  const setupEdit = (user: User, provider: Provider) => {
+    cy.mock();
+    cy.intercept("GET", "**/user/providers/*", provider).as("getProvider");
+    mockEditProvider(provider);
 
-      cy.visit(`/profitSharing/${provider.id}/edit`, {
-        onBeforeLoad: (win: any) => {
-          win.initialState = initialAuthData(user);
-        },
-      });
+    cy.visit(`/profitSharing/${provider.id}/edit`, {
+      onBeforeLoad: (win: any) => {
+        win.initialState = initialAuthData(user);
+      },
+    });
+  };
+
+  describe("Edit provider", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser({ isAdmin: false });
+      provider = makeProvider({ isAdmin: true, maxDrawdown: null });
+      setupEdit(user, provider);
     });
 
-    it.only("can edit", () => {
-      // cy.contains(/Set Maximum Drawdown/i)
-      //   .parent(".MuiDialog-root")
-      //   .contains(/Confirm/i)
-      //   .click();
-      // cy.get("input[name='transfer']").type("transfer");
-      // cy.get("button")
-      //   .contains(/Save Data/i)
-      //   .should("exist");
+    it("can edit", () => {
+      // Accept set drawdown modal
+      cy.contains(/Set Maximum Drawdown/i)
+        .parents(".MuiDialog-root")
+        .contains(/Confirm/i)
+        .click();
+
+      // Fill form
+      cy.get("input[name='profitsShare']").clear().type("6");
+      cy.get("input[name='maxDrawdown']").type("-30");
+      cy.get("input[name='maxAllocatedBalance']").clear().type("20000");
+      cy.get("input[name='maxPositions']").type("100");
+
+      // Cannot list in marketplace
+      cy.contains(/listed in marketplace/i).click();
+      cy.contains(/these requirements/i)
+        .parents(".MuiDialog-root")
+        .contains(/Confirm/i)
+        .click();
+
+      cy.contains(/listed in profile/i).click();
+
+      saveData();
+
+      // Assert page
+      cy.get("input[name='profitsShare']").should("have.value", 6);
+      cy.get("input[name='maxDrawdown']").should("have.value", -30);
+      cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
+      cy.get("input[name='maxPositions']").should("have.value", 100);
+      cy.contains(/listed in profile/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Edit provider as support", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true });
+      setupEdit(user, provider);
+    });
+
+    it("support can list to marketplace", () => {
+      // Fill form
+      cy.get("input[name='profitsShare']").clear().type("6");
+
+      // Check maxDrawdown can only be reduced
+      cy.get("input[name='maxDrawdown']").clear().type("-80");
+      cy.contains(/Maximun drawdown can only be reduced/i);
+      cy.get("input[name='maxDrawdown']").clear().type("-10");
+
+      cy.get("input[name='maxAllocatedBalance']").clear().type("20000");
+      cy.get("input[name='maxPositions']").type("100");
+
+      cy.contains("span", /listed in profile/i).click();
+
+      // Hack to select last slider option, clicking on it causes error:
+      // Cannot read properties of null (reading 'getBoundingClientRect')
+      cy.contains("span", /listed in marketplace/i)
+        .parent()
+        .trigger("keydown", { keyCode: 39 });
+      cy.get("body").trigger("keyup", { keyCode: 39 });
+
+      saveData();
+
+      // Assert page
+      cy.get("input[name='profitsShare']").should("have.value", 6);
+      cy.get("input[name='maxDrawdown']").should("have.value", -10);
+      cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
+      cy.get("input[name='maxPositions']").should("have.value", 100);
+      cy.contains(/listed in marketplace/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Listed provider", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser();
+      provider = makeProvider({ isAdmin: true, privacy: "listed_profile" });
+      setupEdit(user, provider);
+    });
+
+    it("can't be unlisted", () => {
+      cy.contains(/unlisted/i).click();
+      saveData();
+      cy.contains(/listed in profile/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Listed provider with support user", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true, privacy: "listed_profile" });
+      setupEdit(user, provider);
+    });
+
+    it("can be unlisted", () => {
+      cy.contains(/unlisted/i).click();
+      saveData();
+      cy.contains(/unlisted/i)
+        .parent()
+        .should("have.class", "MuiSlider-markLabelActive");
     });
   });
 });
