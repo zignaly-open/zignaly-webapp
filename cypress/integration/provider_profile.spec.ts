@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { readyException } from "cypress/types/jquery";
 import { setSelectedExchange } from "../../src/store/actions/settings";
 import { makeProvider } from "../factories/provider";
 import { makeFakeUser } from "../factories/user";
@@ -204,9 +205,11 @@ describe("Provider Profile", () => {
   });
 
   describe("Edit provider", () => {
+    let provider: Provider;
+
     beforeEach(() => {
       user = makeFakeUser({ isAdmin: false });
-      const provider = makeProvider({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true });
       cy.mock();
       cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
 
@@ -218,14 +221,48 @@ describe("Provider Profile", () => {
     });
 
     it.only("can edit", () => {
-      // cy.contains(/Set Maximum Drawdown/i)
-      //   .parent(".MuiDialog-root")
-      //   .contains(/Confirm/i)
-      //   .click();
-      // cy.get("input[name='transfer']").type("transfer");
-      // cy.get("button")
-      //   .contains(/Save Data/i)
-      //   .should("exist");
+      // Accept set drawdown modal
+      cy.contains(/Set Maximum Drawdown/i)
+        .parents(".MuiDialog-root")
+        .contains(/Confirm/i)
+        .click();
+
+      // Fill form
+      cy.get("input[name='profitsShare']").clear().type("6");
+      cy.get("input[name='maxDrawdown']").type("-30");
+      cy.get("input[name='maxAllocatedBalance']").clear().type("20000");
+      cy.get("input[name='maxPositions']").type("100");
+
+      cy.intercept("POST", "**/user/providers/*", (req) => {
+        // Update provider object
+        provider = {
+          ...provider,
+          ...req.body,
+        };
+
+        // Return new provider although currently we reload the page
+        req.reply(provider);
+        return provider;
+      })
+        .as("editProvider")
+        .intercept("GET", "**/user/providers/*", (req) => {
+          // Mock updated provider
+          req.reply(provider);
+        })
+        .as("getProvider");
+
+      cy.get("button")
+        .contains(/Save Data/i)
+        .click();
+      cy.get("button")
+        .contains(/Accept/i)
+        .click();
+
+      // Assert page
+      cy.get("input[name='profitsShare']").should("have.value", 6);
+      cy.get("input[name='maxDrawdown']").should("have.value", -30);
+      cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
+      cy.get("input[name='maxPositions']").should("have.value", 100);
     });
   });
 });
