@@ -5,6 +5,11 @@ interface User {
   "2FAEnable": boolean;
   isTrader: { copy_trading: boolean; profit_sharing: boolean; signal_providers: boolean };
   exchanges: ExchangeAccount[];
+  isAdmin: boolean;
+}
+
+interface ProviderOptions {
+  allowClones?: boolean;
 }
 
 interface Provider {
@@ -23,7 +28,6 @@ interface Provider {
   profitMode?: string;
   profitSharing: boolean;
   isCopyTrading: boolean;
-  options: object;
   exchangeInternalIds: any[];
   followers: number;
   strategy: string;
@@ -36,6 +40,8 @@ interface Provider {
   maxAllocatedBalance: number;
   verified: boolean;
   userId: string;
+  isAdmin: boolean;
+  options: ProviderOptions;
 }
 
 interface TerminalProviderOption {

@@ -50,6 +50,7 @@ export const makeProvider = (
           profitSharing: false,
           isCopyTrading: false,
         }),
+    isAdmin: false,
   };
   return merge(seed, override) as Provider;
 };
