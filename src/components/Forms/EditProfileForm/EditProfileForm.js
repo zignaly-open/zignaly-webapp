@@ -910,7 +910,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   <PrivacySlider
                     onChange={setPrivacy}
                     options={{
-                      unlistedDisabled: provider.privacy !== "unlisted",
+                      unlistedDisabled: provider.privacy !== "unlisted" && !storeUserData.isAdmin,
                       listMarketplaceDisabled: !storeUserData.isAdmin,
                     }}
                     value={privacy}
