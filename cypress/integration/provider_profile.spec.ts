@@ -7,6 +7,26 @@ import { makeFakeUser } from "../factories/user";
 import initialAuthData from "../fixtures/authState";
 import dispatch from "../utils/dispatch";
 
+const mockEditProvider = (provider: Provider) => {
+  cy.intercept("POST", "**/user/providers/*", (req) => {
+    // Update provider object
+    provider = {
+      ...provider,
+      ...req.body,
+    };
+
+    // Return new provider although currently we reload the page
+    req.reply(provider);
+    return provider;
+  })
+    .as("editProvider")
+    .intercept("GET", "**/user/providers/*", (req) => {
+      // Mock updated provider
+      req.reply(provider);
+    })
+    .as("getProvider");
+};
+
 describe("Provider Profile", () => {
   let user: User;
 
@@ -209,9 +229,10 @@ describe("Provider Profile", () => {
 
     beforeEach(() => {
       user = makeFakeUser({ isAdmin: false });
-      provider = makeProvider({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true, maxDrawdown: null });
       cy.mock();
       cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
+      mockEditProvider(provider);
 
       cy.visit(`/profitSharing/${provider.id}/edit`, {
         onBeforeLoad: (win: any) => {
@@ -220,7 +241,7 @@ describe("Provider Profile", () => {
       });
     });
 
-    it.only("can edit", () => {
+    it("can edit", () => {
       // Accept set drawdown modal
       cy.contains(/Set Maximum Drawdown/i)
         .parents(".MuiDialog-root")
@@ -233,23 +254,14 @@ describe("Provider Profile", () => {
       cy.get("input[name='maxAllocatedBalance']").clear().type("20000");
       cy.get("input[name='maxPositions']").type("100");
 
-      cy.intercept("POST", "**/user/providers/*", (req) => {
-        // Update provider object
-        provider = {
-          ...provider,
-          ...req.body,
-        };
+      // Cannot list in marketplace
+      cy.contains(/listed in marketplace/i).click();
+      cy.contains(/these requirements/i)
+        .parents(".MuiDialog-root")
+        .contains(/Confirm/i)
+        .click();
 
-        // Return new provider although currently we reload the page
-        req.reply(provider);
-        return provider;
-      })
-        .as("editProvider")
-        .intercept("GET", "**/user/providers/*", (req) => {
-          // Mock updated provider
-          req.reply(provider);
-        })
-        .as("getProvider");
+      cy.contains(/listed in profile/i).click();
 
       cy.get("button")
         .contains(/Save Data/i)
@@ -263,6 +275,61 @@ describe("Provider Profile", () => {
       cy.get("input[name='maxDrawdown']").should("have.value", -30);
       cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
       cy.get("input[name='maxPositions']").should("have.value", 100);
+      cy.contains(/listed in profile/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Edit provider as support", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      user = makeFakeUser({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true });
+      cy.mock();
+      cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
+      mockEditProvider(provider);
+
+      cy.visit(`/profitSharing/${provider.id}/edit`, {
+        onBeforeLoad: (win: any) => {
+          win.initialState = initialAuthData(user);
+        },
+      });
+    });
+
+    it("support can list to marketplace", () => {
+      // Fill form
+      cy.get("input[name='profitsShare']").clear().type("6");
+
+      // Check maxDrawdown can only be reduce
+      cy.get("input[name='maxDrawdown']").clear().type("-80");
+      cy.contains(/Maximun drawdown can only be reduced/i);
+      cy.get("input[name='maxDrawdown']").clear().type("-10");
+
+      cy.get("input[name='maxAllocatedBalance']").clear().type("20000");
+      cy.get("input[name='maxPositions']").type("100");
+
+      cy.contains("span", /listed in profile/i).click();
+
+      // Hack to select last slider option, clicking on it causes error:
+      // Cannot read properties of null (reading 'getBoundingClientRect')
+      cy.contains("span", /listed in marketplace/i)
+        .parent()
+        .trigger("keydown", { keyCode: 39 });
+      cy.get("body").trigger("keyup", { keyCode: 39 });
+
+      cy.get("button")
+        .contains(/Save Data/i)
+        .click();
+      cy.get("button")
+        .contains(/Accept/i)
+        .click();
+
+      // Assert page
+      cy.get("input[name='profitsShare']").should("have.value", 6);
+      cy.get("input[name='maxDrawdown']").should("have.value", -10);
+      cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
+      cy.get("input[name='maxPositions']").should("have.value", 100);
+      cy.contains(/listed in marketplace/i).should("have.class", "MuiSlider-markLabelActive");
     });
   });
 });
