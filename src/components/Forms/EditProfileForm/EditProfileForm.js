@@ -558,12 +558,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <Controller
                       as={
                         <TextField
-                          className={
-                            "customInput " +
-                            (storeSettings.darkStyle ? " dark " : " light ") +
-                            (errors.name ? "error" : "")
-                          }
-                          error={!!errors.profitsShare}
+                          className="customInput"
+                          error={!!errors.name}
                           fullWidth
                           variant="outlined"
                         />
