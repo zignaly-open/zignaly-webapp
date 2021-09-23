@@ -27,10 +27,18 @@ const mockEditProvider = (provider: Provider) => {
     .as("getProvider");
 };
 
-describe("Provider Profile", () => {
-  let user: User;
+const saveData = () => {
+  cy.get("button")
+    .contains(/Save Data/i)
+    .click();
+  cy.get("button")
+    .contains(/Accept/i)
+    .click();
+};
 
+describe("Provider Profile", () => {
   describe("Has exchange accounts", () => {
+    let user: User;
     let provider: Provider;
 
     beforeEach(() => {
@@ -179,7 +187,7 @@ describe("Provider Profile", () => {
       // user.update({
       //   exchanges: [],
       // });
-      user = makeFakeUser({ exchanges: [] });
+      const user = makeFakeUser({ exchanges: [] });
       const provider = makeProvider();
       cy.mock();
       cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
@@ -204,7 +212,7 @@ describe("Provider Profile", () => {
       // const provider = server.create("provider");
       // user = server.create("user");
       // server.create("providerConnection", { user, provider });
-      user = makeFakeUser();
+      const user = makeFakeUser();
       const provider = makeProvider();
       cy.mock({ connectedProviders: [provider] });
       cy.intercept("GET", "*/user/providers/*", { ...provider, disable: false }).as(
@@ -224,21 +232,25 @@ describe("Provider Profile", () => {
     });
   });
 
+  const setupEdit = (user: User, provider: Provider) => {
+    cy.mock();
+    cy.intercept("GET", "**/user/providers/*", provider).as("getProvider");
+    mockEditProvider(provider);
+
+    cy.visit(`/profitSharing/${provider.id}/edit`, {
+      onBeforeLoad: (win: any) => {
+        win.initialState = initialAuthData(user);
+      },
+    });
+  };
+
   describe("Edit provider", () => {
     let provider: Provider;
 
     beforeEach(() => {
-      user = makeFakeUser({ isAdmin: false });
+      const user = makeFakeUser({ isAdmin: false });
       provider = makeProvider({ isAdmin: true, maxDrawdown: null });
-      cy.mock();
-      cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
-      mockEditProvider(provider);
-
-      cy.visit(`/profitSharing/${provider.id}/edit`, {
-        onBeforeLoad: (win: any) => {
-          win.initialState = initialAuthData(user);
-        },
-      });
+      setupEdit(user, provider);
     });
 
     it("can edit", () => {
@@ -263,12 +275,7 @@ describe("Provider Profile", () => {
 
       cy.contains(/listed in profile/i).click();
 
-      cy.get("button")
-        .contains(/Save Data/i)
-        .click();
-      cy.get("button")
-        .contains(/Accept/i)
-        .click();
+      saveData();
 
       // Assert page
       cy.get("input[name='profitsShare']").should("have.value", 6);
@@ -283,24 +290,16 @@ describe("Provider Profile", () => {
     let provider: Provider;
 
     beforeEach(() => {
-      user = makeFakeUser({ isAdmin: true });
+      const user = makeFakeUser({ isAdmin: true });
       provider = makeProvider({ isAdmin: true });
-      cy.mock();
-      cy.intercept("GET", "**/user/providers/*", provider).as("mockedProvider");
-      mockEditProvider(provider);
-
-      cy.visit(`/profitSharing/${provider.id}/edit`, {
-        onBeforeLoad: (win: any) => {
-          win.initialState = initialAuthData(user);
-        },
-      });
+      setupEdit(user, provider);
     });
 
     it("support can list to marketplace", () => {
       // Fill form
       cy.get("input[name='profitsShare']").clear().type("6");
 
-      // Check maxDrawdown can only be reduce
+      // Check maxDrawdown can only be reduced
       cy.get("input[name='maxDrawdown']").clear().type("-80");
       cy.contains(/Maximun drawdown can only be reduced/i);
       cy.get("input[name='maxDrawdown']").clear().type("-10");
@@ -317,12 +316,7 @@ describe("Provider Profile", () => {
         .trigger("keydown", { keyCode: 39 });
       cy.get("body").trigger("keyup", { keyCode: 39 });
 
-      cy.get("button")
-        .contains(/Save Data/i)
-        .click();
-      cy.get("button")
-        .contains(/Accept/i)
-        .click();
+      saveData();
 
       // Assert page
       cy.get("input[name='profitsShare']").should("have.value", 6);
@@ -330,6 +324,40 @@ describe("Provider Profile", () => {
       cy.get("input[name='maxAllocatedBalance']").should("have.value", 20000);
       cy.get("input[name='maxPositions']").should("have.value", 100);
       cy.contains(/listed in marketplace/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Listed provider", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser();
+      provider = makeProvider({ isAdmin: true, privacy: "listed_profile" });
+      setupEdit(user, provider);
+    });
+
+    it("can't be unlisted", () => {
+      cy.contains(/unlisted/i).click();
+      saveData();
+      cy.contains(/listed in profile/i).should("have.class", "MuiSlider-markLabelActive");
+    });
+  });
+
+  describe("Listed provider with support user", () => {
+    let provider: Provider;
+
+    beforeEach(() => {
+      const user = makeFakeUser({ isAdmin: true });
+      provider = makeProvider({ isAdmin: true, privacy: "listed_profile" });
+      setupEdit(user, provider);
+    });
+
+    it("can be unlisted", () => {
+      cy.contains(/unlisted/i).click();
+      saveData();
+      cy.contains(/unlisted/i)
+        .parent()
+        .should("have.class", "MuiSlider-markLabelActive");
     });
   });
 });
