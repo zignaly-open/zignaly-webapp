@@ -1606,7 +1606,6 @@ export function mapEntryTypeToEnum(entryType) {
  */
 function createEmptyPosition() {
   return {
-    accounting: false,
     age: "",
     ageSeconds: 0,
     amount: 0,
@@ -1641,7 +1640,7 @@ function createEmptyPosition() {
     positionId: "",
     positionSize: 0,
     positionSizeQuote: 0,
-    profit: "0",
+    profit: 0,
     profitPercentage: 0,
     profitStyle: "",
     unrealizedProfitStyle: "",

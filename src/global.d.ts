@@ -5,6 +5,11 @@ interface User {
   "2FAEnable": boolean;
   isTrader: { copy_trading: boolean; profit_sharing: boolean; signal_providers: boolean };
   exchanges: ExchangeAccount[];
+  isAdmin: boolean;
+}
+
+interface ProviderOptions {
+  allowClones?: boolean;
 }
 
 interface Provider {
@@ -23,7 +28,6 @@ interface Provider {
   profitMode?: string;
   profitSharing: boolean;
   isCopyTrading: boolean;
-  options: object;
   exchangeInternalIds: any[];
   followers: number;
   strategy: string;
@@ -34,8 +38,12 @@ interface Provider {
   allocatedBalance: number;
   minAllocatedBalance: number;
   maxAllocatedBalance: number;
+  maxDrawdown: number;
   verified: boolean;
   userId: string;
+  isAdmin: boolean;
+  options: ProviderOptions;
+  privacy: "unlisted" | "listed_profile" | "listed_marketplace";
 }
 
 interface TerminalProviderOption {
@@ -124,10 +132,6 @@ interface PositionBase {
    * Invested amount without including the leveraged part.
    */
   realInvestment: number;
-  /**
-   * Flag that indicates if accounting is already calculated for a closed position.
-   */
-  accounting: boolean;
   /**
    * Flag that indicate when a position is closed.
    */

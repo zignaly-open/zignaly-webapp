@@ -34,6 +34,7 @@ export const makeProvider = (
     allocatedBalance: 100,
     minAllocatedBalance: 0,
     maxAllocatedBalance: null,
+    maxDrawdown: -10,
     profitSharing: true,
     isCopyTrading: true,
     ...(type === "profitSharing"
@@ -50,15 +51,17 @@ export const makeProvider = (
           profitSharing: false,
           isCopyTrading: false,
         }),
+    isAdmin: false,
+    privacy: "unlisted",
   };
   return merge(seed, override) as Provider;
 };
 
 export const makeCopyTrader = (override: Partial<Provider>) => {
   return makeProvider({
-    ...override,
     profitSharing: false,
     isCopyTrading: true,
+    ...override,
   });
 };
 

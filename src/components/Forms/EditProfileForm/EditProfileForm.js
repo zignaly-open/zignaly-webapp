@@ -79,6 +79,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
+  const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
@@ -150,7 +151,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         providerId: provider.id,
         options: preparePayloadOptions(data),
-        logoUrl,
+        ...(canEditName && { logoUrl, name: data.name }),
+        privacy,
       };
       tradeApi
         .providerEdit(payload)
@@ -547,7 +549,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              {provider.privacy === "unlisted" && (
+              {canEditName && (
                 <>
                   <Box className="inputBox" display="flex" flexDirection="column">
                     <label className={"customLabel"}>
@@ -556,12 +558,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <Controller
                       as={
                         <TextField
-                          className={
-                            "customInput " +
-                            (storeSettings.darkStyle ? " dark " : " light ") +
-                            (errors.name ? "error" : "")
-                          }
-                          error={!!errors.profitsShare}
+                          className="customInput"
+                          error={!!errors.name}
                           fullWidth
                           variant="outlined"
                         />
@@ -661,7 +659,12 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           defaultValue={provider.profitsShare}
                           errors={errors}
                           name="profitsShare"
-                          rules={{ required: true }}
+                          rules={{
+                            validate: (value) =>
+                              value === "0" ||
+                              (parseFloat(value) >= 5 && parseFloat(value) < 100) ||
+                              intl.formatMessage({ id: "form.error.profitsharing" }),
+                          }}
                           suffix="%"
                         />
                       </Box>
@@ -741,7 +744,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           suffix={provider.copyTradingQuote}
                         />
                       </Box>
-                      {/* <Box className="inputBox" display="flex" flexDirection="column">
+                      <Box className="inputBox" display="flex" flexDirection="column">
                         <Tooltip
                           interactive
                           placement="top"
@@ -758,7 +761,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           errors={errors}
                           name="maxPositions"
                         />
-                      </Box> */}
+                      </Box>
                     </>
                   )}
                 </>
@@ -904,7 +907,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   <PrivacySlider
                     onChange={setPrivacy}
                     options={{
-                      unlistedDisabled: provider.privacy !== "unlisted",
+                      unlistedDisabled: provider.privacy !== "unlisted" && !storeUserData.isAdmin,
                       listMarketplaceDisabled: !storeUserData.isAdmin,
                     }}
                     value={privacy}

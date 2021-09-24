@@ -1247,7 +1247,11 @@ class TradeApiClient {
    */
   async providerCopyTradingDataPointsGet(payload) {
     const { providerId } = payload;
-    const responseData = await this.doRequest(`/user/providers/${providerId}/data_points`);
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/data_points`,
+      null,
+      "GET",
+    );
 
     return providerDataPointsResponseTransform(responseData);
   }

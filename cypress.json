@@ -7,6 +7,6 @@
     "token": "testtoken"
   },
   "e2e": {
-    "defaultCommandTimeout": 13000
+    "defaultCommandTimeout": 11000
   }
 }
