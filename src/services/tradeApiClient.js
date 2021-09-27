@@ -1656,7 +1656,7 @@ class TradeApiClient {
    */
   async copyTraderCreate(payload) {
     const endpointPath = "/fe/api.php?action=createCopyTrader";
-    return this.doRequest(endpointPath, payload);
+    return this.doRequest(endpointPath, payload, "POST", 1);
   }
 
   /**
