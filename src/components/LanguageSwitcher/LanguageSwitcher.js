@@ -8,12 +8,10 @@ import { Button } from "@material-ui/core";
 // import FlagIcon from "components/FlagIcon";
 import tradeApi from "../../services/tradeApiClient";
 import { getUserData } from "store/actions/user";
-import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 import { showErrorAlert } from "store/actions/ui";
 
 const LanguageSwitcher = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   /**
@@ -30,7 +28,7 @@ const LanguageSwitcher = () => {
       tradeApi
         .saveLocale({ locale })
         .then(() => {
-          dispatch(getUserData(storeSession.tradeApi.accessToken, false));
+          dispatch(getUserData(false));
         })
         .catch((e) => dispatch(showErrorAlert(e)));
     }

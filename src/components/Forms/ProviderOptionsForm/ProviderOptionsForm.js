@@ -3,7 +3,6 @@ import "./ProviderOptionsForm.scss";
 import { Box, Checkbox, TextField, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import useNestedCheckboxes from "../../../hooks/useNestedCheckboxes";
 import { useDispatch } from "react-redux";
@@ -31,7 +30,6 @@ const ProviderOptionsForm = ({ provider }) => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const entryDCA = watch("reBuysFromSignal", provider.reBuysFromSignal);
   const takeProfit = watch("takeProfitsFromSignal", provider.takeProfitsFromSignal);
   const DCA = watch("reBuyFromProvider", provider.reBuyFromProvider);
@@ -101,7 +99,6 @@ const ProviderOptionsForm = ({ provider }) => {
           ...data,
           connected: true,
           providerId: provider.id,
-          token: storeSession.tradeApi.accessToken,
           exchangeInternalId: selectedExchange.internalId,
         };
         tradeApi
@@ -109,9 +106,7 @@ const ProviderOptionsForm = ({ provider }) => {
           .then((response) => {
             if (response) {
               const payload2 = {
-                token: storeSession.tradeApi.accessToken,
                 providerId: provider.id,
-                version: 2,
                 exchangeInternalId: selectedExchange.internalId,
               };
 

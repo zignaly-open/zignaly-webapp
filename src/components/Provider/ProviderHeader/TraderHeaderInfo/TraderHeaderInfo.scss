@@ -1,4 +1,5 @@
 .providerHeaderInfo {
+  flex-wrap: wrap;
   margin-bottom: 30px;
   width: 100%;
 
@@ -39,7 +40,6 @@
 
 @include media("<=sm") {
   .providerHeaderInfo {
-    flex-wrap: wrap;
     justify-content: space-between;
 
     h4 {

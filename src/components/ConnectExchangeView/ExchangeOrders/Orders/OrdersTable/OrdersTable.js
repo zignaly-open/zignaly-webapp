@@ -3,7 +3,6 @@ import "./OrdersTable.scss";
 import { Box, CircularProgress, Tooltip } from "@material-ui/core";
 import Table from "../../../../Table";
 import tradeApi from "../../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import { ConfirmDialog } from "../../../../Dialogs";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/ui";
@@ -41,7 +40,6 @@ import { FormattedMessage } from "react-intl";
  * @returns {JSX.Element} Component JSX.
  */
 const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persistKey }) => {
-  const storeSession = useStoreSessionSelector();
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("");
   const dispatch = useDispatch();
@@ -168,7 +166,6 @@ const OrdersTable = ({ title, list, selectedAccount, loadData, provider, persist
     const found = list.find((item) => item.id === order);
     const payload = {
       orderId: found.orderId,
-      token: storeSession.tradeApi.accessToken,
       symbol: found.symbol,
       exchangeInternalId: selectedAccount.internalId,
       ...(provider && { providerId: provider.id }),

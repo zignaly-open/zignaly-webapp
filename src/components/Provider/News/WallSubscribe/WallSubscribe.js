@@ -3,7 +3,6 @@ import { NotificationsNone, NotificationsActive } from "@material-ui/icons";
 import { Box, Tooltip, Typography } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import "./WallSubscribe.scss";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import { getProvider } from "../../../../store/actions/views";
@@ -24,13 +23,11 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  */
 const WallSubscribe = ({ subscribed, providerId }) => {
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const [isSubscribed, setSubscribed] = useState(subscribed);
   const dispatch = useDispatch();
 
   const subscribe = () => {
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       providerId,
       subscribed: !isSubscribed,
     };
@@ -41,9 +38,7 @@ const WallSubscribe = ({ subscribed, providerId }) => {
         if (res) {
           setSubscribed(!isSubscribed);
           const payload2 = {
-            token: storeSession.tradeApi.accessToken,
             providerId,
-            version: 2,
             exchangeInternalId: selectedExchange.internalId,
           };
           dispatch(getProvider(payload2, true));

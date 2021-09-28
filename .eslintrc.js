@@ -315,11 +315,25 @@ module.exports = {
     ],
     strict: 2,
     "use-isnan": 2,
-    "valid-jsdoc": 2,
     "valid-typeof": 2,
     "vars-on-top": 2,
     "wrap-iife": [2, "any"],
     "wrap-regex": 2,
     yoda: [2, "never"],
   },
+  overrides: [
+    {
+      files: ["*.ts"],
+      rules: {
+        "no-undef": "off",
+        "no-unused-vars": "off",
+      },
+    },
+    {
+      files: ["*.spec.ts"],
+      rules: {
+        "no-unused-expressions": "off",
+      },
+    },
+  ],
 };

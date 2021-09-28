@@ -4,17 +4,16 @@ import { useDispatch } from "react-redux";
 import Table from "../../../../Table";
 import { ConfirmDialog } from "../../../../Dialogs";
 import tradeApi from "../../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../../hooks/useStoreSessionSelector";
 import ExpandedRow from "../ExpandedRow";
 import { showErrorAlert, showSuccessAlert } from "../../../../../store/actions/ui";
 import { usePositionDataTableCompose } from "../../../../../hooks/usePositionsDataTableCompose";
 import "./ManagementTable.scss";
 import SelectionActions from "../ExpandedRow/SelectionActions";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import("../../../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
- * @typedef {import("../../../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").ManagementPositionsEntity} ManagementPositionsEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
@@ -22,7 +21,7 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
 
 /**
  * @typedef {Object} PositionsTableProps
- * @property {Array<PositionEntity>} list
+ * @property {Array<Position>} list
  * @property {Array<ManagementPositionsEntity>} allPositions
  * @property {React.SetStateAction<*>} setLoading
  * @property {DefaultProviderGetObject} provider
@@ -35,11 +34,11 @@ import SelectionActions from "../ExpandedRow/SelectionActions";
  * @returns {JSX.Element} Positions table element.
  */
 const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
-  const storeSession = useStoreSessionSelector();
   const tablePersistsKey = "managementPositions";
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  const selectedExchange = useSelectedExchange();
 
   /**
    * @typedef {import("../../../../Dialogs/ConfirmDialog/ConfirmDialog").ConfirmDialogConfig} ConfirmDialogConfig
@@ -100,7 +99,6 @@ const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
       tradeApi
         .positionCancel({
           positionId: positionId,
-          token: storeSession.tradeApi.accessToken,
         })
         .then((position) => {
           dispatch(
@@ -119,7 +117,8 @@ const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
       tradeApi
         .positionExit({
           positionId: positionId,
-          token: storeSession.tradeApi.accessToken,
+          // todo: check
+          internalExchangeId: selectedExchange.internalId,
         })
         .then((position) => {
           dispatch(
@@ -132,10 +131,8 @@ const ManagementTable = ({ list, allPositions, setLoading, provider }) => {
     }
   };
 
-  const {
-    composeManagementPositionsDataTable,
-    excludeDataTableColumn,
-  } = usePositionDataTableCompose(list, confirmAction);
+  const { composeManagementPositionsDataTable, excludeDataTableColumn } =
+    usePositionDataTableCompose(list, confirmAction);
 
   /**
    * Compose MUI data table for positions collection of selected type.

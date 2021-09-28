@@ -11,14 +11,14 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
  * @typedef {import('react').KeyboardEvent} KeyboardEvent
- * @typedef {import('../../../services/tradeApiClient.types').UserEntity} UserEntity
+ * @typedef {import('../../../services/tradeApiClient.types').LoginResponse} LoginResponse
  */
 
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} [onComplete]
  * @property {boolean} [verifySessionCode] For login/signup, call verify2FA endpoint.
- * @property {UserEntity} data
+ * @property {LoginResponse} data
  */
 
 /**
@@ -32,7 +32,9 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
   const [sendingCode, setSendingCode] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
   const [is2FAVerified, setIs2FAVerified] = useState(!data.ask2FA);
-  const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(!data.isUnknownDevice);
+  const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(
+    !data.isUnknownDevice && !data.disabled,
+  );
   const dispatch = useDispatch();
 
   /**
@@ -82,8 +84,11 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       code: code,
       token: data.token,
     };
-    tradeApi
-      .verifyKnownDevice(payload)
+    const method = data.disabled
+      ? tradeApi.enableAccount(payload)
+      : tradeApi.verifyKnownDevice(payload);
+
+    method
       .then(() => {
         setIsKnownDeviceVerified(true);
         if (is2FAVerified) {
@@ -102,8 +107,11 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
     if (sendingCode) return;
 
     setSendingCode(true);
-    tradeApi
-      .resendKnownDeviceCode(data.token)
+    const method = data.isUnknownDevice
+      ? tradeApi.resendKnownDeviceCode(data.token)
+      : tradeApi.resendCode({ reason: "enable_user", token: data.token });
+
+    method
       .then(() => {
         dispatch(showSuccessAlert("", "security.device.resent"));
       })
@@ -137,9 +145,21 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
                 flexDirection="column"
                 justifyContent="start"
               >
-                <Typography align="center" variant="h3">
-                  <FormattedMessage id="security.device.title" />
-                </Typography>
+                {!data.disabled ? (
+                  <Typography align="center" variant="h3">
+                    <FormattedMessage id="security.device.title" />
+                  </Typography>
+                ) : (
+                  <>
+                    <Typography align="center" variant="h3">
+                      <FormattedMessage id="security.blocked.title" />
+                    </Typography>
+                    <Typography align="center">
+                      <FormattedMessage id="security.blocked.description" />
+                    </Typography>
+                    <br />
+                  </>
+                )}
                 <label className="customLabel">
                   <Typography>
                     <FormattedMessage id="security.device.input" />

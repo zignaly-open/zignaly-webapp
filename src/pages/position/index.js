@@ -6,7 +6,6 @@ import { TradingViewEdit } from "../../components/TradingTerminal";
 import "./position.scss";
 
 /**
- * @typedef {import("../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**

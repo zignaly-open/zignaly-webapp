@@ -8,6 +8,7 @@ import CloneEdit from "../CloneEdit";
 import ProviderLogo from "../ProviderLogo";
 import FollowProviderButton from "../FollowProviderButton";
 import { FormattedMessage } from "react-intl";
+import { isNumber } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -37,18 +38,28 @@ const TraderHeaderActions = ({ provider }) => {
         flexDirection="row"
         justifyContent="flex-start"
       >
-        <ProviderLogo size="40px" title={provider.name} url={provider.logoUrl} />
+        <ProviderLogo
+          size="40px"
+          title={provider.name}
+          url={provider.logoUrl}
+          verified={provider.verified}
+        />
         <Typography variant="h1">{provider.name}</Typography>
         {provider.isAdmin && provider.isClone && <CloneEdit provider={provider} />}
       </Box>
       {provider.isCopyTrading ? (
         <>
           <CopyTraderButton provider={provider} />
-          {provider.liquidated && (
+          {provider.liquidated ? (
             <Typography className="red" variant="h4">
               <FormattedMessage id="srv.liquidated" />
             </Typography>
-          )}
+          ) : isNumber(provider.maxAllocatedBalance) &&
+            provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
+            <Typography className="red" variant="h4">
+              <FormattedMessage id="srv.maxAllocationReached" />
+            </Typography>
+          ) : null}
         </>
       ) : (
         <FollowProviderButton provider={provider} />

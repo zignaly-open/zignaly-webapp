@@ -25,7 +25,9 @@ const Login = ({ children }) => {
   return (
     <Box className="loginPage">
       <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
-        <img alt="Zignaly" className="logo" src={Logo} />
+        <a href="https://www.zignaly.com">
+          <img alt="Zignaly" className="logo" src={Logo} />
+        </a>
         <Box className="languageBox">
           <LanguageSwitcherDropdown />
         </Box>

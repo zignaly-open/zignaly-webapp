@@ -1,0 +1,15 @@
+.socialLink {
+  .icon {
+    color: var(--purple);
+    cursor: pointer;
+    height: 39px;
+    width: 39px;
+  }
+}
+
+@include media("<=sm") {
+  .icon {
+    height: 30px;
+    width: 30px;
+  }
+}

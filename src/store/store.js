@@ -158,3 +158,10 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
 export const persistor = persistStore(store);
+
+// expose store when run in Cypress
+// @ts-ignore
+if (typeof window !== "undefined" && window.Cypress) {
+  // @ts-ignore
+  window.store = store;
+}

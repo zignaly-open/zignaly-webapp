@@ -17,6 +17,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
 /**
  * @typedef {import("../../services/tradeApiClient.types").UserLoginPayload} UserLoginPayload
  * @typedef {import("../../services/tradeApiClient.types").UserRegisterPayload} UserRegisterPayload
+ * @typedef {import("../../services/tradeApiClient.types").LoginResponse} LoginResponse
  * @typedef {import("../../services/tradeApiClient.types").UserEntity} UserEntity
  * @typedef {import("../../services/tradeApiClient.types").TwoFAPayload} TwoFAPayload
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -24,7 +25,7 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  */
 
 /**
- * @param {UserEntity} response User login payload.
+ * @param {LoginResponse} response User login payload.
  * @param {'login'|'signup'} eventType User event.
  * @returns {AppThunk} return action object.
  */
@@ -39,8 +40,8 @@ export const startTradeApiSession = (response, eventType) => {
     };
 
     dispatch(action);
-    dispatch(refreshSessionData(response.token));
-    dispatch(getUserData(response.token, true, (data) => initExternalWidgets(data, eventType)));
+    dispatch(refreshSessionData());
+    dispatch(getUserData(true, (data) => initExternalWidgets(data, eventType)));
   };
 };
 
@@ -67,16 +68,12 @@ export const endTradeApiSession = () => {
 };
 
 /**
- * @param {string} token Access token.
  * @returns {AppThunk} Thunk Action.
  */
-export const refreshSessionData = (token) => {
+export const refreshSessionData = () => {
   return async (dispatch) => {
     try {
-      const payload = {
-        token: token,
-      };
-      const responseData = await tradeApi.sessionDataGet(payload);
+      const responseData = await tradeApi.sessionDataGet();
       const action = {
         type: REFRESH_SESSION_DATA,
         payload: responseData,

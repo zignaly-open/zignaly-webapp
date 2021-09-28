@@ -30,9 +30,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "./src/**/*",
-    "types/global.d.ts",
-    "static/widgets/dashly.js"
+    "src/**/*",
+    "types/global.d.ts"
   ],
   "exclude": [
     "node_modules",

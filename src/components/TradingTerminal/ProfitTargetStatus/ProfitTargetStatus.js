@@ -6,10 +6,6 @@ import { Help } from "@material-ui/icons";
 import "./ProfitTargetStatus.scss";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ProfitTarget} ProfitTarget
- */
-
-/**
  * @typedef {Object} ProfitLabelProps
  * @property {string} labelId Status label translation text ID.
  * @property {ProfitTarget} profitTarget Position take profit target.

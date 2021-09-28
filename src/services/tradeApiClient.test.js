@@ -364,49 +364,49 @@
 //   //   assert.isString(updatedPositionId, "Response is not a position ID string.");
 
 //   //   // Get the position entity after the update to check the changes.
-//   //   const updatedPositionEntity = await client.positionGet({
+//   //   const updatedPosition = await client.positionGet({
 //   //     token: accessToken,
 //   //     positionId: updatedPositionId,
 //   //     internalExchangeId: payload.internalExchangeId,
 //   //   });
 
 //   //   assert.equal(
-//   //     updatedPositionEntity.reBuyTargets[1].triggerPercentage,
+//   //     updatedPosition.reBuyTargets[1].triggerPercentage,
 //   //     5,
 //   //     "DCA target percentage don't match the expected value.",
 //   //   );
 
 //   //   assert.equal(
-//   //     updatedPositionEntity.reBuyTargets[1].quantity,
+//   //     updatedPosition.reBuyTargets[1].quantity,
 //   //     50,
 //   //     "DCA target amount amount don't match the expected value.",
 //   //   );
 
 //   //   assert.equal(
-//   //     updatedPositionEntity.takeProfitTargets[1].amountPercentage,
+//   //     updatedPosition.takeProfitTargets[1].amountPercentage,
 //   //     100,
 //   //     "Take profit target percentage don't match the expected value.",
 //   //   );
 
 //   //   assert.isAtLeast(
-//   //     updatedPositionEntity.takeProfitTargets[1].priceTargetPercentage,
+//   //     updatedPosition.takeProfitTargets[1].priceTargetPercentage,
 //   //     10,
 //   //     "Take profit target price don't match the expected value.",
 //   //   );
 
 //   //   const positionActionPayload = {
-//   //     positionId: updatedPositionEntity.positionId,
+//   //     positionId: updatedPosition.positionId,
 //   //     token: accessToken,
 //   //   };
 
 //   //   // Position still entering, we can cancel.
-//   //   if (updatedPositionEntity.status === 1) {
+//   //   if (updatedPosition.status === 1) {
 //   //     const cancelPosition = await client.positionCancel(positionActionPayload);
 //   //     assert.isTrue(cancelPosition.updating, "Cancel position is not flagged as updating.");
 //   //   }
 
 //   //   // Position is filled, we can exit.
-//   //   if (updatedPositionEntity.status === 9) {
+//   //   if (updatedPosition.status === 9) {
 //   //     const exitPosition = await client.positionExit(positionActionPayload);
 //   //     assert.isTrue(exitPosition.updating, "Cancel position is not flagged as updating.");
 //   //   }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import { Box, Typography, Switch } from "@material-ui/core";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";

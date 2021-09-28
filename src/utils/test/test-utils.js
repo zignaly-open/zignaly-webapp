@@ -8,6 +8,27 @@ import initialState from "store/initialState";
 import rootReducer from "store/reducers/rootReducer";
 import userExchanges from "utils/mirage/fixtures/userExchanges";
 import userData from "utils/mirage/fixtures/userData";
+import { FormProvider, useForm } from "react-hook-form";
+
+/**
+ * Testing Library utility function to wrap tested component in React Hook Form
+ * @param {React.ReactElement} ui A React component
+ * @param {{defaultValues?: object}} options
+ * @returns {React.ReactNode} New element
+ * React Hook Form, which you can then assert against
+ */
+export function renderWithReactHookForm(ui, { defaultValues = {} } = {}) {
+  /**
+   * @param {{children: React.ReactNode}} params
+   * @returns {React.ReactNode} New element
+   */
+  const Wrapper = ({ children }) => {
+    const methods = useForm({ defaultValues });
+    return <FormProvider {...methods}>{children}</FormProvider>;
+  };
+
+  return render(ui, { wrapper: Wrapper });
+}
 
 /**
  * Render ui with logged in user store

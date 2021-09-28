@@ -3,7 +3,7 @@ import {
   REMOVE_USER,
   GET_USER_BALANCE,
   REMOVE_USER_BALANCE,
-  GET_DAILY_USER_BALANCE,
+  SET_DAILY_USER_BALANCE,
   SET_USER_BALANCE_LOADER,
   REMOVE_USER_EXCHANGE,
   SET_USER_DATA,
@@ -46,7 +46,7 @@ const user = createReducer(initialState.user, {
     state.balance = initialState.user.balance;
   },
 
-  [GET_DAILY_USER_BALANCE]: (state, action) => {
+  [SET_DAILY_USER_BALANCE]: (state, action) => {
     state.dailyBalance = action.payload;
   },
 

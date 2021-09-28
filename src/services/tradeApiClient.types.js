@@ -49,7 +49,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CreatePositionPayload
- * @property {string} token Authorization token.
  * @property {string} pair Currency pair i.e. "USDT BTC".
  * @property {number} limitPrice Order limit price.
  * @property {string} positionSizeQuote Quote (currency) that represent the position size.
@@ -96,13 +95,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} PositionActionPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
+ * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
 /**
  * @typedef {Object} PositionGetPayload
  * @property {string} positionId Position ID to cancel.
- * @property {string} token Access token.
  * @property {string} internalExchangeId Exchange connection ID associated to the position.
  */
 
@@ -110,7 +108,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * Payload to update existing position, the size could be increased passing optional parameters.
  *
  * @typedef {Object} UpdatePositionPayload
- * @property {string} token Authorization token.
+ * @property {string} positionId positionId
  * @property {number} [limitPrice] Order limit price.
  * @property {string} [positionSizeQuote] Quote (currency) that represent the position size.
  * @property {number} [positionSize] Position size.
@@ -161,15 +159,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserExchangeAssetsPayload
- * @property {string} token
  * @property {string} internalId
  */
 
 /**
  * @typedef {Object} GetProviderPayload
- * @property {string} token user's access token
  * @property {string} providerId Provider ID
- * @property {Number} version api endpoint version number.
  * @property {String} exchangeInternalId internal Id of selected exchange.
  */
 
@@ -180,7 +175,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectTraderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} allocatedBalance
  * @property {String} exchangeInternalId
@@ -190,7 +184,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ConnectProviderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} exchangeInternalId
  * @property {Boolean} connected
@@ -228,15 +221,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} DisableProviderPayload
- * @property {string} token
  * @property {string} providerId
- * @property {String} type
- * @property {Boolean} disable
  */
 
 /**
  * @typedef {Object} DisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} disconnectionType Disconnection type.
  * @property {String} internalExchangeId Internal Id of connected exchange.
@@ -244,20 +233,17 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelDisconnectProviderPayload
- * @property {string} token User's session token
  * @property {string} providerId Provider Id
  * @property {String} internalExchangeId Internal Id of connected exchange.
  */
 
 /**
  * @typedef {Object} DeleteProviderPayload
- * @property {string} token
  * @property {string} providerId
  */
 
 /**
  * @typedef {Object} EditProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -278,7 +264,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} EditClonedProvderPayload
- * @property {string} token
  * @property {string} providerId
  * @property {String} name
  * @property {String} logoUrl
@@ -295,6 +280,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} UserWall
  * @property {string} cantPostUntil If present, date until which the user can post reply
  * @property {boolean} banned
+ */
+
+/**
+ * @typedef {Object} LoginResponse
+ * @property {string} token User access token.
+ * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} ask2FA Indicates if 2FA should be asked.
+ * @property {boolean} disabled Account disabled due to too many incorrect login
  */
 
 /**
@@ -323,6 +316,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} locale
  * @property {UserWall} wall
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
+ * @property {boolean} disabled Account disabled due to too many incorrect login
+ * @property {boolean} verified User identity verified
  */
 
 /**
@@ -330,11 +325,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} finished
  * @property {boolean} paused
  * @property {string} step
- */
-
-/**
- * @typedef {Object} AuthorizationPayload
- * @property {string} token User access token.
  */
 
 /**
@@ -362,7 +352,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelOrderPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} orderId order ID.
  * @property {String} symbol symbol.
@@ -371,7 +360,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelContractPayload
- * @property {string} token User access token.
  * @property {String} exchangeInternalId Internal ID of exchange.
  * @property {String} amount amount.
  * @property {String} symbol symbol.
@@ -380,18 +368,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} PositionsListPayload
- * @property {string} token User access token.
  * @property {string} internalExchangeId User exchange connection ID.
  * @property {boolean} [extendedStatuses] Flag to get log positions with all possibles status.
  */
 
 /**
- * @typedef {Object & AuthorizationPayload} ReadOnlyPayload
- * @property {boolean} ro
- */
-
-/**
- * @typedef {Object & AuthorizationPayload} BaseAssetsPayload
+ * @typedef {Object} BaseAssetsPayload
  * @property {string} quote
  */
 
@@ -408,7 +390,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  *
- * @typedef {Object} PositionEntityTotals
+ * @typedef {Object} PositionTotals
  * @property {Number} openPositions
  * @property {Number} totalPositions
  * @property {Number} totalPositionSize
@@ -417,172 +399,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- *
- * @typedef {Object} MultiSideData
- * @property {Number} amount
- * @property {string} price
- * @property {Number} priceDifference
- *
- */
-
-/**
- * @typedef {Object} PositionEntity
- * @property {Object<number, ReBuyTarget>} reBuyTargets DCA/Rebuy targets.
- * @property {Object<number, ReduceOrder>} reduceOrders Reduce position orders.
- * @property {Object<number, ProfitTarget>} takeProfitTargets Take profit targets.
- * @property {Number} realInvestment Invested amount without including the leveraged part.
- * @property {boolean} accounting Flag that indicates if accounting is already calculated for a closed position.
- * @property {boolean} closed Flag that indicate when a position is closed.
- * @property {boolean} isCopyTrader Flag that indicates that this position owner and copy trader signal provider owner are the same.
- * @property {boolean} isCopyTrading Flag that indicates that position is derived from copy trader signal.
- * @property {boolean} paperTrading Flag that indicates that position is executed in paper trading (demo) exchange.
- * @property {boolean} trailingStopTriggered Flag that indicates when trailing stop is triggered.
- * @property {boolean} updating Flag that indicates that some position updates are in progress.
- * @property {number} buyTTL Expiration time of the entry order, if not filled during this seconds will be aborted.
- * @property {number} closeDate Close date represented in unix time epoch seconds.
- * @property {number} fees Exchange transaction fees.
- * @property {number} fundingFees Exchange transaction funding fees.
- * @property {boolean} profitSharing Flag to indicate if it is a profit sharing service position.
- * @property {number} leverage Futures position leverage level, X times real position size borrowed from exchange.
- * @property {number} netProfit Net profit amount.
- * @property {number} netProfitPercentage Net percentage profit.
- * @property {string} netProfitStyle Profit style (coloring) based on gain/loss.
- * @property {number} openDate Open date represented in unix time epoch seconds.
- * @property {number} positionSizeQuote Position size represented in quote currency.
- * @property {number} profit Profit amount without fees substraction.
- * @property {number} reBuyTargetsCountFail Rebuy / DCA targets that was executed with failures counter.
- * @property {number} reBuyTargetsCountPending Rebuy / DCA targets not yet reached and not executed counter.
- * @property {number} reBuyTargetsCountSuccess Rebuy / DCA targets succesfully executed counter.
- * @property {number} risk Invested amount percentage that is still in risk relative to current price and exit protections (stop loss / trailing stop).
- * @property {number} status Position status, see translations/en.yml STATUS section for detailed list.
- * @property {number} stopLossPercentage Price percentage stop loss, relative to entry price.
- * @property {number} stopLossPrice Stop loss price.
- * @property {string} stopLossPriority Stop loss priority (price or percentage).
- * @property {number} takeProfitTargetsCountFail Take profit targets that was executed with failures counter.
- * @property {number} takeProfitTargetsCountPending Take profit targets not yet reached and not executed counter.
- * @property {number} takeProfitTargetsCountSuccess Take profit targets succesfully executed counter.
- * @property {number} trailingStopPercentage Trailing stop distance percentage, the stop will move dynamically following the trend at this distance.
- * @property {number|boolean} trailingStopTriggerPrice Trailing stop trigger price or false when not enabled.
- * @property {number} trailingStopTriggerPercentage Trailing stop entry price percentage increase that will trigger the trailing stop start.
- * @property {string} trailingStopTriggerPriority Trailing stop loss priority (price or percentage).
- * @property {string} age Elapsed time since position was opened in human readable format.
- * @property {number} ageSeconds Elapsed seconds since position was opened.
- * @property {number} amount Position invested amount in quote currency.
- * @property {string} base Base currency ID, i.e. "BTC".
- * @property {number} buyPrice Quote currency price at the moment of order entry was filled.
- * @property {string} closeDateReadable Close date in human readable format.
- * @property {string} exchange Exchange name where position was filled.
- * @property {string} exchangeType Exchange type (futures / spot) used to operate the position.
- * @property {string} exchangeInternalName Exchange connection name where position was filled.
- * @property {string} exitPriceStyle Exit price style (coloring) based on gain/loss.
- * @property {string} internalExchangeId Exchange connection ID, reference the connection of an exchange to Zignaly account.
- * @property {string} exchangeInternalId Exchange connection ID, reference the connection of an exchange to Zignaly account.
- * @property {number} invested Invested amount on this position, including leveraged part.
- * @property {string} investedQuote Currency ID of the invested amount.
- * @property {string} openDateReadable Open date in human readable format.
- * @property {string} positionId Zignaly position ID.
- * @property {string} positionSize Position size in base currency.
- * @property {number} profitPercentage Percentage gain/loss of the position based on current price in relation to entry price.
- * @property {string} profitStyle Profit style (coloring) based on gain/loss.
- * @property {string} providerId Copy trader provider ID that originated the signal for position entry.
- * @property {string} providerOwnerUserId Copy trader service owner user ID.
- * @property {string} providerLink Copy trader provider profile page URL.
- * @property {string} logoUrl Copy trader provider logo (will be deprecated in favor of provideerLogo).
- * @property {string} providerLogo Copy trader provider logo.
- * @property {string} providerName Copy trader provider name.
- * @property {string} quote Quote currency ID.
- * @property {number} remainAmount Remaining position amount after apply take profits (decrease) / rebuy (increase).
- * @property {number} availableAmount Remaining position amount minus locked amount from pending buy/sell orders.
- * @property {string} riskStyle Risk style (coloring) based on gain/loss.
- * @property {number} sellPrice Exit price for closed position, current price for open positions.
- * @property {string} side Position side (LONG / SHORT).
- * @property {string} signalId Copy trader signal ID.
- * @property {string} stopLossStyle Stop loss style (coloring) based on gain / loss.
- * @property {string} pair Currency pair in separated format, i.e. "BTC/USDT".
- * @property {string} symbol Currency pair in separated format, i.e. "BTC/USDT".
- * @property {string} userId Zignaly user ID.
- * @property {('unsold' | 'sold' | 'unopened' | 'open' | 'log' | 'closed' | '')} type Position status category.
- * @property {PositionEntityTotals} copyTradingTotals Position totals stats, only apply for position of copy trader provider.
- * @property {Number} subPositions Followers copied positions derived from this position, only apply for position of copy trader provider.
- * @property {Number} returnFromAllocated Percentage return from copy trader service allocated balance.
- * @property {Number} returnFromInvestment Percentage return from copy trader service invested balance.
- * @property {Number} priceDifference Price difference from entry price.
- * @property {string} priceDifferenceStyle Price difference style (coloring) based on gain/loss.
- * @property {Number} unrealizedProfitLosses Unrealized profit / loss amount expressed in quote currency.
- * @property {Number} unrealizedProfitLossesPercentage Unrealized profit / loss percentage.
- * @property {string} unrealizedProfitStyle Unrealized profit style (coloring) based on gain/loss.
- * @property {Number} currentAllocatedBalance Allocated copy trading balance when the trade was open.
- * @property {Number} positionSizePercentage % of the balance that was allocated (Copy Traders).
- * @property {Number} liquidationPrice
- * @property {Number} markPrice
- * @property {Number} margin
- * @property {string} markPriceStyle
- * @property {string} unitsInvestment Units displayed for the investment.
- * @property {string} unitsAmount Units displayed when bought.
- * @property {string} short Short symbol name displayed in Zignaly.
- * @property {string} tradeViewSymbol TradingView symbol.
- * @property {{long: MultiSideData, short: MultiSideData}} [multiData] Price/Amount info for MULTI side position
- * @property {boolean} stopLossFollowsTakeProfit Stop Loss moves each time a take profit target is reached
- * @property {boolean} stopLossToBreakEven Stop Loss moves to break even (entry price) when take profit target is reached.
- * @property {boolean} isolated
- * @property {string} isolatedReadable
- * @property {string} stopLossOrderId Stop loss order id
- */
-
-/**
  * @typedef {Object} RealInvestment
  * @property {string} $numberDecimal
  */
 
 /**
- * @typedef {Object} ReBuyTarget
- * @property {number} targetId
- * @property {number} triggerPercentage
- * @property {number} [priceTarget]
- * @property {string} [pricePriority] Use price or percentage
- * @property {number} quantity
- * @property {boolean} buying
- * @property {boolean} done
- * @property {string} orderId
- * @property {boolean} cancel
- * @property {boolean} skipped
- * @property {string} buyType
- * @property {string} errorMSG
- * @property {boolean} postOnly
- */
-
-/**
- * @typedef {Object} ReduceOrder
- * @property {number} targetId
- * @property {string} type
- * @property {number} targetPercentage
- * @property {number} availablePercentage
- * @property {boolean} done
- * @property {boolean} recurring
- * @property {boolean} persistent
- * @property {string} orderId
- * @property {string} errorMSG
- * @property {string} price
- * @property {string} amount
- */
-
-/**
- * @typedef {Object} ProfitTarget
- * @property {number} targetId
- * @property {number} amountPercentage
- * @property {boolean} done
- * @property {string} orderId
- * @property {number} priceTargetPercentage
- * @property {number} priceTarget
- * @property {number} pricePriority
- * @property {boolean} cancel
- * @property {boolean} skipped
- * @property {boolean} updating
- * @property {boolean} postOnly
- */
-
-/**
- * @typedef {Array<PositionEntity>} UserPositionsCollection
+ * @typedef {Array<Position>} UserPositionsCollection
  */
 
 /**
@@ -626,7 +448,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersStatsPayload
- * @property {string} token
  * @property {string} quote
  * @property {string} base
  * @property {string} timeFrame
@@ -680,6 +501,11 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} copyTrader
  * @property {boolean} liquidated
  * @property {number} globalReturn
+ * @property {Number} maxDrawdown
+ * @property {Number} maxAllocatedBalance
+ * @property {Number} maxPositions
+ * @property {String} privacy
+ * @property {Boolean} verified KYC passed
  */
 
 /**
@@ -784,7 +610,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
- * @typedef {Object & ReadOnlyPayload} ConnectedProviderUserInfoPayload
+ * @typedef {Object} ConnectedProviderUserInfoPayload
  * @property {string} providerId
  * @property {string} exchangeInternalId
  */
@@ -846,18 +672,14 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {Boolean} includeOpenPositions
  * @property {String} providerId
  * @property {String} quote
- * @property {Boolean} ro
  * @property {Number | Boolean} timeFrame
  * @property {String} timeFrameFormat
- * @property {String} token
  * @property {String} internalExchangeId
  */
 
 /**
  * @typedef {Object} ProfileProviderStatsPayload
  * @property {String} providerId
- * @property {Boolean} ro
- * @property {String} token
  */
 
 /**
@@ -882,7 +704,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ModifySubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Number} days
@@ -890,7 +711,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} CancelSubscriptionPayload
- * @property {string} token
  * @property {String} providerId
  * @property {String} followerId
  * @property {Boolean} cancel
@@ -984,10 +804,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} QuotesAssetsGetPayload
- * @property {boolean} ro
- * @property {string} token
  * @property {string} [exchangeInternalId] Exchange Internal ID
- * @property {number} version version of endpoint
  * @property {string} [exchangeId] Exchange ID
  * @property {string} [exchangeType] Exchange type
  */
@@ -1036,6 +853,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 /**
  * @typedef {Object} AddReplyPayload
  * @property {string} postId
+ * @property {string} providerId
  * @property {string} [replyId] If replying to a comment
  * @property {string} content
  */
@@ -1118,7 +936,9 @@ export function userEntityResponseTransform(response) {
       : [],
     locale: response.locale,
     isUnknownDevice: response.isUnknownDevice,
+    disabled: response.disabled,
     wall: response.wall || {},
+    verified: false,
   };
 }
 
@@ -1320,6 +1140,11 @@ function createEmptyProviderEntity() {
     copyTrader: false,
     liquidated: false,
     globalReturn: 0,
+    maxAllocatedBalance: null,
+    maxPositions: null,
+    maxDrawdown: null,
+    privacy: "",
+    verified: false,
   };
 }
 
@@ -1469,10 +1294,10 @@ export function positionsShortResponseTransform(response) {
 }
 
 /**
- * Transform Trade API position item to typed PositionEntity object.
+ * Transform Trade API position item to typed Position object.
  *
  * @param {*} positionItem Trade API position item object.
- * @returns {PositionEntity} Position entity.
+ * @returns {Position} Position entity.
  */
 export function positionItemTransform(positionItem) {
   const openDateMoment = moment(Number(positionItem.openDate));
@@ -1499,7 +1324,7 @@ export function positionItemTransform(positionItem) {
   /**
    * Calculate position risk based on buy price, stop loss and entry side.
    *
-   * @param {PositionEntity} positionEntity Transformed position entity.
+   * @param {Position} positionEntity Transformed position entity.
    * @returns {number} Risk percentage.
    */
   const calculateRisk = (positionEntity) => {
@@ -1575,7 +1400,7 @@ export function positionItemTransform(positionItem) {
 
   // Override the empty entity with the values that came in from API and augment
   // with pre-calculated fields.
-  const positionEntity = assign(createEmptyPositionEntity(), positionItem, {
+  const positionEntity = assign(createEmptyPosition(), positionItem, {
     amount: safeParseFloat(positionItem.amount),
     buyPrice: safeParseFloat(positionItem.buyPrice),
     buyTTL: safeParseFloat(positionItem.buyTTL),
@@ -1777,11 +1602,10 @@ export function mapEntryTypeToEnum(entryType) {
 /**
  * Create empty position entity skeleton.
  *
- * @returns {PositionEntity} Empty position entity.
+ * @returns {Position} Empty position entity.
  */
-function createEmptyPositionEntity() {
+function createEmptyPosition() {
   return {
-    accounting: false,
     age: "",
     ageSeconds: 0,
     amount: 0,
@@ -1806,7 +1630,7 @@ function createEmptyPositionEntity() {
     profitSharing: false,
     leverage: 0,
     logoUrl: "",
-    netProfit: 0,
+    netProfit: "",
     netProfitPercentage: 0,
     netProfitStyle: "",
     openDate: 0,
@@ -1814,7 +1638,7 @@ function createEmptyPositionEntity() {
     pair: "",
     paperTrading: false,
     positionId: "",
-    positionSize: "",
+    positionSize: 0,
     positionSizeQuote: 0,
     profit: 0,
     profitPercentage: 0,
@@ -1880,7 +1704,6 @@ function createEmptyPositionEntity() {
     short: "",
     tradeViewSymbol: "",
     isolated: false,
-    isolatedReadable: "",
     stopLossPriority: "",
     trailingStopTriggerPriority: "",
     stopLossToBreakEven: false,
@@ -2786,7 +2609,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} public
  * @property {DefaultProviderUserPaymentObject} userPaymentInfo
  * @property {String} website
- * @property {Number} allocatedBalance
+ * @property {Number} allocatedBalance User's allocated balance
  * @property {DefaultProviderAllocatedUpdatedAtObject} allocatedBalanceUpdatedAt
  * @property {Boolean} balanceFilter
  * @property {String} createdAt
@@ -2841,8 +2664,14 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} profitSharing
  * @property {Number} profitsShare
  * @property {String} profitsMode
+ * @property {Number} maxDrawdown
+ * @property {Number} maxAllocatedBalance
+ * @property {Number} maxPositions
+ * @property {String} privacy
+ * @property {Boolean} verified KYC passed
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
+ * @property {string} userId
  */
 
 /**
@@ -2998,6 +2827,7 @@ function createEmptyProviderGetEntity() {
     profitsShare: 0,
     profitsMode: "",
     exchangeInternalIds: [{}],
+    verified: false,
   };
 }
 
@@ -3894,8 +3724,8 @@ export function creatProviderFollowersCountEntity(response) {
 /**
  *
  * @typedef {Object} ManagementPositionsEntity
- * @property {PositionEntity} position
- * @property {Array<PositionEntity>} subPositions
+ * @property {Position} position
+ * @property {Array<Position>} subPositions
  */
 
 /**
@@ -3931,13 +3761,13 @@ function managementPositionsItemTransform(positionList) {
     return positionItemTransform(item);
   });
 
-  let managementPositionEntity = createEmptyManagementPositionsEntity();
-  managementPositionEntity.position = positionList.length ? positionList.splice(0, 1)[0] : {};
-  managementPositionEntity.subPositions = positionList.length
+  let managementPosition = createEmptyManagementPositionsEntity();
+  managementPosition.position = positionList.length ? positionList.splice(0, 1)[0] : {};
+  managementPosition.subPositions = positionList.length
     ? positionList.splice(0, positionList.length)
     : [];
-  managementPositionEntity.position.subPositions = managementPositionEntity.subPositions.length;
-  return managementPositionEntity;
+  managementPosition.position.subPositions = managementPosition.subPositions.length;
+  return managementPosition;
 }
 
 /**
@@ -3945,7 +3775,7 @@ function managementPositionsItemTransform(positionList) {
  */
 function createEmptyManagementPositionsEntity() {
   return {
-    position: createEmptyPositionEntity(),
+    position: createEmptyPosition(),
     subPositions: [],
   };
 }
@@ -4051,6 +3881,7 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} quote
  * @property {boolean} [profitSharing]
  * @property {number} [profitsShare]
+ * @property {number} [maxDrawdown]
  */
 
 /**
@@ -4108,29 +3939,6 @@ function createEmptyProfileNotificationsEntity() {
  * @property {string} lockedFrom
  * @property {Object} copyTradingStatsLastUpdate
  */
-
-/**
- * Transform Create Provider response.
- *
- * @param {*} response Trade API create provider response.
- * @returns {NewProviderEntity} Provider
- */
-export function providerCreateResponseTransform(response) {
-  const emptyNewProviderEntity = createEmptyNewProviderEntity();
-  const normalizedId = response._id
-    ? response._id.$oid || response._id
-    : response.providerId
-    ? response.providerId
-    : "";
-  const normalizeduserId = isObject(response.userId) ? response._id.$oid : "";
-  // Override the empty entity with the values that came in from API.
-  const transformedResponse = assign(emptyNewProviderEntity, response, {
-    id: normalizedId,
-    userId: normalizeduserId,
-  });
-
-  return transformedResponse;
-}
 
 /**
  * Create an empty Created Provider Entity
@@ -4260,7 +4068,6 @@ const createEmptyAvailableBalanceEntity = () => {
 /**
  *
  * @typedef {Object} SessionResponseObject
- * @property {String} status
  * @property {Number} validUntil
  */
 
@@ -4272,7 +4079,6 @@ const createEmptyAvailableBalanceEntity = () => {
  */
 export function sessionDataResponseTransform(response) {
   return {
-    status: response.status,
     validUntil: response.validUntil * 1000,
   };
 }
@@ -4557,6 +4363,11 @@ export const createEmptyProfileProviderStatsEntity = () => {
       CTorPS: false,
       liquidated: false,
       globalReturn: 0,
+      maxAllocatedBalance: null,
+      maxPositions: null,
+      maxDrawdown: null,
+      privacy: "unlisted",
+      verified: false,
     },
     signalsInfo: [],
   };
@@ -4604,3 +4415,15 @@ export function profitSharingBalanceHistoryResponseTransform(response) {
     })),
   };
 }
+
+/**
+ * @typedef {Object} UserAllProviders
+ * @property {string} id
+ * @property {string} name
+ * @property {string} logoUrl
+ * @property {string} privacy
+ * @property {boolean} verified
+ * @property {boolean} liquidated
+ * @property {boolean} isCopyTrading
+ * @property {boolean} profitSharing
+ */

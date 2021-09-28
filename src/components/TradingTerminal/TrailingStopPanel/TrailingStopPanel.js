@@ -10,18 +10,17 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import "./TrailingStopPanel.scss";
 import useValidation from "../../../hooks/useValidation";
 import PricePercentageControl from "../Controls/PricePercentageControl";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import usePositionSizeHandlers from "hooks/usePositionSizeHandlers";
 
 /**
  * @typedef {import("services/tradeApiClient.types").MarketSymbol} MarketSymbol
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  */
 
 /**
  * @typedef {Object} TrailingStopPanel
  * @property {MarketSymbol} symbolData
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 

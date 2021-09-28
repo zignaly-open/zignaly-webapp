@@ -56,9 +56,10 @@ export const format2Dec = (value) => round(value, 2);
  * @param {string} value String numeric value.
  * @param {string} [separator=" "] Thousands separator character.
  * @param {number} [precision=2] Fractional digits precision.
+ * @param {boolean} [compact=false] Abbreviate big numbers
  * @returns {string} String numeric value with added thousands separator chars.
  */
-export const addThousandsSeparator = (value, separator = " ", precision = 2) => {
+export const addThousandsSeparator = (value, separator = " ", precision = 2, compact = false) => {
   const valueNumber = parseFloat(value);
 
   if (typeof valueNumber === "number") {
@@ -66,6 +67,10 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2) => 
       new Intl.NumberFormat("en-US", {
         minimumFractionDigits: precision,
         maximumFractionDigits: precision,
+        ...(compact && {
+          notation: "compact",
+          compactDisplay: "short",
+        }),
       }).format(valueNumber),
     );
 
@@ -83,10 +88,11 @@ export const addThousandsSeparator = (value, separator = " ", precision = 2) => 
  * @param {number|string} price Price to format.
  * @param {string} [nanDisplay] Value to display when price is NaN.
  * @param {string} [thousandSeparator] Character to use for thousand separator.
+ * @param {boolean} [compact=false] Abbreviate big numbers
  *
  * @returns {string} Formatter price for display.
  */
-export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") => {
+export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ", compact = false) => {
   const priceFloat = typeof price === "string" ? parseFloat(price) : price;
   if (isNaN(priceFloat)) {
     return nanDisplay;
@@ -98,7 +104,7 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
     precision = 2;
   }
 
-  return addThousandsSeparator(formattedPrice, thousandSeparator, precision);
+  return addThousandsSeparator(formattedPrice, thousandSeparator, precision, compact);
 };
 
 /**
@@ -107,7 +113,7 @@ export const formatPrice = (price, nanDisplay = "-", thousandSeparator = " ") =>
  * @return {string} url
  */
 export const prefixLinkForXSS = (url) => {
-  if (!url.startsWith("http")) {
+  if (url && !url.startsWith("http")) {
     return "https://" + url;
   }
   return url;

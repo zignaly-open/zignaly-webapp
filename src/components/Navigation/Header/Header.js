@@ -113,6 +113,7 @@ const Header = () => {
               size="32px"
               title=""
               url={storeUserData.imageUrl}
+              verified={storeUserData.verified}
             />
             <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
           </Box>

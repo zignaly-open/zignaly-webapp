@@ -32,7 +32,7 @@ const useConnectedProvidersList = (internalId, type, onlyConnected, shouldExecut
       };
 
       tradeApi
-        .providersListGet(payload)
+        .providersUserGet(payload)
         .then((response) => {
           filterProviders(response);
         })

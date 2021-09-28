@@ -12,7 +12,7 @@ import {
   Tooltip,
   Switch,
 } from "@material-ui/core";
-import CustomNumberInput from "../Controls/CustomNumberInput/CustomNumberInput";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 import { RemoveCircle, Help } from "@material-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
@@ -20,11 +20,6 @@ import "./ReduceOrders.scss";
 import { colors } from "../../../services/theme";
 import { formatFloat2Dec } from "../../../utils/format";
 import { formatPrice } from "../../../utils/formatters";
-
-/**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
- * @typedef {import("../../../services/tradeApiClient.types").ReduceOrder} ReduceOrder
- */
 
 /**
  * @typedef {Object} ReduceOrderStatusProps
@@ -69,7 +64,7 @@ const ReduceOrderStatus = (props) => {
 
 /**
  * @typedef {Object} ReduceOrdersProps
- * @property {PositionEntity} positionEntity Position entity for position edit trading view.
+ * @property {Position} positionEntity Position entity for position edit trading view.
  * @property {boolean} [isReadOnly] Flag to disable edition.
  */
 

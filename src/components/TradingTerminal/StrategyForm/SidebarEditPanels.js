@@ -8,14 +8,13 @@ import ReduceOrders from "../ReduceOrders/ReduceOrders";
 import ReduceStrategyPanel from "../ReduceStrategyPanel/ReduceStrategyPanel";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  */
 
 /**
  * @typedef {Object} SidebarEditPanelsProps
  * @property {MarketSymbol} selectedSymbol
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {boolean} isReadOnly Flag to disable position update.
  */
 

@@ -21,7 +21,6 @@ import { store } from "../store/store.js";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection
- * @typedef {import("../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import("../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  *
@@ -47,7 +46,7 @@ import { store } from "../store/store.js";
 /**
  * Compose provider name element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose name for.
+ * @param {Position} position Position entity to compose name for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeProviderName(position) {
@@ -86,7 +85,7 @@ function composeStatusMessage(statusCode) {
 /**
  * Compose trailing stop icon element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose icon for.
+ * @param {Position} position Position entity to compose icon for.
  * @returns {JSX.Element|null} Composed JSX element or null.
  */
 function composeTrailingStopIcon(position) {
@@ -101,7 +100,7 @@ function composeTrailingStopIcon(position) {
 /**
  * Compose amount element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose amount for.
+ * @param {Position} position Position entity to compose amount for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeAmount(position) {
@@ -116,7 +115,7 @@ function composeAmount(position) {
 /**
  * Compose leverage element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose leverage for.
+ * @param {Position} position Position entity to compose leverage for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeLeverage(position) {
@@ -131,7 +130,7 @@ function composeLeverage(position) {
 /**
  * Compose position quote size for a given position.
  *
- * @param {PositionEntity} position Position entity to compose quote size for.
+ * @param {Position} position Position entity to compose quote size for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeQuoteSize(position) {
@@ -146,7 +145,7 @@ function composeQuoteSize(position) {
 /**
  * Compose entry price element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose entry price for.
+ * @param {Position} position Position entity to compose entry price for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeEntryPrice(position) {
@@ -160,7 +159,7 @@ function composeEntryPrice(position) {
 /**
  * Compose exit price element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose exit price for.
+ * @param {Position} position Position entity to compose exit price for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeExitPrice(position) {
@@ -175,7 +174,7 @@ function composeExitPrice(position) {
 /**
  * Compose profit amount element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose profit for.
+ * @param {Position} position Position entity to compose profit for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeProfit(position) {
@@ -198,7 +197,7 @@ function composeProfit(position) {
 /**
  * Compose profit percentage element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose profit for.
+ * @param {Position} position Position entity to compose profit for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeProfitPercentage(position) {
@@ -218,7 +217,7 @@ function composeProfitPercentage(position) {
 /**
  * Compose stop loss price element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose stop loss price for.
+ * @param {Position} position Position entity to compose stop loss price for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeStopLossPrice(position) {
@@ -233,7 +232,7 @@ function composeStopLossPrice(position) {
 /**
  * Compose risk percentage element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose risk for.
+ * @param {Position} position Position entity to compose risk for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeRisk(position) {
@@ -262,7 +261,7 @@ function composeSymbolWithPrice(symbol, price) {
 /**
  * Compose take profit targets element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose profit targets for.
+ * @param {Position} position Position entity to compose profit targets for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeTakeProfitTargets(position) {
@@ -290,7 +289,7 @@ function composeTakeProfitTargets(position) {
 /**
  * Compose reBuy targets element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose icon for.
+ * @param {Position} position Position entity to compose icon for.
  * @returns {JSX.Element} Composed JSX element.
  */
 function composeRebuyTargets(position) {
@@ -328,7 +327,7 @@ function composeRawValue(value) {
 /**
  * Checks if viewed page is a position edit view.
  *
- * @param {PositionEntity} position Position entity to check.
+ * @param {Position} position Position entity to check.
  * @returns {boolean} true if is edit view, false otherwise.
  */
 function isEditView(position) {
@@ -340,7 +339,7 @@ function isEditView(position) {
 /**
  * Checks if viewed page is a position edit view.
  *
- * @param {PositionEntity} position Position entity to check.
+ * @param {Position} position Position entity to check.
  * @returns {boolean} true if is edit view, false otherwise.
  */
 function isManagementFollowerPosition(position) {
@@ -352,7 +351,7 @@ function isManagementFollowerPosition(position) {
 /**
  * Compose all action buttons element for a given position.
  *
- * @param {PositionEntity} position Position entity to compose buttons for.
+ * @param {Position} position Position entity to compose buttons for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {JSX.Element} Composed JSX element.
  */
@@ -524,7 +523,7 @@ export function excludeDataTableColumn(dataTable, columnId) {
 /**
  * Compose MUI Data Table row for open position entity.
  *
- * @param {PositionEntity} position Position entity to compose data table row for.
+ * @param {Position} position Position entity to compose data table row for.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  * @returns {DataTableDataRow} Row data array.
  */
@@ -563,7 +562,7 @@ function composeManagementPositionRow(position, confirmActionHandler) {
  * Compose MUI Data Table data structure from positions entities collection.
  *
  * @export
- * @param {Array<PositionEntity>} positions Positions collection.
+ * @param {Array<Position>} positions Positions collection.
  * @param {React.MouseEventHandler} confirmActionHandler Confirm action event handler.
  *
  * @returns {DataTableContent} Open positions data table structure.

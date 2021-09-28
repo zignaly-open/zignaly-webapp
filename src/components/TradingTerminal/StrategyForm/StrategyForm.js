@@ -10,7 +10,6 @@ import { formatPrice } from "../../../utils/formatters";
 import tradeApi from "../../../services/tradeApiClient";
 import { mapEntryTypeToEnum, mapSideToEnum } from "../../../services/tradeApiClient.types";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { calculateDcaPrice } from "../../../utils/calculations";
@@ -25,7 +24,6 @@ import "./StrategyForm.scss";
  * @typedef {any} TVChartLine
  * @typedef {import("../../../services/tradeApiClient.types").CreatePositionPayload} CreatePositionPayload
  * @typedef {import("../../../services/tradeApiClient.types").UpdatePositionPayload} UpdatePositionPayload
- * @typedef {import("../../../services/tradeApiClient.types").PositionEntity} PositionEntity
  * @typedef {import("../../../services/tradeApiClient.types").MarketSymbol} MarketSymbol
  * @typedef {CreatePositionPayload["takeProfitTargets"]} PositionProfitTargets
  * @typedef {CreatePositionPayload["reBuyTargets"]} PositionDCATargets
@@ -80,7 +78,7 @@ export const composePositionDcaTargets = (draftPosition) => {
  * @property {number} lastPrice
  * @property {TVWidget} tradingViewWidget
  * @property {MarketSymbol} selectedSymbol
- * @property {PositionEntity} [positionEntity] Position entity (optional) for position edit trading view.
+ * @property {Position} [positionEntity] Position entity (optional) for position edit trading view.
  * @property {function} [notifyPositionUpdate] Callback to notify position update.
  */
 
@@ -103,7 +101,6 @@ const StrategyForm = (props) => {
 
   const { errors, handleSubmit, reset, watch, setValue } = useFormContext();
   const selectedExchange = useSelectedExchange();
-  const storeSession = useStoreSessionSelector();
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const [processing, setProcessing] = useState(false);
@@ -306,7 +303,6 @@ const StrategyForm = (props) => {
     const sellTTL = parseFloat(draftPosition.autoclose);
 
     return {
-      token: storeSession.tradeApi.accessToken,
       pair: selectedSymbol.zignalyId,
       positionSizeQuote: selectedSymbol.unitsInvestment,
       side: mapSideToEnum(draftPosition.entryType),
@@ -364,7 +360,6 @@ const StrategyForm = (props) => {
 
     return assign(
       {
-        token: storeSession.tradeApi.accessToken,
         positionSizeQuote: quote,
         side: mapSideToEnum(draftPosition.entryType),
         stopLossPercentage:

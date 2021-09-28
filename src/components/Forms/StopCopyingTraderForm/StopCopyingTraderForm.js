@@ -4,7 +4,6 @@ import { Box, Typography, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
 import tradeApi from "../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
@@ -26,7 +25,6 @@ import useCheckPSCanDisconnect from "hooks/useCheckPSCanDisconnect";
  * @returns {JSX.Element} JSx component.
  */
 const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
-  const storeSession = useStoreSessionSelector();
   const selectedExchange = useSelectedExchange();
   const [disconnectionType, setDisconnectType] = useState("soft");
   const [loader, setLoader] = useState(false);
@@ -44,9 +42,7 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
 
   const refreshProvider = () => {
     const getProviderPayload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
-      version: 2,
       exchangeInternalId: selectedExchange.internalId,
     };
     dispatch(getProvider(getProviderPayload, true));
@@ -55,7 +51,6 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
   const disable = () => {
     const disablePayload = {
       disable: true,
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       type: "connected",
     };
@@ -80,7 +75,6 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
 
   const disconnect = () => {
     const disconnectPayload = {
-      token: storeSession.tradeApi.accessToken,
       providerId: provider.id,
       internalExchangeId: selectedExchange.internalId,
       disconnectionType: disconnectionType,

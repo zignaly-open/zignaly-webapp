@@ -5,7 +5,6 @@ import { FormattedMessage } from "react-intl";
 import BalanceManagement from "../BalanceManagement";
 import CustomButton from "../../../CustomButton";
 import tradeApi from "../../../../services/tradeApiClient";
-import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import useExchangeAssets from "../../../../hooks/useExchangeAssets";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
@@ -26,7 +25,6 @@ const Convert = () => {
   const [updatedAt, setUpdatedAt] = useState(null);
   const [rowsSelected, setRowsSelected] = useState([]);
   const assets = useExchangeAssets(selectedAccount.internalId, updatedAt);
-  const storeSession = useStoreSessionSelector();
   const dispatch = useDispatch();
 
   /**
@@ -52,7 +50,6 @@ const Convert = () => {
 
     const selectedCoins = selectedAssets.map((a) => a.coin);
     const payload = {
-      token: storeSession.tradeApi.accessToken,
       internalId: selectedAccount.internalId,
       assets: selectedCoins,
     };
