@@ -1285,10 +1285,6 @@ srv.payment.error.title: "¡Pago fallido!"
 srv.payment.error.message: "Su transacción no se completó. Inténtalo de nuevo."
 srv.social: "Redes Sociales"
 srv.newsfeed: "Muro"
-srv.edit.list.1.tooltip: Tener un logo y una descripción.
-srv.edit.list.2.tooltip: Agrega una forma de contactarte.
-srv.edit.list.3.tooltip: Conéctese con una cuenta real.
-srv.edit.list.4.tooltip: 1 mes de resultados.
 signalp.settings.apikey: "API Key"
 alert.management.cancelall.title: "¡Cancelado con éxito!"
 alert.management.cancelall.body: "Su solicitud para cancelar estas posiciones se ha enviado correctamente."

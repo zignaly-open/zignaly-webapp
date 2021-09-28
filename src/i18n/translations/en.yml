@@ -682,10 +682,13 @@ srv.edit.quotes: "Quotes"
 srv.edit.public: "Make it Public"
 srv.edit.public.tooltip: "If you check this option, everybody with the provider url will be able to connect to your service."
 srv.edit.list: "Get Listed in the Marketplace"
-srv.edit.list.tooltip: "Please fulfill all these requirements and then contact our support in order to get listed in the marketplace!"
-srv.edit.list.1.tooltip: Have a logo and description.
-srv.edit.list.2.tooltip: Add a way to contact you.
-srv.edit.list.4.tooltip: 1 month of results.
+srv.edit.list.tooltip: "Please fulfill all these requirements and then contact our support in order to get listed in the marketplace:"
+srv.edit.list.1.tooltip: "The strategy needs to be running for a minimum of 1 month with a start balance of at least 500 USDT and has profits above that amount."
+srv.edit.list.2.tooltip: "Have provided contact information (email, Twitter, Facebook)."
+srv.edit.list.3.tooltip: "Applied a Logo + Description section completed."
+srv.edit.list.4.tooltip: "Maximum drawdown information is mandatory on the description. Once the value is applied it can only be reduced."
+srv.edit.list.5.tooltip: "2FA is mandatory."
+srv.edit.list.6.tooltip: "KYC verification approved (please send email to verify@zignaly.com)."
 srv.edit.upload: "Upload"
 srv.edit.delete: "Delete"
 srv.edit.countries: "Select Countries"
