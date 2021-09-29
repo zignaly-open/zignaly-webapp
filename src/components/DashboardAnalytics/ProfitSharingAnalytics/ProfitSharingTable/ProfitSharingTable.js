@@ -52,7 +52,7 @@ const ProfitSharingTable = ({ data }) => {
     },
     {
       label: intl.formatMessage({
-        id: "profitsharing.types.successFee",
+        id: "copyt.successfee",
       }),
       val: "successFee",
     },
