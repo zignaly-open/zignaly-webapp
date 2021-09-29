@@ -46,8 +46,7 @@ const AccountingFilter = ({ data, onChange, types }) => {
       return data;
     }
 
-    let filteredData = data.filter((item) => item.type.toLowerCase() === value);
-    return filteredData;
+    return data.filter((item) => item.type.toLowerCase() === value.toLowerCase());
   };
 
   return (
