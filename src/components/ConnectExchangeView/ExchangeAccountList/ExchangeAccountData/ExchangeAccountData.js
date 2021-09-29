@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useMediaQuery, Box, Typography, CircularProgress } from "@material-ui/core";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
@@ -7,11 +7,11 @@ import ConnectedProvidersSummary from "../../../Providers/ConnectedProvidersSumm
 import "./ExchangeAccountData.scss";
 import useEquity from "../../../../hooks/useEquity";
 import useBalance from "../../../../hooks/useBalance";
-import useConnectedProviders from "../../../../hooks/useConnectedProviders";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import { useTheme } from "@material-ui/core/styles";
 import ProfitLossAnalysis from "../../../Balance/ProfitLossAnalysis";
+import tradeApi from "services/tradeApiClient";
 
 /**
  * @typedef {import('../../../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -31,7 +31,20 @@ const ExchangeAccountData = ({ account }) => {
   const { navigateToPath } = useContext(ModalPathContext);
   const dailyBalance = useEquity(account.internalId);
   const { balance } = useBalance(account.internalId);
-  const providers = useConnectedProviders(30, account.internalId, ["copytraders", "profitsharing"]);
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    tradeApi
+      .providersGetNew({
+        type: "connected_traders",
+        timeFrame: 30,
+        internalExchangeId: account.internalId,
+      })
+      .then((data) => {
+        setProviders(data);
+      });
+  }, []);
+
   const intl = useIntl();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -90,7 +103,7 @@ const ExchangeAccountData = ({ account }) => {
               </>
             )}
             <Box className="cardsBox" display="flex" flexDirection="column">
-              <ConnectedProvidersSummary providers={providers} />
+              {providers && <ConnectedProvidersSummary providers={providers} />}
             </Box>
           </>
         )}
