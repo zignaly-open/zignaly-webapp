@@ -1298,11 +1298,6 @@ srv.payment.success.message: "İşleminiz tamamlandı. Ödemenizin profilinize y
 srv.payment.error.title: "Ödeme başarısız!"
 srv.payment.error.message: "İşleminiz tamamlanamadı. Lütfen tekrar deneyin."
 srv.social: "Sosyal Medya"
-srv.newsfeed: "Haberler"
-srv.edit.list.1.tooltip: Logo ve açıklama
-srv.edit.list.2.tooltip: İletişim bilgisi
-srv.edit.list.3.tooltip: Gerçek bir hesaptan bağlantı
-srv.edit.list.4.tooltip: 2 haftalık sonuç
 signalp.settings.apikey: "API Anahtarı"
 alert.management.cancelall.title: "Başarıyla İptal Edildi!"
 alert.management.cancelall.body: "Bu pozisyonları iptal etme talebiniz başarıyla gönderildi."
