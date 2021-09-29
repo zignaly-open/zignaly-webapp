@@ -7,9 +7,8 @@ import { Link } from "gatsby";
 import CustomButton from "../../CustomButton";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ProvidersCollection} ProvidersCollection
  * @typedef {Object} ProvidersListPropTypes
- * @property {ProvidersCollection} providers Providers.
+ * @property {Array<Provider>} providers Providers.
  */
 
 /**

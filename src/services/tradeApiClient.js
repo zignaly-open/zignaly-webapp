@@ -535,31 +535,6 @@ class TradeApiClient {
   /**
    * Get providers list.
    *
-   * @param {ProvidersPayload} payload Get providers payload.
-   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
-   *
-   * @memberof TradeApiClient
-   */
-  async providersGet(payload) {
-    const responseData = await this.doRequest(
-      "/user/providers",
-      {
-        ...payload,
-        version:
-          payload.provType.includes("copytraders") || payload.provType.includes("profitsharing")
-            ? 3
-            : 2,
-      },
-      "GET",
-      2,
-    );
-
-    return providersResponseTransform(responseData);
-  }
-
-  /**
-   * Get providers list.
-   *
    * @param {NewAPIProvidersPayload} payload Get providers payload.
    * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
    *

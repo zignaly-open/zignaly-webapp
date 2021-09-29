@@ -82,6 +82,7 @@ const useProvidersList = (options, updatedAt = null) => {
    */
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
+  // Fetch connected providers to augment the full provider lists with user data after.
   const { providers: connectedProviders } = useConnectedProvidersList(
     "",
     [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
