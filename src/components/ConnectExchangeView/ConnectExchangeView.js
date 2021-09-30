@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { ChangeEventHandler, useState } from "react";
 import "./ConnectExchangeView.scss";
 import { Box } from "@material-ui/core";
@@ -26,11 +27,11 @@ const ConnectExchangeView = ({ onClose, onSearch }) => {
   });
   const modalPath = useModalPath();
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   onSearch = (e) => {
     setSearch(e.target.value);
-  }
+  };
 
   return (
     <ModalPathContext.Provider value={modalPath}>

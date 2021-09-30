@@ -10,7 +10,6 @@ import ExchangeOrders from "../ExchangeOrders";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
 
-
 /**
  * @typedef {Object} DefaultProps
  * @property {string} searchFilter Search filter
@@ -21,7 +20,7 @@ import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ConnectExchangeViewContent = ({ searchFilter="" }) => {
+const ConnectExchangeViewContent = ({ searchFilter = "" }) => {
   const { pathParams } = useContext(ModalPathContext);
 
   const path = pathParams.currentPath;

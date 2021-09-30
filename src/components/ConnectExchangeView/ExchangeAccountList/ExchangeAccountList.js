@@ -26,7 +26,7 @@ import { getExchangeNamesCombined } from "../../../utils/helpers";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ExchangeAccountList = ({ demo, searchFilter="" }) => {
+const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
   const {
     pathParams: { currentPath },
     navigateToPath,
@@ -39,17 +39,17 @@ const ExchangeAccountList = ({ demo, searchFilter="" }) => {
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
   const hasDemoAccounts = exchangeConnections.find((e) => e.paperTrading || e.isTestnet);
-  
+
   const selectedExchange = useSelectedExchange();
   const [filteredUserExchanges, setFilteredUserExchanges] = useState([]);
 
   useEffect(() => {
     setFilteredUserExchanges(exchangeConnections
       .filter((item) => item.paperTrading || item.isTestnet ? demo : !demo)
-      .filter((item) => item.internalName.toLowerCase().search(searchFilter) != -1)
+      .filter((item) => item.internalName.toLowerCase().search(searchFilter) !== -1)
       .sort((item) => item.internalId === selectedExchange.internalId ? -1 : 0)
     );
-  }, [selectedExchange, searchFilter, demo])
+  }, [selectedExchange, searchFilter, demo]);
 
   const tabs = [
     {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useContext, useEffect, ChangeEventHandler } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
@@ -108,23 +109,23 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
             )}
 
             {exchangeConnections.length > 0 && !isMobile &&
-              <TextField 
+              <TextField
                 className="customInput searchInput"
-                variant="outlined"
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
                 onChange={(e) => onSearch(e)}
-              />          
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                variant="outlined"
+              />
             }
             {exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
             {exchangeConnections.length > 0 && isMobile &&
-              <TextField 
+              <TextField
                 className="customInput searchInput"
-                variant="outlined"
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
                 onChange={(e) => onSearch(e)}
-              />          
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                variant="outlined"
+              />
             }
 
             {isMobile && tempMessage && (
