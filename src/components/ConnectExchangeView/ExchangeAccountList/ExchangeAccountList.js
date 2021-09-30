@@ -46,7 +46,7 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
   useEffect(() => {
     setFilteredUserExchanges(exchangeConnections
       .filter((item) => item.paperTrading || item.isTestnet ? demo : !demo)
-      .filter((item) => item.internalName.toLowerCase().search(searchFilter) !== -1)
+      .filter((item) => item.internalName.toLowerCase().search(searchFilter.toLowerCase()) !== -1)
       .sort((item) => item.internalId === selectedExchange.internalId ? -1 : 0)
     );
   }, [selectedExchange, searchFilter, demo]);
