@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useContext, useEffect, ChangeEventHandler } from "react";
+import React, { useContext, useEffect } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import { Box, TextField, Typography, useMediaQuery } from "@material-ui/core";
@@ -16,7 +15,7 @@ import { useTheme } from "@material-ui/core/styles";
 /**
  * @typedef {Object} DefaultProps
  * @property {function} onClose Close modal callback.
- * @property {ChangeEventHandler<HTMLInputElement |  HTMLTextAreaElement>} onSearch Search callback
+ * @property {React.ChangeEventHandler<HTMLInputElement |  HTMLTextAreaElement>} onSearch Search callback
  */
 
 /**

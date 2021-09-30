@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
 import "./ConnectExchangeView.scss";
 import { Box } from "@material-ui/core";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
@@ -12,7 +11,7 @@ import FAQ from "../FAQ";
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
- * @property {ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>} onSearch Search callback
+ * @property {React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>} onSearch Search callback
  */
 
 /**
