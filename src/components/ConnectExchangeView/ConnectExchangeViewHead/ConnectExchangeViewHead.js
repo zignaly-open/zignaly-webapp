@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, ChangeEventHandler } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
-import { Box, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, TextField, Typography, useMediaQuery } from "@material-ui/core";
 import CustomButton from "../../CustomButton";
 import "./ConnectExchangeViewHead.scss";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import UserExchangeList from "../../Navigation/Header/UserExchangeList";
 import MobileExchangeList from "../../Navigation/MobileHeader/MobileExchangeList";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
@@ -15,13 +15,14 @@ import { useTheme } from "@material-ui/core/styles";
 /**
  * @typedef {Object} DefaultProps
  * @property {function} onClose Close modal callback.
+ * @property {ChangeEventHandler<HTMLInputElement |  HTMLTextAreaElement>} onSearch Search callback
  */
 
 /**
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} Component JSX.
  */
-const ConnectExchangeViewHead = ({ onClose }) => {
+const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
   const {
     pathParams: { currentPath, previousPath, title, tempMessage, isLoading },
     resetToPath,
@@ -32,6 +33,7 @@ const ConnectExchangeViewHead = ({ onClose }) => {
   const exchangeConnections = useStoreUserExchangeConnections();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const intl = useIntl();
 
   /**
    * Handle submit button click.
@@ -105,9 +107,26 @@ const ConnectExchangeViewHead = ({ onClose }) => {
               </Typography>
             )}
 
+            {exchangeConnections.length > 0 && !isMobile &&
+              <TextField 
+                className="customInput searchInput"
+                variant="outlined"
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                onChange={(e) => onSearch(e)}
+              />          
+            }
             {exchangeConnections.length > 0 &&
               ["demoAccounts", "realAccounts"].includes(currentPath) &&
               (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
+            {exchangeConnections.length > 0 && isMobile &&
+              <TextField 
+                className="customInput searchInput"
+                variant="outlined"
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                onChange={(e) => onSearch(e)}
+              />          
+            }
+
             {isMobile && tempMessage && (
               <Typography className="tempMessage" variant="body1">
                 {tempMessage}

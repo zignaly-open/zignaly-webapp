@@ -10,11 +10,18 @@ import ExchangeOrders from "../ExchangeOrders";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
 
+
+/**
+ * @typedef {Object} DefaultProps
+ * @property {string} searchFilter Search filter
+ */
+
 /**
  * Render the content the account exchanges modal depending on the current path.
+ * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const ConnectExchangeViewContent = () => {
+const ConnectExchangeViewContent = ({ searchFilter="" }) => {
   const { pathParams } = useContext(ModalPathContext);
 
   const path = pathParams.currentPath;
@@ -22,7 +29,7 @@ const ConnectExchangeViewContent = () => {
     case "realAccounts":
     case "demoAccounts":
     default:
-      return <ExchangeAccountList demo={path === "demoAccounts"} />;
+      return <ExchangeAccountList demo={path === "demoAccounts"} searchFilter={searchFilter} />;
     case "createAccount":
     case "createDemoAccount":
       return <ExchangeAccountAdd demo={path === "createDemoAccount"} />;
