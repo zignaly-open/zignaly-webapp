@@ -111,7 +111,7 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
               <TextField
                 className="customInput searchInput"
                 onChange={(e) => onSearch(e)}
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " ..."}
                 variant="outlined"
               />
             }
@@ -122,7 +122,7 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
               <TextField
                 className="customInput searchInput"
                 onChange={(e) => onSearch(e)}
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " .."}
+                placeholder={intl.formatMessage({ id: "fil.search" }) + " ..."}
                 variant="outlined"
               />
             }
