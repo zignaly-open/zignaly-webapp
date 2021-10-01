@@ -7,6 +7,7 @@ import ModalPathContext from "./ModalPathContext";
 import { useForm, FormProvider } from "react-hook-form";
 import useModalPath from "../../hooks/useModalPath";
 import FAQ from "../FAQ";
+import { debounce } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
@@ -28,8 +29,10 @@ const ConnectExchangeView = ({ onClose, onSearch }) => {
 
   const [search, setSearch] = useState("");
 
+  const lazySearch = debounce(setSearch, 100);
+
   onSearch = (e) => {
-    setSearch(e.target.value);
+    lazySearch(e.target.value);
   };
 
   return (
