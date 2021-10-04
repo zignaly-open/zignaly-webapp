@@ -1576,6 +1576,7 @@ error.1047: "Invalid address"
 error.1048: "Timeout trying to access the exchange"
 error.1051: "Order amount is below the min order size for this market"
 error.1052: "Order amount is above the max order size for this market"
+error.10000: "Too many requests, please try again later"
 
 month.jan: "Jan"
 month.feb: "Feb"
