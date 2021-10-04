@@ -429,7 +429,6 @@ interface PositionBase {
   markPrice: number;
   markPriceStyle: string;
   margin: number;
-  liquidationPrice: number;
   /**
    * Units displayed for the investment.
    */
