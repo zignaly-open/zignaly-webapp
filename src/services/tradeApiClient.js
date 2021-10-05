@@ -411,6 +411,10 @@ class TradeApiClient {
         responseData = parsedJson;
       } else {
         responseData.error = parsedJson;
+        if (response.status === 429) {
+          // Cloudflare rate limit
+          responseData.error.code = 10000;
+        }
       }
 
       // Currently method is not taking the real effect on the HTTP method we
