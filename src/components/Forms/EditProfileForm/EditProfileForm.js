@@ -79,7 +79,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
-  const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
+  const canEditName = provider.privacy !== "listed_marketplace";
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
