@@ -13,6 +13,7 @@ import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
 import { navigateLogin } from "../../../services/navigation";
+import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 
 /**
  *
@@ -27,6 +28,7 @@ import { navigateLogin } from "../../../services/navigation";
  */
 const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
+  const exchangeConnections = useStoreUserExchangeConnections();
 
   const logout = () => {
     navigateLogin();
@@ -54,7 +56,9 @@ const UserMenu = ({ onClose }) => {
       >
         <img alt="zignaly" className="iconPurple" src={MyExchange} />
         <span className="item">
-          <FormattedMessage id="menu.exchangeaccount" />
+          <FormattedMessage
+            id={exchangeConnections.length > 1 ? "menu.exchangeaccount" : "menu.myaccount"}
+          />
         </span>
       </MenuItem>
       {/* </Link> */}

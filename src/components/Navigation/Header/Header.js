@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Box, Grow, Typography, Popper } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoNW.svg";
 import LogoBlack from "../../../images/logo/logoNB.svg";
@@ -6,23 +6,23 @@ import ProfileIcon from "../../../images/header/profileIcon.svg";
 import { useDispatch } from "react-redux";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import RightIcon from "../../../images/header/chevron-right.svg";
-import Link from "../../LocalizedLink";
 import UserExchangeList from "./UserExchangeList";
 import BalanceBox from "./TopBalance";
-import ConnectExchangeButton from "./ConnectExchangeButton";
 import { FormattedMessage } from "react-intl";
 import UserMenu from "./UserMenu";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import {
   useStoreUserExchangeConnections,
-  useStoreUserSelector,
+  useStoreUserData,
 } from "../../../hooks/useStoreUserSelector";
 import { toggleBalanceBox } from "../../../store/actions/settings";
 import "./Header.scss";
 import DownIconPurple from "../../../images/header/chevronDownPurple.svg";
 import DownIcon from "../../../images/header/chevron-down.svg";
-import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import CustomButton from "components/CustomButton";
+import { Link } from "gatsby";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -31,15 +31,74 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 const Header = () => {
   const storeSettings = useStoreSettingsSelector();
-  const storeUser = useStoreUserSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
+  const { profitSharingCount, balance } = useContext(PrivateAreaContext);
+
+  const hasFunds = balance.totalUSDT + balance.totalLockedUSDT > 0;
+  const hasConnectedProfitSharing = profitSharingCount > 0;
+  const showBalance = storeSettings.balanceBox;
+
+  let showAddFunds = false;
+  let showFindTraders = false;
+  const hasOnlyDefaultExchangeAccount =
+    exchangeConnections.length === 1 &&
+    exchangeConnections[0].exchangeName.toLowerCase() === "zignaly";
+  if (hasOnlyDefaultExchangeAccount && !hasConnectedProfitSharing) {
+    if (!hasFunds) {
+      showAddFunds = true;
+    } else {
+      showFindTraders = true;
+    }
+  }
+  const hasOnlyNonBrokerAccount =
+    exchangeConnections.length === 1 &&
+    exchangeConnections[0].exchangeName.toLowerCase() !== "zignaly";
 
   const showHideBalance = () => {
-    dispatch(toggleBalanceBox(!storeSettings.balanceBox));
+    dispatch(toggleBalanceBox(!showBalance));
   };
+
+  const Balance = useCallback(
+    () => (
+      <Box
+        alignItems="center"
+        className={"balanceWrapper " + (showBalance ? "full" : "")}
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+      >
+        <Box
+          alignItems="center"
+          className="iconBox"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <img
+            alt="zignaly"
+            className={"expandIcon"}
+            onClick={showHideBalance}
+            src={showBalance ? RightIcon : LeftIcon}
+          />
+        </Box>
+        {showBalance ? (
+          <BalanceBox />
+        ) : (
+          <Grow in={true}>
+            <Box className="iconBox" display="flex" flexDirection="column" justifyContent="center">
+              <Typography variant="h4">
+                <FormattedMessage id="dashboard.balance" />
+              </Typography>
+            </Box>
+          </Grow>
+        )}
+      </Box>
+    ),
+    [showBalance],
+  );
 
   return (
     <Box
@@ -60,52 +119,29 @@ const Header = () => {
       </Box>
       <Box
         alignItems="center"
-        className={"linksContainer"}
+        className="linksContainer"
         display="flex"
         flexDirection="row"
         justifyContent="flex-end"
       >
-        {exchangeConnections.length > 0 && (
-          <Box
-            alignItems="center"
-            className={"balanceWrapper " + (storeSettings.balanceBox ? "full" : "")}
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-start"
-          >
-            <Box
-              alignItems="center"
-              className="iconBox"
-              display="flex"
-              flexDirection="row"
-              justifyContent="center"
-            >
-              <img
-                alt="zignaly"
-                className={"expandIcon"}
-                onClick={showHideBalance}
-                src={storeSettings.balanceBox ? RightIcon : LeftIcon}
-              />
-            </Box>
-            {storeSettings.balanceBox && <BalanceBox />}
-            {!storeSettings.balanceBox && (
-              <Grow in={true}>
-                <Box
-                  className="iconBox"
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                >
-                  <Typography variant="h4">
-                    <FormattedMessage id="dashboard.balance" />
-                  </Typography>
-                </Box>
-              </Grow>
-            )}
-          </Box>
+        {exchangeConnections.length > 0 &&
+          (!showAddFunds && !showFindTraders ? (
+            <Balance />
+          ) : showAddFunds ? (
+            <CustomButton className="customButton textPurple" href="#exchangeAccounts">
+              <FormattedMessage id="accounts.addfunds" />
+            </CustomButton>
+          ) : (
+            <CustomButton className="customButton textPurple" component={Link} to="/profitSharing">
+              <FormattedMessage id="accounts.findtraders" />
+            </CustomButton>
+          ))}
+        {hasOnlyNonBrokerAccount && (
+          <CustomButton className="customButton textPurple" component={Link} to="/profitSharing">
+            <FormattedMessage id="accounts.startps" />
+          </CustomButton>
         )}
-        {storeUser.loaded &&
-          ((exchangeConnections.length > 0 && <UserExchangeList />) || <ConnectExchangeButton />)}
+        {exchangeConnections.length > 1 && <UserExchangeList />}
         <Box className="linkBox">
           <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
             <ProviderLogo

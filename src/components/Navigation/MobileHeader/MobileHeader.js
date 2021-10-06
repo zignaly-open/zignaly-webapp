@@ -54,16 +54,19 @@ const MobileHeader = () => {
               justifyContent="flex-end"
               onClick={() => setShowBalance(!showBalance)}
             >
-              {storeSettings.darkStyle && (
-                <img
-                  alt="zignaly"
-                  className="expandIcon"
-                  src={showBalance ? DisabledWhite : EnabledWhite}
-                />
-              )}
-              {!storeSettings.darkStyle && (
-                <img alt="zignaly" className="expandIcon" src={showBalance ? Disabled : Enabled} />
-              )}
+              <img
+                alt="zignaly"
+                className="expandIcon"
+                src={
+                  showBalance
+                    ? storeSettings.darkStyle
+                      ? DisabledWhite
+                      : Disabled
+                    : storeSettings.darkStyle
+                    ? EnabledWhite
+                    : Enabled
+                }
+              />
               <Typography variant="h4">
                 <FormattedMessage id="dashboard.balance" />
               </Typography>

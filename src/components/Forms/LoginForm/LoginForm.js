@@ -125,12 +125,12 @@ const LoginForm = () => {
       </Modal>
       <Modal
         onClose={() => {}}
-        showCloseIcon={false}
         persist={true}
+        showCloseIcon={false}
         size="small"
         state={verifyEmailModal}
       >
-        <VerifyEmailForm token={loginResponse?.token} onComplete={onSuccess} />
+        <VerifyEmailForm onComplete={onSuccess} token={loginResponse?.token} />
       </Modal>
 
       <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>

@@ -599,7 +599,6 @@ class TradeApiClient {
       `/user/exchanges/${exchangeInternalId}/balance`,
       data,
       "GET",
-      2,
     );
 
     return userBalanceResponseTransform(responseData);

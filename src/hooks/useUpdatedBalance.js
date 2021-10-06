@@ -4,7 +4,6 @@ import useInterval from "./useInterval";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showBalanceLoader } from "../store/actions/ui";
-import useStoreUIBalanceLoader from "./useStoreUIBalanceLoader";
 import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 
 /**
@@ -20,7 +19,7 @@ const useUpdatedBalance = () => {
   const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
 
   const selectedExchange = useSelectedExchange();
-  const storeBalanceLoader = useStoreUIBalanceLoader();
+  // const storeBalanceLoader = useStoreUIBalanceLoader();
   const dispatch = useDispatch();
 
   const showLoader = () => {
@@ -40,9 +39,9 @@ const useUpdatedBalance = () => {
         .userBalanceGet(payload)
         .then((data) => {
           setBalance(data);
-          if (storeBalanceLoader) {
-            dispatch(showBalanceLoader(false));
-          }
+          // if (storeBalanceLoader) {
+          dispatch(showBalanceLoader(false));
+          // }
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
@@ -50,7 +49,7 @@ const useUpdatedBalance = () => {
     }
   };
 
-  useInterval(loadData, 5000, true);
+  useInterval(loadData, 60000, true);
 
   return balance;
 };
