@@ -341,7 +341,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
                   <FormattedMessage
                     id={CTorPS ? "trader.others" : "provider.others"}
                     values={{
-                      count: followers - 1,
+                      count: Math.max(followers - 1, 0),
                     }}
                   />
                 </h6>

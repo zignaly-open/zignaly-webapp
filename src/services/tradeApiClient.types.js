@@ -1029,11 +1029,6 @@ function providerItemTransform(providerItem, providerType) {
   }/${transformedResponse.id}`;
 
   if (!copyTrader && !profitSharingProvider) {
-    // Updating followers count because it's out of date for clones
-    transformedResponse.followers = transformedResponse.aggregateFollowers.length
-      ? transformedResponse.aggregateFollowers[transformedResponse.aggregateFollowers.length - 1]
-          .totalFollowers
-      : 0;
     transformedResponse.newFollowers = calculateNewFollowers(transformedResponse);
   }
 

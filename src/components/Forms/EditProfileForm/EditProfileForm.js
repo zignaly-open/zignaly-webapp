@@ -79,7 +79,6 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
-  const canEditName = provider.privacy !== "listed_marketplace";
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
@@ -151,7 +150,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
         strategy: strategy,
         providerId: provider.id,
         options: preparePayloadOptions(data),
-        ...(canEditName && { logoUrl, name: data.name }),
+        logoUrl,
+        name: data.name,
         privacy,
       };
       tradeApi
@@ -549,44 +549,40 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                   How to send signals?
                 </a>
               </Box>
-              {canEditName && (
-                <>
-                  <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className={"customLabel"}>
-                      <FormattedMessage id="srv.edit.title" />
-                    </label>
-                    <Controller
-                      as={
-                        <TextField
-                          className="customInput"
-                          error={!!errors.name}
-                          fullWidth
-                          variant="outlined"
-                        />
-                      }
-                      control={control}
-                      defaultValue={provider.name}
-                      name="name"
-                      rules={{
-                        required: true,
-                        maxLength: 50,
-                        minLength: 5,
-                      }}
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className={"customLabel"}>
+                  <FormattedMessage id="srv.edit.title" />
+                </label>
+                <Controller
+                  as={
+                    <TextField
+                      className="customInput"
+                      error={!!errors.name}
+                      fullWidth
+                      variant="outlined"
                     />
-                    {errors.name && (
-                      <span className="errorText">
-                        <FormattedMessage id="form.error.name.length" />
-                      </span>
-                    )}
-                  </Box>
-                  <Box className="inputBox" display="flex" flexDirection="column">
-                    <label className="customLabel">
-                      <FormattedMessage id="srv.edit.logo" />
-                    </label>
-                    <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
-                  </Box>
-                </>
-              )}
+                  }
+                  control={control}
+                  defaultValue={provider.name}
+                  name="name"
+                  rules={{
+                    required: true,
+                    maxLength: 50,
+                    minLength: 5,
+                  }}
+                />
+                {errors.name && (
+                  <span className="errorText">
+                    <FormattedMessage id="form.error.name.length" />
+                  </span>
+                )}
+              </Box>
+              <Box className="inputBox" display="flex" flexDirection="column">
+                <label className="customLabel">
+                  <FormattedMessage id="srv.edit.logo" />
+                </label>
+                <UploadImage imageUrl={logoUrl} onChange={handleLogoChange} />
+              </Box>
               <Box className="inputBox" display="flex" flexDirection="column">
                 <label className="customLabel">
                   <FormattedMessage id="srv.edit.website" />
