@@ -15,10 +15,18 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
  */
 
 /**
+ * @typedef {Object} AuthData
+ * @property {boolean} isUnknownDevice
+ * @property {boolean} disabled
+ * @property {boolean} ask2FA
+ * @property {string} token
+ */
+
+/**
  * @typedef {Object} DefaultProps
  * @property {Function} [onComplete]
  * @property {boolean} [verifySessionCode] For login/signup, call verify2FA endpoint.
- * @property {LoginResponse} data
+ * @property {AuthData} data
  */
 
 /**
