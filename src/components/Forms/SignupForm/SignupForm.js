@@ -16,6 +16,8 @@ import CaptchaTerms from "components/Captcha/CaptchaTerms";
 import { showErrorAlert } from "store/actions/ui";
 import tradeApi from "services/tradeApiClient";
 import { startTradeApiSession } from "store/actions/session";
+import Modal from "../../Modal";
+import VerifyEmailForm from "../VerifyEmailForm";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,8 @@ const SignupForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
+  const [verifyModal, showVerifyModal] = useState(false);
+  const [loginResponse, setLoginResponse] = useState(null);
 
   if (!hasMounted) {
     // Don't render form statically
@@ -78,7 +82,7 @@ const SignupForm = () => {
     tradeApi
       .userRegister(payload)
       .then((response) => {
-        dispatch(startTradeApiSession(response, "signup"));
+        setLoginResponse(response);
         captchaFallback.current = null;
       })
       .catch((e) => {
@@ -93,10 +97,23 @@ const SignupForm = () => {
       });
   };
 
+  const onVerified = () => {
+    dispatch(startTradeApiSession(loginResponse, "signup"));
+  };
+
   return (
     <>
       <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
         {/* <Captcha onSuccess={captchaFallback.current} /> */}
+        <Modal
+          onClose={() => {}}
+          showCloseIcon={false}
+          persist={true}
+          size="small"
+          state={Boolean(loginResponse)}
+        >
+          <VerifyEmailForm token={loginResponse?.token} onComplete={onVerified} />
+        </Modal>
         <Box
           alignItems="center"
           className="signupForm"

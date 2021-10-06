@@ -85,7 +85,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       token: data.token,
     };
     const method = data.disabled
-      ? tradeApi.enableAccount(payload)
+      ? tradeApi.verifyCode({ reason: "enable_user", ...payload })
       : tradeApi.verifyKnownDevice(payload);
 
     method
