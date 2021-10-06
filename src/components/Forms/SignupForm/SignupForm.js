@@ -32,7 +32,6 @@ const SignupForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
-  const [verifyModal, showVerifyModal] = useState(false);
   const [loginResponse, setLoginResponse] = useState(null);
 
   if (!hasMounted) {
