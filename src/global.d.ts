@@ -35,15 +35,20 @@ interface Provider {
   team: any[];
   social: any[];
   copyTradingQuote: string;
+  quote: string;
   allocatedBalance: number;
   minAllocatedBalance: number;
   maxAllocatedBalance: number;
   maxDrawdown: number;
+  /** KYC passed */
   verified: boolean;
   userId: string;
   isAdmin: boolean;
   options: ProviderOptions;
   privacy: "unlisted" | "listed_profile" | "listed_marketplace";
+  profitsSinceCopying?: number;
+  currentAllocated?: number;
+  providerLink: string;
 }
 
 interface TerminalProviderOption {
@@ -424,7 +429,6 @@ interface PositionBase {
   markPrice: number;
   markPriceStyle: string;
   margin: number;
-  liquidationPrice: number;
   /**
    * Units displayed for the investment.
    */

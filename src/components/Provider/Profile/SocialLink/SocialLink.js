@@ -37,7 +37,7 @@ const SocialLink = ({ type, url }) => {
       break;
   }
   return (
-    <>
+    <span className="socialLink">
       {type !== "email" ? (
         <Link target="_blank" to={prefixLinkForXSS(url)}>
           <img className="icon" src={icon} />
@@ -47,7 +47,7 @@ const SocialLink = ({ type, url }) => {
           <EmailIcon className="icon" />
         </a>
       )}
-    </>
+    </span>
   );
 };
 

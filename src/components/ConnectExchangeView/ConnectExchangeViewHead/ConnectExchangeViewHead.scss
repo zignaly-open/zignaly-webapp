@@ -3,8 +3,18 @@
 
   .actionBar {
     .userExchangeList {
-      margin-left: auto;
+      margin-left: 24px;
     }
+
+    .customInput.searchInput {
+      height: 36px;
+      margin: 12px 0 12px auto;
+      width: 250px;
+
+      > div {
+        height: 100%;
+      }
+    }  
   }
 }
 
@@ -13,6 +23,11 @@
     width: 100%;
 
     .actionBar {
+      .customInput.searchInput {
+        margin: 12px 10px 12px 0;
+        width: 100%;
+      }  
+  
       .textPurple {
         width: calc(50% - 20px);
       }

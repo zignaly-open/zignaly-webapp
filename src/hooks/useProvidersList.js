@@ -82,6 +82,7 @@ const useProvidersList = (options, updatedAt = null) => {
    */
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
+  // Fetch connected providers to augment the full provider lists with user data after.
   const { providers: connectedProviders } = useConnectedProvidersList(
     "",
     [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
@@ -188,12 +189,13 @@ const useProvidersList = (options, updatedAt = null) => {
   // Sort
   const initSort = () => {
     let val;
-    if (!connectedOnly) {
-      val = copyTraders || profitSharing ? storeSettings.sort.copyt : storeSettings.sort.signalp;
+    if (!connectedOnly && !myServices) {
+      // @ts-ignore
+      val = storeSettings.sort[page];
     }
     return val || defaultSort;
   };
-  const [sort, setSort] = useState(initSort);
+  const [sort, setSort] = useState(initSort());
 
   const clearSort = () => {
     setSort(defaultSort);

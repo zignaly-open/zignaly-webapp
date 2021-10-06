@@ -2,15 +2,13 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import "./TraderMiniCard.scss";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
-import useProviderUserInfo from "../../../hooks/useProviderUserInfo";
 import { FormattedMessage } from "react-intl";
 import { Link } from "gatsby";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 
 /**
- * @typedef {import("../../../services/tradeApiClient.types").ProviderEntity} ProviderEntity
  * @typedef {Object} TraderMiniCardPropTypes
- * @property {ProviderEntity} provider Provider
+ * @property {Provider} provider Provider
  */
 
 /**
@@ -20,8 +18,21 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
  * @returns {JSX.Element} Component JSX.
  */
 const TraderMiniCard = ({ provider }) => {
-  const { name, logoUrl, quote, providerLink, id, verified } = provider;
-  const { providerUserInfo, profitPerc } = useProviderUserInfo(id);
+  const {
+    name,
+    logoUrl,
+    quote,
+    providerLink,
+    verified,
+    profitsSinceCopying,
+    allocatedBalance,
+    currentAllocated,
+  } = provider;
+
+  let profitPerc = 0;
+  if (profitsSinceCopying && allocatedBalance) {
+    profitPerc = (profitsSinceCopying / allocatedBalance) * 100;
+  }
   const color = profitPerc >= 0 ? "green" : "red";
 
   return (
@@ -42,8 +53,7 @@ const TraderMiniCard = ({ provider }) => {
       </Box>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography variant="h5">
-          <FormattedMessage id="srv.allocated" /> {quote}{" "}
-          {formatFloat(providerUserInfo.currentAllocated)}
+          <FormattedMessage id="srv.allocated" /> {quote} {formatFloat(currentAllocated)}
         </Typography>
         <Box display="flex" flexDirection="row">
           <Typography noWrap={true} variant="h5">

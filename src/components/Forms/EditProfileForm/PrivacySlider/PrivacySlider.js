@@ -192,7 +192,16 @@ const PrivacySlider = ({
                   <FormattedMessage id="srv.edit.list.2.tooltip" />
                 </li>
                 <li>
+                  <FormattedMessage id="srv.edit.list.3.tooltip" />
+                </li>
+                <li>
                   <FormattedMessage id="srv.edit.list.4.tooltip" />
+                </li>
+                <li>
+                  <FormattedMessage id="srv.edit.list.5.tooltip" />
+                </li>
+                <li>
+                  <FormattedMessage id="srv.edit.list.6.tooltip" />
                 </li>
               </ul>
             </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ConnectExchangeView.scss";
 import { Box } from "@material-ui/core";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
@@ -7,10 +7,12 @@ import ModalPathContext from "./ModalPathContext";
 import { useForm, FormProvider } from "react-hook-form";
 import useModalPath from "../../hooks/useModalPath";
 import FAQ from "../FAQ";
+import { debounce } from "lodash";
 
 /**
  * @typedef {Object} DefaultProps
  * @property {Function} onClose
+ * @property {React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>} onSearch Search callback
  */
 
 /**
@@ -19,11 +21,19 @@ import FAQ from "../FAQ";
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Connect exchange element.
  */
-const ConnectExchangeView = ({ onClose }) => {
+const ConnectExchangeView = ({ onClose, onSearch }) => {
   const methods = useForm({
     mode: "onBlur",
   });
   const modalPath = useModalPath();
+
+  const [search, setSearch] = useState("");
+
+  const lazySearch = debounce(setSearch, 100);
+
+  onSearch = (e) => {
+    lazySearch(e.target.value);
+  };
 
   return (
     <ModalPathContext.Provider value={modalPath}>
@@ -35,8 +45,8 @@ const ConnectExchangeView = ({ onClose }) => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <ConnectExchangeViewHead onClose={onClose} />
-          <ConnectExchangeViewContent />
+          <ConnectExchangeViewHead onClose={onClose} onSearch={(e) => onSearch(e)} />
+          <ConnectExchangeViewContent searchFilter={search} />
           <FAQ />
         </Box>
       </FormProvider>

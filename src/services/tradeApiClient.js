@@ -411,6 +411,10 @@ class TradeApiClient {
         responseData = parsedJson;
       } else {
         responseData.error = parsedJson;
+        if (response.status === 429) {
+          // Cloudflare rate limit
+          responseData.error.code = 10000;
+        }
       }
 
       // Currently method is not taking the real effect on the HTTP method we
@@ -530,31 +534,6 @@ class TradeApiClient {
     );
 
     return positionsResponseTransform(responseData);
-  }
-
-  /**
-   * Get providers list.
-   *
-   * @param {ProvidersPayload} payload Get providers payload.
-   * @returns {Promise<ProvidersCollection>} Promise that resolves providers collection.
-   *
-   * @memberof TradeApiClient
-   */
-  async providersGet(payload) {
-    const responseData = await this.doRequest(
-      "/user/providers",
-      {
-        ...payload,
-        version:
-          payload.provType.includes("copytraders") || payload.provType.includes("profitsharing")
-            ? 3
-            : 2,
-      },
-      "GET",
-      2,
-    );
-
-    return providersResponseTransform(responseData);
   }
 
   /**

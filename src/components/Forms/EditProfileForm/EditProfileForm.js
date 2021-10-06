@@ -79,7 +79,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const [submittedFormData, setSubmittedFormData] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const intl = useIntl();
-  const canEditName = provider.privacy === "unlisted" || storeUserData.isAdmin;
+  const canEditName = provider.privacy !== "listed_marketplace";
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
     titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
@@ -744,7 +744,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           suffix={provider.copyTradingQuote}
                         />
                       </Box>
-                      {/* <Box className="inputBox" display="flex" flexDirection="column">
+                      <Box className="inputBox" display="flex" flexDirection="column">
                         <Tooltip
                           interactive
                           placement="top"
@@ -761,7 +761,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           errors={errors}
                           name="maxPositions"
                         />
-                      </Box> */}
+                      </Box>
                     </>
                   )}
                 </>

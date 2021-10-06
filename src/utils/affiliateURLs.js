@@ -24,4 +24,4 @@ export const highWaterMarkInfoUrl =
   "https://help.zignaly.com/hc/en-us/articles/360017357399-Understanding-Profit-Sharing-";
 export const pnlRetainInfoUrl = "https://help.zignaly.com/hc/en-us/articles/360021682320)";
 export const psCreateInfoUrl =
-  "https://help.zignaly.com/hc/en-us/articles/360017318920-Create-a-Profit-Sharing-Service";
+  "https://help.zignaly.com/hc/en-us/articles/360017318920-Create-a-Profit-Sharing-Service#h.ataed7sboy2f";
