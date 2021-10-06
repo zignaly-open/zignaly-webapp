@@ -18,6 +18,17 @@
   .spinner {
     margin-left: 4px;
   }
+
+  .linkBox {
+    height: 18px;
+    margin: 20px 0 40px;
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
 }
 
 @include media("<=sm") {

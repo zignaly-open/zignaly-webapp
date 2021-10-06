@@ -4,7 +4,7 @@ import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert } from "../../../store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 
 /**
@@ -26,6 +26,7 @@ import { FormattedMessage } from "react-intl";
  */
 const VerifyEmailForm = ({ token, onComplete }) => {
   const [verifying, setVerifying] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
   const [done, setDone] = useState(false);
   const dispatch = useDispatch();
 
@@ -55,6 +56,23 @@ const VerifyEmailForm = ({ token, onComplete }) => {
       })
       .finally(() => {
         setVerifying(false);
+      });
+  };
+
+  const resendCode = () => {
+    if (sendingCode) return;
+
+    setSendingCode(true);
+    tradeApi
+      .resendCode({ reason: "verify_email", token })
+      .then(() => {
+        dispatch(showSuccessAlert("", "security.device.resent"));
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setSendingCode(false);
       });
   };
 
@@ -96,6 +114,12 @@ const VerifyEmailForm = ({ token, onComplete }) => {
               loading={verifying}
               onComplete={submitCode}
             />
+          </Box>
+          <Box alignItems="center" className="linkBox" display="flex">
+            <Typography className="link" onClick={resendCode}>
+              <FormattedMessage id="security.device.resend" />
+            </Typography>
+            {sendingCode && <CircularProgress className="spinner" color="primary" size={18} />}
           </Box>
         </>
       )}
