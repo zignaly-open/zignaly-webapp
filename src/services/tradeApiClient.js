@@ -1505,16 +1505,16 @@ class TradeApiClient {
   }
 
   /**
-   * Unlock account after blocked.
+   * Verify code
    *
-   * @param {TwoFAPayload} payload Payload
+   * @param {{code: string, token: string, reason: string}} payload Payload
    * @returns {Promise<Boolean>} Returns promise.
    *
    * @memberof TradeApiClient
    */
-  async enableAccount(payload) {
-    const { token, ...data } = payload;
-    return this.doRequest("/user/verify_code/enable_user", data, "POST", 2, token);
+  async verifyCode(payload) {
+    const { token, reason, ...data } = payload;
+    return this.doRequest(`/user/verify_code/${reason}`, data, "POST", 2, token);
   }
 
   /**
@@ -2316,7 +2316,7 @@ class TradeApiClient {
   }
 
   /**
-   * Verify user
+   * Verify user (KYC)
    *
    * @returns {Promise<{}>} Result
    *
