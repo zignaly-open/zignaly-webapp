@@ -37,7 +37,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { profitSharingCount, balance } = useContext(PrivateAreaContext);
 
-  const hasFunds = balance.totalUSDT + balance.totalLockedUSDT > 0;
+  const hasFunds = !balance || balance.totalUSDT + balance.totalLockedUSDT > 0;
   const hasConnectedProfitSharing = profitSharingCount > 0;
   const showBalance = storeSettings.balanceBox;
 

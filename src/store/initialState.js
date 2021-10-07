@@ -183,7 +183,6 @@
  * @property {DefaultUIAlertsObject} alerts
  * @property {Boolean} loader
  * @property {Boolean} ask2FA
- * @property {Boolean} balanceLoader
  */
 
 /**
@@ -550,7 +549,6 @@ const initialState = {
     },
     loader: false,
     ask2FA: false,
-    balanceLoader: false,
   },
   views: {
     provider: {

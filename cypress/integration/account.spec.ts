@@ -35,13 +35,19 @@ describe("User Account", () => {
     });
 
     it("renders Add Funds button, no balance", () => {
-      cy.get("a")
-        .contains(/Add Funds/i)
-        .should("exist");
+      cy.contains("a", /Add Funds/i).should("exist");
       cy.get(".header")
         .contains(/Balance/i)
         .should("not.exist");
     });
+
+    // it("renders Add Funds button, no balance on mobile", () => {
+    //   cy.viewport("iphone-8");
+    //   cy.contains("a", /Add Funds/i).should("exist");
+    //   cy.get(".header")
+    //     .contains(/Balance/i)
+    //     .should("not.exist");
+    // });
   });
 
   describe("Default exchange account with funds but no providers connected", () => {
@@ -60,15 +66,9 @@ describe("User Account", () => {
     });
 
     it("render Find Traders button, no balance", () => {
-      cy.get("a")
-        .contains(/Find traders/i)
-        .should("exist");
-      cy.get(".header")
-        .contains(/Balance/i)
-        .should("not.exist");
-      cy.get("a")
-        .contains(/Add Funds/i)
-        .should("not.exist");
+      cy.contains("a", /Find traders/i).should("exist");
+      cy.contains(".header", /Balance/i).should("not.exist");
+      cy.contains("a", /Add Funds/i).should("not.exist");
     });
   });
 
@@ -90,12 +90,8 @@ describe("User Account", () => {
     });
 
     it("doesn't render Add Funds button, render balance", () => {
-      cy.get("a")
-        .contains(/Add Funds/i)
-        .should("not.exist");
-      cy.get(".header")
-        .contains(/Balance/i)
-        .should("exist");
+      cy.contains("a", /Add Funds/i).should("not.exist");
+      cy.contains(".header", /Balance/i).should("exist");
     });
   });
 
@@ -104,7 +100,6 @@ describe("User Account", () => {
       cy.mock();
 
       const user = makeFakeUser({ exchanges: [] });
-      // cy.viewport("iphone-8");
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
           win.initialState = initialAuthData(user);
@@ -113,12 +108,8 @@ describe("User Account", () => {
     });
 
     it("doesn't render anything in the menu", () => {
-      cy.get(".header")
-        .contains(/Balance/i)
-        .should("not.exist");
-      cy.get("a")
-        .contains(/Add Funds/i)
-        .should("not.exist");
+      cy.contains(".header", /Balance/i).should("not.exist");
+      cy.contains("a", /Add Funds/i).should("not.exist");
     });
   });
 
@@ -136,12 +127,8 @@ describe("User Account", () => {
     });
 
     it("render Start with PS button and balance", () => {
-      cy.get("a")
-        .contains(/Start with Profit Sharing/i)
-        .should("exist");
-      cy.get(".header")
-        .contains(/Balance/i)
-        .should("exist");
+      cy.contains("a", /Start with Profit Sharing/i).should("exist");
+      cy.contains(".header", /Balance/i).should("exist");
     });
   });
 
@@ -159,9 +146,7 @@ describe("User Account", () => {
     });
 
     it("render balance", () => {
-      cy.get(".header")
-        .contains(/Balance/i)
-        .should("exist");
+      cy.contains(".header", /Balance/i).should("exist");
       // No buttons
       cy.get(".linksContainer a").should("not.exist");
     });

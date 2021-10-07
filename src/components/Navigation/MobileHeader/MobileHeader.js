@@ -45,7 +45,7 @@ const MobileHeader = () => {
             flexDirection="row"
             justifyContent="space-between"
           >
-            <MobileExchangeList />
+            {exchangeConnections.length > 1 && <MobileExchangeList />}
             <Box
               alignItems="center"
               className="iconBox"

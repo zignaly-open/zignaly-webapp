@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Box, CircularProgress } from "@material-ui/core";
-import useStoreUIBalanceLoader from "../../../../hooks/useStoreUIBalanceLoader";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import SpotBalance from "./SpotBalance";
 import FuturesBalance from "./FuturesBalance";
@@ -8,12 +7,11 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 
 const TopBalance = () => {
   const selectedExchange = useSelectedExchange();
-  const storeBalanceLoader = useStoreUIBalanceLoader();
   const { balance } = useContext(PrivateAreaContext);
 
   return (
     <>
-      {storeBalanceLoader && (
+      {!balance ? (
         <Box
           alignItems="center"
           className="balanceContainer"
@@ -23,8 +21,7 @@ const TopBalance = () => {
         >
           <CircularProgress color="primary" size={30} />
         </Box>
-      )}
-      {!storeBalanceLoader && (
+      ) : (
         <Box
           alignItems="flex-start"
           className="balanceContainer"
