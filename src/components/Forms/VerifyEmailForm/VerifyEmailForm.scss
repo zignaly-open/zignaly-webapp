@@ -1,0 +1,45 @@
+.verifyEmailModal {
+  padding: 60px 75px;
+
+  h3 {
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
+  .inputBox {
+    width: fit-content;
+  }
+
+  .codeInput {
+    text-align: center;
+    width: auto;
+  }
+
+  .spinner {
+    margin-left: 4px;
+  }
+
+  .linkBox {
+    height: 18px;
+    margin: 20px 0 40px;
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+@include media("<=sm") {
+  .verifyEmailModal {
+    padding: 60px 12px;
+
+    .codeInput {
+      input {
+        max-height: 46px;
+        max-width: 43px;
+      }
+    }
+  }
+}
