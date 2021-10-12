@@ -47,9 +47,10 @@ const initUserExchanges = (responseData) => {
       dispatch(setSelectedExchange(selectedExchangeId));
 
       // If the user has any exchange account, query balance
-      // if (responseData.length > 0) {
-      //   dispatch(getDailyUserBalance(selectedExchangeId));
-      // }
+      // todo: used in dashboard, need to be removed
+      if (responseData.length > 0) {
+        dispatch(getDailyUserBalance(selectedExchangeId));
+      }
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
