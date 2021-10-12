@@ -288,6 +288,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  * @property {boolean} ask2FA Indicates if 2FA should be asked.
  * @property {boolean} disabled Account disabled due to too many incorrect login
+ * @property {boolean} emailUnconfirmed Email not confirmed yet
  */
 
 /**

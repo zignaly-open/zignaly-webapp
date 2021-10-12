@@ -16,6 +16,7 @@ import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
+import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
 
 /**
@@ -29,6 +30,7 @@ import CaptchaTerms from "components/Captcha/CaptchaTerms";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const [forgotModal, showForgotModal] = useState(false);
+  const [verifyEmailModal, showVerifyEmailModal] = useState(false);
   const [twoFAModal, showTwoFAModal] = useState(false);
   const [loginResponse, setLoginResponse] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,9 @@ const LoginForm = () => {
    * @returns {void} None.
    */
   const check2FA = (response) => {
-    if (response.ask2FA || response.isUnknownDevice || response.disabled) {
+    if (response.emailUnconfirmed) {
+      showVerifyEmailModal(true);
+    } else if (response.ask2FA || response.isUnknownDevice || response.disabled) {
       showTwoFAModal(true);
       setLoading(false);
     } else {
@@ -118,6 +122,15 @@ const LoginForm = () => {
       </Modal>
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
         <TwoFAForm data={loginResponse} onComplete={onSuccess} verifySessionCode={true} />
+      </Modal>
+      <Modal
+        onClose={() => {}}
+        showCloseIcon={false}
+        persist={true}
+        size="small"
+        state={verifyEmailModal}
+      >
+        <VerifyEmailForm token={loginResponse?.token} onComplete={onSuccess} />
       </Modal>
 
       <form id="loginForm" method="post" onSubmit={handleSubmit(onSubmit)}>

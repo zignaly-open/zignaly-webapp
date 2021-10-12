@@ -4,7 +4,8 @@ declare namespace Cypress {
   interface Chainable {
     /**
      * Custom command to mock common endpoints, such as exchanges, connected providers, etc.
-     * Also includes a check to warn if any api request is not stubbed. (needs to be called before any ohter `cy.intercept`)
+     * Also includes a check to warn if any api request is not stubbed. (Careful, it needs to be called before any other
+     * `cy.intercept` or it will throw false positive error)
      */
     mock(options?: MockOptions): Chainable<void>;
 
