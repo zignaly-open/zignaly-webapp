@@ -31,6 +31,7 @@ describe("List Providers", () => {
 
   it("navigates to service profile", () => {
     cy.intercept("GET", "*/user/providers/*", providers[0]).as("mockedUserProvider");
+    cy.intercept("GET", "**/user/*/providers", []).as("mockedOtherProviders");
     cy.get(".traderCard")
       .contains(/View Trader/i)
       .click();

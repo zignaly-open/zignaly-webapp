@@ -6,7 +6,7 @@ import { Link } from "gatsby";
  * TODO: This fix type override is is needed until Gatsby fix:
  * https://github.com/gatsbyjs/gatsby/issues/16682
  * @typedef {import("gatsby").GatsbyLinkProps<any>} GatsbyLinkProps
- * @typedef {GatsbyLinkProps & {ref?: React.LegacyRef<Link<any>>}} GatsbyLinkPropsFix
+ * @typedef {GatsbyLinkProps & {ref?: React.LegacyRef<Link<any>>, type?: string, key?: number}} GatsbyLinkPropsFix
  */
 
 /**

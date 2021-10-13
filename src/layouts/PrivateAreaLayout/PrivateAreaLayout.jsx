@@ -18,6 +18,7 @@ import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import useConnectedProvidersList from "hooks/useConnectedProvidersList";
+import useUpdatedBalance from "hooks/useUpdatedBalance";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -35,16 +36,30 @@ const PrivateAreaLayout = (props) => {
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
-  const { setProviderCount } = privateAreaContext;
+  const { setProviderCount, setProfitSharingCount, setBalance } = privateAreaContext;
+  // Get connected signal provider to know if we need to display "Connected Providers" tab in the dashboard.
+  // Also get connected profit sharing to know if we should display "Start with PS" button
   const { providers } = useConnectedProvidersList(
     selectedExchange.internalId,
-    ["signalProvider"],
+    ["signalProvider", "profitSharing"],
     true,
   );
 
+  // Balance to show in the header, and to show the "Add Fund" button
+  const balance = useUpdatedBalance();
+
   useEffect(() => {
-    setProviderCount(providers ? providers.length : 0);
+    if (!providers) return;
+
+    const providersCount = providers.filter((item) => item.type === "signalProvider").length;
+    const profitSharingCount = providers.filter((item) => item.type === "profitSharing").length;
+    setProviderCount(providersCount);
+    setProfitSharingCount(profitSharingCount);
   }, [providers]);
+
+  useEffect(() => {
+    setBalance(balance);
+  }, [balance]);
 
   const updateSession = () => {
     dispatch(refreshSessionData());

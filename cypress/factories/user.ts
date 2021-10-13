@@ -1,5 +1,21 @@
 import faker from "faker";
 import merge from "../../src/utils/merge";
+import { generateExchangeId } from "./utils";
+
+export const makeExchange = (override?: Partial<ExchangeAccount>): ExchangeAccount => {
+  return {
+    activated: true,
+    exchangeId: faker.random.alphaNumeric(24),
+    exchangeName: "Zignaly",
+    exchangeType: "spot",
+    internal: true,
+    internalId: generateExchangeId(),
+    internalName: "Zignaly Spot",
+    isBrokerAccount: true,
+    name: "Zignaly",
+    ...override,
+  };
+};
 
 export const makeFakeUser = (override?: Partial<User>): User => {
   const seed: User = {
