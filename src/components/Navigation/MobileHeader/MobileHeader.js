@@ -8,9 +8,9 @@ import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import MobileExchangeList from "./MobileExchangeList";
 import BalanceBox from "../Header/TopBalance";
 import { FormattedMessage } from "react-intl";
-import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import CustomButton from "components/CustomButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -75,7 +75,11 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+      {exchangeConnections.length === 0 && (
+        <CustomButton className="headerButton" href="#exchangeAccounts">
+          <FormattedMessage id="menu.connectexchange" />
+        </CustomButton>
+      )}
     </Box>
   );
 };

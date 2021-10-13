@@ -65,9 +65,9 @@ describe("User Account", () => {
       });
     });
 
-    it("render Find Traders button, no balance", () => {
+    it("render Find Traders button, balance", () => {
       cy.contains("a", /Find traders/i).should("exist");
-      cy.contains(".header", /Balance/i).should("not.exist");
+      cy.contains(".header", /Balance/i).should("exist");
       cy.contains("a", /Add Funds/i).should("not.exist");
     });
   });
@@ -90,8 +90,8 @@ describe("User Account", () => {
     });
 
     it("doesn't render Add Funds button, render balance", () => {
-      cy.contains("a", /Add Funds/i).should("not.exist");
       cy.contains(".header", /Balance/i).should("exist");
+      cy.contains("a", /Add Funds/i).should("not.exist");
     });
   });
 
@@ -107,9 +107,10 @@ describe("User Account", () => {
       });
     });
 
-    it("doesn't render anything in the menu", () => {
-      cy.contains(".header", /Balance/i).should("not.exist");
+    it("renders Connect Account", () => {
+      cy.contains("a", /Connect Account/i).should("exist");
       cy.contains("a", /Add Funds/i).should("not.exist");
+      cy.contains(".header", /Balance/i).should("not.exist");
     });
   });
 
@@ -126,7 +127,7 @@ describe("User Account", () => {
       });
     });
 
-    it("render Start with PS button and balance", () => {
+    it("renders Start with PS button and balance", () => {
       cy.contains("a", /Start with Profit Sharing/i).should("exist");
       cy.contains(".header", /Balance/i).should("exist");
     });
@@ -145,10 +146,10 @@ describe("User Account", () => {
       });
     });
 
-    it("render balance", () => {
+    it("renders balance, Find Traders button", () => {
       cy.contains(".header", /Balance/i).should("exist");
-      // No buttons
-      cy.get(".linksContainer a").should("not.exist");
+      // cy.get(".linksContainer a").should("not.exist");
+      cy.contains("a", /Find traders/i).should("exist");
     });
   });
 });

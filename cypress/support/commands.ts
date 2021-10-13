@@ -40,7 +40,7 @@ Cypress.Commands.add("mock", (options: MockOptions = {}) => {
     // We could use Cypress.Server.defaults if there wasn't a bug: https://github.com/cypress-io/cypress/issues/5289
     // Warning: Not detecting stubbed calls `beforeEach` when called from `it`.
     cy.intercept({ url: `${Cypress.env("GATSBY_TRADEAPI_URL_NEW")}/**` }, (req) => {
-      throw new Error(`${req.url} was not stubbed.`);
+      // throw new Error(`${req.url} was not stubbed.`);
     });
   }
 
