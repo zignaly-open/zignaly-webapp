@@ -1211,7 +1211,6 @@ deposit.loss: "Sending other coin or token to this address may result in the los
 deposit.memo.copied: "MEMO/Tag copied."
 deposit.network: "Select Network"
 deposit.note.onlysend: "Only send {coin} to this address"
-deposit.time.alert: "Please, take into consideration that once the status of the Deposit is “Ok”, It can take up to 3 hours to reflect in your Balance"
 deposit.processing: "Deposit processing time varies coin to coin and depends mostly on the network performance."
 deposit.selectcoin: "Select coin"
 deposit.transfer: "Transfer Crypto"
