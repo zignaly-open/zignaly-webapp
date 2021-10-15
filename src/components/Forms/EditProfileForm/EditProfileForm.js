@@ -658,7 +658,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           rules={{
                             validate: (value) =>
                               parseFloat(value) === 0 ||
-                              (parseFloat(value) >= 5 && parseFloat(value) < 100) ||
+                              (parseFloat(value) > 5 && parseFloat(value) < 100) ||
                               intl.formatMessage({ id: "form.error.profitsharing" }),
                           }}
                           suffix="%"
