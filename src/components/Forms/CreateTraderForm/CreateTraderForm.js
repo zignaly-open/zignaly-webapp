@@ -346,7 +346,7 @@ const CreateTraderForm = ({ isCopyTrading }) => {
                         validate: (value) =>
                           parseFloat(value) === 0 ||
                           (parseFloat(value) > 5 && parseFloat(value) < 100) ||
-                          intl.formatMessage({ id: "form.error.profitsharing" }),
+                          intl.formatMessage({ id: "form.error.successfee" }),
                       }}
                       suffix="%"
                     />
