@@ -208,11 +208,6 @@ const Deposit = () => {
                   </Box>
                 )}
               </Box>
-              <Alert className="depositTimeAlert" severity="error">
-                <Typography variant="body1">
-                  <FormattedMessage id="deposit.time.alert" />
-                </Typography>
-              </Alert>
             </Box>
           )}
           <DepositHistoryTable internalId={selectedAccount.internalId} />
