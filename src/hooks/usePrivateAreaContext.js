@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * @typedef {import("../context/PrivateAreaContext").PrivateAreaContextObject} PrivateAreaContextObject
+ * @typedef {import('../services/tradeApiClient.types').HasBeenUsedProviderEntity} HasBeenUsedProviderEntity
  */
 
 /**
@@ -10,23 +11,24 @@ import { useState } from "react";
  * @returns {PrivateAreaContextObject} App context object.
  */
 const usePrivateAreaContext = () => {
-  const [providerCount, setProviderCount] = useState(0);
-  const [profitSharingCount, setProfitSharingCount] = useState(0);
+  const [userProviders, setUserProviders] = useState(
+    /** @type {Array<HasBeenUsedProviderEntity>} */ (null),
+  );
+  const connectedProviders = userProviders ? userProviders.filter((p) => p.connected) : null;
   const [balance, setBalance] = useState(null);
   const [quotesMap, setQuotesMapData] = useState({});
   const [exchangeList, setExchangeList] = useState([]);
 
   return {
-    providerCount,
-    setProviderCount,
-    profitSharingCount,
-    setProfitSharingCount,
     quotesMap,
     setQuotesMapData,
     exchangeList,
     setExchangeList,
     setBalance,
     balance,
+    userProviders: userProviders,
+    setUserProviders,
+    connectedProviders,
   };
 };
 

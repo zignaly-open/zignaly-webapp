@@ -23,6 +23,7 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -30,16 +31,23 @@ import { Link } from "gatsby";
  */
 
 const Header = () => {
+  const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const { profitSharingCount, balance } = useContext(PrivateAreaContext);
+  const { connectedProviders, balance } = useContext(PrivateAreaContext);
+  const profitSharingCount = connectedProviders
+    ? connectedProviders.filter(
+        (p) => p.exchangeInternalId === selectedExchange.internalId && p.type === "profitSharing",
+      ).length
+    : null;
 
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
   const hasConnectedProfitSharing = profitSharingCount > 0;
   const showBalance = storeSettings.balanceBox;
+  const balanceReady = balance && profitSharingCount !== null;
 
   let showAddFunds = false;
   let showFindTraders = false;
@@ -126,22 +134,26 @@ const Header = () => {
       >
         {exchangeConnections.length ? (
           <>
-            {!showAddFunds ? (
-              <Balance />
-            ) : (
-              <CustomButton className="textPurple" href="#exchangeAccounts">
-                <FormattedMessage id="accounts.addfunds" />
-              </CustomButton>
-            )}
-            {showFindTraders && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.findtraders" />
-              </CustomButton>
-            )}
-            {hasOnlyNonBrokerAccount && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.startps" />
-              </CustomButton>
+            {balanceReady && (
+              <>
+                {!showAddFunds ? (
+                  <Balance />
+                ) : (
+                  <CustomButton className="textPurple" href="#exchangeAccounts">
+                    <FormattedMessage id="accounts.addfunds" />
+                  </CustomButton>
+                )}
+                {showFindTraders && (
+                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                    <FormattedMessage id="accounts.findtraders" />
+                  </CustomButton>
+                )}
+                {hasOnlyNonBrokerAccount && (
+                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                    <FormattedMessage id="accounts.startps" />
+                  </CustomButton>
+                )}
+              </>
             )}
             {exchangeConnections.length > 1 && <UserExchangeList />}
           </>

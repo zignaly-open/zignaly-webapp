@@ -572,7 +572,7 @@ class TradeApiClient {
   /**
    * Get providers connected by user.
    *
-   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @param {ProvidersListPayload} [payload] Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
