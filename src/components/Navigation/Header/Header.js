@@ -38,23 +38,19 @@ const Header = () => {
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const { connectedProviders, balance } = useContext(PrivateAreaContext);
-  const profitSharingCount = connectedProviders
-    ? connectedProviders.filter(
-        (p) => p.exchangeInternalId === selectedExchange.internalId && p.type === "profitSharing",
-      ).length
+  const connectedProvidersCount = connectedProviders
+    ? connectedProviders.filter((p) => p.exchangeInternalId === selectedExchange.internalId).length
     : null;
-
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
-  const hasConnectedProfitSharing = profitSharingCount > 0;
   const showBalance = storeSettings.balanceBox;
-  const balanceReady = balance && profitSharingCount !== null;
+  const balanceReady = balance && connectedProvidersCount !== null;
 
   let showAddFunds = false;
   let showFindTraders = false;
   // const hasOnlyDefaultExchangeAccount =
   //   exchangeConnections.length === 1 &&
   //   exchangeConnections[0].exchangeName.toLowerCase() === "zignaly";
-  if (!hasConnectedProfitSharing) {
+  if (!connectedProvidersCount) {
     if (!hasFunds) {
       showAddFunds = true;
     } else {
