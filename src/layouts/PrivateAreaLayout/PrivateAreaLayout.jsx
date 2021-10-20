@@ -8,6 +8,8 @@ import Sidebar from "../../components/Navigation/Sidebar";
 import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import SettingsView from "../../components/SettingsView";
+import WalletView from "../../components/WalletView";
+import WalletDepositView from "../../components/WalletView/WalletDepositView";
 import { useDispatch } from "react-redux";
 import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
@@ -69,6 +71,8 @@ const PrivateAreaLayout = (props) => {
       />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
+      <GlobalModal content={WalletView} hash="wallet" />
+      {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>
           <Header />

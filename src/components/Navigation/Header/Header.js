@@ -24,6 +24,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
+import WalletButton from "./WalletButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -121,6 +122,13 @@ const Header = () => {
           />
         </Link>
       </Box>
+      {/* <div>
+        <FormattedMessage id="menu.profitSharing" />
+        <FormattedMessage id="menu.copytraders" />
+        <FormattedMessage id="menu.signals" />
+        <FormattedMessage id="menu.tradingterminal" />
+        <FormattedMessage id="menu.tradingservices" />
+      </div> */}
       <Box
         alignItems="center"
         className="linksContainer"
@@ -128,6 +136,7 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
+        {/* <HeaderBalance /> */}
         {exchangeConnections.length ? (
           <>
             {balanceReady && (
@@ -152,6 +161,7 @@ const Header = () => {
               </>
             )}
             {exchangeConnections.length > 1 && <UserExchangeList />}
+            <WalletButton />
           </>
         ) : (
           <CustomButton className="headerButton" href="#exchangeAccounts">
