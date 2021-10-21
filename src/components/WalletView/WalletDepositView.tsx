@@ -51,14 +51,16 @@ const WalletDepositView = () => {
       <TextDesc>
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: "ZIG" }} />
       </TextDesc>
+      <br />
       <CustomSelect
-        label={"test"}
         labelPlacement="top"
         onChange={setNetwork}
         options={networkOptions}
         value={network}
       />
+      <br />
       <OutlinedInput className="customInput" value={address?.address} readOnly />
+      <br />
       <FormattedMessage id="wallet.deposit.caution" />
       <FormattedMessage id="wallet.deposit.notsure" />
       {address && <DepositQRCodes address={{ ...address, tag: address.memo }} />}
