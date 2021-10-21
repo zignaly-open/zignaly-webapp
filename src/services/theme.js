@@ -185,6 +185,7 @@ const theme = (darkStyle) => {
       },
       text: {
         primary: darkStyle ? colors.lightWhite : colors.black,
+        secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
       type: darkStyle ? "dark" : "light",
     },

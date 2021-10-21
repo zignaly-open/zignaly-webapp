@@ -23,6 +23,8 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
+import useSelectedExchange from "hooks/useSelectedExchange";
+import WalletButton from "./WalletButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -30,23 +32,26 @@ import { Link } from "gatsby";
  */
 
 const Header = () => {
+  const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const { profitSharingCount, balance } = useContext(PrivateAreaContext);
-
+  const { connectedProviders, balance } = useContext(PrivateAreaContext);
+  const connectedProvidersCount = connectedProviders
+    ? connectedProviders.filter((p) => p.exchangeInternalId === selectedExchange.internalId).length
+    : null;
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
-  const hasConnectedProfitSharing = profitSharingCount > 0;
   const showBalance = storeSettings.balanceBox;
+  const balanceReady = balance && connectedProvidersCount !== null;
 
   let showAddFunds = false;
   let showFindTraders = false;
   // const hasOnlyDefaultExchangeAccount =
   //   exchangeConnections.length === 1 &&
   //   exchangeConnections[0].exchangeName.toLowerCase() === "zignaly";
-  if (!hasConnectedProfitSharing) {
+  if (!connectedProvidersCount) {
     if (!hasFunds) {
       showAddFunds = true;
     } else {
@@ -117,6 +122,13 @@ const Header = () => {
           />
         </Link>
       </Box>
+      {/* <div>
+        <FormattedMessage id="menu.profitSharing" />
+        <FormattedMessage id="menu.copytraders" />
+        <FormattedMessage id="menu.signals" />
+        <FormattedMessage id="menu.tradingterminal" />
+        <FormattedMessage id="menu.tradingservices" />
+      </div> */}
       <Box
         alignItems="center"
         className="linksContainer"
@@ -124,26 +136,32 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
+        {/* <HeaderBalance /> */}
         {exchangeConnections.length ? (
           <>
-            {!showAddFunds ? (
-              <Balance />
-            ) : (
-              <CustomButton className="textPurple" href="#exchangeAccounts">
-                <FormattedMessage id="accounts.addfunds" />
-              </CustomButton>
-            )}
-            {showFindTraders && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.findtraders" />
-              </CustomButton>
-            )}
-            {hasOnlyNonBrokerAccount && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.startps" />
-              </CustomButton>
+            {balanceReady && (
+              <>
+                {!showAddFunds ? (
+                  <Balance />
+                ) : (
+                  <CustomButton className="textPurple" href="#exchangeAccounts">
+                    <FormattedMessage id="accounts.addfunds" />
+                  </CustomButton>
+                )}
+                {showFindTraders && (
+                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                    <FormattedMessage id="accounts.findtraders" />
+                  </CustomButton>
+                )}
+                {hasOnlyNonBrokerAccount && (
+                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                    <FormattedMessage id="accounts.startps" />
+                  </CustomButton>
+                )}
+              </>
             )}
             {exchangeConnections.length > 1 && <UserExchangeList />}
+            <WalletButton />
           </>
         ) : (
           <CustomButton className="headerButton" href="#exchangeAccounts">

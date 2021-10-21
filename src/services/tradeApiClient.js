@@ -355,6 +355,8 @@ class TradeApiClient {
     } else if (apiVersion === 0) {
       // Cloudflare url
       baseUrl = baseUrl.split("/new_api")[0];
+    } else if (apiVersion === 3) {
+      baseUrl = process.env.GATSBY_CYBAVOAPI_URL;
     }
 
     let requestUrl = baseUrl + endpointPath;
@@ -572,7 +574,7 @@ class TradeApiClient {
   /**
    * Get providers connected by user.
    *
-   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @param {ProvidersListPayload} [payload] Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
@@ -2334,6 +2336,41 @@ class TradeApiClient {
    */
   async unverifyUser() {
     return this.doRequest("/user/unverify", null, "POST");
+  }
+
+  /**
+   * Get wallet balance
+   *
+   * @returns {Promise<{WalletBalance}>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletBalance() {
+    return this.doRequest("/get-balance", null, "GET", 3);
+  }
+
+  /**
+   * Get coins
+   *
+   * @returns {Promise<WalletCoins>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletCoins() {
+    return this.doRequest("/get-currencies", null, "GET", 3);
+  }
+
+  /**
+   * Get deposit address for coin
+   *
+   * @param {string} network
+   * @param {string} coin
+   * @returns {Promise<WalletAddress>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletDepositAddress(network, coin) {
+    return this.doRequest(`/generate-address/${network}/currency/${coin}`, null, "POST", 3);
   }
 }
 

@@ -1,5 +1,4 @@
 import React from "react";
-import "./positions.scss";
 import { Box } from "@material-ui/core";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import useFilters from "./useFilters";
 import { forceCheck } from "react-lazyload";
 import useExchangeQuotes from "./useExchangeQuotes";
-import useConnectedProvidersList from "./useConnectedProvidersList";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -83,11 +83,15 @@ const useProvidersList = (options, updatedAt = null) => {
   const initialState = { list: null, filteredList: null };
   const [providers, setProviders] = useState(initialState);
   // Fetch connected providers to augment the full provider lists with user data after.
-  const { providers: connectedProviders } = useConnectedProvidersList(
-    "",
-    [copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"],
-    true,
-  );
+  const { connectedProviders: connectedProvidersAll } = useContext(PrivateAreaContext);
+  const connectedProviders = connectedProvidersAll
+    ? connectedProvidersAll.filter(
+        (item) =>
+          item.connected &&
+          item.type ===
+            (copyTraders ? "copyTrading" : profitSharing ? "profitSharing" : "signalProvider"),
+      )
+    : [];
 
   /**
    * @type {PageType} Page shorthand

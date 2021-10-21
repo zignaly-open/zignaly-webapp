@@ -1,30 +1,36 @@
 {
-    "extends": "stylelint-config-sass-guidelines",
-    "plugins": [
-        "stylelint-order"
-    ],
-    "rules": {
-        "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
-        "max-nesting-depth": 4,
-        "selector-max-compound-selectors": 4,
-        "string-quotes": "double",
-        "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]+$",
-        "selector-no-qualifying-type": null,
-        "property-no-vendor-prefix": [
-            true,
-            {
-                "ignoreProperties": [
-                    "box-orient"
-                ]
-            }
-        ],
-        "value-no-vendor-prefix": [
-            true,
-            {
-                "ignoreValues": [
-                    "box"
-                ]
-            }
+  "extends": [
+    "stylelint-config-recommended-scss",
+    "stylelint-config-styled-components"
+  ],
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "max-nesting-depth": 4,
+    "selector-max-compound-selectors": 4,
+    "string-quotes": "double",
+    "scss/dollar-variable-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "selector-no-qualifying-type": null,
+    "property-no-vendor-prefix": [
+      true,
+      {
+        "ignoreProperties": [
+          "box-orient"
         ]
-    }
+      }
+    ],
+    "value-no-vendor-prefix": [
+      true,
+      {
+        "ignoreValues": [
+          "box"
+        ]
+      }
+    ],
+    "no-descending-specificity": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "selector-pseudo-class-no-unknown": null
+  }
 }
