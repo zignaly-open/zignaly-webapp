@@ -24,8 +24,6 @@ export const Panel = styled(Box)`
   background: #151d3f;
   border: 1px solid #413ba0;
   border-radius: 16px;
-  box-sizing: border-box;
-  /* opacity: 0.4; */
 `;
 
 export const Modal = styled(Box)`

@@ -1,5 +1,10 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
-import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
+import {
+  ThemeProvider as MuiThemeProvider,
+  createMuiTheme,
+  StylesProvider,
+} from "@material-ui/core/styles";
+import { ThemeProvider } from "styled-components";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
@@ -43,8 +48,7 @@ const AppLayout = (props) => {
   const storeLoader = useStoreUILoaderSelector();
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
-  const createTheme = () => createMuiTheme(options);
-  const theme = useMemo(createTheme, [darkTheme]);
+  const theme = useMemo(() => createMuiTheme(options), [darkTheme]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -118,13 +122,15 @@ const AppLayout = (props) => {
         useRecaptchaNet={true}
       >
         <StylesProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ErrorAlert />
-            <SuccessAlert />
-            {storeLoader && <Loader />}
-            {children}
-          </ThemeProvider>
+          <MuiThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <ErrorAlert />
+              <SuccessAlert />
+              {storeLoader && <Loader />}
+              {children}
+            </ThemeProvider>
+          </MuiThemeProvider>
         </StylesProvider>
       </GoogleReCaptchaProvider>
     </IntlProvider>

@@ -45,7 +45,7 @@ const Rate = styled.span`
 `;
 
 const Amount = styled.span`
-  color: #f3f4f6;
+  /* color: #f3f4f6; */
   font-size: 32px;
   font-weight: 500;
   letter-spacing: 0.66px;
@@ -53,7 +53,8 @@ const Amount = styled.span`
 `;
 
 const ZigBig = styled.span`
-  color: #9864ef;
+  /* color: #9864ef; */
+  color: ${(props) => props.theme.palette.text.secondary};
   font-size: 18px;
   letter-spacing: 1px;
   line-height: 16px;
@@ -61,7 +62,8 @@ const ZigBig = styled.span`
 `;
 
 const Zig = styled.span`
-  color: #9864ef;
+  /* color: #9864ef; */
+  color: ${(props) => props.theme.palette.text.secondary};
   font-size: 12px;
   letter-spacing: 1px;
   line-height: 16px;
@@ -93,6 +95,7 @@ const Divider = styled.span`
   background: #222249;
   margin: 0 34px;
   width: 1px;
+  height: 128px;
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -154,7 +157,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Panel display="flex" mt="20px" py="40px" px="7%">
+      <Box display="flex" mt="20px" py="40px" px="7%" alignItems="center">
         <PanelItem row>
           <CategIconStyled width={66} height={66} src={ZigCoinIcon} />
           <Box display="flex" flexDirection="column">
@@ -209,7 +212,7 @@ const WalletView = () => {
             <FormattedMessage id="wallet.staking.soon.desc" />
           </TextCaption>
         </PanelItem>
-      </Panel>
+      </Box>
       <Title>
         <Box display="flex" alignItems="center">
           <TitleIcon width="33px" height="30px" src={WalletIcon} />
