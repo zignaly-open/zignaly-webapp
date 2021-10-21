@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ConfirmTwoFADisableForm.scss";
 import { Box, OutlinedInput, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";

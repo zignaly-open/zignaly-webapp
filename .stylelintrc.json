@@ -1,7 +1,6 @@
 {
   "extends": [
-    "stylelint-config-sass-guidelines",
-    "stylelint-config-recommended",
+    "stylelint-config-recommended-scss",
     "stylelint-config-styled-components"
   ],
   "plugins": [
@@ -29,6 +28,9 @@
           "box"
         ]
       }
-    ]
+    ],
+    "no-descending-specificity": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "selector-pseudo-class-no-unknown": null
   }
 }

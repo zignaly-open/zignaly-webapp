@@ -61,7 +61,7 @@ const WalletDepositView = () => {
       <OutlinedInput className="customInput" value={address?.address} readOnly />
       <FormattedMessage id="wallet.deposit.caution" />
       <FormattedMessage id="wallet.deposit.notsure" />
-      {address && <DepositQRCodes address={address} />}
+      {address && <DepositQRCodes address={{ ...address, tag: address.memo }} />}
     </Modal>
   );
 };

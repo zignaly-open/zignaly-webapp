@@ -1,5 +1,4 @@
 import React from "react";
-import "./changeEmail.scss";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import ChangeEmailForm from "components/Forms/ChangeEmailForm";

@@ -22,15 +22,7 @@ import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import styled, { css } from "styled-components";
 
-const TextMain = styled.span`
-  color: #9ca3af;
-  font-size: 32px;
-  font-weight: 500;
-  /* line-height: 40px; */
-  letter-spacing: 0.66px;
-`;
 /**
  *
  * @typedef {Record<string, string>} MessageRecord

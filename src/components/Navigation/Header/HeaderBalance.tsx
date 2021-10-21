@@ -7,14 +7,15 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import { Link } from "gatsby";
 
 const BalanceMiniChart = () => {
-  return <div></div>;
+  return <></>;
 };
 
 const HeaderBalance = () => {
   const exchangeConnections = useStoreUserExchangeConnections();
-  const { profitSharingCount, balance } = useContext(PrivateAreaContext);
+  const { connectedProviders, balance } = useContext(PrivateAreaContext);
   const hasFunds = !balance || balance.totalUSDT + balance.totalLockedUSDT > 0;
-  const hasConnectedProfitSharing = profitSharingCount > 0;
+  const hasConnectedProfitSharing =
+    connectedProviders.filter((p) => p.type === "profitSharing").length > 0;
   let showAddFunds = false;
   let showFindTraders = false;
   const hasOnlyDefaultExchangeAccount =

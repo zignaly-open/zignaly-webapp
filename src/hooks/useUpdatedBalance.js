@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
 import useSelectedExchange from "hooks/useSelectedExchange";

@@ -128,7 +128,7 @@ const WalletView = () => {
   const [path, setPath] = useState("");
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const zigBalance = walletBalance?.ZIG || 0;
+  const zigBalance = walletBalance?.ZIG?.total || 0;
   // const rate = 0.01;
 
   useEffect(() => {

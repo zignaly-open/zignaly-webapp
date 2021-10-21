@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import "./Passwords.scss";
 import { Box, Popper, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import PasswordStrength from "./PasswordStrength";

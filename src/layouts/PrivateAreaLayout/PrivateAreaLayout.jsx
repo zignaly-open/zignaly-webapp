@@ -9,7 +9,6 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import SettingsView from "../../components/SettingsView";
 import WalletView from "../../components/WalletView";
-import WalletDepositView from "../../components/WalletView/WalletDepositView";
 import { useDispatch } from "react-redux";
 import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
