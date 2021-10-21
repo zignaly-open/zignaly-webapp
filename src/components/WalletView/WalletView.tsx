@@ -96,6 +96,7 @@ const Divider = styled.span`
   margin: 0 34px;
   width: 1px;
   height: 128px;
+  align-self: center;
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -157,7 +158,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" mt="20px" py="40px" px="7%" alignItems="center">
+      <Box display="flex" mt="20px" py="40px" px="7%">
         <PanelItem row>
           <CategIconStyled width={66} height={66} src={ZigCoinIcon} />
           <Box display="flex" flexDirection="column">

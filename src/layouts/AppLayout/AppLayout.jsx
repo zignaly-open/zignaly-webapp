@@ -1,10 +1,10 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
 import {
   ThemeProvider as MuiThemeProvider,
-  createMuiTheme,
+  createTheme,
   StylesProvider,
 } from "@material-ui/core/styles";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider, StyleSheetManager } from "styled-components";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
@@ -48,7 +48,7 @@ const AppLayout = (props) => {
   const storeLoader = useStoreUILoaderSelector();
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
-  const theme = useMemo(() => createMuiTheme(options), [darkTheme]);
+  const theme = useMemo(() => createTheme(options), [darkTheme]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -123,13 +123,15 @@ const AppLayout = (props) => {
       >
         <StylesProvider injectFirst>
           <MuiThemeProvider theme={theme}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <ErrorAlert />
-              <SuccessAlert />
-              {storeLoader && <Loader />}
-              {children}
-            </ThemeProvider>
+            <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === "development"}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <ErrorAlert />
+                <SuccessAlert />
+                {storeLoader && <Loader />}
+                {children}
+              </ThemeProvider>
+            </StyleSheetManager>
           </MuiThemeProvider>
         </StylesProvider>
       </GoogleReCaptchaProvider>
