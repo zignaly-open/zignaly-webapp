@@ -13,6 +13,8 @@ import React from "react";
  * @typedef {Object} PrivateAreaContextObject
  * @property {UserBalanceEntity} balance
  * @property {React.SetStateAction<*>} setBalance
+ * @property {WalletBalance} walletBalance
+ * @property {React.SetStateAction<*>} setWalletBalance
  * @property {QuotesMapObject} quotesMap
  * @property {React.SetStateAction<*>} setQuotesMapData
  * @property {Array<ExchangeListEntity>} exchangeList

@@ -360,7 +360,6 @@ class TradeApiClient {
     }
 
     let requestUrl = baseUrl + endpointPath;
-    console.log(requestUrl);
     let responseData = {};
 
     const authToken = this.token || token;
@@ -2342,7 +2341,7 @@ class TradeApiClient {
   /**
    * Get wallet balance
    *
-   * @returns {Promise<{}>} Result
+   * @returns {Promise<{WalletBalance}>} Result
    *
    * @memberof TradeApiClient
    */

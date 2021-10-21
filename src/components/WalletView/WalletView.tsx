@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { FormattedMessage } from "react-intl";
 import { Panel, SubTitle, Title } from "styles/styles";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Box } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
 import WalletDepositView from "./WalletDepositView";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import { ChevronRight } from "@material-ui/icons";
 
 const TitleIcon = styled.img`
   /* background: linear-gradient(
@@ -50,11 +52,20 @@ const Amount = styled.span`
   line-height: 40px;
 `;
 
+const ZigBig = styled.span`
+  color: #9864ef;
+  font-size: 18px;
+  letter-spacing: 1px;
+  line-height: 16px;
+  margin-left: 6px;
+`;
+
 const Zig = styled.span`
   color: #9864ef;
   font-size: 12px;
   letter-spacing: 1px;
   line-height: 16px;
+  margin-left: 4px;
 `;
 
 const Button = styled(CustomButton)`
@@ -62,19 +73,67 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
+const TextMain = styled.span`
+  color: #9ca3af;
+  font-size: 32px;
+  font-weight: 500;
+  /* line-height: 40px; */
+  letter-spacing: 0.66px;
+`;
+
+const TextCaption = styled.span`
+  color: #f3f4f6;
+  font-size: 16px;
+  /* line-height: 20px; */
+  letter-spacing: 0.33px;
+  margin-top: 20px;
+`;
+
+const Divider = styled.span`
+  background: #222249;
+  margin: 0 34px;
+  width: 1px;
+`;
+
+const ChevronRightStyled = styled(ChevronRight)`
+  color: #65647e;
+`;
+
+interface PanelItemProps {
+  row?: boolean;
+}
+const PanelItem = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
+  margin: 0 3%;
+  max-width: 300px;
+  ${(props) =>
+    props.row &&
+    css`
+      justify-content: center;
+    `}
+`;
+
 // const PanelStyled = styled(Panel)`
 //   margin-bottom: 20px;
 // `;
 
 const WalletView = () => {
+  const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
+  // const [balances, setBalances] = useState<WalletBalance>(null);
+  const [coins, setCoins] = useState<WalletCoins>(null);
+  const zigBalance = walletBalance?.ZIG || 0;
+  // const rate = 0.01;
+
   useEffect(() => {
-    tradeApi.getWalletBalance().then((response) => {
-      console.log(response);
-    });
+    // tradeApi.getWalletBalance().then((response) => {
+    //   setBalances(response);
+    // });
 
     tradeApi.getWalletCoins().then((response) => {
-      console.log(response);
+      setCoins(response);
     });
   }, []);
 
@@ -95,31 +154,61 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Panel display="flex" mt="20px" p="40px">
-        <CategIconStyled width={32} height={32} src={ZigCoinIcon} />
-        <Box display="flex" flexDirection="column">
+      <Panel display="flex" mt="20px" py="40px" px="7%">
+        <PanelItem row>
+          <CategIconStyled width={66} height={66} src={ZigCoinIcon} />
+          <Box display="flex" flexDirection="column">
+            <SubTitle>
+              <FormattedMessage id="wallet.totalbalance" />
+            </SubTitle>
+            <Amount>
+              {zigBalance}
+              <ZigBig>ZIG</ZigBig>
+            </Amount>
+            {/* <div>
+              ${zigBalance * rate}
+              <Rate>@{rate}/ZIG</Rate>
+              <ArrowIcon width={32} height={32} src={WalletIcon} />
+            </div> */}
+            <Box display="flex" flexDirection="row" alignItems="center" mt={1.5} mb={2.25}>
+              ETH: {walletBalance?.ZIG?.ETH || 0}
+              <Zig>ZIG</Zig> <ChevronRightStyled />
+            </Box>
+            <Box display="flex" flexDirection="row">
+              <Button className="textPurple borderPurple" href="#exchangeAccounts">
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
+              {/* <Button className="bgPurple" href="#deposit"> */}
+              <Button className="bgPurple" onClick={() => setPath("deposit")}>
+                <FormattedMessage id="accounts.deposit" />
+              </Button>
+            </Box>
+          </Box>
+        </PanelItem>
+        <Divider />
+        <PanelItem>
           <SubTitle>
-            <FormattedMessage id="wallet.totalbalance" />
+            <FormattedMessage id="wallet.rewards" />
           </SubTitle>
-          <Amount>1,200,000 ZIG</Amount>
-          <div>
-            $45,000
-            <Rate>@0.00375/ZIG</Rate>
-            <ArrowIcon width={32} height={32} src={WalletIcon} />
-          </div>
-          <Box display="flex" flexDirection="row">
-            600,000 <Zig>ZIG</Zig>
-          </Box>
-          <Box display="flex" flexDirection="row">
-            <Button className="textPurple borderPurple" href="#exchangeAccounts">
-              <FormattedMessage id="accounts.withdraw" />
-            </Button>
-            {/* <Button className="bgPurple" href="#deposit"> */}
-            <Button className="bgPurple" onClick={() => setPath("deposit")}>
-              <FormattedMessage id="accounts.deposit" />
-            </Button>
-          </Box>
-        </Box>
+          <TextMain>
+            <FormattedMessage id="wallet.rewards.soon" />
+          </TextMain>
+          <TextCaption>
+            <FormattedMessage id="wallet.rewards.soon.desc" />
+          </TextCaption>
+        </PanelItem>
+        <Divider />
+        <PanelItem>
+          <SubTitle>
+            <FormattedMessage id="wallet.staking" />
+          </SubTitle>
+          <TextMain>
+            <FormattedMessage id="wallet.staking.soon" />
+          </TextMain>
+          <TextCaption>
+            <FormattedMessage id="wallet.staking.soon.desc" />
+          </TextCaption>
+        </PanelItem>
       </Panel>
       <Title>
         <Box display="flex" alignItems="center">

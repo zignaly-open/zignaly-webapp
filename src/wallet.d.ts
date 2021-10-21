@@ -22,3 +22,5 @@ interface WalletAddress {
   currency: string;
   memo: string;
 }
+
+type WalletBalance = Record<string, number>;

@@ -21,7 +21,7 @@ export const SubTitle = styled.span`
 `;
 
 export const Panel = styled(Box)`
-  background: #222249;
+  background: #151d3f;
   border: 1px solid #413ba0;
   border-radius: 16px;
   box-sizing: border-box;

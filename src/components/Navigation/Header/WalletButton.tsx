@@ -1,27 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomButton from "components/CustomButton";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
-const Button = styled.a`
-  background: transparent;
-  border: 2px solid white;
-  border-radius: 3px;
-  color: white;
-  /* This renders the buttons above... Edit me! */
-  display: inline-block;
-  margin: 0.5rem 1rem;
-  padding: 0.5rem 0;
-  width: 11rem;
-
-  /* The GitHub button is a primary button
-   * edit this to target it specifically! */
-  /* ${(props) =>
-    props.primary &&
-    css`
-      background: white;
-      color: black;
-    `} */
+const Button = styled(CustomButton)`
+  min-width: 80px;
 `;
 
-const WalletButton = () => <CustomButton href="#wallet">200000 ZIG</CustomButton>;
+const WalletButton = () => {
+  const { walletBalance } = useContext(PrivateAreaContext);
+
+  return <Button href="#wallet">{walletBalance ? walletBalance.ZIG || 0 : "-"} ZIG</Button>;
+};
 export default WalletButton;

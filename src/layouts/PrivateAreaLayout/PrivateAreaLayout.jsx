@@ -36,10 +36,10 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
-  const { setUserProviders, setBalance } = privateAreaContext;
+  const { setUserProviders } = privateAreaContext;
 
-  // Balance to show in the header, and to show the "Add Fund" button
-  const balance = useUpdatedBalance();
+  // Load balance in the context to show in the header, and to show the "Add Fund" button
+  useUpdatedBalance(privateAreaContext);
 
   useEffect(() => {
     // Get connected signal provider to know if we need to display "Connected Providers" tab in the dashboard.
@@ -48,10 +48,6 @@ const PrivateAreaLayout = (props) => {
       setUserProviders(response);
     });
   }, []);
-
-  useEffect(() => {
-    setBalance(balance);
-  }, [balance]);
 
   const updateSession = () => {
     dispatch(refreshSessionData());
