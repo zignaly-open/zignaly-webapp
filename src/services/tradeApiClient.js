@@ -43,6 +43,9 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
   assetsAndBalanceResponseTransform,
+  convertCoinPreviewResponseTransform,
+  convertCoinResponseTransform,
+  quoteAssetFromBaseResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
@@ -151,7 +154,10 @@ import {
  * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
  * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
  * @typedef {import('./tradeApiClient.types').UserAllProviders} UserAllProviders
- *
+ * @typedef {import('./tradeApiClient.types').ConvertCoinPreview} ConvertCoinPreview
+ * @typedef {import('./tradeApiClient.types').ConvertCoin} ConvertCoin
+ * @typedef {import('./tradeApiClient.types').ConvertCoinPayload} ConvertCoinPayload
+ * @typedef {import('./tradeApiClient.types').QuoteAssetFromBase} QuoteAssetFromBase
  */
 
 /**
@@ -803,6 +809,62 @@ class TradeApiClient {
     );
 
     return exchangeAssetsResponseTransform(responseData);
+  }
+
+  /**
+   * Convert Coin Preview
+   *
+   * @param {string} internalExchangeId
+   * @param {ConvertCoinPayload} payload Get Exchange Assets Payload.
+   * @returns {Promise<ConvertCoinPreview>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+  async convertCoinPreviewPost(internalExchangeId, payload) {
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/convert/preview`,
+      payload,
+      "POST",
+      2
+    );
+
+    return convertCoinPreviewResponseTransform(responseData);
+  }
+
+  /**
+   * Get quote asset from given base
+   *
+   * @param {string} base
+   * @returns {Promise<QuoteAssetFromBase>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+  async getQuoteAssetFromBase(base) {
+    const responseData = await this.doRequest(
+      `/quote_assets/${base}`,
+      null,
+      "GET",
+      2
+    );
+
+    return quoteAssetFromBaseResponseTransform(responseData);
+  }
+
+  /**
+   * Convert Coin
+   *
+   * @param {string} internalExchangeId
+   * @param {ConvertCoinPayload} payload Get Exchange Assets Payload.
+   * @returns {Promise<ConvertCoin>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+   async convertCoinPost(internalExchangeId, payload) {
+    const responseData = await this.doRequest(
+      `/user/exchanges/${internalExchangeId}/convert`,
+      payload,
+      "POST",
+      2
+    );
+
+    return convertCoinResponseTransform(responseData);
   }
 
   /**

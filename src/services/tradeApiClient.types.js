@@ -379,6 +379,13 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  */
 
 /**
+ * @typedef {Object} ConvertCoinPayload
+ * @property {string} base
+ * @property {string} quote
+ * @property {string} qty
+ */
+
+/**
  * @typedef {Object} ExchangeAssetsPayload
  * @property {string} internalId
  */
@@ -3119,6 +3126,36 @@ function createProviderFollowersListEmptyEntity() {
  */
 
 /**
+ * @typedef {Object} ConvertCoinPreview
+ * @property {string} lastPrice
+ * @property {string} pair
+ * @property {string} side
+ * @property {string} estimatedAmmount
+ */
+
+/**
+ * @typedef {Object} ConvertCoin
+ * @property {string} status
+ * @property {string} filled
+ * @property {string} remaining
+ * @property {string} feeCost
+ * @property {string} fee
+ * @property {string} id
+ */
+
+/**
+ * @typedef {Object} QuoteAssetFromBase
+ * @property {string} base
+ * @property {Array<Quote>} quotes
+ */
+
+/**
+ * @typedef {Object} Quote
+ * @property {string} base
+ * @property {string} quote
+ */
+
+/**
  * @typedef {Object.<string, ExchangeAsset>} ExchangeAssetsDict
  */
 
@@ -3178,6 +3215,91 @@ function createExchangeAssetsEmptyEntity() {
     networks: [],
     coin: "",
   };
+}
+
+/**
+ *
+ * @param {*} response Exchange assets coin.
+ * @returns {ConvertCoinPreview} Exchange assets.
+ */
+export function convertCoinPreviewResponseTransform(response)
+{
+  const convertCoinPreviewEntity = createExchangeConvertPreviewEmptyEntity();
+  const transformedResponse = assign(convertCoinPreviewEntity, response);
+
+  return transformedResponse;
+}
+
+/**
+ *
+ * @param {*} response Exchange assets coin.
+ * @returns {ConvertCoin} Exchange assets.
+ */
+ export function convertCoinResponseTransform(response)
+ {
+   const convertCoinEntity = createExchangeConvertEmptyEntity();
+   const transformedResponse = assign(convertCoinEntity, response);
+ 
+   return transformedResponse;
+ }
+
+ /**
+ *
+ * @param {*} response Exchange assets coin.
+ * @returns {QuoteAssetFromBase} Exchange assets.
+ */
+export function quoteAssetFromBaseResponseTransform(response)
+{
+  const quoteAssetFromBaseEntity = createQuoteAssetFromBaseEmptyEntity();
+
+  for (let prop in response) {
+    quoteAssetFromBaseEntity.base = prop;
+
+    for (let quote in response[prop]) {
+      quoteAssetFromBaseEntity.quotes.push({
+        'base' : quote['base'],
+        'quote': quote['quote']
+      })
+    }
+  break;
+  }
+  return quoteAssetFromBaseEntity;
+}
+
+/**
+ * @returns {ConvertCoinPreview} Convert Coin Preview
+ */
+function createExchangeConvertPreviewEmptyEntity() {
+  return {
+    lastPrice: "0.000000000000",
+    pair: "",
+    side: "",
+    estimatedAmmount: "0.000000000000"
+  };
+}
+
+/**
+ * @returns {ConvertCoin} Convert Coin
+ */
+function createExchangeConvertEmptyEntity() {
+  return {
+    status: "",
+    filled: "0.000000000000",
+    remaining: "0.000000000000",
+    feeCost: "0.000000000000",
+    fee: "0.000000000000",
+    id: ""
+  };
+}
+
+/**
+ * @returns {QuoteAssetFromBase} Convert Coin
+ */
+function createQuoteAssetFromBaseEmptyEntity() {
+  return {
+    base: '',
+    quotes: []
+  }
 }
 
 /**
