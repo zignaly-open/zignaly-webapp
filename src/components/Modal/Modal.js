@@ -27,11 +27,14 @@ const GenericModal = (props) => {
   return (
     <Dialog
       classes={{ paper: "modal " + (size ? size : " ") }}
-      disableBackdropClick={persist}
       disableEscapeKeyDown={persist}
       fullScreen={fullScreen}
       maxWidth={fullScreen ? false : "lg"}
-      onClose={onClose}
+      onClose={(event, reason) => {
+        if (reason !== "backdropClick" || !persist) {
+          onClose(event, reason);
+        }
+      }}
       open={state}
       //   keepMounted={fullScreen}
     >

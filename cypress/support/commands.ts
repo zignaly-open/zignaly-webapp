@@ -26,15 +26,15 @@
 
 import "@testing-library/cypress/add-commands";
 import dayjs from "dayjs";
-import { generateExchangeId } from "../factories/utils";
 
 interface MockOptions {
   connectedProviders?: Provider[];
   enableStubbedCheck?: boolean;
+  exchangeInternalId?: string;
 }
 
 Cypress.Commands.add("mock", (options: MockOptions = {}) => {
-  const { connectedProviders = [], enableStubbedCheck = true } = options;
+  const { connectedProviders = [], enableStubbedCheck = true, exchangeInternalId } = options;
   if (enableStubbedCheck) {
     // Check that nothing reaches real api
     // We could use Cypress.Server.defaults if there wasn't a bug: https://github.com/cypress-io/cypress/issues/5289
@@ -50,7 +50,7 @@ Cypress.Commands.add("mock", (options: MockOptions = {}) => {
 
   const connectedProvidersData = connectedProviders.map((p) => ({
     connected: true,
-    exchangeInternalId: "",
+    exchangeInternalId,
     // exchangeInternalIds: [],
     id: p.id,
     name: p.name,
@@ -58,6 +58,15 @@ Cypress.Commands.add("mock", (options: MockOptions = {}) => {
   }));
   cy.intercept("GET", "*/user/providers*", connectedProvidersData).as("mockedConnectedProviders");
   cy.intercept("GET", "*/user/exchange/*/available_balance", { USDT: 50 });
+
+  // cybavo
+  cy.intercept("GET", "**/cybavo/get-balance", (req) => {
+    req.reply(200, {});
+  });
+  cy.intercept("GET", "**/cybavo/get-currencies", (req) => {
+    req.reply(200, {});
+  });
+
   cy.intercept("GET", "*/user/exchanges/*/balance*", {
     "1BTC": 0.03504541,
     "1USDT": 1906.47,

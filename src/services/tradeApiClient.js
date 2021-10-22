@@ -2341,7 +2341,7 @@ class TradeApiClient {
   /**
    * Get wallet balance
    *
-   * @returns {Promise<{WalletBalance}>} Result
+   * @returns {Promise<WalletBalance>} Result
    *
    * @memberof TradeApiClient
    */
