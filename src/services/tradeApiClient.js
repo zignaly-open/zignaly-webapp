@@ -2383,6 +2383,17 @@ class TradeApiClient {
   async getWalletDepositsHistory() {
     return this.doRequest("/get-deposits", null, "GET", 3);
   }
+
+  /**
+   * Get transaction history
+   *
+   * @returns {Promise<*>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletTransactionsHistory() {
+    return this.doRequest("/get-operations", null, "GET", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

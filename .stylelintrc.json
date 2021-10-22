@@ -7,7 +7,6 @@
     "stylelint-order"
   ],
   "rules": {
-    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
     "max-nesting-depth": 4,
     "selector-max-compound-selectors": 4,
     "string-quotes": "double",

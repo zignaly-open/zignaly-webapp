@@ -336,4 +336,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["**/*.d.ts", "src/stories/*", "src/tradingView/charting_library/*"],
 };
