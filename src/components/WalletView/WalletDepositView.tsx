@@ -43,8 +43,8 @@ const WalletDepositView = () => {
   return (
     <Modal p={5}>
       <Title>
-        <Box display="flex" alignItems="center">
-          <img width="33px" height="30px" src={WalletIcon} />
+        <Box alignItems="center" display="flex">
+          <img height="30px" src={WalletIcon} width="33px" />
           <FormattedMessage id="accounts.deposit" /> ZIG
         </Box>
       </Title>
@@ -59,7 +59,7 @@ const WalletDepositView = () => {
         value={network}
       />
       <br />
-      <OutlinedInput className="customInput" value={address?.address} readOnly />
+      <OutlinedInput className="customInput" readOnly value={address?.address} />
       <br />
       <FormattedMessage id="wallet.deposit.caution" />
       <FormattedMessage id="wallet.deposit.notsure" />

@@ -39,7 +39,7 @@ const NetworkIcon = ({ network }: { network: string }) => {
     default:
       break;
   }
-  return <img style={{ marginRight: "10px" }} width={20} height={20} src={icon} />;
+  return <img height={20} src={icon} style={{ marginRight: "10px" }} width={20} />;
 };
 
 interface WalletPopoverProps {
@@ -50,15 +50,15 @@ interface WalletPopoverProps {
 }
 const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverProps) => {
   return (
-    <StyledPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={handleClose}>
-      <Grid container spacing={2} direction="column">
+    <StyledPopover anchorEl={anchorEl} onClose={handleClose} open={Boolean(anchorEl)}>
+      <Grid container direction="column" spacing={2}>
         {Object.entries(balance).map(([key, amount]) => {
           if (key !== "total") {
             const network = coin.networks.find((n) => n.network === key);
             if (network) {
               return (
-                <Grid container item xs={12} alignItems="center">
-                  <Grid container item xs={6} wrap="nowrap">
+                <Grid alignItems="center" container item key={key} xs={12}>
+                  <Grid container item wrap="nowrap" xs={6}>
                     <NetworkIcon network={network.network} />
                     <Typography>{network.network}</Typography>
                   </Grid>
