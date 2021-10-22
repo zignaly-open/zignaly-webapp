@@ -45,7 +45,7 @@ const NetworkIcon = ({ network }: { network: string }) => {
 interface WalletPopoverProps {
   anchorEl: Element;
   handleClose: any;
-  balance: WalletBalance;
+  balance: Record<string, number>;
   coin: WalletCoin;
 }
 const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverProps) => {

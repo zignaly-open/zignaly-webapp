@@ -134,7 +134,7 @@ const WalletView = () => {
   // const rate = 0.01;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
 
