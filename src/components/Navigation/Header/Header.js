@@ -42,7 +42,6 @@ const Header = () => {
   const connectedProvidersCount = connectedProviders
     ? connectedProviders.filter((p) => p.exchangeInternalId === selectedExchange.internalId).length
     : null;
-  console.log(connectedProvidersCount, connectedProviders, selectedExchange.internalId);
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
   const showBalance = storeSettings.balanceBox;
   const balanceReady = balance && connectedProvidersCount !== null;
