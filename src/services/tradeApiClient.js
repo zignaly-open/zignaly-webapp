@@ -2372,6 +2372,17 @@ class TradeApiClient {
   async getWalletDepositAddress(network, coin) {
     return this.doRequest(`/generate-address/${network}/currency/${coin}`, null, "POST", 3);
   }
+
+  /**
+   * Get deposit history
+   *
+   * @returns {Promise<*>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletDepositsHistory() {
+    return this.doRequest("/get-deposits", null, "GET", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
