@@ -4,13 +4,14 @@ import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { FormattedMessage } from "react-intl";
 import { Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
-import { Box } from "@material-ui/core";
+import { Box, Popover, Typography } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
 import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
+import WalletPopover from "./WalletPopover";
 
 const TitleIcon = styled.img`
   /* background: linear-gradient(
@@ -101,6 +102,7 @@ const Divider = styled.span`
 
 const ChevronRightStyled = styled(ChevronRight)`
   color: #65647e;
+  cursor: pointer;
 `;
 
 interface PanelItemProps {
@@ -130,6 +132,15 @@ const WalletView = () => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const zigBalance = walletBalance?.ZIG?.total || 0;
   // const rate = 0.01;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     // tradeApi.getWalletBalance().then((response) => {
@@ -176,7 +187,15 @@ const WalletView = () => {
             </div> */}
             <Box display="flex" flexDirection="row" alignItems="center" mt={1.5} mb={2.25}>
               ETH: {walletBalance?.ZIG?.ETH || 0}
-              <Zig>ZIG</Zig> <ChevronRightStyled />
+              <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
+              {walletBalance && coins && (
+                <WalletPopover
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                  balance={walletBalance.ZIG}
+                  coin={coins.ZIG}
+                />
+              )}
             </Box>
             <Box display="flex" flexDirection="row">
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
