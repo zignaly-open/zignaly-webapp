@@ -10,6 +10,6 @@ const Button = styled(CustomButton)`
 const WalletButton = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
 
-  return <Button href="#wallet">{walletBalance ? walletBalance.ZIG || 0 : "-"} ZIG</Button>;
+  return <Button href="#wallet">{walletBalance ? walletBalance.ZIG?.total || 0 : "-"} ZIG</Button>;
 };
 export default WalletButton;
