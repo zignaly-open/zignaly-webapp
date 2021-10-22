@@ -15,7 +15,7 @@ describe("User Account", () => {
       totalLockedUSDT: 0,
       totalPnlBTC: 0,
       totalPnlUSDT: 0,
-    });
+    }).as("mockedBalance");
   };
 
   describe("Default exchange account with no funds and no providers connected", () => {
@@ -74,13 +74,15 @@ describe("User Account", () => {
 
   describe("Default exchange account with no funds but providers connected", () => {
     beforeEach(() => {
+      const exchange = makeExchange();
+
       const provider = makeProvider();
-      cy.mock({ connectedProviders: [provider] });
+      cy.mock({ connectedProviders: [provider], exchangeInternalId: exchange.internalId });
       mockNoFunds();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
       const user = makeFakeUser({
-        exchanges: [makeExchange()],
+        exchanges: [exchange],
       });
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
@@ -90,6 +92,7 @@ describe("User Account", () => {
     });
 
     it("doesn't render Add Funds button, render balance", () => {
+      // cy.wait("@mockedBalance");
       cy.contains(".header", /Balance/i).should("exist");
       cy.contains("a", /Add Funds/i).should("not.exist");
     });

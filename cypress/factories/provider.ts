@@ -24,6 +24,7 @@ export const makeProvider = (
     floating: 10,
     options: {},
     website: "",
+    exchangeInternalId: "",
     exchangeInternalIds: [],
     followers: 10,
     strategy: "",
@@ -39,7 +40,7 @@ export const makeProvider = (
     isCopyTrading: true,
     ...(type === "profitSharing"
       ? {
-          profitsShare: 5,
+          profitsShare: 6,
           profitMode: "reinvest",
         }
       : type === "copyTrader"
