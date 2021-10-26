@@ -113,6 +113,10 @@ const PanelItem = styled.div`
     `}
 `;
 
+const TitleIcon = styled.img`
+  margin-right: 12px;
+`;
+
 // const PanelStyled = styled(Panel)`
 //   margin-bottom: 20px;
 // `;
@@ -160,11 +164,11 @@ const WalletView = () => {
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
-          <img height="30px" src={WalletIcon} width="33px" />
+          <TitleIcon height="30px" src={WalletIcon} width="33px" />
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" mt="20px" px="7%" py="40px">
+      <Box display="flex" px="7%" py="40px">
         <PanelItem row>
           <CategIconStyled height={66} src={ZigCoinIcon} width={66} />
           <Box display="flex" flexDirection="column">
@@ -230,11 +234,11 @@ const WalletView = () => {
       </Box>
       <Title>
         <Box alignItems="center" display="flex">
-          <img height="30px" src={ListIcon} width="33px" />
+          <TitleIcon height="22px" src={ListIcon} width="27px" />
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
-      {/* <WalletTransactions /> */}
+      <WalletTransactions />
     </Box>
   );
 };

@@ -361,6 +361,17 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
+    transactionTable: {
+      backgroundColor: "#0d1a32f2",
+      headTextColor: "#9CA3AF",
+      boxShadow: "0px 0px 14px #00000014, inset 0 1px 1px #161d44, inset 0 -1px 0 0 #171f48",
+
+      amountColor: "#F3F4F6",
+      dateColor: "#C8C7F6",
+      externalLinkColor: "#C3C2F1",
+      externalLinkIconColor: "#26C4C1",
+      separatorColor: "#6E7083",
+    },
   };
 };
 

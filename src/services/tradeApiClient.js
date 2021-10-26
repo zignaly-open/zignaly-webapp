@@ -2387,7 +2387,7 @@ class TradeApiClient {
   /**
    * Get transaction history
    *
-   * @returns {Promise<*>} Result
+   * @returns {Promise<TransactionsHistory[]>} Result
    *
    * @memberof TradeApiClient
    */
@@ -2399,7 +2399,7 @@ class TradeApiClient {
    * Coin conversion preview
    *
    * @param {{from: string, to: string}} payload Payload
-   * @returns {Promise<ConvertPreviewResponse>} Result
+   * @returns {Promise<ConvertPreviewRes>} Result
    *
    * @memberof TradeApiClient
    */

@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { useTable } from "react-table";
+import { Typography } from "@material-ui/core";
+
+const TypographyHeader = styled(Typography)`
+  color: #f3f4f6;
+  font-weight: 600;
+`;
 
 export const TableLayout = styled.div`
   border-radius: 5px;
@@ -13,12 +19,6 @@ export const TableLayout = styled.div`
       border-spacing: 0;
       box-shadow: ${theme.transactionTable.boxShadow};
       border-radius: 8px;
-
-      // ${isMobile(`
-      //   display: block;
-      //   overflow-x: auto;
-      //   white-space: nowrap;
-      // `)}
 
 
       thead tr th {
@@ -52,7 +52,7 @@ const Table = ({ columns, data }) => {
           <tr key={`--group-${indexGroup.toString()}`} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, indexColumn) => (
               <th key={`--group-column-${indexColumn.toString()}`} {...column.getHeaderProps()}>
-                {column.render("Header")}
+                <TypographyHeader>{column.render("Header")}</TypographyHeader>
               </th>
             ))}
           </tr>

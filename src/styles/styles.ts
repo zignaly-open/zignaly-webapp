@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Box } from "@material-ui/core";
 
-export const Title = styled.span`
+export const Title = styled.div`
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 1px;
@@ -41,4 +41,11 @@ export const TextDesc = styled.span`
   font-size: 16px;
   letter-spacing: 0.33px;
   /* line-height: 20px; */
+`;
+
+export const AlignCenter = styled.div`
+  display: flex;
+  align-items: ${(props) => props.alignItems || "center"};
+  justify-content: ${(props) => props.justifyContent || "center"};
+  flex-direction: ${(props) => props.direction || "row"};
 `;
