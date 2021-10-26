@@ -180,14 +180,14 @@ const WalletView = () => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </div>
-            {!isEmpty(walletBalance) && (
+            {!isEmpty(walletBalance) && coins && (
               <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
-                ETH: {walletBalance?.ZIG?.ETH || 0}
+                ETH: {walletBalance.ZIG?.ETH || 0}
                 <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
                 <WalletPopover
                   anchorEl={anchorEl}
                   balance={walletBalance.ZIG}
-                  coin="ZIG"
+                  coin={coins.ZIG}
                   handleClose={handleClose}
                 />
               </Box>
@@ -234,7 +234,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
-      {/* <WalletTransactions /> */}
+      <WalletTransactions />
     </Box>
   );
 };

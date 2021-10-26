@@ -46,7 +46,7 @@ interface WalletPopoverProps {
   anchorEl: Element;
   handleClose: any;
   balance: Record<string, number>;
-  coin: string;
+  coin: WalletCoin;
 }
 const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverProps) => {
   return (
@@ -65,7 +65,7 @@ const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverPr
                   <Grid container item xs={6}>
                     <Typography align="center" style={{ flex: 1 }}>
                       {amount}
-                      <Coin>{coin}</Coin>
+                      <Coin>{coin.name}</Coin>
                     </Typography>
                   </Grid>
                 </Grid>
