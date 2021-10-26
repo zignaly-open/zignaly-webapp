@@ -14,6 +14,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
 import WalletPopover from "./WalletPopover";
 import WalletTransactions from "./WalletTransactions";
+import { isEmpty } from "lodash";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -124,7 +125,7 @@ const WalletView = () => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  console.log(walletBalance);
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -179,18 +180,18 @@ const WalletView = () => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </div>
-            <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
-              ETH: {walletBalance?.ZIG?.ETH || 0}
-              <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
-              {walletBalance && coins && (
+            {!isEmpty(walletBalance) && (
+              <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
+                ETH: {walletBalance?.ZIG?.ETH || 0}
+                <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
                 <WalletPopover
                   anchorEl={anchorEl}
                   balance={walletBalance.ZIG}
-                  coin={coins.ZIG}
+                  coin="ZIG"
                   handleClose={handleClose}
                 />
-              )}
-            </Box>
+              </Box>
+            )}
             <Box display="flex" flexDirection="row">
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
