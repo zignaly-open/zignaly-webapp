@@ -186,7 +186,7 @@ const WalletView = () => {
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </div>
             {!isEmpty(walletBalance) && coins && (
-              <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
+              <Box alignItems="center" display="flex" flexDirection="row" mt={1.5}>
                 ETH: {walletBalance.ZIG?.ETH || 0}
                 <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
                 <WalletPopover
@@ -197,7 +197,7 @@ const WalletView = () => {
                 />
               </Box>
             )}
-            <Box display="flex" flexDirection="row">
+            <Box display="flex" flexDirection="row" mt={2.25}>
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
               </Button>
