@@ -129,7 +129,7 @@ const WalletView = () => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  console.log(walletBalance);
+
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
