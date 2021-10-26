@@ -77,6 +77,11 @@
   .modal {
     background: $lightestBlack;
 
+    &.newTheme {
+      // todo: use correct color
+      background: #060a1f;
+    }
+
     [class^="MuiPaper"],
     [class^="MuiTableCell"] {
       background: transparent;

@@ -17,8 +17,9 @@ export const TableLayout = styled.div`
       width: 100%;
       background-color: ${theme.transactionTable.backgroundColor};
       border-spacing: 0;
-      box-shadow: ${theme.transactionTable.boxShadow};
-      border-radius: 8px;
+      // box-shadow: ${theme.transactionTable.boxShadow};
+      border: 1px solid #1e1c4e;
+      border-radius: 16px;
 
 
       thead tr th {

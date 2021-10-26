@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
  * @typedef {Object} DefaultProps
  * @property {String} hash Hash that opens the modal.
  * @property {function} content Component to display inside the modal.
+ * @property {number} [theme]
  */
 
 /**
@@ -16,7 +17,7 @@ import { useDispatch } from "react-redux";
  * @returns {JSX.Element} Component JSX.
  */
 const GlobalModal = (props) => {
-  const { hash, content } = props;
+  const { hash, content, theme } = props;
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
   const isOpen = currentHash.startsWith(hash);
@@ -36,7 +37,14 @@ const GlobalModal = (props) => {
   }, [isOpen]);
 
   return (
-    <Modal onClose={onClose} persist={false} showCloseIcon={false} size="fullscreen" state={isOpen}>
+    <Modal
+      onClose={onClose}
+      persist={false}
+      showCloseIcon={false}
+      size="fullscreen"
+      state={isOpen}
+      theme={theme}
+    >
       {content({ onClose })}
     </Modal>
   );

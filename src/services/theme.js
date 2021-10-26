@@ -362,7 +362,7 @@ const theme = (darkStyle) => {
       },
     },
     transactionTable: {
-      backgroundColor: "#0d1a32f2",
+      backgroundColor: "#12132d",
       headTextColor: "#9CA3AF",
       boxShadow: "0px 0px 14px #00000014, inset 0 1px 1px #161d44, inset 0 -1px 0 0 #171f48",
 

@@ -233,7 +233,7 @@ const WalletView = () => {
         </PanelItem>
       </Box>
       <Title>
-        <Box alignItems="center" display="flex">
+        <Box alignItems="center" display="flex" mt="64px">
           <TitleIcon height="22px" src={ListIcon} width="27px" />
           <FormattedMessage id="wallet.transactions" />
         </Box>

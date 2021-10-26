@@ -66,7 +66,7 @@ const PrivateAreaLayout = (props) => {
       />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
-      <GlobalModal content={WalletView} hash="wallet" />
+      <GlobalModal content={WalletView} hash="wallet" theme={2} />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>
