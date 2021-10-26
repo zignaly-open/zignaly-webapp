@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { Panel, SubTitle, Title } from "styles/styles";
-import { Box } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import ListIcon from "images/wallet/list.svg";
 import Table from "./Table";
@@ -9,7 +9,6 @@ import Table from "./Table";
 const WalletTransactions = () => {
   const [transactions, setTransactions] = useState();
 
-  return <div></div>;
   const columns = [
     {
       Header: "Status",
@@ -36,6 +35,7 @@ const WalletTransactions = () => {
       accessor: "action",
     },
   ];
+  console.log(transactions);
   const data =
     transactions &&
     transactions.map((transfer) => ({
@@ -135,7 +135,15 @@ const WalletTransactions = () => {
     });
   }, []);
 
-  return <Table />;
+  if (!transactions) {
+    return (
+      <Box alignItems="center" display="flex" justifyContent="center">
+        <CircularProgress color="primary" size={40} />
+      </Box>
+    );
+  }
+
+  return <Table data={data} columns={columns} />;
 };
 
 export default WalletTransactions;

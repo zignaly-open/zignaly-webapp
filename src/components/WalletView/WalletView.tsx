@@ -234,7 +234,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
-      <WalletTransactions />
+      {/* <WalletTransactions /> */}
     </Box>
   );
 };
