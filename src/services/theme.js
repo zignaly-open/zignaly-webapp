@@ -169,6 +169,7 @@ export const colors = {
 const theme = (darkStyle) => {
   return {
     palette: {
+      type: darkStyle ? "dark" : "light",
       background: {
         default: darkStyle ? colors.lightBlack : colors.offWhite,
         paper: darkStyle ? colors.lighterBlack : colors.white,
@@ -361,6 +362,19 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
+    transactionTable: darkStyle
+      ? {
+          backgroundColor: "#12132d",
+          headTextColor: "#f3f4f6",
+          secondaryText: "#9ca3af",
+          linkText: "#829fff",
+        }
+      : {
+          backgroundColor: "#dcdaf4",
+          headTextColor: "#36373F",
+          secondaryText: "#6D6C96",
+          linkText: "#36A6F4",
+        },
   };
 };
 

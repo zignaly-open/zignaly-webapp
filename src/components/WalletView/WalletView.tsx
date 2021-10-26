@@ -68,16 +68,16 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
-const TextMain = styled.span`
-  color: #9ca3af;
+const TextMain = styled(Typography)`
+  /* color: #9ca3af; */
   font-size: 32px;
   font-weight: 500;
   /* line-height: 40px; */
   letter-spacing: 0.66px;
 `;
 
-const TextCaption = styled.span`
-  color: #f3f4f6;
+const TextCaption = styled(Typography)`
+  /* color: #f3f4f6; */
   font-size: 16px;
   /* line-height: 20px; */
   letter-spacing: 0.33px;
@@ -85,7 +85,7 @@ const TextCaption = styled.span`
 `;
 
 const Divider = styled.span`
-  background: #222249;
+  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
   margin: 0 34px;
   width: 1px;
   height: 128px;
@@ -113,6 +113,10 @@ const PanelItem = styled.div`
     `}
 `;
 
+const TitleIcon = styled.img`
+  margin-right: 12px;
+`;
+
 // const PanelStyled = styled(Panel)`
 //   margin-bottom: 20px;
 // `;
@@ -125,7 +129,7 @@ const WalletView = () => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
-  console.log(walletBalance);
+
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -152,6 +156,7 @@ const WalletView = () => {
       <Modal
         // onClose={() => dispatch(showCreateTrader(false))}
         onClose={() => setPath("")}
+        newTheme={true}
         persist={false}
         size="large"
         state={path === "deposit"}
@@ -160,11 +165,11 @@ const WalletView = () => {
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
-          <img height="30px" src={WalletIcon} width="33px" />
+          <TitleIcon height="30px" src={WalletIcon} width="33px" />
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" mt="20px" px="7%" py="40px">
+      <Box display="flex" px="7%" py="40px">
         <PanelItem row>
           <CategIconStyled height={66} src={ZigCoinIcon} width={66} />
           <Box display="flex" flexDirection="column">
@@ -229,12 +234,12 @@ const WalletView = () => {
         </PanelItem>
       </Box>
       <Title>
-        <Box alignItems="center" display="flex">
-          <img height="30px" src={ListIcon} width="33px" />
+        <Box alignItems="center" display="flex" mt="64px">
+          <TitleIcon height="22px" src={ListIcon} width="27px" />
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
-      {/* <WalletTransactions /> */}
+      <WalletTransactions />
     </Box>
   );
 };

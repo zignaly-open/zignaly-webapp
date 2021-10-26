@@ -12,6 +12,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @property {Object} children
  * @property {String} size
  * @property {boolean} [showCloseIcon]
+ * @property {boolean} [newTheme]
  */
 
 /**
@@ -21,12 +22,20 @@ import CloseIcon from "@material-ui/icons/Close";
  * @returns {JSX.Element} Modal element.
  */
 const GenericModal = (props) => {
-  const { state, onClose, persist = false, children, size, showCloseIcon = true } = props;
+  const {
+    state,
+    onClose,
+    persist = false,
+    children,
+    size,
+    showCloseIcon = true,
+    newTheme = false,
+  } = props;
   const fullScreen = size === "fullscreen";
 
   return (
     <Dialog
-      classes={{ paper: "modal " + (size ? size : " ") }}
+      classes={{ paper: `modal ${size} ${newTheme ? "newTheme" : ""}` }}
       disableEscapeKeyDown={persist}
       fullScreen={fullScreen}
       maxWidth={fullScreen ? false : "lg"}
