@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
+import ListIcon from "images/wallet/list.svg";
 import { FormattedMessage } from "react-intl";
 import { Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
@@ -13,6 +14,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
 import WalletPopover from "./WalletPopover";
 import WalletTransactions from "./WalletTransactions";
+import { isEmpty } from "lodash";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -118,12 +120,12 @@ const PanelItem = styled.div`
 const WalletView = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
+  const [rateZIG, setRateZIG] = useState<number>(null);
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const zigBalance = walletBalance?.ZIG?.total || 0;
-  // const rate = 0.01;
+  const balanceZIG = walletBalance?.ZIG?.total || 0;
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  console.log(walletBalance);
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -136,6 +138,9 @@ const WalletView = () => {
     // tradeApi.getWalletBalance().then((response) => {
     //   setBalances(response);
     // });
+    tradeApi.convertPreview({ from: "ZIG", to: "USDT" }).then((response) => {
+      setRateZIG(response.lastPrice);
+    });
 
     tradeApi.getWalletCoins().then((response) => {
       setCoins(response);
@@ -167,26 +172,26 @@ const WalletView = () => {
               <FormattedMessage id="wallet.totalbalance" />
             </SubTitle>
             <Amount>
-              {zigBalance}
+              {balanceZIG}
               <ZigBig>ZIG</ZigBig>
             </Amount>
-            {/* <div>
-              ${zigBalance * rate}
-              <Rate>@{rate}/ZIG</Rate>
-              <ArrowIcon width={32} height={32} src={WalletIcon} />
-            </div> */}
-            <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
-              ETH: {walletBalance?.ZIG?.ETH || 0}
-              <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
-              {walletBalance && coins && (
+            <div>
+              ${balanceZIG * rateZIG}
+              <Rate>@{rateZIG}/ZIG</Rate>
+              {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
+            </div>
+            {!isEmpty(walletBalance) && (
+              <Box alignItems="center" display="flex" flexDirection="row" mb={2.25} mt={1.5}>
+                ETH: {walletBalance?.ZIG?.ETH || 0}
+                <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
                 <WalletPopover
                   anchorEl={anchorEl}
                   balance={walletBalance.ZIG}
-                  coin={coins.ZIG}
+                  coin="ZIG"
                   handleClose={handleClose}
                 />
-              )}
-            </Box>
+              </Box>
+            )}
             <Box display="flex" flexDirection="row">
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
@@ -223,7 +228,13 @@ const WalletView = () => {
           </TextCaption>
         </PanelItem>
       </Box>
-      <WalletTransactions />
+      <Title>
+        <Box alignItems="center" display="flex">
+          <img height="30px" src={ListIcon} width="33px" />
+          <FormattedMessage id="wallet.transactions" />
+        </Box>
+      </Title>
+      {/* <WalletTransactions /> */}
     </Box>
   );
 };

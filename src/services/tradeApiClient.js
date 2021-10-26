@@ -2394,6 +2394,18 @@ class TradeApiClient {
   async getWalletTransactionsHistory() {
     return this.doRequest("/get-operations", null, "GET", 3);
   }
+
+  /**
+   * Coin conversion preview
+   *
+   * @param {{from: string, to: string}} payload Payload
+   * @returns {Promise<ConvertPreviewResponse>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async convertPreview(payload) {
+    return this.doRequest("/zig/convert-preview", payload, "POST", 0);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
