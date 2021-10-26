@@ -169,6 +169,7 @@ export const colors = {
 const theme = (darkStyle) => {
   return {
     palette: {
+      type: darkStyle ? "dark" : "light",
       background: {
         default: darkStyle ? colors.lightBlack : colors.offWhite,
         paper: darkStyle ? colors.lighterBlack : colors.white,
@@ -361,17 +362,19 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
-    transactionTable: {
-      backgroundColor: "#12132d",
-      headTextColor: "#9CA3AF",
-      boxShadow: "0px 0px 14px #00000014, inset 0 1px 1px #161d44, inset 0 -1px 0 0 #171f48",
-
-      amountColor: "#F3F4F6",
-      dateColor: "#C8C7F6",
-      externalLinkColor: "#C3C2F1",
-      externalLinkIconColor: "#26C4C1",
-      separatorColor: "#6E7083",
-    },
+    transactionTable: darkStyle
+      ? {
+          backgroundColor: "#12132d",
+          headTextColor: "#f3f4f6",
+          secondaryText: "#9ca3af",
+          linkText: "#829fff",
+        }
+      : {
+          backgroundColor: "#dcdaf4",
+          headTextColor: "#36373F",
+          secondaryText: "#6D6C96",
+          linkText: "#36A6F4",
+        },
   };
 };
 

@@ -34,18 +34,18 @@ const TypographyDate = styled(Typography)`
 
 const TypographyTime = styled(Typography)`
   font-weight: 600;
-  color: #9ca3af;
+  color: ${({ theme }) => theme.transactionTable.secondaryText};
 `;
 
 const TypographyTx = styled(Typography)`
   font-size: 12px;
-  color: #9ca3af;
+  color: ${({ theme }) => theme.transactionTable.secondaryText};
   margin-top: 10px;
   line-height: 16px;
 `;
 
 const TypographyView = styled(Typography)`
-  color: #829fff;
+  color: ${({ theme }) => theme.transactionTable.linkText};
   font-size: 13px;
   margin-top: 10px;
   line-height: 16px;

@@ -12,7 +12,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @property {Object} children
  * @property {String} size
  * @property {boolean} [showCloseIcon]
- * @property {number} [theme]
+ * @property {boolean} [newTheme]
  */
 
 /**
@@ -29,13 +29,13 @@ const GenericModal = (props) => {
     children,
     size,
     showCloseIcon = true,
-    theme = 1,
+    newTheme = false,
   } = props;
   const fullScreen = size === "fullscreen";
 
   return (
     <Dialog
-      classes={{ paper: `modal ${size} ${theme === 2 ? "newTheme" : ""}` }}
+      classes={{ paper: `modal ${size} ${newTheme ? "newTheme" : ""}` }}
       disableEscapeKeyDown={persist}
       fullScreen={fullScreen}
       maxWidth={fullScreen ? false : "lg"}

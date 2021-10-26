@@ -68,16 +68,16 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
-const TextMain = styled.span`
-  color: #9ca3af;
+const TextMain = styled(Typography)`
+  /* color: #9ca3af; */
   font-size: 32px;
   font-weight: 500;
   /* line-height: 40px; */
   letter-spacing: 0.66px;
 `;
 
-const TextCaption = styled.span`
-  color: #f3f4f6;
+const TextCaption = styled(Typography)`
+  /* color: #f3f4f6; */
   font-size: 16px;
   /* line-height: 20px; */
   letter-spacing: 0.33px;
@@ -85,7 +85,7 @@ const TextCaption = styled.span`
 `;
 
 const Divider = styled.span`
-  background: #222249;
+  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
   margin: 0 34px;
   width: 1px;
   height: 128px;
@@ -156,6 +156,7 @@ const WalletView = () => {
       <Modal
         // onClose={() => dispatch(showCreateTrader(false))}
         onClose={() => setPath("")}
+        newTheme={true}
         persist={false}
         size="large"
         state={path === "deposit"}

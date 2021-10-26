@@ -10,6 +10,11 @@ import CustomButton from "components/CustomButton";
 import CustomSelect from "components/CustomSelect";
 import DepositQRCodes from "components/ConnectExchangeView/ExchangeAccountBalanceManagement/Deposit/DepositQRCodes";
 
+const StyledCustomSelect = styled(CustomSelect)`
+  width: 100%;
+  flex: 1;
+`;
+
 const WalletDepositView = () => {
   const coin = "ZIG";
   const [networks, setNetworks] = useState<WalletNetwork[]>([]);
@@ -52,7 +57,7 @@ const WalletDepositView = () => {
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: "ZIG" }} />
       </TextDesc>
       <br />
-      <CustomSelect
+      <StyledCustomSelect
         labelPlacement="top"
         onChange={setNetwork}
         options={networkOptions}

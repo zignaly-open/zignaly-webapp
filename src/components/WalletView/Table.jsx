@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useTable } from "react-table";
 import { Typography } from "@material-ui/core";
+import { isMobile } from "styles/styles";
 
 const TypographyHeader = styled(Typography)`
-  color: #f3f4f6;
+  color: ${({ theme }) => theme.transactionTable.headTextColor};
   font-weight: 600;
 `;
 
@@ -17,13 +18,17 @@ export const TableLayout = styled.div`
       width: 100%;
       background-color: ${theme.transactionTable.backgroundColor};
       border-spacing: 0;
-      // box-shadow: ${theme.transactionTable.boxShadow};
       border: 1px solid #1e1c4e;
       border-radius: 16px;
 
+      ${isMobile(`
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      `)}
+
 
       thead tr th {
-        color: ${theme.transactionTable.headTextColor};
         text-transform: uppercase;
         font-weight: 100;
         font-size: 14px;
