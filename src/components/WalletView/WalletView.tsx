@@ -215,11 +215,9 @@ const WalletView = () => {
     // tradeApi.getWalletBalance().then((response) => {
     //   setBalances(response);
     // });
-    // tradeApi
-    //   .convertPreview({ from: "ZIG", to: "USDT" })
-    //   .then((response) => {
-    //     setRateZIG(response.lastPrice);
-    //   })
+    tradeApi.convertPreview({ from: "ZIG", to: "USDT" }).then((response) => {
+      setRateZIG(response.lastPrice);
+    });
 
     tradeApi.getWalletCoins().then((response) => {
       setCoins(response);
