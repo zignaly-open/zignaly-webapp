@@ -14,4 +14,7 @@ interface TransactionsHistory {
   toAddress: string;
   transactionId: string;
   txUrl: string;
+  network: string;
+  status: string;
+  type: string;
 }

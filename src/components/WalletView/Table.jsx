@@ -21,6 +21,10 @@ export const TableLayout = styled.div`
       border: 1px solid #1e1c4e;
       border-radius: 16px;
 
+      tbody {
+        font-size: 16px;
+      }
+
       ${isMobile(`
         display: block;
         overflow-x: auto;

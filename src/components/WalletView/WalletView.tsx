@@ -289,7 +289,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" px="7%" py="40px">
+      <Box display="flex" px="1%" py="40px">
         <PanelItem row>
           <CategIconStyled height={66} src={ZigCoinIcon} width={66} />
           <Box display="flex" flexDirection="column">
