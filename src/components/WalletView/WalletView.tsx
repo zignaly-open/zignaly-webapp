@@ -24,6 +24,9 @@ import WalletTransactions from "./WalletTransactions";
 import { isEmpty } from "lodash";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 import ETHIcon from "images/wallet/eth.svg";
+import { getChainIcon } from "utils/chain";
+import BalanceChain from "./BalanceChain";
+import balance from "pages/dashboard/balance";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -58,6 +61,7 @@ const ZigBig = styled.span`
   /* color: #9864ef; */
   color: ${(props) => props.theme.palette.text.secondary};
   font-size: 18px;
+  font-weight: 600;
   letter-spacing: 1px;
   line-height: 16px;
   margin-left: 6px;
@@ -167,6 +171,15 @@ const TypographyTooltip = styled.span`
   margin-bottom: 3px;
 `;
 
+const RateText = styled.span`
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.newTheme.secondaryText};
+  font-weight: 600;
+  font-size: 16px;
+`;
+
 // const PanelStyled = styled(Panel)`
 //   margin-bottom: 20px;
 // `;
@@ -178,9 +191,7 @@ const WalletView = () => {
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
-  const [anchorEl, setAnchorEl] = useState(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  console.log(tooltipOpen);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -190,21 +201,15 @@ const WalletView = () => {
     setTooltipOpen(true);
   };
 
-  const handleClick = (event: React.MouseEvent<any>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   useEffect(() => {
     // tradeApi.getWalletBalance().then((response) => {
     //   setBalances(response);
     // });
-    tradeApi.convertPreview({ from: "ZIG", to: "USDT" }).then((response) => {
-      setRateZIG(response.lastPrice);
-    });
+    // tradeApi
+    //   .convertPreview({ from: "ZIG", to: "USDT" })
+    //   .then((response) => {
+    //     setRateZIG(response.lastPrice);
+    //   })
 
     tradeApi.getWalletCoins().then((response) => {
       setCoins(response);
@@ -251,6 +256,8 @@ const WalletView = () => {
     [tooltipOpen],
   );
 
+  // const BalanceChain = useCallback(() => {}, [walletBalance, coins, anchorEl]);
+
   return (
     <Box p={5}>
       <Modal
@@ -280,23 +287,12 @@ const WalletView = () => {
               {balanceZIG}
               <ZigBig>ZIG</ZigBig>
             </Amount>
-            <div>
+            <RateText>
               ${balanceZIG * rateZIG}
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
-            </div>
-            {!isEmpty(walletBalance) && coins && (
-              <Box alignItems="center" display="flex" flexDirection="row" mt={1.5}>
-                ETH: {walletBalance.ZIG?.ETH || 0}
-                <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
-                <WalletPopover
-                  anchorEl={anchorEl}
-                  balance={walletBalance.ZIG}
-                  coin={coins.ZIG}
-                  handleClose={handleClose}
-                />
-              </Box>
-            )}
+            </RateText>
+            <BalanceChain coins={coins} walletBalance={walletBalance} />
             <Box display="flex" flexDirection="row" mt={2.25}>
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />

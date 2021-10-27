@@ -4,23 +4,13 @@ import { Panel, SubTitle, Title, AlignCenter } from "styles/styles";
 import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
-import ETHIcon from "images/wallet/eth.svg";
-import BSCIcon from "images/wallet/bsc.svg";
 // import ZIGIcon from "images/wallet/zig.svg";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { formatDate } from "utils/format";
 import NumberFormat from "react-number-format";
-
-const getChainIcon = (chain: string) => {
-  switch (chain) {
-    case "BSC":
-      return BSCIcon;
-    default:
-      return ETHIcon;
-  }
-};
+import { getChainIcon } from "utils/chain";
 
 const Date = styled.a`
   font-size: 14px;
@@ -34,12 +24,12 @@ const TypographyDate = styled(Typography)`
 
 const TypographyTime = styled(Typography)`
   font-weight: 600;
-  color: ${({ theme }) => theme.transactionTable.secondaryText};
+  color: ${({ theme }) => theme.newTheme.secondaryText};
 `;
 
 const TypographyTx = styled(Typography)`
   font-size: 12px;
-  color: ${({ theme }) => theme.transactionTable.secondaryText};
+  color: ${({ theme }) => theme.newTheme.secondaryText};
   margin-top: 10px;
   line-height: 16px;
 `;

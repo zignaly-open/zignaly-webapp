@@ -16,7 +16,7 @@ export const TableLayout = styled.div`
   ${({ theme }) => `
     table {
       width: 100%;
-      background-color: ${theme.transactionTable.backgroundColor};
+      background-color: ${theme.newTheme.backgroundColor};
       border-spacing: 0;
       border: 1px solid #1e1c4e;
       border-radius: 16px;
