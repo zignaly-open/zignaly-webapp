@@ -14,6 +14,7 @@ const StyledPopover = styled(Popover)`
     flex-direction: column;
     align-items: flex-start;
     min-width: 325px;
+    color: #ffffff;
   }
 `;
 

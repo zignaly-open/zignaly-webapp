@@ -16,10 +16,15 @@ export const TableLayout = styled.div`
   ${({ theme }) => `
     table {
       width: 100%;
-      background-color: ${theme.transactionTable.backgroundColor};
+      background-color: ${theme.newTheme.backgroundColor};
       border-spacing: 0;
-      border: 1px solid #1e1c4e;
+      // border: 1px solid #1e1c4e;
+      border: 1px solid ${theme.newTheme.borderColor};
       border-radius: 16px;
+
+      tbody {
+        font-size: 16px;
+      }
 
       ${isMobile(`
         display: block;

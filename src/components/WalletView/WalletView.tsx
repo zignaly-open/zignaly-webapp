@@ -1,11 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.svg";
 import { FormattedMessage } from "react-intl";
 import { Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
-import { Box, Popover, Typography } from "@material-ui/core";
+import {
+  Button as MuiButton,
+  Box,
+  ClickAwayListener,
+  Popover,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
@@ -15,6 +22,12 @@ import { ChevronRight } from "@material-ui/icons";
 import WalletPopover from "./WalletPopover";
 import WalletTransactions from "./WalletTransactions";
 import { isEmpty } from "lodash";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
+import ETHIcon from "images/wallet/eth.svg";
+import { getChainIcon } from "utils/chain";
+import BalanceChain from "./BalanceChain";
+import balance from "pages/dashboard/balance";
+import { TitleIcon } from "./styles";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -49,6 +62,7 @@ const ZigBig = styled.span`
   /* color: #9864ef; */
   color: ${(props) => props.theme.palette.text.secondary};
   font-size: 18px;
+  font-weight: 600;
   letter-spacing: 1px;
   line-height: 16px;
   margin-left: 6px;
@@ -113,8 +127,67 @@ const PanelItem = styled.div`
     `}
 `;
 
-const TitleIcon = styled.img`
-  margin-right: 12px;
+const ButtonBuy = styled(MuiButton)`
+  display: flex;
+  padding: 4px 12px 4px 16px;
+  /* box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25); */
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 13px;
+  border-image: linear-gradient(
+    312.12deg,
+    rgba(134, 113, 247, 0.33) 14.16%,
+    rgba(126, 201, 249, 0.33) 83.59%
+  );
+  border-image-slice: 1;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  /* background: transparent; */
+`;
+const StyledTooltip = styled.div`
+  .MuiTooltip-tooltip {
+    background: #f3f4f6;
+    box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
+    border-radius: 3px;
+    padding: 8px 16px;
+  }
+`;
+
+// const TooltipContainer = styled((props) => (
+//   <Tooltip classes={{ popper: props.className }} {...props} />
+// ))`
+//   & .MuiTooltip-tooltip {
+//     background-color: papayawhip;
+//     color: #000;
+//   }
+// `;
+
+const TooltipContainer = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  a {
+    text-decoration: none;
+  }
+`;
+
+const TypographyTooltip = styled.span`
+  color: #0c0d21;
+  margin-bottom: 3px;
+`;
+
+const RateText = styled.span`
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.newTheme.secondaryText};
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 // const PanelStyled = styled(Panel)`
@@ -128,28 +201,72 @@ const WalletView = () => {
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  const handleClick = (event: React.MouseEvent<any>) => {
-    setAnchorEl(event.currentTarget);
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleTooltipOpen = () => {
+    setTooltipOpen(true);
   };
 
   useEffect(() => {
     // tradeApi.getWalletBalance().then((response) => {
     //   setBalances(response);
     // });
-    tradeApi.convertPreview({ from: "ZIG", to: "USDT" }).then((response) => {
-      setRateZIG(response.lastPrice);
-    });
+    // tradeApi
+    //   .convertPreview({ from: "ZIG", to: "USDT" })
+    //   .then((response) => {
+    //     setRateZIG(response.lastPrice);
+    //   })
 
     tradeApi.getWalletCoins().then((response) => {
       setCoins(response);
     });
   }, []);
+
+  const BuyZig = useCallback(
+    () => (
+      <ClickAwayListener onClickAway={handleTooltipClose}>
+        <StyledTooltip>
+          <Tooltip
+            interactive
+            placement="right"
+            onClose={handleTooltipClose}
+            open={tooltipOpen}
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            PopperProps={{
+              disablePortal: true,
+            }}
+            title={
+              <TooltipContainer>
+                <TypographyTooltip>
+                  <FormattedMessage id="wallet.buy.tooltip" />
+                </TypographyTooltip>
+                <a href="https://ascendex.com" rel="noreferrer" target="_blank">
+                  AscendEX &gt;
+                </a>
+                <a href="https://mexc.com" rel="noreferrer" target="_blank">
+                  MEXC &gt;
+                </a>
+              </TooltipContainer>
+            }
+          >
+            <ButtonBuy onClick={handleTooltipOpen}>
+              <FormattedMessage id="wallet.buy" />
+              <ChevronRightStyled />
+            </ButtonBuy>
+          </Tooltip>
+        </StyledTooltip>
+      </ClickAwayListener>
+    ),
+    [tooltipOpen],
+  );
+
+  // const BalanceChain = useCallback(() => {}, [walletBalance, coins, anchorEl]);
 
   return (
     <Box p={5}>
@@ -158,7 +275,7 @@ const WalletView = () => {
         onClose={() => setPath("")}
         newTheme={true}
         persist={false}
-        size="large"
+        size="medium"
         state={path === "deposit"}
       >
         <WalletDepositView />
@@ -169,7 +286,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" px="7%" py="40px">
+      <Box display="flex" px="1%" py="40px">
         <PanelItem row>
           <CategIconStyled height={66} src={ZigCoinIcon} width={66} />
           <Box display="flex" flexDirection="column">
@@ -180,23 +297,12 @@ const WalletView = () => {
               {balanceZIG}
               <ZigBig>ZIG</ZigBig>
             </Amount>
-            <div>
+            <RateText>
               ${balanceZIG * rateZIG}
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
-            </div>
-            {!isEmpty(walletBalance) && coins && (
-              <Box alignItems="center" display="flex" flexDirection="row" mt={1.5}>
-                ETH: {walletBalance.ZIG?.ETH || 0}
-                <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
-                <WalletPopover
-                  anchorEl={anchorEl}
-                  balance={walletBalance.ZIG}
-                  coin={coins.ZIG}
-                  handleClose={handleClose}
-                />
-              </Box>
-            )}
+            </RateText>
+            <BalanceChain coins={coins} walletBalance={walletBalance} />
             <Box display="flex" flexDirection="row" mt={2.25}>
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
@@ -206,6 +312,12 @@ const WalletView = () => {
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
+
+            {walletBalance && !walletBalance.ZIG && (
+              <Box mt={2}>
+                <BuyZig />
+              </Box>
+            )}
           </Box>
         </PanelItem>
         <Divider />

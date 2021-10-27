@@ -4,23 +4,13 @@ import { Panel, SubTitle, Title, AlignCenter } from "styles/styles";
 import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
-import ETHIcon from "images/wallet/eth.svg";
-import BSCIcon from "images/wallet/bsc.svg";
 // import ZIGIcon from "images/wallet/zig.svg";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { formatDate } from "utils/format";
 import NumberFormat from "react-number-format";
-
-const getChainIcon = (chain: string) => {
-  switch (chain) {
-    case "BSC":
-      return BSCIcon;
-    default:
-      return ETHIcon;
-  }
-};
+import { getChainIcon } from "utils/chain";
 
 const Date = styled.a`
   font-size: 14px;
@@ -28,20 +18,25 @@ const Date = styled.a`
   align-items: center;
 `;
 
-const TypographyDate = styled(Typography)`
+const TypographyRow = styled(Typography)`
   font-weight: 600;
 `;
 
 const TypographyTime = styled(Typography)`
   font-weight: 600;
-  color: ${({ theme }) => theme.transactionTable.secondaryText};
+  color: ${({ theme }) => theme.newTheme.secondaryText};
 `;
 
 const TypographyTx = styled(Typography)`
   font-size: 12px;
-  color: ${({ theme }) => theme.transactionTable.secondaryText};
+  color: ${({ theme }) => theme.newTheme.secondaryText};
   margin-top: 10px;
   line-height: 16px;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 58px;
 `;
 
 const TypographyView = styled(Typography)`
@@ -70,10 +65,10 @@ const WalletTransactions = () => {
       Header: intl.formatMessage({ id: "col.date" }),
       accessor: "date",
     },
-    // {
-    //   Header: intl.formatMessage({ id: "accounts.exchange.type" }),
-    //   accessor: "type",
-    // },
+    {
+      Header: intl.formatMessage({ id: "accounts.exchange.type" }),
+      accessor: "type",
+    },
     {
       Header: intl.formatMessage({ id: "col.amount" }),
       accessor: "amount",
@@ -91,58 +86,33 @@ const WalletTransactions = () => {
       accessor: "status",
     },
   ];
-  console.log(transactions);
+
   const data =
     transactions &&
     transactions.map((t) => ({
       date: (
         <Box display="flex" justifyContent="center">
           <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
-            <TypographyDate>{dayjs(t.createdAt).format("MMM DD")}</TypographyDate>
-            <TypographyTx>0xtodo...</TypographyTx>
+            <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
+            <TypographyTx>{t.transactionId}</TypographyTx>
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
             <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
-            <a href="todo" target="_blank">
+            <a href={t.txUrl} target="_blank" rel="noreferrer">
               <TypographyView>
                 <FormattedMessage id="action.view" />
               </TypographyView>
             </a>
           </Box>
         </Box>
-        // <AlignCenter>
-        //   <Date href={t.txUrl} target={"_blank"}>
-        //     {/* <ExternalLink src={ExternalLinkImage} width={"10px"} height={"10px"} /> */}
-        //   </Date>
-        // </AlignCenter>
       ),
-      // status: (
-      //   <AlignCenter>
-      //     <StateLabel
-      //       type={transfer.state}
-      //       fromChain={transfer.fromChain}
-      //       toChain={transfer.toChain}
-      //     />
-      //     <div style={{ width: "22px" }} />
-      //     <ToolTip
-      //       position={"bottom"}
-      //       content={renderStatusContent(transfer.state, transfer)}
-      //       target={
-      //         <InfoMark>
-      //           <AlertOutline
-      //             width={"14px"}
-      //             height={"20px"}
-      //             style={{
-      //               position: "relative",
-      //               left: "2px",
-      //               top: "-1px",
-      //             }}
-      //           />
-      //         </InfoMark>
-      //       }
-      //     />
-      //   </AlignCenter>
-      // ),
+      type: (
+        <AlignCenter>
+          <TypographyRow>
+            <FormattedMessage id={`wallet.type.${t.type.toLowerCase()}`} />
+          </TypographyRow>
+        </AlignCenter>
+      ),
       amount: (
         <AlignCenter direction={"column"}>
           <Typography style={{ fontWeight: 600 }}>
@@ -155,23 +125,6 @@ const WalletTransactions = () => {
           </Typography>
         </AlignCenter>
       ),
-      // fromChain: (
-      //   <AlignCenter>
-      //     <Chains>
-      //       <Chain>
-      //         <ChainImage src={transfer.fromChain.image} />
-      //         <ChainName color={transfer.fromChain.color}>{transfer.fromChain.shortName}</ChainName>
-      //       </Chain>
-      //     </Chains>
-      //   </AlignCenter>
-      // ),
-      // separator: (
-      //   <AlignCenter>
-      //     <Separator>
-      //       <ArrowForward src={ArrowWideShort} width={"18px"} height={"18px"} />
-      //     </Separator>
-      //   </AlignCenter>
-      // ),
       coin: (
         <AlignCenter>
           <img width={24} height={24} src={ZIGIcon} />
@@ -180,8 +133,8 @@ const WalletTransactions = () => {
       ),
       network: (
         <AlignCenter>
-          <img width={24} height={24} src={getChainIcon("ETH")} />
-          <TypographyToken>TODO</TypographyToken>
+          <img width={24} height={24} src={getChainIcon(t.network)} />
+          <TypographyToken>{t.network}</TypographyToken>
         </AlignCenter>
       ),
       status: (
@@ -191,20 +144,6 @@ const WalletTransactions = () => {
           </TypographyStatus>
         </AlignCenter>
       ),
-      // action: (
-      //   <AlignCenter>
-      //     <TransferActionButton transfer={transfer} />
-      //     {transfer.state === transferStateId.PROCESSING && (
-      //       <Link
-      //         href={`${transfer.fromChain.scanLink}/tx/${transfer.transactionHash}`}
-      //         target={"_blank"}
-      //       >
-      //         View transaction
-      //         <ExternalLink src={ExternalLinkImage} width={"10px"} height={"10px"} />
-      //       </Link>
-      //     )}
-      //   </AlignCenter>
-      // ),
     }));
 
   useEffect(() => {

@@ -362,17 +362,24 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
-    transactionTable: darkStyle
+    newTheme: darkStyle
       ? {
           backgroundColor: "#12132d",
-          headTextColor: "#f3f4f6",
           secondaryText: "#9ca3af",
-          linkText: "#829fff",
+          borderColor: "#1e1c4f",
         }
       : {
           backgroundColor: "#dcdaf4",
-          headTextColor: "#36373F",
           secondaryText: "#6D6C96",
+          borderColor: "#c1c2f7",
+        },
+    transactionTable: darkStyle
+      ? {
+          headTextColor: "#f3f4f6",
+          linkText: "#829fff",
+        }
+      : {
+          headTextColor: "#36373F",
           linkText: "#36A6F4",
         },
   };

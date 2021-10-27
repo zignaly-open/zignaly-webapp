@@ -8,9 +8,10 @@
   position: relative;
 
   &.newTheme {
-    // todo: use correct color
+    // todo: use correct color, same as other modals?
     background: #e7e5f8;
     border-radius: 16px;
+    border: 1px solid #c1c2f7;
   }
 
   .closeIcon {
@@ -86,6 +87,7 @@
     &.newTheme {
       // todo: use correct color
       background: #060a1f;
+      border: 1px solid #413ba0;
     }
 
     [class^="MuiPaper"],
