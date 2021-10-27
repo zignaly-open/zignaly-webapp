@@ -27,6 +27,7 @@ import ETHIcon from "images/wallet/eth.svg";
 import { getChainIcon } from "utils/chain";
 import BalanceChain from "./BalanceChain";
 import balance from "pages/dashboard/balance";
+import { TitleIcon } from "./styles";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -124,10 +125,6 @@ const PanelItem = styled.div`
     css`
       justify-content: center;
     `}
-`;
-
-const TitleIcon = styled.img`
-  margin-right: 12px;
 `;
 
 const ButtonBuy = styled(MuiButton)`
@@ -278,7 +275,7 @@ const WalletView = () => {
         onClose={() => setPath("")}
         newTheme={true}
         persist={false}
-        size="large"
+        size="medium"
         state={path === "deposit"}
       >
         <WalletDepositView />

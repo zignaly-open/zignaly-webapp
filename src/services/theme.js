@@ -366,10 +366,12 @@ const theme = (darkStyle) => {
       ? {
           backgroundColor: "#12132d",
           secondaryText: "#9ca3af",
+          borderColor: "#1e1c4f",
         }
       : {
           backgroundColor: "#dcdaf4",
           secondaryText: "#6D6C96",
+          borderColor: "#c1c2f7",
         },
     transactionTable: darkStyle
       ? {

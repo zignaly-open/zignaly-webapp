@@ -9,10 +9,12 @@ import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import CustomSelect from "components/CustomSelect";
 import DepositQRCodes from "components/ConnectExchangeView/ExchangeAccountBalanceManagement/Deposit/DepositQRCodes";
+import { TitleIcon } from "./styles";
 
-const StyledCustomSelect = styled(CustomSelect)`
-  width: 100%;
-  flex: 1;
+const StyledCustomSelect = styled.div`
+  .customSelectControl {
+    width: 100%;
+  }
 `;
 
 const WalletDepositView = () => {
@@ -49,7 +51,7 @@ const WalletDepositView = () => {
     <Modal p={5}>
       <Title>
         <Box alignItems="center" display="flex">
-          <img height="30px" src={WalletIcon} width="33px" />
+          <TitleIcon height="30px" src={WalletIcon} width="33px" />
           <FormattedMessage id="accounts.deposit" /> ZIG
         </Box>
       </Title>
@@ -57,12 +59,15 @@ const WalletDepositView = () => {
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: "ZIG" }} />
       </TextDesc>
       <br />
-      <StyledCustomSelect
-        labelPlacement="top"
-        onChange={setNetwork}
-        options={networkOptions}
-        value={network}
-      />
+      <StyledCustomSelect>
+        <CustomSelect
+          labelPlacement="top"
+          onChange={setNetwork}
+          options={networkOptions}
+          value={network}
+          label={<FormattedMessage id="deposit.network" />}
+        />
+      </StyledCustomSelect>
       <br />
       <OutlinedInput className="customInput" readOnly value={address?.address} />
       <br />

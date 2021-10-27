@@ -109,7 +109,7 @@ const WalletTransactions = () => {
       type: (
         <AlignCenter>
           <TypographyRow>
-            <FormattedMessage id={`wallet.type.${t.type}`} />
+            <FormattedMessage id={`wallet.type.${t.type.toLowerCase()}`} />
           </TypographyRow>
         </AlignCenter>
       ),

@@ -27,9 +27,9 @@ export const Panel = styled(Box)`
 `;
 
 export const Modal = styled(Box)`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#0C0D21" : "#E4E3F4")};
-  border: 1px solid ${({ theme }) => (theme.palette.type === "dark" ? "#413BA0" : "#A586DF")};
-  border-radius: 16px;
+  /* background: ${({ theme }) => (theme.palette.type === "dark" ? "#0C0D21" : "#E4E3F4")}; */
+  /* border: 1px solid ${({ theme }) => (theme.palette.type === "dark" ? "#413BA0" : "#A586DF")}; */
+  /* border-radius: 16px; */
   display: flex;
   flex: 1;
   flex-direction: column;

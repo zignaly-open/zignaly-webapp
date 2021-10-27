@@ -18,7 +18,8 @@ export const TableLayout = styled.div`
       width: 100%;
       background-color: ${theme.newTheme.backgroundColor};
       border-spacing: 0;
-      border: 1px solid #1e1c4e;
+      // border: 1px solid #1e1c4e;
+      border: 1px solid ${theme.newTheme.borderColor};
       border-radius: 16px;
 
       tbody {
