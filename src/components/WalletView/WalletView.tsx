@@ -149,12 +149,25 @@ const ButtonBuy = styled(MuiButton)`
   line-height: 16px;
   /* background: transparent; */
 `;
-
 const StyledTooltip = styled.div`
-  background: #f3f4f6;
-  box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
-  border-radius: 3px;
-  padding: 8px 16px;
+  .MuiTooltip-tooltip {
+    background: #f3f4f6;
+    box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
+    border-radius: 3px;
+    padding: 8px 16px;
+  }
+`;
+
+// const TooltipContainer = styled((props) => (
+//   <Tooltip classes={{ popper: props.className }} {...props} />
+// ))`
+//   & .MuiTooltip-tooltip {
+//     background-color: papayawhip;
+//     color: #000;
+//   }
+// `;
+
+const TooltipContainer = styled.div`
   font-weight: 600;
   font-size: 16px;
   display: flex;
@@ -219,7 +232,7 @@ const WalletView = () => {
   const BuyZig = useCallback(
     () => (
       <ClickAwayListener onClickAway={handleTooltipClose}>
-        <div>
+        <StyledTooltip>
           <Tooltip
             interactive
             placement="right"
@@ -232,7 +245,7 @@ const WalletView = () => {
               disablePortal: true,
             }}
             title={
-              <StyledTooltip>
+              <TooltipContainer>
                 <TypographyTooltip>
                   <FormattedMessage id="wallet.buy.tooltip" />
                 </TypographyTooltip>
@@ -242,7 +255,7 @@ const WalletView = () => {
                 <a href="https://mexc.com" rel="noreferrer" target="_blank">
                   MEXC &gt;
                 </a>
-              </StyledTooltip>
+              </TooltipContainer>
             }
           >
             <ButtonBuy onClick={handleTooltipOpen}>
@@ -250,7 +263,7 @@ const WalletView = () => {
               <ChevronRightStyled />
             </ButtonBuy>
           </Tooltip>
-        </div>
+        </StyledTooltip>
       </ClickAwayListener>
     ),
     [tooltipOpen],
