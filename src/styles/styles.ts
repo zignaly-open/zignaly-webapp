@@ -11,7 +11,7 @@ export const Title = styled.div`
   text-transform: uppercase;
 `;
 
-export const SubTitle = styled.span`
+export const SubTitle = styled(Typography)`
   color: #65647e;
   font-size: 12px;
   font-weight: 600;

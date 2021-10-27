@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomButton from "components/CustomButton";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@material-ui/core";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 
 const Button = styled(CustomButton)`

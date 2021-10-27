@@ -1,11 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.svg";
 import { FormattedMessage } from "react-intl";
 import { Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
-import { Box, Popover, Typography } from "@material-ui/core";
+import {
+  Button as MuiButton,
+  Box,
+  ClickAwayListener,
+  Popover,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
@@ -15,6 +22,8 @@ import { ChevronRight } from "@material-ui/icons";
 import WalletPopover from "./WalletPopover";
 import WalletTransactions from "./WalletTransactions";
 import { isEmpty } from "lodash";
+import TooltipWithUrl from "components/Controls/TooltipWithUrl";
+import ETHIcon from "images/wallet/eth.svg";
 
 const CategIconStyled = styled.img`
   /* height: 30px; */
@@ -117,6 +126,47 @@ const TitleIcon = styled.img`
   margin-right: 12px;
 `;
 
+const ButtonBuy = styled(MuiButton)`
+  display: flex;
+  padding: 4px 12px 4px 16px;
+  /* box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25); */
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 13px;
+  border-image: linear-gradient(
+    312.12deg,
+    rgba(134, 113, 247, 0.33) 14.16%,
+    rgba(126, 201, 249, 0.33) 83.59%
+  );
+  border-image-slice: 1;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  /* background: transparent; */
+`;
+
+const StyledTooltip = styled.div`
+  background: #f3f4f6;
+  box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
+  border-radius: 3px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  a {
+    text-decoration: none;
+  }
+`;
+
+const TypographyTooltip = styled.span`
+  color: #0c0d21;
+  margin-bottom: 3px;
+`;
+
 // const PanelStyled = styled(Panel)`
 //   margin-bottom: 20px;
 // `;
@@ -128,7 +178,17 @@ const WalletView = () => {
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  console.log(tooltipOpen);
+
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setTooltipOpen(true);
+  };
 
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
@@ -150,6 +210,46 @@ const WalletView = () => {
       setCoins(response);
     });
   }, []);
+
+  const BuyZig = useCallback(
+    () => (
+      <ClickAwayListener onClickAway={handleTooltipClose}>
+        <div>
+          <Tooltip
+            interactive
+            placement="right"
+            onClose={handleTooltipClose}
+            open={tooltipOpen}
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            PopperProps={{
+              disablePortal: true,
+            }}
+            title={
+              <StyledTooltip>
+                <TypographyTooltip>
+                  <FormattedMessage id="wallet.buy.tooltip" />
+                </TypographyTooltip>
+                <a href="https://ascendex.com" rel="noreferrer" target="_blank">
+                  AscendEX &gt;
+                </a>
+                <a href="https://mexc.com" rel="noreferrer" target="_blank">
+                  MEXC &gt;
+                </a>
+              </StyledTooltip>
+            }
+          >
+            <ButtonBuy onClick={handleTooltipOpen}>
+              <FormattedMessage id="wallet.buy" />
+              <ChevronRightStyled />
+            </ButtonBuy>
+          </Tooltip>
+        </div>
+      </ClickAwayListener>
+    ),
+    [tooltipOpen],
+  );
 
   return (
     <Box p={5}>
@@ -206,6 +306,12 @@ const WalletView = () => {
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
+
+            {/* {walletBalance && !walletBalance.ZIG && ( */}
+            <Box mt={2}>
+              <BuyZig />
+            </Box>
+            {/* )} */}
           </Box>
         </PanelItem>
         <Divider />

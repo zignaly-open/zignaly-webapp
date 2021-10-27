@@ -1725,6 +1725,8 @@ wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
 # WALLET
+wallet.buy: "Where to buy ZIG?"
+wallet.buy.tooltip: "You can buy ZIG on these exchanges:"
 wallet.deposit.caution: "Only send ERC-20 ZIG tokens to this address."
 wallet.deposit.desc: "To deposit {coin} tokens, select the network and send to the address below."
 wallet.deposit.notsure: "Not sure?"
