@@ -316,11 +316,11 @@ const WalletView = () => {
               </Button>
             </Box>
 
-            {/* {walletBalance && !walletBalance.ZIG && ( */}
-            <Box mt={2}>
-              <BuyZig />
-            </Box>
-            {/* )} */}
+            {walletBalance && !walletBalance.ZIG && (
+              <Box mt={2}>
+                <BuyZig />
+              </Box>
+            )}
           </Box>
         </PanelItem>
         <Divider />
