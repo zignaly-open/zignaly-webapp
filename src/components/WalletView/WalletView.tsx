@@ -3,7 +3,7 @@ import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.svg";
 import { FormattedMessage } from "react-intl";
-import { Panel, SubTitle, Title } from "styles/styles";
+import { isMobile, Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
 import {
   Button as MuiButton,
@@ -21,15 +21,25 @@ import { ChevronRight } from "@material-ui/icons";
 import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
 import { TitleIcon } from "./styles";
+import NumberFormat from "react-number-format";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
+
+  ${isMobile(`
+    display: none;
+  `)}
 `;
 
 const StyledPanel = styled(Panel)`
   display: flex;
   justify-content: space-around;
   padding: 40px 0;
+
+  ${isMobile(`
+    flex-direction: column;
+    padding: 40px 28px;
+  `)}
 `;
 
 const Rate = styled.span`
@@ -95,6 +105,10 @@ const Divider = styled.span`
   width: 1px;
   height: 128px;
   align-self: center;
+
+  ${isMobile(`
+    display: none;
+  `)}
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -111,11 +125,18 @@ const PanelItem = styled.div`
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
   margin: 0 3%;
   max-width: 300px;
+
   ${(props) =>
     props.row &&
     css`
       justify-content: center;
     `}
+
+  ${isMobile(`
+    &:not(:first-child) {
+      margin: 48px 0 0;
+    }
+  `)}
 `;
 
 const ButtonBuy = styled(MuiButton)`
@@ -281,7 +302,13 @@ const WalletView = () => {
               <ZigBig>ZIG</ZigBig>
             </Amount>
             <RateText>
-              ${balanceZIG * rateZIG}
+              <NumberFormat
+                value={balanceZIG * rateZIG}
+                displayType="text"
+                thousandSeparator={true}
+                prefix="$"
+                decimalScale={2}
+              />
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
