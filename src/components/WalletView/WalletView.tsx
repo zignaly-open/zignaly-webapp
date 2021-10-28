@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import WalletIcon from "images/wallet/wallet.svg";
+import WalletIcon from "images/wallet/wallet.inline.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
-import ListIcon from "images/wallet/list.svg";
+import ListIcon from "images/wallet/list.inline.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
@@ -272,6 +272,31 @@ const WalletView = () => {
     [tooltipOpen],
   );
 
+  // const WalletIcon = (props) => (
+  //   <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //     <path
+  //       d="M29.287 5.35714V4.28571C29.287 1.91853 27.3265 0 24.9075 0H6.9026C3.2744 0 0.333252 2.87813 0.333252 6.42857V23.5714C0.333252 27.1219 3.2744 30 6.9026 30H29.287C31.706 30 33.6666 28.0815 33.6666 25.7143V9.64286C33.6666 7.27567 31.706 5.35714 29.287 5.35714ZM30.3819 25.7143C30.3819 26.3049 29.8906 26.7857 29.287 26.7857H6.9026C5.09124 26.7857 3.61792 25.344 3.61792 23.5714V6.42857C3.61792 4.65603 5.09124 3.21429 6.9026 3.21429H24.9075C25.511 3.21429 26.0024 3.69509 26.0024 4.28571V6.42857H7.99749C7.39256 6.42857 6.9026 6.90804 6.9026 7.5C6.9026 8.09196 7.39256 8.57143 7.99749 8.57143H29.287C29.8906 8.57143 30.3819 9.05223 30.3819 9.64286V25.7143ZM24.9075 15C23.6983 15 22.7177 15.9596 22.7177 17.1429C22.7177 18.3261 23.6983 19.2857 24.9075 19.2857C26.1166 19.2857 27.0972 18.3261 27.0972 17.1429C27.0972 15.9596 26.1166 15 24.9075 15Z"
+  //       fill="url(#paint0_linear_594:4159)"
+  //     />
+  //     <defs>
+  //       <linearGradient
+  //         id="paint0_linear_594:4159"
+  //         x1="6.06242"
+  //         y1="-1.89648e-07"
+  //         x2="35.192"
+  //         y2="19.6111"
+  //         gradientUnits="userSpaceOnUse"
+  //       >
+  //         <stop stop-color="#A600FB" />
+  //         <stop offset="0.260417" stop-color="#6F06FC" />
+  //         <stop offset="0.625" stop-color="#4959F5" />
+  //         <stop offset="0.828125" stop-color="#2E8DDF" />
+  //         <stop offset="1" stop-color="#12C1C9" />
+  //       </linearGradient>
+  //     </defs>
+  //   </svg>
+  // );
+
   return (
     <Box p={5}>
       <Modal
@@ -286,7 +311,8 @@ const WalletView = () => {
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
-          <TitleIcon height="30px" src={WalletIcon} width="33px" />
+          {/* <TitleIcon height="30px" src={WalletIcon} width="33px" /> */}
+          <WalletIcon />
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
@@ -357,7 +383,7 @@ const WalletView = () => {
       </StyledPanel>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">
-          <TitleIcon height="22px" src={ListIcon} width="27px" />
+          <ListIcon />
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
