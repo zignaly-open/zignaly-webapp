@@ -40,8 +40,8 @@ const BalanceChain = ({ walletBalance, coins }) => {
     setAnchorEl(null);
   };
 
-  // Wait for data fetching
-  if (!walletBalance || !coins) return null;
+  // Wait for data fetching, and ZIG balance
+  if (!walletBalance?.ZIG || !coins) return null;
 
   // Get 1st chain with coins
   const chainWithCoin = Object.keys(walletBalance.ZIG).find((key) => {

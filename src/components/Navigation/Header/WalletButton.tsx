@@ -4,6 +4,7 @@ import CustomButton from "components/CustomButton";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import { Box, Tooltip, Typography } from "@material-ui/core";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
+import { isMobile } from "styles/styles";
 
 const Button = styled(CustomButton)`
   min-width: 80px;
@@ -21,12 +22,28 @@ const ZIG = styled.span`
   margin-left: 4px;
 `;
 
+const WalletIcon = styled.img.attrs((props) => ({
+  src: ZigCoinIcon,
+}))`
+  width: 40px;
+  height: 40px;
+
+  ${isMobile(`
+    width: 32px;
+    height: 32px;
+  `)}
+
+  ::placeholder {
+    color: palevioletred;
+  }
+`;
+
 const WalletButton = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
 
   return (
     <Box display="flex" alignItems="center">
-      <img height={40} src={ZigCoinIcon} width={40} />
+      <WalletIcon />
       <Button href="#wallet">
         <TypographyBalance>
           {walletBalance ? walletBalance.ZIG?.total || 0 : "-"}

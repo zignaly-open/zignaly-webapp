@@ -11,6 +11,7 @@ import { FormattedMessage } from "react-intl";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import CustomButton from "components/CustomButton";
+import WalletButton from "../Header/WalletButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -39,6 +40,7 @@ const MobileHeader = () => {
           justifyContent="flex-start"
         >
           <Box
+            flexWrap="wrap"
             alignItems="center"
             className="actionBox"
             display="flex"
@@ -46,6 +48,7 @@ const MobileHeader = () => {
             justifyContent="space-between"
           >
             {exchangeConnections.length > 1 && <MobileExchangeList />}
+            <WalletButton />
             <Box
               alignItems="center"
               className="iconBox"
