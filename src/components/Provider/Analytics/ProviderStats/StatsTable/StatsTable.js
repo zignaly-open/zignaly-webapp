@@ -1,5 +1,4 @@
 import React from "react";
-import "./StatsTable.scss";
 import { Box } from "@material-ui/core";
 import { formatFloat2Dec } from "../../../../../utils/format";
 import Table from "../../../../Table";

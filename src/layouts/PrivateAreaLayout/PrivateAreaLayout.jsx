@@ -8,6 +8,7 @@ import Sidebar from "../../components/Navigation/Sidebar";
 import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import SettingsView from "../../components/SettingsView";
+import WalletView from "../../components/WalletView";
 import { useDispatch } from "react-redux";
 import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
@@ -16,8 +17,8 @@ import useInterval from "../../hooks/useInterval";
 import useAppUpdatesCheck from "../../hooks/useAppUpdatesCheck";
 import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import useSelectedExchange from "hooks/useSelectedExchange";
-import useConnectedProvidersList from "hooks/useConnectedProvidersList";
+import useUpdatedBalance from "hooks/useUpdatedBalance";
+import tradeApi from "services/tradeApiClient";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -32,19 +33,20 @@ import useConnectedProvidersList from "hooks/useConnectedProvidersList";
  */
 const PrivateAreaLayout = (props) => {
   const { children } = props;
-  const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
-  const { setProviderCount } = privateAreaContext;
-  const { providers } = useConnectedProvidersList(
-    selectedExchange.internalId,
-    ["signalProvider"],
-    true,
-  );
+  const { setUserProviders } = privateAreaContext;
+
+  // Load balance in the context to show in the header, and to show the "Add Fund" button
+  useUpdatedBalance(privateAreaContext);
 
   useEffect(() => {
-    setProviderCount(providers ? providers.length : 0);
-  }, [providers]);
+    // Get connected signal provider to know if we need to display "Connected Providers" tab in the dashboard.
+    // Also get connected profit sharing to know if we should display "Start with PS" button
+    tradeApi.providersUserGet().then((response) => {
+      setUserProviders(response);
+    });
+  }, []);
 
   const updateSession = () => {
     dispatch(refreshSessionData());
@@ -64,6 +66,8 @@ const PrivateAreaLayout = (props) => {
       />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
+      <GlobalModal content={WalletView} hash="wallet" newTheme={true} showCloseIcon={true} />
+      {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>
           <Header />

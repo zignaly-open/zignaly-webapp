@@ -169,6 +169,7 @@ export const colors = {
 const theme = (darkStyle) => {
   return {
     palette: {
+      type: darkStyle ? "dark" : "light",
       background: {
         default: darkStyle ? colors.lightBlack : colors.offWhite,
         paper: darkStyle ? colors.lighterBlack : colors.white,
@@ -185,6 +186,7 @@ const theme = (darkStyle) => {
       },
       text: {
         primary: darkStyle ? colors.lightWhite : colors.black,
+        secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
       type: darkStyle ? "dark" : "light",
     },
@@ -360,6 +362,33 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
+    newTheme: darkStyle
+      ? {
+          backgroundColor: "#12132d",
+          secondaryText: "#9ca3af",
+          borderColor: "#1e1c4f",
+        }
+      : {
+          backgroundColor: "#ffffff",
+          // backgroundColor: "#dcdaf4",
+          secondaryText: "#6D6C96",
+          // borderColor: "#c1c2f7",
+          borderColor: "rgba(0, 0, 0, 0.1);",
+        },
+    transactionTable: darkStyle
+      ? {
+          headTextColor: "#f3f4f6",
+          headBackgroundColor: "#0C0D21",
+          linkText: "#829fff",
+          border: "#222249",
+        }
+      : {
+          headTextColor: "#36373F",
+          // headBackgroundColor: "#CCCAEF",
+          headBackgroundColor: "#ffffff",
+          linkText: "#36A6F4",
+          border: "rgba(0, 0, 0, 0.1)",
+        },
   };
 };
 

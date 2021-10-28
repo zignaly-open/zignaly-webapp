@@ -435,7 +435,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersListPayload
- * @property {string} internalExchangeId
+ * @property {string} [internalExchangeId]
  */
 
 /**
@@ -1818,6 +1818,7 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalFreeUSDT
  * @property {Number} totalLockedBTC
  * @property {Number} totalLockedUSDT
+ * // not used?
  * @property {Number} totalUSDT
  * @property {Number} totalAvailableBTC
  * @property {Number} totalAvailableUSDT
@@ -1827,6 +1828,7 @@ export function createExchangeConnectionEmptyEntity() {
  * @property {Number} totalMarginUSDT
  * @property {Number} totalUnrealizedProfitBTC
  * @property {Number} totalUnrealizedProfitUSDT
+ * // not used?
  * @property {Number} totalWalletBTC
  * @property {Number} totalWalletUSDT
  */

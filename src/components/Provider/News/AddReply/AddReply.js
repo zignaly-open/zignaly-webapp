@@ -3,7 +3,6 @@ import { Box, OutlinedInput } from "@material-ui/core";
 import ProviderLogo from "../../ProviderHeader/ProviderLogo";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
-import "./AddReply.scss";
 import { useIntl } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreViewsSelector from "hooks/useStoreViewsSelector";

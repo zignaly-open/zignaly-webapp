@@ -8,9 +8,10 @@ import DisabledWhite from "../../../images/header/disabledWhite.svg";
 import MobileExchangeList from "./MobileExchangeList";
 import BalanceBox from "../Header/TopBalance";
 import { FormattedMessage } from "react-intl";
-import ConnectExchangeButton from "../Header/ConnectExchangeButton";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
+import CustomButton from "components/CustomButton";
+import WalletButton from "../Header/WalletButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -39,13 +40,15 @@ const MobileHeader = () => {
           justifyContent="flex-start"
         >
           <Box
+            flexWrap="wrap"
             alignItems="center"
             className="actionBox"
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
           >
-            <MobileExchangeList />
+            {exchangeConnections.length > 1 && <MobileExchangeList />}
+            <WalletButton />
             <Box
               alignItems="center"
               className="iconBox"
@@ -54,16 +57,19 @@ const MobileHeader = () => {
               justifyContent="flex-end"
               onClick={() => setShowBalance(!showBalance)}
             >
-              {storeSettings.darkStyle && (
-                <img
-                  alt="zignaly"
-                  className="expandIcon"
-                  src={showBalance ? DisabledWhite : EnabledWhite}
-                />
-              )}
-              {!storeSettings.darkStyle && (
-                <img alt="zignaly" className="expandIcon" src={showBalance ? Disabled : Enabled} />
-              )}
+              <img
+                alt="zignaly"
+                className="expandIcon"
+                src={
+                  showBalance
+                    ? storeSettings.darkStyle
+                      ? DisabledWhite
+                      : Disabled
+                    : storeSettings.darkStyle
+                    ? EnabledWhite
+                    : Enabled
+                }
+              />
               <Typography variant="h4">
                 <FormattedMessage id="dashboard.balance" />
               </Typography>
@@ -72,7 +78,11 @@ const MobileHeader = () => {
           {showBalance && <BalanceBox />}
         </Box>
       )}
-      {exchangeConnections.length === 0 && <ConnectExchangeButton />}
+      {exchangeConnections.length === 0 && (
+        <CustomButton className="headerButton" href="#exchangeAccounts">
+          <FormattedMessage id="menu.connectexchange" />
+        </CustomButton>
+      )}
     </Box>
   );
 };

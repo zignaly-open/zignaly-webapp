@@ -323,7 +323,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["*.ts"],
+      files: ["*.ts", "*.tsx"],
       rules: {
         "no-undef": "off",
         "no-unused-vars": "off",
@@ -336,4 +336,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["**/*.d.ts", "src/stories/*", "src/tradingView/charting_library/*"],
 };

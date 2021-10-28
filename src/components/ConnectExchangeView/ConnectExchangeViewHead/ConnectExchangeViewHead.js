@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
 import { Box, TextField, Typography, useMediaQuery } from "@material-ui/core";
@@ -72,6 +72,18 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
     };
   }, [tempMessage, setPathParams]);
 
+  const ExchangeFilter = useCallback(
+    () => (
+      <TextField
+        className="customInput searchInput"
+        onChange={(e) => onSearch(e)}
+        placeholder={intl.formatMessage({ id: "fil.search" }) + " ..."}
+        variant="outlined"
+      />
+    ),
+    [],
+  );
+
   return (
     <Box className="connectExchangeViewHead">
       <GlobalModalHead
@@ -107,25 +119,14 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
               </Typography>
             )}
 
-            {exchangeConnections.length > 0 && !isMobile &&
-              <TextField
-                className="customInput searchInput"
-                onChange={(e) => onSearch(e)}
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " ..."}
-                variant="outlined"
-              />
-            }
-            {exchangeConnections.length > 0 &&
-              ["demoAccounts", "realAccounts"].includes(currentPath) &&
-              (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
-            {exchangeConnections.length > 0 && isMobile &&
-              <TextField
-                className="customInput searchInput"
-                onChange={(e) => onSearch(e)}
-                placeholder={intl.formatMessage({ id: "fil.search" }) + " ..."}
-                variant="outlined"
-              />
-            }
+            {exchangeConnections.length > 1 && (
+              <>
+                {!isMobile && <ExchangeFilter />}
+                {["demoAccounts", "realAccounts"].includes(currentPath) &&
+                  (isMobile ? <MobileExchangeList /> : <UserExchangeList />)}
+                {isMobile && <ExchangeFilter />}
+              </>
+            )}
 
             {isMobile && tempMessage && (
               <Typography className="tempMessage" variant="body1">

@@ -57,7 +57,7 @@ describe("Provider Profile", () => {
       });
     });
 
-    it("should asks to deposit if exchange account is not activated", () => {
+    it("should ask to deposit if exchange account is not activated", () => {
       const exchangeNotActivated = user.exchanges.find((e) => !e.activated);
       dispatch(setSelectedExchange(exchangeNotActivated.internalId));
 

@@ -1,5 +1,4 @@
 import React from "react";
-import "./CoinsTable.scss";
 import { Box } from "@material-ui/core";
 import { formatFloat } from "../../../../utils/format";
 import Table from "../../../Table";
