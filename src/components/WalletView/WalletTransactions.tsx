@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import tradeApi from "services/tradeApiClient";
-import { Panel, SubTitle, Title, AlignCenter } from "styles/styles";
+import { AlignCenter } from "styles/styles";
 import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
-// import ZIGIcon from "images/wallet/zig.svg";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { formatDate } from "utils/format";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 
