@@ -124,9 +124,8 @@ interface PanelItemProps {
 }
 const PanelItem = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
-  max-width: 300px;
+  flex-basis: 24%;
 
   ${(props) =>
     props.row &&
@@ -225,7 +224,31 @@ const SwitchLabel = styled.span`
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.33px;
-  color: #2ec9c0;
+
+  ${(props) =>
+    props.enabled &&
+    css`
+      color: #2ec9c0;
+    `}
+`;
+
+const StyledSwitch = styled(Switch)`
+  margin: 8px 0;
+
+  .MuiSwitch-switchBase.Mui-checked {
+    color: #2ec9c0;
+  }
+
+  .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+    background-color: #2ec9c0;
+  }
+`;
+
+const FeeLine = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3px;
 `;
 
 const WalletView = () => {
@@ -395,22 +418,27 @@ const WalletView = () => {
               <FormattedMessage id="wallet.fees.title" />
             </TextMain>
             <FormControlLabel
-              control={<Switch checked={feesZig} onChange={() => setFeesZig(!feesZig)} />}
+              control={<StyledSwitch checked={feesZig} onChange={() => setFeesZig(!feesZig)} />}
               label={
-                <SwitchLabel>
+                <SwitchLabel enabled={feesZig}>
                   <FormattedMessage id={feesZig ? "wallet.fees.enabled" : "wallet.fees.zig"} />
                 </SwitchLabel>
               }
             />
-            <Box display="flex" alignItems="center" justifyContent="space-between">
+            <FeeLine>
               <SecondaryText>
                 <FormattedMessage id="wallet.fees.discount" />
               </SecondaryText>
-              <ValueBig>6+%</ValueBig>
-            </Box>
-            <SecondaryText>
-              <FormattedMessage id="wallet.fees.rebate" />
-            </SecondaryText>
+              <ValueBig>
+                <FormattedMessage id="wallet.fees.min" values={{ perc: 6 }} />
+              </ValueBig>
+            </FeeLine>
+            <FeeLine>
+              <SecondaryText>
+                <FormattedMessage id="wallet.fees.rebate" />
+              </SecondaryText>
+              <ValueBig>Soon</ValueBig>
+            </FeeLine>
           </Box>
         </PanelItem>
         <Divider />
