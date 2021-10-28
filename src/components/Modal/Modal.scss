@@ -88,6 +88,10 @@
       // todo: use correct color
       background: #060a1f;
       border: 1px solid #413ba0;
+
+      &.fullscreen {
+        border-color: #1e1c4f;
+      }
     }
 
     [class^="MuiPaper"],
