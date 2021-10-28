@@ -2404,7 +2404,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async convertPreview(payload) {
-    return this.doRequest("/zig/convert-preview", payload, "POST", 0);
+    return this.doRequest("/zig/convert-preview", payload, "POST");
   }
 }
 
