@@ -376,10 +376,12 @@ const theme = (darkStyle) => {
     transactionTable: darkStyle
       ? {
           headTextColor: "#f3f4f6",
+          headBackgroundColor: "#0C0D21",
           linkText: "#829fff",
         }
       : {
           headTextColor: "#36373F",
+          headBackgroundColor: "#CCCAEF",
           linkText: "#36A6F4",
         },
   };

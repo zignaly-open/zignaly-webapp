@@ -21,9 +21,11 @@ export const SubTitle = styled(Typography)`
 `;
 
 export const Panel = styled(Box)`
-  background: #151d3f;
-  border: 1px solid #413ba0;
   border-radius: 16px;
+  ${({ theme }) => `
+    border: 1px solid ${theme.newTheme.borderColor};
+    background-color: ${theme.newTheme.backgroundColor};
+  `}
 `;
 
 export const Modal = styled(Box)`
@@ -41,6 +43,13 @@ export const TextDesc = styled(Typography)`
   font-size: 16px;
   letter-spacing: 0.33px;
   /* line-height: 20px; */
+`;
+
+export const Label = styled(Typography)`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 2px;
 `;
 
 export const AlignCenter = styled.div`
