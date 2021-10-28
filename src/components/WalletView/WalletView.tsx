@@ -2,6 +2,8 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.inline.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.inline.svg";
+import TrophyIcon from "images/wallet/trophy.inline.svg";
+import TrophyDarkIcon from "images/wallet/trophy-dark.inline.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
@@ -11,6 +13,8 @@ import {
   ClickAwayListener,
   Tooltip,
   Typography,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
@@ -22,6 +26,8 @@ import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
 import { TitleIcon } from "./styles";
 import NumberFormat from "react-number-format";
+import theme from "services/theme";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -29,6 +35,13 @@ const CategIconStyled = styled.img`
   ${isMobile(`
     display: none;
   `)}
+`;
+
+const TrophyIconStyled = styled(CategIconStyled).attrs(({ theme }) => ({
+  as: theme.palette.type === "dark" ? TrophyDarkIcon : TrophyIcon,
+}))`
+  min-width: 64px;
+  min-height: 64px;
 `;
 
 const StyledPanel = styled(Panel)`
@@ -52,14 +65,6 @@ const Rate = styled.span`
   text-transform: uppercase;
 `;
 
-const Amount = styled.span`
-  /* color: #f3f4f6; */
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: 0.66px;
-  line-height: 40px;
-`;
-
 const ZigBig = styled.span`
   /* color: #9864ef; */
   color: ${(props) => props.theme.palette.text.secondary};
@@ -70,13 +75,11 @@ const ZigBig = styled.span`
   margin-left: 6px;
 `;
 
-const Zig = styled.span`
-  /* color: #9864ef; */
-  color: ${(props) => props.theme.palette.text.secondary};
+const SecondaryText = styled.span`
+  color: ${(props) => props.theme.newTheme.secondaryText};
   font-size: 12px;
-  letter-spacing: 1px;
   line-height: 16px;
-  margin-left: 4px;
+  letter-spacing: 1px;
 `;
 
 const Button = styled(CustomButton)`
@@ -123,7 +126,6 @@ const PanelItem = styled.div`
   display: flex;
   flex: 1;
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
-  margin: 0 3%;
   max-width: 300px;
 
   ${(props) =>
@@ -202,6 +204,30 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
+const TextFees = styled.span`
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.66px;
+  text-transform: uppercase;
+`;
+
+const ValueBig = styled.span`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: right;
+  color: #2ec9c0;
+`;
+
+const SwitchLabel = styled.span`
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.33px;
+  color: #2ec9c0;
+`;
+
 const WalletView = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -210,6 +236,8 @@ const WalletView = () => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || 0;
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  const userData = useStoreUserData();
+  const [feesZig, setFeesZig] = useState(userData.feesZig);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -323,10 +351,10 @@ const WalletView = () => {
             <SubTitle>
               <FormattedMessage id="wallet.totalbalance" />
             </SubTitle>
-            <Amount>
+            <TextMain>
               {balanceZIG}
               <ZigBig>ZIG</ZigBig>
-            </Amount>
+            </TextMain>
             <RateText>
               <NumberFormat
                 value={balanceZIG * rateZIG}
@@ -357,16 +385,33 @@ const WalletView = () => {
           </Box>
         </PanelItem>
         <Divider />
-        <PanelItem>
-          <SubTitle>
-            <FormattedMessage id="wallet.rewards" />
-          </SubTitle>
-          <TextMain>
-            <FormattedMessage id="wallet.rewards.soon" />
-          </TextMain>
-          <TextCaption>
-            <FormattedMessage id="wallet.rewards.soon.desc" />
-          </TextCaption>
+        <PanelItem row>
+          <TrophyIconStyled />
+          <Box display="flex" flexDirection="column">
+            <SubTitle>
+              <FormattedMessage id="wallet.rewards" />
+            </SubTitle>
+            <TextMain>
+              <FormattedMessage id="wallet.fees.title" />
+            </TextMain>
+            <FormControlLabel
+              control={<Switch checked={feesZig} onChange={() => setFeesZig(!feesZig)} />}
+              label={
+                <SwitchLabel>
+                  <FormattedMessage id={feesZig ? "wallet.fees.enabled" : "wallet.fees.zig"} />
+                </SwitchLabel>
+              }
+            />
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <SecondaryText>
+                <FormattedMessage id="wallet.fees.discount" />
+              </SecondaryText>
+              <ValueBig>6+%</ValueBig>
+            </Box>
+            <SecondaryText>
+              <FormattedMessage id="wallet.fees.rebate" />
+            </SecondaryText>
+          </Box>
         </PanelItem>
         <Divider />
         <PanelItem>
