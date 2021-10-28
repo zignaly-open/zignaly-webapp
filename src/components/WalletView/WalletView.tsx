@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.svg";
@@ -9,7 +9,6 @@ import {
   Button as MuiButton,
   Box,
   ClickAwayListener,
-  Popover,
   Tooltip,
   Typography,
 } from "@material-ui/core";
@@ -19,25 +18,18 @@ import Modal from "components/Modal";
 import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
-import WalletPopover from "./WalletPopover";
 import WalletTransactions from "./WalletTransactions";
-import { isEmpty } from "lodash";
-import TooltipWithUrl from "components/Controls/TooltipWithUrl";
-import ETHIcon from "images/wallet/eth.svg";
-import { getChainIcon } from "utils/chain";
 import BalanceChain from "./BalanceChain";
-import balance from "pages/dashboard/balance";
 import { TitleIcon } from "./styles";
 
 const CategIconStyled = styled.img`
-  /* height: 30px; */
   margin: 31px 14px 0 0;
 `;
 
-const ArrowIcon = styled.img`
-  background: green;
-  height: 30px;
-  margin-right: 14px;
+const StyledPanel = styled(Panel)`
+  display: flex;
+  justify-content: space-around;
+  padding: 40px 0;
 `;
 
 const Rate = styled.span`
@@ -100,7 +92,6 @@ const TextCaption = styled(Typography)`
 
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
-  margin: 0 34px;
   width: 1px;
   height: 128px;
   align-self: center;
@@ -190,10 +181,6 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
-// const PanelStyled = styled(Panel)`
-//   margin-bottom: 20px;
-// `;
-
 const WalletView = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -264,8 +251,6 @@ const WalletView = () => {
     [tooltipOpen],
   );
 
-  // const BalanceChain = useCallback(() => {}, [walletBalance, coins, anchorEl]);
-
   return (
     <Box p={5}>
       <Modal
@@ -284,7 +269,7 @@ const WalletView = () => {
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
-      <Box display="flex" px="1%" py="40px">
+      <StyledPanel>
         <PanelItem row>
           <CategIconStyled height={66} src={ZigCoinIcon} width={66} />
           <Box display="flex" flexDirection="column">
@@ -342,7 +327,7 @@ const WalletView = () => {
             <FormattedMessage id="wallet.staking.soon.desc" />
           </TextCaption>
         </PanelItem>
-      </Box>
+      </StyledPanel>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">
           <TitleIcon height="22px" src={ListIcon} width="27px" />

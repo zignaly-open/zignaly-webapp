@@ -21,9 +21,11 @@ export const SubTitle = styled(Typography)`
 `;
 
 export const Panel = styled(Box)`
-  background: #151d3f;
-  border: 1px solid #413ba0;
   border-radius: 16px;
+  ${({ theme }) => `
+    border: 1px solid ${theme.newTheme.borderColor};
+    background-color: ${theme.newTheme.backgroundColor};
+  `}
 `;
 
 export const Modal = styled(Box)`
