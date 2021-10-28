@@ -1741,4 +1741,4 @@ wallet.staking.soon.desc: "Stake your ZIG tokens and earn huge rewards in our ZI
 wallet.status.completed: "Completed"
 wallet.transactions: "Wallet Transactions"
 wallet.type.deposit: "Deposit"
-wallet.type.withdrawal: "Withdrawal"
+wallet.type.withdraw: "Withdraw"

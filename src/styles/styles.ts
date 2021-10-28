@@ -45,6 +45,13 @@ export const TextDesc = styled(Typography)`
   /* line-height: 20px; */
 `;
 
+export const Label = styled(Typography)`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 2px;
+`;
+
 export const AlignCenter = styled.div`
   display: flex;
   align-items: ${(props) => props.alignItems || "center"};

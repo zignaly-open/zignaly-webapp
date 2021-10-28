@@ -261,7 +261,7 @@ const WalletView = () => {
         size="medium"
         state={path === "deposit"}
       >
-        <WalletDepositView />
+        <WalletDepositView coins={coins} />
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">

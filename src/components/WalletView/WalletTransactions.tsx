@@ -120,7 +120,7 @@ const WalletTransactions = () => {
               value={t.amount}
               displayType="text"
               thousandSeparator={true}
-              prefix={parseFloat(t.amount) > 0 && "+"}
+              prefix={t.type !== "withdraw" ? "+" : "-"}
             />
           </Typography>
         </AlignCenter>
