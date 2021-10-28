@@ -59,5 +59,13 @@ module.exports = {
       resolve: "gatsby-plugin-tsconfig-paths",
       options: {},
     },
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /\.inline\.svg$/,
+        },
+      },
+    },
   ],
 };

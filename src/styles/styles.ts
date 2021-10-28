@@ -6,9 +6,11 @@ export const Title = styled.div`
   font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 21px;
-  /* background-clip: text; */
-  /* -webkit-text-fill-color: transparent; */
   text-transform: uppercase;
+
+  svg {
+    margin-right: 4px;
+  }
 `;
 
 export const SubTitle = styled(Typography)`
