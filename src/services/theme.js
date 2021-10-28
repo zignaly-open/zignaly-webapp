@@ -369,20 +369,25 @@ const theme = (darkStyle) => {
           borderColor: "#1e1c4f",
         }
       : {
-          backgroundColor: "#dcdaf4",
+          backgroundColor: "#ffffff",
+          // backgroundColor: "#dcdaf4",
           secondaryText: "#6D6C96",
-          borderColor: "#c1c2f7",
+          // borderColor: "#c1c2f7",
+          borderColor: "rgba(0, 0, 0, 0.1);",
         },
     transactionTable: darkStyle
       ? {
           headTextColor: "#f3f4f6",
           headBackgroundColor: "#0C0D21",
           linkText: "#829fff",
+          border: "#222249",
         }
       : {
           headTextColor: "#36373F",
-          headBackgroundColor: "#CCCAEF",
+          // headBackgroundColor: "#CCCAEF",
+          headBackgroundColor: "#ffffff",
           linkText: "#36A6F4",
+          border: "rgba(0, 0, 0, 0.1)",
         },
   };
 };

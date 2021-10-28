@@ -38,13 +38,14 @@ export const TableLayout = styled.div`
         font-weight: 100;
         font-size: 14px;
         padding: 22px;
-      background-color: ${theme.transactionTable.headBackgroundColor};
+        background-color: ${theme.transactionTable.headBackgroundColor};
       }
 
       th,
       td {
         margin: 0;
         padding: 16px;
+        border-bottom: 1px solid ${theme.transactionTable.border};
       }
     }
   `}
