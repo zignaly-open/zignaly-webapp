@@ -10,7 +10,7 @@ const BalanceChainBox = styled(Box)`
 `;
 
 const BalanceText = styled.span`
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.secondaryText};
   margin-left: 8px;
   font-weight: 600;
   font-size: 12px;

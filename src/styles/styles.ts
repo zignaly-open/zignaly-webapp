@@ -49,7 +49,7 @@ export const Label = styled(Typography)`
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 `;
 
 export const AlignCenter = styled.div`
