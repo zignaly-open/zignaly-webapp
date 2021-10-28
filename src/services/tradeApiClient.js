@@ -356,7 +356,7 @@ class TradeApiClient {
       // Cloudflare url
       baseUrl = baseUrl.split("/new_api")[0];
     } else if (apiVersion === 3) {
-      baseUrl = process.env.GATSBY_CYBAVOAPI_URL;
+      baseUrl = process.env.GATSBY_WALLETAPI_URL;
     }
 
     let requestUrl = baseUrl + endpointPath;
