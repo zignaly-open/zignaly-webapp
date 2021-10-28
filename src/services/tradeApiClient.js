@@ -362,7 +362,7 @@ class TradeApiClient {
     let requestUrl = baseUrl + endpointPath;
     let responseData = {};
 
-    const authToken = this.token || token;
+    const authToken = token !== false ? token || this.token : null;
 
     /**
      * @type {*}
@@ -2398,13 +2398,13 @@ class TradeApiClient {
   /**
    * Coin conversion preview
    *
-   * @param {{from: string, to: string}} payload Payload
+   * @param {{from: string, to: string, qty: number}} payload Payload
    * @returns {Promise<ConvertPreviewRes>} Result
    *
    * @memberof TradeApiClient
    */
   async convertPreview(payload) {
-    return this.doRequest("/zig/convert-preview", payload, "POST");
+    return this.doRequest("/zig/convert-preview", payload, "POST", 2, false);
   }
 }
 
