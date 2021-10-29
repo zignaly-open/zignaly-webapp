@@ -526,6 +526,7 @@ const initialState = {
       wall: { banned: false, cantPostUntil: null },
       isUnknownDevice: false,
       disabled: false,
+      payFeeWithZig: false,
     },
   },
   ui: {
