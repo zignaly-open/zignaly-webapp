@@ -825,6 +825,7 @@ profit.create.desc: "Offer your services as an expert trader and get a proportio
 copyt.lastStep: "Last step"
 copyt.model.choose: "Choose Copy Trading Model"
 copyt.monthlyfee.service: "Monthly Price"
+copyt.profitsharing.acceptZig: "Accept Success Fees Payment with ZIG"
 copyt.profitsharing.maxAllocatedBalance: "Maximum Allocated Balance"
 copyt.profitsharing.maxAllocatedBalance.tooltip: "Maximum allocated balance between all the users in the service."
 copyt.profitsharing.maxAllocatedBalance.kyc: "You need to pass the KYC to increase this value."

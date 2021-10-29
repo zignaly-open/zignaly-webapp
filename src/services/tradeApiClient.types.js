@@ -319,6 +319,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  * @property {boolean} disabled Account disabled due to too many incorrect login
  * @property {boolean} verified User identity verified
+ * @property {boolean} payFeeWithZig
  */
 
 /**
@@ -812,8 +813,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserPayload
- * @property {string} userName
+ * @property {string} [userName]
  * @property {string} [imageUrl]
+ * @property {boolean} [payFeeWithZig]
  */
 
 /**
@@ -940,6 +942,7 @@ export function userEntityResponseTransform(response) {
     disabled: response.disabled,
     wall: response.wall || {},
     verified: false,
+    payFeeWithZig: response.payFeeWithZig,
   };
 }
 
@@ -2670,6 +2673,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {string} userId
+ * @property {boolean} acceptZigFee
  */
 
 /**
@@ -2826,6 +2830,7 @@ function createEmptyProviderGetEntity() {
     profitsMode: "",
     exchangeInternalIds: [{}],
     verified: false,
+    acceptZigFee: false,
   };
 }
 
