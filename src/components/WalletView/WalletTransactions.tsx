@@ -167,7 +167,7 @@ const WalletTransactions = () => {
       status: (
         <AlignCenter>
           <TypographyStatus status={t.status}>
-            <FormattedMessage id={getStatusTextId(t.status)} />
+            {/* <FormattedMessage id={getStatusTextId(t.status)} /> */}
           </TypographyStatus>
         </AlignCenter>
       ),

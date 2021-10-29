@@ -29,9 +29,9 @@ const useUpdatedBalance = (context) => {
           setBalance(data);
         });
 
-      tradeApi.getWalletBalance().then((response) => {
-        setWalletBalance(response);
-      });
+      // tradeApi.getWalletBalance().then((response) => {
+      //   setWalletBalance(response);
+      // });
     }
   };
 
