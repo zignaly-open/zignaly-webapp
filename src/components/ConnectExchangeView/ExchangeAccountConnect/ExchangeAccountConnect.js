@@ -19,7 +19,7 @@ import {
   bitmexAPIKeysUrl,
   kucoinUrl,
   vcceUrl,
-  ascendEXUrl,
+  ascendexApiUrl,
 } from "../../../utils/affiliateURLs";
 import Alert from "@material-ui/lab/Alert";
 
@@ -154,7 +154,7 @@ const ExchangeAccountConnect = () => {
         url = vcceUrl;
         break;
       case "ascendex":
-        url = ascendEXUrl;
+        url = ascendexApiUrl;
         break;
       default:
         url = binanceUrl;

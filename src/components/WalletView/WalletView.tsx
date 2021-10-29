@@ -28,6 +28,7 @@ import { TitleIcon } from "./styles";
 import NumberFormat from "react-number-format";
 import theme from "services/theme";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -303,10 +304,10 @@ const WalletView = () => {
                 <TypographyTooltip>
                   <FormattedMessage id="wallet.buy.tooltip" />
                 </TypographyTooltip>
-                <a href="https://ascendex.com" rel="noreferrer" target="_blank">
+                <a href={ascendexUrl} rel="noreferrer" target="_blank">
                   AscendEX &gt;
                 </a>
-                <a href="https://mexc.com" rel="noreferrer" target="_blank">
+                <a href={mexcUrl} rel="noreferrer" target="_blank">
                   MEXC &gt;
                 </a>
               </TooltipContainer>

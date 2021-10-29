@@ -144,7 +144,7 @@ const WalletTransactions = () => {
         <AlignCenter direction={"column"}>
           <Typography style={{ fontWeight: 600 }}>
             <NumberFormat
-              value={t.amount}
+              value={t.formattedAmount}
               displayType="text"
               thousandSeparator={true}
               prefix={t.type !== "withdraw" ? "+" : "-"}

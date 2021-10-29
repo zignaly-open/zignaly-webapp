@@ -7,6 +7,7 @@ interface ConvertPreviewRes {
 
 interface TransactionsHistory {
   amount: string;
+  formattedAmount: string;
   createdAt: string;
   currency: string;
   fees: string;
