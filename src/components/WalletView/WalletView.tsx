@@ -32,6 +32,9 @@ import theme from "services/theme";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
 import { colors } from "services/theme";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
+import { useDispatch } from "react-redux";
+import { getUserData } from "store/actions/user";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -274,7 +277,8 @@ const WalletView = () => {
   const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
-  const [feesZig, setFeesZig] = useState(userData.feesZig);
+  const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
+  const dispatch = useDispatch();
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -285,9 +289,6 @@ const WalletView = () => {
   };
 
   useEffect(() => {
-    // tradeApi.getWalletBalance().then((response) => {
-    //   setBalances(response);
-    // });
     tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
       setRateZIG(response.lastPrice);
     });
@@ -296,6 +297,19 @@ const WalletView = () => {
       setCoins(response);
     });
   }, []);
+
+  const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.checked;
+    setPayFeeWithZig(val);
+    tradeApi
+      .updateUser({ payFeeWithZig: val })
+      .then(() => {
+        dispatch(getUserData());
+      })
+      .catch(() => {
+        setPayFeeWithZig(!val);
+      });
+  };
 
   const BuyZig = useCallback(
     () => (
@@ -402,10 +416,12 @@ const WalletView = () => {
               <FormattedMessage id="wallet.fees.title" />
             </TextMain>
             <FormControlLabel
-              control={<StyledSwitch checked={feesZig} onChange={() => setFeesZig(!feesZig)} />}
+              control={<StyledSwitch checked={payFeeWithZig} onChange={onPayFeeChange} />}
               label={
-                <SwitchLabel enabled={feesZig}>
-                  <FormattedMessage id={feesZig ? "wallet.fees.enabled" : "wallet.fees.zig"} />
+                <SwitchLabel enabled={payFeeWithZig}>
+                  <FormattedMessage
+                    id={payFeeWithZig ? "wallet.fees.enabled" : "wallet.fees.zig"}
+                  />
                   <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
                     <div>
                       <StyledInfoIcon />

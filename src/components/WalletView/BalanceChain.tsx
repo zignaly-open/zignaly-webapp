@@ -1,6 +1,7 @@
 import { Box } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
 import React, { useState } from "react";
+import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import { getChainIcon } from "utils/chain";
 import WalletPopover from "./WalletPopover";
@@ -54,7 +55,13 @@ const BalanceChain = ({ walletBalance, coins }) => {
   return (
     <BalanceChainBox alignItems="center" display="flex" flexDirection="row" mt="3px">
       <img width={20} height={20} src={getChainIcon(chainWithCoin)} title={chainWithCoin} />
-      <BalanceText>{walletBalance.ZIG[chainWithCoin] || 0}</BalanceText>
+      <BalanceText>
+        <NumberFormat
+          value={walletBalance.ZIG[chainWithCoin] || 0}
+          thousandSeparator={true}
+          displayType="text"
+        />
+      </BalanceText>
       <Zig>ZIG</Zig> {networks.length > 1 && <ChevronRightStyled onClick={handleClick} />}
       <WalletPopover
         anchorEl={anchorEl}
