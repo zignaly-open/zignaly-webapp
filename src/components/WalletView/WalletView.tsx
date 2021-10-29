@@ -184,12 +184,12 @@ const ButtonBuy = styled(MuiButton)`
 // `;
 
 const TooltipContainer = styled.div`
-  /* font-weight: 600; */
-  /* font-size: 16px; */
+  font-weight: 600;
+  font-size: 16px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* padding: 8px 16px; */
+  padding: 8px 16px;
 
   a {
     text-decoration: none;
