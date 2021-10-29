@@ -49,9 +49,25 @@ const TypographyToken = styled(Typography)`
   margin-left: 8px;
 `;
 
+const getStatusColor = (status, theme) => {
+  switch (status) {
+    case "SUCCESS":
+      return theme.newTheme.green;
+    case "IN_PROGRESS":
+      return theme.newTheme.yellow;
+    case "FAILED":
+      return theme.newTheme.red;
+    default:
+      return null;
+  }
+};
+
+interface TypographyStatusProps {
+  status: string;
+}
 const TypographyStatus = styled(Typography)`
   font-weight: 600;
-  color: #26c4c1;
+  color: ${(props: TypographyStatusProps) => getStatusColor(props.status, props.theme)};
 `;
 
 const WalletTransactions = () => {
@@ -137,7 +153,7 @@ const WalletTransactions = () => {
       ),
       status: (
         <AlignCenter>
-          <TypographyStatus>
+          <TypographyStatus status={t.status}>
             <FormattedMessage id="wallet.status.completed" />
           </TypographyStatus>
         </AlignCenter>

@@ -75,11 +75,12 @@ const ZigBig = styled.span`
   margin-left: 6px;
 `;
 
-const SecondaryText = styled.span`
+const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 1px;
+  white-space: nowrap;
 `;
 
 const Button = styled(CustomButton)`
@@ -203,20 +204,14 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
-const TextFees = styled.span`
-  font-weight: 600;
-  font-size: 11px;
-  line-height: 14px;
-  letter-spacing: 0.66px;
-  text-transform: uppercase;
-`;
-
 const ValueBig = styled.span`
+  white-space: nowrap;
   font-weight: 600;
   font-size: 20px;
   line-height: 28px;
   text-align: right;
-  color: #2ec9c0;
+  color: ${({ theme }) => theme.newTheme.green};
+  margin-left: 8px;
 `;
 
 const SwitchLabel = styled.span`
@@ -228,7 +223,7 @@ const SwitchLabel = styled.span`
   ${(props) =>
     props.enabled &&
     css`
-      color: #2ec9c0;
+      color: ${props.theme.newTheme.green};
     `}
 `;
 
@@ -236,11 +231,11 @@ const StyledSwitch = styled(Switch)`
   margin: 8px 0;
 
   .MuiSwitch-switchBase.Mui-checked {
-    color: #2ec9c0;
+    color: ${({ theme }) => theme.newTheme.green};
   }
 
   .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-    background-color: #2ec9c0;
+    background-color: ${({ theme }) => theme.newTheme.green};
   }
 `;
 
@@ -390,6 +385,9 @@ const WalletView = () => {
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
             <BalanceChain coins={coins} walletBalance={walletBalance} />
+            <Box mt="2px">
+              <BuyZig />
+            </Box>
             <Box display="flex" flexDirection="row" mt={2.25}>
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
@@ -399,12 +397,6 @@ const WalletView = () => {
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
-
-            {walletBalance && !walletBalance.ZIG && (
-              <Box mt={2}>
-                <BuyZig />
-              </Box>
-            )}
           </Box>
         </PanelItem>
         <Divider />
@@ -426,7 +418,7 @@ const WalletView = () => {
               }
             />
             <FeeLine>
-              <SecondaryText>
+              <SecondaryText noWrap>
                 <FormattedMessage id="wallet.fees.discount" />
               </SecondaryText>
               <ValueBig>
@@ -434,10 +426,12 @@ const WalletView = () => {
               </ValueBig>
             </FeeLine>
             <FeeLine>
-              <SecondaryText>
+              <SecondaryText noWrap>
                 <FormattedMessage id="wallet.fees.rebate" />
               </SecondaryText>
-              <ValueBig>Soon</ValueBig>
+              <ValueBig>
+                <FormattedMessage id="wallet.fees.rebate.soon" />
+              </ValueBig>
             </FeeLine>
           </Box>
         </PanelItem>

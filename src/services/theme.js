@@ -367,6 +367,9 @@ const theme = (darkStyle) => {
           backgroundColor: "#12132d",
           secondaryText: "#9ca3af",
           borderColor: "#1e1c4f",
+          green: "#26c4c1",
+          yellow: "#F7CF00",
+          red: "#F63F82",
         }
       : {
           backgroundColor: "#ffffff",
@@ -374,6 +377,9 @@ const theme = (darkStyle) => {
           secondaryText: "#6D6C96",
           // borderColor: "#c1c2f7",
           borderColor: "rgba(0, 0, 0, 0.1);",
+          green: "#2EC9C0",
+          yellow: "#C39713",
+          red: "#F63F82",
         },
     transactionTable: darkStyle
       ? {
