@@ -258,7 +258,7 @@ const HeightFiller = styled.div`
 `;
 
 const StyledInfoIcon = styled(InfoIcon)`
-  margin-left: 4px;
+  margin-left: 7px;
 `;
 
 const WalletView = () => {
