@@ -10,7 +10,6 @@ const TypographyHeader = styled(Typography)`
 `;
 
 export const TableLayout = styled.div`
-  border-radius: 5px;
   margin-bottom: 3rem;
 
   ${({ theme }) => `
@@ -21,6 +20,7 @@ export const TableLayout = styled.div`
       // border: 1px solid #1e1c4e;
       border: 1px solid ${theme.newTheme.borderColor};
       border-radius: 16px;
+      overflow: hidden;
 
       tbody {
         font-size: 16px;

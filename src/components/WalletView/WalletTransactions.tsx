@@ -49,9 +49,38 @@ const TypographyToken = styled(Typography)`
   margin-left: 8px;
 `;
 
+const getStatusColor = (status, theme) => {
+  switch (status) {
+    case "SUCCESS":
+      return theme.newTheme.green;
+    case "IN_PROGRESS":
+      return theme.newTheme.yellow;
+    case "FAILED":
+      return theme.newTheme.red;
+    default:
+      return null;
+  }
+};
+
+const getStatusTextId = (status) => {
+  switch (status) {
+    case "SUCCESS":
+      return "wallet.status.completed";
+    case "IN_PROGRESS":
+      return "wallet.status.progress";
+    case "FAILED":
+      return "wallet.status.failed";
+    default:
+      return null;
+  }
+};
+
+interface TypographyStatusProps {
+  status: string;
+}
 const TypographyStatus = styled(Typography)`
   font-weight: 600;
-  color: #26c4c1;
+  color: ${(props: TypographyStatusProps) => getStatusColor(props.status, props.theme)};
 `;
 
 const WalletTransactions = () => {
@@ -115,10 +144,10 @@ const WalletTransactions = () => {
         <AlignCenter direction={"column"}>
           <Typography style={{ fontWeight: 600 }}>
             <NumberFormat
-              value={t.amount}
+              value={t.formattedAmount}
               displayType="text"
               thousandSeparator={true}
-              prefix={t.type !== "withdraw" ? "+" : "-"}
+              prefix={parseFloat(t.formattedAmount) > 0 && "+"}
             />
           </Typography>
         </AlignCenter>
@@ -137,8 +166,8 @@ const WalletTransactions = () => {
       ),
       status: (
         <AlignCenter>
-          <TypographyStatus>
-            <FormattedMessage id="wallet.status.completed" />
+          <TypographyStatus status={t.status}>
+            <FormattedMessage id={getStatusTextId(t.status)} />
           </TypographyStatus>
         </AlignCenter>
       ),

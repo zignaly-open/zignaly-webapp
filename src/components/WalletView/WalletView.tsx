@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.inline.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import ListIcon from "images/wallet/list.inline.svg";
+import InfoIcon from "images/wallet/info.inline.svg";
 import TrophyIcon from "images/wallet/trophy.inline.svg";
 import TrophyDarkIcon from "images/wallet/trophy-dark.inline.svg";
 import { FormattedMessage } from "react-intl";
@@ -15,6 +16,7 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  IconButton,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
@@ -28,6 +30,8 @@ import { TitleIcon } from "./styles";
 import NumberFormat from "react-number-format";
 import theme from "services/theme";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
+import { colors } from "services/theme";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -75,11 +79,12 @@ const ZigBig = styled.span`
   margin-left: 6px;
 `;
 
-const SecondaryText = styled.span`
+const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 1px;
+  white-space: nowrap;
 `;
 
 const Button = styled(CustomButton)`
@@ -125,7 +130,9 @@ interface PanelItemProps {
 const PanelItem = styled.div`
   display: flex;
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
-  flex-basis: 24%;
+  /* flex-basis: 24%; */
+  max-width: 400px;
+  margin: 0 16px;
 
   ${(props) =>
     props.row &&
@@ -159,14 +166,14 @@ const ButtonBuy = styled(MuiButton)`
   line-height: 16px;
   /* background: transparent; */
 `;
-const StyledTooltip = styled.div`
-  .MuiTooltip-tooltip {
-    background: #f3f4f6;
-    box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
-    border-radius: 3px;
-    padding: 8px 16px;
-  }
-`;
+// const StyledTooltip = styled.div`
+//   .MuiTooltip-tooltip {
+//     background: #f3f4f6;
+//     box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
+//     border-radius: 3px;
+//     padding: 8px 16px;
+//   }
+// `;
 
 // const TooltipContainer = styled((props) => (
 //   <Tooltip classes={{ popper: props.className }} {...props} />
@@ -183,14 +190,16 @@ const TooltipContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 8px 16px;
 
   a {
     text-decoration: none;
+    color: ${colors.purpleLight};
   }
 `;
 
 const TypographyTooltip = styled.span`
-  color: #0c0d21;
+  /* color: #0c0d21; */
   margin-bottom: 3px;
 `;
 
@@ -203,20 +212,14 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
-const TextFees = styled.span`
-  font-weight: 600;
-  font-size: 11px;
-  line-height: 14px;
-  letter-spacing: 0.66px;
-  text-transform: uppercase;
-`;
-
 const ValueBig = styled.span`
+  white-space: nowrap;
   font-weight: 600;
   font-size: 20px;
   line-height: 28px;
   text-align: right;
-  color: #2ec9c0;
+  color: ${({ theme }) => theme.newTheme.green};
+  margin-left: 8px;
 `;
 
 const SwitchLabel = styled.span`
@@ -224,11 +227,13 @@ const SwitchLabel = styled.span`
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.33px;
+  display: flex;
+  align-items: center;
 
   ${(props) =>
     props.enabled &&
     css`
-      color: #2ec9c0;
+      color: ${props.theme.newTheme.green};
     `}
 `;
 
@@ -236,11 +241,11 @@ const StyledSwitch = styled(Switch)`
   margin: 8px 0;
 
   .MuiSwitch-switchBase.Mui-checked {
-    color: #2ec9c0;
+    color: ${({ theme }) => theme.newTheme.green};
   }
 
   .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-    background-color: #2ec9c0;
+    background-color: ${({ theme }) => theme.newTheme.green};
   }
 `;
 
@@ -251,13 +256,22 @@ const FeeLine = styled.div`
   margin-bottom: 3px;
 `;
 
+const HeightFiller = styled.div`
+  height: 37px;
+  padding-top: 6px;
+`;
+
+const StyledInfoIcon = styled(InfoIcon)`
+  margin-left: 7px;
+`;
+
 const WalletView = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const [rateZIG, setRateZIG] = useState<number>(null);
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const balanceZIG = walletBalance?.ZIG?.total || 0;
+  const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [feesZig, setFeesZig] = useState(userData.feesZig);
@@ -286,67 +300,40 @@ const WalletView = () => {
   const BuyZig = useCallback(
     () => (
       <ClickAwayListener onClickAway={handleTooltipClose}>
-        <StyledTooltip>
-          <Tooltip
-            interactive
-            placement="right"
-            onClose={handleTooltipClose}
-            open={tooltipOpen}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            PopperProps={{
-              disablePortal: true,
-            }}
-            title={
-              <TooltipContainer>
-                <TypographyTooltip>
-                  <FormattedMessage id="wallet.buy.tooltip" />
-                </TypographyTooltip>
-                <a href="https://ascendex.com" rel="noreferrer" target="_blank">
-                  AscendEX &gt;
-                </a>
-                <a href="https://mexc.com" rel="noreferrer" target="_blank">
-                  MEXC &gt;
-                </a>
-              </TooltipContainer>
-            }
-          >
-            <ButtonBuy onClick={handleTooltipOpen}>
-              <FormattedMessage id="wallet.buy" />
-              <ChevronRightStyled />
-            </ButtonBuy>
-          </Tooltip>
-        </StyledTooltip>
+        <Tooltip
+          interactive
+          placement="right"
+          onClose={handleTooltipClose}
+          open={tooltipOpen}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          PopperProps={{
+            disablePortal: true,
+          }}
+          title={
+            <TooltipContainer>
+              <TypographyTooltip>
+                <FormattedMessage id="wallet.buy.tooltip" />
+              </TypographyTooltip>
+              <a href={ascendexUrl} rel="noreferrer" target="_blank">
+                AscendEX &gt;
+              </a>
+              <a href={mexcUrl} rel="noreferrer" target="_blank">
+                MEXC &gt;
+              </a>
+            </TooltipContainer>
+          }
+        >
+          <ButtonBuy onClick={handleTooltipOpen}>
+            <FormattedMessage id="wallet.buy" />
+            <ChevronRightStyled />
+          </ButtonBuy>
+        </Tooltip>
       </ClickAwayListener>
     ),
     [tooltipOpen],
   );
-
-  // const WalletIcon = (props) => (
-  //   <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //     <path
-  //       d="M29.287 5.35714V4.28571C29.287 1.91853 27.3265 0 24.9075 0H6.9026C3.2744 0 0.333252 2.87813 0.333252 6.42857V23.5714C0.333252 27.1219 3.2744 30 6.9026 30H29.287C31.706 30 33.6666 28.0815 33.6666 25.7143V9.64286C33.6666 7.27567 31.706 5.35714 29.287 5.35714ZM30.3819 25.7143C30.3819 26.3049 29.8906 26.7857 29.287 26.7857H6.9026C5.09124 26.7857 3.61792 25.344 3.61792 23.5714V6.42857C3.61792 4.65603 5.09124 3.21429 6.9026 3.21429H24.9075C25.511 3.21429 26.0024 3.69509 26.0024 4.28571V6.42857H7.99749C7.39256 6.42857 6.9026 6.90804 6.9026 7.5C6.9026 8.09196 7.39256 8.57143 7.99749 8.57143H29.287C29.8906 8.57143 30.3819 9.05223 30.3819 9.64286V25.7143ZM24.9075 15C23.6983 15 22.7177 15.9596 22.7177 17.1429C22.7177 18.3261 23.6983 19.2857 24.9075 19.2857C26.1166 19.2857 27.0972 18.3261 27.0972 17.1429C27.0972 15.9596 26.1166 15 24.9075 15Z"
-  //       fill="url(#paint0_linear_594:4159)"
-  //     />
-  //     <defs>
-  //       <linearGradient
-  //         id="paint0_linear_594:4159"
-  //         x1="6.06242"
-  //         y1="-1.89648e-07"
-  //         x2="35.192"
-  //         y2="19.6111"
-  //         gradientUnits="userSpaceOnUse"
-  //       >
-  //         <stop stop-color="#A600FB" />
-  //         <stop offset="0.260417" stop-color="#6F06FC" />
-  //         <stop offset="0.625" stop-color="#4959F5" />
-  //         <stop offset="0.828125" stop-color="#2E8DDF" />
-  //         <stop offset="1" stop-color="#12C1C9" />
-  //       </linearGradient>
-  //     </defs>
-  //   </svg>
-  // );
 
   return (
     <Box p={5}>
@@ -375,12 +362,12 @@ const WalletView = () => {
               <FormattedMessage id="wallet.totalbalance" />
             </SubTitle>
             <TextMain>
-              {balanceZIG}
+              <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
             </TextMain>
             <RateText>
               <NumberFormat
-                value={balanceZIG * rateZIG}
+                value={parseFloat(balanceZIG) * rateZIG}
                 displayType="text"
                 thousandSeparator={true}
                 prefix="$"
@@ -389,8 +376,11 @@ const WalletView = () => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
-            <BalanceChain coins={coins} walletBalance={walletBalance} />
-            <Box display="flex" flexDirection="row" mt={2.25}>
+            <HeightFiller>
+              <BalanceChain coins={coins} walletBalance={walletBalance} />
+              {walletBalance && !walletBalance.ZIG && <BuyZig />}
+            </HeightFiller>
+            <Box display="flex" flexDirection="row" mt="12px">
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
               </Button>
@@ -399,12 +389,6 @@ const WalletView = () => {
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
-
-            {walletBalance && !walletBalance.ZIG && (
-              <Box mt={2}>
-                <BuyZig />
-              </Box>
-            )}
           </Box>
         </PanelItem>
         <Divider />
@@ -422,11 +406,16 @@ const WalletView = () => {
               label={
                 <SwitchLabel enabled={feesZig}>
                   <FormattedMessage id={feesZig ? "wallet.fees.enabled" : "wallet.fees.zig"} />
+                  <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
+                    <div>
+                      <StyledInfoIcon />
+                    </div>
+                  </Tooltip>
                 </SwitchLabel>
               }
             />
             <FeeLine>
-              <SecondaryText>
+              <SecondaryText noWrap>
                 <FormattedMessage id="wallet.fees.discount" />
               </SecondaryText>
               <ValueBig>
@@ -434,10 +423,12 @@ const WalletView = () => {
               </ValueBig>
             </FeeLine>
             <FeeLine>
-              <SecondaryText>
-                <FormattedMessage id="wallet.fees.rebate" />
+              <SecondaryText noWrap>
+                <FormattedMessage id="wallet.fees.cashback" />
               </SecondaryText>
-              <ValueBig>Soon</ValueBig>
+              <ValueBig>
+                <FormattedMessage id="wallet.fees.cashback.soon" />
+              </ValueBig>
             </FeeLine>
           </Box>
         </PanelItem>
