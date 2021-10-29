@@ -362,7 +362,7 @@ const WalletView = () => {
               <FormattedMessage id="wallet.totalbalance" />
             </SubTitle>
             <TextMain>
-              {balanceZIG}
+              <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
             </TextMain>
             <RateText>
