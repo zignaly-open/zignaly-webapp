@@ -31,6 +31,7 @@ import NumberFormat from "react-number-format";
 import theme from "services/theme";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
+import { colors } from "services/theme";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -164,14 +165,14 @@ const ButtonBuy = styled(MuiButton)`
   line-height: 16px;
   /* background: transparent; */
 `;
-const StyledTooltip = styled.div`
-  .MuiTooltip-tooltip {
-    background: #f3f4f6;
-    box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
-    border-radius: 3px;
-    padding: 8px 16px;
-  }
-`;
+// const StyledTooltip = styled.div`
+//   .MuiTooltip-tooltip {
+//     background: #f3f4f6;
+//     box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
+//     border-radius: 3px;
+//     padding: 8px 16px;
+//   }
+// `;
 
 // const TooltipContainer = styled((props) => (
 //   <Tooltip classes={{ popper: props.className }} {...props} />
@@ -183,19 +184,21 @@ const StyledTooltip = styled.div`
 // `;
 
 const TooltipContainer = styled.div`
-  font-weight: 600;
-  font-size: 16px;
+  /* font-weight: 600; */
+  /* font-size: 16px; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* padding: 8px 16px; */
 
   a {
     text-decoration: none;
+    color: ${colors.purpleLight};
   }
 `;
 
 const TypographyTooltip = styled.span`
-  color: #0c0d21;
+  /* color: #0c0d21; */
   margin-bottom: 3px;
 `;
 
@@ -267,7 +270,7 @@ const WalletView = () => {
   const [rateZIG, setRateZIG] = useState<number>(null);
   // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const balanceZIG = walletBalance?.ZIG?.total || 0;
+  const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [feesZig, setFeesZig] = useState(userData.feesZig);
@@ -296,38 +299,36 @@ const WalletView = () => {
   const BuyZig = useCallback(
     () => (
       <ClickAwayListener onClickAway={handleTooltipClose}>
-        <StyledTooltip>
-          <Tooltip
-            interactive
-            placement="right"
-            onClose={handleTooltipClose}
-            open={tooltipOpen}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            PopperProps={{
-              disablePortal: true,
-            }}
-            title={
-              <TooltipContainer>
-                <TypographyTooltip>
-                  <FormattedMessage id="wallet.buy.tooltip" />
-                </TypographyTooltip>
-                <a href={ascendexUrl} rel="noreferrer" target="_blank">
-                  AscendEX &gt;
-                </a>
-                <a href={mexcUrl} rel="noreferrer" target="_blank">
-                  MEXC &gt;
-                </a>
-              </TooltipContainer>
-            }
-          >
-            <ButtonBuy onClick={handleTooltipOpen}>
-              <FormattedMessage id="wallet.buy" />
-              <ChevronRightStyled />
-            </ButtonBuy>
-          </Tooltip>
-        </StyledTooltip>
+        <Tooltip
+          interactive
+          placement="right"
+          onClose={handleTooltipClose}
+          open={tooltipOpen}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          PopperProps={{
+            disablePortal: true,
+          }}
+          title={
+            <TooltipContainer>
+              <TypographyTooltip>
+                <FormattedMessage id="wallet.buy.tooltip" />
+              </TypographyTooltip>
+              <a href={ascendexUrl} rel="noreferrer" target="_blank">
+                AscendEX &gt;
+              </a>
+              <a href={mexcUrl} rel="noreferrer" target="_blank">
+                MEXC &gt;
+              </a>
+            </TooltipContainer>
+          }
+        >
+          <ButtonBuy onClick={handleTooltipOpen}>
+            <FormattedMessage id="wallet.buy" />
+            <ChevronRightStyled />
+          </ButtonBuy>
+        </Tooltip>
       </ClickAwayListener>
     ),
     [tooltipOpen],
@@ -365,7 +366,7 @@ const WalletView = () => {
             </TextMain>
             <RateText>
               <NumberFormat
-                value={balanceZIG * rateZIG}
+                value={parseFloat(balanceZIG) * rateZIG}
                 displayType="text"
                 thousandSeparator={true}
                 prefix="$"

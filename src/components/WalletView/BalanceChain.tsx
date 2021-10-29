@@ -43,17 +43,19 @@ const BalanceChain = ({ walletBalance, coins }) => {
   // Wait for data fetching, and ZIG balance
   if (!walletBalance?.ZIG || !coins) return null;
 
+  const networks = Object.keys(walletBalance.ZIG).filter((k) => k !== "total");
+
   // Get 1st chain with coins
-  const chainWithCoin = Object.keys(walletBalance.ZIG).find((key) => {
-    return key !== "total" && walletBalance.ZIG[key] > 0;
+  const chainWithCoin = networks.find((key) => {
+    return walletBalance.ZIG[key] > 0;
   });
   if (!chainWithCoin) return null;
 
   return (
     <BalanceChainBox alignItems="center" display="flex" flexDirection="row" mt="3px">
-      <img width={20} height={20} src={getChainIcon(chainWithCoin)} />
+      <img width={20} height={20} src={getChainIcon(chainWithCoin)} title={chainWithCoin} />
       <BalanceText>{walletBalance.ZIG[chainWithCoin] || 0}</BalanceText>
-      <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
+      <Zig>ZIG</Zig> {networks.length > 1 && <ChevronRightStyled onClick={handleClick} />}
       <WalletPopover
         anchorEl={anchorEl}
         balance={walletBalance.ZIG}
