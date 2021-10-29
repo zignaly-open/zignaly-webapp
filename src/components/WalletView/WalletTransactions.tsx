@@ -147,7 +147,7 @@ const WalletTransactions = () => {
               value={t.formattedAmount}
               displayType="text"
               thousandSeparator={true}
-              prefix={t.type !== "withdraw" ? "+" : "-"}
+              prefix={t.formattedAmount[0]}
             />
           </Typography>
         </AlignCenter>
