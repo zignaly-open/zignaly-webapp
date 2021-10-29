@@ -27,6 +27,7 @@ const WalletIcon = styled.img.attrs((props) => ({
 }))`
   width: 40px;
   height: 40px;
+  margin-right: 12px;
 
   ${isMobile(`
     width: 32px;
@@ -43,8 +44,8 @@ const WalletButton = () => {
 
   return (
     <Box display="flex" alignItems="center">
-      <WalletIcon />
       <Button href="#wallet">
+        <WalletIcon />
         <TypographyBalance>
           {walletBalance ? walletBalance.ZIG?.total || 0 : "-"}
           <ZIG>ZIG</ZIG>
