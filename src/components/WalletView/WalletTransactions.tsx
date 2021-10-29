@@ -62,6 +62,19 @@ const getStatusColor = (status, theme) => {
   }
 };
 
+const getStatusTextId = (status) => {
+  switch (status) {
+    case "SUCCESS":
+      return "wallet.status.completed";
+    case "IN_PROGRESS":
+      return "wallet.status.progress";
+    case "FAILED":
+      return "wallet.status.failed";
+    default:
+      return null;
+  }
+};
+
 interface TypographyStatusProps {
   status: string;
 }
@@ -154,7 +167,7 @@ const WalletTransactions = () => {
       status: (
         <AlignCenter>
           <TypographyStatus status={t.status}>
-            <FormattedMessage id="wallet.status.completed" />
+            <FormattedMessage id={getStatusTextId(t.status)} />
           </TypographyStatus>
         </AlignCenter>
       ),

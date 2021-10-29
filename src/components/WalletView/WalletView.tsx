@@ -246,6 +246,11 @@ const FeeLine = styled.div`
   margin-bottom: 3px;
 `;
 
+const HeightFiller = styled.div`
+  height: 37px;
+  padding-top: 6px;
+`;
+
 const WalletView = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -384,11 +389,11 @@ const WalletView = () => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
-            <BalanceChain coins={coins} walletBalance={walletBalance} />
-            <Box mt="2px">
-              <BuyZig />
-            </Box>
-            <Box display="flex" flexDirection="row" mt={2.25}>
+            <HeightFiller>
+              <BalanceChain coins={coins} walletBalance={walletBalance} />
+              {walletBalance && !walletBalance.ZIG && <BuyZig />}
+            </HeightFiller>
+            <Box display="flex" flexDirection="row" mt="12px">
               <Button className="textPurple borderPurple" href="#exchangeAccounts">
                 <FormattedMessage id="accounts.withdraw" />
               </Button>

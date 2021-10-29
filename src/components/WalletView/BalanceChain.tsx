@@ -50,7 +50,7 @@ const BalanceChain = ({ walletBalance, coins }) => {
   if (!chainWithCoin) return null;
 
   return (
-    <BalanceChainBox alignItems="center" display="flex" flexDirection="row" mt={1.5}>
+    <BalanceChainBox alignItems="center" display="flex" flexDirection="row" mt="3px">
       <img width={20} height={20} src={getChainIcon(chainWithCoin)} />
       <BalanceText>{walletBalance.ZIG[chainWithCoin] || 0}</BalanceText>
       <Zig>ZIG</Zig> <ChevronRightStyled onClick={handleClick} />
