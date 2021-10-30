@@ -36,7 +36,7 @@ const useUpdatedBalance = (context) => {
   };
 
   useEffect(loadData, [selectedExchange.internalId]);
-  useInterval(loadData, 60000, true);
+  useInterval(loadData, 60000, false);
 };
 
 export default useUpdatedBalance;
