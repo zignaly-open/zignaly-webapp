@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import WalletIcon from "images/wallet/wallet.inline.svg";
+import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Label, Modal, Panel, SubTitle, TextDesc, Title } from "styles/styles";
@@ -98,7 +98,7 @@ const WalletDepositView = ({ coins }: WalletDepositViewProps) => {
     <Modal p={5}>
       <Title>
         <Box alignItems="center" display="flex">
-          <WalletIcon />
+          <img src={WalletIcon} width={40} height={40} />
           <FormattedMessage id="accounts.deposit" /> ZIG
         </Box>
       </Title>

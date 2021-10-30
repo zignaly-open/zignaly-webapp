@@ -15,7 +15,6 @@ export const TableLayout = styled.div`
   ${({ theme }) => `
     table {
       width: 100%;
-      background-color: ${theme.newTheme.backgroundColor};
       border-spacing: 0;
       // border: 1px solid #1e1c4e;
       border: 1px solid ${theme.newTheme.borderColor};
@@ -24,6 +23,7 @@ export const TableLayout = styled.div`
 
       tbody {
         font-size: 16px;
+        background-color: ${theme.newTheme.backgroundColor};
       }
 
       ${isMobile(`
@@ -41,11 +41,14 @@ export const TableLayout = styled.div`
         background-color: ${theme.transactionTable.headBackgroundColor};
       }
 
+      tbody td {
+        border-top: 1px solid ${theme.transactionTable.border};
+      }
+
       th,
       td {
         margin: 0;
         padding: 16px;
-        border-bottom: 1px solid ${theme.transactionTable.border};
       }
     }
   `}

@@ -8,7 +8,7 @@ export const Title = styled.div`
   margin-bottom: 21px;
   text-transform: uppercase;
 
-  svg {
+  img {
     margin-right: 4px;
   }
 `;
