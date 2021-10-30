@@ -125,11 +125,13 @@ const WalletTransactions = () => {
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
             <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
-            <a href={t.txUrl} target="_blank" rel="noreferrer">
-              <TypographyView>
-                <FormattedMessage id="action.view" />
-              </TypographyView>
-            </a>
+            {t.txUrl && (
+              <a href={t.txUrl} target="_blank" rel="noreferrer">
+                <TypographyView>
+                  <FormattedMessage id="action.view" />
+                </TypographyView>
+              </a>
+            )}
           </Box>
         </Box>
       ),
