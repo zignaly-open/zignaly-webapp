@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import WalletIcon from "images/wallet/wallet.inline.svg";
+import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
-import ListIcon from "images/wallet/list.inline.svg";
-import InfoIcon from "images/wallet/info.inline.svg";
+import ListIcon from "images/wallet/list.svg";
+import InfoIcon from "images/wallet/info.svg";
 import TrophyIcon from "images/wallet/trophy.inline.svg";
 import TrophyDarkIcon from "images/wallet/trophy-dark.inline.svg";
 import { FormattedMessage } from "react-intl";
@@ -264,7 +264,7 @@ const HeightFiller = styled.div`
   padding-top: 6px;
 `;
 
-const StyledInfoIcon = styled(InfoIcon)`
+const StyledInfoIcon = styled.img`
   margin-left: 7px;
 `;
 
@@ -363,8 +363,7 @@ const WalletView = () => {
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
-          {/* <TitleIcon height="30px" src={WalletIcon} width="33px" /> */}
-          <WalletIcon />
+          <img src={WalletIcon} width={40} height={40} />
           <FormattedMessage id="wallet.zig" />
         </Box>
       </Title>
@@ -424,7 +423,7 @@ const WalletView = () => {
                   />
                   <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
                     <div>
-                      <StyledInfoIcon />
+                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
                     </div>
                   </Tooltip>
                 </SwitchLabel>
@@ -463,7 +462,7 @@ const WalletView = () => {
       </StyledPanel>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">
-          <ListIcon />
+          <img src={ListIcon} width={40} height={40} />
           <FormattedMessage id="wallet.transactions" />
         </Box>
       </Title>
