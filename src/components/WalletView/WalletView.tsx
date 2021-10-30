@@ -268,8 +268,8 @@ const StyledInfoIcon = styled.img`
   margin-left: 7px;
 `;
 
-const WalletView = () => {
-  const { walletBalance } = useContext(PrivateAreaContext);
+const WalletView = ({ isOpen }) => {
+  const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const [rateZIG, setRateZIG] = useState<number>(null);
   // const [balances, setBalances] = useState<WalletBalance>(null);
@@ -296,7 +296,11 @@ const WalletView = () => {
     tradeApi.getWalletCoins().then((response) => {
       setCoins(response);
     });
-  }, []);
+
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  }, [isOpen]);
 
   const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.checked;
