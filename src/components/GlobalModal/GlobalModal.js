@@ -46,7 +46,7 @@ const GlobalModal = (props) => {
       state={isOpen}
       newTheme={newTheme}
     >
-      {content({ onClose })}
+      {content({ onClose, isOpen })}
     </Modal>
   );
 };
