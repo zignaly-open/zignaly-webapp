@@ -42,7 +42,9 @@ const Header = () => {
   const dispatch = useDispatch();
   const { connectedProviders, balance } = useContext(PrivateAreaContext);
   const connectedProvidersCount = connectedProviders
-    ? connectedProviders.filter((p) => p.exchangeInternalId === selectedExchange.internalId).length
+    ? connectedProviders.filter((p) =>
+        p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
+      ).length
     : null;
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
   const showBalance = storeSettings.balanceBox;
@@ -51,9 +53,6 @@ const Header = () => {
 
   let showAddFunds = false;
   let showFindTraders = false;
-  // const hasOnlyDefaultExchangeAccount =
-  //   exchangeConnections.length === 1 &&
-  //   exchangeConnections[0].exchangeName.toLowerCase() === "zignaly";
   if (!connectedProvidersCount) {
     if (!hasFunds) {
       showAddFunds = true;
