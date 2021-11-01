@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
-import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Label, Modal, Panel, SubTitle, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
 import { Box, CircularProgress, OutlinedInput, Typography } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
-import CustomButton from "components/CustomButton";
 import CustomSelect from "components/CustomSelect";
-import DepositQRCodes from "components/ConnectExchangeView/ExchangeAccountBalanceManagement/Deposit/DepositQRCodes";
-import { TitleIcon } from "./styles";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";

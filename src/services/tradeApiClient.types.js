@@ -320,6 +320,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} disabled Account disabled due to too many incorrect login
  * @property {boolean} verified User identity verified
  * @property {boolean} payFeeWithZig
+ * @property {string} refCode
  */
 
 /**
@@ -943,6 +944,7 @@ export function userEntityResponseTransform(response) {
     wall: response.wall || {},
     verified: false,
     payFeeWithZig: response.payFeeWithZig,
+    refCode: response.refCode,
   };
 }
 
