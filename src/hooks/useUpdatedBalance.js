@@ -19,7 +19,12 @@ const useUpdatedBalance = (context) => {
   const { setBalance, setWalletBalance } = context;
   const selectedExchange = useSelectedExchange();
 
-  const loadData = () => {
+  // const [updatedAt, setUpdatedAt] = useState(null);
+  // const refreshBalance = () => {
+  //   setUpdatedAt(new Date());
+  // };
+
+  const loadExchangeBalance = () => {
     if (selectedExchange.internalId) {
       tradeApi
         .userBalanceGet({
@@ -28,14 +33,18 @@ const useUpdatedBalance = (context) => {
         .then((data) => {
           setBalance(data);
         });
-
-      tradeApi.getWalletBalance().then((response) => {
-        setWalletBalance(response);
-      });
     }
   };
+  useEffect(loadExchangeBalance, [selectedExchange.internalId]);
 
-  useEffect(loadData, [selectedExchange.internalId]);
+  const loadData = () => {
+    loadExchangeBalance();
+
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  };
+
   useInterval(loadData, 60000, false);
 };
 
