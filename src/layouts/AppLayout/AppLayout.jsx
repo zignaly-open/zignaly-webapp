@@ -91,13 +91,9 @@ const AppLayout = (props) => {
   useEffect(() => {
     // Internal tracking for navigation
     if (href !== ref.current) {
-      // userId can be undefined at login
-      if (storeUserData.userId) {
-        const location = typeof window !== "undefined" ? window.location : null;
-        triggerTz(location, ref.current);
-        // Save prev location
-        ref.current = href;
-      }
+      triggerTz(window.location, ref.current);
+      // Save prev location
+      ref.current = href;
     }
   }, [href, storeUserData.userId]);
 
