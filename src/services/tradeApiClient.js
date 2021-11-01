@@ -342,7 +342,7 @@ class TradeApiClient {
    * @param {*} [payload] Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
    * @param {number} [apiVersion] API to call (0=CF, 1=old, 2=new)
-   * @param {string} [token] Optional authentication token.
+   * @param {string|boolean} [token] Optional authentication token (false to force no token).
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient

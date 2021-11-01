@@ -527,6 +527,7 @@ const initialState = {
       isUnknownDevice: false,
       disabled: false,
       payFeeWithZig: false,
+      refCode: "",
     },
   },
   ui: {

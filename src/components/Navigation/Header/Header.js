@@ -25,6 +25,8 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
+import Modal from "components/Modal";
+import InviteModal from "./InviteModal";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -45,6 +47,7 @@ const Header = () => {
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
   const showBalance = storeSettings.balanceBox;
   const balanceReady = balance && connectedProvidersCount !== null;
+  const [inviteModal, showInviteModal] = useState(false);
 
   let showAddFunds = false;
   let showFindTraders = false;
@@ -113,6 +116,14 @@ const Header = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
+      <Modal
+        onClose={() => showInviteModal(false)}
+        persist={false}
+        size="medium"
+        state={inviteModal}
+      >
+        <InviteModal />
+      </Modal>
       <Box alignItems="center" className={"logoContainer"} display="flex" flexDirection="row">
         <Link to="/dashboard">
           <img
@@ -142,20 +153,25 @@ const Header = () => {
             {balanceReady && (
               <>
                 {!showAddFunds ? (
-                  <Balance />
+                  <>
+                    <Balance />
+                    {showFindTraders ? (
+                      <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                        <FormattedMessage id="accounts.startps" />
+                      </CustomButton>
+                    ) : hasOnlyNonBrokerAccount ? (
+                      <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                        <FormattedMessage id="accounts.findtraders" />
+                      </CustomButton>
+                    ) : (
+                      <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
+                        <FormattedMessage id="accounts.invite" />
+                      </CustomButton>
+                    )}
+                  </>
                 ) : (
                   <CustomButton className="textPurple" href="#exchangeAccounts">
                     <FormattedMessage id="accounts.addfunds" />
-                  </CustomButton>
-                )}
-                {showFindTraders && (
-                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                    <FormattedMessage id="accounts.findtraders" />
-                  </CustomButton>
-                )}
-                {hasOnlyNonBrokerAccount && (
-                  <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                    <FormattedMessage id="accounts.startps" />
                   </CustomButton>
                 )}
               </>
