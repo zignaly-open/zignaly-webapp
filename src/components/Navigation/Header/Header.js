@@ -115,14 +115,7 @@ const Header = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      <Modal
-        onClose={() => showInviteModal(false)}
-        persist={false}
-        size="medium"
-        state={inviteModal}
-      >
-        <InviteModal />
-      </Modal>
+      <InviteModal isOpen={inviteModal} onClose={() => showInviteModal(false)} />
       <Box alignItems="center" className={"logoContainer"} display="flex" flexDirection="row">
         <Link to="/dashboard">
           <img
