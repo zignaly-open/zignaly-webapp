@@ -20,6 +20,8 @@ import React from "react";
  * @property {Array<ExchangeListEntity>} exchangeList
  * @property {React.SetStateAction<*>} setExchangeList
  * @property {React.SetStateAction<*>} setUserProviders
+ * @property {React.SetStateAction<*>} showInviteModal
+ * @property {boolean} inviteModal
  * @property {Array<HasBeenUsedProviderEntity>} userProviders
  * @property {Array<HasBeenUsedProviderEntity>} connectedProviders
  */
