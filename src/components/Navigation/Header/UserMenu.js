@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
@@ -16,6 +16,7 @@ import { navigateLogin } from "../../../services/navigation";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import InviteModal from "./InviteModal";
 import { RecordVoiceOver } from "@material-ui/icons";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  *
@@ -31,7 +32,7 @@ import { RecordVoiceOver } from "@material-ui/icons";
 const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
   const exchangeConnections = useStoreUserExchangeConnections();
-  const [inviteModal, showInviteModal] = useState(false);
+  const { showInviteModal } = useContext(PrivateAreaContext);
 
   const logout = () => {
     navigateLogin();
@@ -45,6 +46,11 @@ const UserMenu = ({ onClose }) => {
 
   const showDocs = () => {
     window.open(docsURL, "_blank");
+    onClose();
+  };
+
+  const showInvite = () => {
+    showInviteModal(true);
     onClose();
   };
 
@@ -77,8 +83,7 @@ const UserMenu = ({ onClose }) => {
           <FormattedMessage id="menu.settings" />
         </span>
       </MenuItem>
-      <MenuItem className="userMenuItem" onClick={() => showInviteModal(true)}>
-        <InviteModal isOpen={inviteModal} onClose={() => showInviteModal(false)} />
+      <MenuItem className="userMenuItem" onClick={showInvite}>
         <RecordVoiceOver className="iconPurple" />
         <span className="item">
           <FormattedMessage id="accounts.invite" />

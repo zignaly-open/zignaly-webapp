@@ -19,6 +19,7 @@ const usePrivateAreaContext = () => {
   const [quotesMap, setQuotesMapData] = useState({});
   const [exchangeList, setExchangeList] = useState([]);
   const [walletBalance, setWalletBalance] = useState(null);
+  const [inviteModal, showInviteModal] = useState(false);
 
   return {
     quotesMap,
@@ -32,6 +33,8 @@ const usePrivateAreaContext = () => {
     connectedProviders,
     setWalletBalance,
     walletBalance,
+    showInviteModal,
+    inviteModal,
   };
 };
 

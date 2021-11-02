@@ -19,6 +19,7 @@ import usePrivateAreaContext from "hooks/usePrivateAreaContext";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import useUpdatedBalance from "hooks/useUpdatedBalance";
 import tradeApi from "services/tradeApiClient";
+import InviteModal from "components/Navigation/Header/InviteModal";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -35,7 +36,7 @@ const PrivateAreaLayout = (props) => {
   const { children } = props;
   const dispatch = useDispatch();
   const privateAreaContext = usePrivateAreaContext();
-  const { setUserProviders } = privateAreaContext;
+  const { setUserProviders, showInviteModal, inviteModal } = privateAreaContext;
 
   // Load balance in the context to show in the header, and to show the "Add Fund" button
   useUpdatedBalance(privateAreaContext);
@@ -64,6 +65,7 @@ const PrivateAreaLayout = (props) => {
         executeCancelCallback={postponeRefresh}
         setConfirmConfig={setConfirmConfig}
       />
+      <InviteModal isOpen={inviteModal} onClose={() => showInviteModal(false)} />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
       <GlobalModal content={WalletView} hash="wallet" newTheme={true} showCloseIcon={true} />
