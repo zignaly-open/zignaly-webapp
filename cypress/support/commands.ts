@@ -51,7 +51,16 @@ Cypress.Commands.add("mock", (options: MockOptions = {}) => {
   const connectedProvidersData = connectedProviders.map((p) => ({
     connected: true,
     exchangeInternalId,
-    // exchangeInternalIds: [],
+    exchangeInternalIds: [
+      {
+        disconnecting: false,
+        disconnectionType: null,
+        internalId: exchangeInternalId,
+        profitsMode: "reinvest",
+        profitsShare: 55,
+        retain: 0,
+      },
+    ],
     id: p.id,
     name: p.name,
     type: "profitSharing",
