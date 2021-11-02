@@ -374,11 +374,11 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             <SubTitle>
               <FormattedMessage id="wallet.totalbalance" />
             </SubTitle>
-            <TextMain>
+            <TextMain data-test-id="total-balance">
               <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
             </TextMain>
-            <RateText>
+            <RateText data-test-id="total-balance-usd">
               <NumberFormat
                 value={parseFloat(balanceZIG) * rateZIG}
                 displayType="text"
