@@ -53,7 +53,7 @@ const Header = () => {
 
   let showAddFunds = false;
   let showFindTraders = false;
-  if (!connectedProvidersCount && selectedExchange.exchangeType.toLowerCase() === "zignaly") {
+  if (!connectedProvidersCount && selectedExchange.exchangeName.toLowerCase() === "zignaly") {
     if (!hasFunds) {
       showAddFunds = true;
     } else {
