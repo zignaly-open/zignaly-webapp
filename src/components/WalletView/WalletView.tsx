@@ -16,7 +16,6 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-  IconButton,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
@@ -26,13 +25,10 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
 import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
-import { TitleIcon } from "./styles";
 import NumberFormat from "react-number-format";
-import theme from "services/theme";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
 import { colors } from "services/theme";
-import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
 
@@ -135,7 +131,7 @@ const PanelItem = styled.div`
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
   /* flex-basis: 24%; */
   max-width: 400px;
-  margin: 0 16px;
+  margin: 0 20px;
 
   ${(props) =>
     props.row &&
@@ -268,7 +264,7 @@ const StyledInfoIcon = styled.img`
   margin-left: 7px;
 `;
 
-const WalletView = ({ isOpen }) => {
+const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const [rateZIG, setRateZIG] = useState<number>(null);

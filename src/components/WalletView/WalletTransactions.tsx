@@ -38,7 +38,7 @@ const TypographyTx = styled(Typography)`
 `;
 
 const TypographyView = styled(Typography)`
-  color: ${({ theme }) => theme.transactionTable.linkText};
+  color: ${({ theme }) => theme.newTheme.linkText};
   font-size: 13px;
   margin-top: 10px;
   line-height: 16px;

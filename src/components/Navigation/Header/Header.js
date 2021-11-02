@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { Box, Grow, Typography, Popper } from "@material-ui/core";
+import { Box, Grow, Typography, Popper, ClickAwayListener } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoNW.svg";
 import LogoBlack from "../../../images/logo/logoNB.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
@@ -25,8 +25,6 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
-import Modal from "components/Modal";
-import InviteModal from "./InviteModal";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -40,7 +38,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const { connectedProviders, balance } = useContext(PrivateAreaContext);
+  const { connectedProviders, balance, showInviteModal } = useContext(PrivateAreaContext);
   const connectedProvidersCount = connectedProviders
     ? connectedProviders.filter((p) =>
         p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
@@ -49,11 +47,10 @@ const Header = () => {
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
   const showBalance = storeSettings.balanceBox;
   const balanceReady = balance && connectedProvidersCount !== null;
-  const [inviteModal, showInviteModal] = useState(false);
 
   let showAddFunds = false;
   let showFindTraders = false;
-  if (!connectedProvidersCount) {
+  if (!connectedProvidersCount && selectedExchange.exchangeName.toLowerCase() === "zignaly") {
     if (!hasFunds) {
       showAddFunds = true;
     } else {
@@ -115,14 +112,6 @@ const Header = () => {
       flexDirection="row"
       justifyContent="space-between"
     >
-      <Modal
-        onClose={() => showInviteModal(false)}
-        persist={false}
-        size="medium"
-        state={inviteModal}
-      >
-        <InviteModal />
-      </Modal>
       <Box alignItems="center" className={"logoContainer"} display="flex" flexDirection="row">
         <Link to="/dashboard">
           <img
@@ -154,11 +143,11 @@ const Header = () => {
                 {!showAddFunds ? (
                   <>
                     <Balance />
-                    {showFindTraders ? (
+                    {hasOnlyNonBrokerAccount ? (
                       <CustomButton className="textPurple" component={Link} to="/profitSharing">
                         <FormattedMessage id="accounts.startps" />
                       </CustomButton>
-                    ) : hasOnlyNonBrokerAccount ? (
+                    ) : showFindTraders ? (
                       <CustomButton className="textPurple" component={Link} to="/profitSharing">
                         <FormattedMessage id="accounts.findtraders" />
                       </CustomButton>
@@ -183,37 +172,35 @@ const Header = () => {
             <FormattedMessage id="menu.connectexchange" />
           </CustomButton>
         )}
-        <Box className="linkBox">
-          <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <ProviderLogo
-              defaultImage={ProfileIcon}
-              size="32px"
-              title=""
-              url={storeUserData.imageUrl}
-              verified={storeUserData.verified}
-            />
-            <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+        <ClickAwayListener onClickAway={() => setAnchorEl(undefined)}>
+          <Box className="linkBox">
+            <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
+              <ProviderLogo
+                defaultImage={ProfileIcon}
+                size="32px"
+                title=""
+                url={storeUserData.imageUrl}
+                verified={storeUserData.verified}
+              />
+              <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+            </Box>
+            <Popper
+              anchorEl={anchorEl}
+              className="popper"
+              open={Boolean(anchorEl)}
+              placement="bottom-start"
+              transition
+            >
+              {({ TransitionProps }) => (
+                <Grow {...TransitionProps} timeout={350}>
+                  <Box bgcolor="grid.main" className="menuWrapper">
+                    <UserMenu onClose={() => setAnchorEl(undefined)} />
+                  </Box>
+                </Grow>
+              )}
+            </Popper>
           </Box>
-          <Popper
-            anchorEl={anchorEl}
-            className="popper"
-            open={Boolean(anchorEl)}
-            placement="bottom-start"
-            transition
-          >
-            {({ TransitionProps }) => (
-              <Grow {...TransitionProps} timeout={350}>
-                <Box
-                  bgcolor="grid.main"
-                  className="menuWrapper"
-                  onMouseLeave={() => setAnchorEl(undefined)}
-                >
-                  <UserMenu onClose={() => setAnchorEl(undefined)} />
-                </Box>
-              </Grow>
-            )}
-          </Popper>
-        </Box>
+        </ClickAwayListener>
       </Box>
     </Box>
   );

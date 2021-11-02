@@ -327,6 +327,7 @@ module.exports = {
       rules: {
         "no-undef": "off",
         "no-unused-vars": "off",
+        "react/require-default-props": "off",
       },
     },
     {

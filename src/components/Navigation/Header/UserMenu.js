@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
 import SignOut from "../../../images/header/signOut.svg";
 import Settings from "../../../images/dashboard/settings.svg";
-import { Box, MenuItem, Grow } from "@material-ui/core";
+import { Box, MenuItem, Grow, Modal } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -14,6 +14,9 @@ import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
 import { navigateLogin } from "../../../services/navigation";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
+import InviteModal from "./InviteModal";
+import { RecordVoiceOver } from "@material-ui/icons";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  *
@@ -29,6 +32,7 @@ import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
   const exchangeConnections = useStoreUserExchangeConnections();
+  const { showInviteModal } = useContext(PrivateAreaContext);
 
   const logout = () => {
     navigateLogin();
@@ -42,6 +46,11 @@ const UserMenu = ({ onClose }) => {
 
   const showDocs = () => {
     window.open(docsURL, "_blank");
+    onClose();
+  };
+
+  const showInvite = () => {
+    showInviteModal(true);
     onClose();
   };
 
@@ -72,6 +81,12 @@ const UserMenu = ({ onClose }) => {
         <img alt="zignaly" className="iconPurple" src={Settings} />
         <span className="item">
           <FormattedMessage id="menu.settings" />
+        </span>
+      </MenuItem>
+      <MenuItem className="userMenuItem" onClick={showInvite}>
+        <RecordVoiceOver className="iconPurple" />
+        <span className="item">
+          <FormattedMessage id="accounts.invite" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDiscord}>
