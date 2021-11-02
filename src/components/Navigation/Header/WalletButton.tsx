@@ -5,6 +5,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import { Box, Tooltip, Typography } from "@material-ui/core";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { isMobile } from "styles/styles";
+import NumberFormat from "react-number-format";
 
 const Button = styled(CustomButton)`
   min-width: 80px;
@@ -47,7 +48,15 @@ const WalletButton = () => {
       <Button href="#wallet">
         <WalletIcon />
         <TypographyBalance>
-          {walletBalance ? walletBalance.ZIG?.total || 0 : "-"}
+          {walletBalance ? (
+            <NumberFormat
+              value={walletBalance.ZIG?.total || 0}
+              thousandSeparator={true}
+              displayType="text"
+            />
+          ) : (
+            <>-</>
+          )}
           <ZIG>ZIG</ZIG>
         </TypographyBalance>
       </Button>
