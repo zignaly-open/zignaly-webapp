@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
-import { isMobile, Label, Modal, Panel, SubTitle, TextDesc, Title } from "styles/styles";
+import { isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
 import { Box, CircularProgress, OutlinedInput, Typography } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
@@ -9,6 +9,23 @@ import CustomSelect from "components/CustomSelect";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
+import InfoIcon from "images/wallet/info.svg";
+import { ErrorOutlineOutlined } from "@material-ui/icons";
+
+const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
+  margin-right: 7px;
+  color: ${({ theme }) => theme.newTheme.error};
+`;
+
+const TypographyError = styled(Typography)`
+  color: ${({ theme }) => theme.newTheme.error};
+`;
+
+const NotSure = styled.a`
+  margin-left: 17px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.newTheme.linkText};
+`;
 
 const StyledCustomSelect = styled.div`
   margin-top: 64px;
@@ -26,7 +43,6 @@ const StyledCustomSelect = styled.div`
 
   .customSelect {
     align-items: flex-start;
-    margin-bottom: 24px;
   }
 
   .customSelectControl {
@@ -50,37 +66,27 @@ const QRCodeContainer = styled.div`
 
 interface WalletDepositViewProps {
   coins: WalletCoins;
+  coin?: string;
 }
 
-const WalletDepositView = ({ coins }: WalletDepositViewProps) => {
-  const coin = "ZIG";
-  const [networks, setNetworks] = useState<WalletNetwork[]>([]);
-  const networkOptions = networks.map((n) => n.network);
-  const [network, setNetwork] = useState("");
+const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
+  const coinData = coins ? coins[coin] : null;
+  const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
+  const [network, setNetwork] = useState<WalletNetwork>(null);
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
 
-  // const onNetworkChange = (selectedNetwork) => {
-  //   console.log(selectedNetwork);
-  // };
-
   useEffect(() => {
-    // tradeApi.getWalletCoins().then((response) => {
-    if (!coins) return;
-
-    const coinData = coins[coin];
     if (coinData) {
-      setNetworks(coinData.networks);
       // Select first option
-      setNetwork(coinData.networks[0].network);
+      setNetwork(coinData.networks[0]);
     }
-    // });
-  }, [coins]);
+  }, [coinData]);
 
   useEffect(() => {
     if (network) {
       setAddress(null);
-      tradeApi.getWalletDepositAddress(network, coin).then((response) => {
+      tradeApi.getWalletDepositAddress(network.network, coin).then((response) => {
         setAddress(response);
       });
     }
@@ -107,11 +113,25 @@ const WalletDepositView = ({ coins }: WalletDepositViewProps) => {
           labelPlacement="top"
           onChange={setNetwork}
           options={networkOptions}
-          value={network}
+          value={network?.network || ""}
           label={<FormattedMessage id="deposit.network" />}
         />
       </StyledCustomSelect>
-      <Label>
+      {network && (
+        <Box display="flex" alignItems="center" mt={2}>
+          <StyledErrorOutlined width={24} height={24} />
+          <TypographyError>
+            <FormattedMessage
+              id="wallet.deposit.caution"
+              values={{ coin: "ZIG", network: network.name }}
+            />
+          </TypographyError>
+          <NotSure href="" target="_blank">
+            <FormattedMessage id="wallet.deposit.notsure" />
+          </NotSure>
+        </Box>
+      )}
+      <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="deposit.address" />
       </Label>
       {address ? (
@@ -146,8 +166,6 @@ const WalletDepositView = ({ coins }: WalletDepositViewProps) => {
       ) : (
         <CircularProgress size={21} style={{ margin: "0 auto" }} />
       )}
-      {/* <FormattedMessage id="wallet.deposit.caution" /> */}
-      {/* <FormattedMessage id="wallet.deposit.notsure" /> */}
     </Modal>
   );
 };

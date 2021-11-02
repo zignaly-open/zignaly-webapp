@@ -370,6 +370,8 @@ const theme = (darkStyle) => {
           green: "#26c4c1",
           yellow: "#F7CF00",
           red: "#F63F82",
+          error: "#F268C3",
+          linkText: "#829fff",
         }
       : {
           backgroundColor: "#ffffff",
@@ -380,19 +382,19 @@ const theme = (darkStyle) => {
           green: "#2EC9C0",
           yellow: "#C39713",
           red: "#F63F82",
+          error: "#F268C3",
+          linkText: "#36A6F4",
         },
     transactionTable: darkStyle
       ? {
           headTextColor: "#f3f4f6",
           headBackgroundColor: "#0C0D21",
-          linkText: "#829fff",
           border: "#222249",
         }
       : {
           headTextColor: "#36373F",
           // headBackgroundColor: "#CCCAEF",
           headBackgroundColor: "#ffffff",
-          linkText: "#36A6F4",
           border: "rgba(0, 0, 0, 0.1)",
         },
   };
