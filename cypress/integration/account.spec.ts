@@ -122,7 +122,9 @@ describe("User Account", () => {
       cy.mock();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
-      const user = makeFakeUser({ exchanges: [makeExchange({ exchangeName: "Binance" })] });
+      const user = makeFakeUser({
+        exchanges: [makeExchange({ exchangeName: "Binance", internalName: "Binance" })],
+      });
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
           win.initialState = initialAuthData(user);

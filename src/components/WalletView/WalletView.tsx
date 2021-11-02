@@ -131,7 +131,7 @@ const PanelItem = styled.div`
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
   /* flex-basis: 24%; */
   max-width: 400px;
-  margin: 0 16px;
+  margin: 0 20px;
 
   ${(props) =>
     props.row &&

@@ -147,11 +147,11 @@ const Header = () => {
                 {!showAddFunds ? (
                   <>
                     <Balance />
-                    {showFindTraders ? (
+                    {hasOnlyNonBrokerAccount ? (
                       <CustomButton className="textPurple" component={Link} to="/profitSharing">
                         <FormattedMessage id="accounts.startps" />
                       </CustomButton>
-                    ) : hasOnlyNonBrokerAccount ? (
+                    ) : showFindTraders ? (
                       <CustomButton className="textPurple" component={Link} to="/profitSharing">
                         <FormattedMessage id="accounts.findtraders" />
                       </CustomButton>
