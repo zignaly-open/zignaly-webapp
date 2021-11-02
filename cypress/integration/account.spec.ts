@@ -139,11 +139,13 @@ describe("User Account", () => {
   });
 
   describe("Multiple exchange accounts", () => {
+    let user: User;
+
     beforeEach(() => {
       cy.mock();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
-      const user = makeFakeUser();
+      user = makeFakeUser();
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
           win.initialState = initialAuthData(user);
@@ -155,6 +157,16 @@ describe("User Account", () => {
       cy.contains(".header", /Balance/i).should("exist");
       // cy.get(".linksContainer a").should("not.exist");
       cy.contains("a", /Find traders/i).should("exist");
+    });
+
+    it("renders Invite Friend", () => {
+      const exchangeId = user.exchanges.find(
+        (e) => e.exchangeName.toLowerCase() === "binance",
+      ).internalId;
+      cy.window()
+        .its("store")
+        .invoke("dispatch", { type: "SET_SELECTED_EXCHANGE", payload: exchangeId });
+      cy.contains("button", /Invite a Friend/i).should("exist");
     });
   });
 });

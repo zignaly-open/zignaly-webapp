@@ -56,7 +56,7 @@ const Header = () => {
   if (!connectedProvidersCount) {
     if (!hasFunds) {
       showAddFunds = true;
-    } else {
+    } else if (selectedExchange.exchangeType.toLowerCase() === "zignaly") {
       showFindTraders = true;
     }
   }
