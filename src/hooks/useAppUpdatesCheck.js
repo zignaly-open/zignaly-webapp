@@ -95,9 +95,9 @@ const useAppUpdatesCheck = (enableInterval = true) => {
 
   const appUpdatesCheck = () => {
     isNewVersionAvailable().then((update) => {
-      if (update) {
-        setConfirmConfig({ ...confirmConfig, visible: true });
-      }
+      // if (update) {
+      //   setConfirmConfig({ ...confirmConfig, visible: true });
+      // }
     });
   };
 

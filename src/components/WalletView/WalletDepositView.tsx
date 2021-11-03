@@ -72,21 +72,21 @@ interface WalletDepositViewProps {
 const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
-  const [network, setNetwork] = useState("");
+  const [network, setNetwork] = useState<WalletNetwork>(null);
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
 
   useEffect(() => {
     if (coinData) {
       // Select first option
-      setNetwork(coinData.networks[0].network);
+      setNetwork(coinData.networks[0]);
     }
   }, [coinData]);
 
   useEffect(() => {
     if (network) {
       setAddress(null);
-      tradeApi.getWalletDepositAddress(network, coin).then((response) => {
+      tradeApi.getWalletDepositAddress(network.network, coin).then((response) => {
         setAddress(response);
       });
     }
@@ -111,9 +111,9 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
       <StyledCustomSelect>
         <CustomSelect
           labelPlacement="top"
-          onChange={setNetwork}
+          onChange={(v) => setNetwork(coinData.networks.find((n) => n.network === v))}
           options={networkOptions}
-          value={network}
+          value={network?.network || ""}
           label={<FormattedMessage id="deposit.network" />}
         />
       </StyledCustomSelect>
