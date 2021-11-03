@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter } from "styles/styles";
 import {
@@ -107,6 +107,19 @@ const TypographyStatus = styled(Typography)`
   font-weight: 600;
   color: ${(props: TypographyStatusProps) => getStatusColor(props.status, props.theme)};
 `;
+
+const TransferChainLabel = (transaction) => (
+  <StyledTransferImg width={24} height={24} src={getChainIcon(transaction.network)} />
+);
+
+const TransferZigLabel = () => (
+  <>
+    <StyledTransferImg width={24} height={24} src={ZIGIcon} style={{ marginRight: "8px" }} />
+    <TypographyLabel>
+      <FormattedMessage id="wallet.zig" />
+    </TypographyLabel>
+  </>
+);
 
 const WalletTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
@@ -231,27 +244,29 @@ const WalletTransactions = () => {
 
       return (
         <StyledTransferPanel>
-          <Box display="flex" alignItems="center">
-            <TypographyLabel>
-              <FormattedMessage id="wallet.from" />
-            </TypographyLabel>
-            <StyledTransferImg width={24} height={24} src={getChainIcon(transaction.network)} />
-            <TypographyAddress>{transaction.fromAddress}</TypographyAddress>
-            <ArrowRightAlt style={{ margin: "0 21px" }} />
-            <TypographyLabel>
-              <FormattedMessage id="wallet.to" />
-            </TypographyLabel>
-            <StyledTransferImg
-              width={24}
-              height={24}
-              src={ZIGIcon}
-              style={{ marginRight: "8px" }}
-            />
-            <TypographyLabel>
-              <FormattedMessage id="wallet.zig" />
-            </TypographyLabel>
-            <TypographyAddress>{transaction.toAddress}</TypographyAddress>
-          </Box>
+          {transaction.type !== "internal" && (
+            <Box display="flex" alignItems="center">
+              <TypographyLabel>
+                <FormattedMessage id="wallet.from" />
+              </TypographyLabel>
+              {isWithdrawal ? (
+                <TransferZigLabel />
+              ) : (
+                <TransferChainLabel transaction={transaction} />
+              )}
+              <TypographyAddress>{transaction.fromAddress}</TypographyAddress>
+              <ArrowRightAlt style={{ margin: "0 21px" }} />
+              <TypographyLabel>
+                <FormattedMessage id="wallet.to" />
+              </TypographyLabel>
+              {isWithdrawal ? (
+                <TransferChainLabel transaction={transaction} />
+              ) : (
+                <TransferZigLabel />
+              )}
+              <TypographyAddress>{transaction.toAddress}</TypographyAddress>
+            </Box>
+          )}
           <Box display="flex" alignItems="center" mt="18px">
             <TypographyLabel>
               <FormattedMessage id="wallet.tx" />
