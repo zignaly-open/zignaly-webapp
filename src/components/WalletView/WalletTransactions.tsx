@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter } from "styles/styles";
-import { Box, CircularProgress, Grid, Typography } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import Table, { TableLayout } from "./Table";
@@ -9,12 +17,8 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
-
-const Date = styled.a`
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-`;
+import { ChevronDown, ChevronUp } from "react-feather";
+import { ArrowRightAlt } from "@material-ui/icons";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -47,6 +51,27 @@ const TypographyView = styled(Typography)`
 const TypographyToken = styled(Typography)`
   font-weight: 600;
   margin-left: 8px;
+`;
+
+const TypographyLabel = styled(Typography)`
+  font-weight: 600;
+  font-size: 13px;
+`;
+
+const TypographyAddress = styled(Typography)`
+  font-size: 12px;
+  margin-left: 16px;
+`;
+
+const StyledTransferPanel = styled.div`
+  background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
+  border: 1px dashed ${({ theme }) => (theme.palette.type === "dark" ? "#5A51F5" : "#a586e0")};
+  margin: 0 16px;
+  padding: 28px 20px;
+`;
+
+const StyledTransferImg = styled.img`
+  margin-left: 16px;
 `;
 
 const getStatusColor = (status, theme) => {
@@ -112,6 +137,17 @@ const WalletTransactions = () => {
       Header: intl.formatMessage({ id: "col.stat" }),
       accessor: "status",
     },
+    {
+      Header: "",
+      id: "action",
+      // accessor: "action",
+      Cell: ({ row }) => (
+        <span {...row.getToggleRowExpandedProps({})}>
+          {row.isExpanded ? <ChevronUp /> : <ChevronDown />}
+        </span>
+      ),
+    },
+    { Header: "", accessor: "transactionId" },
   ];
 
   const data =
@@ -173,7 +209,60 @@ const WalletTransactions = () => {
           </TypographyStatus>
         </AlignCenter>
       ),
+      transactionId: t.transactionId,
+      // action: (
+      //   <Accordion>
+      //     <AccordionSummary
+      //       expandIcon={<ChevronDown />}
+      //       aria-controls="panel-content"
+      //     ></AccordionSummary>
+      //     <AccordionDetails>
+
+      //     </AccordionDetails>
+      //   </Accordion>
+      // ),
     }));
+
+  const renderRowSubComponent = useCallback(
+    ({ row }) => {
+      const { transactionId } = row.values;
+      const transaction = transactions.find((t) => t.transactionId === transactionId);
+      const isWithdrawal = transaction.amount.startsWith("-");
+
+      return (
+        <StyledTransferPanel>
+          <Box display="flex" alignItems="center">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.from" />
+            </TypographyLabel>
+            <StyledTransferImg width={24} height={24} src={getChainIcon(transaction.network)} />
+            <TypographyAddress>{transaction.fromAddress}</TypographyAddress>
+            <ArrowRightAlt style={{ margin: "0 21px" }} />
+            <TypographyLabel>
+              <FormattedMessage id="wallet.to" />
+            </TypographyLabel>
+            <StyledTransferImg
+              width={24}
+              height={24}
+              src={ZIGIcon}
+              style={{ marginRight: "8px" }}
+            />
+            <TypographyLabel>
+              <FormattedMessage id="wallet.zig" />
+            </TypographyLabel>
+            <TypographyAddress>{transaction.toAddress}</TypographyAddress>
+          </Box>
+          <Box display="flex" alignItems="center" mt="18px">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.tx" />
+            </TypographyLabel>
+            <TypographyAddress>{transactionId}</TypographyAddress>
+          </Box>
+        </StyledTransferPanel>
+      );
+    },
+    [transactions],
+  );
 
   useEffect(() => {
     tradeApi.getWalletTransactionsHistory().then((response) => {
@@ -190,9 +279,18 @@ const WalletTransactions = () => {
     );
   }
 
+  const tableState = {
+    hiddenColumns: ["transactionId"],
+  };
+
   return (
     <TableLayout>
-      <Table data={data} columns={columns} />
+      <Table
+        data={data}
+        columns={columns}
+        renderRowSubComponent={renderRowSubComponent}
+        initialState={tableState}
+      />
     </TableLayout>
   );
 };

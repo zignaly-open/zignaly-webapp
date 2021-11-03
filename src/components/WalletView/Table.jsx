@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useTable } from "react-table";
+import { useExpanded, useTable } from "react-table";
 import { Typography } from "@material-ui/core";
 import { isMobile } from "styles/styles";
 
@@ -54,12 +54,26 @@ export const TableLayout = styled.div`
   `}
 `;
 
-const Table = ({ columns, data }) => {
-  // Table
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
-    columns,
-    data,
-  });
+const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { expanded },
+    visibleColumns,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        // pageIndex: 0,
+        ...initialState,
+      },
+    },
+    useExpanded,
+  );
 
   return (
     <table {...getTableProps()}>
@@ -77,16 +91,36 @@ const Table = ({ columns, data }) => {
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
+          console.log(row);
           return (
-            <tr {...row.getRowProps()} key={`--group-column-row-${i.toString()}`}>
-              {row.cells.map((cell, cellIndex) => {
-                return (
-                  <td key={`--group-column-cell-${cellIndex.toString()}`} {...cell.getCellProps()}>
-                    {cell.render("Cell")}
+            <>
+              <tr {...row.getRowProps()} key={`--group-column-row-${i.toString()}`}>
+                {row.cells.map((cell, cellIndex) => {
+                  return (
+                    <td
+                      key={`--group-column-cell-${cellIndex.toString()}`}
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  );
+                })}
+              </tr>
+              {row.isExpanded ? (
+                <tr>
+                  <td colSpan={visibleColumns.length} style={{ border: "none" }}>
+                    {/*
+                      Inside it, call our renderRowSubComponent function. In reality,
+                      you could pass whatever you want as props to
+                      a component like this, including the entire
+                      table instance. But for this example, we'll just
+                      pass the row
+                    */}
+                    {renderRowSubComponent({ row })}
                   </td>
-                );
-              })}
-            </tr>
+                </tr>
+              ) : null}
+            </>
           );
         })}
       </tbody>
