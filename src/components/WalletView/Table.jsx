@@ -95,7 +95,7 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
             <>
               <tr
                 {...row.getRowProps()}
-                {...row.getToggleRowExpandedProps({})}
+                {...(renderRowSubComponent && row.getToggleRowExpandedProps({}))}
                 key={`--group-column-row-${i.toString()}`}
               >
                 {row.cells.map((cell, cellIndex) => {
