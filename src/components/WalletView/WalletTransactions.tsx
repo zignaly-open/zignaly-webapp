@@ -154,11 +154,7 @@ const WalletTransactions = () => {
       Header: "",
       id: "action",
       // accessor: "action",
-      Cell: ({ row }) => (
-        <span {...row.getToggleRowExpandedProps({})}>
-          {row.isExpanded ? <ChevronUp /> : <ChevronDown />}
-        </span>
-      ),
+      Cell: ({ row }) => (row.isExpanded ? <ChevronUp /> : <ChevronDown />),
     },
     { Header: "", accessor: "transactionId" },
   ];

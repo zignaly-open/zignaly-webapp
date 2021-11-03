@@ -91,10 +91,13 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
-          console.log(row);
           return (
             <>
-              <tr {...row.getRowProps()} key={`--group-column-row-${i.toString()}`}>
+              <tr
+                {...row.getRowProps()}
+                {...row.getToggleRowExpandedProps({})}
+                key={`--group-column-row-${i.toString()}`}
+              >
                 {row.cells.map((cell, cellIndex) => {
                   return (
                     <td
