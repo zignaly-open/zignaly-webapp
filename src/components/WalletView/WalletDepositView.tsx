@@ -73,6 +73,7 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
   const [network, setNetwork] = useState("");
+  console.log(networkOptions, network);
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
 
@@ -121,10 +122,7 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
         <Box display="flex" alignItems="center" mt={2}>
           <StyledErrorOutlined width={24} height={24} />
           <TypographyError>
-            <FormattedMessage
-              id="wallet.deposit.caution"
-              values={{ coin: "ZIG", network: network.name }}
-            />
+            <FormattedMessage id="wallet.deposit.caution" values={{ coin: "ZIG", network }} />
           </TypographyError>
           <NotSure href="" target="_blank">
             <FormattedMessage id="wallet.deposit.notsure" />
