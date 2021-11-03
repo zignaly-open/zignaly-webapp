@@ -17,7 +17,7 @@ export const bitmexAPIKeysUrl = "https://www.bitmex.com/app/apiKeys";
 export const binanceUrl = "https://accounts.binance.com/";
 export const kucoinUrl = "https://www.kucoin.com/";
 export const vcceUrl = "https://vcc.exchange/";
-export const ascendEXUrl = "https://bitmax.io/en/account/api-key";
+export const ascendexApiUrl = "https://ascendex.com/en/account/api-key";
 export const retainInfoUrl =
   "https://help.zignaly.com/hc/en-us/articles/360017357399-Understanding-Profit-Sharing-";
 export const highWaterMarkInfoUrl =
@@ -25,3 +25,5 @@ export const highWaterMarkInfoUrl =
 export const pnlRetainInfoUrl = "https://help.zignaly.com/hc/en-us/articles/360021682320)";
 export const psCreateInfoUrl =
   "https://help.zignaly.com/hc/en-us/articles/360017318920-Create-a-Profit-Sharing-Service#h.ataed7sboy2f";
+export const ascendexUrl = "https://ascendex.com/en-us/register?inviteCode=I180THP3";
+export const mexcUrl = "https://mexc.com/auth/signup?inviteCode=1DHh4";

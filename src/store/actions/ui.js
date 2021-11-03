@@ -8,7 +8,6 @@ export const HIDE_SUCCESS_ALERT = "HIDE_SUCCESS_ALERT";
 export const ASK_2FA = "ASK_2FA";
 export const SHOW_CREATE_PROVIDER = "SHOW_CREATE_PROVIDER";
 export const SHOW_CREATE_TRADER = "SHOW_CREATE_TRADER";
-export const SHOW_BALANCE_LOADER = "SHOW_BALANCE_LOADER_ACTION";
 export const SHOW_GLOBAL_MODAL = "SHOW_GLOBAL_MODAL";
 
 /**
@@ -136,17 +135,6 @@ export const showCreateProvider = (payload) => {
 export const showCreateTrader = (payload) => {
   return {
     type: SHOW_CREATE_TRADER,
-    payload,
-  };
-};
-
-/**
- * @param {boolean} payload Flag to indicate if topbar balance is being loaded.
- * @returns {AnyAction} return action object.
- */
-export const showBalanceLoader = (payload) => {
-  return {
-    type: SHOW_BALANCE_LOADER,
     payload,
   };
 };

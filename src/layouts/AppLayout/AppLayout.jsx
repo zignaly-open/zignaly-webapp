@@ -1,5 +1,10 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
-import { ThemeProvider, createMuiTheme, StylesProvider } from "@material-ui/core/styles";
+import {
+  ThemeProvider as MuiThemeProvider,
+  createTheme,
+  StylesProvider,
+} from "@material-ui/core/styles";
+import { ThemeProvider, StyleSheetManager } from "styled-components";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
@@ -43,8 +48,7 @@ const AppLayout = (props) => {
   const storeLoader = useStoreUILoaderSelector();
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
-  const createTheme = () => createMuiTheme(options);
-  const theme = useMemo(createTheme, [darkTheme]);
+  const theme = useMemo(() => createTheme(options), [darkTheme]);
   const ref = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -87,13 +91,9 @@ const AppLayout = (props) => {
   useEffect(() => {
     // Internal tracking for navigation
     if (href !== ref.current) {
-      // userId can be undefined at login
-      if (storeUserData.userId) {
-        const location = typeof window !== "undefined" ? window.location : null;
-        triggerTz(location, ref.current);
-        // Save prev location
-        ref.current = href;
-      }
+      triggerTz(window.location, ref.current);
+      // Save prev location
+      ref.current = href;
     }
   }, [href, storeUserData.userId]);
 
@@ -118,13 +118,17 @@ const AppLayout = (props) => {
         useRecaptchaNet={true}
       >
         <StylesProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ErrorAlert />
-            <SuccessAlert />
-            {storeLoader && <Loader />}
-            {children}
-          </ThemeProvider>
+          <MuiThemeProvider theme={theme}>
+            <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === "development"}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <ErrorAlert />
+                <SuccessAlert />
+                {storeLoader && <Loader />}
+                {children}
+              </ThemeProvider>
+            </StyleSheetManager>
+          </MuiThemeProvider>
         </StylesProvider>
       </GoogleReCaptchaProvider>
     </IntlProvider>

@@ -1,5 +1,4 @@
 import React from "react";
-import "./FlagIcon.scss";
 // @ts-ignore
 import { findFlagUrlByIso2Code } from "country-flags-svg";
 

@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./EditProfileForm.scss";
-import { Box, TextField, Typography, Checkbox, FormHelperText, Tooltip } from "@material-ui/core";
+import {
+  Box,
+  TextField,
+  Typography,
+  Checkbox,
+  FormHelperText,
+  Tooltip,
+  Switch,
+  FormControlLabel,
+} from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
@@ -658,8 +667,8 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           rules={{
                             validate: (value) =>
                               parseFloat(value) === 0 ||
-                              (parseFloat(value) >= 5 && parseFloat(value) < 100) ||
-                              intl.formatMessage({ id: "form.error.profitsharing" }),
+                              (parseFloat(value) > 5 && parseFloat(value) < 100) ||
+                              intl.formatMessage({ id: "form.error.successfee" }),
                           }}
                           suffix="%"
                         />
@@ -758,6 +767,30 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                           name="maxPositions"
                         />
                       </Box>
+                      <div className="inputBox full">
+                        <Controller
+                          control={control}
+                          defaultValue={provider.acceptZigFee}
+                          name="acceptZigFee"
+                          render={({ onChange, onBlur, value }) => (
+                            <FormControlLabel
+                              control={
+                                <Switch
+                                  checked={value}
+                                  onBlur={onBlur}
+                                  onChange={(e) => onChange(e.target.checked)}
+                                />
+                              }
+                              label={
+                                <label className="customLabel" style={{ marginBottom: 0 }}>
+                                  <FormattedMessage id="copyt.profitsharing.acceptZig" />
+                                  {/* <HelpIcon className="helpIcon" /> */}
+                                </label>
+                              }
+                            />
+                          )}
+                        />
+                      </div>
                     </>
                   )}
                 </>

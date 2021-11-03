@@ -1,28 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Box, CircularProgress } from "@material-ui/core";
-import useUpdatedBalance from "../../../../hooks/useUpdatedBalance";
-import useStoreUIBalanceLoader from "../../../../hooks/useStoreUIBalanceLoader";
-import { useDispatch } from "react-redux";
-import { showBalanceLoader } from "../../../../store/actions/ui";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import SpotBalance from "./SpotBalance";
 import FuturesBalance from "./FuturesBalance";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 const TopBalance = () => {
   const selectedExchange = useSelectedExchange();
-  const balance = useUpdatedBalance();
-  const storeBalanceLoader = useStoreUIBalanceLoader();
-  const dispatch = useDispatch();
-
-  const showLoader = () => {
-    dispatch(showBalanceLoader(true));
-  };
-
-  useEffect(showLoader, []);
+  const { balance } = useContext(PrivateAreaContext);
 
   return (
     <>
-      {storeBalanceLoader && (
+      {!balance ? (
         <Box
           alignItems="center"
           className="balanceContainer"
@@ -32,8 +21,7 @@ const TopBalance = () => {
         >
           <CircularProgress color="primary" size={30} />
         </Box>
-      )}
-      {!storeBalanceLoader && (
+      ) : (
         <Box
           alignItems="flex-start"
           className="balanceContainer"

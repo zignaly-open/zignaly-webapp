@@ -323,10 +323,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["*.ts"],
+      files: ["*.ts", "*.tsx"],
       rules: {
         "no-undef": "off",
         "no-unused-vars": "off",
+        "react/require-default-props": "off",
       },
     },
     {
@@ -336,4 +337,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["**/*.d.ts", "src/stories/*", "src/tradingView/charting_library/*"],
 };

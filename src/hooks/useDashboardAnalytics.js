@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useDashboardAnalyticsTimeframeOptions from "./useDashboardAnalyticsTimeframeOptions";
 import { showErrorAlert } from "../store/actions/ui";
 import { useDispatch } from "react-redux";
-import useConnectedProvidersList from "./useConnectedProvidersList";
 import { useIntl } from "react-intl";
 import useStoreSettingsSelector from "./useStoreSettingsSelector";
 import useFilters from "./useFilters";
 import { toNumber } from "lodash";
 import useExchangeQuotes from "./useExchangeQuotes";
 import useSelectedExchange from "hooks/useSelectedExchange";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  * @typedef {import("../store/initialState").DefaultState} DefaultStateType
@@ -56,11 +56,9 @@ const useDashboardAnalytics = (providerId) => {
   });
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
-
-  const { providers, providersLoading } = useConnectedProvidersList(
-    selectedExchange.internalId,
-    ["copyTrading", "profitSharing", "signalProvider"],
-    false,
+  const { userProviders: usedProvidersAll } = useContext(PrivateAreaContext);
+  const providers = usedProvidersAll?.filter((p) =>
+    p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
   );
 
   let providersOptions = [
@@ -123,7 +121,7 @@ const useDashboardAnalytics = (providerId) => {
   // useEffect(adjustProviderQuotes, [filters.provider]);
 
   const loadDashboardStats = () => {
-    if (!providersLoading) {
+    if (!providers) {
       setLoading(true);
       const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
       const payload = {
@@ -158,7 +156,7 @@ const useDashboardAnalytics = (providerId) => {
     filters.quote,
     filters.timeFrame,
     selectedExchange.internalId,
-    providersLoading,
+    providers,
   ]);
 
   return {

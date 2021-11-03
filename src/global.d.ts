@@ -28,7 +28,8 @@ interface Provider {
   profitMode?: string;
   profitSharing: boolean;
   isCopyTrading: boolean;
-  exchangeInternalIds: any[];
+  exchangeInternalId: string;
+  exchangeInternalIds: string[];
   followers: number;
   strategy: string;
   about: string;

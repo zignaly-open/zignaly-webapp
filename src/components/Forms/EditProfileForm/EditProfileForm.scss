@@ -52,7 +52,9 @@
 
   .inputBox {
     margin-bottom: 16px;
-    width: calc(50% - 40px);
+    &:not(.full) {
+      width: calc(50% - 40px);
+    }
 
     &.switches {
       min-width: 65%;

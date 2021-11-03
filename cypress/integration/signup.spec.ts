@@ -17,6 +17,7 @@ describe("Signup", () => {
   beforeEach(() => {
     // server = makeServer({ environment: "test" });
     cy.intercept("POST", "*/signup", { token: Cypress.env("token") });
+    cy.intercept("POST", "*/user/verify_code/verify_email", "true");
 
     cy.visit("/signup");
   });
@@ -60,9 +61,12 @@ describe("Signup", () => {
     cy.get("[name=password]").type(password);
     cy.get("[name=repeatPassword]").type(`${password}{enter}`);
 
+    // Verification code
+    cy.get(".MuiDialog-root").focused().type("000000");
+
     const user = makeFakeUser({ email, firstName });
-    cy.mockSession(user);
     cy.mock();
+    cy.mockSession(user);
 
     const providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
     cy.mockProviders(providers);

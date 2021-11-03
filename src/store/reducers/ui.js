@@ -9,7 +9,6 @@ import {
   ASK_2FA,
   SHOW_CREATE_PROVIDER,
   SHOW_CREATE_TRADER,
-  SHOW_BALANCE_LOADER,
   SHOW_GLOBAL_MODAL,
 } from "../actions/ui";
 
@@ -88,10 +87,6 @@ const ui = (state = initialState.ui, action) => {
 
     case ASK_2FA:
       newState.ask2FA = action.payload;
-      break;
-
-    case SHOW_BALANCE_LOADER:
-      newState.balanceLoader = action.payload;
       break;
 
     case SHOW_GLOBAL_MODAL:

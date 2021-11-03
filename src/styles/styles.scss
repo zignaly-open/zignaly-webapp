@@ -57,24 +57,6 @@ body {
   margin-top: 5px;
 }
 
-[data-theme="dark"] {
-  &[data-os="win"] {
-    ::-webkit-scrollbar {
-      &:hover {
-        background-color: #353738;
-      }
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: #909090;
-
-      &:hover {
-        border: 5px solid #353738;
-      }
-    }
-  }
-}
-
 .boxTitle {
   font-size: 24px;
   font-weight: 500;
@@ -257,7 +239,8 @@ body {
       margin-bottom: 0;
     }
 
-    img {
+    img,
+    svg {
       margin-right: 15px;
     }
 
@@ -356,6 +339,22 @@ table {
   --ck-color-text: hsl(0, 0%, 98%);
   --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.2);
   --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
+
+  &[data-os="win"] {
+    ::-webkit-scrollbar {
+      &:hover {
+        background-color: #353738;
+      }
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #909090;
+
+      &:hover {
+        border: 5px solid #353738;
+      }
+    }
+  }
 
   .iconPurple {
     filter: brightness(130%);

@@ -1,5 +1,4 @@
 import React from "react";
-import "./login.scss";
 import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";

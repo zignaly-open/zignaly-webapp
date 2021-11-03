@@ -9,6 +9,7 @@
   .customLabel {
     align-items: center;
     display: flex;
+    font-weight: 700;
   }
 
   .loaderBox {
@@ -113,10 +114,6 @@
     .accountLabel {
       margin-bottom: 33px;
     }
-  }
-
-  .customLabel {
-    font-weight: 700;
   }
 
   .inputBox {

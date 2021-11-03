@@ -19,7 +19,8 @@ import { Button, CircularProgress } from "@material-ui/core";
  * @property {Boolean} [disabled] disable button and all events.
  * @property {ButtonHTMLAttributes["type"]} [type] type can be "submit" in terms of form.
  * @property {String} [target] open a link in a new tab.
- * @property {JSX.Element|string} [component] the component used for the root node.
+ * @property {*} [component] the component used for the root node.
+ * @property {string} [to] Gatsby link
  */
 
 /**

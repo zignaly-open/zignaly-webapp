@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Documents from "../../../images/header/documents.svg";
 import MyExchange from "../../../images/header/myExchange.svg";
 import Message from "../../../images/header/message.svg";
 import SignOut from "../../../images/header/signOut.svg";
 import Settings from "../../../images/dashboard/settings.svg";
-import { Box, MenuItem, Grow } from "@material-ui/core";
+import { Box, MenuItem, Grow, Modal } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
 import { discordURL, docsURL } from "../../../utils/affiliateURLs";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -13,6 +13,10 @@ import LanguageIcon from "@material-ui/icons/Language";
 import LanguageSwitcher from "../../LanguageSwitcher";
 import { navigate as navigateReach } from "@reach/router";
 import { navigateLogin } from "../../../services/navigation";
+import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
+import InviteModal from "./InviteModal";
+import { RecordVoiceOver } from "@material-ui/icons";
+import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**
  *
@@ -27,6 +31,8 @@ import { navigateLogin } from "../../../services/navigation";
  */
 const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
+  const exchangeConnections = useStoreUserExchangeConnections();
+  const { showInviteModal } = useContext(PrivateAreaContext);
 
   const logout = () => {
     navigateLogin();
@@ -43,6 +49,11 @@ const UserMenu = ({ onClose }) => {
     onClose();
   };
 
+  const showInvite = () => {
+    showInviteModal(true);
+    onClose();
+  };
+
   return (
     <Box alignItems="flex-start" className="userMenu" display="flex" flexDirection="column">
       <MenuItem
@@ -54,7 +65,9 @@ const UserMenu = ({ onClose }) => {
       >
         <img alt="zignaly" className="iconPurple" src={MyExchange} />
         <span className="item">
-          <FormattedMessage id="menu.exchangeaccount" />
+          <FormattedMessage
+            id={exchangeConnections.length > 1 ? "menu.exchangeaccount" : "menu.myaccount"}
+          />
         </span>
       </MenuItem>
       {/* </Link> */}
@@ -68,6 +81,12 @@ const UserMenu = ({ onClose }) => {
         <img alt="zignaly" className="iconPurple" src={Settings} />
         <span className="item">
           <FormattedMessage id="menu.settings" />
+        </span>
+      </MenuItem>
+      <MenuItem className="userMenuItem" onClick={showInvite}>
+        <RecordVoiceOver className="iconPurple" />
+        <span className="item">
+          <FormattedMessage id="accounts.invite" />
         </span>
       </MenuItem>
       <MenuItem className="userMenuItem" onClick={showDiscord}>

@@ -106,12 +106,12 @@ const SignupForm = () => {
         {/* <Captcha onSuccess={captchaFallback.current} /> */}
         <Modal
           onClose={() => {}}
-          showCloseIcon={false}
           persist={true}
+          showCloseIcon={false}
           size="small"
           state={Boolean(loginResponse)}
         >
-          <VerifyEmailForm token={loginResponse?.token} onComplete={onVerified} />
+          <VerifyEmailForm onComplete={onVerified} token={loginResponse?.token} />
         </Modal>
         <Box
           alignItems="center"

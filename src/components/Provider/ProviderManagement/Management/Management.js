@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import "./Management.scss";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import useInterval from "../../../../hooks/useInterval";

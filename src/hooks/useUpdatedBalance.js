@@ -1,58 +1,51 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { useDispatch } from "react-redux";
-import { showErrorAlert, showBalanceLoader } from "../store/actions/ui";
-import useStoreUIBalanceLoader from "./useStoreUIBalanceLoader";
-import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
+// import { createEmptyUserBalanceEntity } from "../services/tradeApiClient.types";
 
 /**
  * @typedef {import("../services/tradeApiClient.types").UserBalanceEntity} UserBalanceEntity
  */
 
 /**
- * Provides balance summary for exchange.
+ * Load periodically balance in context
  *
- * @returns {UserBalanceEntity} Balance.
+ * @param {import("context/PrivateAreaContext").PrivateAreaContextObject} context
+ * @returns {void}
  */
-const useUpdatedBalance = () => {
-  const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
-
+const useUpdatedBalance = (context) => {
+  // const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
+  const { setBalance, setWalletBalance } = context;
   const selectedExchange = useSelectedExchange();
-  const storeBalanceLoader = useStoreUIBalanceLoader();
-  const dispatch = useDispatch();
 
-  const showLoader = () => {
-    dispatch(showBalanceLoader(true));
-    loadData();
-  };
+  // const [updatedAt, setUpdatedAt] = useState(null);
+  // const refreshBalance = () => {
+  //   setUpdatedAt(new Date());
+  // };
 
-  useEffect(showLoader, [selectedExchange.internalId]);
-
-  const loadData = () => {
+  const loadExchangeBalance = () => {
     if (selectedExchange.internalId) {
-      const payload = {
-        exchangeInternalId: selectedExchange.internalId,
-      };
-
       tradeApi
-        .userBalanceGet(payload)
+        .userBalanceGet({
+          exchangeInternalId: selectedExchange.internalId,
+        })
         .then((data) => {
           setBalance(data);
-          if (storeBalanceLoader) {
-            dispatch(showBalanceLoader(false));
-          }
-        })
-        .catch((e) => {
-          dispatch(showErrorAlert(e));
         });
     }
   };
+  useEffect(loadExchangeBalance, [selectedExchange.internalId]);
 
-  useInterval(loadData, 5000, true);
+  const loadData = () => {
+    loadExchangeBalance();
 
-  return balance;
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  };
+
+  useInterval(loadData, 60000, false);
 };
 
 export default useUpdatedBalance;

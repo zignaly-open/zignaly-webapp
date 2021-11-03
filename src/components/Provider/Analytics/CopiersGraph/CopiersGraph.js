@@ -1,5 +1,4 @@
 import React from "react";
-import "./CopiersGraph.scss";
 import GenericChart from "../../../Graphs/LineChart";
 import { Box } from "@material-ui/core";
 
