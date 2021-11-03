@@ -365,6 +365,7 @@ const theme = (darkStyle) => {
     newTheme: darkStyle
       ? {
           backgroundColor: "#12132d",
+          backgroundAltColor: "#222249",
           secondaryText: "#9ca3af",
           borderColor: "#1e1c4f",
           green: "#26c4c1",
@@ -375,6 +376,7 @@ const theme = (darkStyle) => {
         }
       : {
           backgroundColor: "#ffffff",
+          backgroundAltColor: "#e7e6f8",
           // backgroundColor: "#dcdaf4",
           secondaryText: "#6D6C96",
           // borderColor: "#c1c2f7",
