@@ -394,9 +394,18 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <Button className="textPurple borderPurple" href="#exchangeAccounts">
-                <FormattedMessage id="accounts.withdraw" />
-              </Button>
+              <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+                <div>
+                  <Button
+                    className="textPurple borderPurple"
+                    href="#exchangeAccounts"
+                    disabled
+                    style={{ opacity: 0.4 }}
+                  >
+                    <FormattedMessage id="accounts.withdraw" />
+                  </Button>
+                </div>
+              </Tooltip>
               {/* <Button className="bgPurple" href="#deposit"> */}
               <Button className="bgPurple" onClick={() => setPath("deposit")}>
                 <FormattedMessage id="accounts.deposit" />
