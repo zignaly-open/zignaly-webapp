@@ -112,7 +112,7 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
       <StyledCustomSelect>
         <CustomSelect
           labelPlacement="top"
-          onChange={setNetwork}
+          onChange={(v) => setNetwork(coinData.networks.find((n) => n.network === v))}
           options={networkOptions}
           value={network}
           label={<FormattedMessage id="deposit.network" />}
