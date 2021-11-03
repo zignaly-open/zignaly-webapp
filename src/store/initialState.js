@@ -528,6 +528,7 @@ const initialState = {
       disabled: false,
       payFeeWithZig: false,
       refCode: "",
+      refRewardType: "",
     },
   },
   ui: {
