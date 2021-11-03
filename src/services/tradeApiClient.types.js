@@ -321,6 +321,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} verified User identity verified
  * @property {boolean} payFeeWithZig
  * @property {string} refCode
+ * @property {string} refRewardType
  */
 
 /**
@@ -817,6 +818,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} [userName]
  * @property {string} [imageUrl]
  * @property {boolean} [payFeeWithZig]
+ * @property {string} [refRewardType]
  */
 
 /**
@@ -945,6 +947,7 @@ export function userEntityResponseTransform(response) {
     verified: false,
     payFeeWithZig: response.payFeeWithZig,
     refCode: response.refCode,
+    refRewardType: response.refRewardType,
   };
 }
 

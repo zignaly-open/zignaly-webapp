@@ -68,11 +68,8 @@ Cypress.Commands.add("mock", (options: MockOptions = {}) => {
   cy.intercept("GET", "*/user/providers*", connectedProvidersData).as("mockedConnectedProviders");
   cy.intercept("GET", "*/user/exchange/*/available_balance", { USDT: 50 });
 
-  // cybavo
+  // Wallet
   cy.intercept("GET", "**/api/get-balance", (req) => {
-    req.reply(200, {});
-  });
-  cy.intercept("GET", "**/api/get-currencies", (req) => {
     req.reply(200, {});
   });
 
