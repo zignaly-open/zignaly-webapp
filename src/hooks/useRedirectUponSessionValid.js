@@ -5,11 +5,13 @@ import { verifySessionData } from "../utils/auth";
 import { globalHistory } from "@reach/router";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "store/actions/session";
+import { useStoreUserData } from "./useStoreUserSelector";
 
 const useRedirectUponSessionValid = (newUserPath = "") => {
   const storeSession = useStoreSessionSelector();
+  const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const forced = useRef(globalHistory.location.state && globalHistory.location.state.forced);
+  const forced = useRef(globalHistory.location.state?.forced);
 
   useEffect(() => {
     if (forced.current) {
@@ -20,7 +22,13 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       return;
     }
 
-    if (!storeSession.tradeApi.accessToken) return;
+    if (
+      !storeSession.tradeApi.accessToken ||
+      !storeSession.sessionData.validUntil ||
+      !storeUserData.userId
+    ) {
+      return;
+    }
 
     // Navigate to return url or dashboard if session is valid
     if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
@@ -39,9 +47,10 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
     } else {
+      // Token not valid anymore
       dispatch(endTradeApiSession());
     }
-  }, [storeSession.sessionData]);
+  }, [storeSession.sessionData, storeUserData.userId]);
 };
 
 export default useRedirectUponSessionValid;

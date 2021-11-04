@@ -39,15 +39,13 @@
 
 /**
  * @typedef {Object} DefaultSessionData
- * @property {string} status
  * @property {number} validUntil
- * @property {'login'|'signup'|''} initEvent
+ * @property {string} userId
  */
 
 /**
  * @typedef {Object} DefaultStateSession
  * @property {DefaultStateSessionTradeApi} tradeApi
- * @property {DefaultStateSessionCoinRay} coinRay
  * @property {DefaultSessionData} sessionData
  * @property {string} appVersion
  */
@@ -211,9 +209,8 @@ const initialState = {
       accessToken: "",
     },
     sessionData: {
-      status: "",
       validUntil: 0,
-      initEvent: "",
+      userId: "",
     },
     appVersion: "",
   },

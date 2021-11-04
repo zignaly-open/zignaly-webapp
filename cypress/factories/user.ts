@@ -19,7 +19,7 @@ export const makeExchange = (override?: Partial<ExchangeAccount>): ExchangeAccou
 
 export const makeFakeUser = (override?: Partial<User>): User => {
   const seed: User = {
-    id: faker.random.alphaNumeric(24),
+    userId: faker.random.alphaNumeric(24),
     email: faker.internet.email(),
     firstName: faker.name.findName(),
     "2FAEnable": false,
