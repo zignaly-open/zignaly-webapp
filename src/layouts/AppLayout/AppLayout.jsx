@@ -89,18 +89,8 @@ const AppLayout = (props) => {
 
   const href = typeof window !== "undefined" ? window.location.href : "";
   useEffect(() => {
-    // Internal tracking for navigation
-    if (href !== ref.current) {
-      triggerTz(window.location, ref.current);
-      // Save prev location
-      ref.current = href;
-    }
-  }, [href, storeUserData.userId]);
-
-  useEffect(() => {
-    if (href) {
-      analyticsPageView(storeUserData.userId);
-    }
+    triggerTz(window.location, ref.current, storeUserData);
+    analyticsPageView(storeUserData.userId);
   }, [href]);
 
   return (

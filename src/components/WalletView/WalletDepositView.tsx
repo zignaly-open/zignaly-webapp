@@ -124,7 +124,7 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
           <TypographyError>
             <FormattedMessage id="wallet.deposit.caution" values={{ coin: "ZIG", network }} />
           </TypographyError>
-          <NotSure href="" target="_blank">
+          <NotSure href="https://help.zignaly.com" target="_blank">
             <FormattedMessage id="wallet.deposit.notsure" />
           </NotSure>
         </Box>
