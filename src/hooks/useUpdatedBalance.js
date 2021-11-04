@@ -37,15 +37,22 @@ const useUpdatedBalance = (context) => {
   };
   useEffect(loadExchangeBalance, [selectedExchange.internalId]);
 
-  const loadData = () => {
-    loadExchangeBalance();
-
+  const loadWalletBalance = () => {
     tradeApi.getWalletBalance().then((response) => {
       setWalletBalance(response);
     });
   };
+  useEffect(loadWalletBalance, []);
 
-  useInterval(loadData, 60000, false);
+  // Update both balances every 60s
+  useInterval(
+    () => {
+      loadExchangeBalance();
+      loadWalletBalance();
+    },
+    60000,
+    false,
+  );
 };
 
 export default useUpdatedBalance;

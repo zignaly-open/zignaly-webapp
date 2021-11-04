@@ -285,17 +285,19 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   };
 
   useEffect(() => {
-    tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
-      setRateZIG(response.lastPrice);
-    });
+    if (isOpen) {
+      tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
+        setRateZIG(response.lastPrice);
+      });
 
-    tradeApi.getWalletCoins().then((response) => {
-      setCoins(response);
-    });
+      tradeApi.getWalletCoins().then((response) => {
+        setCoins(response);
+      });
 
-    tradeApi.getWalletBalance().then((response) => {
-      setWalletBalance(response);
-    });
+      tradeApi.getWalletBalance().then((response) => {
+        setWalletBalance(response);
+      });
+    }
   }, [isOpen]);
 
   const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
