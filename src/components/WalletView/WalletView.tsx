@@ -31,6 +31,7 @@ import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
 import { colors } from "services/theme";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
+import WalletWithdrawView from "./WalletWithdrawView";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -363,6 +364,16 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
       >
         <WalletDepositView coins={coins} />
       </Modal>
+      <Modal
+        // onClose={() => dispatch(showCreateTrader(false))}
+        onClose={() => setPath("")}
+        newTheme={true}
+        persist={false}
+        size="medium"
+        state={path === "withdraw"}
+      >
+        <WalletWithdrawView coins={coins} />
+      </Modal>
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
@@ -396,19 +407,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-                <div>
-                  <Button
-                    className="textPurple borderPurple"
-                    href="#exchangeAccounts"
-                    disabled
-                    style={{ opacity: 0.4 }}
-                  >
-                    <FormattedMessage id="accounts.withdraw" />
-                  </Button>
-                </div>
-              </Tooltip>
-              {/* <Button className="bgPurple" href="#deposit"> */}
+              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
               <Button className="bgPurple" onClick={() => setPath("deposit")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>
