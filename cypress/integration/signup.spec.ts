@@ -18,6 +18,7 @@ describe("Signup", () => {
     // server = makeServer({ environment: "test" });
     cy.intercept("POST", "*/signup", { token: Cypress.env("token") });
     cy.intercept("POST", "*/user/verify_code/verify_email", "true");
+    cy.intercept("GET", "*/user/exchanges/*/historical_balance", { balances: [], quotes: [] });
 
     cy.visit("/signup");
   });

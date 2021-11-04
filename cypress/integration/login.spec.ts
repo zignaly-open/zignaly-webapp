@@ -37,6 +37,7 @@ describe("Login", () => {
     cy.mock({ enableStubbedCheck: false });
     cy.mockSession(user);
     cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
+    cy.intercept("GET", "*/user/exchanges/*/historical_balance", { balances: [], quotes: [] });
 
     cy.get("[name=email]").type("joe@example.com");
     cy.get("[name=password]").type("password123");
