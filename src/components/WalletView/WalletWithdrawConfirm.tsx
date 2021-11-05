@@ -20,6 +20,7 @@ import { ErrorOutlineOutlined } from "@material-ui/icons";
 import { NetworkCautionMessage } from "./WalletDepositView";
 import { StyledCustomSelect } from "./styles";
 import CustomButton from "components/CustomButton";
+import NumberFormat from "react-number-format";
 
 const AmountInput = styled(OutlinedInput)``;
 
@@ -28,12 +29,12 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
-interface WalletDepositViewProps {
-  coins: WalletCoins;
-  coin?: string;
+interface WalletWithdrawConfirmProps {
+  address: string;
+  amount: string;
 }
 
-const WalletWithdrawConfirm = ({ coins, coin = "ZIG", setPath, path }: WalletDepositViewProps) => {
+const WalletWithdrawConfirm = ({ address, amount, onClose }: WalletWithdrawConfirmProps) => {
   const withdraw = () => {};
 
   return (
@@ -45,32 +46,19 @@ const WalletWithdrawConfirm = ({ coins, coin = "ZIG", setPath, path }: WalletDep
         </Box>
       </Title>
       <TextDesc>
-        <FormattedMessage id="wallet.withdraw.desc" values={{ coin: "ZIG" }} />
+        <FormattedMessage id="wallet.withdraw.confirm.desc" values={{ coin: "ZIG" }} />
       </TextDesc>
       <br />
-      <StyledCustomSelect>
-        <CustomSelect
-          labelPlacement="top"
-          onChange={setNetwork}
-          options={networkOptions}
-          value={network}
-          label={<FormattedMessage id="deposit.network" />}
-        />
-      </StyledCustomSelect>
-      <NetworkCautionMessage network={network} />
       <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="wallet.withdraw.address" />
       </Label>
-      <AmountInput
-        className="customInput"
-        endAdornment={
-          <InputAdornment position="end">
-            <FormattedMessage id="transfer.internal.max" />
-          </InputAdornment>
-        }
-      />
+      {address}
+      <FormattedMessage id="wallet.withdraw.amount" />
+      <NumberFormat value={amount} displayType="text" thousandSeparator={true} />
+      <FormattedMessage id="wallet.withdraw.fee" />
+      <FormattedMessage id="wallet.withdraw.receive" />
       <Box display="flex" flexDirection="row" mt="12px">
-        <Button className="textPurple borderPurple" onClick={() => setPath("")}>
+        <Button className="textPurple borderPurple" onClick={onClose}>
           <FormattedMessage id="accounts.back" />
         </Button>
         <Button className="bgPurple" onClick={withdraw}>

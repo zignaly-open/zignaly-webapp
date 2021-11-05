@@ -362,7 +362,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         size="medium"
         state={path === "deposit"}
       >
-        <WalletDepositView coins={coins} />
+        <WalletDepositView coins={coins} onClose={() => setPath("")} />
       </Modal>
       <Modal
         // onClose={() => dispatch(showCreateTrader(false))}
@@ -372,7 +372,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         size="medium"
         state={path === "withdraw"}
       >
-        <WalletWithdrawView coins={coins} />
+        <WalletWithdrawView coins={coins} onClose={() => setPath("")} />
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
