@@ -1,5 +1,5 @@
 interface User {
-  id: string;
+  userId: string;
   firstName: string;
   email: string;
   "2FAEnable": boolean;
