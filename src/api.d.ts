@@ -19,3 +19,17 @@ interface TransactionsHistory {
   status: string;
   type: string;
 }
+
+interface GetNetworkFeeRes {
+  floatFee: string;
+  expiration: number;
+  key: string;
+}
+
+interface WidthdrawReq {
+  network: string;
+  currency: string;
+  address: string;
+  amount: string;
+  fee: string;
+}

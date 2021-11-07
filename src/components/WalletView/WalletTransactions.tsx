@@ -1,15 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter } from "styles/styles";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import Table, { TableLayout } from "./Table";

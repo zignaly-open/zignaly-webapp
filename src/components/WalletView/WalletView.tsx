@@ -31,6 +31,7 @@ import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
 import { colors } from "services/theme";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
+import WalletWithdrawView from "./WalletWithdrawView";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -285,17 +286,19 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   };
 
   useEffect(() => {
-    tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
-      setRateZIG(response.lastPrice);
-    });
+    if (isOpen) {
+      tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
+        setRateZIG(response.lastPrice);
+      });
 
-    tradeApi.getWalletCoins().then((response) => {
-      setCoins(response);
-    });
+      tradeApi.getWalletCoins().then((response) => {
+        setCoins(response);
+      });
 
-    tradeApi.getWalletBalance().then((response) => {
-      setWalletBalance(response);
-    });
+      tradeApi.getWalletBalance().then((response) => {
+        setWalletBalance(response);
+      });
+    }
   }, [isOpen]);
 
   const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -359,7 +362,21 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         size="medium"
         state={path === "deposit"}
       >
-        <WalletDepositView coins={coins} />
+        <WalletDepositView coins={coins} onClose={() => setPath("")} />
+      </Modal>
+      <Modal
+        // onClose={() => dispatch(showCreateTrader(false))}
+        onClose={() => setPath("")}
+        newTheme={true}
+        persist={false}
+        size="medium"
+        state={path === "withdraw"}
+      >
+        <WalletWithdrawView
+          coins={coins}
+          balance={walletBalance?.ZIG}
+          onClose={() => setPath("")}
+        />
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
@@ -394,19 +411,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-                <div>
-                  <Button
-                    className="textPurple borderPurple"
-                    href="#exchangeAccounts"
-                    disabled
-                    style={{ opacity: 0.4 }}
-                  >
-                    <FormattedMessage id="accounts.withdraw" />
-                  </Button>
-                </div>
-              </Tooltip>
-              {/* <Button className="bgPurple" href="#deposit"> */}
+              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
               <Button className="bgPurple" onClick={() => setPath("deposit")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>

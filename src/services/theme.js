@@ -188,7 +188,6 @@ const theme = (darkStyle) => {
         primary: darkStyle ? colors.lightWhite : colors.black,
         secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
-      type: darkStyle ? "dark" : "light",
     },
     typography: {
       fontFamily: "PlexSans, Roboto, Helvetica, Arial, sans-serif",
