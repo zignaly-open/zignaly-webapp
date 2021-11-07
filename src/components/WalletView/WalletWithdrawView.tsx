@@ -63,8 +63,10 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
     return (
       <WalletWithdrawConfirm
         address={withdrawData.address}
+        network={network}
         amount={withdrawData.amount}
-        onClose={onClose}
+        coin={coin}
+        onClose={() => setWithdrawData(null)}
       />
     );
   }
@@ -156,7 +158,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
           </form>
         </>
       ) : (
-        <CircularProgress size={21} style={{ margin: "0 auto" }} />
+        <CircularProgress style={{ margin: "0 auto" }} />
       )}
     </Modal>
   );
