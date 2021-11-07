@@ -20,6 +20,7 @@ import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import CustomNumberInput from "components/Forms/CustomNumberInput";
 
 const AmountInput = styled(OutlinedInput)``;
 
@@ -31,15 +32,24 @@ const Button = styled(CustomButton)`
 interface WalletDepositViewProps {
   coins: WalletCoins;
   coin?: string;
+  balance: Record<string, string>;
 }
 
-const WalletWithdrawView = ({ coins, coin = "ZIG", onClose }: WalletDepositViewProps) => {
+const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
   const [network, setNetwork] = useState("");
+  const balanceAmount = (balance && balance[network]) || 0;
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
-  const { handleSubmit, register, reset, control, errors } = useForm();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    control,
+    errors,
+    formState: { isValid },
+  } = useForm({ mode: "onChange" });
   const intl = useIntl();
 
   useEffect(() => {
@@ -66,72 +76,88 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", onClose }: WalletDepositViewP
 
   return (
     <Modal p={5}>
-      <Title>
-        <Box alignItems="center" display="flex">
-          <img src={WalletIcon} width={40} height={40} />
-          <FormattedMessage id="wallet.type.withdraw" /> ZIG
-        </Box>
-      </Title>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <TextDesc>
-          <FormattedMessage id="wallet.withdraw.desc" values={{ coin: "ZIG" }} />
-        </TextDesc>
-        <br />
-        <StyledCustomSelect>
-          <CustomSelect
-            labelPlacement="top"
-            onChange={setNetwork}
-            options={networkOptions}
-            value={network}
-            label={<FormattedMessage id="deposit.network" />}
-          />
-        </StyledCustomSelect>
-        <NetworkCautionMessage network={network} />
-        <FormControl error={errors.address} fullWidth>
-          <Label style={{ marginTop: "24px" }}>
-            <FormattedMessage id="wallet.withdraw.address" />
-          </Label>
-          <OutlinedInput
-            className="customInput"
-            inputRef={register({
-              required: true,
-              pattern: {
-                value: /^(0x)[0-9A-Fa-f]{40}$/,
-                message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
-              },
-            })}
-            name="address"
-          />
-          {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
-        </FormControl>
-        <FormControl error={errors.amount} fullWidth>
-          <Label style={{ marginTop: "24px" }}>
-            <FormattedMessage id="wallet.withdraw.amount" />
-          </Label>
-          <AmountInput
-            className="customInput"
-            endAdornment={
-              <InputAdornment position="end">
-                <FormattedMessage id="transfer.internal.max" />
-              </InputAdornment>
-            }
-            inputRef={register({
-              required: true,
-            })}
-            name="amount"
-          />
-          {errors.amount && <FormHelperText>{errors.amount.message}</FormHelperText>}
-        </FormControl>
+      {balance ? (
+        <>
+          <Title>
+            <Box alignItems="center" display="flex">
+              <img src={WalletIcon} width={40} height={40} />
+              <FormattedMessage id="wallet.type.withdraw" /> ZIG
+            </Box>
+          </Title>
+          <form onSubmit={handleSubmit(submitForm)}>
+            <TextDesc>
+              <FormattedMessage id="wallet.withdraw.desc" values={{ coin: "ZIG" }} />
+            </TextDesc>
+            <br />
+            <StyledCustomSelect>
+              <CustomSelect
+                labelPlacement="top"
+                onChange={setNetwork}
+                options={networkOptions}
+                value={network}
+                label={<FormattedMessage id="deposit.network" />}
+              />
+            </StyledCustomSelect>
+            <NetworkCautionMessage network={network} />
+            <FormControl error={errors.address} fullWidth>
+              <Label style={{ marginTop: "24px" }}>
+                <FormattedMessage id="wallet.withdraw.address" />
+              </Label>
+              <OutlinedInput
+                className="customInput"
+                inputRef={register({
+                  required: true,
+                  pattern: {
+                    value: /^(0x)[0-9A-Fa-f]{40}$/,
+                    message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
+                  },
+                })}
+                name="address"
+              />
+              {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
+            </FormControl>
+            <FormControl error={errors.amount} fullWidth>
+              <Label style={{ marginTop: "24px" }}>
+                <FormattedMessage id="wallet.withdraw.amount" />
+              </Label>
+              <CustomNumberInput
+                showErrorMessage={false}
+                errors={errors}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <FormattedMessage id="transfer.internal.max" />
+                  </InputAdornment>
+                }
+                control={control}
+                rules={{
+                  // required: true,
+                  validate: {
+                    min: (value) =>
+                      value > 0 || intl.formatMessage({ id: "form.error.withdraw.min" }),
+                    max: (value) =>
+                      value <= balanceAmount ||
+                      intl.formatMessage({ id: "form.error.withdraw.max" }),
+                    // step: checkDecimals,
+                  },
+                }}
+                name="amount"
+              />
+              {errors.amount && <FormHelperText>{errors.amount.message}</FormHelperText>}
+            </FormControl>
 
-        <Box display="flex" flexDirection="row" mt="12px">
-          <Button className="textPurple borderPurple" onClick={onClose}>
-            <FormattedMessage id="confirm.cancel" />
-          </Button>
-          <Button className="bgPurple" type="submit">
-            <FormattedMessage id="wallet.withdraw.continue" />
-          </Button>
-        </Box>
-      </form>
+            <Box display="flex" flexDirection="row" mt="64px">
+              <Button className="textPurple borderPurple" onClick={onClose}>
+                <FormattedMessage id="confirm.cancel" />
+              </Button>
+              <Button className="bgPurple" type="submit" disabled={!isValid}>
+                <FormattedMessage id="wallet.withdraw.continue" />
+              </Button>
+            </Box>
+          </form>
+        </>
+      ) : (
+        <CircularProgress size={21} style={{ margin: "0 auto" }} />
+      )}
     </Modal>
   );
 };

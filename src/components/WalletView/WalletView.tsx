@@ -372,7 +372,11 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         size="medium"
         state={path === "withdraw"}
       >
-        <WalletWithdrawView coins={coins} onClose={() => setPath("")} />
+        <WalletWithdrawView
+          coins={coins}
+          balance={walletBalance?.ZIG}
+          onClose={() => setPath("")}
+        />
       </Modal>
       <Title>
         <Box alignItems="center" display="flex">
