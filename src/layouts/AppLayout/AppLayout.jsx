@@ -49,7 +49,7 @@ const AppLayout = (props) => {
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
   const theme = useMemo(() => createTheme(options), [darkTheme]);
-  const ref = useRef(null);
+  const previousUrl = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
   // Merged english messages with selected by user locale messages
@@ -89,8 +89,10 @@ const AppLayout = (props) => {
 
   const href = typeof window !== "undefined" ? window.location.href : "";
   useEffect(() => {
-    triggerTz(window.location, ref.current, storeUserData);
+    triggerTz(window.location, previousUrl.current, storeUserData);
     analyticsPageView(storeUserData.userId);
+    // Save previous url
+    previousUrl.current = href;
   }, [href]);
 
   return (
