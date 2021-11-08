@@ -11,6 +11,7 @@ import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
 import { ArrowRightAlt } from "@material-ui/icons";
+import { Link } from "gatsby";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -100,8 +101,8 @@ const TypographyStatus = styled(Typography)`
   color: ${(props: TypographyStatusProps) => getStatusColor(props.status, props.theme)};
 `;
 
-const TransferChainLabel = (transaction) => (
-  <StyledTransferImg width={24} height={24} src={getChainIcon(transaction.network)} />
+const TransferChainIcon = (network) => (
+  <StyledTransferImg width={24} height={24} src={getChainIcon(network)} />
 );
 
 const TransferZigLabel = () => (
@@ -222,37 +223,56 @@ const WalletTransactions = () => {
     // ),
   }));
 
+  const TransferAddress = ({
+    transaction,
+    isWithdrawal,
+  }: {
+    transaction: TransactionsHistory;
+    isWithdrawal: boolean;
+  }) => {
+    const { fromAddress, toAddress, providerId, network, providerName } = transaction;
+    const address = isWithdrawal ? fromAddress : toAddress;
+
+    return (
+      <>
+        <TransferChainIcon network={network} />
+        {providerId ? (
+          <Link to={`/profitSharing/${providerId}`}>{providerName}</Link>
+        ) : (
+          <TypographyAddress>{address}</TypographyAddress>
+        )}
+      </>
+    );
+  };
+
   const renderRowSubComponent = useCallback(
     ({ row }) => {
       const { transactionId } = row.values;
       const transaction = transactions.find((t) => t.transactionId === transactionId);
-      const isWithdrawal = transaction.amount.startsWith("-");
+      const isWithdrawal = transaction.formattedAmount.startsWith("-");
+      console.log(transaction);
 
       return (
         <StyledTransferPanel>
-          {transaction.type !== "internal" && (
-            <Box display="flex" alignItems="center">
-              <TypographyLabel>
-                <FormattedMessage id="wallet.from" />
-              </TypographyLabel>
-              {isWithdrawal ? (
-                <TransferZigLabel />
-              ) : (
-                <TransferChainLabel transaction={transaction} />
-              )}
-              <TypographyAddress>{transaction.fromAddress}</TypographyAddress>
-              <ArrowRightAlt style={{ margin: "0 21px" }} />
-              <TypographyLabel>
-                <FormattedMessage id="wallet.to" />
-              </TypographyLabel>
-              {isWithdrawal ? (
-                <TransferChainLabel transaction={transaction} />
-              ) : (
-                <TransferZigLabel />
-              )}
-              <TypographyAddress>{transaction.toAddress}</TypographyAddress>
-            </Box>
-          )}
+          <Box display="flex" alignItems="center">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.from" />
+            </TypographyLabel>
+            {isWithdrawal ? (
+              <TransferZigLabel />
+            ) : (
+              <TransferAddress isWithdrawal={false} transaction={transaction} />
+            )}
+            <ArrowRightAlt style={{ margin: "0 21px" }} />
+            <TypographyLabel>
+              <FormattedMessage id="wallet.to" />
+            </TypographyLabel>
+            {isWithdrawal ? (
+              <TransferAddress isWithdrawal={true} transaction={transaction} />
+            ) : (
+              <TransferZigLabel />
+            )}
+          </Box>
           <Box display="flex" alignItems="center" mt="18px">
             <TypographyLabel>
               <FormattedMessage id="wallet.tx" />

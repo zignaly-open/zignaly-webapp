@@ -1,18 +1,18 @@
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import React from "react";
 import { AlignCenter } from "react-feather";
 import { useIntl } from "react-intl";
+import NumberFormat from "react-number-format";
 import Table, { TableLayout } from "./Table";
 
 interface WalletCoinsProps {
-  coins: WalletCoins;
   balance: Record<string, string>;
 }
 
-const WalletCoins = ({ coins, balance }: WalletCoinsProps) => {
+const WalletCoins = ({ balance }: WalletCoinsProps) => {
   const intl = useIntl();
 
-  if (!coins) {
+  if (!balance) {
     return <CircularProgress color="primary" size={40} />;
   }
 
@@ -31,13 +31,26 @@ const WalletCoins = ({ coins, balance }: WalletCoinsProps) => {
     },
   ];
 
-  const data = Object.entries(coins).map((c) => ({
+  console.log(Object.entries(balance));
+  const data = Object.entries(balance).map((c) => ({
     coin: (
       <AlignCenter>
         {/* <img width={24} height={24} src={ZIGIcon} /> */}
         {/* <TypographyToken>{t.currency}</TypographyToken> */}
       </AlignCenter>
     ),
+    // amount: (
+    //   <AlignCenter direction={"column"}>
+    //     <Typography style={{ fontWeight: 600 }}>
+    //       <NumberFormat
+    //         value={}
+    //         displayType="text"
+    //         thousandSeparator={true}
+    //         prefix={parseFloat(t.formattedAmount) > 0 && "+"}
+    //       />
+    //     </Typography>
+    //   </AlignCenter>
+    // ),
   }));
 
   return (
