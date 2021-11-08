@@ -1,11 +1,12 @@
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { AlignCenter } from "styles/styles";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
-import { getChainIcon } from "utils/chain";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
+import tradeApi from "services/tradeApiClient";
+import CustomButton from "components/CustomButton";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -20,6 +21,11 @@ const TypographySeconday = styled(Typography)`
 const TypographyToken = styled(TypographySeconday)`
   font-weight: 600;
   margin-left: 4px;
+`;
+
+const Button = styled(CustomButton)`
+  margin-right: 8px;
+  min-width: 121px;
 `;
 
 const CoinIcon = ({
@@ -41,13 +47,25 @@ const CoinIcon = ({
   return image && <img src={image.default} width={width} height={height} />;
 };
 interface WalletCoinsProps {
-  balance: Record<string, string>;
+  walletBalance: WalletBalance;
 }
 
-const WalletCoins = ({ balance }: WalletCoinsProps) => {
+const WalletCoins = ({ walletBalance }: WalletCoinsProps) => {
   const intl = useIntl();
 
-  if (!balance) {
+  // const balanceEntries = Object.entries(balance || {});
+
+  // useEffect(() => {
+  //   if (balance) {
+  //     balanceEntries.forEach(([coin]) => {
+  //       tradeApi.convertPreview({ from: coin, to: "USDT", qty: 1 }).then((response) => {
+  //         setRateZIG(response.lastPrice);
+  //       });
+  //     });
+  //   }
+  // }, [balance]);
+
+  if (!walletBalance) {
     return <CircularProgress color="primary" size={40} />;
   }
 
@@ -63,11 +81,28 @@ const WalletCoins = ({ balance }: WalletCoinsProps) => {
     {
       Header: intl.formatMessage({ id: "col.actions" }),
       id: "actions",
-      Cell: ({ row }) => "a",
+      Cell: ({ row }) => (
+        <AlignCenter>
+          <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+            <div>
+              <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
+            </div>
+          </Tooltip>
+          <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+            <div>
+              <Button className="textPurple borderPurple">
+                <FormattedMessage id="accounts.deposit" />
+              </Button>
+            </div>
+          </Tooltip>
+        </AlignCenter>
+      ),
     },
   ];
 
-  const makeData = (coin, networkBalance) => ({
+  const makeData = (coin: string, networkBalance: string) => ({
     coin: (
       <AlignCenter>
         <CoinIcon coin={coin} />
@@ -78,20 +113,21 @@ const WalletCoins = ({ balance }: WalletCoinsProps) => {
             </TypographyAmount>
             <TypographyToken>{coin}</TypographyToken>
           </Box>
-          <TypographySeconday>Ethe</TypographySeconday>
+          <TypographySeconday>Todo</TypographySeconday>
         </Box>
       </AlignCenter>
     ),
     value: (
       <AlignCenter direction={"column"}>
         <Typography style={{ fontWeight: 600 }}>
-          <NumberFormat value={networkBalance} displayType="text" thousandSeparator={true} />
+          <NumberFormat prefix="$" value={0} displayType="text" thousandSeparator={true} />
+          &nbsp;(todo)
         </Typography>
       </AlignCenter>
     ),
   });
 
-  const data = Object.entries(balance).reduce((accData, [coin, networkBalances]) => {
+  const data = Object.entries(walletBalance).reduce((accData, [coin, networkBalances]) => {
     Object.entries(networkBalances).forEach(([key, networkBalance]) => {
       if (key !== "total") {
         accData.push(makeData(coin, networkBalance));

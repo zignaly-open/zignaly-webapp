@@ -477,7 +477,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </TextCaption>
         </PanelItem>
       </StyledPanel>
-      <WalletCoins coins={coins} balance={walletBalance} />
+      <Box mt="40px">
+        <WalletCoins coins={coins} walletBalance={walletBalance} />
+      </Box>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">
           <img src={ListIcon} width={40} height={40} />
