@@ -151,78 +151,76 @@ const WalletTransactions = () => {
     { Header: "", accessor: "transactionId" },
   ];
 
-  const data =
-    transactions &&
-    transactions.map((t) => ({
-      date: (
-        <Box display="flex" justifyContent="center">
-          <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
-            <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
-            <TypographyTx>{t.transactionId}</TypographyTx>
-          </Box>
-          <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
-            <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
-            {t.txUrl && (
-              <a href={t.txUrl} target="_blank" rel="noreferrer">
-                <TypographyView>
-                  <FormattedMessage id="action.view" />
-                </TypographyView>
-              </a>
-            )}
-          </Box>
+  const data = transactions?.map((t) => ({
+    date: (
+      <Box display="flex" justifyContent="center">
+        <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
+          <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
+          <TypographyTx>{t.transactionId}</TypographyTx>
         </Box>
-      ),
-      type: (
-        <AlignCenter>
-          <TypographyRow>
-            <FormattedMessage id={`wallet.type.${t.type.toLowerCase()}`} />
-          </TypographyRow>
-        </AlignCenter>
-      ),
-      amount: (
-        <AlignCenter direction={"column"}>
-          <Typography style={{ fontWeight: 600 }}>
-            <NumberFormat
-              value={t.formattedAmount}
-              displayType="text"
-              thousandSeparator={true}
-              prefix={parseFloat(t.formattedAmount) > 0 && "+"}
-            />
-          </Typography>
-        </AlignCenter>
-      ),
-      coin: (
-        <AlignCenter>
-          <img width={24} height={24} src={ZIGIcon} />
-          <TypographyToken>{t.currency}</TypographyToken>
-        </AlignCenter>
-      ),
-      network: (
-        <AlignCenter>
-          <img width={24} height={24} src={getChainIcon(t.network)} />
-          <TypographyToken>{t.network}</TypographyToken>
-        </AlignCenter>
-      ),
-      status: (
-        <AlignCenter>
-          <TypographyStatus status={t.status}>
-            <FormattedMessage id={getStatusTextId(t.status)} />
-          </TypographyStatus>
-        </AlignCenter>
-      ),
-      transactionId: t.transactionId,
-      // action: (
-      //   <Accordion>
-      //     <AccordionSummary
-      //       expandIcon={<ChevronDown />}
-      //       aria-controls="panel-content"
-      //     ></AccordionSummary>
-      //     <AccordionDetails>
+        <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
+          <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
+          {t.txUrl && (
+            <a href={t.txUrl} target="_blank" rel="noreferrer">
+              <TypographyView>
+                <FormattedMessage id="action.view" />
+              </TypographyView>
+            </a>
+          )}
+        </Box>
+      </Box>
+    ),
+    type: (
+      <AlignCenter>
+        <TypographyRow>
+          <FormattedMessage id={`wallet.type.${t.type.toLowerCase()}`} />
+        </TypographyRow>
+      </AlignCenter>
+    ),
+    amount: (
+      <AlignCenter direction={"column"}>
+        <Typography style={{ fontWeight: 600 }}>
+          <NumberFormat
+            value={t.formattedAmount}
+            displayType="text"
+            thousandSeparator={true}
+            prefix={parseFloat(t.formattedAmount) > 0 && "+"}
+          />
+        </Typography>
+      </AlignCenter>
+    ),
+    coin: (
+      <AlignCenter>
+        <img width={24} height={24} src={ZIGIcon} />
+        <TypographyToken>{t.currency}</TypographyToken>
+      </AlignCenter>
+    ),
+    network: (
+      <AlignCenter>
+        <img width={24} height={24} src={getChainIcon(t.network)} />
+        <TypographyToken>{t.network}</TypographyToken>
+      </AlignCenter>
+    ),
+    status: (
+      <AlignCenter>
+        <TypographyStatus status={t.status}>
+          <FormattedMessage id={getStatusTextId(t.status)} />
+        </TypographyStatus>
+      </AlignCenter>
+    ),
+    transactionId: t.transactionId,
+    // action: (
+    //   <Accordion>
+    //     <AccordionSummary
+    //       expandIcon={<ChevronDown />}
+    //       aria-controls="panel-content"
+    //     ></AccordionSummary>
+    //     <AccordionDetails>
 
-      //     </AccordionDetails>
-      //   </Accordion>
-      // ),
-    }));
+    //     </AccordionDetails>
+    //   </Accordion>
+    // ),
+  }));
 
   const renderRowSubComponent = useCallback(
     ({ row }) => {
