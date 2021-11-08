@@ -12,7 +12,11 @@ interface TransactionsHistory {
   currency: string;
   fees: string;
   fromAddress: string;
+  fromName: string;
   toAddress: string;
+  toName: string;
+  providerId: string;
+  providerName: string;
   transactionId: string;
   txUrl: string;
   network: string;

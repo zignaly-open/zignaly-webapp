@@ -32,6 +32,7 @@ import { colors } from "services/theme";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
 import WalletWithdrawView from "./WalletWithdrawView";
+import WalletCoins from "./WalletCoins";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -476,6 +477,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </TextCaption>
         </PanelItem>
       </StyledPanel>
+      <Box mt="40px">
+        <WalletCoins coins={coins} walletBalance={walletBalance} />
+      </Box>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">
           <img src={ListIcon} width={40} height={40} />

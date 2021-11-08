@@ -11,6 +11,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Button as ButtonMui,
   Typography,
 } from "@material-ui/core";
 import CustomSelect from "components/CustomSelect";
@@ -19,20 +20,33 @@ import { StyledCustomSelect } from "./styles";
 import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
-import NumberFormat from "react-number-format";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
-
-const AmountInput = styled(OutlinedInput)``;
+import NumberFormat from "react-number-format";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
   min-width: 121px;
 `;
 
+const SecondaryText = styled(Typography)`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+const BalanceLabel = styled(Typography)`
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 4px;
+`;
+
+const ButtonMax = styled(ButtonMui)``;
+
 interface WalletDepositViewProps {
   coins: WalletCoins;
   coin?: string;
   balance: Record<string, string>;
+  onClose: () => void;
 }
 
 const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDepositViewProps) => {
@@ -49,6 +63,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
     control,
     errors,
     formState: { isValid },
+    setValue,
   } = useForm({ mode: "onChange" });
   const intl = useIntl();
 
@@ -71,8 +86,11 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
     );
   }
 
+  const setBalanceMax = () => {
+    setValue("amount", balanceAmount);
+  };
+
   const submitForm = (data) => {
-    // setPath("verify");
     setWithdrawData(data);
   };
 
@@ -126,8 +144,10 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                 showErrorMessage={false}
                 errors={errors}
                 endAdornment={
-                  <InputAdornment position="end">
-                    <FormattedMessage id="transfer.internal.max" />
+                  <InputAdornment position="end" style={{ padding: 0 }}>
+                    <ButtonMax onClick={setBalanceMax}>
+                      <FormattedMessage id="transfer.internal.max" />
+                    </ButtonMax>
                   </InputAdornment>
                 }
                 control={control}
@@ -145,8 +165,21 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                 name="amount"
               />
               {errors.amount && <FormHelperText>{errors.amount.message}</FormHelperText>}
+              <Box display="flex" mt="16px">
+                <SecondaryText>
+                  <FormattedMessage id="wallet.balance" />
+                </SecondaryText>
+                <BalanceLabel>
+                  <NumberFormat
+                    value={balanceAmount}
+                    displayType="text"
+                    thousandSeparator={true}
+                    decimalScale={2}
+                  />
+                  &nbsp;{coin}
+                </BalanceLabel>
+              </Box>
             </FormControl>
-
             <Box display="flex" flexDirection="row" mt="64px">
               <Button className="textPurple borderPurple" onClick={onClose}>
                 <FormattedMessage id="confirm.cancel" />
