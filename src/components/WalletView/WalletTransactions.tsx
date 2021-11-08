@@ -88,7 +88,7 @@ const getStatusTextId = (status) => {
     case "FAILED":
       return "wallet.status.failed";
     default:
-      return null;
+      return " ";
   }
 };
 
