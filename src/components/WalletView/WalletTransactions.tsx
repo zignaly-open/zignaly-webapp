@@ -174,7 +174,7 @@ const WalletTransactions = () => {
     type: (
       <AlignCenter>
         <TypographyRow>
-          <FormattedMessage id={`wallet.type.${t.type.toLowerCase()}`} />
+          <FormattedMessage id={`wallet.type.${t.type.replace("_", "").toLowerCase()}`} />
         </TypographyRow>
       </AlignCenter>
     ),
@@ -250,7 +250,6 @@ const WalletTransactions = () => {
       const { transactionId } = row.values;
       const transaction = transactions.find((t) => t.transactionId === transactionId);
       const isWithdrawal = transaction.formattedAmount.startsWith("-");
-      console.log(transaction);
 
       return (
         <StyledTransferPanel>
