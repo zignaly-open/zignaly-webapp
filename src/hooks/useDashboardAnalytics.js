@@ -57,8 +57,10 @@ const useDashboardAnalytics = (providerId) => {
   const allQuotes = Object.keys(quoteAssets);
   // const [providerQuotes, setProviderQuotes] = useState([]);
   const { userProviders: usedProvidersAll } = useContext(PrivateAreaContext);
-  const providers = usedProvidersAll?.filter((p) =>
-    p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
+  const providers = usedProvidersAll?.filter(
+    (p) =>
+      p.exchangeInternalId === selectedExchange.internalId ||
+      p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
   );
 
   let providersOptions = [
