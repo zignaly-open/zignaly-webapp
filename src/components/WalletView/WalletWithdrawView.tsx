@@ -51,7 +51,9 @@ interface WalletDepositViewProps {
 
 const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
-  const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
+  const networkOptions = coinData
+    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    : [];
   const [network, setNetwork] = useState("");
   const balanceAmount = (balance && balance[network]) || 0;
   // const [path, setPath] = useState("");
@@ -59,7 +61,6 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
   const {
     handleSubmit,
     register,
-    reset,
     control,
     errors,
     formState: { isValid },
@@ -79,8 +80,9 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
       <WalletWithdrawConfirm
         address={withdrawData.address}
         network={network}
+        networkName={networkOptions.find((o) => o.val === network).label}
         amount={withdrawData.amount}
-        coin={coin}
+        coin={coinData}
         onClose={() => setWithdrawData(null)}
       />
     );
@@ -112,7 +114,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
             <StyledCustomSelect>
               <CustomSelect
                 labelPlacement="top"
-                onChange={setNetwork}
+                onChange={(v) => setNetwork(v.val)}
                 options={networkOptions}
                 value={network}
                 label={<FormattedMessage id="deposit.network" />}
@@ -174,7 +176,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                     value={balanceAmount}
                     displayType="text"
                     thousandSeparator={true}
-                    decimalScale={2}
+                    decimalScale={coinData.decimals}
                   />
                   &nbsp;{coin}
                 </BalanceLabel>

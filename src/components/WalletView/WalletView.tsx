@@ -33,6 +33,7 @@ import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
 import WalletWithdrawView from "./WalletWithdrawView";
 import WalletCoins from "./WalletCoins";
+import { Rate } from "./styles";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -58,16 +59,6 @@ const StyledPanel = styled(Panel)`
     flex-direction: column;
     padding: 40px 28px;
   `)}
-`;
-
-const Rate = styled.span`
-  color: #65647e;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.66px;
-  line-height: 14px;
-  margin: 0 8px;
-  text-transform: uppercase;
 `;
 
 const ZigBig = styled.span`
