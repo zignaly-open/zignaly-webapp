@@ -123,7 +123,7 @@ const useDashboardAnalytics = (providerId) => {
   // useEffect(adjustProviderQuotes, [filters.provider]);
 
   const loadDashboardStats = () => {
-    if (!providers) {
+    if (providers) {
       setLoading(true);
       const timeFrmaeFormatList = ["weekly", "monthly", "yearly"];
       const payload = {
@@ -152,13 +152,14 @@ const useDashboardAnalytics = (providerId) => {
     }
   };
 
+  const providersLoaded = Boolean(providers);
   // Load stats at init and on filters change
   useEffect(loadDashboardStats, [
     filters.provider.val,
     filters.quote,
     filters.timeFrame,
     selectedExchange.internalId,
-    providers,
+    providersLoaded,
   ]);
 
   return {
