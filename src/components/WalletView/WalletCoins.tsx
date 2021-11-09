@@ -8,18 +8,19 @@ import styled from "styled-components";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
+import { Rate } from "./styles";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
   font-size: 16px;
 `;
 
-const TypographySeconday = styled(Typography)`
+const TypographySecondary = styled(Typography)`
   font-size: 12px;
   color: #65647e;
 `;
 
-const TypographyToken = styled(TypographySeconday)`
+const TypographyToken = styled(TypographySecondary)`
   font-weight: 600;
   margin-left: 4px;
 `;
@@ -86,7 +87,8 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
   );
 
   const makeData = (coin: string, network: string, networkBalance: string) => {
-    const networkData = coins ? coins[coin]?.networks.find((n) => n.network === network) : null;
+    const coinData = coins ? coins[coin] : null;
+    const networkData = coinData?.networks.find((n) => n.network === network);
 
     return {
       coin: (
@@ -99,16 +101,30 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
             </Box>
-            <TypographySeconday>{networkData?.name}</TypographySeconday>
+            <TypographySecondary>{networkData?.name}</TypographySecondary>
           </Box>
         </AlignCenter>
       ),
       value: (
         <AlignCenter direction="column">
-          <Typography style={{ fontWeight: 600 }}>
-            <NumberFormat prefix="$" value={0} displayType="text" thousandSeparator={true} />
-            &nbsp;(todo)
-          </Typography>
+          {coinData ? (
+            <Box display="flex" alignItems="center">
+              <Typography style={{ fontWeight: 600 }}>
+                <NumberFormat
+                  prefix="$"
+                  value={parseFloat(networkBalance) * coinData.usdPrice}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={2}
+                />
+              </Typography>
+              <Rate>
+                @{coinData.usdPrice}/{coin}
+              </Rate>
+            </Box>
+          ) : (
+            " - "
+          )}
         </AlignCenter>
       ),
     };
@@ -124,7 +140,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
         });
         return accData;
       }, []),
-    [walletBalance],
+    [walletBalance, coins],
   );
 
   if (!walletBalance) {

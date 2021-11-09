@@ -27,3 +27,13 @@ export const StyledCustomSelect = styled.div`
     width: 100%;
   }
 `;
+
+export const Rate = styled.span`
+  color: #65647e;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.66px;
+  line-height: 14px;
+  margin: 0 8px;
+  text-transform: uppercase;
+`;
