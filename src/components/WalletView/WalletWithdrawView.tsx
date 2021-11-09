@@ -82,7 +82,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
         network={network}
         networkName={networkOptions.find((o) => o.val === network).label}
         amount={withdrawData.amount}
-        coin={coin}
+        coin={coinData}
         onClose={() => setWithdrawData(null)}
       />
     );
@@ -176,7 +176,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                     value={balanceAmount}
                     displayType="text"
                     thousandSeparator={true}
-                    decimalScale={2}
+                    decimalScale={coinData.decimals}
                   />
                   &nbsp;{coin}
                 </BalanceLabel>

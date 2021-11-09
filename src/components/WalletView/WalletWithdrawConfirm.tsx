@@ -112,7 +112,7 @@ interface WalletWithdrawConfirmProps {
   amount: string;
   network: string;
   networkName: string;
-  coin: string;
+  coin: WalletCoin;
 }
 
 const WalletWithdrawConfirm = ({
@@ -130,7 +130,7 @@ const WalletWithdrawConfirm = ({
 
   const loadFee = () => {
     tradeApi
-      .getNetworkFee({ network, currency: coin })
+      .getNetworkFee({ network, currency: coin.name })
       .then((response) => {
         setFee(response);
       })
@@ -157,9 +157,14 @@ const WalletWithdrawConfirm = ({
     <Box display="flex" flexDirection="row" alignItems="center">
       <img width={24} height={24} src={ZIGIcon} />
       <AmountTypography big={big}>
-        <NumberFormat value={value} displayType="text" thousandSeparator={true} decimalScale={2} />
+        <NumberFormat
+          value={value}
+          displayType="text"
+          thousandSeparator={true}
+          decimalScale={coin.decimals}
+        />
       </AmountTypography>
-      <Coin big={big}>{coin}</Coin>
+      <Coin big={big}>{coin.name}</Coin>
     </Box>
   );
 

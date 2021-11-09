@@ -97,7 +97,12 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
           <Box display="flex" flexDirection="column" ml="16px">
             <Box display="flex" alignItems="center" mb="4px">
               <TypographyAmount>
-                <NumberFormat value={networkBalance} displayType="text" thousandSeparator={true} />
+                <NumberFormat
+                  value={networkBalance}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={coinData?.decimals}
+                />
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
             </Box>
