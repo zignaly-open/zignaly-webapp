@@ -12,10 +12,28 @@ interface TransactionsHistory {
   currency: string;
   fees: string;
   fromAddress: string;
+  fromName: string;
   toAddress: string;
+  toName: string;
+  providerId: string;
+  providerName: string;
   transactionId: string;
   txUrl: string;
   network: string;
   status: string;
   type: string;
+}
+
+interface GetNetworkFeeRes {
+  floatFee: string;
+  expiration: number;
+  key: string;
+}
+
+interface WidthdrawReq {
+  network: string;
+  currency: string;
+  address: string;
+  amount: string;
+  fee: string;
 }
