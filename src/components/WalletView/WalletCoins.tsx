@@ -74,7 +74,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
             </Tooltip>
             <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
               <div>
-                <Button className="textPurple borderPurple">
+                <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
               </div>

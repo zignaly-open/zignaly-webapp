@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import useInterval from "hooks/useInterval";
+import { getChainIcon } from "utils/chain";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -97,10 +98,20 @@ const AmountTypography = styled(Typography)`
 
   margin-left: 4px;
 `;
+
+const StyledPanel = styled.div`
+  background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  border: 1px dashed ${({ theme }) => (theme.palette.type === "dark" ? "#5A51F5" : "#996BDE")};
+  padding: 20px 35px;
+  margin-top: 16px;
+  border-radius: 8px;
+`;
 interface WalletWithdrawConfirmProps {
   address: string;
   amount: string;
   network: string;
+  networkName: string;
   coin: string;
 }
 
@@ -109,6 +120,7 @@ const WalletWithdrawConfirm = ({
   amount,
   onClose,
   network,
+  networkName,
   coin,
 }: WalletWithdrawConfirmProps) => {
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
@@ -127,7 +139,7 @@ const WalletWithdrawConfirm = ({
       });
   };
   useEffect(loadFee, []);
-  useInterval(loadFee, 5000, false);
+  useInterval(loadFee, 7500, false);
 
   const withdraw = () => {
     setLoading(true);
@@ -141,7 +153,7 @@ const WalletWithdrawConfirm = ({
       });
   };
 
-  const CoinAmount = ({ value, big = false }: { value: string; big: boolean }) => (
+  const CoinAmount = ({ value, big = false }: { value: string; big?: boolean }) => (
     <Box display="flex" flexDirection="row" alignItems="center">
       <img width={24} height={24} src={ZIGIcon} />
       <AmountTypography big={big}>
@@ -156,7 +168,7 @@ const WalletWithdrawConfirm = ({
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
-          {done ? (
+          {!done ? (
             <FormattedMessage id="wallet.withdraw.confirm" />
           ) : (
             <FormattedMessage id="wallet.withdraw.sent" />
@@ -174,9 +186,16 @@ const WalletWithdrawConfirm = ({
       {!done ? (
         <>
           <Label style={{ marginTop: "24px" }}>
+            <FormattedMessage id="wallet.withdraw.network" />
+          </Label>
+          <Box display="flex" mt="16px" alignItems="center">
+            <img width={64} height={64} src={getChainIcon(network)} />
+            <Typography style={{ fontSize: "24px", marginLeft: "16px" }}>{networkName}</Typography>
+          </Box>
+          <Label style={{ marginTop: "24px" }}>
             <FormattedMessage id="wallet.withdraw.address" />
           </Label>
-          {address}
+          <StyledPanel>{address}</StyledPanel>
           <Box display="flex" mt="64px" mb="16px">
             <AmountBox flex={2}>
               <AmountLabel>
@@ -216,8 +235,9 @@ const WalletWithdrawConfirm = ({
         </>
       ) : (
         <Box display="flex" flexDirection="row" mt="64px">
-          <Button className="bgPurple" href="">
-            <FormattedMessage id="wallet.withdraw.view" />
+          <Button className="bgPurple" onClick={onClose}>
+            {/* <FormattedMessage id="wallet.withdraw.view" /> */}
+            <FormattedMessage id="accounts.done" />
           </Button>
         </Box>
       )}
