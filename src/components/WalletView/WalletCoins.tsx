@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AlignCenter } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
@@ -7,6 +7,7 @@ import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
+import CoinIcon from "./CoinIcon";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -28,29 +29,12 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
-const CoinIcon = ({
-  coin,
-  width = 32,
-  height = 32,
-}: {
-  coin: string;
-  width?: number;
-  height?: number;
-}) => {
-  const [image, setImage] = useState(null);
-  useEffect(() => {
-    import(`../../images/coins/${coin.toLowerCase()}.svg`).then((img) => {
-      setImage(img);
-    });
-  }, []);
-
-  return image && <img src={image.default} width={width} height={height} />;
-};
 interface WalletCoinsProps {
   walletBalance: WalletBalance;
+  coins: WalletCoins;
 }
 
-const WalletCoins = ({ walletBalance }: WalletCoinsProps) => {
+const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
   const intl = useIntl();
 
   // const balanceEntries = Object.entries(balance || {});
@@ -65,76 +49,91 @@ const WalletCoins = ({ walletBalance }: WalletCoinsProps) => {
   //   }
   // }, [balance]);
 
-  if (!walletBalance) {
-    return <CircularProgress color="primary" size={40} />;
-  }
+  const columns = useMemo(
+    () => [
+      {
+        Header: intl.formatMessage({ id: "col.coin" }),
+        accessor: "coin",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.value" }),
+        accessor: "value",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.actions" }),
+        id: "actions",
+        Cell: ({ row }) => (
+          <AlignCenter>
+            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+              <div>
+                <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
+                  <FormattedMessage id="accounts.withdraw" />
+                </Button>
+              </div>
+            </Tooltip>
+            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+              <div>
+                <Button className="textPurple borderPurple">
+                  <FormattedMessage id="accounts.deposit" />
+                </Button>
+              </div>
+            </Tooltip>
+          </AlignCenter>
+        ),
+      },
+    ],
+    [],
+  );
 
-  const columns = [
-    {
-      Header: intl.formatMessage({ id: "col.coin" }),
-      accessor: "coin",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.value" }),
-      accessor: "value",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.actions" }),
-      id: "actions",
-      Cell: ({ row }) => (
+  const makeData = (coin: string, network: string, networkBalance: string) => {
+    const networkData = coins ? coins[coin]?.networks.find((n) => n.network === network) : null;
+
+    return {
+      coin: (
         <AlignCenter>
-          <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-            <div>
-              <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
-                <FormattedMessage id="accounts.withdraw" />
-              </Button>
-            </div>
-          </Tooltip>
-          <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-            <div>
-              <Button className="textPurple borderPurple">
-                <FormattedMessage id="accounts.deposit" />
-              </Button>
-            </div>
-          </Tooltip>
+          <CoinIcon coin={coin} />
+          <Box display="flex" flexDirection="column" ml="16px">
+            <Box display="flex" alignItems="center" mb="4px">
+              <TypographyAmount>
+                <NumberFormat value={networkBalance} displayType="text" thousandSeparator={true} />
+              </TypographyAmount>
+              <TypographyToken>{coin}</TypographyToken>
+            </Box>
+            <TypographySeconday>{networkData?.name}</TypographySeconday>
+          </Box>
         </AlignCenter>
       ),
-    },
-  ];
+      value: (
+        <AlignCenter direction="column">
+          <Typography style={{ fontWeight: 600 }}>
+            <NumberFormat prefix="$" value={0} displayType="text" thousandSeparator={true} />
+            &nbsp;(todo)
+          </Typography>
+        </AlignCenter>
+      ),
+    };
+  };
 
-  const makeData = (coin: string, networkBalance: string) => ({
-    coin: (
-      <AlignCenter>
-        <CoinIcon coin={coin} />
-        <Box display="flex" flexDirection="column" ml="16px">
-          <Box display="flex" alignItems="center" mb="4px">
-            <TypographyAmount>
-              <NumberFormat value={networkBalance} displayType="text" thousandSeparator={true} />
-            </TypographyAmount>
-            <TypographyToken>{coin}</TypographyToken>
-          </Box>
-          <TypographySeconday>Todo</TypographySeconday>
-        </Box>
-      </AlignCenter>
-    ),
-    value: (
-      <AlignCenter direction={"column"}>
-        <Typography style={{ fontWeight: 600 }}>
-          <NumberFormat prefix="$" value={0} displayType="text" thousandSeparator={true} />
-          &nbsp;(todo)
-        </Typography>
-      </AlignCenter>
-    ),
-  });
+  const data = useMemo(
+    () =>
+      Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
+        Object.entries(networkBalances).forEach(([key, networkBalance]) => {
+          if (key !== "total") {
+            accData.push(makeData(coin, key, networkBalance));
+          }
+        });
+        return accData;
+      }, []),
+    [walletBalance],
+  );
 
-  const data = Object.entries(walletBalance).reduce((accData, [coin, networkBalances]) => {
-    Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-      if (key !== "total") {
-        accData.push(makeData(coin, networkBalance));
-      }
-    });
-    return accData;
-  }, []);
+  if (!walletBalance) {
+    return (
+      <Box display="flex" flex={1} justifyContent="center">
+        <CircularProgress color="primary" size={40} />
+      </Box>
+    );
+  }
 
   return (
     <TableLayout>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter } from "styles/styles";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
@@ -12,6 +12,7 @@ import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
 import { ArrowRightAlt } from "@material-ui/icons";
 import { Link } from "gatsby";
+import CoinIcon from "./CoinIcon";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -61,6 +62,7 @@ const StyledTransferPanel = styled.div`
   border: 1px dashed ${({ theme }) => (theme.palette.type === "dark" ? "#5A51F5" : "#a586e0")};
   margin: 0 16px;
   padding: 28px 20px;
+  border-radius: 8px;
 `;
 
 const StyledTransferImg = styled.img`
@@ -118,110 +120,117 @@ const WalletTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
   const intl = useIntl();
 
-  const columns = [
-    {
-      Header: intl.formatMessage({ id: "col.date" }),
-      accessor: "date",
-    },
-    {
-      Header: intl.formatMessage({ id: "accounts.exchange.type" }),
-      accessor: "type",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.amount" }),
-      accessor: "amount",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.token" }),
-      accessor: "coin",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.network" }),
-      accessor: "network",
-    },
-    {
-      Header: intl.formatMessage({ id: "col.stat" }),
-      accessor: "status",
-    },
-    {
-      Header: "",
-      id: "action",
-      // accessor: "action",
-      Cell: ({ row }) => (row.isExpanded ? <ChevronUp /> : <ChevronDown />),
-    },
-    { Header: "", accessor: "transactionId" },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        Header: intl.formatMessage({ id: "col.date" }),
+        accessor: "date",
+      },
+      {
+        Header: intl.formatMessage({ id: "accounts.exchange.type" }),
+        accessor: "type",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.amount" }),
+        accessor: "amount",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.token" }),
+        accessor: "coin",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.network" }),
+        accessor: "network",
+      },
+      {
+        Header: intl.formatMessage({ id: "col.stat" }),
+        accessor: "status",
+      },
+      {
+        Header: "",
+        id: "action",
+        // accessor: "action",
+        Cell: ({ row }) => (row.isExpanded ? <ChevronUp /> : <ChevronDown />),
+      },
+      { Header: "", accessor: "transactionId" },
+    ],
+    [],
+  );
 
-  const data = transactions?.map((t) => ({
-    date: (
-      <Box display="flex" justifyContent="center">
-        <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
-          <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
-          <TypographyTx>{t.transactionId}</TypographyTx>
-        </Box>
-        <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
-          <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
-          {t.txUrl && (
-            <a href={t.txUrl} target="_blank" rel="noreferrer">
-              <TypographyView>
-                <FormattedMessage id="action.view" />
-              </TypographyView>
-            </a>
-          )}
-        </Box>
-      </Box>
-    ),
-    type: (
-      <AlignCenter>
-        <TypographyRow>
-          <FormattedMessage id={`wallet.type.${t.type.replace("_", "").toLowerCase()}`} />
-        </TypographyRow>
-      </AlignCenter>
-    ),
-    amount: (
-      <AlignCenter direction={"column"}>
-        <Typography style={{ fontWeight: 600 }}>
-          <NumberFormat
-            value={t.formattedAmount}
-            displayType="text"
-            thousandSeparator={true}
-            prefix={parseFloat(t.formattedAmount) > 0 && "+"}
-          />
-        </Typography>
-      </AlignCenter>
-    ),
-    coin: (
-      <AlignCenter>
-        <img width={24} height={24} src={ZIGIcon} />
-        <TypographyToken>{t.currency}</TypographyToken>
-      </AlignCenter>
-    ),
-    network: (
-      <AlignCenter>
-        <img width={24} height={24} src={getChainIcon(t.network)} />
-        <TypographyToken>{t.network}</TypographyToken>
-      </AlignCenter>
-    ),
-    status: (
-      <AlignCenter>
-        <TypographyStatus status={t.status}>
-          <FormattedMessage id={getStatusTextId(t.status)} />
-        </TypographyStatus>
-      </AlignCenter>
-    ),
-    transactionId: t.transactionId,
-    // action: (
-    //   <Accordion>
-    //     <AccordionSummary
-    //       expandIcon={<ChevronDown />}
-    //       aria-controls="panel-content"
-    //     ></AccordionSummary>
-    //     <AccordionDetails>
+  const data = useMemo(
+    () =>
+      transactions?.map((t) => ({
+        date: (
+          <Box display="flex" justifyContent="center">
+            <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
+              <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
+              <TypographyTx>{t.transactionId}</TypographyTx>
+            </Box>
+            <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
+              <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
+              {t.txUrl && (
+                <a href={t.txUrl} target="_blank" rel="noreferrer">
+                  <TypographyView>
+                    <FormattedMessage id="action.view" />
+                  </TypographyView>
+                </a>
+              )}
+            </Box>
+          </Box>
+        ),
+        type: (
+          <AlignCenter>
+            <TypographyRow>
+              <FormattedMessage id={`wallet.type.${t.type.replace("_", "").toLowerCase()}`} />
+            </TypographyRow>
+          </AlignCenter>
+        ),
+        amount: (
+          <AlignCenter direction={"column"}>
+            <Typography style={{ fontWeight: 600 }}>
+              <NumberFormat
+                value={t.formattedAmount}
+                displayType="text"
+                thousandSeparator={true}
+                prefix={parseFloat(t.formattedAmount) > 0 && "+"}
+              />
+            </Typography>
+          </AlignCenter>
+        ),
+        coin: (
+          <AlignCenter>
+            <CoinIcon width={24} height={24} coin={t.currency} />
+            <TypographyToken>{t.currency}</TypographyToken>
+          </AlignCenter>
+        ),
+        network: (
+          <AlignCenter>
+            <img width={24} height={24} src={getChainIcon(t.network)} />
+            <TypographyToken>{t.network}</TypographyToken>
+          </AlignCenter>
+        ),
+        status: (
+          <AlignCenter>
+            <TypographyStatus status={t.status}>
+              <FormattedMessage id={getStatusTextId(t.status)} />
+            </TypographyStatus>
+          </AlignCenter>
+        ),
+        transactionId: t.transactionId,
+        // action: (
+        //   <Accordion>
+        //     <AccordionSummary
+        //       expandIcon={<ChevronDown />}
+        //       aria-controls="panel-content"
+        //     ></AccordionSummary>
+        //     <AccordionDetails>
 
-    //     </AccordionDetails>
-    //   </Accordion>
-    // ),
-  }));
+        //     </AccordionDetails>
+        //   </Accordion>
+        // ),
+      })),
+    [transactions],
+  );
 
   const TransferAddress = ({
     transaction,
