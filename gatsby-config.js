@@ -71,16 +71,16 @@ module.exports = {
       resolve: "gatsby-plugin-newrelic",
       options: {
         configs: {
-          // dev: {
-          instrumentationType: "proAndSPA",
-          accountId: "3238823",
-          trustKey: "3238823",
-          agentID: "32253586",
-          licenseKey: "NRJS-ac29673573719df2357",
-          applicationID: "242080714",
-          beacon: "bam.nr-data.net",
-          errorBeacon: "bam.nr-data.net",
-          // },
+          test: {
+            instrumentationType: "proAndSPA",
+            accountId: "3238823",
+            trustKey: "3238823",
+            agentID: "32253586",
+            licenseKey: "NRJS-ac29673573719df2357",
+            applicationID: "242080714",
+            beacon: "bam.nr-data.net",
+            errorBeacon: "bam.nr-data.net",
+          },
           // staging: {
           //   instrumentationType: "proAndSPA",
           //   accountId: "<some integer>",
@@ -91,7 +91,7 @@ module.exports = {
           //   beacon: "bam.nr-data.net",
           //   errorBeacon: "bam.nr-data.net",
           // },
-          // production: {
+          // prod: {
           //   instrumentationType: "proAndSPA",
           //   accountId: "<some integer>",
           //   trustKey: "<some integer>",

@@ -211,9 +211,9 @@
   "scripts": {
     "build": "npm install && npm run reset && NODE_OPTIONS=--max-old-space-size=8192 gatsby build --prefix-paths",
     "build:package": "tar -C public -zcvf release.tar.gz ./",
-    "build:test": "STAGE=test GATSBY_API_KEY=\"\" npm run build",
-    "build:staging": "STAGE=staging GATSBY_API_KEY=\"\" npm run build",
-    "build:prod": "STAGE=prod GATSBY_API_KEY=\"\" npm run build",
+    "build:test": "STAGE=test GATSBY_NEWRELIC_ENV=test GATSBY_API_KEY=\"\" npm run build",
+    "build:staging": "STAGE=staging GATSBY_NEWRELIC_ENV=staging GATSBY_API_KEY=\"\" npm run build",
+    "build:prod": "STAGE=prod GATSBY_NEWRELIC_ENV=prod GATSBY_API_KEY=\"\" npm run build",
     "checkall": "npm run stylelint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",
     "develop": "gatsby develop -p 3000 -H 0.0.0.0",
