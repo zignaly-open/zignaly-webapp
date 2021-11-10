@@ -3,22 +3,8 @@ import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled, { css } from "styled-components";
-import {
-  Box,
-  CircularProgress,
-  InputAdornment,
-  OutlinedInput,
-  Typography,
-} from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
-import CustomSelect from "components/CustomSelect";
-import CopyIcon from "images/exchangeAccount/copy.svg";
-import useClipboard from "hooks/useClipboard";
-import QRCode from "qrcode.react";
-import InfoIcon from "images/wallet/info.svg";
-import { ErrorOutlineOutlined } from "@material-ui/icons";
-import { NetworkCautionMessage } from "./WalletDepositView";
-import { StyledCustomSelect } from "./styles";
 import CustomButton from "components/CustomButton";
 import NumberFormat from "react-number-format";
 import { useDispatch } from "react-redux";
@@ -144,7 +130,7 @@ const WalletWithdrawConfirm = ({
   const withdraw = () => {
     setLoading(true);
     tradeApi
-      .walletWithdraw({ network, currency: coin, address, amount, fee: fee.key })
+      .walletWithdraw({ network, currency: coin.name, address, amount, fee: fee.key })
       .then(() => {
         setDone(true);
       })
