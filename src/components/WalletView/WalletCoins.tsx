@@ -139,7 +139,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
     () =>
       Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
         Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-          if (key !== "total") {
+          if (coin !== "ZIG" && key !== "total") {
             accData.push(makeData(coin, key, networkBalance));
           }
         });
@@ -154,6 +154,10 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
         <CircularProgress color="primary" size={40} />
       </Box>
     );
+  }
+
+  if (!data.length) {
+    return null;
   }
 
   return (
