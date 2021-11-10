@@ -114,7 +114,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
             <StyledCustomSelect>
               <CustomSelect
                 labelPlacement="top"
-                onChange={(v) => setNetwork(v.val)}
+                onChange={setNetwork}
                 options={networkOptions}
                 value={network}
                 label={<FormattedMessage id="deposit.network" />}
@@ -176,7 +176,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                     value={balanceAmount}
                     displayType="text"
                     thousandSeparator={true}
-                    decimalScale={coinData.decimals}
+                    decimalScale={coinData?.decimals}
                   />
                   &nbsp;{coin}
                 </BalanceLabel>
