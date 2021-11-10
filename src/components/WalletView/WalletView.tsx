@@ -260,14 +260,13 @@ const StyledInfoIcon = styled.img`
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
-  const [rateZIG, setRateZIG] = useState<number>(null);
-  // const [balances, setBalances] = useState<WalletBalance>(null);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const dispatch = useDispatch();
+  const rateZIG = coins?.ZIG.usdPrice;
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -279,10 +278,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
   useEffect(() => {
     if (isOpen) {
-      tradeApi.convertPreview({ from: "ZIG", to: "USDT", qty: 1 }).then((response) => {
-        setRateZIG(response.lastPrice);
-      });
-
       tradeApi.getWalletCoins().then((response) => {
         setCoins(response);
       });

@@ -49,6 +49,7 @@
     "gatsby-plugin-layout": "^3.0.0",
     "gatsby-plugin-manifest": "^4.0.0",
     "gatsby-plugin-material-ui": "^4.0.3",
+    "gatsby-plugin-newrelic": "^2.0.2",
     "gatsby-plugin-react-helmet": "^4.10.0",
     "gatsby-plugin-react-svg": "^3.1.0",
     "gatsby-plugin-styled-components": "^5.0.0",
