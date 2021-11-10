@@ -257,9 +257,13 @@ const WalletTransactions = () => {
             <>
               <TransferChainIcon network={network} />
               <TypographyAddress>
-                <Link target="_blank" to={`/profitSharing/${providerId}`}>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`${window.location.origin}${process.env.GATSBY_BASE_PATH}/profitSharing/${providerId}`}
+                >
                   {providerName}
-                </Link>
+                </a>
               </TypographyAddress>
             </>
           ) : address ? (
