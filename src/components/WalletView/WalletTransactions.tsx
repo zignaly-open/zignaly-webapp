@@ -103,6 +103,12 @@ const TypographyStatus = styled(Typography)`
   color: ${(props: TypographyStatusProps) => getStatusColor(props.status, props.theme)};
 `;
 
+const StyledTableLayout = styled(TableLayout)`
+  tr {
+    height: 79px;
+  }
+`;
+
 const TransferChainIcon = (network) => (
   <StyledTransferImg width={24} height={24} src={getChainIcon(network)} />
 );
@@ -164,7 +170,7 @@ const WalletTransactions = () => {
           <Box display="flex" justifyContent="center">
             <Box display="flex" flexDirection="column" alignItems="center" mr={2}>
               <TypographyRow>{dayjs(t.createdAt).format("MMM DD")}</TypographyRow>
-              <TypographyTx>{t.transactionId}</TypographyTx>
+              {t.txUrl && <TypographyTx>{t.transactionId}</TypographyTx>}
             </Box>
             <Box display="flex" flexDirection="column" alignItems="center" ml={2}>
               <TypographyTime>{dayjs(t.createdAt).format("hh:mm A")}</TypographyTime>
@@ -239,17 +245,23 @@ const WalletTransactions = () => {
     transaction: TransactionsHistory;
     isWithdrawal: boolean;
   }) => {
-    const { fromAddress, toAddress, providerId, network, providerName } = transaction;
-    const address = isWithdrawal ? fromAddress : toAddress;
+    const { fromAddress, toAddress, fromName, toName, providerId, network, providerName } =
+      transaction;
+    const address = isWithdrawal ? toAddress : fromAddress;
+    const name = isWithdrawal ? toName : fromName;
 
     return (
       <>
         <TransferChainIcon network={network} />
-        {providerId ? (
-          <Link to={`/profitSharing/${providerId}`}>{providerName}</Link>
-        ) : (
-          <TypographyAddress>{address}</TypographyAddress>
-        )}
+        <TypographyAddress>
+          {providerId ? (
+            <Link target="_blank" to={`/profitSharing/${providerId}`}>
+              {providerName}
+            </Link>
+          ) : (
+            address || name
+          )}
+        </TypographyAddress>
       </>
     );
   };
@@ -313,14 +325,14 @@ const WalletTransactions = () => {
   };
 
   return (
-    <TableLayout>
+    <StyledTableLayout>
       <Table
         data={data}
         columns={columns}
         renderRowSubComponent={renderRowSubComponent}
         initialState={tableState}
       />
-    </TableLayout>
+    </StyledTableLayout>
   );
 };
 
