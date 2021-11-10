@@ -113,12 +113,10 @@ const TransferChainIcon = (network) => (
   <StyledTransferImg width={24} height={24} src={getChainIcon(network)} />
 );
 
-const TransferZigLabel = () => (
+const TransferZigLabel = ({ name }: { name?: string }) => (
   <>
     <StyledTransferImg width={24} height={24} src={ZIGIcon} style={{ marginRight: "8px" }} />
-    <TypographyLabel>
-      <FormattedMessage id="wallet.zig" />
-    </TypographyLabel>
+    <TypographyLabel>{name || <FormattedMessage id="wallet.zig" />}</TypographyLabel>
   </>
 );
 
@@ -241,29 +239,47 @@ const WalletTransactions = () => {
   const TransferAddress = ({
     transaction,
     isWithdrawal,
+    side,
   }: {
     transaction: TransactionsHistory;
     isWithdrawal: boolean;
+    side: "from" | "to";
   }) => {
     const { fromAddress, toAddress, fromName, toName, providerId, network, providerName } =
       transaction;
     const address = isWithdrawal ? toAddress : fromAddress;
     const name = isWithdrawal ? toName : fromName;
 
-    return (
-      <>
-        <TransferChainIcon network={network} />
-        <TypographyAddress>
+    const TransferAddressContent = useCallback(
+      () => (
+        <>
           {providerId ? (
-            <Link target="_blank" to={`/profitSharing/${providerId}`}>
-              {providerName}
-            </Link>
+            <>
+              <TransferChainIcon network={network} />
+              <TypographyAddress>
+                <Link target="_blank" to={`/profitSharing/${providerId}`}>
+                  {providerName}
+                </Link>
+              </TypographyAddress>
+            </>
+          ) : address ? (
+            <>
+              <TransferChainIcon network={network} />
+              <TypographyAddress>{address}</TypographyAddress>
+            </>
           ) : (
-            address || name
+            <TransferZigLabel name={name} />
           )}
-        </TypographyAddress>
-      </>
+        </>
+      ),
+      [],
     );
+
+    if ((side === "from" && isWithdrawal) || (side === "to" && !isWithdrawal)) {
+      return <TransferZigLabel />;
+    }
+
+    return <TransferAddressContent />;
   };
 
   const renderRowSubComponent = useCallback(
@@ -278,20 +294,12 @@ const WalletTransactions = () => {
             <TypographyLabel>
               <FormattedMessage id="wallet.from" />
             </TypographyLabel>
-            {isWithdrawal ? (
-              <TransferZigLabel />
-            ) : (
-              <TransferAddress isWithdrawal={false} transaction={transaction} />
-            )}
+            <TransferAddress side="from" isWithdrawal={isWithdrawal} transaction={transaction} />
             <ArrowRightAlt style={{ margin: "0 21px" }} />
             <TypographyLabel>
               <FormattedMessage id="wallet.to" />
             </TypographyLabel>
-            {isWithdrawal ? (
-              <TransferAddress isWithdrawal={true} transaction={transaction} />
-            ) : (
-              <TransferZigLabel />
-            )}
+            <TransferAddress side="to" isWithdrawal={isWithdrawal} transaction={transaction} />
           </Box>
           <Box display="flex" alignItems="center" mt="18px">
             <TypographyLabel>
