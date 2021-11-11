@@ -398,9 +398,19 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
-                <FormattedMessage id="accounts.withdraw" />
-              </Button>
+              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
+                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+                  <div>
+                    <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
+                      <FormattedMessage id="accounts.withdraw" />
+                    </Button>
+                  </div>
+                </Tooltip>
+              ) : (
+                <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
+                  <FormattedMessage id="accounts.withdraw" />
+                </Button>
+              )}
               <Button className="bgPurple" onClick={() => setPath("deposit")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>
