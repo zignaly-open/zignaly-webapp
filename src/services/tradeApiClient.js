@@ -2406,6 +2406,32 @@ class TradeApiClient {
   async convertPreview(payload) {
     return this.doRequest("/zig/convert-preview", payload, "POST", 2, false);
   }
+
+  /**
+   * Get network fee
+   *
+   * @param {{network: string, currency: string}} payload Payload
+   * @returns {Promise<GetNetworkFeeRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getNetworkFee(payload) {
+    const { network, currency } = payload;
+    return this.doRequest(`/generate-fee/${network}/currency/${currency}`, null, "POST", 3);
+  }
+
+  /**
+   * Withdraw
+   *
+   * @param {WidthdrawReq} payload Payload
+   * @returns {Promise<GetNetworkFeeRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async walletWithdraw(payload) {
+    const { network, currency, ...data } = payload;
+    return this.doRequest(`/make-withdraw/${network}/currency/${currency}`, data, "POST", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

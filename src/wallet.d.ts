@@ -13,6 +13,7 @@ interface WalletCoin {
   decimals: number;
   name: string;
   networks: WalletNetwork[];
+  usdPrice: number;
 }
 
 type WalletCoins = Record<string, WalletCoin>;

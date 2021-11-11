@@ -11,6 +11,7 @@ import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
 import InfoIcon from "images/wallet/info.svg";
 import { ErrorOutlineOutlined } from "@material-ui/icons";
+import { StyledCustomSelect } from "./styles";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -19,35 +20,16 @@ const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
 
 const TypographyError = styled(Typography)`
   color: ${({ theme }) => theme.newTheme.error};
+  font-weight: 500;
+  font-size: 12px;
 `;
 
 const NotSure = styled.a`
   margin-left: 17px;
+  font-weight: 600;
+  font-size: 12px;
   text-decoration: none;
   color: ${({ theme }) => theme.newTheme.linkText};
-`;
-
-const StyledCustomSelect = styled.div`
-  margin-top: 64px;
-
-  ${isMobile(`
-    margin-top: 32px;
-  `)}
-
-  .selectLabel {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-    margin-bottom: 4px;
-  }
-
-  .customSelect {
-    align-items: flex-start;
-  }
-
-  .customSelectControl {
-    width: 100%;
-  }
 `;
 
 const CopyButton = styled.img`
@@ -64,6 +46,19 @@ const QRCodeContainer = styled.div`
   `)}
 `;
 
+export const NetworkCautionMessage = ({ network }: { network: string }) =>
+  network && (
+    <Box display="flex" alignItems="center" mt={2}>
+      <StyledErrorOutlined width={24} height={24} />
+      <TypographyError>
+        <FormattedMessage id="wallet.deposit.caution" values={{ coin: "ZIG", network }} />
+      </TypographyError>
+      <NotSure href="https://help.zignaly.com" target="_blank">
+        <FormattedMessage id="wallet.deposit.notsure" />
+      </NotSure>
+    </Box>
+  );
+
 interface WalletDepositViewProps {
   coins: WalletCoins;
   coin?: string;
@@ -72,21 +67,21 @@ interface WalletDepositViewProps {
 const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
-  const [network, setNetwork] = useState<WalletNetwork>(null);
+  const [network, setNetwork] = useState("");
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
 
   useEffect(() => {
     if (coinData) {
       // Select first option
-      setNetwork(coinData.networks[0]);
+      setNetwork(coinData.networks[0].network);
     }
   }, [coinData]);
 
   useEffect(() => {
     if (network) {
       setAddress(null);
-      tradeApi.getWalletDepositAddress(network.network, coin).then((response) => {
+      tradeApi.getWalletDepositAddress(network, coin).then((response) => {
         setAddress(response);
       });
     }
@@ -111,26 +106,13 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
       <StyledCustomSelect>
         <CustomSelect
           labelPlacement="top"
-          onChange={(v) => setNetwork(coinData.networks.find((n) => n.network === v))}
+          onChange={setNetwork}
           options={networkOptions}
-          value={network?.network || ""}
+          value={network}
           label={<FormattedMessage id="deposit.network" />}
         />
       </StyledCustomSelect>
-      {network && (
-        <Box display="flex" alignItems="center" mt={2}>
-          <StyledErrorOutlined width={24} height={24} />
-          <TypographyError>
-            <FormattedMessage
-              id="wallet.deposit.caution"
-              values={{ coin: "ZIG", network: network.name }}
-            />
-          </TypographyError>
-          <NotSure href="" target="_blank">
-            <FormattedMessage id="wallet.deposit.notsure" />
-          </NotSure>
-        </Box>
-      )}
+      {network && <NetworkCautionMessage network={network} />}
       <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="deposit.address" />
       </Label>

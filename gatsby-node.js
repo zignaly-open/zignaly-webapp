@@ -210,6 +210,12 @@ exports.onCreateBabelConfig = ({ actions }) => {
     },
   });
 
+  // actions.setBabelPlugin({
+  //   name: "babel-plugin-formatjs",
+  //   options: {
+  //   },
+  // });
+
   if (process.env.NODE_ENV !== "production") {
     // Add istanbul plugin for code coverage
     actions.setBabelPlugin({

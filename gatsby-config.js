@@ -67,5 +67,42 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: "gatsby-plugin-newrelic",
+      options: {
+        configs: {
+          test: {
+            instrumentationType: "proAndSPA",
+            accountId: "3238823",
+            trustKey: "3238823",
+            agentID: "32253586",
+            licenseKey: "NRJS-ac29673573719df2357",
+            applicationID: "242080714",
+            beacon: "bam.eu01.nr-data.net",
+            errorBeacon: "bam.eu01.nr-data.net",
+          },
+          staging: {
+            instrumentationType: "proAndSPA",
+            accountId: "3238823",
+            trustKey: "3238823",
+            agentID: "32253586",
+            licenseKey: "NRJS-ac29673573719df2357",
+            applicationID: "242080714",
+            beacon: "bam.eu01.nr-data.net",
+            errorBeacon: "bam.eu01.nr-data.net",
+          },
+          prod: {
+            instrumentationType: "proAndSPA",
+            accountId: "3238823",
+            trustKey: "3238823",
+            agentID: "32253586",
+            licenseKey: "NRJS-ac29673573719df2357",
+            applicationID: "242080714",
+            beacon: "bam.eu01.nr-data.net",
+            errorBeacon: "bam.eu01.nr-data.net",
+          },
+        },
+      },
+    },
   ],
 };
