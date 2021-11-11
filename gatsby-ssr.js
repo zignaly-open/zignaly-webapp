@@ -13,5 +13,7 @@ export const onRenderBody = ({ setHeadComponents, setPostBodyComponents }, plugi
   //     }}
   //   />,
   // ]);
-  setHeadComponents([<script key="newrelic" src={withPrefix("newRelic.js")} />]);
+  if (process.env.NODE_ENV === "production") {
+    setHeadComponents([<script key="newrelic" src={withPrefix("newRelic.js")} />]);
+  }
 };
