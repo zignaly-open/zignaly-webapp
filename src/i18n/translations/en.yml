@@ -815,6 +815,7 @@ signalp.option.disclaimer.error: "You need to accept the disclaimer from this pr
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Name"
+copyt.allowClones: "Allow Clones"
 copyt.become: "Offer Your Copy Trading Service"
 copyt.become.mobile: "Offer Service"
 copyt.cannotmodify: "Please, review this information, it cannot be modified later."
@@ -1737,6 +1738,7 @@ wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
 # WALLET
+wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"
 wallet.buy: "Where to buy ZIG?"
 wallet.buy.tooltip: "You can buy ZIG on these exchanges:"

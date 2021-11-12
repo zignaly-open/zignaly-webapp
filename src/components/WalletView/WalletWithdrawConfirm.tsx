@@ -225,7 +225,7 @@ const WalletWithdrawConfirm = ({
           </Box>
         </>
       ) : (
-        <Box display="flex" flexDirection="row" mt="64px">
+        <Box display="flex" flexDirection="row" mt="8px">
           <Button className="bgPurple" onClick={onClose}>
             {/* <FormattedMessage id="wallet.withdraw.view" /> */}
             <FormattedMessage id="accounts.done" />
