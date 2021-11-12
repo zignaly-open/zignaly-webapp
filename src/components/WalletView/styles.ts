@@ -6,11 +6,7 @@ export const TitleIcon = styled.img`
 `;
 
 export const StyledCustomSelect = styled.div`
-  margin-top: 64px;
-
-  ${isMobile(`
-    margin-top: 32px;
-  `)}
+  /* margin-bottom: 24px; */
 
   .selectLabel {
     font-weight: 600;
