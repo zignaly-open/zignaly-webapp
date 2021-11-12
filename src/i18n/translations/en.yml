@@ -815,6 +815,7 @@ signalp.option.disclaimer.error: "You need to accept the disclaimer from this pr
 # CREATE PROVIDER ACCOUNT
 provider.createaccount: "Create Service"
 provider.name: "Name"
+copyt.allowClones: "Allow Clones"
 copyt.become: "Offer Your Copy Trading Service"
 copyt.become.mobile: "Offer Service"
 copyt.cannotmodify: "Please, review this information, it cannot be modified later."
