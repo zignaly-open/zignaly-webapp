@@ -1,6 +1,6 @@
 import ETHIcon from "images/wallet/eth.svg";
 import BSCIcon from "images/wallet/bsc.svg";
-import BTCIcon from "images/wallet/btc.svg";
+import BTCIcon from "images/coin/btc.svg";
 
 export const getChainIcon = (chain: string) => {
   switch (chain) {
