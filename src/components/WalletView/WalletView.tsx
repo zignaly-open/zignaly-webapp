@@ -260,6 +260,9 @@ const StyledInfoIcon = styled.img`
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
+  const pathParams = path.split("/");
+  const page = pathParams[0];
+  const coinParam = pathParams[1] || "ZIG";
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -347,9 +350,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         newTheme={true}
         persist={false}
         size="medium"
-        state={path === "deposit"}
+        state={page === "deposit"}
       >
-        <WalletDepositView coins={coins} onClose={() => setPath("")} />
+        <WalletDepositView coins={coins} onClose={() => setPath("")} coin={coinParam} />
       </Modal>
       <Modal
         // onClose={() => dispatch(showCreateTrader(false))}
@@ -357,12 +360,13 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         newTheme={true}
         persist={false}
         size="medium"
-        state={path === "withdraw"}
+        state={page === "withdraw"}
       >
         <WalletWithdrawView
           coins={coins}
-          balance={walletBalance?.ZIG}
+          balance={walletBalance ? walletBalance[coinParam] : null}
           onClose={() => setPath("")}
+          coin={coinParam}
         />
       </Modal>
       <Title>
@@ -399,19 +403,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
               {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
-                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-                  <div>
-                    <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
-                      <FormattedMessage id="accounts.withdraw" />
-                    </Button>
-                  </div>
-                </Tooltip>
+                <Button className="textPurple borderPurple">
+                  <FormattedMessage id="accounts.withdraw" />
+                </Button>
               ) : (
-                <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
+                <Button className="textPurple borderPurple" onClick={() => setPath("withdraw/ZIG")}>
                   <FormattedMessage id="accounts.withdraw" />
                 </Button>
               )}
-              <Button className="bgPurple" onClick={() => setPath("deposit")}>
+              <Button className="bgPurple" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
@@ -474,7 +474,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         </PanelItem>
       </StyledPanel>
       <Box mt="40px">
-        <WalletCoins coins={coins} walletBalance={walletBalance} />
+        <WalletCoins coins={coins} walletBalance={walletBalance} setPath={setPath} />
       </Box>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">

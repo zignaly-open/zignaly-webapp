@@ -35,20 +35,8 @@ interface WalletCoinsProps {
   coins: WalletCoins;
 }
 
-const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
+const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
   const intl = useIntl();
-
-  // const balanceEntries = Object.entries(balance || {});
-
-  // useEffect(() => {
-  //   if (balance) {
-  //     balanceEntries.forEach(([coin]) => {
-  //       tradeApi.convertPreview({ from: coin, to: "USDT", qty: 1 }).then((response) => {
-  //         setRateZIG(response.lastPrice);
-  //       });
-  //     });
-  //   }
-  // }, [balance]);
 
   const columns = useMemo(
     () => [
@@ -63,24 +51,22 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
       {
         Header: intl.formatMessage({ id: "col.actions" }),
         id: "actions",
-        Cell: ({ row }) => (
-          <AlignCenter>
-            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-              <div>
-                <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
-                  <FormattedMessage id="accounts.withdraw" />
-                </Button>
-              </div>
-            </Tooltip>
-            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-              <div>
-                <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
-                  <FormattedMessage id="accounts.deposit" />
-                </Button>
-              </div>
-            </Tooltip>
-          </AlignCenter>
-        ),
+        Cell: ({ row }) => {
+          const { coinData } = row.original;
+          return (
+            <AlignCenter>
+              <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
+              <Button
+                className="textPurple borderPurple"
+                onClick={() => setPath(`deposit/${coinData.name}`)}
+              >
+                <FormattedMessage id="accounts.deposit" />
+              </Button>
+            </AlignCenter>
+          );
+        },
       },
     ],
     [],
@@ -132,6 +118,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
           )}
         </AlignCenter>
       ),
+      coinData,
     };
   };
 
