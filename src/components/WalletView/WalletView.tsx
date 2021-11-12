@@ -262,7 +262,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [path, setPath] = useState("");
   const pathParams = path.split("/");
   const page = pathParams[0];
-  const coinParam = pathParams[1] || "ZIG";
+  const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
   const balanceZIG = walletBalance?.ZIG?.total || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -402,15 +402,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
-                <Button className="textPurple borderPurple">
-                  <FormattedMessage id="accounts.withdraw" />
-                </Button>
-              ) : (
-                <Button className="textPurple borderPurple" onClick={() => setPath("withdraw/ZIG")}>
-                  <FormattedMessage id="accounts.withdraw" />
-                </Button>
-              )}
+              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw/ZIG")}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
               <Button className="bgPurple" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>

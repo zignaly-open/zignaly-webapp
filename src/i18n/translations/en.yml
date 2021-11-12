@@ -1738,6 +1738,7 @@ wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
 # WALLET
+wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"
 wallet.buy: "Where to buy ZIG?"
 wallet.buy.tooltip: "You can buy ZIG on these exchanges:"

@@ -9,6 +9,7 @@ import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
+import { Add } from "@material-ui/icons";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -143,14 +144,17 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
     );
   }
 
-  if (!data.length) {
-    return null;
-  }
-
   return (
-    <TableLayout>
-      <Table data={data} columns={columns} />
-    </TableLayout>
+    <Box style={{ textAlign: "center" }}>
+      {data.length > 0 && (
+        <TableLayout>
+          <Table data={data} columns={columns} />
+        </TableLayout>
+      )}
+      <Button startIcon={<Add />} onClick={() => setPath("deposit")}>
+        <FormattedMessage id="wallet.addcoin" />
+      </Button>
+    </Box>
   );
 };
 

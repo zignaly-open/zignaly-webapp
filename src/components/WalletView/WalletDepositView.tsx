@@ -65,8 +65,10 @@ interface WalletDepositViewProps {
 }
 
 const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
-  const coinData = coins ? coins[coin] : null;
+  const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
+  const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
+  const coinsOptions = ["ZIG", "BNB", "BTC", "BUSD", "ETH"];
   const [network, setNetwork] = useState("");
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
@@ -81,7 +83,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   useEffect(() => {
     if (network) {
       setAddress(null);
-      tradeApi.getWalletDepositAddress(network, coin).then((response) => {
+      tradeApi.getWalletDepositAddress(network, selectedCoin).then((response) => {
         setAddress(response);
       });
     }
@@ -96,23 +98,35 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
-          <FormattedMessage id="accounts.deposit" /> {coin}
+          <FormattedMessage id="accounts.deposit" /> {selectedCoin}
         </Box>
       </Title>
       <TextDesc>
-        <FormattedMessage id="wallet.deposit.desc" values={{ coin }} />
+        <FormattedMessage id="wallet.deposit.desc" values={{ selectedCoin }} />
       </TextDesc>
-      <br />
-      <StyledCustomSelect>
-        <CustomSelect
-          labelPlacement="top"
-          onChange={setNetwork}
-          options={networkOptions}
-          value={network}
-          label={<FormattedMessage id="deposit.network" />}
-        />
-      </StyledCustomSelect>
-      {network && <NetworkCautionMessage network={network} coin={coin} />}
+      {!coin && (
+        <StyledCustomSelect>
+          <CustomSelect
+            labelPlacement="top"
+            onChange={setSelectedCoin}
+            options={coinsOptions}
+            value={selectedCoin}
+            label={<FormattedMessage id="deposit.selectcoin" />}
+          />
+        </StyledCustomSelect>
+      )}
+      <Box style={{ margin: "24px 0 12px" }}>
+        <StyledCustomSelect>
+          <CustomSelect
+            labelPlacement="top"
+            onChange={setNetwork}
+            options={networkOptions}
+            value={network}
+            label={<FormattedMessage id="deposit.network" />}
+          />
+        </StyledCustomSelect>
+        {network && <NetworkCautionMessage network={network} coin={selectedCoin} />}
+      </Box>
       <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="deposit.address" />
       </Label>
