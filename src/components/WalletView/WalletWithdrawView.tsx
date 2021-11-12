@@ -44,12 +44,12 @@ const ButtonMax = styled(ButtonMui)``;
 
 interface WalletDepositViewProps {
   coins: WalletCoins;
-  coin?: string;
+  coin: string;
   balance: Record<string, string>;
   onClose: () => void;
 }
 
-const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDepositViewProps) => {
+const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData
     ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
@@ -103,12 +103,12 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
           <Title>
             <Box alignItems="center" display="flex">
               <img src={WalletIcon} width={40} height={40} />
-              <FormattedMessage id="wallet.type.withdraw" /> ZIG
+              <FormattedMessage id="wallet.type.withdraw" /> {coin}
             </Box>
           </Title>
           <form onSubmit={handleSubmit(submitForm)}>
             <TextDesc>
-              <FormattedMessage id="wallet.withdraw.desc" values={{ coin: "ZIG" }} />
+              <FormattedMessage id="wallet.withdraw.desc" values={{ coin }} />
             </TextDesc>
             <br />
             <StyledCustomSelect>
@@ -120,7 +120,7 @@ const WalletWithdrawView = ({ coins, coin = "ZIG", balance, onClose }: WalletDep
                 label={<FormattedMessage id="deposit.network" />}
               />
             </StyledCustomSelect>
-            <NetworkCautionMessage network={network} />
+            <NetworkCautionMessage network={network} coin={coin} />
             <FormControl error={errors.address} fullWidth>
               <Label style={{ marginTop: "24px" }}>
                 <FormattedMessage id="wallet.withdraw.address" />

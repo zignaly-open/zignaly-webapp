@@ -46,12 +46,12 @@ const QRCodeContainer = styled.div`
   `)}
 `;
 
-export const NetworkCautionMessage = ({ network }: { network: string }) =>
+export const NetworkCautionMessage = ({ network, coin }: { network: string; coin: string }) =>
   network && (
     <Box display="flex" alignItems="center" mt={2}>
       <StyledErrorOutlined width={24} height={24} />
       <TypographyError>
-        <FormattedMessage id="wallet.deposit.caution" values={{ coin: "ZIG", network }} />
+        <FormattedMessage id="wallet.deposit.caution" values={{ coin, network }} />
       </TypographyError>
       <NotSure href="https://help.zignaly.com" target="_blank">
         <FormattedMessage id="wallet.deposit.notsure" />
@@ -61,10 +61,10 @@ export const NetworkCautionMessage = ({ network }: { network: string }) =>
 
 interface WalletDepositViewProps {
   coins: WalletCoins;
-  coin?: string;
+  coin: string;
 }
 
-const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
+const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
   const [network, setNetwork] = useState("");
@@ -96,11 +96,11 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
-          <FormattedMessage id="accounts.deposit" /> ZIG
+          <FormattedMessage id="accounts.deposit" /> {coin}
         </Box>
       </Title>
       <TextDesc>
-        <FormattedMessage id="wallet.deposit.desc" values={{ coin: "ZIG" }} />
+        <FormattedMessage id="wallet.deposit.desc" values={{ coin }} />
       </TextDesc>
       <br />
       <StyledCustomSelect>
@@ -112,7 +112,7 @@ const WalletDepositView = ({ coins, coin = "ZIG" }: WalletDepositViewProps) => {
           label={<FormattedMessage id="deposit.network" />}
         />
       </StyledCustomSelect>
-      {network && <NetworkCautionMessage network={network} />}
+      {network && <NetworkCautionMessage network={network} coin={coin} />}
       <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="deposit.address" />
       </Label>
