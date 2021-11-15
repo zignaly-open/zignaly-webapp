@@ -99,12 +99,15 @@ interface WalletWithdrawConfirmProps {
   network: string;
   networkName: string;
   coin: WalletCoin;
+  onClose: () => void;
+  onCancel: () => void;
 }
 
 const WalletWithdrawConfirm = ({
   address,
   amount,
   onClose,
+  onCancel,
   network,
   networkName,
   coin,
@@ -216,7 +219,7 @@ const WalletWithdrawConfirm = ({
             )}
           </AmountBox>
           <Box display="flex" flexDirection="row" mt="64px">
-            <Button className="textPurple borderPurple" onClick={onClose}>
+            <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
             </Button>
             <Button className="bgPurple" onClick={withdraw} disabled={!fee} loading={loading}>

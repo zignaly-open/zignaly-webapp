@@ -344,31 +344,33 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <Box p={5}>
-      <Modal
-        // onClose={() => dispatch(showCreateTrader(false))}
-        onClose={() => setPath("")}
-        newTheme={true}
-        persist={false}
-        size="medium"
-        state={page === "deposit"}
-      >
-        <WalletDepositView coins={coins} onClose={() => setPath("")} coin={coinParam} />
-      </Modal>
-      <Modal
-        // onClose={() => dispatch(showCreateTrader(false))}
-        onClose={() => setPath("")}
-        newTheme={true}
-        persist={false}
-        size="medium"
-        state={page === "withdraw"}
-      >
-        <WalletWithdrawView
-          coins={coins}
-          balance={walletBalance ? walletBalance[coinParam] : null}
+      {page === "deposit" && (
+        <Modal
           onClose={() => setPath("")}
-          coin={coinParam}
-        />
-      </Modal>
+          newTheme={true}
+          persist={false}
+          size="medium"
+          state={true}
+        >
+          <WalletDepositView coins={coins} onClose={() => setPath("")} coin={coinParam} />
+        </Modal>
+      )}
+      {page === "withdraw" && (
+        <Modal
+          onClose={() => setPath("")}
+          newTheme={true}
+          persist={false}
+          size="medium"
+          state={true}
+        >
+          <WalletWithdrawView
+            coins={coins}
+            balance={walletBalance ? walletBalance[coinParam] : null}
+            onClose={() => setPath("")}
+            coin={coinParam}
+          />
+        </Modal>
+      )}
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
