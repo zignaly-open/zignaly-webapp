@@ -12,6 +12,7 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
   const forced = useRef(globalHistory.location.state?.forced);
+  const firstCheck = useRef(true);
 
   useEffect(() => {
     if (forced.current) {
@@ -22,16 +23,11 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       return;
     }
 
+    // Navigate to return url or dashboard if session is valid, and we got user data
     if (
-      !storeSession.tradeApi.accessToken ||
-      !storeSession.sessionData.validUntil ||
-      !storeUserData.userId
+      storeUserData.userId &&
+      verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)
     ) {
-      return;
-    }
-
-    // Navigate to return url or dashboard if session is valid
-    if (verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)) {
       const params = new URLSearchParams(window.location.search);
       let path = newUserPath || "/dashboard";
       if (params.get("ret")) {
@@ -46,10 +42,13 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       const pathPrefix = process.env.GATSBY_BASE_PATH || "";
       const pathWithoutPrefix = path.replace(pathPrefix, "");
       navigate(pathWithoutPrefix);
-    } else {
-      // Token not valid anymore
+    } else if (firstCheck.current) {
+      // The user navigated directly to the login page with an expired token.
+      // We need to clear it to avoid sending it in api calls automatically.
+      // Only check once at init, because calling /login can set userData before sessionData.
       dispatch(endTradeApiSession());
     }
+    firstCheck.current = false;
   }, [storeSession.sessionData, storeUserData.userId]);
 };
 
