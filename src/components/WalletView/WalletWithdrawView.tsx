@@ -83,7 +83,8 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
         networkName={networkOptions.find((o) => o.val === network).label}
         amount={withdrawData.amount}
         coin={coinData}
-        onClose={() => setWithdrawData(null)}
+        onClose={onClose}
+        onCancel={() => setWithdrawData(null)}
       />
     );
   }
