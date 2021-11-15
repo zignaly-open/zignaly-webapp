@@ -1,5 +1,5 @@
 interface User {
-  id: string;
+  userId: string;
   firstName: string;
   email: string;
   "2FAEnable": boolean;
@@ -28,7 +28,8 @@ interface Provider {
   profitMode?: string;
   profitSharing: boolean;
   isCopyTrading: boolean;
-  exchangeInternalIds: any[];
+  exchangeInternalId: string;
+  exchangeInternalIds: string[];
   followers: number;
   strategy: string;
   about: string;

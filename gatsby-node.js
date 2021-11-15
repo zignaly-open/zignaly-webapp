@@ -70,6 +70,9 @@ const svgCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg
 const cssCKEditorRegex = /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/;
 // const { StatsWriterPlugin } = require("webpack-stats-plugin");
 
+// RegExp.prototype.toJSON = function () {
+//   return this.source;
+// };
 exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   const config = getConfig();
 
@@ -77,7 +80,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
    * Modify gatsby generated webpack config to support building ckEditor from source.
    * https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/react.html#integrating-ckeditor-5-built-from-source
    */
-
   config.module.rules.forEach((rule) => {
     if (rule.oneOf) {
       rule.oneOf.forEach((subRule) => {
@@ -86,9 +88,8 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
           subRule.exclude.push(cssCKEditorRegex);
         }
       });
-    } else if (String(rule.test).includes("svg")) {
-      if (!rule.exclude) rule.exclude = [];
-      rule.exclude.push(svgCKEditorRegex);
+    } else if (String(rule.test).includes("|svg")) {
+      rule.exclude = [/\.inline\.svg$/, svgCKEditorRegex];
     }
   });
 
@@ -181,9 +182,6 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, getConfig }) => {
   };
   // eslint-disable-next-line no-console
   console.log("Webpack build config updated");
-  // RegExp.prototype.toJSON = function () {
-  //   return this.source;
-  // };
   // console.log(JSON.stringify(config.module.rules, null, 2));
   actions.replaceWebpackConfig(config);
 };
@@ -211,6 +209,12 @@ exports.onCreateBabelConfig = ({ actions }) => {
       },
     },
   });
+
+  // actions.setBabelPlugin({
+  //   name: "babel-plugin-formatjs",
+  //   options: {
+  //   },
+  // });
 
   if (process.env.NODE_ENV !== "production") {
     // Add istanbul plugin for code coverage

@@ -1,5 +1,4 @@
 import React from "react";
-import "./recover.scss";
 import ResetPasswordForm from "../../components/Forms/ResetPasswordForm";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";

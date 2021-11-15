@@ -18,6 +18,7 @@ describe("Signup", () => {
     // server = makeServer({ environment: "test" });
     cy.intercept("POST", "*/signup", { token: Cypress.env("token") });
     cy.intercept("POST", "*/user/verify_code/verify_email", "true");
+    cy.intercept("GET", "*/user/exchanges/*/historical_balance", { balances: [], quotes: [] });
 
     cy.visit("/signup");
   });
@@ -67,6 +68,29 @@ describe("Signup", () => {
     const user = makeFakeUser({ email, firstName });
     cy.mock();
     cy.mockSession(user);
+
+    const providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
+    cy.mockProviders(providers);
+
+    cy.url().should("eq", Cypress.config("baseUrl") + "/profitSharing");
+  });
+
+  it("asks for verification code", () => {
+    const email = "joe@example.com";
+    const password = "Pa839.rd#@?873";
+    const firstName = "Joe";
+
+    const user = makeFakeUser({ email, firstName });
+    cy.intercept("POST", "*/user/verify_code/verify_email", "true");
+    cy.mockSession(user);
+    cy.mock();
+
+    cy.get("[name=firstName]").type(firstName);
+    cy.get("[name=email]").type(email);
+    cy.get("[name=password]").type(password);
+    cy.get("[name=repeatPassword]").type(`${password}{enter}`);
+
+    cy.get(".MuiDialog-root").focused().type("000000");
 
     const providers = [...Array(10)].map(() => makeProvider({}, { type: "profitSharing" }));
     cy.mockProviders(providers);

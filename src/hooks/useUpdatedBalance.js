@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import tradeApi from "../services/tradeApiClient";
 import useInterval from "./useInterval";
 import useSelectedExchange from "hooks/useSelectedExchange";
@@ -9,36 +9,50 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  */
 
 /**
- * Provides balance summary for exchange.
+ * Load periodically balance in context
  *
- * @returns {UserBalanceEntity} Balance.
+ * @param {import("context/PrivateAreaContext").PrivateAreaContextObject} context
+ * @returns {void}
  */
-const useUpdatedBalance = () => {
+const useUpdatedBalance = (context) => {
   // const [balance, setBalance] = useState(createEmptyUserBalanceEntity());
-  const [balance, setBalance] = useState(null);
+  const { setBalance, setWalletBalance } = context;
   const selectedExchange = useSelectedExchange();
 
-  const showLoader = () => {
-    loadData();
-  };
+  // const [updatedAt, setUpdatedAt] = useState(null);
+  // const refreshBalance = () => {
+  //   setUpdatedAt(new Date());
+  // };
 
-  useEffect(showLoader, [selectedExchange.internalId]);
-
-  const loadData = () => {
+  const loadExchangeBalance = () => {
     if (selectedExchange.internalId) {
-      const payload = {
-        exchangeInternalId: selectedExchange.internalId,
-      };
-
-      tradeApi.userBalanceGet(payload).then((data) => {
-        setBalance(data);
-      });
+      tradeApi
+        .userBalanceGet({
+          exchangeInternalId: selectedExchange.internalId,
+        })
+        .then((data) => {
+          setBalance(data);
+        });
     }
   };
+  useEffect(loadExchangeBalance, [selectedExchange.internalId]);
 
-  useInterval(loadData, 60000, true);
+  const loadWalletBalance = () => {
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  };
+  useEffect(loadWalletBalance, []);
 
-  return balance;
+  // Update both balances every 60s
+  useInterval(
+    () => {
+      loadExchangeBalance();
+      loadWalletBalance();
+    },
+    60000,
+    false,
+  );
 };
 
 export default useUpdatedBalance;

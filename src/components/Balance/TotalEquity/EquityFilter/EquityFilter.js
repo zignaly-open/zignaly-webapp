@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./EquityFilter.scss";
 import { Box } from "@material-ui/core";
 import CustomSelect from "../../../CustomSelect";
 import { useIntl } from "react-intl";

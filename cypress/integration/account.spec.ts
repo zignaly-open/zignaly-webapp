@@ -15,7 +15,7 @@ describe("User Account", () => {
       totalLockedUSDT: 0,
       totalPnlBTC: 0,
       totalPnlUSDT: 0,
-    });
+    }).as("mockedBalance");
   };
 
   describe("Default exchange account with no funds and no providers connected", () => {
@@ -74,13 +74,15 @@ describe("User Account", () => {
 
   describe("Default exchange account with no funds but providers connected", () => {
     beforeEach(() => {
+      const exchange = makeExchange();
+
       const provider = makeProvider();
-      cy.mock({ connectedProviders: [provider] });
+      cy.mock({ connectedProviders: [provider], exchangeInternalId: exchange.internalId });
       mockNoFunds();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
       const user = makeFakeUser({
-        exchanges: [makeExchange()],
+        exchanges: [exchange],
       });
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
@@ -90,6 +92,7 @@ describe("User Account", () => {
     });
 
     it("doesn't render Add Funds button, render balance", () => {
+      // cy.wait("@mockedBalance");
       cy.contains(".header", /Balance/i).should("exist");
       cy.contains("a", /Add Funds/i).should("not.exist");
     });
@@ -119,7 +122,9 @@ describe("User Account", () => {
       cy.mock();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
-      const user = makeFakeUser({ exchanges: [makeExchange({ exchangeName: "Binance" })] });
+      const user = makeFakeUser({
+        exchanges: [makeExchange({ exchangeName: "Binance", internalName: "Binance" })],
+      });
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
           win.initialState = initialAuthData(user);
@@ -134,11 +139,13 @@ describe("User Account", () => {
   });
 
   describe("Multiple exchange accounts", () => {
+    let user: User;
+
     beforeEach(() => {
       cy.mock();
       cy.intercept("GET", "*/user/exchanges/*/positions?type=open", []);
 
-      const user = makeFakeUser();
+      user = makeFakeUser();
       cy.visit("/", {
         onBeforeLoad: (win: any) => {
           win.initialState = initialAuthData(user);
@@ -150,6 +157,16 @@ describe("User Account", () => {
       cy.contains(".header", /Balance/i).should("exist");
       // cy.get(".linksContainer a").should("not.exist");
       cy.contains("a", /Find traders/i).should("exist");
+    });
+
+    it("renders Invite Friend", () => {
+      const exchangeId = user.exchanges.find(
+        (e) => e.exchangeName.toLowerCase() === "binance",
+      ).internalId;
+      cy.window()
+        .its("store")
+        .invoke("dispatch", { type: "SET_SELECTED_EXCHANGE", payload: exchangeId });
+      cy.contains("button", /Invite a Friend/i).should("exist");
     });
   });
 });

@@ -1,5 +1,4 @@
 import React from "react";
-import "./disable2FA.scss";
 import ConfirmTwoFADisableForm from "../../components/Forms/ConfirmTwoFADisableForm";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";

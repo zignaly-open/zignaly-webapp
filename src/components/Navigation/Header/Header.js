@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { Box, Grow, Typography, Popper } from "@material-ui/core";
+import { Box, Grow, Typography, Popper, ClickAwayListener } from "@material-ui/core";
 import LogoWhite from "../../../images/logo/logoNW.svg";
 import LogoBlack from "../../../images/logo/logoNB.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";
@@ -23,6 +23,8 @@ import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
+import useSelectedExchange from "hooks/useSelectedExchange";
+import WalletButton from "./WalletButton";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -30,23 +32,25 @@ import { Link } from "gatsby";
  */
 
 const Header = () => {
+  const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
   const [anchorEl, setAnchorEl] = useState(undefined);
   const storeUserData = useStoreUserData();
   const dispatch = useDispatch();
-  const { profitSharingCount, balance } = useContext(PrivateAreaContext);
-
+  const { connectedProviders, balance, showInviteModal } = useContext(PrivateAreaContext);
+  const connectedProvidersCount = connectedProviders
+    ? connectedProviders.filter((p) =>
+        p.exchangeInternalIds.find((e) => e.internalId === selectedExchange.internalId),
+      ).length
+    : null;
   const hasFunds = balance?.totalUSDT + balance?.totalLockedUSDT > 0;
-  const hasConnectedProfitSharing = profitSharingCount > 0;
   const showBalance = storeSettings.balanceBox;
+  const balanceReady = balance && connectedProvidersCount !== null;
 
   let showAddFunds = false;
   let showFindTraders = false;
-  // const hasOnlyDefaultExchangeAccount =
-  //   exchangeConnections.length === 1 &&
-  //   exchangeConnections[0].exchangeName.toLowerCase() === "zignaly";
-  if (!hasConnectedProfitSharing) {
+  if (!connectedProvidersCount && selectedExchange.exchangeName.toLowerCase() === "zignaly") {
     if (!hasFunds) {
       showAddFunds = true;
     } else {
@@ -117,6 +121,13 @@ const Header = () => {
           />
         </Link>
       </Box>
+      {/* <div>
+        <FormattedMessage id="menu.profitSharing" />
+        <FormattedMessage id="menu.copytraders" />
+        <FormattedMessage id="menu.signals" />
+        <FormattedMessage id="menu.tradingterminal" />
+        <FormattedMessage id="menu.tradingservices" />
+      </div> */}
       <Box
         alignItems="center"
         className="linksContainer"
@@ -124,63 +135,72 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
+        {/* <HeaderBalance /> */}
         {exchangeConnections.length ? (
           <>
-            {!showAddFunds ? (
-              <Balance />
-            ) : (
-              <CustomButton className="textPurple" href="#exchangeAccounts">
-                <FormattedMessage id="accounts.addfunds" />
-              </CustomButton>
-            )}
-            {showFindTraders && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.findtraders" />
-              </CustomButton>
-            )}
-            {hasOnlyNonBrokerAccount && (
-              <CustomButton className="textPurple" component={Link} to="/profitSharing">
-                <FormattedMessage id="accounts.startps" />
-              </CustomButton>
+            {balanceReady && (
+              <>
+                {!showAddFunds ? (
+                  <>
+                    <Balance />
+                    {hasOnlyNonBrokerAccount ? (
+                      <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                        <FormattedMessage id="accounts.startps" />
+                      </CustomButton>
+                    ) : showFindTraders ? (
+                      <CustomButton className="textPurple" component={Link} to="/profitSharing">
+                        <FormattedMessage id="accounts.findtraders" />
+                      </CustomButton>
+                    ) : (
+                      <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
+                        <FormattedMessage id="accounts.invite" />
+                      </CustomButton>
+                    )}
+                  </>
+                ) : (
+                  <CustomButton className="textPurple" href="#exchangeAccounts">
+                    <FormattedMessage id="accounts.addfunds" />
+                  </CustomButton>
+                )}
+              </>
             )}
             {exchangeConnections.length > 1 && <UserExchangeList />}
+            <WalletButton />
           </>
         ) : (
           <CustomButton className="headerButton" href="#exchangeAccounts">
             <FormattedMessage id="menu.connectexchange" />
           </CustomButton>
         )}
-        <Box className="linkBox">
-          <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
-            <ProviderLogo
-              defaultImage={ProfileIcon}
-              size="32px"
-              title=""
-              url={storeUserData.imageUrl}
-              verified={storeUserData.verified}
-            />
-            <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+        <ClickAwayListener onClickAway={() => setAnchorEl(undefined)}>
+          <Box className="linkBox">
+            <Box className="iconOpen" onClick={(e) => setAnchorEl(e.currentTarget)}>
+              <ProviderLogo
+                defaultImage={ProfileIcon}
+                size="32px"
+                title=""
+                url={storeUserData.imageUrl}
+                verified={storeUserData.verified}
+              />
+              <img className="arrow" src={storeSettings.darkStyle ? DownIcon : DownIconPurple} />
+            </Box>
+            <Popper
+              anchorEl={anchorEl}
+              className="popper"
+              open={Boolean(anchorEl)}
+              placement="bottom-start"
+              transition
+            >
+              {({ TransitionProps }) => (
+                <Grow {...TransitionProps} timeout={350}>
+                  <Box bgcolor="grid.main" className="menuWrapper">
+                    <UserMenu onClose={() => setAnchorEl(undefined)} />
+                  </Box>
+                </Grow>
+              )}
+            </Popper>
           </Box>
-          <Popper
-            anchorEl={anchorEl}
-            className="popper"
-            open={Boolean(anchorEl)}
-            placement="bottom-start"
-            transition
-          >
-            {({ TransitionProps }) => (
-              <Grow {...TransitionProps} timeout={350}>
-                <Box
-                  bgcolor="grid.main"
-                  className="menuWrapper"
-                  onMouseLeave={() => setAnchorEl(undefined)}
-                >
-                  <UserMenu onClose={() => setAnchorEl(undefined)} />
-                </Box>
-              </Grow>
-            )}
-          </Popper>
-        </Box>
+        </ClickAwayListener>
       </Box>
     </Box>
   );

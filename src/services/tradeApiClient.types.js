@@ -319,6 +319,9 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} isUnknownDevice True if user needs to confirm new device connection
  * @property {boolean} disabled Account disabled due to too many incorrect login
  * @property {boolean} verified User identity verified
+ * @property {boolean} payFeeWithZig
+ * @property {string} refCode
+ * @property {'perpetual'|'oneTime'} refRewardType
  */
 
 /**
@@ -442,7 +445,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} ProvidersListPayload
- * @property {string} internalExchangeId
+ * @property {string} [internalExchangeId]
  */
 
 /**
@@ -819,8 +822,10 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserPayload
- * @property {string} userName
+ * @property {string} [userName]
  * @property {string} [imageUrl]
+ * @property {boolean} [payFeeWithZig]
+ * @property {string} [refRewardType]
  */
 
 /**
@@ -947,6 +952,9 @@ export function userEntityResponseTransform(response) {
     disabled: response.disabled,
     wall: response.wall || {},
     verified: false,
+    payFeeWithZig: response.payFeeWithZig,
+    refCode: response.refCode,
+    refRewardType: response.refRewardType || "perpetual",
   };
 }
 
@@ -2677,6 +2685,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {false} notificationsPosts Flag to turn on emails notifications when new posts are created.
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {string} userId
+ * @property {boolean} acceptZigFee
  */
 
 /**
@@ -2833,6 +2842,7 @@ function createEmptyProviderGetEntity() {
     profitsMode: "",
     exchangeInternalIds: [{}],
     verified: false,
+    acceptZigFee: false,
   };
 }
 

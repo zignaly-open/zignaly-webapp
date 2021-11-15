@@ -24,7 +24,10 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 const DashboardHeader = ({ path }) => {
   const selectedExchange = useSelectedExchange();
   let links = routesMapping(path).links;
-  const { providerCount } = useContext(PrivateAreaContext);
+  const { connectedProviders } = useContext(PrivateAreaContext);
+  const providerCount = connectedProviders?.filter(
+    (p) => p.exchangeInternalId === selectedExchange.internalId && p.type === "signalProvider",
+  ).length;
 
   if (providerCount > 0) {
     links.push({

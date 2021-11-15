@@ -348,7 +348,7 @@ class TradeApiClient {
    * @param {*} [payload] Request payload parameters object.
    * @param {string} [method] Request HTTP method, currently used only for cache purposes.
    * @param {number} [apiVersion] API to call (0=CF, 1=old, 2=new)
-   * @param {string} [token] Optional authentication token.
+   * @param {string|boolean} [token] Optional authentication token (false to force no token).
    * @returns {Promise<*>} Promise that resolves Trade API request response.
    *
    * @memberof TradeApiClient
@@ -361,12 +361,14 @@ class TradeApiClient {
     } else if (apiVersion === 0) {
       // Cloudflare url
       baseUrl = baseUrl.split("/new_api")[0];
+    } else if (apiVersion === 3) {
+      baseUrl = process.env.GATSBY_WALLETAPI_URL;
     }
 
     let requestUrl = baseUrl + endpointPath;
     let responseData = {};
 
-    const authToken = this.token || token;
+    const authToken = token !== false ? token || this.token : null;
 
     /**
      * @type {*}
@@ -460,7 +462,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    return this.doRequest("/login", payload, "POST", 2);
+    return this.doRequest("/login", payload, "POST", 2, false);
   }
 
   /**
@@ -578,7 +580,7 @@ class TradeApiClient {
   /**
    * Get providers connected by user.
    *
-   * @param {ProvidersListPayload} payload Get providers list payload.
+   * @param {ProvidersListPayload} [payload] Get providers list payload.
    * @returns {Promise<Array<HasBeenUsedProviderEntity>>} Promise that resolves providers collection.
    *
    * @memberof TradeApiClient
@@ -2396,6 +2398,101 @@ class TradeApiClient {
    */
   async unverifyUser() {
     return this.doRequest("/user/unverify", null, "POST");
+  }
+
+  /**
+   * Get wallet balance
+   *
+   * @returns {Promise<WalletBalance>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletBalance() {
+    return this.doRequest("/get-balance", null, "GET", 3);
+  }
+
+  /**
+   * Get coins
+   *
+   * @returns {Promise<WalletCoins>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletCoins() {
+    return this.doRequest("/get-currencies", null, "GET", 3);
+  }
+
+  /**
+   * Get deposit address for coin
+   *
+   * @param {string} network
+   * @param {string} coin
+   * @returns {Promise<WalletAddress>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletDepositAddress(network, coin) {
+    return this.doRequest(`/generate-address/${network}/currency/${coin}`, null, "POST", 3);
+  }
+
+  /**
+   * Get deposit history
+   *
+   * @returns {Promise<*>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletDepositsHistory() {
+    return this.doRequest("/get-deposits", null, "GET", 3);
+  }
+
+  /**
+   * Get transaction history
+   *
+   * @returns {Promise<TransactionsHistory[]>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getWalletTransactionsHistory() {
+    return this.doRequest("/get-operations", null, "GET", 3);
+  }
+
+  /**
+   * Coin conversion preview
+   *
+   * @param {{from: string, to: string, qty: number}} payload Payload
+   * @returns {Promise<ConvertPreviewRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async convertPreview(payload) {
+    return this.doRequest("/zig/convert-preview", payload, "POST", 2, false);
+  }
+
+  /**
+   * Get network fee
+   *
+   * @param {{network: string, currency: string}} payload Payload
+   * @returns {Promise<GetNetworkFeeRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getNetworkFee(payload) {
+    const { network, currency } = payload;
+    return this.doRequest(`/generate-fee/${network}/currency/${currency}`, null, "POST", 3);
+  }
+
+  /**
+   * Withdraw
+   *
+   * @param {WidthdrawReq} payload Payload
+   * @returns {Promise<GetNetworkFeeRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async walletWithdraw(payload) {
+    const { network, currency, ...data } = payload;
+    return this.doRequest(`/make-withdraw/${network}/currency/${currency}`, data, "POST", 3);
   }
 }
 

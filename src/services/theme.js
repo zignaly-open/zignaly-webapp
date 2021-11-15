@@ -169,6 +169,7 @@ export const colors = {
 const theme = (darkStyle) => {
   return {
     palette: {
+      type: darkStyle ? "dark" : "light",
       background: {
         default: darkStyle ? colors.lightBlack : colors.offWhite,
         paper: darkStyle ? colors.lighterBlack : colors.white,
@@ -185,8 +186,8 @@ const theme = (darkStyle) => {
       },
       text: {
         primary: darkStyle ? colors.lightWhite : colors.black,
+        secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
-      type: darkStyle ? "dark" : "light",
     },
     typography: {
       fontFamily: "PlexSans, Roboto, Helvetica, Arial, sans-serif",
@@ -360,6 +361,43 @@ const theme = (darkStyle) => {
         disableRipple: true,
       },
     },
+    newTheme: darkStyle
+      ? {
+          backgroundColor: "#12132d",
+          backgroundAltColor: "#222249",
+          secondaryText: "#9ca3af",
+          borderColor: "#1e1c4f",
+          green: "#26c4c1",
+          yellow: "#F7CF00",
+          red: "#F63F82",
+          error: "#F268C3",
+          linkText: "#829fff",
+        }
+      : {
+          backgroundColor: "#ffffff",
+          backgroundAltColor: "#e7e6f8",
+          // backgroundColor: "#dcdaf4",
+          secondaryText: "#6D6C96",
+          // borderColor: "#c1c2f7",
+          borderColor: "rgba(0, 0, 0, 0.1);",
+          green: "#2EC9C0",
+          yellow: "#C39713",
+          red: "#F63F82",
+          error: "#F268C3",
+          linkText: "#36A6F4",
+        },
+    transactionTable: darkStyle
+      ? {
+          headTextColor: "#f3f4f6",
+          headBackgroundColor: "#0C0D21",
+          border: "#222249",
+        }
+      : {
+          headTextColor: "#36373F",
+          // headBackgroundColor: "#CCCAEF",
+          headBackgroundColor: "#ffffff",
+          border: "rgba(0, 0, 0, 0.1)",
+        },
   };
 };
 

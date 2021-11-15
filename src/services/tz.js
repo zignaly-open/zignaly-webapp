@@ -1,5 +1,3 @@
-import { store } from "../store/store.js";
-
 /**
  * @typedef {Object} tzData
  * @property {string} action
@@ -29,23 +27,20 @@ const sendTz = (data) => {
 /**
  * Trigger internal tracking event.
  * @param {Location} location New location
- * @param {Location} prevLocation Previous location
+ * @param {String} prevLocation Previous location href
+ * @param {import("./tradeApiClient.types.js").UserEntity} userData
  * @returns {Promise<void>} Promise
  */
-export const triggerTz = async (location, prevLocation) => {
+export const triggerTz = async (location, prevLocation, userData) => {
   // Root page will be redirected
   if (location.pathname === "/") return;
-
-  const state = store.getState();
-  // @ts-ignore
-  const { isAdmin, userId } = state.user.userData;
-  if (isAdmin || process.env.GATSBY_ENABLE_TRACKING !== "true") return;
+  if (userData.isAdmin || process.env.GATSBY_ENABLE_TRACKING !== "true") return;
 
   const data = {
     action: "sData",
-    urlReferer: prevLocation ? prevLocation.href : document.referrer,
+    urlReferer: prevLocation || document.referrer,
     urlDestination: location.href,
-    userId,
+    userId: userData.userId,
     tid: localStorage.getItem("tid"),
   };
 
