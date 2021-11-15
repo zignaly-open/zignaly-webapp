@@ -27,7 +27,7 @@ const sendTz = (data) => {
 /**
  * Trigger internal tracking event.
  * @param {Location} location New location
- * @param {Location} prevLocation Previous location
+ * @param {String} prevLocation Previous location href
  * @param {import("./tradeApiClient.types.js").UserEntity} userData
  * @returns {Promise<void>} Promise
  */
@@ -38,7 +38,7 @@ export const triggerTz = async (location, prevLocation, userData) => {
 
   const data = {
     action: "sData",
-    urlReferer: prevLocation ? prevLocation.href : document.referrer,
+    urlReferer: prevLocation || document.referrer,
     urlDestination: location.href,
     userId: userData.userId,
     tid: localStorage.getItem("tid"),

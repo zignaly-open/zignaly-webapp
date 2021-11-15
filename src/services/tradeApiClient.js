@@ -456,7 +456,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userLogin(payload) {
-    return this.doRequest("/login", payload, "POST", 2);
+    return this.doRequest("/login", payload, "POST", 2, false);
   }
 
   /**
