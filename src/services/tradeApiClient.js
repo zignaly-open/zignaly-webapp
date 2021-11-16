@@ -43,8 +43,6 @@ import {
   providerFollowersCountResponseTransform,
   managementBalanceAndPositionsResponseTransform,
   assetsAndBalanceResponseTransform,
-  convertCoinPreviewResponseTransform,
-  quoteAssetFromBaseResponseTransform,
 } from "./tradeApiClient.types";
 
 /**
