@@ -151,7 +151,6 @@ import {
  * @typedef {import('./tradeApiClient.types').InternalTransferPayload} InternalTransferPayload
  * @typedef {import('./tradeApiClient.types').AssetsAndBalanceObject} AssetsAndBalanceObject
  * @typedef {import('./tradeApiClient.types').UserAllProviders} UserAllProviders
- *
  */
 
 /**
@@ -805,6 +804,42 @@ class TradeApiClient {
     );
 
     return exchangeAssetsResponseTransform(responseData);
+  }
+
+  /**
+   * Convert Coin Preview
+   *
+   * @param {ConvertCoinPreviewReq} payload Payload
+   * @returns {Promise<ConvertCoinPreviewRes>} Response
+   * @memberof TradeApiClient
+   */
+  async convertCoinPreview(payload) {
+    const { from } = payload;
+    return this.doRequest(`/${from}/convert-preview`, payload, "POST", 2, false);
+  }
+
+  /**
+   * Get quote assets from given base
+   *
+   * @param {string} base
+   * @returns {Promise<string[]>} Promise that resolves quotes
+   * @memberof TradeApiClient
+   */
+  async getQuoteAssetFromBase(base) {
+    const responseData = await this.doRequest(`/quote_assets/${base}`, null, "GET", 2);
+    return responseData[base].map(({ quote }) => quote);
+  }
+
+  /**
+   * Convert Coin
+   *
+   * @param {ConvertCoinReq} payload Payload
+   * @returns {Promise<ConvertCoinRes>} Response
+   * @memberof TradeApiClient
+   */
+  async convertCoin(payload) {
+    const { internalExchangeId, ...data } = payload;
+    return this.doRequest(`/user/exchanges/${internalExchangeId}/convert`, data, "POST", 2);
   }
 
   /**
