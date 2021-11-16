@@ -12,6 +12,7 @@ import { StyledCustomSelect } from "../WalletView/styles";
 import AmountControl from "components/WalletView/AmountControl";
 import useDebounce from "hooks/useDebounce";
 import NumberFormat from "react-number-format";
+import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 interface ConvertCoinFormProps {
   balance: string;
@@ -27,7 +28,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
     handleSubmit,
     control,
     errors,
-    formState: { isValid, isDirty },
+    formState: { isValid },
     setValue,
     watch,
   } = useForm({ mode: "onChange" });
@@ -52,8 +53,8 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       });
   }, [selectedBase]);
 
-  useEffect(() => {
-    if (!isValid || !isDirty) return;
+  useEffectSkipFirst(() => {
+    if (!isValid) return;
     setPreviewAmount(null);
     setPreviewLoading(true);
 
