@@ -6,7 +6,7 @@ export const TitleIcon = styled.img`
 `;
 
 export const StyledCustomSelect = styled.div`
-  /* margin-bottom: 24px; */
+  width: 100%;
 
   .selectLabel {
     font-weight: 600;
@@ -19,7 +19,8 @@ export const StyledCustomSelect = styled.div`
     align-items: flex-start;
   }
 
-  .customSelectControl {
+  .customSelectControl,
+  .searchRoot {
     width: 100%;
   }
 `;

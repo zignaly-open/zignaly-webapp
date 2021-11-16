@@ -37,3 +37,32 @@ interface WidthdrawReq {
   amount: string;
   fee: string;
 }
+
+interface ConvertCoinPreviewReq {
+  from: string;
+  to: string;
+  qty: string;
+}
+
+interface ConvertCoinReq {
+  internalExchangeId: string;
+  base: string;
+  quote: string;
+  qty: string;
+}
+
+interface ConvertCoinRes {
+  status: string;
+  filled: string;
+  remaining: string;
+  feeCost: string;
+  fee: string;
+  id: string;
+}
+
+interface ConvertCoinPreviewRes {
+  lastPrice: string;
+  pair: string;
+  side: string;
+  estimatedAmount: string;
+}
