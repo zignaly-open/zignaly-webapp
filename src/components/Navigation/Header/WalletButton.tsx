@@ -17,7 +17,7 @@ const TypographyBalance = styled(Typography)`
 `;
 
 const ZIG = styled.span`
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   font-weight: 600;
   font-size: 18px;
   margin-left: 4px;

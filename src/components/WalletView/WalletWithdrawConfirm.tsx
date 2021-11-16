@@ -56,14 +56,14 @@ const AmountBox = styled(Box)`
 `;
 
 const AmountLabel = styled(Typography)`
-  color: ${(props) => props.theme.newTheme.secondaryText};
+  color: ${(props) => props.theme.newTheme.purple};
   font-weight: 600;
   font-size: ${(props) => (props.big ? "20px" : "12px")};
   margin-bottom: 8px;
 `;
 
 const Coin = styled(Typography)`
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   margin-left: 4px;
   font-weight: 600;
   font-size: ${(props) => (props.big ? "32px" : "18px")};
