@@ -186,7 +186,6 @@ const theme = (darkStyle) => {
       },
       text: {
         primary: darkStyle ? colors.lightWhite : colors.black,
-        secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
     },
     typography: {
@@ -372,6 +371,7 @@ const theme = (darkStyle) => {
           red: "#F63F82",
           error: "#F268C3",
           linkText: "#829fff",
+          purple: colors.purpleLight,
         }
       : {
           backgroundColor: "#ffffff",
@@ -385,6 +385,7 @@ const theme = (darkStyle) => {
           red: "#F63F82",
           error: "#F268C3",
           linkText: "#36A6F4",
+          purple: colors.purple,
         },
     transactionTable: darkStyle
       ? {

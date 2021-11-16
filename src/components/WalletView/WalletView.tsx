@@ -62,8 +62,7 @@ const StyledPanel = styled(Panel)`
 `;
 
 const ZigBig = styled.span`
-  /* color: #9864ef; */
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 1px;

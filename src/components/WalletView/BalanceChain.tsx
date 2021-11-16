@@ -18,8 +18,7 @@ const BalanceText = styled.span`
 `;
 
 const Zig = styled.span`
-  /* color: #9864ef; */
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   font-size: 12px;
   letter-spacing: 1px;
   line-height: 16px;
