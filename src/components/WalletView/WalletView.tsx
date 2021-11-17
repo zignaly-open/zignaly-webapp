@@ -341,6 +341,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
     ),
     [tooltipOpen],
   );
+  console.log(walletBalance ? walletBalance.ZIG : null);
+  console.log(walletBalance);
 
   return (
     <Box p={5}>
@@ -365,7 +367,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         >
           <WalletWithdrawView
             coins={coins}
-            balance={walletBalance ? walletBalance[coinParam] : null}
+            balance={walletBalance ? walletBalance[coinParam] || {} : null}
             onClose={() => setPath("")}
             coin={coinParam}
           />
