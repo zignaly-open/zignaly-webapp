@@ -7,6 +7,9 @@ import { FormattedMessage } from "react-intl";
 import Modal from "components/Modal";
 import ConvertCoinForm from "components/Forms/ConvertCoinForm";
 import { ExchangeAsset } from "services/tradeApiClient.types";
+import useSelectedExchange from "hooks/useSelectedExchange";
+import { MUIDataTableColumn } from "components/Table/Table";
+import { MUIDataTableOptions } from "mui-datatables";
 
 interface CoinData {
   coin: string;
@@ -26,11 +29,9 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
     .filter((c) => parseFloat(c.balanceFree))
     .map((c) => c.coin)
     .sort((a, b) => a.localeCompare(b));
+  const selectedExchange = useSelectedExchange();
 
-  /**
-   * @type {Array<MUIDataTableColumn>} Table columns
-   */
-  let columns = [
+  let columns: MUIDataTableColumn[] = [
     {
       name: "coin",
       label: "col.coins.coin",
@@ -74,7 +75,13 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
         customBodyRender: formatFloat,
       },
     },
-    {
+  ];
+
+  if (
+    selectedExchange.exchangeName.toLowerCase() === "zignaly" &&
+    selectedExchange.exchangeType === "spot"
+  ) {
+    columns.push({
       name: "coin",
       label: "col.actions",
       options: {
@@ -95,13 +102,10 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
           );
         },
       },
-    },
-  ];
+    });
+  }
 
-  /**
-   * @type {MUIDataTableOptions}
-   */
-  const options = {
+  const options: MUIDataTableOptions = {
     sortOrder: {
       name: "balanceTotalBTC",
       direction: "desc",
@@ -122,6 +126,9 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
             bases={coinsOptions}
             base={convertCoin.coin}
             balance={convertCoin.balance}
+            onClose={() => {
+              setConvertCoin(null);
+            }}
           />
         </Modal>
       )}
