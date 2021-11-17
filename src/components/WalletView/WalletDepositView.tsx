@@ -102,7 +102,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
         </Box>
       </Title>
       <TextDesc>
-        <FormattedMessage id="wallet.deposit.desc" values={{ selectedCoin }} />
+        <FormattedMessage id="wallet.deposit.desc" values={{ coin: selectedCoin }} />
       </TextDesc>
       {!coin && (
         <StyledCustomSelect>
