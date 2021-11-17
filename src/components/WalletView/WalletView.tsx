@@ -341,8 +341,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
     ),
     [tooltipOpen],
   );
-  console.log(walletBalance ? walletBalance.ZIG : null);
-  console.log(walletBalance);
 
   return (
     <Box p={5}>
