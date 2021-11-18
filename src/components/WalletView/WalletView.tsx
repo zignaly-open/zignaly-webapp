@@ -263,7 +263,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const page = pathParams[0];
   const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const balanceZIG = walletBalance?.ZIG?.total || "0";
+  const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
