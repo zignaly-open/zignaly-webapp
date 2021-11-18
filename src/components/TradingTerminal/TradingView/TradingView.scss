@@ -52,21 +52,36 @@
   .tradingViewChart {
     flex: 0 0 calc(70% - 15px);
     margin-right: 15px;
+    text-align: center;
 
-    @include media("<=sm") {
-      flex: 0 0 100%;
-      height: 400px;
-      margin-bottom: 15px;
-      margin-right: 0;
+    p {
+      margin-bottom: 10px;
     }
 
-    @include media(">=lg") {
-      flex: 0 0 calc(75% - 15px);
-      height: calc(100vh - 300px);
+    a {
+      font-size: 11px;
+      color: inherit;
+      text-decoration: none;
     }
 
-    @include media(">=xl") {
-      flex: 0 0 calc(80% - 15px);
+    #trading_view_chart {
+      margin-bottom: 14px;
+
+      @include media("<=sm") {
+        flex: 0 0 100%;
+        height: 400px;
+        margin-bottom: 15px;
+        margin-right: 0;
+      }
+
+      @include media(">=lg") {
+        flex: 0 0 calc(75% - 15px);
+        height: calc(100vh - 300px);
+      }
+
+      @include media(">=xl") {
+        flex: 0 0 calc(80% - 15px);
+      }
     }
   }
 
