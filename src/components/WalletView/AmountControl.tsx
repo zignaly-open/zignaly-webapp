@@ -89,23 +89,27 @@ const AmountControl = ({
           &nbsp;{coin}
         </BalanceLabel>
       </Box>
-      <Box display="flex">
-        <SecondaryText>
-          <FormattedMessage id="wallet.locked" />
-        </SecondaryText>
-        <BalanceLabel>
-          <NumberFormat
-            value={lockedBalance}
-            displayType="text"
-            thousandSeparator={true}
-            decimalScale={decimals}
-          />
-          &nbsp;{coin}
-        </BalanceLabel>
-      </Box>
-      <Typography style={{ marginTop: "18px" }} color="textSecondary">
-        <FormattedMessage id="wallet.locked.desc" />
-      </Typography>
+      {lockedBalance > 0 && (
+        <>
+          <Box display="flex">
+            <SecondaryText>
+              <FormattedMessage id="wallet.locked" />
+            </SecondaryText>
+            <BalanceLabel>
+              <NumberFormat
+                value={lockedBalance}
+                displayType="text"
+                thousandSeparator={true}
+                decimalScale={decimals}
+              />
+              &nbsp;{coin}
+            </BalanceLabel>
+          </Box>
+          <Typography style={{ marginTop: "18px" }} color="textSecondary">
+            <FormattedMessage id="wallet.locked.desc" />
+          </Typography>
+        </>
+      )}
     </FormControl>
   );
 };
