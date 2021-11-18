@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";
@@ -233,7 +233,20 @@ const TradingView = () => {
                 <CircularProgress disableShrink />
               </Box>
             )}
-            <div className="tradingViewChart" id="trading_view_chart" />
+            <Box className="tradingViewChart">
+              <div id="trading_view_chart" />
+              {!isLoading && (
+                <Typography color="textSecondary">
+                  <a
+                    href={`https://www.tradingview.com/symbols/${selectedSymbol.tradeViewSymbol}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {selectedSymbol.symbol} by TradingView
+                  </a>
+                </Typography>
+              )}
+            </Box>
             {!isLoading && !isLastPriceLoading && lastPrice && (
               <StrategyForm
                 lastPrice={lastPrice}
