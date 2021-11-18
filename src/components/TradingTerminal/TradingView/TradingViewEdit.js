@@ -345,7 +345,20 @@ const TradingViewEdit = (props) => {
                 <CircularProgress disableShrink />
               </Box>
             )}
-            <Box className="tradingViewChart" id="trading_view_chart" />
+            <Box className="tradingViewChart">
+              <div id="trading_view_chart" />
+              {!isLoading && (
+                <Typography color="textSecondary">
+                  <a
+                    href={`https://www.tradingview.com/symbols/${selectedSymbol.tradeViewSymbol}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {selectedSymbol.symbol} by TradingView
+                  </a>
+                </Typography>
+              )}
+            </Box>
             {!isLoading && (
               <StrategyForm
                 lastPrice={lastPrice}
