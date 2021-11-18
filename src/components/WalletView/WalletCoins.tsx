@@ -73,7 +73,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
     [],
   );
 
-  const makeData = (coin: string, network: string, networkBalance: string) => {
+  const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
     const networkData = coinData?.networks.find((n) => n.network === network);
 
@@ -85,7 +85,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
             <Box display="flex" alignItems="center" mb="4px">
               <TypographyAmount>
                 <NumberFormat
-                  value={networkBalance}
+                  value={networkBalance.balance}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={coinData?.decimals}
@@ -104,7 +104,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
               <Typography style={{ fontWeight: 600 }}>
                 <NumberFormat
                   prefix="$"
-                  value={parseFloat(networkBalance) * coinData.usdPrice}
+                  value={parseFloat(networkBalance.balance) * coinData.usdPrice}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={2}

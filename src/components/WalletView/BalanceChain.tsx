@@ -30,7 +30,12 @@ const ChevronRightStyled = styled(ChevronRight)`
   cursor: pointer;
 `;
 
-const BalanceChain = ({ walletBalance, coins }) => {
+interface BalanceChainProps {
+  walletBalance: WalletBalance;
+  coins: WalletCoins;
+}
+
+const BalanceChain = ({ walletBalance, coins }: BalanceChainProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event: React.MouseEvent<any>) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +52,7 @@ const BalanceChain = ({ walletBalance, coins }) => {
 
   // Get 1st chain with coins
   const chainWithCoin = networks.find((key) => {
-    return walletBalance.ZIG[key] > 0;
+    return parseFloat(walletBalance.ZIG[key].balance) > 0;
   });
   if (!chainWithCoin) return null;
 
@@ -56,7 +61,7 @@ const BalanceChain = ({ walletBalance, coins }) => {
       <img width={20} height={20} src={getChainIcon(chainWithCoin)} title={chainWithCoin} />
       <BalanceText>
         <NumberFormat
-          value={walletBalance.ZIG[chainWithCoin] || 0}
+          value={walletBalance.ZIG[chainWithCoin]?.balance || 0}
           thousandSeparator={true}
           displayType="text"
         />
