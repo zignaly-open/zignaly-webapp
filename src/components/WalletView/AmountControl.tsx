@@ -28,7 +28,7 @@ const BalanceLabel = styled(Typography)`
 interface AmountControlProps {
   errors: any;
   control: any;
-  balance: string;
+  balance: BalanceData;
   decimals?: number;
   setBalanceMax: () => void;
   coin: string;
@@ -79,7 +79,7 @@ const AmountControl = ({
         </SecondaryText>
         <BalanceLabel>
           <NumberFormat
-            value={balance}
+            value={balance.availableBalance}
             displayType="text"
             thousandSeparator={true}
             decimalScale={decimals}
