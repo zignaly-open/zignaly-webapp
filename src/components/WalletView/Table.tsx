@@ -112,13 +112,6 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
               {row.isExpanded ? (
                 <tr>
                   <td colSpan={visibleColumns.length} style={{ border: "none" }}>
-                    {/*
-                      Inside it, call our renderRowSubComponent function. In reality,
-                      you could pass whatever you want as props to
-                      a component like this, including the entire
-                      table instance. But for this example, we'll just
-                      pass the row
-                    */}
                     {renderRowSubComponent({ row })}
                   </td>
                 </tr>
