@@ -68,7 +68,8 @@ const AmountControl = ({
           validate: {
             min: (value) => value > 0 || intl.formatMessage({ id: "form.error.withdraw.min" }),
             max: (value) =>
-              value <= balance || intl.formatMessage({ id: "form.error.withdraw.max" }),
+              value <= parseFloat(balance.availableBalance) ||
+              intl.formatMessage({ id: "form.error.withdraw.max" }),
             // step: checkDecimals,
           },
         }}
