@@ -116,6 +116,7 @@ const WalletWithdrawConfirm = ({
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
 
   const loadFee = () => {
     tradeApi
@@ -213,7 +214,7 @@ const WalletWithdrawConfirm = ({
               <FormattedMessage id="wallet.withdraw.receive" />
             </AmountLabel>
             {fee ? (
-              <CoinAmount big={true} value={parseFloat(amount) - parseFloat(fee.floatFee)} />
+              <CoinAmount big={true} value={amountReceived} />
             ) : (
               <CircularProgress size={21} style={{ margin: "0 auto" }} />
             )}
@@ -222,7 +223,12 @@ const WalletWithdrawConfirm = ({
             <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
             </Button>
-            <Button className="bgPurple" onClick={withdraw} disabled={!fee} loading={loading}>
+            <Button
+              className="bgPurple"
+              onClick={withdraw}
+              disabled={amountReceived <= 0}
+              loading={loading}
+            >
               <FormattedMessage id="wallet.withdraw.now" />
             </Button>
           </Box>
