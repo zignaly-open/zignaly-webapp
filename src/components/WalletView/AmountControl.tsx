@@ -45,7 +45,7 @@ const AmountControl = ({
   label = "withdraw.amount",
 }: AmountControlProps) => {
   const intl = useIntl();
-  const lockedBalance = parseFloat(balance.balance) - parseFloat(balance.availableBalance);
+  const lockedBalance = balance.balance - balance.availableBalance;
 
   return (
     <FormControl error={Boolean(errors.amount)} fullWidth>
@@ -66,9 +66,10 @@ const AmountControl = ({
         rules={{
           // required: true,
           validate: {
-            min: (value) => value > 0 || intl.formatMessage({ id: "form.error.withdraw.min" }),
+            min: (value) =>
+              parseFloat(value) > 0 || intl.formatMessage({ id: "form.error.withdraw.min" }),
             max: (value) =>
-              value <= parseFloat(balance.availableBalance) ||
+              parseFloat(value) <= balance.availableBalance ||
               intl.formatMessage({ id: "form.error.withdraw.max" }),
             // step: checkDecimals,
           },

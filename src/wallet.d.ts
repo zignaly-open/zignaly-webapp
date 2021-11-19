@@ -25,7 +25,7 @@ interface WalletAddress {
 }
 
 interface BalanceData {
-  balance: string;
-  availableBalance: string;
+  balance: number;
+  availableBalance: number;
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
