@@ -37,7 +37,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
     : [];
   const [network, setNetwork] = useState("");
-  const balanceAmount = (balance && balance[network]) || 0;
+  const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
   const {
