@@ -27,7 +27,7 @@ const Button = styled(CustomButton)`
 interface WalletDepositViewProps {
   coins: WalletCoins;
   coin: string;
-  balance: Record<string, string>;
+  balance: Record<string, BalanceData>;
   onClose: () => void;
 }
 
