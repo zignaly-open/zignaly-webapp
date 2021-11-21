@@ -22,6 +22,10 @@ interface ConvertCoinFormProps {
 }
 
 const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps) => {
+  const balanceData: BalanceData = {
+    availableBalance: parseFloat(balance),
+    balance: parseFloat(balance),
+  };
   const [loading, setLoading] = useState(false);
   const [quotes, setQuotes] = useState([]);
   const {
@@ -44,7 +48,10 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
 
   useEffect(() => {
     tradeApi
-      .getQuoteAssetFromBase(selectedBase)
+      .getQuoteAssetFromBase({
+        base: selectedBase,
+        internalExchangeId: selectedExchange.internalId,
+      })
       .then((response) => {
         setQuotes(response);
       })
@@ -80,8 +87,8 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
     tradeApi
       .convertCoin({
         internalExchangeId: selectedExchange.internalId,
-        base: selectedBase,
-        quote: selectedQuote,
+        from: selectedBase,
+        to: selectedQuote,
         qty: amount,
       })
       .then(() => {
@@ -150,7 +157,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
           </Box>
 
           <AmountControl
-            balance={balance}
+            balance={balanceData}
             setBalanceMax={setBalanceMax}
             errors={errors}
             control={control}
