@@ -39,7 +39,7 @@ const CopyButton = styled.img`
 const QRCodeContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 68px;
+  margin-top: 48px;
 
   ${isMobile(`
     margin: 34px 40px;
@@ -89,10 +89,6 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
     }
   }, [network]);
 
-  const copyAddress = () => {
-    copyToClipboard(address?.address, "deposit.address.copied");
-  };
-
   return (
     <Modal p={5}>
       <Title>
@@ -127,6 +123,31 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
         </StyledCustomSelect>
         {network && <NetworkCautionMessage network={network} coin={selectedCoin} />}
       </Box>
+      {address?.memo && (
+        <>
+          <Label style={{ marginTop: "24px" }}>
+            <FormattedMessage id="withdraw.memo" />
+          </Label>
+          <OutlinedInput
+            className="customInput"
+            readOnly
+            value={address.memo}
+            endAdornment={
+              <CopyButton
+                alt="copy"
+                className="copy"
+                onClick={() => copyToClipboard(address.memo, "deposit.memo.copied")}
+                src={CopyIcon}
+                width={24}
+                height={24}
+              />
+            }
+          />
+          <QRCodeContainer>
+            <QRCode size={200} value={address.memo} />
+          </QRCodeContainer>
+        </>
+      )}
       <Label style={{ marginTop: "24px" }}>
         <FormattedMessage id="deposit.address" />
       </Label>
@@ -140,7 +161,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
               <CopyButton
                 alt="copy"
                 className="copy"
-                onClick={copyAddress}
+                onClick={() => copyToClipboard(address.address, "deposit.address.copied")}
                 src={CopyIcon}
                 width={24}
                 height={24}
@@ -149,14 +170,6 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           />
           <QRCodeContainer>
             <QRCode size={200} value={address.address} />
-            {/* {address.tag && (
-        <Box className="qrCode">
-          <Typography variant="body1">
-            {address.currency} <FormattedMessage id="withdraw.memo" />
-          </Typography>
-          <QRCode value={address.tag} />
-        </Box>
-      )} */}
           </QRCodeContainer>
         </>
       ) : (
