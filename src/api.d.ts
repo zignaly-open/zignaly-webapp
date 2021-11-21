@@ -46,8 +46,8 @@ interface ConvertCoinPreviewReq {
 
 interface ConvertCoinReq {
   internalExchangeId: string;
-  base: string;
-  quote: string;
+  from: string;
+  to: string;
   qty: string;
 }
 
@@ -65,4 +65,9 @@ interface ConvertCoinPreviewRes {
   pair: string;
   side: string;
   estimatedAmount: string;
+}
+
+interface GetQuoteAssetFromBaseReq {
+  internalExchangeId: string;
+  base: string;
 }
