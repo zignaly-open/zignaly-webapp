@@ -15,6 +15,8 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
   const firstCheck = useRef(true);
 
   useEffect(() => {
+    firstCheck.current = false;
+
     if (forced.current) {
       // Token was marked as expired, clear it here.
       forced.current = false;
@@ -48,7 +50,6 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       // Only check once at init, because calling /login can set userData before sessionData.
       dispatch(endTradeApiSession());
     }
-    firstCheck.current = false;
   }, [storeSession.sessionData, storeUserData.userId]);
 };
 
