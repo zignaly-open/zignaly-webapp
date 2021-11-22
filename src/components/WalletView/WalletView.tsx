@@ -16,7 +16,6 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-  IconButton,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
@@ -36,6 +35,7 @@ import WalletWithdrawView from "./WalletWithdrawView";
 import WalletCoins from "./WalletCoins";
 import { Rate } from "./styles";
 import CoinIcon from "./CoinIcon";
+import VaultOfferModal from "./VaultOfferModal";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -284,6 +284,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
+  const [selectedVault, setSelectedVault] = useState<Vault>(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -389,6 +390,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           />
         </Modal>
       )}
+      {selectedVault && (
+        <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
+      )}
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
@@ -483,7 +487,12 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             <Box mt={1} display="flex" flexDirection="column">
               {vaults.slice(0, 4).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
-                  <VaultListItem display="flex" key={v.id} alignItems="center">
+                  <VaultListItem
+                    display="flex"
+                    key={v.id}
+                    alignItems="center"
+                    onClick={() => setSelectedVault(v)}
+                  >
                     <Box display="flex">
                       <CoinIcon coin={v.coinReward} width={20} height={20} />
                       <NeutralText>
