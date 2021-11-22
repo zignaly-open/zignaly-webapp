@@ -502,7 +502,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                         />
                       </NeutralText>
                     </Box>
-                    <ChevronRight />
+                    <ChevronRightStyled />
                   </VaultListItem>
                   <VaultDivider />
                 </Box>

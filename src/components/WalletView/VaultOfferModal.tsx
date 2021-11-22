@@ -27,6 +27,12 @@ const ItemValue = styled.span`
   color: ${(props) => props.theme.palette.text.primary};
 `;
 
+const SecondaryText = styled.span`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  font-size: 14px;
+  font-style: italic;
+`;
+
 interface CompoundingTextProps {
   compounding: boolean;
 }
@@ -152,7 +158,9 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
                 <FormattedMessage id="general.yes" />
               </CompoundingText>
               &nbsp;
-              <FormattedMessage id="wallet.staking.offer.compounding.info" />
+              <SecondaryText>
+                <FormattedMessage id="wallet.staking.offer.compounding.info" />
+              </SecondaryText>
             </ItemValue>
           </ListItem>
         </ul>
