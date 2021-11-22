@@ -1737,6 +1737,16 @@ wall.write.banned: "You are not allowed to comment"
 wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
+# VAULT
+vault.rewardsRemaning: "Rewards Pool Remaining"
+vault.offer: "Offer"
+vault.minBalance: "Min Balance"
+vault.earn: "Earn"
+vault.starts: "Starts"
+vault.ends: "Starts"
+vault.terms: "Terms"
+vault.title: "ZIG Vault"
+
 # WALLET
 wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"
@@ -1759,7 +1769,7 @@ wallet.locked.desc: "Zig Coins related to the Referral program cannot be withdra
 wallet.totalbalance: "Total ZIG Balance"
 wallet.rewards: "Rewards & Savings"
 wallet.staking: "ZIG Staking Vault"
-wallet.staking.earn: "Earn {reward} on {coin} balances over ${amount}"
+wallet.staking.earn: "Earn {reward} on balances over {amount} {coin}"
 wallet.staking.offer.title: "VAULT OFFER TERMS"
 wallet.staking.offer.desc: "Hold {coin} and earn {reward}"
 wallet.staking.offer.minDeposit: "Minimum deposit:"

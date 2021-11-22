@@ -35,6 +35,7 @@ interface Vault {
   minDeposit: number;
   maxDeposit: number;
   startDate: string;
+  endDate: string;
   lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;

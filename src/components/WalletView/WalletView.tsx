@@ -35,7 +35,7 @@ import WalletWithdrawView from "./WalletWithdrawView";
 import WalletCoins from "./WalletCoins";
 import { Rate } from "./styles";
 import CoinIcon from "./CoinIcon";
-import VaultOfferModal from "./VaultOfferModal";
+import VaultOfferModal from "./Vault/VaultOfferModal";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -394,10 +394,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
       )}
       <Title>
-        <Box alignItems="center" display="flex">
-          <img src={WalletIcon} width={40} height={40} />
-          <FormattedMessage id="wallet.zig" />
-        </Box>
+        <img src={WalletIcon} width={40} height={40} />
+        <FormattedMessage id="wallet.zig" />
       </Title>
       <StyledPanel>
         <PanelItem row>
@@ -507,7 +505,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} onClick={() => setPath("deposit")}>
+              <VaultButton endIcon={<ChevronRight />} href="#vault">
                 <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
               </VaultButton>
             </Box>
@@ -517,11 +515,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
       <Box mt="40px">
         <WalletCoins coins={coins} walletBalance={walletBalance} setPath={setPath} />
       </Box>
-      <Title>
-        <Box alignItems="center" display="flex" mt="64px">
-          <img src={ListIcon} width={40} height={40} />
-          <FormattedMessage id="wallet.transactions" />
-        </Box>
+      <Title style={{ marginTop: "64px" }}>
+        <img src={ListIcon} width={40} height={40} />
+        <FormattedMessage id="wallet.transactions" />
       </Title>
       <WalletTransactions />
     </Box>

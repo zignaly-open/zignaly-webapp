@@ -92,10 +92,8 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   return (
     <Modal p={5}>
       <Title>
-        <Box alignItems="center" display="flex">
-          <img src={WalletIcon} width={40} height={40} />
-          <FormattedMessage id="accounts.deposit" /> {selectedCoin}
-        </Box>
+        <img src={WalletIcon} width={40} height={40} />
+        <FormattedMessage id="accounts.deposit" /> {selectedCoin}
       </Title>
       <TextDesc>
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: selectedCoin }} />

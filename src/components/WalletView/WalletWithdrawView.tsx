@@ -84,10 +84,8 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
       {balance ? (
         <>
           <Title>
-            <Box alignItems="center" display="flex">
-              <img src={WalletIcon} width={40} height={40} />
-              <FormattedMessage id="wallet.type.withdraw" /> {coin}
-            </Box>
+            <img src={WalletIcon} width={40} height={40} />
+            <FormattedMessage id="wallet.type.withdraw" /> {coin}
           </Title>
           <form onSubmit={handleSubmit(submitForm)}>
             <TextDesc>

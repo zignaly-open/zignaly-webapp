@@ -66,10 +66,8 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal p={5}>
         <Title>
-          <Box alignItems="center" display="flex">
-            <img src={PiggyIcon} width={40} height={40} />
-            <FormattedMessage id="wallet.staking.offer.title" />
-          </Box>
+          <img src={PiggyIcon} width={40} height={40} />
+          <FormattedMessage id="wallet.staking.offer.title" />
         </Title>
         <TitleDesc>
           <FormattedMessage id="wallet.staking.offer.desc" values={{ coin, reward: coinReward }} />

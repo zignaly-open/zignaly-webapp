@@ -20,6 +20,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import useUpdatedBalance from "hooks/useUpdatedBalance";
 import tradeApi from "services/tradeApiClient";
 import InviteModal from "components/Navigation/Header/InviteModal";
+import VaultsView from "components/WalletView/Vault/VaultView";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -69,6 +70,7 @@ const PrivateAreaLayout = (props) => {
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
       <GlobalModal content={WalletView} hash="wallet" newTheme={true} showCloseIcon={true} />
+      <GlobalModal content={VaultsView} hash="vault" newTheme={true} showCloseIcon={true} />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>

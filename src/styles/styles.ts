@@ -11,9 +11,11 @@ export const Title = styled.div`
   letter-spacing: 1px;
   margin-bottom: 21px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
 
   img {
-    margin-right: 4px;
+    margin-right: 10px;
   }
 `;
 
