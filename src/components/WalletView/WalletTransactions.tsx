@@ -320,7 +320,6 @@ const WalletTransactions = () => {
   useEffect(() => {
     tradeApi.getWalletTransactionsHistory().then((response) => {
       setTransactions(response);
-      // console.log(response);
     });
   }, []);
 

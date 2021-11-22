@@ -56,14 +56,14 @@ const AmountBox = styled(Box)`
 `;
 
 const AmountLabel = styled(Typography)`
-  color: ${(props) => props.theme.newTheme.secondaryText};
+  color: ${(props) => props.theme.newTheme.purple};
   font-weight: 600;
   font-size: ${(props) => (props.big ? "20px" : "12px")};
   margin-bottom: 8px;
 `;
 
 const Coin = styled(Typography)`
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   margin-left: 4px;
   font-weight: 600;
   font-size: ${(props) => (props.big ? "32px" : "18px")};
@@ -99,12 +99,15 @@ interface WalletWithdrawConfirmProps {
   network: string;
   networkName: string;
   coin: WalletCoin;
+  onClose: () => void;
+  onCancel: () => void;
 }
 
 const WalletWithdrawConfirm = ({
   address,
   amount,
   onClose,
+  onCancel,
   network,
   networkName,
   coin,
@@ -113,6 +116,7 @@ const WalletWithdrawConfirm = ({
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
 
   const loadFee = () => {
     tradeApi
@@ -210,22 +214,27 @@ const WalletWithdrawConfirm = ({
               <FormattedMessage id="wallet.withdraw.receive" />
             </AmountLabel>
             {fee ? (
-              <CoinAmount big={true} value={parseFloat(amount) - parseFloat(fee.floatFee)} />
+              <CoinAmount big={true} value={amountReceived} />
             ) : (
               <CircularProgress size={21} style={{ margin: "0 auto" }} />
             )}
           </AmountBox>
           <Box display="flex" flexDirection="row" mt="64px">
-            <Button className="textPurple borderPurple" onClick={onClose}>
+            <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
             </Button>
-            <Button className="bgPurple" onClick={withdraw} disabled={!fee} loading={loading}>
+            <Button
+              className="bgPurple"
+              onClick={withdraw}
+              disabled={amountReceived <= 0}
+              loading={loading}
+            >
               <FormattedMessage id="wallet.withdraw.now" />
             </Button>
           </Box>
         </>
       ) : (
-        <Box display="flex" flexDirection="row" mt="64px">
+        <Box display="flex" flexDirection="row" mt="8px">
           <Button className="bgPurple" onClick={onClose}>
             {/* <FormattedMessage id="wallet.withdraw.view" /> */}
             <FormattedMessage id="accounts.done" />

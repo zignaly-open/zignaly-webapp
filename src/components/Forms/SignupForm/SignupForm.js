@@ -140,6 +140,10 @@ const SignupForm = () => {
                   value: 3,
                   message: intl.formatMessage({ id: "form.error.firstname.length" }),
                 },
+                maxLength: {
+                  value: 20,
+                  message: intl.formatMessage({ id: "form.error.firstname.maxlength" }),
+                },
               })}
               name="firstName"
               type="text"

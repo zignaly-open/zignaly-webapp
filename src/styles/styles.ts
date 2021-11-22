@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { Box, Typography } from "@material-ui/core";
 
+export const isMobile = (query) => {
+  return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
+};
+
 export const Title = styled.div`
   font-size: 18px;
   font-weight: bold;
@@ -45,6 +49,11 @@ export const TextDesc = styled(Typography)`
   font-size: 16px;
   letter-spacing: 0.33px;
   /* line-height: 20px; */
+  margin-bottom: 64px;
+
+  ${isMobile(`
+    margin-bottom: 32px;
+  `)}
 `;
 
 export const Label = styled(Typography)`
@@ -60,7 +69,3 @@ export const AlignCenter = styled.div`
   justify-content: ${(props) => props.justifyContent || "center"};
   flex-direction: ${(props) => props.direction || "row"};
 `;
-
-export const isMobile = (query) => {
-  return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
-};

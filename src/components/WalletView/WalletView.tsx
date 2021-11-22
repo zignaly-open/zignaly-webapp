@@ -62,8 +62,7 @@ const StyledPanel = styled(Panel)`
 `;
 
 const ZigBig = styled.span`
-  /* color: #9864ef; */
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -260,8 +259,11 @@ const StyledInfoIcon = styled.img`
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
+  const pathParams = path.split("/");
+  const page = pathParams[0];
+  const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const balanceZIG = walletBalance?.ZIG?.total || "0";
+  const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
@@ -341,30 +343,33 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <Box p={5}>
-      <Modal
-        // onClose={() => dispatch(showCreateTrader(false))}
-        onClose={() => setPath("")}
-        newTheme={true}
-        persist={false}
-        size="medium"
-        state={path === "deposit"}
-      >
-        <WalletDepositView coins={coins} onClose={() => setPath("")} />
-      </Modal>
-      <Modal
-        // onClose={() => dispatch(showCreateTrader(false))}
-        onClose={() => setPath("")}
-        newTheme={true}
-        persist={false}
-        size="medium"
-        state={path === "withdraw"}
-      >
-        <WalletWithdrawView
-          coins={coins}
-          balance={walletBalance?.ZIG}
+      {page === "deposit" && (
+        <Modal
           onClose={() => setPath("")}
-        />
-      </Modal>
+          newTheme={true}
+          persist={false}
+          size="medium"
+          state={true}
+        >
+          <WalletDepositView coins={coins} onClose={() => setPath("")} coin={coinParam} />
+        </Modal>
+      )}
+      {page === "withdraw" && (
+        <Modal
+          onClose={() => setPath("")}
+          newTheme={true}
+          persist={false}
+          size="medium"
+          state={true}
+        >
+          <WalletWithdrawView
+            coins={coins}
+            balance={walletBalance ? walletBalance[coinParam] || {} : null}
+            onClose={() => setPath("")}
+            coin={coinParam}
+          />
+        </Modal>
+      )}
       <Title>
         <Box alignItems="center" display="flex">
           <img src={WalletIcon} width={40} height={40} />
@@ -398,20 +403,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
-                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-                  <div>
-                    <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
-                      <FormattedMessage id="accounts.withdraw" />
-                    </Button>
-                  </div>
-                </Tooltip>
-              ) : (
-                <Button className="textPurple borderPurple" onClick={() => setPath("withdraw")}>
-                  <FormattedMessage id="accounts.withdraw" />
-                </Button>
-              )}
-              <Button className="bgPurple" onClick={() => setPath("deposit")}>
+              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw/ZIG")}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
+              <Button className="bgPurple" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </Button>
             </Box>
@@ -474,7 +469,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         </PanelItem>
       </StyledPanel>
       <Box mt="40px">
-        <WalletCoins coins={coins} walletBalance={walletBalance} />
+        <WalletCoins coins={coins} walletBalance={walletBalance} setPath={setPath} />
       </Box>
       <Title>
         <Box alignItems="center" display="flex" mt="64px">

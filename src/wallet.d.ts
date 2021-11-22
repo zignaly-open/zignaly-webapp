@@ -24,4 +24,8 @@ interface WalletAddress {
   memo: string;
 }
 
-type WalletBalance = Record<string, Record<string, string>>;
+interface BalanceData {
+  balance: number;
+  availableBalance: number;
+}
+type WalletBalance = Record<string, Record<string, BalanceData>>;

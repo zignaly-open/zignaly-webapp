@@ -53,6 +53,7 @@ const InviteModal = ({ onClose, isOpen }: InviteModalProps) => {
             <Typography align="center">
               <FormattedMessage id="accounts.invite.type.perpetual.desc" />
             </Typography>
+            <br />
             <Typography align="center">
               <FormattedMessage id="accounts.invite.description2" />
             </Typography>
