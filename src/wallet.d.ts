@@ -29,3 +29,14 @@ interface BalanceData {
   availableBalance: number;
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
+
+interface Vault {
+  id: number;
+  minDeposit: number;
+  maxDeposit: number;
+  startDate: string;
+  rewardsTotal: number;
+  rewardsRemaining: number;
+  coin: string;
+  coinReward: string;
+}

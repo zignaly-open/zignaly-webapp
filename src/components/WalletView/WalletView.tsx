@@ -16,6 +16,7 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  IconButton,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
@@ -34,6 +35,7 @@ import { getUserData } from "store/actions/user";
 import WalletWithdrawView from "./WalletWithdrawView";
 import WalletCoins from "./WalletCoins";
 import { Rate } from "./styles";
+import CoinIcon from "./CoinIcon";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -78,6 +80,13 @@ const SecondaryText = styled(Typography)`
   white-space: nowrap;
 `;
 
+const NeutralText = styled(Typography)`
+  color: ${({ theme }) => theme.newTheme.neutralText};
+  font-size: 12px;
+  margin-left: 10px;
+  font-weight: 500;
+`;
+
 const Button = styled(CustomButton)`
   margin-right: 8px;
   min-width: 121px;
@@ -91,14 +100,6 @@ const TextMain = styled(Typography)`
   letter-spacing: 0.66px;
 `;
 
-const TextCaption = styled(Typography)`
-  /* color: #f3f4f6; */
-  font-size: 16px;
-  /* line-height: 20px; */
-  letter-spacing: 0.33px;
-  margin-top: 20px;
-`;
-
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
   width: 1px;
@@ -110,6 +111,28 @@ const Divider = styled.span`
   `)}
 `;
 
+const VaultDivider = styled.span`
+  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
+  height: 1px;
+  width: calc(100% - 31px);
+  align-self: flex-end;
+  margin: 10px 0 9px;
+
+  ${isMobile(`
+    display: none;
+  `)}
+`;
+
+const VaultButton = styled(MuiButton)`
+  position: absolute;
+  bottom: 0;
+  color: ${({ theme }) => theme.newTheme.linkText};
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  align-self: flex-end;
+`;
+
 const ChevronRightStyled = styled(ChevronRight)`
   color: #65647e;
   cursor: pointer;
@@ -119,6 +142,7 @@ interface PanelItemProps {
   row?: boolean;
 }
 const PanelItem = styled.div`
+  position: relative;
   display: flex;
   flex-direction: ${(props: PanelItemProps) => (props.row ? "row" : "column")};
   /* flex-basis: 24%; */
@@ -256,6 +280,10 @@ const StyledInfoIcon = styled.img`
   margin-left: 7px;
 `;
 
+const VaultListItem = styled(Box)`
+  cursor: pointer;
+`;
+
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -263,6 +291,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const page = pathParams[0];
   const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
+  const [vaults, setVaults] = useState<Vault[]>(null);
   const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
@@ -286,6 +315,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
       tradeApi.getWalletBalance().then((response) => {
         setWalletBalance(response);
+      });
+
+      tradeApi.getVaults().then((response) => {
+        setVaults(response);
       });
     }
   }, [isOpen]);
@@ -460,12 +493,28 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           <SubTitle>
             <FormattedMessage id="wallet.staking" />
           </SubTitle>
-          <TextMain>
-            <FormattedMessage id="wallet.staking.soon" />
-          </TextMain>
-          <TextCaption>
-            <FormattedMessage id="wallet.staking.soon.desc" />
-          </TextCaption>
+          {vaults && (
+            <>
+              {vaults.map((v) => (
+                <>
+                  <VaultListItem display="flex" key={v.id} alignItems="center" mt={1}>
+                    <CoinIcon coin={v.coinReward} width={20} height={20} />
+                    <NeutralText>
+                      <FormattedMessage
+                        id="wallet.staking.earn"
+                        values={{ coin: v.coin, reward: v.coinReward, amount: v.minDeposit }}
+                      />
+                    </NeutralText>
+                    <ChevronRight />
+                  </VaultListItem>
+                  <VaultDivider />
+                </>
+              ))}
+              <VaultButton endIcon={<ChevronRight />} onClick={() => setPath("deposit")}>
+                <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
+              </VaultButton>
+            </>
+          )}
         </PanelItem>
       </StyledPanel>
       <Box mt="40px">

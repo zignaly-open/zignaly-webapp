@@ -5,7 +5,7 @@ import { Typography } from "@material-ui/core";
 import { isMobile } from "styles/styles";
 
 const TypographyHeader = styled(Typography)`
-  color: ${({ theme }) => theme.transactionTable.headTextColor};
+  color: ${({ theme }) => theme.newTheme.neutralText};
   font-weight: 600;
 `;
 

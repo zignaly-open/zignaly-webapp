@@ -2467,6 +2467,39 @@ class TradeApiClient {
     const { network, currency, ...data } = payload;
     return this.doRequest(`/make-withdraw/${network}/currency/${currency}`, data, "POST", 3);
   }
+
+  /**
+   * Get vaults
+   *
+   * @param {WidthdrawReq} payload Payload
+   * @returns {Promise<Array<Vault>>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getVaults(payload) {
+    return [
+      {
+        id: 0,
+        minDeposit: 10,
+        maxDeposit: 100000,
+        startDate: "'2021-11-22T05:43:14.529Z",
+        rewardsTotal: 100,
+        rewardsRemaining: 90,
+        coin: "ZIG",
+        coinReward: "ZIG",
+      },
+      {
+        id: 1,
+        minDeposit: 10,
+        maxDeposit: 100000,
+        startDate: "'2021-11-22T05:43:14.529Z",
+        rewardsTotal: 100,
+        rewardsRemaining: 90,
+        coin: "ZIG",
+        coinReward: "ZIG",
+      },
+    ];
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
