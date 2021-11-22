@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./VerifyEmailForm.scss";
 import { Box, Typography, CircularProgress } from "@material-ui/core";
 import ReactCodeInput from "react-verification-code-input";
@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
+import { navigate } from "@reach/router";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -29,6 +30,11 @@ const VerifyEmailForm = ({ token, onComplete }) => {
   const [sendingCode, setSendingCode] = useState(false);
   const [done, setDone] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Trigger tz
+    navigate("#verify");
+  }, []);
 
   /**
    * Function to submit code to backend.

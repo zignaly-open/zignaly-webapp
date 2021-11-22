@@ -15,6 +15,8 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
   const firstCheck = useRef(true);
 
   useEffect(() => {
+    firstCheck.current = false;
+
     if (forced.current) {
       // Token was marked as expired, clear it here.
       forced.current = false;
