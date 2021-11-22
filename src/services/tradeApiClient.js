@@ -2498,6 +2498,36 @@ class TradeApiClient {
         coin: "ZIG",
         coinReward: "ZIG",
       },
+      {
+        id: 2,
+        minDeposit: 10,
+        maxDeposit: 100000,
+        startDate: "'2021-11-22T05:43:14.529Z",
+        rewardsTotal: 100,
+        rewardsRemaining: 90,
+        coin: "ZIG",
+        coinReward: "ZIG",
+      },
+      {
+        id: 3,
+        minDeposit: 10,
+        maxDeposit: 100000,
+        startDate: "'2021-11-22T05:43:14.529Z",
+        rewardsTotal: 100,
+        rewardsRemaining: 90,
+        coin: "ZIG",
+        coinReward: "ZIG",
+      },
+      {
+        id: 4,
+        minDeposit: 10,
+        maxDeposit: 100000,
+        startDate: "'2021-11-22T05:43:14.529Z",
+        rewardsTotal: 100,
+        rewardsRemaining: 90,
+        coin: "ZIG",
+        coinReward: "ZIG",
+      },
     ];
   }
 }

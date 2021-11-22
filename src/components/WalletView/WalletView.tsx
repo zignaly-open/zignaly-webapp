@@ -116,7 +116,7 @@ const VaultDivider = styled.span`
   height: 1px;
   width: calc(100% - 31px);
   align-self: flex-end;
-  margin: 10px 0 9px;
+  margin: 8px 0 9px;
 
   ${isMobile(`
     display: none;
@@ -124,6 +124,7 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
+  margin-bottom: -6px;
   position: absolute;
   bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
@@ -494,10 +495,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             <FormattedMessage id="wallet.staking" />
           </SubTitle>
           {vaults && (
-            <>
-              {vaults.map((v) => (
-                <>
-                  <VaultListItem display="flex" key={v.id} alignItems="center" mt={1}>
+            <Box mt={1} display="flex" flexDirection="column">
+              {vaults.slice(0, 4).map((v) => (
+                <Box display="flex" key={v.id} flexDirection="column">
+                  <VaultListItem display="flex" key={v.id} alignItems="center">
                     <CoinIcon coin={v.coinReward} width={20} height={20} />
                     <NeutralText>
                       <FormattedMessage
@@ -508,12 +509,12 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                     <ChevronRight />
                   </VaultListItem>
                   <VaultDivider />
-                </>
+                </Box>
               ))}
               <VaultButton endIcon={<ChevronRight />} onClick={() => setPath("deposit")}>
                 <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
               </VaultButton>
-            </>
+            </Box>
           )}
         </PanelItem>
       </StyledPanel>
