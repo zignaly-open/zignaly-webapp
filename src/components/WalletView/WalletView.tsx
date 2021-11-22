@@ -105,10 +105,11 @@ const Divider = styled.span`
   width: 1px;
   height: 128px;
   align-self: center;
+  margin: 0 20px;
 
   ${isMobile(`
     display: none;
-  `)}
+  `)};
 `;
 
 const VaultDivider = styled.span`
@@ -149,6 +150,7 @@ const PanelItem = styled.div`
   /* flex-basis: 24%; */
   max-width: 400px;
   margin: 0 20px;
+  flex: 1;
 
   ${(props) =>
     props.row &&
@@ -180,25 +182,7 @@ const ButtonBuy = styled(MuiButton)`
   font-weight: 600;
   font-size: 13px;
   line-height: 16px;
-  /* background: transparent; */
 `;
-// const StyledTooltip = styled.div`
-//   .MuiTooltip-tooltip {
-//     background: #f3f4f6;
-//     box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25);
-//     border-radius: 3px;
-//     padding: 8px 16px;
-//   }
-// `;
-
-// const TooltipContainer = styled((props) => (
-//   <Tooltip classes={{ popper: props.className }} {...props} />
-// ))`
-//   & .MuiTooltip-tooltip {
-//     background-color: papayawhip;
-//     color: #000;
-//   }
-// `;
 
 const TooltipContainer = styled.div`
   font-weight: 600;
@@ -282,6 +266,7 @@ const StyledInfoIcon = styled.img`
 `;
 
 const VaultListItem = styled(Box)`
+  justify-content: space-between;
   cursor: pointer;
 `;
 
@@ -499,13 +484,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {vaults.slice(0, 4).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
                   <VaultListItem display="flex" key={v.id} alignItems="center">
-                    <CoinIcon coin={v.coinReward} width={20} height={20} />
-                    <NeutralText>
-                      <FormattedMessage
-                        id="wallet.staking.earn"
-                        values={{ coin: v.coin, reward: v.coinReward, amount: v.minDeposit }}
-                      />
-                    </NeutralText>
+                    <Box display="flex">
+                      <CoinIcon coin={v.coinReward} width={20} height={20} />
+                      <NeutralText>
+                        <FormattedMessage
+                          id="wallet.staking.earn"
+                          values={{ coin: v.coin, reward: v.coinReward, amount: v.minDeposit }}
+                        />
+                      </NeutralText>
+                    </Box>
                     <ChevronRight />
                   </VaultListItem>
                   <VaultDivider />
