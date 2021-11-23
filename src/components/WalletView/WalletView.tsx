@@ -304,7 +304,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         setWalletBalance(response);
       });
 
-      tradeApi.getVaults().then((response) => {
+      tradeApi.getVaults({ status: "active" }).then((response) => {
         setVaults(response);
       });
     }
@@ -505,7 +505,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#vault">
+              <VaultButton endIcon={<ChevronRight />} href="#vault-wallet">
                 <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
               </VaultButton>
             </Box>

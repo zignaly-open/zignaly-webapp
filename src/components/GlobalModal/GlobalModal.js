@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
  * @property {function} content Component to display inside the modal.
  * @property {boolean} [newTheme]
  * @property {boolean} [showCloseIcon]
- * @property {function} [onClose] onClose callback to navigate to custom location
  */
 
 /**
@@ -19,19 +18,15 @@ import { useDispatch } from "react-redux";
  * @returns {JSX.Element} Component JSX.
  */
 const GlobalModal = (props) => {
-  const { hash, content, newTheme, showCloseIcon = false, onClose } = props;
+  const { hash, content, newTheme, showCloseIcon = false } = props;
   const currentHash =
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
   const isOpen = currentHash.startsWith(hash);
   const dispatch = useDispatch();
 
-  const handleOnClose = () => {
+  const onClose = () => {
+    navigate("#");
     dispatch(showGlobalModal(false));
-    if (onClose) {
-      onClose();
-    } else {
-      navigate("#");
-    }
   };
 
   useEffect(() => {
@@ -44,14 +39,14 @@ const GlobalModal = (props) => {
 
   return (
     <Modal
-      onClose={handleOnClose}
+      onClose={onClose}
       persist={false}
       showCloseIcon={showCloseIcon}
       size="fullscreen"
       state={isOpen}
       newTheme={newTheme}
     >
-      {content({ onClose: handleOnClose, isOpen })}
+      {content({ onClose, isOpen })}
     </Modal>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography, Button as ButtonMui } from "@material-ui/core";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Title } from "styles/styles";
@@ -8,7 +8,7 @@ import RewardsProgressBar from "./RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import VaultOfferModal from "./VaultOfferModal";
 import styled from "styled-components";
-import { ChevronRight } from "@material-ui/icons";
+import { ArrowBack, ChevronRight } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -161,22 +161,23 @@ const VaultView = ({ isOpen }) => {
             {dayjs(v.endDate).format("MMM D, YYYY")}
           </Typography>
         ),
-        actions: false ? (
-          <ActivatedButton>
-            <FormattedMessage id="vault.activated" />
-          </ActivatedButton>
-        ) : (
-          <Button className="textPurple borderPurple" onClick={() => setDepositCoin(v.coin)}>
-            <FormattedMessage id="accounts.deposit" />
-            &nbsp;
-            <NumberFormat
-              value={v.minBalance}
-              displayType="text"
-              suffix={` ${v.coin}`}
-              style={{ whiteSpace: "nowrap" }}
-            />
-          </Button>
-        ),
+        actions:
+          walletBalance && walletBalance[v.coin].total.availableBalance >= v.minBalance ? (
+            <ActivatedButton>
+              <FormattedMessage id="vault.activated" />
+            </ActivatedButton>
+          ) : (
+            <Button className="textPurple borderPurple" onClick={() => setDepositCoin(v.coin)}>
+              <FormattedMessage id="accounts.deposit" />
+              &nbsp;
+              <NumberFormat
+                value={v.minBalance}
+                displayType="text"
+                suffix={` ${v.coin}`}
+                style={{ whiteSpace: "nowrap" }}
+              />
+            </Button>
+          ),
       })),
     [vaults],
   );
@@ -202,7 +203,10 @@ const VaultView = ({ isOpen }) => {
         </Modal>
       )}
       <Title>
-        <img src={WalletIcon} width={40} height={40} />
+        <ButtonMui href="#wallet" variant="outlined" color="grid.content" startIcon={<ArrowBack />}>
+          <FormattedMessage id="accounts.back" />
+        </ButtonMui>
+        <img src={WalletIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
         <FormattedMessage id="vault.title" />
       </Title>
       <InfoPanel title="vault.title" message="vault.info" />
