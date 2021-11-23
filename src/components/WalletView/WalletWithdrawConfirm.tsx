@@ -161,14 +161,12 @@ const WalletWithdrawConfirm = ({
   return (
     <Modal p={5}>
       <Title>
-        <Box alignItems="center" display="flex">
-          <img src={WalletIcon} width={40} height={40} />
-          {!done ? (
-            <FormattedMessage id="wallet.withdraw.confirm" />
-          ) : (
-            <FormattedMessage id="wallet.withdraw.sent" />
-          )}
-        </Box>
+        <img src={WalletIcon} width={40} height={40} />
+        {!done ? (
+          <FormattedMessage id="wallet.withdraw.confirm" />
+        ) : (
+          <FormattedMessage id="wallet.withdraw.sent" />
+        )}
       </Title>
       <TextDesc>
         {done ? (
