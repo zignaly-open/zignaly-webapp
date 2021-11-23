@@ -10,6 +10,7 @@ import {
   ENABLE_TWO_FA,
   SET_DAILY_BALANCE_LOADER,
   ACTIVATE_SUBACCOUNT,
+  SET_USER_ID,
 } from "../actions/user";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -53,6 +54,11 @@ const user = createReducer(initialState.user, {
   [SET_USER_DATA]: (state, action) => {
     state.userData = action.payload;
     state.loaded = true;
+  },
+
+  [SET_USER_ID]: (state, action) => {
+    // Save userId before getUserData is called for tracking purposes
+    state.userData.userId = action.payload;
   },
 
   [REMOVE_USER_EXCHANGE]: (state, action) => {

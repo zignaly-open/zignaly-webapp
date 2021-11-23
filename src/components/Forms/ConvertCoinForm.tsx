@@ -22,6 +22,10 @@ interface ConvertCoinFormProps {
 }
 
 const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps) => {
+  const balanceData: BalanceData = {
+    availableBalance: parseFloat(balance),
+    balance: parseFloat(balance),
+  };
   const [loading, setLoading] = useState(false);
   const [quotes, setQuotes] = useState([]);
   const {
@@ -31,6 +35,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
     formState: { isValid },
     setValue,
     watch,
+    trigger,
   } = useForm({ mode: "onChange" });
   const selectedBase = watch("base", base);
   const selectedQuote = watch("quote");
@@ -40,11 +45,14 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const debouncedAmount = useDebounce(amount, 500);
+  const debouncedAmount = useDebounce(amount, 1500);
 
   useEffect(() => {
     tradeApi
-      .getQuoteAssetFromBase(selectedBase)
+      .getQuoteAssetFromBase({
+        base: selectedBase,
+        internalExchangeId: selectedExchange.internalId,
+      })
       .then((response) => {
         setQuotes(response);
       })
@@ -53,6 +61,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       });
   }, [selectedBase]);
 
+  // skip first check because isValid is true at init
   useEffectSkipFirst(() => {
     if (!isValid) return;
     setPreviewAmount(null);
@@ -73,15 +82,15 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       .finally(() => {
         setPreviewLoading(false);
       });
-  }, [debouncedAmount, selectedBase, selectedQuote]);
+  }, [debouncedAmount, selectedBase, selectedQuote, isValid]);
 
   const submitForm = () => {
     setLoading(true);
     tradeApi
       .convertCoin({
         internalExchangeId: selectedExchange.internalId,
-        base: selectedBase,
-        quote: selectedQuote,
+        from: selectedBase,
+        to: selectedQuote,
         qty: amount,
       })
       .then(() => {
@@ -99,6 +108,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
 
   const setBalanceMax = () => {
     setValue("amount", balance);
+    trigger("amount");
   };
 
   return (
@@ -150,7 +160,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
           </Box>
 
           <AmountControl
-            balance={balance}
+            balance={balanceData}
             setBalanceMax={setBalanceMax}
             errors={errors}
             control={control}
