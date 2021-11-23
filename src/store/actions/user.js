@@ -12,6 +12,7 @@ export const SET_USER_DATA = "SET_USER_DATA_ACTION";
 export const ENABLE_TWO_FA = "ENABLE_TWO_FA";
 export const SET_DAILY_BALANCE_LOADER = "SET_DAILY_BALANCE_LOADER_ACTION";
 export const ACTIVATE_SUBACCOUNT = "ACTIVATE_SUBACCOUNT";
+export const SET_USER_ID = "SET_USER_ID";
 
 /**
  * @typedef {import('../../services/tradeApiClient.types').ExchangeConnectionEntity} ExchangeConnectionEntity
@@ -134,6 +135,19 @@ export const getUserData = (loadExchanges = false, callback) => {
     } catch (e) {
       dispatch(showErrorAlert(e));
     }
+  };
+};
+
+/**
+ * Set user id (tracking purposes)
+ *
+ * @param {string} userId userId
+ * @returns {Object} Action object.
+ */
+export const setUserId = (userId) => {
+  return {
+    type: SET_USER_ID,
+    payload: userId,
   };
 };
 
