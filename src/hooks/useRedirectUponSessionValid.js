@@ -50,7 +50,6 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       // Only check once at init, because calling /login can set userData before sessionData.
       dispatch(endTradeApiSession());
     }
-    firstCheck.current = false;
   }, [storeSession.sessionData, storeUser.loaded]);
 };
 

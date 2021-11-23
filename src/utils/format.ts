@@ -1,5 +1,8 @@
 import moment from "moment";
 import { capitalize } from "lodash";
+import dayjs from "dayjs";
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 
 /**
  * Format string to float with 2 decimals.
@@ -145,3 +148,5 @@ export const FormatedDateTime = (date) =>
   //     year="numeric"
   //   />
   moment(date).format("YYYY/MM/DD HH:mm");
+
+export const formatUTC = (date: string) => dayjs(date).utc().format("MMMM DD, YYYY hh:mm A UTC");

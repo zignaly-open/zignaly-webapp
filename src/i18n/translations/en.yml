@@ -1737,6 +1737,30 @@ wall.write.banned: "You are not allowed to comment"
 wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
+# VAULT
+vault.activated: "Activated"
+vault.rewardsRemaning: "Rewards Pool Remaining"
+vault.offer: "Offer"
+vault.minBalance: "Min Balance"
+vault.earn: "Earn"
+vault.starts: "Starts"
+vault.ends: "Ends"
+vault.terms: "Terms"
+vault.title: "ZIG Vault"
+vault.info: |
+  The Zignaly Vault is a reliable, safe way to stake your idle crypto assets and earn high interest with no lockup period.
+  Start the rewards program to offer its users yet another way to earn passive income on their idle assets as well as brining even
+  more value to its native ZIG coin. Zignaly offers rewards on its native ZIG coin as well as exciting offers from its partnerships.
+  To get started, make a qualifiying deposit and you will automatically start receiving awards!
+vault.benefits: "Benefits"
+vault.benefits.info: |
+  • Earn high interest with competitive rates
+  • Earn passive income on idle assets
+  • Daily rewards & daily compounding
+vault.benefits.info2: |
+  • No fees or lockup period
+  • Rewards stat automatically, no promo codes needed
+  • Your funds are always available for withdrawal
 # WALLET
 wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"
@@ -1759,8 +1783,24 @@ wallet.locked.desc: "Zig Coins related to the Referral program cannot be withdra
 wallet.totalbalance: "Total ZIG Balance"
 wallet.rewards: "Rewards & Savings"
 wallet.staking: "ZIG Staking Vault"
-wallet.staking.soon: "ZIG Vault coming soon!"
-wallet.staking.soon.desc: "Stake your ZIG tokens and earn huge rewards in our ZIG Vault program."
+wallet.staking.earn: "Earn {reward} on balances over {amount} {coin}"
+wallet.staking.offer.title: "VAULT OFFER TERMS"
+wallet.staking.offer.desc: "Hold {coin} and earn {reward}"
+wallet.staking.offer.minDeposit: "Minimum deposit:"
+wallet.staking.offer.maxDeposit: "Maximum deposit:"
+wallet.staking.offer.none: "None"
+wallet.staking.offer.rewardBegins: "Reward period begins:"
+wallet.staking.offer.rewardEnds: "Reward period ends:"
+wallet.staking.offer.rewardEnds.val: "When {amount} {coin} pool has been distributed"
+wallet.staking.offer.lockup: "Lockup period:"
+wallet.staking.offer.awarded: "Rewards awarded:"
+wallet.staking.offer.awarded.val: "Every 24h at 12:00 AM UTC"
+wallet.staking.offer.calculation: "Rewards calculation:"
+wallet.staking.offer.calculation.val: "Based on average of balance of prior 24h period"
+wallet.staking.offer.firstAwarded: "First rewards awarded:"
+wallet.staking.offer.firstAwarded.val: "Deposit must be held for at least 24h and first reward will be available at 12:00 AM the next day"
+wallet.staking.offer.compounding: "Rewards compounding:"
+wallet.staking.offer.compounding.info: "(You earn rewards on your rewards)"
 wallet.status.completed: "Completed"
 wallet.status.failed: "Failed"
 wallet.status.progress: "In Progress"
@@ -1773,6 +1813,7 @@ wallet.type.withdraw: "Withdraw"
 wallet.from: "From:"
 wallet.to: "To:"
 wallet.tx: "Tx Hash:"
+wallet.vaults.offers: "All {count} Vault offers"
 wallet.withdraw.address: "Withdraw to Address:"
 wallet.withdraw.address.invalid: "Invalid address"
 wallet.withdraw.amount: "Withdrawal Amount:"
