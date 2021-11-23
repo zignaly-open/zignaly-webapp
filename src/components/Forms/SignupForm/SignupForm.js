@@ -18,6 +18,7 @@ import tradeApi from "services/tradeApiClient";
 import { startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
+import { setUserId } from "store/actions/user";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -81,6 +82,9 @@ const SignupForm = () => {
     tradeApi
       .userRegister(payload)
       .then((response) => {
+        // Store userId for tracking purposes
+        dispatch(setUserId(response.userId));
+        // Store login response and show verification modal
         setLoginResponse(response);
         captchaFallback.current = null;
       })
