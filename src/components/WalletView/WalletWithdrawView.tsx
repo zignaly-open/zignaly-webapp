@@ -72,7 +72,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
   }
 
   const setBalanceMax = () => {
-    setValue("amount", balanceAmount);
+    setValue("amount", balanceAmount.availableBalance);
   };
 
   const submitForm = (data) => {
