@@ -41,7 +41,6 @@ const Terms = styled.a`
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  margin-left: 4px;
   font-weight: 600;
   font-size: 12px;
   text-decoration: none;
@@ -130,6 +129,7 @@ const VaultView = ({ isOpen }) => {
                 id="wallet.staking.earn"
                 values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
               />
+              &nbsp;
               <Terms onClick={() => setSelectedVault(v)}>
                 <FormattedMessage id="vault.terms" />
                 <ChevronRight />

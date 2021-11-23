@@ -26,9 +26,10 @@ const TypographyMessage = styled(Typography)`
   font-size: 14px;
   margin: 8px 0 0 35px;
 
-  ul {
-    display: inline-block;
-    padding-left: 0;
+  div {
+    display: inline-flex;
+    flex-direction: column;
+    margin-right: 55px;
   }
 `;
 
@@ -36,7 +37,7 @@ export const BenefitsInfo = () => {
   const intl = useIntl();
   const parseTranslationList = (id: string) => {
     const translation = intl.formatMessage({ id });
-    return translation.slice(2, translation.length - 1).split("• ");
+    return translation.split("\n");
   };
 
   return (
@@ -48,16 +49,16 @@ export const BenefitsInfo = () => {
         </TypographyTitle>
       </Box>
       <TypographyMessage>
-        <ul>
+        <div>
           {parseTranslationList("vault.benefits.info").map((t, i) => (
-            <li key={i}>{t}</li>
+            <div>{t}</div>
           ))}
-        </ul>
-        <ul>
+        </div>
+        <div>
           {parseTranslationList("vault.benefits.info2").map((t, i) => (
-            <li key={i}>{t}</li>
+            <div>{t}</div>
           ))}
-        </ul>
+        </div>
       </TypographyMessage>
     </Panel>
   );
