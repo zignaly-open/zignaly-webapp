@@ -505,7 +505,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#vault-wallet">
+              <VaultButton endIcon={<ChevronRight />} href="#vault">
                 <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
               </VaultButton>
             </Box>

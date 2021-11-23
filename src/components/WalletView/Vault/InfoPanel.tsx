@@ -1,15 +1,21 @@
-import { formatMessage } from "@formatjs/intl";
 import { Box, Typography } from "@material-ui/core";
 import { Info } from "@material-ui/icons";
 import React from "react";
-import { FormattedList, FormattedMessage, useIntl } from "react-intl";
-import styled from "styled-components";
+import { FormattedMessage, useIntl } from "react-intl";
+import styled, { css } from "styled-components";
 
 const Panel = styled.div`
   background: linear-gradient(91.23deg, rgba(34, 34, 73, 0.75) 0%, rgba(12, 13, 33, 0.75) 100%);
   border-radius: 12px;
   padding: 15px 15px 32px 15px;
   margin-bottom: 16px;
+
+  ${({ theme }) =>
+    theme.palette.type === "light" &&
+    css`
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    `}
 `;
 
 const StyledInfo = styled(Info)`
