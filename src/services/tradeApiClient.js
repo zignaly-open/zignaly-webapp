@@ -463,7 +463,7 @@ class TradeApiClient {
    *
    * @param {UserRegisterPayload} payload User register payload.
    *
-   * @returns {Promise<UserEntity>} Promise that resolves user entity.
+   * @returns {Promise<{token: string; userId: string}>} Promise.
    *
    * @memberof TradeApiClient
    */
@@ -821,13 +821,12 @@ class TradeApiClient {
   /**
    * Get quote assets from given base
    *
-   * @param {string} base
+   * @param {GetQuoteAssetFromBaseReq} Payload
    * @returns {Promise<string[]>} Promise that resolves quotes
    * @memberof TradeApiClient
    */
-  async getQuoteAssetFromBase(base) {
-    const responseData = await this.doRequest(`/quote_assets/${base}`, null, "GET", 2);
-    return responseData[base].map(({ quote }) => quote);
+  async getQuoteAssetFromBase({ base, internalExchangeId }) {
+    return this.doRequest(`/quote_assets/${internalExchangeId}/${base}`, null, "GET", 2);
   }
 
   /**
