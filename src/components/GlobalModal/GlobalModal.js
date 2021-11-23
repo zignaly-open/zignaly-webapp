@@ -3,6 +3,7 @@ import Modal from "../Modal";
 import { navigate } from "@reach/router";
 import { showGlobalModal } from "../../store/actions/ui";
 import { useDispatch } from "react-redux";
+import VerifyEmailForm from "components/Forms/VerifyEmailForm";
 
 /**
  * @typedef {Object} DefaultProps

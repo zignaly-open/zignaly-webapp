@@ -5,11 +5,11 @@ import { verifySessionData } from "../utils/auth";
 import { globalHistory } from "@reach/router";
 import { useDispatch } from "react-redux";
 import { endTradeApiSession } from "store/actions/session";
-import { useStoreUserData } from "./useStoreUserSelector";
+import { useStoreUserSelector } from "./useStoreUserSelector";
 
 const useRedirectUponSessionValid = (newUserPath = "") => {
   const storeSession = useStoreSessionSelector();
-  const storeUserData = useStoreUserData();
+  const storeUser = useStoreUserSelector();
   const dispatch = useDispatch();
   const forced = useRef(globalHistory.location.state?.forced);
   const firstCheck = useRef(true);
@@ -27,7 +27,7 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
 
     // Navigate to return url or dashboard if session is valid, and we got user data
     if (
-      storeUserData.userId &&
+      storeUser.loaded &&
       verifySessionData(storeSession.tradeApi.accessToken, storeSession.sessionData)
     ) {
       const params = new URLSearchParams(window.location.search);
@@ -51,7 +51,7 @@ const useRedirectUponSessionValid = (newUserPath = "") => {
       dispatch(endTradeApiSession());
     }
     firstCheck.current = false;
-  }, [storeSession.sessionData, storeUserData.userId]);
+  }, [storeSession.sessionData, storeUser.loaded]);
 };
 
 export default useRedirectUponSessionValid;
