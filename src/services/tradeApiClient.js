@@ -463,7 +463,7 @@ class TradeApiClient {
    *
    * @param {UserRegisterPayload} payload User register payload.
    *
-   * @returns {Promise<UserEntity>} Promise that resolves user entity.
+   * @returns {Promise<{token: string; userId: string}>} Promise.
    *
    * @memberof TradeApiClient
    */
