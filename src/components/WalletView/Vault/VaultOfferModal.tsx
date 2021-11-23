@@ -61,7 +61,7 @@ interface VaultOfferModalProps {
 }
 
 const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
-  const { coin, coinReward, startDate, lockupDate, minDeposit, maxDeposit, rewardsTotal } = vault;
+  const { coin, coinReward, startDate, lockupDate, minBalance, maxBalance, rewardsTotal } = vault;
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal p={5}>
@@ -78,7 +78,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.minDeposit" />
             </ItemLabel>
             <ItemValue>
-              <NumberFormat displayType="text" value={minDeposit} suffix={` ${coinReward}`} />
+              <NumberFormat displayType="text" value={minBalance} suffix={` ${coinReward}`} />
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -86,8 +86,8 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.maxDeposit" />
             </ItemLabel>
             <ItemValue>
-              {maxDeposit ? (
-                <NumberFormat displayType="text" value={maxDeposit} suffix={` ${coinReward}`} />
+              {maxBalance ? (
+                <NumberFormat displayType="text" value={maxBalance} suffix={` ${coinReward}`} />
               ) : (
                 <FormattedMessage id="wallet.staking.offer.none" />
               )}

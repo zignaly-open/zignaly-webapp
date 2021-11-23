@@ -32,11 +32,11 @@ type WalletBalance = Record<string, Record<string, BalanceData>>;
 
 interface Vault {
   id: number;
-  minDeposit: number;
-  maxDeposit: number;
+  minBalance: number;
+  maxBalance: number;
   startDate: string;
   endDate: string;
-  lockupDate: string;
+  // lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;
   coin: string;

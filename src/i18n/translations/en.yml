@@ -1738,15 +1738,29 @@ wall.write.comment: "Write a comment..."
 wall.write.wait: "To avoid spam, new users need to wait 15 days to comment ({daysLeft})"
 
 # VAULT
+vault.activated: "Activated"
 vault.rewardsRemaning: "Rewards Pool Remaining"
 vault.offer: "Offer"
 vault.minBalance: "Min Balance"
 vault.earn: "Earn"
 vault.starts: "Starts"
-vault.ends: "Starts"
+vault.ends: "Ends"
 vault.terms: "Terms"
 vault.title: "ZIG Vault"
-
+vault.info: |
+  The Zignaly Vault is a reliable, safe way to stake your idle crypto assets and earn high interest with no lockup period.
+  Start the rewards program to offer its users yet another way to earn passive income on their idle assets as well as brining even
+  more value to its native ZIG coin. Zignaly offers rewards on its native ZIG coin as well as exciting offers from its partnerships.
+  To get started, make a qualifiying deposit and you will automatically start receiving awards!
+vault.benefits: "Benefits"
+vault.benefits.info: |
+  • Earn high interest with competitive rates
+  • Earn passive income on idle assets
+  • Daily rewards & daily compounding
+vault.benefits.info2: |
+  • No fees or lockup period
+  • Rewards stat automatically, no promo codes needed
+  • Your funds are always available for withdrawal
 # WALLET
 wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"

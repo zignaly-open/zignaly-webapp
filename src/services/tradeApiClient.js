@@ -2471,64 +2471,71 @@ class TradeApiClient {
   /**
    * Get vaults
    *
-   * @param {WidthdrawReq} payload Payload
+   * @param {{status: 'active'|'expired'}} payload Payload
    * @returns {Promise<Array<Vault>>} Result
    *
    * @memberof TradeApiClient
    */
   async getVaults(payload) {
-    return [
-      {
-        id: 0,
-        minDeposit: 10,
-        maxDeposit: 100000,
-        startDate: "2021-11-22T05:43:14.529Z",
-        rewardsTotal: 100,
-        rewardsRemaining: 90,
-        coin: "ZIG",
-        coinReward: "ZIG",
-      },
-      {
-        id: 1,
-        minDeposit: 10,
-        maxDeposit: 100000,
-        startDate: "2021-11-22T05:43:14.529Z",
-        rewardsTotal: 100,
-        rewardsRemaining: 90,
-        coin: "ZIG",
-        coinReward: "ZIG",
-      },
-      {
-        id: 2,
-        minDeposit: 10,
-        maxDeposit: 100000,
-        startDate: "2021-11-22T05:43:14.529Z",
-        rewardsTotal: 100,
-        rewardsRemaining: 90,
-        coin: "ZIG",
-        coinReward: "ZIG",
-      },
-      {
-        id: 3,
-        minDeposit: 10,
-        maxDeposit: 100000,
-        startDate: "2021-11-22T05:43:14.529Z",
-        rewardsTotal: 100,
-        rewardsRemaining: 90,
-        coin: "ZIG",
-        coinReward: "ZIG",
-      },
-      {
-        id: 4,
-        minDeposit: 10,
-        maxDeposit: 100000,
-        startDate: "2021-11-22T05:43:14.529Z",
-        rewardsTotal: 100,
-        rewardsRemaining: 90,
-        coin: "ZIG",
-        coinReward: "ZIG",
-      },
-    ];
+    return this.doRequest(`/get-programs/${payload.status}`, null, "GET", 3);
+
+    // return [
+    //   {
+    //     id: 0,
+    //     minDeposit: 10,
+    //     maxDeposit: 100000,
+    //     startDate: "2021-11-22T05:43:14.529Z",
+    //     endDate: "2021-12-22T05:43:14.529Z",
+    //     rewardsTotal: 100000,
+    //     rewardsRemaining: 50000,
+    //     coin: "ZIG",
+    //     coinReward: "ZIG",
+    //   },
+    //   {
+    //     id: 1,
+    //     minDeposit: 10,
+    //     maxDeposit: 100000,
+    //     startDate: "2021-11-22T05:43:14.529Z",
+    //     endDate: "2021-12-22T05:43:14.529Z",
+    //     rewardsTotal: 100,
+    //     rewardsRemaining: 90,
+    //     coin: "ZIG",
+    //     coinReward: "ZIG",
+    //   },
+    //   {
+    //     id: 2,
+    //     minDeposit: 10,
+    //     maxDeposit: 100000,
+    //     startDate: "2021-11-22T05:43:14.529Z",
+    //     endDate: "2021-12-22T05:43:14.529Z",
+    //     rewardsTotal: 100,
+    //     rewardsRemaining: 90,
+    //     coin: "ZIG",
+    //     coinReward: "ZIG",
+    //   },
+    //   {
+    //     id: 3,
+    //     minDeposit: 10,
+    //     maxDeposit: 100000,
+    //     startDate: "2021-11-22T05:43:14.529Z",
+    //     endDate: "2021-12-22T05:43:14.529Z",
+    //     rewardsTotal: 100,
+    //     rewardsRemaining: 90,
+    //     coin: "ZIG",
+    //     coinReward: "ZIG",
+    //   },
+    //   {
+    //     id: 4,
+    //     minDeposit: 10,
+    //     maxDeposit: 100000,
+    //     startDate: "2021-11-22T05:43:14.529Z",
+    //     endDate: "2021-12-22T05:43:14.529Z",
+    //     rewardsTotal: 100,
+    //     rewardsRemaining: 90,
+    //     coin: "ZIG",
+    //     coinReward: "ZIG",
+    //   },
+    // ];
   }
 }
 

@@ -496,7 +496,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                       <NeutralText>
                         <FormattedMessage
                           id="wallet.staking.earn"
-                          values={{ coin: v.coin, reward: v.coinReward, amount: v.minDeposit }}
+                          values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
                         />
                       </NeutralText>
                     </Box>

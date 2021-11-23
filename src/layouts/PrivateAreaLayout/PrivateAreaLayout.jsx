@@ -58,6 +58,10 @@ const PrivateAreaLayout = (props) => {
 
   const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
 
+  const onVaultClose = () => {
+    window.history.back();
+  };
+
   return (
     <PrivateAreaContext.Provider value={privateAreaContext}>
       <ConfirmDialog
@@ -70,7 +74,13 @@ const PrivateAreaLayout = (props) => {
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
       <GlobalModal content={WalletView} hash="wallet" newTheme={true} showCloseIcon={true} />
-      <GlobalModal content={VaultsView} hash="vault" newTheme={true} showCloseIcon={true} />
+      <GlobalModal
+        onClose={onVaultClose}
+        content={VaultsView}
+        hash="vault"
+        newTheme={true}
+        showCloseIcon={true}
+      />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>
