@@ -157,7 +157,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         actions: (
           <VaultDepositButton
             vault={v}
-            balance={walletBalance && walletBalance[v.coin].total.availableBalance}
+            balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
             onClick={() => setDepositCoin(v.coin)}
           />
         ),
