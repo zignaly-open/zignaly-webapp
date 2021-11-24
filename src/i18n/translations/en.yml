@@ -1746,6 +1746,7 @@ vault.minBalance: "Min Balance"
 vault.earn: "Earn"
 vault.starts: "Starts"
 vault.ends: "Ends"
+vault.startsEnds: "Starts/Ends"
 vault.terms: "Terms"
 vault.title: "ZIG Vault"
 vault.info: |

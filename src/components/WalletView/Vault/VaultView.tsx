@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Typography, Button as ButtonMui } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Button as ButtonMui,
+  useMediaQuery,
+} from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Title } from "styles/styles";
@@ -12,28 +19,12 @@ import { ArrowBack, ChevronRight } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
-import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
 import WalletDepositView from "../WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
-
-const Button = styled(CustomButton)`
-  min-width: 160px;
-`;
-
-const ActivatedButton = styled.div`
-  width: 160px;
-  background: rgba(38, 196, 193, 0.28);
-  border-radius: 40px;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #b1f7ca;
-`;
+import VaultMobile from "./VaultMobile";
+import VaultDepositButton from "./VaultDepositButton";
 
 const Terms = styled.a`
   line-height: 16px;
@@ -59,13 +50,15 @@ const Balance = styled(Typography)`
   align-items: center;
 `;
 
-const VaultView = ({ isOpen }) => {
+const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
   const [vaults, setVaults] = useState<Vault[]>(null);
   const [selectedVault, setSelectedVault] = useState<Vault>(null);
   const [depositCoin, setDepositCoin] = useState<string>(null);
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (isOpen) {
@@ -161,23 +154,13 @@ const VaultView = ({ isOpen }) => {
             {dayjs(v.endDate).format("MMM D, YYYY")}
           </Typography>
         ),
-        actions:
-          walletBalance && walletBalance[v.coin].total.availableBalance >= v.minBalance ? (
-            <ActivatedButton>
-              <FormattedMessage id="vault.activated" />
-            </ActivatedButton>
-          ) : (
-            <Button className="textPurple borderPurple" onClick={() => setDepositCoin(v.coin)}>
-              <FormattedMessage id="accounts.deposit" />
-              &nbsp;
-              <NumberFormat
-                value={v.minBalance}
-                displayType="text"
-                suffix={` ${v.coin}`}
-                style={{ whiteSpace: "nowrap" }}
-              />
-            </Button>
-          ),
+        actions: (
+          <VaultDepositButton
+            vault={v}
+            balance={walletBalance && walletBalance[v.coin].total.availableBalance}
+            onClick={() => setDepositCoin(v.coin)}
+          />
+        ),
       })),
     [vaults],
   );
@@ -195,11 +178,7 @@ const VaultView = ({ isOpen }) => {
           size="medium"
           state={true}
         >
-          <WalletDepositView
-            coins={coins}
-            onClose={() => setDepositCoin(null)}
-            coin={depositCoin}
-          />
+          <WalletDepositView coins={coins} coin={depositCoin} />
         </Modal>
       )}
       <Title>
@@ -213,9 +192,17 @@ const VaultView = ({ isOpen }) => {
       <BenefitsInfo />
       <Box mt="32px">
         {data ? (
-          <TableLayout>
-            <Table data={data} columns={columns} />
-          </TableLayout>
+          isMobile ? (
+            <VaultMobile
+              vaults={vaults}
+              onOfferClick={(coin) => setDepositCoin(coin)}
+              balance={walletBalance}
+            />
+          ) : (
+            <TableLayout>
+              <Table data={data} columns={columns} />
+            </TableLayout>
+          )
         ) : (
           <Box display="flex" flex={1} justifyContent="center">
             <CircularProgress color="primary" size={40} />

@@ -71,3 +71,7 @@ export const AlignCenter = styled.div`
   justify-content: ${(props) => props.justifyContent || "center"};
   flex-direction: ${(props) => props.direction || "row"};
 `;
+
+export const SecondaryText = styled.div`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+`;

@@ -1,5 +1,4 @@
 import React from "react";
-import { CustomThemeOptions } from "services/theme";
 import styled, { css } from "styled-components";
 import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";

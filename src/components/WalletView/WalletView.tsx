@@ -133,6 +133,11 @@ const VaultButton = styled(MuiButton)`
   font-weight: 600;
   text-transform: none;
   align-self: flex-end;
+
+  ${isMobile(`
+    position: static;
+    margin-top: 12px;
+  `)}
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -158,9 +163,11 @@ const PanelItem = styled.div`
       justify-content: center;
     `}
 
-  ${isMobile(`
+  ${isMobile(css`
+    margin: 0;
+    justify-content: stretch;
     &:not(:first-child) {
-      margin: 48px 0 0;
+      margin-top: 48px;
     }
   `)}
 `;
