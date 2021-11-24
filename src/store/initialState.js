@@ -135,6 +135,7 @@
  * @property {Filters} filters
  * @property {TradingTerminalSettings} tradingTerminal
  * @property {Object<'login', boolean>} testAB
+ * @property {Object<string, boolean>} ignoreNotice
  */
 
 /**
@@ -221,6 +222,10 @@ const initialState = {
     balanceBox: false,
     rowsPerPage: {},
     selectedExchangeId: null,
+    ignoreNotice: {
+      vaultInfo: false,
+      vaultBenefits: false,
+    },
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",

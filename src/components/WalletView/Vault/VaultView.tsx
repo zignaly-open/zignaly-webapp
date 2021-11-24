@@ -209,17 +209,19 @@ const VaultView = ({ isOpen }) => {
         <img src={WalletIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
         <FormattedMessage id="vault.title" />
       </Title>
-      <InfoPanel title="vault.title" message="vault.info" />
+      <InfoPanel id="vaultInfo" title="vault.title" message="vault.info" />
       <BenefitsInfo />
-      {data ? (
-        <TableLayout>
-          <Table data={data} columns={columns} />
-        </TableLayout>
-      ) : (
-        <Box display="flex" flex={1} justifyContent="center">
-          <CircularProgress color="primary" size={40} />
-        </Box>
-      )}
+      <Box mt="32px">
+        {data ? (
+          <TableLayout>
+            <Table data={data} columns={columns} />
+          </TableLayout>
+        ) : (
+          <Box display="flex" flex={1} justifyContent="center">
+            <CircularProgress color="primary" size={40} />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

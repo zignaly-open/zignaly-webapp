@@ -16,6 +16,8 @@ import {
   SET_TERMINAL_PROVIDER,
   SET_MARKETPLACE_CACHE_MODAL,
   SET_TEST_AB,
+  IGNORE_NOTICE,
+  ignoreNotice,
 } from "../actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -30,6 +32,7 @@ import { createReducer } from "@reduxjs/toolkit";
  * @typedef {import("../actions/settings").SetTerminalPairAction} SetTerminalPairAction
  * @typedef {import("../actions/settings").SetTerminalProviderAction} SetTerminalProviderAction
  * @typedef {import("../actions/settings").SetTestABAction} SetTestABAction
+ * @typedef {import("../actions/settings").IgnoreNoticeAction} IgnoreNoticeAction
  */
 
 /**
@@ -128,6 +131,10 @@ const settings = createReducer(initialState.settings, {
   [SET_TEST_AB]: (state, /** @type {SetTestABAction} */ action) => {
     const { page, enable } = action.payload;
     state.testAB[page] = enable;
+  },
+
+  [IGNORE_NOTICE]: (state, /** @type {IgnoreNoticeAction} */ action) => {
+    state.ignoreNotice[action.payload] = true;
   },
 });
 

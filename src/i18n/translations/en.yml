@@ -1630,6 +1630,7 @@ action.next: "Next"
 action.accept: "Accept"
 action.proceed: "Proceed"
 action.view: "View"
+action.dismiss: "Dismiss"
 
 # FORM
 form.button.save: "Save"
@@ -1761,6 +1762,7 @@ vault.benefits.info2: |
   • No fees or lockup period
   • Rewards stat automatically, no promo codes needed
   • Your funds are always available for withdrawal
+
 # WALLET
 wallet.addcoin: "Add coin"
 wallet.balance: "Balance:"
