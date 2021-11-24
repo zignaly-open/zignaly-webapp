@@ -66,6 +66,7 @@
 
     #trading_view_chart {
       margin-bottom: 14px;
+      height: 100%;
 
       @include media("<=sm") {
         flex: 0 0 100%;
