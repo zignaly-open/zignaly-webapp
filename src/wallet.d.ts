@@ -36,6 +36,8 @@ interface Vault {
   maxBalance: number;
   startDate: string;
   endDate: string;
+  apr: number;
+  distributionPeriod: string;
   // lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;

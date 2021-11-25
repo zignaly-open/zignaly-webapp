@@ -92,13 +92,9 @@ const VaultMobile = ({ vaults, balance, onOfferClick }: VaultMobileProps) => {
             </div>
             <div>
               <Label>
-                <FormattedMessage id="vault.earn" />
+                <FormattedMessage id="vault.apr" />
               </Label>
-              <Amount>
-                {formatPrice(v.rewardsTotal, "", " ", true)}
-                <Coin>{v.coinReward}</Coin>
-                <CoinIcon width={16} height={16} coin={v.coinReward} />
-              </Amount>
+              <Amount>{v.apr}%</Amount>
             </div>
           </Box>
         </Panel>

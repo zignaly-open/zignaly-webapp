@@ -3,7 +3,7 @@ import CustomModal from "components/Modal";
 import React from "react";
 import { Title, Modal } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import { formatUTC } from "utils/format";
@@ -61,7 +61,17 @@ interface VaultOfferModalProps {
 }
 
 const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
-  const { coin, coinReward, startDate, lockupDate, minBalance, maxBalance, rewardsTotal } = vault;
+  const intl = useIntl();
+  const {
+    coin,
+    coinReward,
+    startDate,
+    lockupDate,
+    minBalance,
+    maxBalance,
+    rewardsTotal,
+    distributionPeriod,
+  } = vault;
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal p={5}>
@@ -128,7 +138,12 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.awarded" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage id="wallet.staking.offer.awarded.val" />
+              <FormattedMessage
+                id="wallet.staking.offer.awarded.val"
+                values={{
+                  period: intl.formatMessage({ id: `wallet.staking.offer.${distributionPeriod}` }),
+                }}
+              />
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -136,17 +151,22 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.calculation" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage id="wallet.staking.offer.calculation.val" />
+              <FormattedMessage
+                id="wallet.staking.offer.calculation.val"
+                values={{
+                  period: intl.formatMessage({ id: `wallet.staking.offer.${distributionPeriod}` }),
+                }}
+              />
             </ItemValue>
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.firstAwarded" />
             </ItemLabel>
             <ItemValue>
               <FormattedMessage id="wallet.staking.offer.firstAwarded.val" />
             </ItemValue>
-          </ListItem>
+          </ListItem> */}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.compounding" />

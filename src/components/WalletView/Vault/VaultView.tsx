@@ -91,7 +91,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         accessor: "minBalance",
       },
       {
-        Header: intl.formatMessage({ id: "vault.earn" }),
+        Header: intl.formatMessage({ id: "vault.apr" }),
         accessor: "earn",
       },
       {
@@ -137,13 +137,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
             <CoinIcon width={16} height={16} coin={v.coin} />
           </Balance>
         ),
-        earn: (
-          <Balance>
-            <NumberFormat displayType="text" value={v.rewardsTotal} />
-            <Coin>{v.coinReward}</Coin>
-            <CoinIcon width={16} height={16} coin={v.coinReward} />
-          </Balance>
-        ),
+        earn: <Balance>{v.apr}%</Balance>,
         startDate: (
           <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
             {dayjs(v.startDate).format("MMM D, YYYY")}
