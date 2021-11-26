@@ -12,6 +12,7 @@
     // background: #e7e5f8;
     border-radius: 16px;
     // border: 1px solid #c1c2f7;
+    padding: 40px;
   }
 
   .closeIcon {
@@ -52,6 +53,10 @@
 
 @include media("<=sm") {
   .modal {
+    &.newTheme {
+      padding: 16px;
+    }
+
     .closeIcon {
       cursor: pointer;
       height: 20px;

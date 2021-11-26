@@ -160,7 +160,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   );
 
   return (
-    <Box p={5}>
+    <>
       {selectedVault && (
         <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
       )}
@@ -203,7 +203,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           </Box>
         )}
       </Box>
-    </Box>
+    </>
   );
 };
 export default VaultView;
