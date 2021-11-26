@@ -35,6 +35,7 @@ interface Vault {
   minBalance: number;
   maxBalance: number;
   startDate: string;
+  distributionDate: string;
   endDate: string;
   apr: number;
   distributionPeriod: string;
