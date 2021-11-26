@@ -65,7 +65,6 @@ interface WalletDepositViewProps {
 }
 
 const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
-  console.log("depo");
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
@@ -91,7 +90,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   }, [network]);
 
   return (
-    <Modal p={5}>
+    <Modal>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="accounts.deposit" /> {selectedCoin}

@@ -80,7 +80,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
   };
 
   return (
-    <Modal p={5}>
+    <Modal>
       {balance ? (
         <>
           <Title>

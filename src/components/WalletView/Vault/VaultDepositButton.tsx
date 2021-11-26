@@ -8,7 +8,7 @@ import { isMobile } from "styles/styles";
 
 const ButtonStyled = styled(CustomButton)`
   && {
-    min-width: auto;
+    min-width: 142px;
     min-height: auto;
     width: auto;
   }
@@ -31,7 +31,7 @@ const ActivatedButton = styled.div`
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: #36373f;
+  color: ${({ theme }) => (theme.palette.type === "dark" ? "#B1F7CA" : "#36373f")};
 
   ${isMobile(css`
     min-width: 98px;

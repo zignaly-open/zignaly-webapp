@@ -369,7 +369,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   );
 
   return (
-    <Box p={5}>
+    <>
       {page === "deposit" && (
         <Modal
           onClose={() => setPath("")}
@@ -527,7 +527,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         <FormattedMessage id="wallet.transactions" />
       </Title>
       <WalletTransactions />
-    </Box>
+    </>
   );
 };
 

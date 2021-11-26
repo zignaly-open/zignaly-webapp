@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import { formatUTC } from "utils/format";
+import { formatPrice } from "utils/formatters";
 // const localizedFormat = require("dayjs/plugin/localizedFormat");
 // dayjs.extend(localizedFormat);
 
@@ -74,7 +75,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
   } = vault;
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
-      <Modal p={5}>
+      <Modal>
         <Title>
           <img src={PiggyIcon} width={40} height={40} />
           <FormattedMessage id="wallet.staking.offer.title" />
@@ -117,7 +118,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             <ItemValue>
               <FormattedMessage
                 id="wallet.staking.offer.rewardEnds.val"
-                values={{ coin: coinReward, amount: rewardsTotal }}
+                values={{ coin: coinReward, amount: rewardsTotal.toLocaleString("en-US") }}
               />
             </ItemValue>
           </ListItem>
