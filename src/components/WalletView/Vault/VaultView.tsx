@@ -97,8 +97,14 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
       },
       {
-        Header: intl.formatMessage({ id: "vault.starts" }),
+        Header: intl.formatMessage({ id: "vault.stakingStats" }),
         accessor: "startDate",
+        tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+      },
+      {
+        Header: intl.formatMessage({ id: "vault.paymentStarts" }),
+        accessor: "distributionDate",
+        tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
       },
       {
         Header: intl.formatMessage({ id: "vault.ends" }),
@@ -143,6 +149,11 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         startDate: (
           <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
             {dayjs(v.startDate).format("MMM D, YYYY")}
+          </Typography>
+        ),
+        distributionDate: (
+          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
+            {dayjs(v.distributionDate).format("MMM D, YYYY")}
           </Typography>
         ),
         endDate: (
