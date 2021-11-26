@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useExpanded, useTable } from "react-table";
-import { Typography } from "@material-ui/core";
+import { Typography, Tooltip } from "@material-ui/core";
 import { isMobile } from "styles/styles";
+import ConditionalWrapper from "components/ConditionalWrapper";
 
 const TypographyHeader = styled(Typography)`
   color: ${({ theme }) => theme.newTheme.neutralText};
@@ -82,7 +83,12 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
           <tr key={`--group-${indexGroup.toString()}`} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, indexColumn) => (
               <th key={`--group-column-${indexColumn.toString()}`} {...column.getHeaderProps()}>
-                <TypographyHeader>{column.render("Header")}</TypographyHeader>
+                <ConditionalWrapper
+                  condition={Boolean(column.tooltip)}
+                  wrapper={(_children) => <Tooltip title={column.tooltip}>{_children}</Tooltip>}
+                >
+                  <TypographyHeader>{column.render("Header")}</TypographyHeader>
+                </ConditionalWrapper>
               </th>
             ))}
           </tr>

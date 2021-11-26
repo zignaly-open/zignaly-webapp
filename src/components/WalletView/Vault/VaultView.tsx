@@ -89,10 +89,12 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       {
         Header: intl.formatMessage({ id: "vault.minBalance" }),
         accessor: "minBalance",
+        tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
       },
       {
         Header: intl.formatMessage({ id: "vault.apr" }),
         accessor: "earn",
+        tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
       },
       {
         Header: intl.formatMessage({ id: "vault.starts" }),
