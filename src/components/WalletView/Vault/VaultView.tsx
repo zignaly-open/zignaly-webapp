@@ -8,7 +8,7 @@ import {
 import { useTheme } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Title } from "styles/styles";
+import { AlignCenter, Title } from "styles/styles";
 import WalletIcon from "images/wallet/wallet.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "./RewardsProgressBar";
@@ -44,10 +44,12 @@ const Coin = styled.span`
   margin: 0 5px 0 4px;
 `;
 
-const Balance = styled(Typography)`
+const Value = styled(Typography)`
   font-weight: 600;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  justify-content: center;
 `;
 
 const VaultView = ({ isOpen }: { isOpen: boolean }) => {
@@ -124,7 +126,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       vaults.map((v) => ({
         rewards: <RewardsProgressBar vault={v} />,
         offer: (
-          <>
+          <AlignCenter>
             <Typography style={{ fontWeight: 600 }}>
               <FormattedMessage
                 id="wallet.staking.earn"
@@ -136,31 +138,19 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
                 <ChevronRight />
               </Terms>
             </Typography>
-          </>
+          </AlignCenter>
         ),
         minBalance: (
-          <Balance>
+          <Value>
             <NumberFormat displayType="text" value={v.minBalance} />
             <Coin>{v.coin}</Coin>
             <CoinIcon width={16} height={16} coin={v.coin} />
-          </Balance>
+          </Value>
         ),
-        earn: <Balance>{v.apr}%</Balance>,
-        startDate: (
-          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-            {dayjs(v.startDate).format("MMM D, YYYY")}
-          </Typography>
-        ),
-        distributionDate: (
-          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-            {dayjs(v.distributionDate).format("MMM D, YYYY")}
-          </Typography>
-        ),
-        endDate: (
-          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-            {dayjs(v.endDate).format("MMM D, YYYY")}
-          </Typography>
-        ),
+        earn: <Value>{v.apr}%</Value>,
+        startDate: <Value>{dayjs(v.startDate).format("MMM D, YYYY")}</Value>,
+        distributionDate: <Value>{dayjs(v.distributionDate).format("MMM D, YYYY")}</Value>,
+        endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
           <VaultDepositButton
             vault={v}
