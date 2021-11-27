@@ -421,7 +421,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             </TextMain>
             <RateText data-test-id="total-balance-usd">
               <NumberFormat
-                value={parseFloat(balanceZIG) * rateZIG}
+                value={balanceZIG * rateZIG}
                 displayType="text"
                 thousandSeparator={true}
                 prefix="$"

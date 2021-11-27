@@ -12,6 +12,6 @@
   "include": [
     "../node_modules/cypress",
     "./**/*.ts",
-    "../src/global.d.ts"
+    "../src/*.d.ts"
   ]
 }
