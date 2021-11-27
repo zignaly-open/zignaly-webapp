@@ -84,7 +84,7 @@ const Coin = styled.span`
 `;
 
 interface RewardsProgressBarProps {
-  vault: Vault;
+  vault: VaultOffer;
 }
 
 const RewardsProgressBar = ({ vault }: RewardsProgressBarProps) => {

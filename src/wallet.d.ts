@@ -30,7 +30,7 @@ interface BalanceData {
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
 
-interface Vault {
+interface VaultOffer {
   id: number;
   minBalance: number;
   maxBalance: number;

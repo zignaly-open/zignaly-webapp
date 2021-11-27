@@ -40,7 +40,7 @@ const ActivatedButton = styled.div`
 
 interface VaultDepositButtonProps {
   onClick: () => void;
-  vault: Vault;
+  vault: VaultOffer;
   balance: number;
 }
 

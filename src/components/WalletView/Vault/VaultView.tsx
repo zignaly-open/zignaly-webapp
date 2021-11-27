@@ -54,8 +54,8 @@ const Value = styled(Typography)`
 
 const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
-  const [vaults, setVaults] = useState<Vault[]>(null);
-  const [selectedVault, setSelectedVault] = useState<Vault>(null);
+  const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
+  const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
   const [depositCoin, setDepositCoin] = useState<string>(null);
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
@@ -72,8 +72,8 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         setWalletBalance(response);
       });
 
-      tradeApi.getVaults({ status: "active" }).then((response) => {
-        setVaults(response);
+      tradeApi.getVaultOffers({ status: "active" }).then((response) => {
+        setVaultOffers(response);
       });
     }
   }, [isOpen]);
@@ -122,8 +122,8 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
 
   const data = useMemo(
     () =>
-      vaults &&
-      vaults.map((v) => ({
+      vaultOffers &&
+      vaultOffers.map((v) => ({
         rewards: <RewardsProgressBar vault={v} />,
         offer: (
           <AlignCenter>
@@ -133,7 +133,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
                 values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
               />
               &nbsp;
-              <Terms onClick={() => setSelectedVault(v)}>
+              <Terms onClick={() => setSelectedVaultOffer(v)}>
                 <FormattedMessage id="vault.terms" />
                 <ChevronRight />
               </Terms>
@@ -159,13 +159,17 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           />
         ),
       })),
-    [vaults],
+    [vaultOffers],
   );
 
   return (
     <>
-      {selectedVault && (
-        <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
+      {selectedVaultOffer && (
+        <VaultOfferModal
+          onClose={() => setSelectedVaultOffer(null)}
+          open={true}
+          vault={selectedVaultOffer}
+        />
       )}
       {depositCoin && (
         <Modal
@@ -191,7 +195,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         {data ? (
           isMobile ? (
             <VaultMobile
-              vaults={vaults}
+              vaults={vaultOffers}
               onOfferClick={(coin) => setDepositCoin(coin)}
               balance={walletBalance}
             />

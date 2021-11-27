@@ -44,7 +44,7 @@ const Perc = styled.div`
 `;
 
 interface RewardsProgressCircleProps {
-  vault: Vault;
+  vault: VaultOffer;
 }
 
 const RewardsProgressCircle = ({ vault }: RewardsProgressCircleProps) => {
