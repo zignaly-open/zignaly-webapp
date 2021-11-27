@@ -1752,6 +1752,7 @@ vault.stakingStats.tooltip: "Day that you should have the minimum balance in you
 vault.paymentStarts: "Payment Starts"
 vault.paymentStarts.tooltip: "When the payments starts"
 vault.ends: "Ends"
+vault.ended: "Ended"
 vault.startsEnds: "Starts/Ends"
 vault.terms: "Terms"
 vault.title: "ZIG Vault"
@@ -1769,6 +1770,8 @@ vault.benefits.info2: |
   • No fees or lockup period
   • Rewards stat automatically, no promo codes needed
   • Your funds are always available for withdrawal
+vault.active: "Active Vault Offers"
+vault.expired: "Expired Offers"
 
 # WALLET
 wallet.addcoin: "Add coin"
