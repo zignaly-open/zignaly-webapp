@@ -1752,6 +1752,7 @@ vault.stakingStats.tooltip: "Day that you should have the minimum balance in you
 vault.paymentStarts: "Payment Starts"
 vault.paymentStarts.tooltip: "When the payments starts"
 vault.ends: "Ends"
+vault.ended: "Ended"
 vault.startsEnds: "Starts/Ends"
 vault.terms: "Terms"
 vault.title: "ZIG Vault"
@@ -1769,6 +1770,8 @@ vault.benefits.info2: |
   • No fees or lockup period
   • Rewards stat automatically, no promo codes needed
   • Your funds are always available for withdrawal
+vault.active: "Active Vault Offers"
+vault.expired: "Expired Offers"
 
 # WALLET
 wallet.addcoin: "Add coin"
@@ -1793,6 +1796,7 @@ wallet.totalbalance: "Total ZIG Balance"
 wallet.rewards: "Rewards & Savings"
 wallet.staking: "ZIG Staking Vault"
 wallet.staking.earn: "Earn {reward} on balances over {amount} {coin}"
+wallet.staking.earn.short: "<span>Earn {reward}</span> on {coin} balances"
 wallet.staking.offer.title: "VAULT OFFER TERMS"
 wallet.staking.offer.desc: "Hold {coin} and earn {reward}"
 wallet.staking.offer.minDeposit: "Minimum deposit:"
@@ -1825,6 +1829,7 @@ wallet.type.withdraw: "Withdraw"
 wallet.from: "From:"
 wallet.to: "To:"
 wallet.tx: "Tx Hash:"
+wallet.note: "Note:"
 wallet.vaults.offers: "All {count} Vault offers"
 wallet.withdraw.address: "Withdraw to Address:"
 wallet.withdraw.address.invalid: "Invalid address"

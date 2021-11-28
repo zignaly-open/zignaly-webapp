@@ -37,18 +37,6 @@ jobs:
         run: echo "skipping tests"
       - name: Build
         run: npm run build:test
-      # - name: Integration Tests
-      #   # temp until we fix the flake errors
-      #   continue-on-error: true
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     start: npm run serve
-      #     record: true
-      #   env:
-      #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      #     # pass GitHub token to allow accurately detecting a build vs a re-run build
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     CYPRESS_baseUrl: http://localhost:9000/app
       - name: Package & Release
         env:
           GITHUB_AUTHOR_NAME: ${{ secrets.GITHUB_AUTHOR_NAME }}
@@ -75,3 +63,15 @@ jobs:
           s3_folder: dev
           max_polling_iterations: 60
           directory: public
+      - name: Integration Tests
+        # temp until we fix the flake errors
+        continue-on-error: true
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run serve
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_baseUrl: http://localhost:9000/app

@@ -46,7 +46,7 @@ const Panel = styled.div`
 `;
 
 interface VaultMobileProps {
-  vaults: Vault[];
+  vaults: VaultOffer[];
   balance: WalletBalance;
   onOfferClick: (coin: string) => void;
 }

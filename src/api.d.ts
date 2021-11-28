@@ -18,6 +18,7 @@ interface TransactionsHistory {
   providerId: string;
   providerName: string;
   transactionId: string;
+  note: string;
   txUrl: string;
   network: string;
   status: string;

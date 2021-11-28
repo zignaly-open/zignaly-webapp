@@ -58,7 +58,7 @@ const TitleDesc = styled(Typography)`
 interface VaultOfferModalProps {
   onClose: () => void;
   open: boolean;
-  vault: Vault;
+  vault: VaultOffer;
 }
 
 const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
