@@ -221,6 +221,7 @@ const WalletTransactions = () => {
           </AlignCenter>
         ),
         transactionId: t.transactionId,
+        note: t.note,
         // action: (
         //   <Accordion>
         //     <AccordionSummary
@@ -288,7 +289,7 @@ const WalletTransactions = () => {
 
   const renderRowSubComponent = useCallback(
     ({ row }) => {
-      const { transactionId } = row.values;
+      const { transactionId, note } = row.values;
       const transaction = transactions.find((t) => t.transactionId === transactionId);
       const isWithdrawal = transaction.formattedAmount.startsWith("-");
 
@@ -311,6 +312,14 @@ const WalletTransactions = () => {
             </TypographyLabel>
             <TypographyAddress>{transactionId}</TypographyAddress>
           </Box>
+          {note && (
+            <Box display="flex" alignItems="center" mt="8px">
+              <TypographyLabel>
+                <FormattedMessage id="wallet.note" />
+              </TypographyLabel>
+              <TypographyAddress>{note}</TypographyAddress>
+            </Box>
+          )}
         </StyledTransferPanel>
       );
     },
