@@ -69,7 +69,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const networkOptions = coinData
     ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
     : [];
-  const coinsOptions = ["ZIG", "BNB", "BTC", "BUSD", "ETH"];
+  const coinsOptions = coins ? Object.keys(coins) : [];
   const [network, setNetwork] = useState("");
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();

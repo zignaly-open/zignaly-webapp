@@ -178,7 +178,7 @@ const WalletWithdrawConfirm = ({
       <br />
       {!done ? (
         <>
-          <Label style={{ marginTop: "24px" }}>
+          <Label>
             <FormattedMessage id="wallet.withdraw.network" />
           </Label>
           <Box display="flex" mt="16px" alignItems="center">
