@@ -149,4 +149,4 @@ export const FormatedDateTime = (date) =>
   //   />
   moment(date).format("YYYY/MM/DD HH:mm");
 
-export const formatUTC = (date: string) => dayjs(date).utc().format("MMMM DD, YYYY hh:mm A UTC");
+export const formatUTC = (date: string) => dayjs(date).format("MMMM DD, YYYY hh:mm A UTC");
