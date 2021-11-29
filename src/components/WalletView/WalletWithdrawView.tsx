@@ -111,7 +111,9 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                 inputRef={register({
                   required: true,
                   pattern: {
-                    value: /^(0x)[0-9A-Fa-f]{40}$/,
+                    value: RegExp(
+                      coinData.networks.find((n) => n.network === network)?.addressRegex,
+                    ),
                     message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
                   },
                 })}
