@@ -1,39 +1,32 @@
-import { Box, CircularProgress, Typography, Button as ButtonMui } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Button as ButtonMui,
+  useMediaQuery,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Title } from "styles/styles";
+import { AlignCenter, Title } from "styles/styles";
 import WalletIcon from "images/wallet/wallet.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "./RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import VaultOfferModal from "./VaultOfferModal";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { ArrowBack, ChevronRight } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
-import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
 import WalletDepositView from "../WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
-
-const Button = styled(CustomButton)`
-  min-width: 160px;
-`;
-
-const ActivatedButton = styled.div`
-  width: 160px;
-  background: rgba(38, 196, 193, 0.28);
-  border-radius: 40px;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: #b1f7ca;
-`;
+import VaultMobile from "./VaultMobile";
+import VaultDepositButton from "./VaultDepositButton";
 
 const Terms = styled.a`
   line-height: 16px;
@@ -53,19 +46,49 @@ const Coin = styled.span`
   margin: 0 5px 0 4px;
 `;
 
-const Balance = styled(Typography)`
+const Value = styled(Typography)`
   font-weight: 600;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  justify-content: center;
 `;
 
-const VaultView = ({ isOpen }) => {
+const StyledTabs = styled(Tabs)`
+  .MuiTabs-indicator {
+    background: linear-gradient(289.8deg, #149cad 0%, #4540c1 100%);
+    border-radius: 6px;
+
+    ${({ theme }) =>
+      theme.palette.type === "light" &&
+      css`
+        background: linear-gradient(
+          121.21deg,
+          #a600fb 10.7%,
+          #6f06fc 31.3%,
+          #4959f5 60.13%,
+          #2e8ddf 76.19%,
+          #12c1c9 89.78%
+        );
+      `}
+  }
+`;
+
+const StyledTab = styled(Tab)`
+  text-transform: none;
+  font-weight: 600;
+`;
+
+const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
-  const [vaults, setVaults] = useState<Vault[]>(null);
-  const [selectedVault, setSelectedVault] = useState<Vault>(null);
+  const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
+  const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
   const [depositCoin, setDepositCoin] = useState<string>(null);
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [tab, setTab] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
@@ -76,116 +99,145 @@ const VaultView = ({ isOpen }) => {
       tradeApi.getWalletBalance().then((response) => {
         setWalletBalance(response);
       });
-
-      tradeApi.getVaults({ status: "active" }).then((response) => {
-        setVaults(response);
-      });
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      setVaultOffers(null);
+      tradeApi.getVaultOffers({ status: tab === 0 ? "active" : "expired" }).then((response) => {
+        setVaultOffers(response);
+      });
+    }
+  }, [isOpen, tab]);
+
   const columns = useMemo(
-    () => [
-      {
-        Header: intl.formatMessage({ id: "vault.rewardsRemaning" }),
-        accessor: "rewards",
-      },
-      {
-        Header: intl.formatMessage({ id: "vault.offer" }),
-        accessor: "offer",
-      },
-      {
-        Header: intl.formatMessage({ id: "vault.minBalance" }),
-        accessor: "minBalance",
-      },
-      {
-        Header: intl.formatMessage({ id: "vault.earn" }),
-        accessor: "earn",
-      },
-      {
-        Header: intl.formatMessage({ id: "vault.starts" }),
-        accessor: "startDate",
-      },
-      {
-        Header: intl.formatMessage({ id: "vault.ends" }),
-        accessor: "endDate",
-      },
-      {
-        Header: "",
-        accessor: "actions",
-      },
-    ],
-    [],
+    () =>
+      tab === 0
+        ? [
+            {
+              Header: intl.formatMessage({ id: "vault.rewardsRemaning" }),
+              accessor: "rewards",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.offer" }),
+              accessor: "offer",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.minBalance" }),
+              accessor: "minBalance",
+              tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.apr" }),
+              accessor: "earn",
+              tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.stakingStats" }),
+              accessor: "startDate",
+              tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.paymentStarts" }),
+              accessor: "distributionDate",
+              tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.ends" }),
+              accessor: "endDate",
+            },
+            {
+              Header: "",
+              accessor: "actions",
+            },
+          ]
+        : [
+            {
+              Header: "",
+              accessor: "rewards",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.offer" }),
+              accessor: "offer",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.minBalance" }),
+              accessor: "minBalance",
+              tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.apr" }),
+              accessor: "earn",
+              tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.stakingStats" }),
+              accessor: "startDate",
+              tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.ended" }),
+              accessor: "endDate",
+            },
+          ],
+    [tab],
   );
 
   const data = useMemo(
     () =>
-      vaults &&
-      vaults.map((v) => ({
-        rewards: <RewardsProgressBar vault={v} />,
+      vaultOffers &&
+      vaultOffers.map((v) => ({
+        rewards: (
+          <AlignCenter>
+            {tab === 0 ? <RewardsProgressBar vault={v} /> : <CoinIcon coin={v.coinReward} />}
+          </AlignCenter>
+        ),
         offer: (
-          <>
+          <AlignCenter>
             <Typography style={{ fontWeight: 600 }}>
               <FormattedMessage
                 id="wallet.staking.earn"
                 values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
               />
               &nbsp;
-              <Terms onClick={() => setSelectedVault(v)}>
+              <Terms onClick={() => setSelectedVaultOffer(v)}>
                 <FormattedMessage id="vault.terms" />
                 <ChevronRight />
               </Terms>
             </Typography>
-          </>
+          </AlignCenter>
         ),
         minBalance: (
-          <Balance>
+          <Value>
             <NumberFormat displayType="text" value={v.minBalance} />
             <Coin>{v.coin}</Coin>
             <CoinIcon width={16} height={16} coin={v.coin} />
-          </Balance>
+          </Value>
         ),
-        earn: (
-          <Balance>
-            <NumberFormat displayType="text" value={v.rewardsTotal} />
-            <Coin>{v.coinReward}</Coin>
-            <CoinIcon width={16} height={16} coin={v.coinReward} />
-          </Balance>
+        earn: <Value>{v.apr}%</Value>,
+        startDate: <Value>{dayjs(v.startDate).format("MMM D, YYYY")}</Value>,
+        distributionDate: <Value>{dayjs(v.distributionDate).format("MMM D, YYYY")}</Value>,
+        endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
+        actions: (
+          <VaultDepositButton
+            vault={v}
+            balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
+            onClick={() => setDepositCoin(v.coin)}
+          />
         ),
-        startDate: (
-          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-            {dayjs(v.startDate).format("MMM D, YYYY")}
-          </Typography>
-        ),
-        endDate: (
-          <Typography style={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-            {dayjs(v.endDate).format("MMM D, YYYY")}
-          </Typography>
-        ),
-        actions:
-          walletBalance && walletBalance[v.coin].total.availableBalance >= v.minBalance ? (
-            <ActivatedButton>
-              <FormattedMessage id="vault.activated" />
-            </ActivatedButton>
-          ) : (
-            <Button className="textPurple borderPurple" onClick={() => setDepositCoin(v.coin)}>
-              <FormattedMessage id="accounts.deposit" />
-              &nbsp;
-              <NumberFormat
-                value={v.minBalance}
-                displayType="text"
-                suffix={` ${v.coin}`}
-                style={{ whiteSpace: "nowrap" }}
-              />
-            </Button>
-          ),
       })),
-    [vaults],
+    [vaultOffers, tab],
   );
 
   return (
-    <Box p={5}>
-      {selectedVault && (
-        <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
+    <>
+      {selectedVaultOffer && (
+        <VaultOfferModal
+          onClose={() => setSelectedVaultOffer(null)}
+          open={true}
+          vault={selectedVaultOffer}
+        />
       )}
       {depositCoin && (
         <Modal
@@ -195,11 +247,7 @@ const VaultView = ({ isOpen }) => {
           size="medium"
           state={true}
         >
-          <WalletDepositView
-            coins={coins}
-            onClose={() => setDepositCoin(null)}
-            coin={depositCoin}
-          />
+          <WalletDepositView coins={coins} coin={depositCoin} />
         </Modal>
       )}
       <Title>
@@ -209,18 +257,34 @@ const VaultView = ({ isOpen }) => {
         <img src={WalletIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
         <FormattedMessage id="vault.title" />
       </Title>
-      <InfoPanel title="vault.title" message="vault.info" />
+      <InfoPanel id="vaultInfo" title="vault.title" message="vault.info" />
       <BenefitsInfo />
-      {data ? (
-        <TableLayout>
-          <Table data={data} columns={columns} />
-        </TableLayout>
-      ) : (
-        <Box display="flex" flex={1} justifyContent="center">
-          <CircularProgress color="primary" size={40} />
-        </Box>
-      )}
-    </Box>
+      <Box mt="28px">
+        {data ? (
+          <>
+            <StyledTabs onChange={(e, v) => setTab(v)} value={tab} style={{ marginBottom: "16px" }}>
+              <StyledTab label={<FormattedMessage id="vault.active" />} />
+              <StyledTab label={<FormattedMessage id="vault.expired" />} />
+            </StyledTabs>
+            {isMobile ? (
+              <VaultMobile
+                vaults={vaultOffers}
+                onOfferClick={(coin) => setDepositCoin(coin)}
+                balance={walletBalance}
+              />
+            ) : (
+              <TableLayout>
+                <Table data={data} columns={columns} />
+              </TableLayout>
+            )}
+          </>
+        ) : (
+          <Box display="flex" flex={1} justifyContent="center">
+            <CircularProgress color="primary" size={40} />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 export default VaultView;

@@ -18,6 +18,7 @@ interface TransactionsHistory {
   providerId: string;
   providerName: string;
   transactionId: string;
+  note: string;
   txUrl: string;
   network: string;
   status: string;
@@ -62,9 +63,9 @@ interface ConvertCoinRes {
 
 interface ConvertCoinPreviewRes {
   lastPrice: string;
-  pair: string;
   side: string;
   estimatedAmount: string;
+  min: { amount: number; currency: string };
 }
 
 interface GetQuoteAssetFromBaseReq {

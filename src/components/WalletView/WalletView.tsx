@@ -133,6 +133,11 @@ const VaultButton = styled(MuiButton)`
   font-weight: 600;
   text-transform: none;
   align-self: flex-end;
+
+  ${isMobile(`
+    position: static;
+    margin-top: 12px;
+  `)}
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -158,9 +163,11 @@ const PanelItem = styled.div`
       justify-content: center;
     `}
 
-  ${isMobile(`
+  ${isMobile(css`
+    margin: 0;
+    justify-content: stretch;
     &:not(:first-child) {
-      margin: 48px 0 0;
+      margin-top: 48px;
     }
   `)}
 `;
@@ -277,14 +284,14 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const page = pathParams[0];
   const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
-  const [vaults, setVaults] = useState<Vault[]>(null);
+  const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
-  const [selectedVault, setSelectedVault] = useState<Vault>(null);
+  const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -304,8 +311,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         setWalletBalance(response);
       });
 
-      tradeApi.getVaults({ status: "active" }).then((response) => {
-        setVaults(response);
+      tradeApi.getVaultOffers({ status: "active" }).then((response) => {
+        setVaultOffers(response);
       });
     }
   }, [isOpen]);
@@ -362,7 +369,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   );
 
   return (
-    <Box p={5}>
+    <>
       {page === "deposit" && (
         <Modal
           onClose={() => setPath("")}
@@ -390,8 +397,12 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           />
         </Modal>
       )}
-      {selectedVault && (
-        <VaultOfferModal onClose={() => setSelectedVault(null)} open={true} vault={selectedVault} />
+      {selectedVaultOffer && (
+        <VaultOfferModal
+          onClose={() => setSelectedVaultOffer(null)}
+          open={true}
+          vault={selectedVaultOffer}
+        />
       )}
       <Title>
         <img src={WalletIcon} width={40} height={40} />
@@ -410,7 +421,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             </TextMain>
             <RateText data-test-id="total-balance-usd">
               <NumberFormat
-                value={parseFloat(balanceZIG) * rateZIG}
+                value={balanceZIG * rateZIG}
                 displayType="text"
                 thousandSeparator={true}
                 prefix="$"
@@ -481,15 +492,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           <SubTitle>
             <FormattedMessage id="wallet.staking" />
           </SubTitle>
-          {vaults && (
+          {vaultOffers && (
             <Box mt={1} display="flex" flexDirection="column">
-              {vaults.slice(0, 4).map((v) => (
+              {vaultOffers.slice(0, 4).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
                   <VaultListItem
                     display="flex"
                     key={v.id}
                     alignItems="center"
-                    onClick={() => setSelectedVault(v)}
+                    onClick={() => setSelectedVaultOffer(v)}
                   >
                     <Box display="flex">
                       <CoinIcon coin={v.coinReward} width={20} height={20} />
@@ -506,21 +517,30 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 </Box>
               ))}
               <VaultButton endIcon={<ChevronRight />} href="#vault">
-                <FormattedMessage id="wallet.vaults.offers" values={{ count: vaults.length }} />
+                <FormattedMessage
+                  id="wallet.vaults.offers"
+                  values={{ count: vaultOffers.length }}
+                />
               </VaultButton>
             </Box>
           )}
         </PanelItem>
       </StyledPanel>
       <Box mt="40px">
-        <WalletCoins coins={coins} walletBalance={walletBalance} setPath={setPath} />
+        <WalletCoins
+          offers={vaultOffers}
+          coins={coins}
+          walletBalance={walletBalance}
+          setPath={setPath}
+          setSelectedVaultOffer={setSelectedVaultOffer}
+        />
       </Box>
       <Title style={{ marginTop: "64px" }}>
         <img src={ListIcon} width={40} height={40} />
         <FormattedMessage id="wallet.transactions" />
       </Title>
       <WalletTransactions />
-    </Box>
+    </>
   );
 };
 

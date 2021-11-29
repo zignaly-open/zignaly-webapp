@@ -30,12 +30,15 @@ interface BalanceData {
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
 
-interface Vault {
+interface VaultOffer {
   id: number;
   minBalance: number;
   maxBalance: number;
   startDate: string;
+  distributionDate: string;
   endDate: string;
+  apr: number;
+  distributionPeriod: string;
   // lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;

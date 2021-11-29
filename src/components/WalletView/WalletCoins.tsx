@@ -1,11 +1,10 @@
-import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
-import React, { useEffect, useMemo, useState } from "react";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
+import React, { useMemo } from "react";
 import { AlignCenter } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
-import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
@@ -31,12 +30,38 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
+const EarnButton = styled(CustomButton)`
+  min-width: auto;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    color: ${(props) => props.theme.newTheme.secondaryText};
+    font-size: 12px;
+  }
+
+  .MuiButton-label span {
+    font-weight: 600;
+    font-size: 16px;
+    color: ${(props) => props.theme.newTheme.green};
+  }
+`;
+
 interface WalletCoinsProps {
   walletBalance: WalletBalance;
   coins: WalletCoins;
+  offers: VaultOffer[];
+  setSelectedVaultOffer: (offer: VaultOffer) => void;
+  setPath: (path: string) => void;
 }
 
-const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
+const WalletCoins = ({
+  offers,
+  walletBalance,
+  coins,
+  setPath,
+  setSelectedVaultOffer,
+}: WalletCoinsProps) => {
   const intl = useIntl();
 
   const columns = useMemo(
@@ -48,6 +73,10 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
       {
         Header: intl.formatMessage({ id: "col.value" }),
         accessor: "value",
+      },
+      {
+        Header: "",
+        accessor: "earn",
       },
       {
         Header: intl.formatMessage({ id: "col.actions" }),
@@ -76,6 +105,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
   const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
     const networkData = coinData?.networks.find((n) => n.network === network);
+    const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
       coin: (
@@ -104,7 +134,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
               <Typography style={{ fontWeight: 600 }}>
                 <NumberFormat
                   prefix="$"
-                  value={parseFloat(networkBalance.balance) * coinData.usdPrice}
+                  value={networkBalance.balance * coinData.usdPrice}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={2}
@@ -118,6 +148,22 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
             " - "
           )}
         </AlignCenter>
+      ),
+      earn: (
+        <div style={{ minWidth: "123px" }}>
+          {offer && (
+            <EarnButton onClick={() => setSelectedVaultOffer(offer)}>
+              <FormattedMessage
+                id="wallet.staking.earn.short"
+                values={{
+                  coin: coinData.name,
+                  reward: offer.coinReward,
+                  span: (chunks: string) => <span>{chunks}</span>,
+                }}
+              />
+            </EarnButton>
+          )}
+        </div>
       ),
       coinData,
     };
@@ -133,7 +179,7 @@ const WalletCoins = ({ walletBalance, coins, setPath }: WalletCoinsProps) => {
         });
         return accData;
       }, []),
-    [walletBalance, coins],
+    [walletBalance, coins, offers],
   );
 
   if (!walletBalance) {

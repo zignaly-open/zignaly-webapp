@@ -9,7 +9,6 @@ import CustomSelect from "components/CustomSelect";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
-import InfoIcon from "images/wallet/info.svg";
 import { ErrorOutlineOutlined } from "@material-ui/icons";
 import { StyledCustomSelect } from "./styles";
 
@@ -67,18 +66,13 @@ interface WalletDepositViewProps {
 const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
-  const networkOptions = coinData ? coinData.networks.map((n) => n.network) : [];
+  const networkOptions = coinData
+    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    : [];
   const coinsOptions = ["ZIG", "BNB", "BTC", "BUSD", "ETH"];
   const [network, setNetwork] = useState("");
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
-
-  useEffect(() => {
-    if (coinData) {
-      // Select first option
-      setNetwork(coinData.networks[0].network);
-    }
-  }, [coinData]);
 
   useEffect(() => {
     if (network) {
@@ -90,7 +84,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   }, [network]);
 
   return (
-    <Modal p={5}>
+    <Modal>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="accounts.deposit" /> {selectedCoin}
@@ -146,32 +140,36 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           </QRCodeContainer>
         </>
       )}
-      <Label style={{ marginTop: "24px" }}>
-        <FormattedMessage id="deposit.address" />
-      </Label>
-      {address ? (
+      {network && (
         <>
-          <OutlinedInput
-            className="customInput"
-            readOnly
-            value={address.address}
-            endAdornment={
-              <CopyButton
-                alt="copy"
-                className="copy"
-                onClick={() => copyToClipboard(address.address, "deposit.address.copied")}
-                src={CopyIcon}
-                width={24}
-                height={24}
+          <Label style={{ marginTop: "24px" }}>
+            <FormattedMessage id="deposit.address" />
+          </Label>
+          {address ? (
+            <>
+              <OutlinedInput
+                className="customInput"
+                readOnly
+                value={address.address}
+                endAdornment={
+                  <CopyButton
+                    alt="copy"
+                    className="copy"
+                    onClick={() => copyToClipboard(address.address, "deposit.address.copied")}
+                    src={CopyIcon}
+                    width={24}
+                    height={24}
+                  />
+                }
               />
-            }
-          />
-          <QRCodeContainer>
-            <QRCode size={200} value={address.address} />
-          </QRCodeContainer>
+              <QRCodeContainer>
+                <QRCode size={200} value={address.address} />
+              </QRCodeContainer>
+            </>
+          ) : (
+            <CircularProgress size={21} style={{ margin: "0 auto" }} />
+          )}
         </>
-      ) : (
-        <CircularProgress size={21} style={{ margin: "0 auto" }} />
       )}
     </Modal>
   );
