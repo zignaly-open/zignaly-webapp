@@ -41,7 +41,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
   const selectedQuote = watch("quote");
   const amount = watch("amount");
   const [previewLoading, setPreviewLoading] = useState(false);
-  const [previewAmount, setPreviewAmount] = useState(null);
+  const [previewConversion, setPreviewConversion] = useState<ConvertCoinPreviewRes>(null);
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -63,8 +63,8 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
 
   // skip first check because isValid is true at init
   useEffectSkipFirst(() => {
-    if (!isValid) return;
-    setPreviewAmount(null);
+    if (!isValid || !debouncedAmount) return;
+    setPreviewConversion(null);
     setPreviewLoading(true);
 
     tradeApi
@@ -74,7 +74,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
         qty: amount,
       })
       .then((response) => {
-        setPreviewAmount(response.estimatedAmount);
+        setPreviewConversion(response);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -165,6 +165,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
             errors={errors}
             control={control}
             coin={base}
+            minAmount={previewConversion ? previewConversion.min : 0}
             decimals={8}
           />
 
@@ -172,14 +173,15 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
             {previewLoading ? (
               <CircularProgress />
             ) : (
-              previewAmount && (
+              previewConversion &&
+              amount >= previewConversion.min && (
                 <>
                   <Typography>
                     <FormattedMessage id="convert.preview" />
                     &nbsp;
                   </Typography>
                   <NumberFormat
-                    value={previewAmount}
+                    value={previewConversion.estimatedAmount}
                     displayType="text"
                     suffix={` ${selectedQuote}`}
                   />
