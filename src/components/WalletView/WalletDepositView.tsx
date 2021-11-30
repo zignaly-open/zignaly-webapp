@@ -71,6 +71,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
     : [];
   const coinsOptions = coins ? Object.keys(coins) : [];
   const [network, setNetwork] = useState("");
+  const networkData = coinData?.networks.find((n) => n.network === network);
   const [address, setAddress] = useState<WalletAddress>(null);
   const copyToClipboard = useClipboard();
 
@@ -113,7 +114,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             label={<FormattedMessage id="deposit.network" />}
           />
         </StyledCustomSelect>
-        {network && <NetworkCautionMessage network={network} coin={selectedCoin} />}
+        {networkData && <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />}
       </Box>
       {address?.memo && (
         <>
