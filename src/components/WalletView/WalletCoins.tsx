@@ -1,10 +1,10 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
-import { AlignCenter } from "styles/styles";
+import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import Table, { TableLayout } from "./Table";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
@@ -45,6 +45,15 @@ const EarnButton = styled(CustomButton)`
     font-size: 16px;
     color: ${(props) => props.theme.newTheme.green};
   }
+`;
+
+const CoinCell = styled.div`
+  display: flex;
+  margin-left: 42px;
+
+  ${isMobile(css`
+    margin: 0;
+  `)}
 `;
 
 interface WalletCoinsProps {
@@ -109,7 +118,7 @@ const WalletCoins = ({
 
     return {
       coin: (
-        <AlignCenter>
+        <CoinCell>
           <CoinIcon coin={coin} />
           <Box display="flex" flexDirection="column" ml="16px">
             <Box display="flex" alignItems="center" mb="4px">
@@ -125,7 +134,7 @@ const WalletCoins = ({
             </Box>
             <TypographySecondary>{networkData?.name}</TypographySecondary>
           </Box>
-        </AlignCenter>
+        </CoinCell>
       ),
       value: (
         <AlignCenter direction="column">
