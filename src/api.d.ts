@@ -65,7 +65,7 @@ interface ConvertCoinPreviewRes {
   lastPrice: string;
   side: string;
   estimatedAmount: string;
-  min: { amount: number; currency: string };
+  min: number;
 }
 
 interface GetQuoteAssetFromBaseReq {
