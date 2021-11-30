@@ -123,6 +123,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
             </FormControl>
 
             <AmountControl
+              minAmount={0}
               balance={balanceAmount}
               setBalanceMax={setBalanceMax}
               decimals={coinData?.decimals}
