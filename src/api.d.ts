@@ -37,6 +37,7 @@ interface WidthdrawReq {
   address: string;
   amount: string;
   fee: string;
+  code?: string;
 }
 
 interface ConvertCoinPreviewReq {

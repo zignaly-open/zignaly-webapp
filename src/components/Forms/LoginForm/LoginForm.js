@@ -121,7 +121,7 @@ const LoginForm = () => {
         <ForgotPasswordForm />
       </Modal>
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm data={loginResponse} onComplete={onSuccess} verifySessionCode={true} />
+        <TwoFAForm loginData={loginResponse} onComplete={onSuccess} />
       </Modal>
       <Modal
         onClose={() => {}}
