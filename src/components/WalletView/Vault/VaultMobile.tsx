@@ -66,7 +66,7 @@ const VaultMobile = ({ vaults, balance, onOfferClick }: VaultMobileProps) => {
             </EarnText>
             <VaultDepositButton
               vault={v}
-              balance={balance && balance[v.coin].total.availableBalance}
+              balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
               onClick={() => onOfferClick(v.coin)}
             />
           </Box>

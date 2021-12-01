@@ -10,7 +10,7 @@ const ButtonStyled = styled(CustomButton)`
   && {
     min-width: 142px;
     min-height: auto;
-    width: auto;
+    width: 100%;
   }
 
   span {
