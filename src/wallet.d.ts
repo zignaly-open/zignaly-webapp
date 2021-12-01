@@ -44,4 +44,5 @@ interface VaultOffer {
   rewardsRemaining: number;
   coin: string;
   coinReward: string;
+  stakingDays: number;
 }
