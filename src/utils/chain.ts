@@ -3,11 +3,12 @@ import BSCIcon from "images/wallet/bsc.svg";
 import BTCIcon from "images/coins/btc.svg";
 
 export const getChainIcon = (chain: string) => {
-  switch (chain) {
+  switch (chain.toUpperCase()) {
     case "BSC":
     case "BEP20 (BSC)":
+    case "BEP20 (Binance Smart Chain)":
       return BSCIcon;
-    case "Bitcoin":
+    case "BITCOIN":
     case "BTC":
       return BTCIcon;
     default:
