@@ -124,14 +124,16 @@ const WalletWithdrawConfirm = ({
   const [twoFAModal, showTwoFAModal] = useState(false);
 
   const loadFee = () => {
-    tradeApi
-      .getNetworkFee({ network, currency: coin.name })
-      .then((response) => {
-        setFee(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (!done) {
+      tradeApi
+        .getNetworkFee({ network, currency: coin.name })
+        .then((response) => {
+          setFee(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
   useEffect(loadFee, []);
   useInterval(loadFee, 7500, false);
