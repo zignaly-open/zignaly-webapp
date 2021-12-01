@@ -6,8 +6,7 @@ import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
-import { formatUTC } from "utils/format";
-import { formatPrice } from "utils/formatters";
+import dayjs from "dayjs";
 // const localizedFormat = require("dayjs/plugin/localizedFormat");
 // dayjs.extend(localizedFormat);
 
@@ -61,6 +60,9 @@ interface VaultOfferModalProps {
   vault: VaultOffer;
 }
 
+const formatUTC = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMMM DD, YYYY hh:mm A UTC");
+const formatDay = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMM D, YYYY");
+
 const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
   const intl = useIntl();
   const {
@@ -72,7 +74,10 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     maxBalance,
     rewardsTotal,
     distributionPeriod,
+    distributionDate,
+    endDate,
   } = vault;
+
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
@@ -89,7 +94,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.minDeposit" />
             </ItemLabel>
             <ItemValue>
-              <NumberFormat displayType="text" value={minBalance} suffix={` ${coinReward}`} />
+              <NumberFormat displayType="text" value={minBalance} suffix={` ${coin}`} />
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -106,10 +111,17 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
           </ListItem>
           <ListItem>
             <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.rewardBegins" />
+              <FormattedMessage id="wallet.staking.offer.stakingBegins" />
             </ItemLabel>
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
             <ItemValue>{formatUTC(startDate)}</ItemValue>
+          </ListItem>
+          <ListItem>
+            <ItemLabel>
+              <FormattedMessage id="wallet.staking.offer.rewardBegins" />
+            </ItemLabel>
+            {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
+            <ItemValue>{formatUTC(distributionDate)}</ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
@@ -118,7 +130,11 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             <ItemValue>
               <FormattedMessage
                 id="wallet.staking.offer.rewardEnds.val"
-                values={{ coin: coinReward, amount: rewardsTotal.toLocaleString("en-US") }}
+                values={{
+                  coin: coinReward,
+                  amount: rewardsTotal.toLocaleString("en-US"),
+                  date: formatDay(endDate),
+                }}
               />
             </ItemValue>
           </ListItem>
@@ -139,12 +155,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.awarded" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage
-                id="wallet.staking.offer.awarded.val"
-                values={{
-                  period: intl.formatMessage({ id: `wallet.staking.offer.${distributionPeriod}` }),
-                }}
-              />
+              <FormattedMessage id={`wallet.staking.offer.awarded.${distributionPeriod}`} />
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -152,12 +163,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.calculation" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage
-                id="wallet.staking.offer.calculation.val"
-                values={{
-                  period: intl.formatMessage({ id: `wallet.staking.offer.${distributionPeriod}` }),
-                }}
-              />
+              <FormattedMessage id="wallet.staking.offer.calculation.val" />
             </ItemValue>
           </ListItem>
           {/* <ListItem>
