@@ -76,6 +76,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     distributionPeriod,
     distributionDate,
     endDate,
+    stakingDays,
   } = vault;
 
   return (
@@ -163,7 +164,10 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.calculation" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage id="wallet.staking.offer.calculation.val" />
+              <FormattedMessage
+                id="wallet.staking.offer.calculation.val"
+                values={{ days: stakingDays }}
+              />
             </ItemValue>
           </ListItem>
           {/* <ListItem>
