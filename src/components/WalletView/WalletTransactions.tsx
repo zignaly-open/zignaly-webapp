@@ -221,7 +221,6 @@ const WalletTransactions = () => {
           </AlignCenter>
         ),
         transactionId: t.transactionId,
-        note: t.note,
         // action: (
         //   <Accordion>
         //     <AccordionSummary
@@ -312,12 +311,12 @@ const WalletTransactions = () => {
             </TypographyLabel>
             <TypographyAddress>{transactionId}</TypographyAddress>
           </Box>
-          {note && (
+          {transaction.note && (
             <Box display="flex" alignItems="center" mt="8px">
               <TypographyLabel>
                 <FormattedMessage id="wallet.note" />
               </TypographyLabel>
-              <TypographyAddress>{note}</TypographyAddress>
+              <TypographyAddress>{transaction.note}</TypographyAddress>
             </Box>
           )}
         </StyledTransferPanel>
