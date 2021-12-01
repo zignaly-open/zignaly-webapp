@@ -51,11 +51,16 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
   const intl = useIntl();
 
   useEffect(() => {
-    if (coinData) {
-      // Select first option
-      setNetwork(coinData.networks[0].network);
+    if (coinData && balance) {
+      // If only one network has balance, select it
+      const res = Object.entries(balance).filter(
+        ([key, balances]) => key !== "total" && balances.availableBalance > 0,
+      );
+      if (res.length === 1) {
+        setNetwork(res[0][0]);
+      }
     }
-  }, [coinData]);
+  }, [coinData, balance]);
 
   if (withdrawData) {
     return (
