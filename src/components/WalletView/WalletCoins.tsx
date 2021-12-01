@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -94,9 +94,19 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
-                <FormattedMessage id="accounts.withdraw" />
-              </Button>
+              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
+                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+                  <div>
+                    <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
+                      <FormattedMessage id="accounts.withdraw" />
+                    </Button>
+                  </div>
+                </Tooltip>
+              ) : (
+                <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
+                  <FormattedMessage id="accounts.withdraw" />
+                </Button>
+              )}
               <Button
                 className="textPurple borderPurple"
                 onClick={() => setPath(`deposit/${coinData.name}`)}
