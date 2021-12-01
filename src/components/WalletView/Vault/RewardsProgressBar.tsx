@@ -4,13 +4,13 @@ import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
 
 const Bar = styled.div`
-  margin: 0 15px;
+  margin: 0 10px 0 40px;
   display: flex;
   box-shadow: inset 0px 1px 1px -1px rgba(73, 9, 123, 0.25);
   border-radius: 100px;
   background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
   height: 16px;
-  width: calc(100% - 15px);
+  width: 100%;
 
   ${({ theme }) =>
     theme.palette.type === "dark" &&

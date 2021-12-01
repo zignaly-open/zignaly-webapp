@@ -69,8 +69,10 @@ const AmountControl = ({
           // required: true,
           validate: {
             min: (value) =>
-              parseFloat(value) >= minAmount ||
-              intl.formatMessage({ id: "convert.min" }, { amount: minAmount }),
+              minAmount
+                ? parseFloat(value) >= minAmount
+                : parseFloat(value) > minAmount ||
+                  intl.formatMessage({ id: "convert.min" }, { amount: minAmount }),
             max: (value) =>
               parseFloat(value) <= balance.availableBalance ||
               intl.formatMessage({ id: "form.error.withdraw.max" }),
