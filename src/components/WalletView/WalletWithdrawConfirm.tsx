@@ -153,6 +153,7 @@ const WalletWithdrawConfirm = ({
         showTwoFAModal(false);
       })
       .catch((e) => {
+        setLoading(false);
         dispatch(showErrorAlert(e));
       });
   };

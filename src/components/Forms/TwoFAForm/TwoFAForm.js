@@ -39,7 +39,7 @@ const TwoFAForm = ({ loginData, onComplete }) => {
   const [verifying2FA, setVerifying2FA] = useState(false);
   const [sendingCode, setSendingCode] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
-  const [is2FAVerified, setIs2FAVerified] = useState(loginData?.ask2FA);
+  const [is2FAVerified, setIs2FAVerified] = useState(loginData && !loginData.ask2FA);
   const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(
     !loginData || (!loginData.isUnknownDevice && !loginData.disabled),
   );
