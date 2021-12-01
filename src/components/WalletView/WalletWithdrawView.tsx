@@ -37,6 +37,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
     : [];
   const [network, setNetwork] = useState("");
+  const networkData = coinData?.networks.find((n) => n.network === network);
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -106,7 +107,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                 label={<FormattedMessage id="deposit.network" />}
               />
             </StyledCustomSelect>
-            <NetworkCautionMessage network={network} coin={coin} />
+            {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
             <FormControl error={errors.address} fullWidth>
               <Label style={{ marginTop: "24px" }}>
                 <FormattedMessage id="wallet.withdraw.address" />
@@ -116,9 +117,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                 inputRef={register({
                   required: true,
                   pattern: {
-                    value: RegExp(
-                      coinData.networks.find((n) => n.network === network)?.addressRegex,
-                    ),
+                    value: RegExp(networkData?.addressRegex),
                     message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
                   },
                 })}
