@@ -6,7 +6,7 @@ export const getChainIcon = (chain: string) => {
   switch (chain.toUpperCase()) {
     case "BSC":
     case "BEP20 (BSC)":
-    case "BEP20 (Binance Smart Chain)":
+    case "BEP20 (BINANCE SMART CHAIN)":
       return BSCIcon;
     case "BITCOIN":
     case "BTC":
