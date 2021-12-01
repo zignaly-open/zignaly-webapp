@@ -7,6 +7,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
+import useStoreSessionSelector from "hooks/useStoreSessionSelector";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -24,9 +25,8 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 
 /**
  * @typedef {Object} DefaultProps
- * @property {Function} [onComplete]
- * @property {boolean} [verifySessionCode] For login/signup, call verify2FA endpoint.
- * @property {AuthData} data
+ * @property {Function} onComplete
+ * @property {AuthData} [loginData]
  */
 
 /**
@@ -34,16 +34,18 @@ import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
  * @param {DefaultProps} props Default props.
  * @returns {JSX.Element} JSx component.
  */
-const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
+const TwoFAForm = ({ loginData, onComplete }) => {
   const [verifyingDevice, setVerifyingDevice] = useState(false);
   const [verifying2FA, setVerifying2FA] = useState(false);
   const [sendingCode, setSendingCode] = useState(false);
   const [resetTwoFAModal, showResetTwoFAModal] = useState(false);
-  const [is2FAVerified, setIs2FAVerified] = useState(!data.ask2FA);
+  const [is2FAVerified, setIs2FAVerified] = useState(loginData?.ask2FA);
   const [isKnownDeviceVerified, setIsKnownDeviceVerified] = useState(
-    !data.isUnknownDevice && !data.disabled,
+    !loginData || (!loginData.isUnknownDevice && !loginData.disabled),
   );
   const dispatch = useDispatch();
+  const storeSession = useStoreSessionSelector();
+  const token = loginData?.token || storeSession.tradeApi.accessToken;
 
   /**
    * Function to submit code to backend.
@@ -52,7 +54,8 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
    * @returns {void} None.
    */
   const submit2FACode = (code) => {
-    if (!verifySessionCode) {
+    // Only call /user/verify_2fa during login
+    if (!loginData) {
       onComplete(code);
       return;
     }
@@ -60,8 +63,8 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
     setVerifying2FA(true);
 
     const payload = {
-      code: code,
-      token: data.token,
+      code,
+      token,
     };
     tradeApi
       .verify2FA(payload)
@@ -90,9 +93,9 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
 
     const payload = {
       code: code,
-      token: data.token,
+      token,
     };
-    const method = data.disabled
+    const method = loginData.disabled
       ? tradeApi.verifyCode({ reason: "enable_user", ...payload })
       : tradeApi.verifyKnownDevice(payload);
 
@@ -115,9 +118,12 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
     if (sendingCode) return;
 
     setSendingCode(true);
-    const method = data.isUnknownDevice
-      ? tradeApi.resendKnownDeviceCode(data.token)
-      : tradeApi.resendCode({ reason: "enable_user", token: data.token });
+    const method = loginData.isUnknownDevice
+      ? tradeApi.resendKnownDeviceCode(token)
+      : tradeApi.resendCode({
+          reason: "enable_user",
+          token,
+        });
 
     method
       .then(() => {
@@ -140,7 +146,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
       justifyContent="center"
     >
       {resetTwoFAModal ? (
-        <ResetTwoFAForm token={data.token} />
+        <ResetTwoFAForm token={token} />
       ) : (
         <>
           {isKnownDeviceVerified && is2FAVerified && <CircularProgress color="primary" size={40} />}
@@ -153,7 +159,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
                 flexDirection="column"
                 justifyContent="start"
               >
-                {!data.disabled ? (
+                {!loginData.disabled ? (
                   <Typography align="center" variant="h3">
                     <FormattedMessage id="security.device.title" />
                   </Typography>
@@ -200,7 +206,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
                 flexDirection="column"
                 justifyContent="start"
               >
-                {!data.isUnknownDevice && (
+                {!loginData?.isUnknownDevice && (
                   <Typography variant="h3">
                     <FormattedMessage id="security.2fa.title" />
                   </Typography>
@@ -212,7 +218,7 @@ const TwoFAForm = ({ verifySessionCode = false, data, onComplete }) => {
                 </label>
                 {/* @ts-ignore */}
                 <ReactCodeInput
-                  autoFocus={!data.isUnknownDevice}
+                  autoFocus={!loginData || !loginData.isUnknownDevice}
                   className="inputBox"
                   fields={6}
                   loading={verifying2FA}

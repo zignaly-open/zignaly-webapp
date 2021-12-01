@@ -99,7 +99,7 @@ const ChangeEmailButton = () => {
             <CircularProgress color="primary" size={35} />
           </Box>
         )}
-        {!loading && <TwoFAForm data={userData} onComplete={startChangeEmailProcess} />}
+        {!loading && <TwoFAForm onComplete={startChangeEmailProcess} />}
       </Modal>
       <ConfirmDialog
         confirmConfig={confirmConfig}

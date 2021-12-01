@@ -134,7 +134,7 @@ const Withdraw = () => {
           size="small"
           state={twoFAModal}
         >
-          <TwoFAForm data={userData} onComplete={onSuccess} />
+          <TwoFAForm onComplete={onSuccess} />
         </Modal>
         <Box className="transferBox">
           {!assetsList.length || !selectedNetwork ? (

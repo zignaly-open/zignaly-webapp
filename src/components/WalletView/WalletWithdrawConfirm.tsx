@@ -12,6 +12,9 @@ import { showErrorAlert } from "store/actions/ui";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import useInterval from "hooks/useInterval";
 import { getChainIcon } from "utils/chain";
+import CustomModal from "components/Modal";
+import TwoFAForm from "components/Forms/TwoFAForm";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -117,6 +120,8 @@ const WalletWithdrawConfirm = ({
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
+  const userData = useStoreUserData();
+  const [twoFAModal, showTwoFAModal] = useState(false);
 
   const loadFee = () => {
     tradeApi
@@ -131,16 +136,33 @@ const WalletWithdrawConfirm = ({
   useEffect(loadFee, []);
   useInterval(loadFee, 7500, false);
 
-  const withdraw = () => {
+  const withdraw = (code?: string) => {
     setLoading(true);
+
     tradeApi
-      .walletWithdraw({ network, currency: coin.name, address, amount, fee: fee.key })
+      .walletWithdraw({
+        network,
+        currency: coin.name,
+        address,
+        amount,
+        fee: fee.key,
+        ...(code && { code }),
+      })
       .then(() => {
         setDone(true);
+        showTwoFAModal(false);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
+  };
+
+  const check2FA = () => {
+    if (userData.ask2FA) {
+      showTwoFAModal(true);
+    } else {
+      withdraw();
+    }
   };
 
   const CoinAmount = ({ value, big = false }: { value: string; big?: boolean }) => (
@@ -159,7 +181,15 @@ const WalletWithdrawConfirm = ({
   );
 
   return (
-    <Modal p={5}>
+    <Modal>
+      <CustomModal
+        onClose={() => showTwoFAModal(false)}
+        persist={false}
+        size="small"
+        state={twoFAModal}
+      >
+        <TwoFAForm onComplete={withdraw} />
+      </CustomModal>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         {!done ? (
@@ -223,7 +253,7 @@ const WalletWithdrawConfirm = ({
             </Button>
             <Button
               className="bgPurple"
-              onClick={withdraw}
+              onClick={check2FA}
               disabled={amountReceived <= 0}
               loading={loading}
             >
