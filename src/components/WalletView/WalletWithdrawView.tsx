@@ -9,7 +9,6 @@ import {
   FormControl,
   FormHelperText,
   OutlinedInput,
-  Typography,
 } from "@material-ui/core";
 import CustomSelect from "components/CustomSelect";
 import { NetworkCautionMessage } from "./WalletDepositView";
