@@ -288,7 +288,7 @@ const WalletTransactions = () => {
 
   const renderRowSubComponent = useCallback(
     ({ row }) => {
-      const { transactionId } = row.values;
+      const { transactionId, note } = row.values;
       const transaction = transactions.find((t) => t.transactionId === transactionId);
       const isWithdrawal = transaction.formattedAmount.startsWith("-");
 
@@ -311,6 +311,14 @@ const WalletTransactions = () => {
             </TypographyLabel>
             <TypographyAddress>{transactionId}</TypographyAddress>
           </Box>
+          {transaction.note && (
+            <Box display="flex" alignItems="center" mt="8px">
+              <TypographyLabel>
+                <FormattedMessage id="wallet.note" />
+              </TypographyLabel>
+              <TypographyAddress>{transaction.note}</TypographyAddress>
+            </Box>
+          )}
         </StyledTransferPanel>
       );
     },
@@ -320,7 +328,6 @@ const WalletTransactions = () => {
   useEffect(() => {
     tradeApi.getWalletTransactionsHistory().then((response) => {
       setTransactions(response);
-      // console.log(response);
     });
   }, []);
 

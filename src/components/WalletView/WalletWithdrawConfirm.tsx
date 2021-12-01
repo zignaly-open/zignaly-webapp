@@ -12,6 +12,9 @@ import { showErrorAlert } from "store/actions/ui";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import useInterval from "hooks/useInterval";
 import { getChainIcon } from "utils/chain";
+import CustomModal from "components/Modal";
+import TwoFAForm from "components/Forms/TwoFAForm";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -56,14 +59,14 @@ const AmountBox = styled(Box)`
 `;
 
 const AmountLabel = styled(Typography)`
-  color: ${(props) => props.theme.newTheme.secondaryText};
+  color: ${(props) => props.theme.newTheme.purple};
   font-weight: 600;
   font-size: ${(props) => (props.big ? "20px" : "12px")};
   margin-bottom: 8px;
 `;
 
 const Coin = styled(Typography)`
-  color: ${(props) => props.theme.palette.text.secondary};
+  color: ${(props) => props.theme.newTheme.purple};
   margin-left: 4px;
   font-weight: 600;
   font-size: ${(props) => (props.big ? "32px" : "18px")};
@@ -99,12 +102,15 @@ interface WalletWithdrawConfirmProps {
   network: string;
   networkName: string;
   coin: WalletCoin;
+  onClose: () => void;
+  onCancel: () => void;
 }
 
 const WalletWithdrawConfirm = ({
   address,
   amount,
   onClose,
+  onCancel,
   network,
   networkName,
   coin,
@@ -113,30 +119,53 @@ const WalletWithdrawConfirm = ({
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
+  const userData = useStoreUserData();
+  const [twoFAModal, showTwoFAModal] = useState(false);
 
   const loadFee = () => {
-    tradeApi
-      .getNetworkFee({ network, currency: coin.name })
-      .then((response) => {
-        setFee(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
+    if (!done) {
+      tradeApi
+        .getNetworkFee({ network, currency: coin.name })
+        .then((response) => {
+          setFee(response);
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
   };
   useEffect(loadFee, []);
   useInterval(loadFee, 7500, false);
 
-  const withdraw = () => {
+  const withdraw = (code?: string) => {
     setLoading(true);
+
     tradeApi
-      .walletWithdraw({ network, currency: coin.name, address, amount, fee: fee.key })
+      .walletWithdraw({
+        network,
+        currency: coin.name,
+        address,
+        amount,
+        fee: fee.key,
+        ...(code && { code }),
+      })
       .then(() => {
         setDone(true);
+        showTwoFAModal(false);
       })
       .catch((e) => {
+        setLoading(false);
         dispatch(showErrorAlert(e));
       });
+  };
+
+  const check2FA = () => {
+    if (userData.ask2FA) {
+      showTwoFAModal(true);
+    } else {
+      withdraw();
+    }
   };
 
   const CoinAmount = ({ value, big = false }: { value: string; big?: boolean }) => (
@@ -155,16 +184,22 @@ const WalletWithdrawConfirm = ({
   );
 
   return (
-    <Modal p={5}>
+    <Modal>
+      <CustomModal
+        onClose={() => showTwoFAModal(false)}
+        persist={false}
+        size="small"
+        state={twoFAModal}
+      >
+        <TwoFAForm onComplete={withdraw} />
+      </CustomModal>
       <Title>
-        <Box alignItems="center" display="flex">
-          <img src={WalletIcon} width={40} height={40} />
-          {!done ? (
-            <FormattedMessage id="wallet.withdraw.confirm" />
-          ) : (
-            <FormattedMessage id="wallet.withdraw.sent" />
-          )}
-        </Box>
+        <img src={WalletIcon} width={40} height={40} />
+        {!done ? (
+          <FormattedMessage id="wallet.withdraw.confirm" />
+        ) : (
+          <FormattedMessage id="wallet.withdraw.sent" />
+        )}
       </Title>
       <TextDesc>
         {done ? (
@@ -176,7 +211,7 @@ const WalletWithdrawConfirm = ({
       <br />
       {!done ? (
         <>
-          <Label style={{ marginTop: "24px" }}>
+          <Label>
             <FormattedMessage id="wallet.withdraw.network" />
           </Label>
           <Box display="flex" mt="16px" alignItems="center">
@@ -210,22 +245,27 @@ const WalletWithdrawConfirm = ({
               <FormattedMessage id="wallet.withdraw.receive" />
             </AmountLabel>
             {fee ? (
-              <CoinAmount big={true} value={parseFloat(amount) - parseFloat(fee.floatFee)} />
+              <CoinAmount big={true} value={amountReceived} />
             ) : (
               <CircularProgress size={21} style={{ margin: "0 auto" }} />
             )}
           </AmountBox>
           <Box display="flex" flexDirection="row" mt="64px">
-            <Button className="textPurple borderPurple" onClick={onClose}>
+            <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
             </Button>
-            <Button className="bgPurple" onClick={withdraw} disabled={!fee} loading={loading}>
+            <Button
+              className="bgPurple"
+              onClick={check2FA}
+              disabled={amountReceived <= 0}
+              loading={loading}
+            >
               <FormattedMessage id="wallet.withdraw.now" />
             </Button>
           </Box>
         </>
       ) : (
-        <Box display="flex" flexDirection="row" mt="64px">
+        <Box display="flex" flexDirection="row" mt="8px">
           <Button className="bgPurple" onClick={onClose}>
             {/* <FormattedMessage id="wallet.withdraw.view" /> */}
             <FormattedMessage id="accounts.done" />

@@ -24,4 +24,25 @@ interface WalletAddress {
   memo: string;
 }
 
-type WalletBalance = Record<string, Record<string, string>>;
+interface BalanceData {
+  balance: number;
+  availableBalance: number;
+}
+type WalletBalance = Record<string, Record<string, BalanceData>>;
+
+interface VaultOffer {
+  id: number;
+  minBalance: number;
+  maxBalance: number;
+  startDate: string;
+  distributionDate: string;
+  endDate: string;
+  apr: number;
+  distributionPeriod: string;
+  // lockupDate: string;
+  rewardsTotal: number;
+  rewardsRemaining: number;
+  coin: string;
+  coinReward: string;
+  stakingDays: number;
+}

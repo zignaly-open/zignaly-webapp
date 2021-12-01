@@ -1,14 +1,14 @@
 import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
-import React, { useEffect, useMemo, useState } from "react";
-import { AlignCenter } from "styles/styles";
+import React, { useMemo } from "react";
+import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import Table, { TableLayout } from "./Table";
-import styled from "styled-components";
-import tradeApi from "services/tradeApiClient";
+import styled, { css } from "styled-components";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
+import { Add } from "@material-ui/icons";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -30,25 +30,48 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
+const EarnButton = styled(CustomButton)`
+  min-width: auto;
+
+  span {
+    display: flex;
+    flex-direction: column;
+    color: ${(props) => props.theme.newTheme.secondaryText};
+    font-size: 12px;
+  }
+
+  .MuiButton-label span {
+    font-weight: 600;
+    font-size: 16px;
+    color: ${(props) => props.theme.newTheme.green};
+  }
+`;
+
+const CoinCell = styled.div`
+  display: flex;
+  margin-left: 42px;
+
+  ${isMobile(css`
+    margin: 0;
+  `)}
+`;
+
 interface WalletCoinsProps {
   walletBalance: WalletBalance;
   coins: WalletCoins;
+  offers: VaultOffer[];
+  setSelectedVaultOffer: (offer: VaultOffer) => void;
+  setPath: (path: string) => void;
 }
 
-const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
+const WalletCoins = ({
+  offers,
+  walletBalance,
+  coins,
+  setPath,
+  setSelectedVaultOffer,
+}: WalletCoinsProps) => {
   const intl = useIntl();
-
-  // const balanceEntries = Object.entries(balance || {});
-
-  // useEffect(() => {
-  //   if (balance) {
-  //     balanceEntries.forEach(([coin]) => {
-  //       tradeApi.convertPreview({ from: coin, to: "USDT", qty: 1 }).then((response) => {
-  //         setRateZIG(response.lastPrice);
-  //       });
-  //     });
-  //   }
-  // }, [balance]);
 
   const columns = useMemo(
     () => [
@@ -61,44 +84,57 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
         accessor: "value",
       },
       {
+        Header: "",
+        accessor: "earn",
+      },
+      {
         Header: intl.formatMessage({ id: "col.actions" }),
         id: "actions",
-        Cell: ({ row }) => (
-          <AlignCenter>
-            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-              <div>
-                <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
+        Cell: ({ row }) => {
+          const { coinData } = row.original;
+          return (
+            <AlignCenter>
+              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
+                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
+                  <div>
+                    <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
+                      <FormattedMessage id="accounts.withdraw" />
+                    </Button>
+                  </div>
+                </Tooltip>
+              ) : (
+                <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
                   <FormattedMessage id="accounts.withdraw" />
                 </Button>
-              </div>
-            </Tooltip>
-            <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-              <div>
-                <Button className="textPurple borderPurple" disabled style={{ opacity: 0.4 }}>
-                  <FormattedMessage id="accounts.deposit" />
-                </Button>
-              </div>
-            </Tooltip>
-          </AlignCenter>
-        ),
+              )}
+              <Button
+                className="textPurple borderPurple"
+                onClick={() => setPath(`deposit/${coinData.name}`)}
+              >
+                <FormattedMessage id="accounts.deposit" />
+              </Button>
+            </AlignCenter>
+          );
+        },
       },
     ],
     [],
   );
 
-  const makeData = (coin: string, network: string, networkBalance: string) => {
+  const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
     const networkData = coinData?.networks.find((n) => n.network === network);
+    const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
       coin: (
-        <AlignCenter>
+        <CoinCell>
           <CoinIcon coin={coin} />
           <Box display="flex" flexDirection="column" ml="16px">
             <Box display="flex" alignItems="center" mb="4px">
               <TypographyAmount>
                 <NumberFormat
-                  value={networkBalance}
+                  value={networkBalance.balance}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={coinData?.decimals}
@@ -108,7 +144,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
             </Box>
             <TypographySecondary>{networkData?.name}</TypographySecondary>
           </Box>
-        </AlignCenter>
+        </CoinCell>
       ),
       value: (
         <AlignCenter direction="column">
@@ -117,7 +153,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
               <Typography style={{ fontWeight: 600 }}>
                 <NumberFormat
                   prefix="$"
-                  value={parseFloat(networkBalance) * coinData.usdPrice}
+                  value={networkBalance.balance * coinData.usdPrice}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={2}
@@ -132,6 +168,23 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
           )}
         </AlignCenter>
       ),
+      earn: (
+        <div style={{ minWidth: "123px" }}>
+          {offer && (
+            <EarnButton onClick={() => setSelectedVaultOffer(offer)}>
+              <FormattedMessage
+                id="wallet.staking.earn.short"
+                values={{
+                  coin: coinData.name,
+                  reward: offer.coinReward,
+                  span: (chunks: string) => <span>{chunks}</span>,
+                }}
+              />
+            </EarnButton>
+          )}
+        </div>
+      ),
+      coinData,
     };
   };
 
@@ -145,7 +198,7 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
         });
         return accData;
       }, []),
-    [walletBalance, coins],
+    [walletBalance, coins, offers],
   );
 
   if (!walletBalance) {
@@ -156,14 +209,17 @@ const WalletCoins = ({ walletBalance, coins }: WalletCoinsProps) => {
     );
   }
 
-  if (!data.length) {
-    return null;
-  }
-
   return (
-    <TableLayout>
-      <Table data={data} columns={columns} />
-    </TableLayout>
+    <Box style={{ textAlign: "center" }}>
+      {data.length > 0 && (
+        <TableLayout>
+          <Table data={data} columns={columns} />
+        </TableLayout>
+      )}
+      <Button startIcon={<Add />} onClick={() => setPath("deposit")}>
+        <FormattedMessage id="wallet.addcoin" />
+      </Button>
+    </Box>
   );
 };
 

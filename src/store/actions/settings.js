@@ -15,6 +15,7 @@ export const SET_TERMINAL_PAIR = "SET_TERMINAL_PAIR";
 export const SET_TERMINAL_PROVIDER = "SET_TERMINAL_PROVIDER";
 export const SET_MARKETPLACE_CACHE_MODAL = "SET_MARKETPLACE_CACHE_MODAL";
 export const SET_TEST_AB = "SET_TEST_AB";
+export const IGNORE_NOTICE = "IGNORE_NOTICE";
 
 /**
  * @typedef {import('redux').AnyAction} AnyAction
@@ -291,6 +292,24 @@ export const setTerminalProvider = (payload) => {
 export const setTestAB = (payload) => {
   return {
     type: SET_TEST_AB,
+    payload,
+  };
+};
+
+/**
+ * @typedef {Object} IgnoreNoticeAction
+ * @property {typeof IGNORE_NOTICE} type
+ * @property {string} payload Notice
+ */
+
+/**
+ * Ignore confirmation/notice.
+ * @param {string} payload
+ * @returns {IgnoreNoticeAction} Action.
+ */
+export const ignoreNotice = (payload) => {
+  return {
+    type: IGNORE_NOTICE,
     payload,
   };
 };

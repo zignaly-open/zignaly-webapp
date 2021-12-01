@@ -1,15 +1,21 @@
 import styled from "styled-components";
 import { Box, Typography } from "@material-ui/core";
 
+export const isMobile = (query) => {
+  return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
+};
+
 export const Title = styled.div`
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 21px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
 
   img {
-    margin-right: 4px;
+    margin-right: 10px;
   }
 `;
 
@@ -45,6 +51,11 @@ export const TextDesc = styled(Typography)`
   font-size: 16px;
   letter-spacing: 0.33px;
   /* line-height: 20px; */
+  margin-bottom: 64px;
+
+  ${isMobile(`
+    margin-bottom: 32px;
+  `)}
 `;
 
 export const Label = styled(Typography)`
@@ -61,6 +72,6 @@ export const AlignCenter = styled.div`
   flex-direction: ${(props) => props.direction || "row"};
 `;
 
-export const isMobile = (query) => {
-  return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
-};
+export const SecondaryText = styled.div`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+`;

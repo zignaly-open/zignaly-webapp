@@ -136,7 +136,7 @@ const Preferences = () => {
             <CircularProgress color="primary" size={35} />
           </Box>
         )}
-        {!loading && <TwoFAForm data={userData} onComplete={startDeleteAccountProcess} />}
+        {!loading && <TwoFAForm onComplete={startDeleteAccountProcess} />}
       </Modal>
       <ConfirmDialog
         confirmConfig={confirmConfig}

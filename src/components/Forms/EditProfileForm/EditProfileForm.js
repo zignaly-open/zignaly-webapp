@@ -947,6 +947,32 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                     <FormattedMessage id="srv.edit.visibility.definitive" />
                   </FormHelperText>
                 )}
+                {provider.isCopyTrading && !provider.profitSharing && (
+                  <div>
+                    <Tooltip
+                      placement="top"
+                      title={<FormattedMessage id="signalp.useroption.allowClones.help" />}
+                    >
+                      <FormControlLabel
+                        className="checkboxClone"
+                        control={
+                          <Controller
+                            control={control}
+                            defaultValue={provider.options.allowClones}
+                            name="allowClones"
+                            render={({ onChange, value }) => (
+                              <Checkbox
+                                checked={value}
+                                onChange={(e) => onChange(e.target.checked)}
+                              />
+                            )}
+                          />
+                        }
+                        label={<FormattedMessage id="copyt.allowClones" />}
+                      />
+                    </Tooltip>
+                  </div>
+                )}
               </Box>
             </Box>
           </Box>

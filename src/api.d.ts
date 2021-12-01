@@ -18,6 +18,7 @@ interface TransactionsHistory {
   providerId: string;
   providerName: string;
   transactionId: string;
+  note: string;
   txUrl: string;
   network: string;
   status: string;
@@ -36,4 +37,39 @@ interface WidthdrawReq {
   address: string;
   amount: string;
   fee: string;
+  code?: string;
+}
+
+interface ConvertCoinPreviewReq {
+  from: string;
+  to: string;
+  qty: string;
+}
+
+interface ConvertCoinReq {
+  internalExchangeId: string;
+  from: string;
+  to: string;
+  qty: string;
+}
+
+interface ConvertCoinRes {
+  status: string;
+  filled: string;
+  remaining: string;
+  feeCost: string;
+  fee: string;
+  id: string;
+}
+
+interface ConvertCoinPreviewRes {
+  lastPrice: string;
+  side: string;
+  estimatedAmount: string;
+  min: number;
+}
+
+interface GetQuoteAssetFromBaseReq {
+  internalExchangeId: string;
+  base: string;
 }

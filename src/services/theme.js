@@ -186,7 +186,6 @@ const theme = (darkStyle) => {
       },
       text: {
         primary: darkStyle ? colors.lightWhite : colors.black,
-        secondary: darkStyle ? colors.purpleLight : colors.purple,
       },
     },
     typography: {
@@ -372,6 +371,8 @@ const theme = (darkStyle) => {
           red: "#F63F82",
           error: "#F268C3",
           linkText: "#829fff",
+          purple: colors.purpleLight,
+          neutralText: "#f3f4f6",
         }
       : {
           backgroundColor: "#ffffff",
@@ -385,15 +386,15 @@ const theme = (darkStyle) => {
           red: "#F63F82",
           error: "#F268C3",
           linkText: "#36A6F4",
+          purple: colors.purple,
+          neutralText: "#36373F",
         },
     transactionTable: darkStyle
       ? {
-          headTextColor: "#f3f4f6",
           headBackgroundColor: "#0C0D21",
           border: "#222249",
         }
       : {
-          headTextColor: "#36373F",
           // headBackgroundColor: "#CCCAEF",
           headBackgroundColor: "#ffffff",
           border: "rgba(0, 0, 0, 0.1)",
