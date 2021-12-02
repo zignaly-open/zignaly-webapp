@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { ignoreNotice } from "store/actions/settings";
 import styled, { css } from "styled-components";
+import { isMobile } from "styles/styles";
 
 const StyledButton = styled(Button)`
   text-transform: none;
@@ -28,6 +29,10 @@ const Panel = styled.div`
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.1);
     `}
+
+  ${isMobile(css`
+    flex-direction: column;
+  `)}
 `;
 
 const StyledInfo = styled(Info)`
@@ -55,6 +60,10 @@ const TypographyMessage = styled(Typography)`
 
 const ButtonsContainer = styled.div`
   margin: 0 20px 0 100px;
+
+  ${isMobile(css`
+    margin: 12px 0 0;
+  `)}
 `;
 
 const InfoPanelGeneric = ({
@@ -69,7 +78,7 @@ const InfoPanelGeneric = ({
   const { ignoreNotice: ignoreNoticeSettings } = useStoreSettingsSelector();
   const dispatch = useDispatch();
   if (ignoreNoticeSettings[id]) {
-    return null;
+    // return null;
   }
 
   const handleDismiss = () => {
