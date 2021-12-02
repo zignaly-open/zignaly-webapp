@@ -178,7 +178,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.firstAwarded.val" />
             </ItemValue>
           </ListItem> */}
-          <ListItem>
+          {/* <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.compounding" />
             </ItemLabel>
@@ -191,7 +191,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
                 <FormattedMessage id="wallet.staking.offer.compounding.info" />
               </SecondaryText>
             </ItemValue>
-          </ListItem>
+          </ListItem> */}
         </ul>
       </Modal>
     </CustomModal>
