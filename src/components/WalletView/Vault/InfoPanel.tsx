@@ -81,7 +81,7 @@ const InfoPanelGeneric = ({
   const { ignoreNotice: ignoreNoticeSettings } = useStoreSettingsSelector();
   const dispatch = useDispatch();
   if (ignoreNoticeSettings[id]) {
-    // return null;
+    return null;
   }
 
   const handleDismiss = () => {
