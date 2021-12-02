@@ -54,6 +54,9 @@ const TypographyMessage = styled(Typography)`
     flex-direction: column;
     &:not(:last-child) {
       margin-right: 55px;
+      ${isMobile(css`
+        margin: 0;
+      `)}
     }
   }
 `;
