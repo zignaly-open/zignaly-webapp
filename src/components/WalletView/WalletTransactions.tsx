@@ -109,9 +109,9 @@ const StyledTableLayout = styled(TableLayout)`
   }
 `;
 
-const TransferChainIcon = (network) => (
-  <StyledTransferImg width={24} height={24} src={getChainIcon(network)} />
-);
+const TransferChainIcon = ({ network }: { network: string }) => {
+  return <StyledTransferImg width={24} height={24} src={getChainIcon(network)} />;
+};
 
 const TransferZigLabel = ({ name }: { name?: string }) => (
   <>
