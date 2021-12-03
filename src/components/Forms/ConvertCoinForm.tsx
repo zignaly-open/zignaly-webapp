@@ -54,7 +54,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
         internalExchangeId: selectedExchange.internalId,
       })
       .then((response) => {
-        setQuotes(response);
+        setQuotes(response.sort((a, b) => a.localeCompare(b)));
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
