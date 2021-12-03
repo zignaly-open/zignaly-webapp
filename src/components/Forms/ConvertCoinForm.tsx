@@ -54,16 +54,21 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
         internalExchangeId: selectedExchange.internalId,
       })
       .then((response) => {
-        setQuotes(response);
+        setQuotes(response.sort((a, b) => a.localeCompare(b)));
+        if (selectedQuote && !response.includes(selectedQuote)) {
+          // Selected quote not valid for new base
+          setValue("quote", "");
+        } else if (isFilled()) {
+          // Selected base changed, force update preview.
+          loadPreview();
+        }
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
       });
   }, [selectedBase]);
 
-  // skip first check because isValid is true at init
-  useEffectSkipFirst(() => {
-    if (!isValid || !debouncedAmount) return;
+  const loadPreview = () => {
     setPreviewConversion(null);
     setPreviewLoading(true);
 
@@ -75,6 +80,10 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       })
       .then((response) => {
         setPreviewConversion(response);
+        // Update amount verification check. Without timeout, ROF doesn't check against updated minAmount...
+        setTimeout(() => {
+          trigger("amount");
+        }, 0);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -82,7 +91,16 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       .finally(() => {
         setPreviewLoading(false);
       });
-  }, [debouncedAmount, selectedBase, selectedQuote, isValid]);
+  };
+
+  const isFilled = () => selectedQuote && selectedBase && debouncedAmount;
+
+  // Update preview on change
+  useEffect(() => {
+    if (isFilled()) {
+      loadPreview();
+    }
+  }, [debouncedAmount, selectedQuote]);
 
   const submitForm = () => {
     setLoading(true);
@@ -165,7 +183,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
             errors={errors}
             control={control}
             coin={base}
-            minAmount={previewConversion ? previewConversion.min : 0}
+            minAmount={previewConversion?.min}
             decimals={8}
           />
 
@@ -174,17 +192,17 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
               <CircularProgress />
             ) : (
               previewConversion &&
-              amount >= previewConversion.min && (
+              parseFloat(amount) >= previewConversion.min && (
                 <>
                   <Typography>
                     <FormattedMessage id="convert.preview" />
                     &nbsp;
+                    <NumberFormat
+                      value={previewConversion.estimatedAmount}
+                      displayType="text"
+                      suffix={` ${selectedQuote}`}
+                    />
                   </Typography>
-                  <NumberFormat
-                    value={previewConversion.estimatedAmount}
-                    displayType="text"
-                    suffix={` ${selectedQuote}`}
-                  />
                 </>
               )
             )}
@@ -195,7 +213,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
               className="submitButton"
               loading={loading}
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || !previewConversion}
             >
               <FormattedMessage id="accounts.convert" />
             </CustomButton>
