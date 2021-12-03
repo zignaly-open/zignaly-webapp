@@ -94,19 +94,9 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {process.env.GATSBY_ENABLE_WITHDRAW !== "true" ? (
-                <Tooltip title={<FormattedMessage id="wallet.fees.cashback.soon" />}>
-                  <div>
-                    <Button className="textPurple" disabled style={{ opacity: 0.4 }}>
-                      <FormattedMessage id="accounts.withdraw" />
-                    </Button>
-                  </div>
-                </Tooltip>
-              ) : (
-                <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
-                  <FormattedMessage id="accounts.withdraw" />
-                </Button>
-              )}
+              <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
+                <FormattedMessage id="accounts.withdraw" />
+              </Button>
               <Button
                 className="textPurple borderPurple"
                 onClick={() => setPath(`deposit/${coinData.name}`)}

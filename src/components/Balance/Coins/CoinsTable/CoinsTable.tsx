@@ -79,8 +79,7 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
 
   if (
     selectedExchange.exchangeName.toLowerCase() === "zignaly" &&
-    selectedExchange.exchangeType === "spot" &&
-    process.env.GATSBY_ENABLE_CONVERT === "true"
+    selectedExchange.exchangeType === "spot"
   ) {
     columns.push({
       name: "coin",
