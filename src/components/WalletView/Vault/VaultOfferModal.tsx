@@ -69,7 +69,6 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     coin,
     coinReward,
     startDate,
-    lockupDate,
     minBalance,
     maxBalance,
     rewardsTotal,
@@ -95,7 +94,12 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.minDeposit" />
             </ItemLabel>
             <ItemValue>
-              <NumberFormat displayType="text" value={minBalance} suffix={` ${coin}`} />
+              <NumberFormat
+                displayType="text"
+                value={minBalance}
+                suffix={` ${coin}`}
+                thousandSeparator={true}
+              />
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -104,9 +108,14 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             <ItemValue>
               {maxBalance ? (
-                <NumberFormat displayType="text" value={maxBalance} suffix={` ${coinReward}`} />
+                <NumberFormat
+                  displayType="text"
+                  value={maxBalance}
+                  suffix={` ${coinReward}`}
+                  thousandSeparator={true}
+                />
               ) : (
-                <FormattedMessage id="wallet.staking.offer.none" />
+                <FormattedMessage id="wallet.staking.offer.noLimit" />
               )}
             </ItemValue>
           </ListItem>
@@ -116,6 +125,19 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
             <ItemValue>{formatUTC(startDate)}</ItemValue>
+          </ListItem>
+          <ListItem>
+            <ItemLabel>
+              <FormattedMessage id="wallet.staking.offer.totalRewards" />
+            </ItemLabel>
+            <ItemValue>
+              <NumberFormat
+                displayType="text"
+                value={rewardsTotal}
+                suffix={` ${coinReward}`}
+                thousandSeparator={true}
+              />
+            </ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
@@ -129,26 +151,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.rewardEnds" />
             </ItemLabel>
             <ItemValue>
-              <FormattedMessage
-                id="wallet.staking.offer.rewardEnds.val"
-                values={{
-                  coin: coinReward,
-                  amount: rewardsTotal.toLocaleString("en-US"),
-                  date: formatDay(endDate),
-                }}
-              />
-            </ItemValue>
-          </ListItem>
-          <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.lockup" />
-            </ItemLabel>
-            <ItemValue>
-              {lockupDate ? (
-                formatUTC(lockupDate)
-              ) : (
-                <FormattedMessage id="wallet.staking.offer.none" />
-              )}
+              <ItemValue>{formatUTC(endDate)}</ItemValue>
             </ItemValue>
           </ListItem>
           <ListItem>
