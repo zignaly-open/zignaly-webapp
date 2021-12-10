@@ -289,6 +289,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
+  const [tradingFeeDiscount, setTradingFeeDiscount] = useState(userData.tradingFeeDiscount);
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
@@ -302,7 +303,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   };
 
   useEffect(() => {
+    // Reload user data
+    setTradingFeeDiscount(userData.tradingFeeDiscount);
+    setPayFeeWithZig(userData.payFeeWithZig);
+  }, [userData.payFeeWithZig, userData.tradingFeeDiscount]);
+
+  useEffect(() => {
     if (isOpen) {
+      dispatch(getUserData());
+
       tradeApi.getWalletCoins().then((response) => {
         setCoins(response);
       });
@@ -320,14 +329,17 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.checked;
     setPayFeeWithZig(val);
-    tradeApi
-      .updateUser({ payFeeWithZig: val })
-      .then(() => {
-        dispatch(getUserData());
-      })
-      .catch(() => {
-        setPayFeeWithZig(!val);
-      });
+    tradeApi.updateUser({ payFeeWithZig: val }).catch(() => {
+      setPayFeeWithZig(!val);
+    });
+  };
+
+  const onTradingFeeDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.checked;
+    setTradingFeeDiscount(val);
+    tradeApi.updateUser({ tradingFeeDiscount: val }).catch(() => {
+      setTradingFeeDiscount(!val);
+    });
   };
 
   const BuyZig = useCallback(
@@ -469,6 +481,25 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 </SwitchLabel>
               }
             />
+            <FormControlLabel
+              control={
+                <StyledSwitch checked={tradingFeeDiscount} onChange={onTradingFeeDiscountChange} />
+              }
+              label={
+                <SwitchLabel enabled={tradingFeeDiscount}>
+                  <FormattedMessage
+                    id={
+                      tradingFeeDiscount ? "wallet.fees.cashback.enabled" : "wallet.fees.cashback"
+                    }
+                  />
+                  <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
+                    <div>
+                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
+                    </div>
+                  </Tooltip>
+                </SwitchLabel>
+              }
+            />
             <FeeLine>
               <SecondaryText noWrap>
                 <FormattedMessage id="wallet.fees.discount" />
@@ -479,10 +510,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             </FeeLine>
             <FeeLine>
               <SecondaryText noWrap>
-                <FormattedMessage id="wallet.fees.cashback" />
+                <FormattedMessage id="wallet.fees.volume" />
               </SecondaryText>
               <ValueBig>
-                <FormattedMessage id="wallet.fees.cashback.soon" />
+                <FormattedMessage id="wallet.fees.volume.soon" />
               </ValueBig>
             </FeeLine>
           </Box>

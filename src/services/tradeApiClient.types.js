@@ -320,6 +320,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} disabled Account disabled due to too many incorrect login
  * @property {boolean} verified User identity verified
  * @property {boolean} payFeeWithZig
+ * @property {boolean} tradingFeeDiscount
  * @property {string} refCode
  * @property {'perpetual'|'oneTime'} refRewardType
  */
@@ -818,6 +819,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} [userName]
  * @property {string} [imageUrl]
  * @property {boolean} [payFeeWithZig]
+ * @property {boolean} [tradingFeeDiscount]
  * @property {string} [refRewardType]
  */
 
@@ -946,6 +948,7 @@ export function userEntityResponseTransform(response) {
     wall: response.wall || {},
     verified: false,
     payFeeWithZig: response.payFeeWithZig,
+    tradingFeeDiscount: response.tradingFeeDiscount,
     refCode: response.refCode,
     refRewardType: response.refRewardType || "perpetual",
   };
