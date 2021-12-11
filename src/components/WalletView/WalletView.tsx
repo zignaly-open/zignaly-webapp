@@ -513,7 +513,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 <FormattedMessage id="wallet.fees.volume" />
               </SecondaryText>
               <ValueBig>
-                <FormattedMessage id="wallet.fees.volume.soon" />
+                <FormattedMessage id="wallet.fees.min" values={{ perc: 15 }} />
               </ValueBig>
             </FeeLine>
           </Box>
