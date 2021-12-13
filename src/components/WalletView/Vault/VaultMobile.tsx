@@ -86,8 +86,8 @@ const VaultMobile = ({ vaults, balance, onOfferClick }: VaultMobileProps) => {
               </Label>
               <Amount>
                 {formatPrice(v.minBalance, "", " ", true)}
-                <Coin>{v.coinReward}</Coin>
-                <CoinIcon width={16} height={16} coin={v.coinReward} />
+                <Coin>{v.coin}</Coin>
+                <CoinIcon width={16} height={16} coin={v.coin} />
               </Amount>
             </div>
             <div>
