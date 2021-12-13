@@ -115,6 +115,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                   href="https://twitter.com/AscendEX_Global/status/1469886844787691528"
                   target="_blank"
                   rel="noreferrer"
+                  className="link"
                 >
                   https://twitter.com/AscendEX_Global/status/1469886844787691528
                 </a>
