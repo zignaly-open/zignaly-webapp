@@ -11,9 +11,10 @@ import { showErrorAlert } from "../store/actions/ui";
  * Provides balance summary for exchange.
  *
  * @param {string} internalId ID of the exchange.
+ * @param {Date} [updatedAt] Last updated date to force data refresh.
  * @returns {ExchangeAssetsDict} Balance.
  */
-const useUserExchangeAssets = (internalId) => {
+const useUserExchangeAssets = (internalId, updatedAt) => {
   const [assets, setAssets] = useState({});
   const dispatch = useDispatch();
 
@@ -35,7 +36,7 @@ const useUserExchangeAssets = (internalId) => {
     }
   };
 
-  useEffect(loadData, [internalId]);
+  useEffect(loadData, [internalId, updatedAt]);
 
   return assets;
 };
