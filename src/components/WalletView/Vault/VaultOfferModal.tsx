@@ -144,14 +144,14 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.rewardBegins" />
             </ItemLabel>
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
-            <ItemValue>{formatUTC(distributionDate)}</ItemValue>
+            <ItemValue>{formatDay(distributionDate)}</ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.rewardEnds" />
             </ItemLabel>
             <ItemValue>
-              <ItemValue>{formatUTC(endDate)}</ItemValue>
+              <ItemValue>{formatDay(endDate)}</ItemValue>
             </ItemValue>
           </ListItem>
           <ListItem>
