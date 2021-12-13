@@ -17,6 +17,7 @@ import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
 import AmountControl from "./AmountControl";
+import { Alert } from "@material-ui/lab";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -37,6 +38,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
+  const withdrawDisabled = coin === "ZIG";
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -106,43 +108,56 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                 label={<FormattedMessage id="deposit.network" />}
               />
             </StyledCustomSelect>
-            {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
-            <FormControl error={errors.address} fullWidth>
-              <Label style={{ marginTop: "24px" }}>
-                <FormattedMessage id="wallet.withdraw.address" />
-              </Label>
-              <OutlinedInput
-                className="customInput"
-                inputRef={register({
-                  required: true,
-                  pattern: {
-                    value: RegExp(networkData?.addressRegex),
-                    message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
-                  },
-                })}
-                name="address"
-              />
-              {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
-            </FormControl>
+            {withdrawDisabled ? (
+              <Alert style={{ marginTop: "10px" }} severity="error">
+                Due to the recent hack on Ascendex (
+                <a href="https://twitter.com/AscendEX_Global/status/1469886844787691528">
+                  https://twitter.com/AscendEX_Global/status/1469886844787691528
+                </a>
+                ), withdrawals have been disabled. We expect to re-activate them in the following
+                hours.
+              </Alert>
+            ) : (
+              <>
+                {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
+                <FormControl error={errors.address} fullWidth>
+                  <Label style={{ marginTop: "24px" }}>
+                    <FormattedMessage id="wallet.withdraw.address" />
+                  </Label>
+                  <OutlinedInput
+                    className="customInput"
+                    inputRef={register({
+                      required: true,
+                      pattern: {
+                        value: RegExp(networkData?.addressRegex),
+                        message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
+                      },
+                    })}
+                    name="address"
+                  />
+                  {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
+                </FormControl>
 
-            <AmountControl
-              balance={balanceAmount}
-              setBalanceMax={setBalanceMax}
-              decimals={coinData?.decimals}
-              errors={errors}
-              control={control}
-              coin={coin}
-              label="wallet.withdraw.amount"
-            />
+                <AmountControl
+                  balance={balanceAmount}
+                  setBalanceMax={setBalanceMax}
+                  decimals={coinData?.decimals}
+                  errors={errors}
+                  control={control}
+                  coin={coin}
+                  label="wallet.withdraw.amount"
+                />
 
-            <Box display="flex" flexDirection="row" mt="64px">
-              <Button className="textPurple borderPurple" onClick={onClose}>
-                <FormattedMessage id="confirm.cancel" />
-              </Button>
-              <Button className="bgPurple" type="submit" disabled={!isValid}>
-                <FormattedMessage id="wallet.withdraw.continue" />
-              </Button>
-            </Box>
+                <Box display="flex" flexDirection="row" mt="64px">
+                  <Button className="textPurple borderPurple" onClick={onClose}>
+                    <FormattedMessage id="confirm.cancel" />
+                  </Button>
+                  <Button className="bgPurple" type="submit" disabled={!isValid}>
+                    <FormattedMessage id="wallet.withdraw.continue" />
+                  </Button>
+                </Box>
+              </>
+            )}
           </form>
         </>
       ) : (
