@@ -1,18 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import tradeApi from "services/tradeApiClient";
-import { AlignCenter } from "styles/styles";
+import { AlignCenter, Title } from "styles/styles";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
+import ExportIcon from "images/wallet/export.inline.svg";
 import Table, { TableLayout } from "./Table";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
-import { ArrowRightAlt } from "@material-ui/icons";
+import { ArrowRightAlt, Share } from "@material-ui/icons";
 import CoinIcon from "./CoinIcon";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ListIcon from "images/wallet/list.svg";
+import CustomButton from "components/CustomButton";
+import { showErrorAlert } from "store/actions/ui";
+import { useDispatch } from "react-redux";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -69,6 +74,24 @@ const StyledTransferImg = styled.img`
   margin-left: 16px;
 `;
 
+const Button = styled(CustomButton)`
+  min-width: 121px;
+`;
+
+const StyledTitle = styled(Title)`
+  margin-top: 64px; ;
+`;
+
+const FiltersBox = styled.div`
+  margin-left: auto;
+`;
+
+const StyledExportIcon = styled.svg.attrs(() => ({
+  as: ExportIcon,
+}))`
+  color: ${(props) => props.theme.newTheme.purple};
+`;
+
 const getStatusColor = (status, theme) => {
   switch (status) {
     case "SUCCESS":
@@ -123,7 +146,39 @@ const TransferZigLabel = ({ name }: { name?: string }) => (
 const WalletTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
   const [hasMore, setHasMore] = useState(true);
+  const [type, setType] = useState<TransactionType>("all");
   const intl = useIntl();
+  const dispatch = useDispatch();
+
+  const getTransactions = () => {
+    return tradeApi.getWalletTransactionsHistory({
+      type,
+      limit: 20,
+      offset: transactions ? transactions.length : 0,
+    });
+  };
+
+  const fetchMoreData = () => {
+    getTransactions().then((response) => {
+      if (response.length) {
+        setTransactions(transactions.concat(response));
+      } else {
+        setHasMore(false);
+      }
+    });
+  };
+
+  const downloadTransactions = () => {
+    tradeApi.downloadTransactions({ type }).catch((e) => {
+      dispatch(showErrorAlert(e));
+    });
+  };
+
+  useEffect(() => {
+    getTransactions().then((response) => {
+      setTransactions(response);
+    });
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -326,56 +381,49 @@ const WalletTransactions = () => {
     [transactions],
   );
 
-  useEffect(() => {
-    tradeApi.getWalletTransactionsHistory({ limit: 20, offset: 0 }).then((response) => {
-      setTransactions(response);
-    });
-  }, []);
-
-  if (!transactions) {
-    return (
-      <Box alignItems="center" display="flex" justifyContent="center">
-        <CircularProgress color="primary" size={40} />
-      </Box>
-    );
-  }
-
   const tableState = {
     hiddenColumns: ["transactionId"],
   };
 
-  const fetchMoreData = () => {
-    tradeApi
-      .getWalletTransactionsHistory({ limit: 20, offset: transactions.length })
-      .then((response) => {
-        if (response.length) {
-          setTransactions(transactions.concat(response));
-        } else {
-          setHasMore(false);
+  return !transactions ? (
+    <Box alignItems="center" display="flex" justifyContent="center">
+      <CircularProgress color="primary" size={40} />
+    </Box>
+  ) : (
+    <>
+      <StyledTitle>
+        <img src={ListIcon} width={40} height={40} />
+        <FormattedMessage id="wallet.transactions" />
+        <FiltersBox>
+          <Button
+            endIcon={<StyledExportIcon />}
+            className="textPurple borderPurple"
+            onClick={downloadTransactions}
+          >
+            <FormattedMessage id="wallet.export" />
+          </Button>
+        </FiltersBox>
+      </StyledTitle>
+      <InfiniteScroll
+        dataLength={transactions.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
         }
-      });
-  };
-
-  return (
-    <InfiniteScroll
-      dataLength={transactions.length}
-      next={fetchMoreData}
-      hasMore={hasMore}
-      loader={
-        <Box display="flex" justifyContent="center">
-          <CircularProgress />
-        </Box>
-      }
-    >
-      <StyledTableLayout>
-        <Table
-          data={data}
-          columns={columns}
-          renderRowSubComponent={renderRowSubComponent}
-          initialState={tableState}
-        />
-      </StyledTableLayout>
-    </InfiniteScroll>
+      >
+        <StyledTableLayout>
+          <Table
+            data={data}
+            columns={columns}
+            renderRowSubComponent={renderRowSubComponent}
+            initialState={tableState}
+          />
+        </StyledTableLayout>
+      </InfiniteScroll>
+    </>
   );
 };
 

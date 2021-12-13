@@ -5,6 +5,12 @@ interface ConvertPreviewRes {
   estimatedAmount: number;
 }
 
+type TransactionType = "deposit" | "withdraw" | "internal" | "all";
+
+interface GetTransactionsReq extends PaginationReq {
+  type?: TransactionType;
+}
+
 interface TransactionsHistory {
   amount: string;
   formattedAmount: string;
@@ -23,6 +29,10 @@ interface TransactionsHistory {
   network: string;
   status: string;
   type: string;
+}
+
+interface DownloadTransactionsReq {
+  type?: TransactionType;
 }
 
 interface GetNetworkFeeRes {
