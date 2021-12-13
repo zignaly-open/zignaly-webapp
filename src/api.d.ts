@@ -73,3 +73,8 @@ interface GetQuoteAssetFromBaseReq {
   internalExchangeId: string;
   base: string;
 }
+
+interface PaginationReq {
+  limit: number;
+  offset: number;
+}

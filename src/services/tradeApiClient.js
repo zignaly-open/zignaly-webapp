@@ -2421,12 +2421,13 @@ class TradeApiClient {
   /**
    * Get transaction history
    *
+   * @param {PaginationReq} payload
    * @returns {Promise<TransactionsHistory[]>} Result
    *
    * @memberof TradeApiClient
    */
-  async getWalletTransactionsHistory() {
-    return this.doRequest("/get-operations", null, "GET", 3);
+  async getWalletTransactionsHistory(payload) {
+    return this.doRequest("/get-operations", payload, "GET", 3);
   }
 
   /**

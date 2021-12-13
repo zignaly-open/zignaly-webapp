@@ -11,8 +11,8 @@ import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
 import { ArrowRightAlt } from "@material-ui/icons";
-import { Link } from "gatsby";
 import CoinIcon from "./CoinIcon";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -122,6 +122,7 @@ const TransferZigLabel = ({ name }: { name?: string }) => (
 
 const WalletTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
+  const [hasMore, setHasMore] = useState(true);
   const intl = useIntl();
 
   const columns = useMemo(
@@ -326,7 +327,7 @@ const WalletTransactions = () => {
   );
 
   useEffect(() => {
-    tradeApi.getWalletTransactionsHistory().then((response) => {
+    tradeApi.getWalletTransactionsHistory({ limit: 20, offset: 0 }).then((response) => {
       setTransactions(response);
     });
   }, []);
@@ -343,15 +344,38 @@ const WalletTransactions = () => {
     hiddenColumns: ["transactionId"],
   };
 
+  const fetchMoreData = () => {
+    tradeApi
+      .getWalletTransactionsHistory({ limit: 20, offset: transactions.length })
+      .then((response) => {
+        if (response.length) {
+          setTransactions(transactions.concat(response));
+        } else {
+          setHasMore(false);
+        }
+      });
+  };
+
   return (
-    <StyledTableLayout>
-      <Table
-        data={data}
-        columns={columns}
-        renderRowSubComponent={renderRowSubComponent}
-        initialState={tableState}
-      />
-    </StyledTableLayout>
+    <InfiniteScroll
+      dataLength={transactions.length}
+      next={fetchMoreData}
+      hasMore={hasMore}
+      loader={
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      }
+    >
+      <StyledTableLayout>
+        <Table
+          data={data}
+          columns={columns}
+          renderRowSubComponent={renderRowSubComponent}
+          initialState={tableState}
+        />
+      </StyledTableLayout>
+    </InfiniteScroll>
   );
 };
 
