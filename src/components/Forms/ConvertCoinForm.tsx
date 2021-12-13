@@ -19,9 +19,16 @@ interface ConvertCoinFormProps {
   bases: string[];
   base: string;
   onClose: () => void;
+  onRefreshCoins: () => void;
 }
 
-const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps) => {
+const ConvertCoinForm = ({
+  bases,
+  base,
+  balance,
+  onClose,
+  onRefreshCoins,
+}: ConvertCoinFormProps) => {
   const balanceData: BalanceData = {
     availableBalance: parseFloat(balance),
     balance: parseFloat(balance),
@@ -113,7 +120,7 @@ const ConvertCoinForm = ({ bases, base, balance, onClose }: ConvertCoinFormProps
       })
       .then(() => {
         dispatch(showSuccessAlert("", "convert.success"));
-        // TODO: refresh balance
+        onRefreshCoins();
         onClose();
       })
       .catch((e) => {

@@ -14,7 +14,8 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 const Coins = () => {
   const [list, setList] = useState([]);
   const selectedExchange = useSelectedExchange();
-  const assets = useUserExchangeAssets(selectedExchange.internalId);
+  const [updatedAt, setUpdatedAt] = useState(null);
+  const assets = useUserExchangeAssets(selectedExchange.internalId, updatedAt);
   const data = Object.values(assets);
   const loading = data.length === 0;
 
@@ -55,7 +56,12 @@ const Coins = () => {
           flexDirection="column"
           justifyContent="flex-start"
         >
-          <CoinsTable list={list} persistKey="exchangeAssets" title={embedFilter} />
+          <CoinsTable
+            onRefreshCoins={() => setUpdatedAt(new Date())}
+            list={list}
+            persistKey="exchangeAssets"
+            title={embedFilter}
+          />
         </Box>
       )}
     </>
