@@ -21,9 +21,10 @@ interface CoinsTableProps {
   /* Key to save display columns settings. **/
   persistKey: string;
   list: ExchangeAsset[];
+  onRefreshCoins: () => void;
 }
 
-const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
+const CoinsTable = ({ title, persistKey, list, onRefreshCoins }: CoinsTableProps) => {
   const [convertCoin, setConvertCoin] = useState<CoinData>(null);
   const coinsOptions = list
     .filter((c) => parseFloat(c.balanceFree))
@@ -129,6 +130,7 @@ const CoinsTable = ({ title, persistKey, list }: CoinsTableProps) => {
             onClose={() => {
               setConvertCoin(null);
             }}
+            onRefreshCoins={onRefreshCoins}
           />
         </Modal>
       )}
