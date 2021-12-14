@@ -38,7 +38,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = coin === "ZIG";
+  const withdrawDisabled = false;
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -49,6 +49,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     errors,
     formState: { isValid },
     setValue,
+    trigger,
   } = useForm({ mode: "onChange" });
   const intl = useIntl();
 
@@ -80,6 +81,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
 
   const setBalanceMax = () => {
     setValue("amount", balanceAmount.availableBalance);
+    trigger("amount");
   };
 
   const submitForm = (data) => {
