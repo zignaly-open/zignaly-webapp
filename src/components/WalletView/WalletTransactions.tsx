@@ -1,18 +1,24 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import tradeApi from "services/tradeApiClient";
-import { AlignCenter } from "styles/styles";
+import { AlignCenter, isMobile, Title } from "styles/styles";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
+import ExportIcon from "images/wallet/export.inline.svg";
 import Table, { TableLayout } from "./Table";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import dayjs from "dayjs";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
-import { ArrowRightAlt } from "@material-ui/icons";
-import { Link } from "gatsby";
+import { ArrowRightAlt, Share } from "@material-ui/icons";
 import CoinIcon from "./CoinIcon";
+import InfiniteScroll from "react-infinite-scroll-component";
+import ListIcon from "images/wallet/list.svg";
+import CustomButton from "components/CustomButton";
+import { showErrorAlert } from "store/actions/ui";
+import { useDispatch } from "react-redux";
+import Select from "./Select";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -69,6 +75,41 @@ const StyledTransferImg = styled.img`
   margin-left: 16px;
 `;
 
+const Button = styled(CustomButton)`
+  min-width: 121px;
+`;
+
+const StyledTitle = styled(Title)`
+  margin-top: 64px;
+
+  ${isMobile(css`
+    flex-direction: column;
+  `)}
+`;
+
+const FiltersBox = styled.div`
+  margin-left: auto;
+
+  ${isMobile(css`
+    margin: 32px 0 0;
+  `)}
+`;
+
+const ExportButton = styled(CustomButton)`
+  color: ${({ theme }) => theme.newTheme.linkText};
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  min-width: auto;
+  width: auto;
+`;
+
+const StyledExportIcon = styled.svg.attrs(() => ({
+  as: ExportIcon,
+}))`
+  color: ${({ theme }) => theme.newTheme.linkText};
+`;
+
 const getStatusColor = (status, theme) => {
   switch (status) {
     case "SUCCESS":
@@ -122,7 +163,67 @@ const TransferZigLabel = ({ name }: { name?: string }) => (
 
 const WalletTransactions = () => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
+  const [hasMore, setHasMore] = useState(true);
+  const [type, setType] = useState<TransactionType>("all");
   const intl = useIntl();
+  const dispatch = useDispatch();
+  const limit = 10;
+
+  const types = [
+    {
+      value: "all",
+      label: intl.formatMessage({ id: "wallet.alltransactions" }),
+    },
+    {
+      value: "deposit",
+      label: intl.formatMessage({ id: "wallet.type.deposit" }),
+    },
+    {
+      value: "internal",
+      label: intl.formatMessage({ id: "wallet.type.internal" }),
+    },
+    {
+      value: "withdraw",
+      label: intl.formatMessage({ id: "wallet.type.withdraw" }),
+    },
+  ];
+
+  const getTransactions = () => {
+    return tradeApi.getWalletTransactionsHistory({
+      type,
+      limit,
+      offset: transactions ? transactions.length : 0,
+    });
+  };
+
+  const fetchMoreData = () => {
+    getTransactions().then((response) => {
+      if (response.length) {
+        setTransactions(transactions.concat(response));
+      } else {
+        setHasMore(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (transactions) {
+      setTransactions(null);
+    }
+
+    getTransactions().then((response) => {
+      setTransactions(response);
+      if (!response.length) {
+        setHasMore(false);
+      }
+    });
+  }, [type]);
+
+  const downloadTransactions = () => {
+    tradeApi.downloadTransactions().catch((e) => {
+      dispatch(showErrorAlert(e));
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -325,33 +426,57 @@ const WalletTransactions = () => {
     [transactions],
   );
 
-  useEffect(() => {
-    tradeApi.getWalletTransactionsHistory().then((response) => {
-      setTransactions(response);
-    });
-  }, []);
-
-  if (!transactions) {
-    return (
-      <Box alignItems="center" display="flex" justifyContent="center">
-        <CircularProgress color="primary" size={40} />
-      </Box>
-    );
-  }
-
   const tableState = {
     hiddenColumns: ["transactionId"],
   };
 
-  return (
-    <StyledTableLayout>
-      <Table
-        data={data}
-        columns={columns}
-        renderRowSubComponent={renderRowSubComponent}
-        initialState={tableState}
-      />
-    </StyledTableLayout>
+  // Get scroll container manually since InfiniteScroll only supports ids
+  const container = document.getElementsByClassName("MuiDialog-paperScrollPaper")[0];
+
+  return !transactions ? (
+    <Box alignItems="center" display="flex" justifyContent="center" mt={4}>
+      <CircularProgress color="primary" size={40} />
+    </Box>
+  ) : (
+    <>
+      <StyledTitle>
+        <Box display="flex" alignItems="center">
+          <img src={ListIcon} width={40} height={40} />
+          <FormattedMessage id="wallet.transactions" />
+        </Box>
+        <FiltersBox>
+          <ExportButton endIcon={<StyledExportIcon />} onClick={downloadTransactions}>
+            <FormattedMessage id="wallet.export" />
+          </ExportButton>
+          <Select
+            values={types}
+            value={type}
+            handleChange={(e) => setType(e.target.value as TransactionType)}
+          />
+        </FiltersBox>
+      </StyledTitle>
+      <InfiniteScroll
+        style={{ overflow: "visible" }}
+        scrollableTarget={container}
+        dataLength={transactions.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        }
+      >
+        <StyledTableLayout>
+          <Table
+            data={data}
+            columns={columns}
+            renderRowSubComponent={renderRowSubComponent}
+            initialState={tableState}
+          />
+        </StyledTableLayout>
+      </InfiniteScroll>
+    </>
   );
 };
 

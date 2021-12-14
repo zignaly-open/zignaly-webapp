@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
-import ListIcon from "images/wallet/list.svg";
 import InfoIcon from "images/wallet/info.svg";
 import TrophyIcon from "images/wallet/trophy.inline.svg";
 import TrophyDarkIcon from "images/wallet/trophy-dark.inline.svg";
@@ -566,10 +565,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           setSelectedVaultOffer={setSelectedVaultOffer}
         />
       </Box>
-      <Title style={{ marginTop: "64px" }}>
-        <img src={ListIcon} width={40} height={40} />
-        <FormattedMessage id="wallet.transactions" />
-      </Title>
       <WalletTransactions />
     </>
   );

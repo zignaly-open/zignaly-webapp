@@ -194,11 +194,7 @@ const WalletCoins = ({
   );
 
   if (!walletBalance) {
-    return (
-      <Box display="flex" flex={1} justifyContent="center">
-        <CircularProgress color="primary" size={40} />
-      </Box>
-    );
+    return null;
   }
 
   return (
