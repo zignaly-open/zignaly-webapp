@@ -49,6 +49,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     errors,
     formState: { isValid },
     setValue,
+    trigger,
   } = useForm({ mode: "onChange" });
   const intl = useIntl();
 
@@ -80,6 +81,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
 
   const setBalanceMax = () => {
     setValue("amount", balanceAmount.availableBalance);
+    trigger("amount");
   };
 
   const submitForm = (data) => {
