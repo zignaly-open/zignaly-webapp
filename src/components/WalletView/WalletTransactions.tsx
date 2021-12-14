@@ -207,9 +207,8 @@ const WalletTransactions = () => {
   };
 
   useEffect(() => {
-    if (transactions) {
-      setTransactions(null);
-    }
+    setHasMore(true);
+    setTransactions(null);
 
     getTransactions(null).then((response) => {
       setTransactions(response);
