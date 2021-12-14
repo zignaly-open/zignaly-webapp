@@ -18,6 +18,7 @@ import ListIcon from "images/wallet/list.svg";
 import CustomButton from "components/CustomButton";
 import { showErrorAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
+import Select from "./Select";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -86,10 +87,18 @@ const FiltersBox = styled.div`
   margin-left: auto;
 `;
 
+const ExportButton = styled(CustomButton)`
+  color: ${({ theme }) => theme.newTheme.linkText};
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  min-width: auto;
+`;
+
 const StyledExportIcon = styled.svg.attrs(() => ({
   as: ExportIcon,
 }))`
-  color: ${(props) => props.theme.newTheme.purple};
+  color: ${({ theme }) => theme.newTheme.linkText};
 `;
 
 const getStatusColor = (status, theme) => {
@@ -149,11 +158,31 @@ const WalletTransactions = () => {
   const [type, setType] = useState<TransactionType>("all");
   const intl = useIntl();
   const dispatch = useDispatch();
+  const limit = 10;
+
+  const types = [
+    {
+      value: "all",
+      label: intl.formatMessage({ id: "wallet.alltransactions" }),
+    },
+    {
+      value: "deposit",
+      label: intl.formatMessage({ id: "wallet.type.deposit" }),
+    },
+    {
+      value: "internal",
+      label: intl.formatMessage({ id: "wallet.type.internal" }),
+    },
+    {
+      value: "withdraw",
+      label: intl.formatMessage({ id: "wallet.type.withdraw" }),
+    },
+  ];
 
   const getTransactions = () => {
     return tradeApi.getWalletTransactionsHistory({
       type,
-      limit: 20,
+      limit,
       offset: transactions ? transactions.length : 0,
     });
   };
@@ -168,17 +197,24 @@ const WalletTransactions = () => {
     });
   };
 
+  useEffect(() => {
+    if (transactions) {
+      setTransactions(null);
+    }
+
+    getTransactions().then((response) => {
+      setTransactions(response);
+      if (!response.length) {
+        setHasMore(false);
+      }
+    });
+  }, [type]);
+
   const downloadTransactions = () => {
     tradeApi.downloadTransactions({ type }).catch((e) => {
       dispatch(showErrorAlert(e));
     });
   };
-
-  useEffect(() => {
-    getTransactions().then((response) => {
-      setTransactions(response);
-    });
-  }, []);
 
   const columns = useMemo(
     () => [
@@ -386,7 +422,7 @@ const WalletTransactions = () => {
   };
 
   return !transactions ? (
-    <Box alignItems="center" display="flex" justifyContent="center">
+    <Box alignItems="center" display="flex" justifyContent="center" mt={4}>
       <CircularProgress color="primary" size={40} />
     </Box>
   ) : (
@@ -395,13 +431,10 @@ const WalletTransactions = () => {
         <img src={ListIcon} width={40} height={40} />
         <FormattedMessage id="wallet.transactions" />
         <FiltersBox>
-          <Button
-            endIcon={<StyledExportIcon />}
-            className="textPurple borderPurple"
-            onClick={downloadTransactions}
-          >
+          <ExportButton endIcon={<StyledExportIcon />} onClick={downloadTransactions}>
             <FormattedMessage id="wallet.export" />
-          </Button>
+          </ExportButton>
+          <Select values={types} value={type} handleChange={(e) => setType(e.target.value)} />
         </FiltersBox>
       </StyledTitle>
       <InfiniteScroll
