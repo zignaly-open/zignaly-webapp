@@ -188,16 +188,16 @@ const WalletTransactions = () => {
     },
   ];
 
-  const getTransactions = () => {
+  const getTransactions = (_transactions: TransactionsHistory[]) => {
     return tradeApi.getWalletTransactionsHistory({
       type,
       limit,
-      offset: transactions ? transactions.length : 0,
+      offset: _transactions ? _transactions.length : 0,
     });
   };
 
   const fetchMoreData = () => {
-    getTransactions().then((response) => {
+    getTransactions(transactions).then((response) => {
       if (response.length) {
         setTransactions(transactions.concat(response));
       } else {
@@ -211,7 +211,7 @@ const WalletTransactions = () => {
       setTransactions(null);
     }
 
-    getTransactions().then((response) => {
+    getTransactions(null).then((response) => {
       setTransactions(response);
       if (!response.length) {
         setHasMore(false);
