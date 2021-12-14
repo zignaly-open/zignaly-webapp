@@ -9,6 +9,7 @@ import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
 import { Add } from "@material-ui/icons";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -72,6 +73,7 @@ const WalletCoins = ({
   setSelectedVaultOffer,
 }: WalletCoinsProps) => {
   const intl = useIntl();
+  const userData = useStoreUserData();
 
   const columns = useMemo(
     () => [
@@ -206,9 +208,11 @@ const WalletCoins = ({
           <Table data={data} columns={columns} />
         </TableLayout>
       )}
-      <Button startIcon={<Add />} onClick={() => setPath("deposit")}>
-        <FormattedMessage id="wallet.addcoin" />
-      </Button>
+      {userData.isAdmin && (
+        <Button startIcon={<Add />} onClick={() => setPath("deposit")}>
+          <FormattedMessage id="wallet.addcoin" />
+        </Button>
+      )}
     </Box>
   );
 };
