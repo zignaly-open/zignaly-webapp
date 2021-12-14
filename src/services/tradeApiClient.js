@@ -335,6 +335,26 @@ class TradeApiClient {
   }
 
   /**
+   * @param {string} endpointPath
+   * @param {number} apiVersion
+   * @return {string} url
+   */
+  getUrl(endpointPath, apiVersion) {
+    let baseUrl = this.baseUrlv2;
+    if (apiVersion === 1) {
+      // Old api
+      baseUrl = this.baseUrlv1;
+    } else if (apiVersion === 0) {
+      // Cloudflare url
+      baseUrl = baseUrl.split("/new_api")[0];
+    } else if (apiVersion === 3) {
+      baseUrl = process.env.GATSBY_WALLETAPI_URL;
+    }
+
+    return baseUrl + endpointPath;
+  }
+
+  /**
    * Process API HTTP request.
    *
    * @param {string} endpointPath API endpoint path and action.
@@ -347,18 +367,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async doRequest(endpointPath, payload, method = "POST", apiVersion = 2, token) {
-    let baseUrl = this.baseUrlv2;
-    if (apiVersion === 1) {
-      // Old api
-      baseUrl = this.baseUrlv1;
-    } else if (apiVersion === 0) {
-      // Cloudflare url
-      baseUrl = baseUrl.split("/new_api")[0];
-    } else if (apiVersion === 3) {
-      baseUrl = process.env.GATSBY_WALLETAPI_URL;
-    }
-
-    let requestUrl = baseUrl + endpointPath;
+    let requestUrl = this.getUrl(endpointPath, apiVersion);
     let responseData = {};
 
     const authToken = token !== false ? token || this.token : null;
@@ -443,6 +452,32 @@ class TradeApiClient {
     }
 
     return responseData;
+  }
+
+  /**
+   * Download file
+   * @param {string} endpointPath
+   * @param {number} apiVersion
+   * @param {string} filename
+   * @returns {Promise<any>}
+   */
+  downloadFile(endpointPath, apiVersion, filename) {
+    const requestUrl = this.getUrl(endpointPath, apiVersion);
+    return fetch(requestUrl, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + this.token,
+        // "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => URL.createObjectURL(blob))
+      .then((href) => {
+        Object.assign(document.createElement("a"), {
+          href,
+          download: filename,
+        }).click();
+      });
   }
 
   /**
@@ -2433,13 +2468,12 @@ class TradeApiClient {
   /**
    * Download transaction history
    *
-   * @param {DownloadTransactionsReq} payload
    * @returns {Promise<any>} Result
    *
    * @memberof TradeApiClient
    */
-  async downloadTransactions(payload) {
-    return this.doRequest("/get-operations", payload, "GET", 3);
+  async downloadTransactions() {
+    return this.downloadFile("/history.csv", 3, "transactions.csv");
   }
 
   /**

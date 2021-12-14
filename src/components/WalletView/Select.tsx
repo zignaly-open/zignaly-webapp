@@ -3,14 +3,23 @@ import { FormControl, Select as SelectMui, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 
 const StyledSelect = styled(SelectMui)`
-  background: rgba(12, 13, 33, 0.8);
+  background: ${(props) =>
+    props.theme.palette.type === "dark"
+      ? "rgba(12, 13, 33, 0.8)"
+      : "linear-gradient(312.12deg, #41BDD8 14.16%, #7568DE 83.59%)"};
   border-radius: 4px;
-  color: ${(props) => props.theme.newTheme.neutralText};
+  color: ${(props) =>
+    props.theme.palette.type === "dark" ? props.theme.newTheme.neutralText : "white"};
   font-weight: 600;
   font-size: 13px;
   position: relative;
   z-index: 0;
   margin-left: 18px;
+
+  svg {
+    color: ${(props) =>
+      props.theme.palette.type === "dark" ? props.theme.newTheme.neutralText : "white"};
+  }
 
   &:before {
     content: "";
@@ -21,7 +30,10 @@ const StyledSelect = styled(SelectMui)`
     bottom: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(289.8deg, #149cad 0%, #4540c1 100%);
+    background: ${(props) =>
+      props.theme.palette.type === "dark"
+        ? "linear-gradient(289.8deg, #149cad 0%, #4540c1 100%)"
+        : "linear-gradient(289.8deg, #817cce 0%, #779fd4 100%)"};
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
@@ -37,7 +49,7 @@ interface FilterValue {
 interface ISelect {
   values: FilterValue[];
   value: string | number;
-  handleChange: () => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Select = ({ values, value, handleChange }: ISelect) => {

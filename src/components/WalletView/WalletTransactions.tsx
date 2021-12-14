@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import tradeApi from "services/tradeApiClient";
-import { AlignCenter, Title } from "styles/styles";
+import { AlignCenter, isMobile, Title } from "styles/styles";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import ExportIcon from "images/wallet/export.inline.svg";
 import Table, { TableLayout } from "./Table";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import dayjs from "dayjs";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
@@ -80,11 +80,19 @@ const Button = styled(CustomButton)`
 `;
 
 const StyledTitle = styled(Title)`
-  margin-top: 64px; ;
+  margin-top: 64px;
+
+  ${isMobile(css`
+    flex-direction: column;
+  `)}
 `;
 
 const FiltersBox = styled.div`
   margin-left: auto;
+
+  ${isMobile(css`
+    margin: 32px 0 0;
+  `)}
 `;
 
 const ExportButton = styled(CustomButton)`
@@ -93,6 +101,7 @@ const ExportButton = styled(CustomButton)`
   font-weight: 600;
   text-transform: none;
   min-width: auto;
+  width: auto;
 `;
 
 const StyledExportIcon = styled.svg.attrs(() => ({
@@ -211,7 +220,7 @@ const WalletTransactions = () => {
   }, [type]);
 
   const downloadTransactions = () => {
-    tradeApi.downloadTransactions({ type }).catch((e) => {
+    tradeApi.downloadTransactions().catch((e) => {
       dispatch(showErrorAlert(e));
     });
   };
@@ -421,6 +430,9 @@ const WalletTransactions = () => {
     hiddenColumns: ["transactionId"],
   };
 
+  // Get scroll container manually since InfiniteScroll only supports ids
+  const container = document.getElementsByClassName("MuiDialog-paperScrollPaper")[0];
+
   return !transactions ? (
     <Box alignItems="center" display="flex" justifyContent="center" mt={4}>
       <CircularProgress color="primary" size={40} />
@@ -428,16 +440,24 @@ const WalletTransactions = () => {
   ) : (
     <>
       <StyledTitle>
-        <img src={ListIcon} width={40} height={40} />
-        <FormattedMessage id="wallet.transactions" />
+        <Box display="flex" alignItems="center">
+          <img src={ListIcon} width={40} height={40} />
+          <FormattedMessage id="wallet.transactions" />
+        </Box>
         <FiltersBox>
           <ExportButton endIcon={<StyledExportIcon />} onClick={downloadTransactions}>
             <FormattedMessage id="wallet.export" />
           </ExportButton>
-          <Select values={types} value={type} handleChange={(e) => setType(e.target.value)} />
+          <Select
+            values={types}
+            value={type}
+            handleChange={(e) => setType(e.target.value as TransactionType)}
+          />
         </FiltersBox>
       </StyledTitle>
       <InfiniteScroll
+        style={{ overflow: "visible" }}
+        scrollableTarget={container}
         dataLength={transactions.length}
         next={fetchMoreData}
         hasMore={hasMore}
