@@ -20,7 +20,7 @@ const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
 const TypographyError = styled(Typography)`
   color: ${({ theme }) => theme.newTheme.error};
   font-weight: 500;
-  font-size: 12px;
+  font-size: 15px;
 `;
 
 const NotSure = styled.a`
@@ -50,7 +50,14 @@ export const NetworkCautionMessage = ({ network, coin }: { network: string; coin
     <Box display="flex" alignItems="center" mt={2}>
       <StyledErrorOutlined width={24} height={24} />
       <TypographyError>
-        <FormattedMessage id="wallet.deposit.caution" values={{ coin, network }} />
+        <FormattedMessage
+          id="wallet.deposit.caution"
+          values={{
+            coin,
+            network,
+            b: (chunks: string) => <b>{chunks}</b>,
+          }}
+        />
       </TypographyError>
       <NotSure href="https://help.zignaly.com" target="_blank">
         <FormattedMessage id="wallet.deposit.notsure" />

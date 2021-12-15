@@ -11,7 +11,7 @@ const TypographyHeader = styled(Typography)`
 `;
 
 export const TableLayout = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   ${({ theme }) => `
     table {
