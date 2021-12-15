@@ -80,7 +80,7 @@ const Button = styled(CustomButton)`
 `;
 
 const StyledTitle = styled(Title)`
-  margin-top: 64px;
+  margin-top: 56px;
 
   ${isMobile(css`
     flex-direction: column;
