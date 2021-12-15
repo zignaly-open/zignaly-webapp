@@ -38,7 +38,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = false;
+  const withdrawDisabled = coin === "ZIG" && network === "ETH";
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
