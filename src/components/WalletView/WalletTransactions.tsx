@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter, isMobile, Title } from "styles/styles";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
@@ -80,7 +80,7 @@ const Button = styled(CustomButton)`
 `;
 
 const StyledTitle = styled(Title)`
-  margin-top: 64px;
+  margin-top: 56px;
 
   ${isMobile(css`
     flex-direction: column;
@@ -167,7 +167,7 @@ const WalletTransactions = () => {
   const [type, setType] = useState<TransactionType>("all");
   const intl = useIntl();
   const dispatch = useDispatch();
-  const limit = 10;
+  const limit = 20;
 
   const types = [
     {
@@ -189,32 +189,33 @@ const WalletTransactions = () => {
   ];
 
   const getTransactions = (_transactions: TransactionsHistory[]) => {
-    return tradeApi.getWalletTransactionsHistory({
-      type,
-      limit,
-      offset: _transactions ? _transactions.length : 0,
-    });
+    return tradeApi
+      .getWalletTransactionsHistory({
+        type,
+        limit,
+        offset: _transactions ? _transactions.length : 0,
+      })
+      .then((response) => {
+        setHasMore(response.length === limit);
+        return response;
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+        throw e;
+      });
   };
 
   const fetchMoreData = () => {
     getTransactions(transactions).then((response) => {
-      if (response.length) {
-        setTransactions(transactions.concat(response));
-      } else {
-        setHasMore(false);
-      }
+      setTransactions(transactions.concat(response));
     });
   };
 
   useEffect(() => {
-    setHasMore(true);
     setTransactions(null);
 
     getTransactions(null).then((response) => {
       setTransactions(response);
-      if (!response.length) {
-        setHasMore(false);
-      }
     });
   }, [type]);
 
@@ -432,11 +433,7 @@ const WalletTransactions = () => {
   // Get scroll container manually since InfiniteScroll only supports ids
   const container = document.getElementsByClassName("MuiDialog-paperScrollPaper")[0];
 
-  return !transactions ? (
-    <Box alignItems="center" display="flex" justifyContent="center" mt={4}>
-      <CircularProgress color="primary" size={40} />
-    </Box>
-  ) : (
+  return (
     <>
       <StyledTitle>
         <Box display="flex" alignItems="center">
@@ -454,27 +451,33 @@ const WalletTransactions = () => {
           />
         </FiltersBox>
       </StyledTitle>
-      <InfiniteScroll
-        style={{ overflow: "visible" }}
-        scrollableTarget={container}
-        dataLength={transactions.length}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={
-          <Box display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <StyledTableLayout>
-          <Table
-            data={data}
-            columns={columns}
-            renderRowSubComponent={renderRowSubComponent}
-            initialState={tableState}
-          />
-        </StyledTableLayout>
-      </InfiniteScroll>
+      {!transactions ? (
+        <Box alignItems="center" display="flex" justifyContent="center" mt={4}>
+          <CircularProgress color="primary" size={40} />
+        </Box>
+      ) : (
+        <InfiniteScroll
+          style={{ overflow: "visible" }}
+          scrollableTarget={container}
+          dataLength={transactions.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={
+            <Box display="flex" justifyContent="center">
+              <CircularProgress />
+            </Box>
+          }
+        >
+          <StyledTableLayout>
+            <Table
+              data={data}
+              columns={columns}
+              renderRowSubComponent={renderRowSubComponent}
+              initialState={tableState}
+            />
+          </StyledTableLayout>
+        </InfiniteScroll>
+      )}
     </>
   );
 };

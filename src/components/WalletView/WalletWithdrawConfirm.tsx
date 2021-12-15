@@ -9,7 +9,6 @@ import CustomButton from "components/CustomButton";
 import NumberFormat from "react-number-format";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
-import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import useInterval from "hooks/useInterval";
 import { getChainIcon } from "utils/chain";
 import CustomModal from "components/Modal";
@@ -170,7 +169,6 @@ const WalletWithdrawConfirm = ({
 
   const CoinAmount = ({ value, big = false }: { value: string; big?: boolean }) => (
     <Box display="flex" flexDirection="row" alignItems="center">
-      <img width={24} height={24} src={ZIGIcon} />
       <AmountTypography big={big}>
         <NumberFormat
           value={value}

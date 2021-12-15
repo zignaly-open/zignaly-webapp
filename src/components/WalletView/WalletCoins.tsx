@@ -99,12 +99,12 @@ const WalletCoins = ({
               <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
                 <FormattedMessage id="accounts.withdraw" />
               </Button>
-              <Button
+              {/* <Button
                 className="textPurple borderPurple"
                 onClick={() => setPath(`deposit/${coinData.name}`)}
               >
                 <FormattedMessage id="accounts.deposit" />
-              </Button>
+              </Button> */}
             </AlignCenter>
           );
         },
