@@ -2304,6 +2304,20 @@ class TradeApiClient {
   }
 
   /**
+   * Get internal transfers history
+   *
+   * @param {{exchangeInternalId: string}} payload Payload
+   *
+   * @returns {Promise<InternalTransfersHistory[]>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getInternalTransfersHistory(payload) {
+    const endpointPath = `/user/exchanges/${payload.exchangeInternalId}/internal_transfer_history`;
+    return this.doRequest(endpointPath, null, "GET");
+  }
+
+  /**
    * Perform internal transfer for user
    *
    * @param {{exchangeInternalId: String}} payload Payload to perform internal transfer

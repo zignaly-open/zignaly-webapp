@@ -110,7 +110,7 @@ const StyledExportIcon = styled.svg.attrs(() => ({
   color: ${({ theme }) => theme.newTheme.linkText};
 `;
 
-const getStatusColor = (status, theme) => {
+const getStatusColor = (status: string, theme) => {
   switch (status) {
     case "SUCCESS":
       return theme.newTheme.green;
@@ -123,7 +123,7 @@ const getStatusColor = (status, theme) => {
   }
 };
 
-const getStatusTextId = (status) => {
+const getStatusTextId = (status: string) => {
   switch (status) {
     case "SUCCESS":
       return "wallet.status.completed";
