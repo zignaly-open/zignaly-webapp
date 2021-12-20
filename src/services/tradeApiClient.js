@@ -2306,7 +2306,7 @@ class TradeApiClient {
   /**
    * Get internal transfers history
    *
-   * @param {{exchangeInternalId: string}} payload Payload
+   * @param {GetInternalTransfersHistory} payload Payload
    *
    * @returns {Promise<InternalTransfersHistory[]>} Result
    *

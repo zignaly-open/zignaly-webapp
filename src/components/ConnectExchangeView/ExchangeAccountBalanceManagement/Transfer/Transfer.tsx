@@ -15,6 +15,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { AlignCenter } from "styles/styles";
 import NumberFormat from "react-number-format";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
@@ -26,16 +27,42 @@ const Transfer = () => {
   } = useContext(ModalPathContext);
   const intl = useIntl();
   const dispatch = useDispatch();
-  const [transactions, setTransactions] = useState<InternalTransfersHistory[]>(null);
+  const [transfers, setTransfers] = useState<InternalTransfersHistory[]>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [type, setType] = useState<TransactionType>("all");
+  const limit = 20;
 
-  useEffect(() => {
-    tradeApi
-      .getInternalTransfersHistory({ exchangeInternalId: selectedAccount.internalId })
-      .then(setTransactions)
+  const getInternalTransfersHistory = (_transactions: InternalTransfersHistory[]) => {
+    return tradeApi
+      .getInternalTransfersHistory({
+        exchangeInternalId: selectedAccount.internalId,
+        limit,
+        type,
+        offset: _transactions ? _transactions.length : 0,
+      })
+      .then((response) => {
+        setHasMore(response.length === limit);
+        return response;
+      })
       .catch((e) => {
         dispatch(showErrorAlert(e));
+        throw e;
       });
-  }, []);
+  };
+
+  const fetchMoreData = () => {
+    getInternalTransfersHistory(transfers).then((response) => {
+      setTransfers(transfers.concat(response));
+    });
+  };
+
+  useEffect(() => {
+    setTransfers(null);
+
+    getInternalTransfersHistory(null).then((response) => {
+      setTransfers(response);
+    });
+  }, [type]);
 
   const columns = useMemo(
     () => [
@@ -95,7 +122,7 @@ const Transfer = () => {
 
   const data = useMemo(
     () =>
-      transactions?.map((t) => ({
+      transfers?.map((t) => ({
         coin: (
           <Box display="flex">
             <CoinIcon width={32} height={32} coin={t.asset} />
@@ -152,17 +179,33 @@ const Transfer = () => {
         ),
         // transactionId: t.transactionId,
       })),
-    [transactions],
+    [transfers],
   );
+
+  // Get scroll container manually since InfiniteScroll only supports ids
+  const container = document.getElementsByClassName("MuiDialog-paperScrollPaper")[0];
 
   return (
     <BalanceManagement>
       <Box className="exchangeAccountTransfer">
         <InternalTransferForm selectedExchange={selectedAccount} />
-        {transactions ? (
-          <TableLayout>
-            <Table data={data} columns={columns} />
-          </TableLayout>
+        {transfers ? (
+          <InfiniteScroll
+            style={{ overflow: "visible" }}
+            scrollableTarget={container}
+            dataLength={transfers.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+              <Box display="flex" justifyContent="center">
+                <CircularProgress />
+              </Box>
+            }
+          >
+            <TableLayout>
+              <Table data={data} columns={columns} />
+            </TableLayout>
+          </InfiniteScroll>
         ) : (
           <Box alignItems="center" display="flex" justifyContent="center">
             <CircularProgress color="primary" size={40} />

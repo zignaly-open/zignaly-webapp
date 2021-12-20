@@ -106,3 +106,8 @@ interface InternalTransfersHistory {
   txId: string;
   type: string;
 }
+
+interface GetInternalTransfersHistory extends PaginationReq {
+  exchangeInternalId: string;
+  type: string;
+}
