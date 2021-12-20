@@ -337,7 +337,7 @@ const WalletTransactions = () => {
     [transactions],
   );
 
-  const TransferAddress = ({
+  const TransferAddressPart = ({
     transaction,
     isWithdrawal,
     side,
@@ -381,6 +381,7 @@ const WalletTransactions = () => {
     );
 
     if ((side === "from" && isWithdrawal) || (side === "to" && !isWithdrawal)) {
+      // Zig Wallet
       return <TransferZigLabel />;
     }
 
@@ -399,12 +400,16 @@ const WalletTransactions = () => {
             <TypographyLabel>
               <FormattedMessage id="wallet.from" />
             </TypographyLabel>
-            <TransferAddress side="from" isWithdrawal={isWithdrawal} transaction={transaction} />
+            <TransferAddressPart
+              side="from"
+              isWithdrawal={isWithdrawal}
+              transaction={transaction}
+            />
             <ArrowRightAlt style={{ margin: "0 21px" }} />
             <TypographyLabel>
               <FormattedMessage id="wallet.to" />
             </TypographyLabel>
-            <TransferAddress side="to" isWithdrawal={isWithdrawal} transaction={transaction} />
+            <TransferAddressPart side="to" isWithdrawal={isWithdrawal} transaction={transaction} />
           </Box>
           <Box display="flex" alignItems="center" mt="18px">
             <TypographyLabel>

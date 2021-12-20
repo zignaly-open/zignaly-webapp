@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import ModalPathContext from "../../ModalPathContext";
-import { Box, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@material-ui/core";
 import "./Transfer.scss";
 import BalanceManagement from "../BalanceManagement";
 import InternalTransferForm from "components/Forms/InternalTransferForm";
@@ -19,34 +19,6 @@ import NumberFormat from "react-number-format";
 const TypographyRow = styled(Typography)`
   font-weight: 600;
 `;
-
-const TransferSubData = () => {
-  return (
-    <>
-      {providerId ? (
-        <>
-          <TransferChainIcon network={network} />
-          <TypographyAddress>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${window.location.origin}${process.env.GATSBY_BASE_PATH}/profitSharing/${providerId}`}
-            >
-              {providerName}
-            </a>
-          </TypographyAddress>
-        </>
-      ) : address ? (
-        <>
-          <TransferChainIcon network={network} />
-          <TypographyAddress>{address}</TypographyAddress>
-        </>
-      ) : (
-        <TransferZigLabel name={name} />
-      )}
-    </>
-  );
-};
 
 const Transfer = () => {
   const {
@@ -83,18 +55,18 @@ const Transfer = () => {
         Header: intl.formatMessage({ id: "col.amount" }),
         accessor: "amount",
       },
-      {
-        Header: intl.formatMessage({ id: "transfer.internal.transactionId" }),
-        accessor: "txId",
-      },
-      {
-        Header: intl.formatMessage({ id: "transfer.internal.form.from" }),
-        accessor: "from",
-      },
-      {
-        Header: intl.formatMessage({ id: "transfer.internal.form.to" }),
-        accessor: "to",
-      },
+      // {
+      //   Header: intl.formatMessage({ id: "transfer.internal.transactionId" }),
+      //   accessor: "txId",
+      // },
+      // {
+      //   Header: intl.formatMessage({ id: "transfer.internal.form.from" }),
+      //   accessor: "from",
+      // },
+      // {
+      //   Header: intl.formatMessage({ id: "transfer.internal.form.to" }),
+      //   accessor: "to",
+      // },
       {
         Header: intl.formatMessage({ id: "col.stat" }),
         accessor: "status",
@@ -156,21 +128,21 @@ const Transfer = () => {
             </TypographyRow>
           </AlignCenter>
         ),
-        txId: (
-          <AlignCenter>
-            <TypographyRow>{t.txId}</TypographyRow>
-          </AlignCenter>
-        ),
-        from: (
-          <AlignCenter>
-            <TypographyRow>{t.from}</TypographyRow>
-          </AlignCenter>
-        ),
-        to: (
-          <AlignCenter>
-            <TypographyRow>{t.to}</TypographyRow>
-          </AlignCenter>
-        ),
+        // txId: (
+        //   <AlignCenter>
+        //     <TypographyRow>{t.txId}</TypographyRow>
+        //   </AlignCenter>
+        // ),
+        // from: (
+        //   <AlignCenter>
+        //     <TypographyRow>{t.from}</TypographyRow>
+        //   </AlignCenter>
+        // ),
+        // to: (
+        //   <AlignCenter>
+        //     <TypographyRow>{t.to}</TypographyRow>
+        //   </AlignCenter>
+        // ),
         status: (
           <AlignCenter>
             {/* <TypographyStatus status={t.status}>
@@ -187,10 +159,14 @@ const Transfer = () => {
     <BalanceManagement>
       <Box className="exchangeAccountTransfer">
         <InternalTransferForm selectedExchange={selectedAccount} />
-        {transactions && (
+        {transactions ? (
           <TableLayout>
             <Table data={data} columns={columns} />
           </TableLayout>
+        ) : (
+          <Box alignItems="center" display="flex" justifyContent="center">
+            <CircularProgress color="primary" size={40} />
+          </Box>
         )}
       </Box>
     </BalanceManagement>
