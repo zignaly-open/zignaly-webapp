@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ModalPathContext from "../../ModalPathContext";
 import { Box, CircularProgress, Typography } from "@material-ui/core";
 import "./Transfer.scss";
@@ -11,15 +11,75 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import { ChevronDown, ChevronUp } from "react-feather";
 import CoinIcon from "components/WalletView/CoinIcon";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import dayjs from "dayjs";
-import { AlignCenter } from "styles/styles";
+import { AlignCenter, isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
 import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  getStatusColor,
+  getStatusTextId,
+  ProviderLink,
+  TransferPanel,
+  TypographyAddress,
+  TypographyLabel,
+} from "components/WalletView/TransferPanel";
+import { ArrowRightAlt } from "@material-ui/icons";
+import ListIcon from "images/wallet/list.svg";
+import Select from "components/WalletView/Select";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
 `;
+
+const getType = (type: string) => {
+  switch (type) {
+    case "in":
+      return "wallet.type.deposit";
+    case "out":
+      return "wallet.type.withdraw";
+    default:
+      return " ";
+  }
+};
+
+const getPSMessage = (type: string): string => {
+  switch (type) {
+    case "psDeposit":
+      return "transfer.internal.ps.deposit";
+    case "psWithdraw":
+      return "transfer.internal.ps.withdraw";
+    case "psSuccessFee":
+      return "transfer.internal.ps.pnl";
+    default:
+      return " ";
+  }
+};
+
+const TypographyStatus = styled(Typography)`
+  font-weight: 600;
+  color: ${(props: { status: string }) => getStatusColor(props.status, props.theme)};
+`;
+
+const StyledTitle = styled(Title)`
+  margin-top: 12px;
+
+  ${isMobile(css`
+    flex-direction: column;
+  `)}
+`;
+
+const getFromToName = (transfer: InternalTransfersHistory, side: "from" | "to") => {
+  const { toExchangeName, fromExchangeName, type, providerName } = transfer;
+  if (
+    (type === "psDeposit" && side === "to") ||
+    ((type === "psWithdraw" || type === "psSuccessFee") && side === "from")
+  ) {
+    return providerName;
+  }
+
+  return side === "to" ? toExchangeName : fromExchangeName;
+};
 
 const Transfer = () => {
   const {
@@ -86,14 +146,14 @@ const Transfer = () => {
       //   Header: intl.formatMessage({ id: "transfer.internal.transactionId" }),
       //   accessor: "txId",
       // },
-      // {
-      //   Header: intl.formatMessage({ id: "transfer.internal.form.from" }),
-      //   accessor: "from",
-      // },
-      // {
-      //   Header: intl.formatMessage({ id: "transfer.internal.form.to" }),
-      //   accessor: "to",
-      // },
+      {
+        Header: intl.formatMessage({ id: "transfer.internal.form.from" }),
+        accessor: "from",
+      },
+      {
+        Header: intl.formatMessage({ id: "transfer.internal.form.to" }),
+        accessor: "to",
+      },
       {
         Header: intl.formatMessage({ id: "col.stat" }),
         accessor: "status",
@@ -102,32 +162,23 @@ const Transfer = () => {
         Header: "",
         id: "action",
         // accessor: "action",
-        Cell: ({ row }) => (row.isExpanded ? <ChevronUp /> : <ChevronDown />),
+        Cell: ({ row }) => (
+          <AlignCenter>{row.isExpanded ? <ChevronUp /> : <ChevronDown />}</AlignCenter>
+        ),
       },
       { Header: "", accessor: "transactionId" },
     ],
     [],
   );
 
-  const getType = (type: string) => {
-    switch (type) {
-      case "in":
-        return "wallet.type.deposit";
-      case "out":
-        return "wallet.type.withdraw";
-      default:
-        return " ";
-    }
-  };
-
   const data = useMemo(
     () =>
       transfers?.map((t) => ({
         coin: (
-          <Box display="flex">
+          <AlignCenter>
             <CoinIcon width={32} height={32} coin={t.asset} />
             <Typography>{t.asset}</Typography>
-          </Box>
+          </AlignCenter>
         ),
         date: (
           <AlignCenter direction="column">
@@ -143,7 +194,7 @@ const Transfer = () => {
           </AlignCenter>
         ),
         amount: (
-          <AlignCenter direction={"column"}>
+          <AlignCenter direction="column">
             <TypographyRow>
               <NumberFormat
                 value={t.amount}
@@ -160,25 +211,83 @@ const Transfer = () => {
         //     <TypographyRow>{t.txId}</TypographyRow>
         //   </AlignCenter>
         // ),
-        // from: (
-        //   <AlignCenter>
-        //     <TypographyRow>{t.from}</TypographyRow>
-        //   </AlignCenter>
-        // ),
-        // to: (
-        //   <AlignCenter>
-        //     <TypographyRow>{t.to}</TypographyRow>
-        //   </AlignCenter>
-        // ),
-        status: (
+        from: (
           <AlignCenter>
-            {/* <TypographyStatus status={t.status}>
-              <FormattedMessage id={getStatusTextId(t.status)} />
-            </TypographyStatus> */}
+            <TypographyRow>{getFromToName(t, "from")}</TypographyRow>
           </AlignCenter>
         ),
-        // transactionId: t.transactionId,
+        to: (
+          <AlignCenter>
+            <TypographyRow>{getFromToName(t, "to")}</TypographyRow>
+          </AlignCenter>
+        ),
+        status: (
+          <AlignCenter>
+            <TypographyStatus status={t.status}>
+              <FormattedMessage id={getStatusTextId(t.status)} />
+            </TypographyStatus>
+          </AlignCenter>
+        ),
       })),
+    [transfers],
+  );
+
+  const TransferAddressPart = ({
+    transfer,
+    side,
+  }: {
+    transfer: InternalTransfersHistory;
+    side: "from" | "to";
+  }) => {
+    const { providerId, providerName } = transfer;
+
+    return (
+      <TypographyAddress>
+        {providerId ? (
+          <ProviderLink providerId={providerId} providerName={providerName} />
+        ) : (
+          getFromToName(transfer, side)
+        )}
+      </TypographyAddress>
+    );
+  };
+
+  const renderRowSubComponent = useCallback(
+    ({ row }) => {
+      const transfer = transfers[row.index];
+
+      return (
+        <TransferPanel>
+          <Box display="flex" alignItems="center">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.from" />
+            </TypographyLabel>
+            <TransferAddressPart side="from" transfer={transfer} />
+            <ArrowRightAlt style={{ margin: "0 21px" }} />
+            <TypographyLabel>
+              <FormattedMessage id="wallet.to" />
+            </TypographyLabel>
+            <TransferAddressPart side="to" transfer={transfer} />
+          </Box>
+          <Box display="flex" alignItems="center" mt="18px">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.tx" />
+            </TypographyLabel>
+            <TypographyAddress>{transfer.txId}</TypographyAddress>
+          </Box>
+          {transfer.providerId && (
+            <Box display="flex" alignItems="center" mt="8px">
+              <TypographyLabel>
+                <FormattedMessage id="wallet.note" />
+              </TypographyLabel>
+              <TypographyAddress>
+                <FormattedMessage id={getPSMessage(transfer.type)} />
+              </TypographyAddress>
+            </Box>
+          )}
+        </TransferPanel>
+      );
+    },
     [transfers],
   );
 
@@ -189,28 +298,50 @@ const Transfer = () => {
     <BalanceManagement>
       <Box className="exchangeAccountTransfer">
         <InternalTransferForm selectedExchange={selectedAccount} />
-        {transfers ? (
-          <InfiniteScroll
-            style={{ overflow: "visible" }}
-            scrollableTarget={container}
-            dataLength={transfers.length}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={
-              <Box display="flex" justifyContent="center">
-                <CircularProgress />
-              </Box>
-            }
-          >
-            <TableLayout>
-              <Table data={data} columns={columns} />
-            </TableLayout>
-          </InfiniteScroll>
-        ) : (
-          <Box alignItems="center" display="flex" justifyContent="center">
-            <CircularProgress color="primary" size={40} />
-          </Box>
-        )}
+        <Box p="20px">
+          <StyledTitle>
+            <Box display="flex" alignItems="center">
+              <img src={ListIcon} width={40} height={40} />
+              <FormattedMessage id="transfer.internal.form.history" />
+            </Box>
+            {/* <FiltersBox>
+            <ExportButton endIcon={<StyledExportIcon />} onClick={downloadTransactions}>
+              <FormattedMessage id="wallet.export" />
+            </ExportButton>
+            <Select
+              values={types}
+              value={type}
+              handleChange={(e) => setType(e.target.value as TransactionType)}
+            />
+          </FiltersBox> */}
+          </StyledTitle>
+          {transfers ? (
+            <InfiniteScroll
+              style={{ overflow: "visible" }}
+              scrollableTarget={container}
+              dataLength={transfers.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              loader={
+                <Box display="flex" justifyContent="center">
+                  <CircularProgress />
+                </Box>
+              }
+            >
+              <TableLayout>
+                <Table
+                  data={data}
+                  columns={columns}
+                  renderRowSubComponent={renderRowSubComponent}
+                />
+              </TableLayout>
+            </InfiniteScroll>
+          ) : (
+            <Box alignItems="center" display="flex" justifyContent="center">
+              <CircularProgress color="primary" size={40} />
+            </Box>
+          )}
+        </Box>
       </Box>
     </BalanceManagement>
   );
