@@ -97,6 +97,7 @@ interface InternalTransfersHistory {
   fromExchangeName: string;
   processedAt: number;
   providerId: string;
+  providerName: string;
   requestedAt: number;
   status: string;
   to: string;

@@ -30,18 +30,8 @@ import Select from "components/WalletView/Select";
 
 const TypographyRow = styled(Typography)`
   font-weight: 600;
+  white-space: nowrap;
 `;
-
-const getType = (type: string) => {
-  switch (type) {
-    case "in":
-      return "wallet.type.deposit";
-    case "out":
-      return "wallet.type.withdraw";
-    default:
-      return " ";
-  }
-};
 
 const getPSMessage = (type: string): string => {
   switch (type) {
@@ -59,6 +49,7 @@ const getPSMessage = (type: string): string => {
 const TypographyStatus = styled(Typography)`
   font-weight: 600;
   color: ${(props: { status: string }) => getStatusColor(props.status, props.theme)};
+  white-space: nowrap;
 `;
 
 const StyledTitle = styled(Title)`
@@ -69,13 +60,29 @@ const StyledTitle = styled(Title)`
   `)}
 `;
 
-const getFromToName = (transfer: InternalTransfersHistory, side: "from" | "to") => {
-  const { toExchangeName, fromExchangeName, type, providerName } = transfer;
+const Coin = styled.span`
+  margin-left: 4px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.newTheme.neutralText3};
+`;
+
+const getFromToName = (
+  transfer: InternalTransfersHistory,
+  side: "from" | "to",
+  providerLink = false,
+) => {
+  const { toExchangeName, fromExchangeName, type, providerName, providerId } = transfer;
   if (
     (type === "psDeposit" && side === "to") ||
     ((type === "psWithdraw" || type === "psSuccessFee") && side === "from")
   ) {
-    return providerName;
+    return providerLink ? (
+      <ProviderLink providerId={providerId} providerName={providerName} />
+    ) : (
+      providerName
+    );
+  } else if (type === "internal") {
+    return "Zignaly";
   }
 
   return side === "to" ? toExchangeName : fromExchangeName;
@@ -166,7 +173,6 @@ const Transfer = () => {
           <AlignCenter>{row.isExpanded ? <ChevronUp /> : <ChevronDown />}</AlignCenter>
         ),
       },
-      { Header: "", accessor: "transactionId" },
     ],
     [],
   );
@@ -177,7 +183,7 @@ const Transfer = () => {
         coin: (
           <AlignCenter>
             <CoinIcon width={32} height={32} coin={t.asset} />
-            <Typography>{t.asset}</Typography>
+            <Typography style={{ marginLeft: "4px" }}>{t.asset}</Typography>
           </AlignCenter>
         ),
         date: (
@@ -189,7 +195,7 @@ const Transfer = () => {
         type: (
           <AlignCenter>
             <TypographyRow>
-              <FormattedMessage id={getType(t.transferType)} />
+              <FormattedMessage id={`transfer.internal.type.${t.type}`} />
             </TypographyRow>
           </AlignCenter>
         ),
@@ -201,8 +207,9 @@ const Transfer = () => {
                 displayType="text"
                 thousandSeparator={true}
                 prefix={t.amount > 0 && "+"}
-                suffix={t.asset}
+                decimalScale={8}
               />
+              <Coin>{t.asset}</Coin>
             </TypographyRow>
           </AlignCenter>
         ),
@@ -241,15 +248,7 @@ const Transfer = () => {
   }) => {
     const { providerId, providerName } = transfer;
 
-    return (
-      <TypographyAddress>
-        {providerId ? (
-          <ProviderLink providerId={providerId} providerName={providerName} />
-        ) : (
-          getFromToName(transfer, side)
-        )}
-      </TypographyAddress>
-    );
+    return <TypographyAddress>{getFromToName(transfer, side, true)}</TypographyAddress>;
   };
 
   const renderRowSubComponent = useCallback(
@@ -269,22 +268,25 @@ const Transfer = () => {
             </TypographyLabel>
             <TransferAddressPart side="to" transfer={transfer} />
           </Box>
-          <Box display="flex" alignItems="center" mt="18px">
-            <TypographyLabel>
-              <FormattedMessage id="wallet.tx" />
-            </TypographyLabel>
-            <TypographyAddress>{transfer.txId}</TypographyAddress>
-          </Box>
           {transfer.providerId && (
             <Box display="flex" alignItems="center" mt="8px">
               <TypographyLabel>
                 <FormattedMessage id="wallet.note" />
               </TypographyLabel>
               <TypographyAddress>
-                <FormattedMessage id={getPSMessage(transfer.type)} />
+                <FormattedMessage
+                  id={getPSMessage(transfer.type)}
+                  values={{ service: transfer.providerName }}
+                />
               </TypographyAddress>
             </Box>
           )}
+          <Box display="flex" alignItems="center" mt="8px">
+            <TypographyLabel>
+              <FormattedMessage id="wallet.tx" />
+            </TypographyLabel>
+            <TypographyAddress>{transfer.txId}</TypographyAddress>
+          </Box>
         </TransferPanel>
       );
     },

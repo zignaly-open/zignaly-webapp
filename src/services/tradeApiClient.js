@@ -2313,26 +2313,9 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async getInternalTransfersHistory(payload) {
-    const endpointPath = `/user/exchanges/${payload.exchangeInternalId}/internal_transfer_history`;
-    return [
-      {
-        asset: "USDT",
-        from: "503232279993528320",
-        fromExchangeInternalId: "Zignaly1597938326_5f3e9a968a001",
-        fromExchangeName: "Zignaly",
-        processedAt: 1639578774000,
-        providerId: null,
-        requestedAt: 1639578774000,
-        status: "completed",
-        to: "452854835235524608",
-        toExchangeInternalId: "Zignaly1585927408_5e8754f075080",
-        toExchangeName: "Zignaly",
-        transferType: "in",
-        txId: "e510e8b1-1e1d-4c78-85e6-5881658bb205",
-        type: "user",
-      },
-    ];
-    return this.doRequest(endpointPath, null, "GET");
+    const { exchangeInternalId, ...data } = payload;
+    const endpointPath = `/user/exchanges/${exchangeInternalId}/internal_transfer_history`;
+    return this.doRequest(endpointPath, data, "GET");
   }
 
   /**
