@@ -373,6 +373,7 @@ const theme = (darkStyle) => {
           linkText: "#829fff",
           purple: colors.purpleLight,
           neutralText: "#f3f4f6",
+          neutralText3: "#65647E",
         }
       : {
           backgroundColor: "#ffffff",
@@ -388,6 +389,7 @@ const theme = (darkStyle) => {
           linkText: "#36A6F4",
           purple: colors.purple,
           neutralText: "#36373F",
+          neutralText3: "#5955B6",
         },
     transactionTable: darkStyle
       ? {

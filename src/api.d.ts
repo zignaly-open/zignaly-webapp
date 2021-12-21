@@ -88,3 +88,27 @@ interface PaginationReq {
   limit: number;
   offset: number;
 }
+
+interface InternalTransfersHistory {
+  amount: number;
+  asset: string;
+  from: string;
+  fromExchangeInternalId: string;
+  fromExchangeName: string;
+  processedAt: number;
+  providerId: string;
+  providerName: string;
+  requestedAt: number;
+  status: string;
+  to: string;
+  toExchangeInternalId: string;
+  toExchangeName: string;
+  transferType: string;
+  txId: string;
+  type: string;
+}
+
+interface GetInternalTransfersHistory extends PaginationReq {
+  exchangeInternalId: string;
+  type: string;
+}
