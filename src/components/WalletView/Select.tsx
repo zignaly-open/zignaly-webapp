@@ -3,26 +3,31 @@ import { FormControl, Select as SelectMui, MenuItem } from "@material-ui/core";
 import styled, { css } from "styled-components";
 
 const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
-  background: ${(props) =>
-    props.theme.palette.type === "dark"
+  ${({ theme }) => css`
+    background: ${theme.palette.type === "dark"
       ? "rgba(12, 13, 33, 0.8)"
       : "linear-gradient(312.12deg, #41BDD8 14.16%, #7568DE 83.59%)"};
-  border-radius: 4px;
-  color: ${(props) =>
-    props.theme.palette.type === "dark" ? props.theme.newTheme.neutralText : "white"};
-  font-weight: 600;
-  font-size: 13px;
-  position: relative;
-  z-index: 0;
+    color: ${theme.palette.type === "dark"
+      ? theme.newTheme.neutralText
+      : theme.newTheme.neutralText5};
+    font-weight: 600;
+    position: relative;
+    border: 1px solid ${theme.palette.type === "dark" ? "#413BA0" : "#9CA3AF"};
 
-  svg {
-    color: ${(props) =>
-      props.theme.palette.type === "dark" ? props.theme.newTheme.neutralText : "white"};
-  }
+    svg {
+      color: "#9CA3AF";
+    }
+  `}
 
   ${({ theme, customVariant }) =>
     customVariant === "rainbow" &&
     css`
+      z-index: 0;
+      font-size: 13px;
+      border-radius: 4px;
+      border: none;
+      color: ${theme.palette.type === "dark" ? theme.newTheme.neutralText : "white"};
+
       &:before {
         content: "";
         position: absolute;
@@ -53,7 +58,7 @@ interface ISelect {
   value: string | number;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fullWidth?: boolean;
-  variant: "default" | "rainbow";
+  variant?: "default" | "rainbow";
 }
 
 const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) => {

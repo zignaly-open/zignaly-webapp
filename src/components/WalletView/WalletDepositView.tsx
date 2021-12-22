@@ -123,7 +123,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           />
         </StyledCustomSelect>
         <Label style={{ marginTop: "24px" }}>
-          <FormattedMessage id="withdraw.memo" />
+          <FormattedMessage id="wallet.withdraw.memo" />
         </Label>
         <Select
           values={networkOptions}
@@ -136,7 +136,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
       {address?.memo && (
         <>
           <Label style={{ marginTop: "24px" }}>
-            <FormattedMessage id="withdraw.memo" />
+            <FormattedMessage id="wallet.withdraw.memo" />
           </Label>
           <OutlinedInput
             className="customInput"
