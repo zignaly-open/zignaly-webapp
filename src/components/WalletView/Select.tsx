@@ -36,6 +36,10 @@ const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
       border: none;
       color: ${theme.palette.type === "dark" ? theme.newTheme.neutralText : "white"};
 
+      svg {
+        color: ${theme.palette.type === "dark" ? theme.newTheme.neutralText : "white"};
+      }
+
       &:before {
         content: "";
         position: absolute;
