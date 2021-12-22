@@ -79,6 +79,8 @@ const StyledTitle = styled(Title)`
 
 const FiltersBox = styled.div`
   margin-left: auto;
+  display: flex;
+  align-items: center;
 
   ${isMobile(css`
     margin: 32px 0 0;

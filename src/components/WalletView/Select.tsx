@@ -3,7 +3,7 @@ import { FormControl, Select as SelectMui, MenuItem } from "@material-ui/core";
 import styled, { css } from "styled-components";
 
 const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
-  ${({ theme }) => css`
+  ${({ theme, fullWidth }) => css`
     background: ${theme.palette.type === "dark"
       ? "rgba(12, 13, 33, 0.8)"
       : "linear-gradient(312.12deg, #41BDD8 14.16%, #7568DE 83.59%)"};
@@ -12,10 +12,18 @@ const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
       : theme.newTheme.neutralText5};
     font-weight: 600;
     position: relative;
-    border: 1px solid ${theme.palette.type === "dark" ? "#413BA0" : "#9CA3AF"};
+    border: 1px solid ${theme.newTheme.borderColor2};
+    height: ${fullWidth ? "72px" : "40px"};
 
     svg {
-      color: "#9CA3AF";
+      color: #9ca3af;
+      ${fullWidth &&
+      css`
+        height: 40px;
+        width: 40px;
+        top: calc(50% - 20px);
+        margin-right: 10px;
+      `};
     }
   `}
 
@@ -54,7 +62,7 @@ interface FilterValue {
 }
 
 interface ISelect {
-  values: FilterValue[];
+  values: FilterValue[] | FilterValue["value"][];
   value: string | number;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fullWidth?: boolean;
@@ -72,8 +80,11 @@ const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) =>
         customVariant={variant}
       >
         {values.map((v) => (
-          <MenuItem key={v.value} value={v.value}>
-            {v.label}
+          <MenuItem
+            key={typeof v === "object" ? v.value : v}
+            value={typeof v === "object" ? v.value : v}
+          >
+            {typeof v === "object" ? v.label : v}
           </MenuItem>
         ))}
       </StyledSelect>

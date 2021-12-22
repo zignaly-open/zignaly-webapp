@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Box, Typography } from "@material-ui/core";
+import styled, { css } from "styled-components";
+import { Box, OutlinedInput, Typography } from "@material-ui/core";
 
 export const isMobile = (query) => {
   return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
@@ -74,4 +74,22 @@ export const AlignCenter = styled.div`
 
 export const SecondaryText = styled.div`
   color: ${(props) => props.theme.newTheme.secondaryText};
+`;
+
+export const Input = styled(OutlinedInput)`
+  ${({ theme, fullWidth }) => css`
+    border: 1px solid ${theme.newTheme.borderColor2};
+
+    ${fullWidth &&
+    css`
+      height: "72px";
+      /* svg {
+        height: 40px;
+      } */
+    `}
+
+    svg {
+      color: #9ca3af;
+    }
+  `}
 `;
