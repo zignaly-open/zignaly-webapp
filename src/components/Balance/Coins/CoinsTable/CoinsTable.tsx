@@ -21,7 +21,7 @@ interface CoinsTableProps {
   /* Key to save display columns settings. **/
   persistKey: string;
   list: ExchangeAsset[];
-  onRefreshCoins: () => void;
+  onRefreshCoins?: () => void;
 }
 
 const CoinsTable = ({ title, persistKey, list, onRefreshCoins }: CoinsTableProps) => {
@@ -80,7 +80,8 @@ const CoinsTable = ({ title, persistKey, list, onRefreshCoins }: CoinsTableProps
 
   if (
     selectedExchange.exchangeName.toLowerCase() === "zignaly" &&
-    selectedExchange.exchangeType === "spot"
+    selectedExchange.exchangeType === "spot" &&
+    onRefreshCoins
   ) {
     columns.push({
       name: "coin",
@@ -115,7 +116,7 @@ const CoinsTable = ({ title, persistKey, list, onRefreshCoins }: CoinsTableProps
 
   return (
     <Box className="coinsTable" display="flex" flexDirection="column" width={1}>
-      {convertCoin && (
+      {onRefreshCoins && convertCoin && (
         <Modal
           onClose={() => {
             setConvertCoin(null);
