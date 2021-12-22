@@ -97,6 +97,7 @@ const StyledPanel = styled.div`
 `;
 interface WalletWithdrawConfirmProps {
   address: string;
+  memo: string;
   amount: string;
   network: string;
   networkName: string;
@@ -113,6 +114,7 @@ const WalletWithdrawConfirm = ({
   network,
   networkName,
   coin,
+  memo,
 }: WalletWithdrawConfirmProps) => {
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
   const dispatch = useDispatch();
@@ -147,6 +149,7 @@ const WalletWithdrawConfirm = ({
         address,
         amount,
         fee: fee.key,
+        memo,
         ...(code && { code }),
       })
       .then(() => {
