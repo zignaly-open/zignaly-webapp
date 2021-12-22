@@ -92,6 +92,7 @@ const ExportButton = styled(CustomButton)`
   text-transform: none;
   min-width: auto;
   width: auto;
+  margin-right: 18px;
 `;
 
 const StyledExportIcon = styled.svg.attrs(() => ({
@@ -410,6 +411,7 @@ const WalletTransactions = () => {
             values={types}
             value={type}
             handleChange={(e) => setType(e.target.value as TransactionType)}
+            variant="rainbow"
           />
         </FiltersBox>
       </StyledTitle>

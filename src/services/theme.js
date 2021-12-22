@@ -374,6 +374,7 @@ const theme = (darkStyle) => {
           purple: colors.purpleLight,
           neutralText: "#f3f4f6",
           neutralText3: "#65647E",
+          neutralText5: "#413BA0",
         }
       : {
           backgroundColor: "#ffffff",
@@ -390,6 +391,7 @@ const theme = (darkStyle) => {
           purple: colors.purple,
           neutralText: "#36373F",
           neutralText3: "#5955B6",
+          neutralText5: "#CCCAEF",
         },
     transactionTable: darkStyle
       ? {

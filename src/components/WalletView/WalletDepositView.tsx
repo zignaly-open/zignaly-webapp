@@ -11,6 +11,7 @@ import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
 import { ErrorOutlineOutlined } from "@material-ui/icons";
 import { StyledCustomSelect } from "./styles";
+import Select from "./Select";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -74,7 +75,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData
-    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    ? coinData.networks.map((n) => ({ value: n.network, label: n.name }))
     : [];
   const coinsOptions = coins ? Object.keys(coins) : [];
   const [network, setNetwork] = useState("");
@@ -121,6 +122,15 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             label={<FormattedMessage id="deposit.network" />}
           />
         </StyledCustomSelect>
+        <Label style={{ marginTop: "24px" }}>
+          <FormattedMessage id="withdraw.memo" />
+        </Label>
+        <Select
+          values={networkOptions}
+          fullWidth
+          value={network}
+          handleChange={(e) => setNetwork(e.target.value)}
+        />
         {networkData && <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />}
       </Box>
       {address?.memo && (

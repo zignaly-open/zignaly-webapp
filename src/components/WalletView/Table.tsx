@@ -98,11 +98,10 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <>
+            <React.Fragment key={`--group-column-row-${i.toString()}`}>
               <tr
                 {...row.getRowProps()}
                 {...(renderRowSubComponent && row.getToggleRowExpandedProps({}))}
-                key={`--group-column-row-${i.toString()}`}
               >
                 {row.cells.map((cell, cellIndex) => {
                   return (
@@ -122,7 +121,7 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
                   </td>
                 </tr>
               ) : null}
-            </>
+            </React.Fragment>
           );
         })}
       </tbody>
