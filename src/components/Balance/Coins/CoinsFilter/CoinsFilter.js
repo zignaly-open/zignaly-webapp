@@ -48,10 +48,7 @@ const CoinsFilter = ({ list, onChange }) => {
       return list;
     }
 
-    let newList = [...list].filter((item) => {
-      return parseFloat(item.balanceTotal) > 0;
-    });
-    return newList;
+    return list.filter((item) => parseFloat(item.balanceTotalUSDT) > 1);
   };
 
   return (

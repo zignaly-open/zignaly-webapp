@@ -180,6 +180,9 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
                   />
                 }
               />
+              {networkData && (
+                <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />
+              )}
               <QRCodeContainer>
                 <QRCode size={200} value={address.address} />
               </QRCodeContainer>
