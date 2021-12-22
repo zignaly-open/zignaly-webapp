@@ -38,7 +38,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = coin === "ZIG" && network === "ETH";
+  const withdrawDisabled = false;
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -70,6 +70,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
       <WalletWithdrawConfirm
         address={withdrawData.address}
         network={network}
+        memo={withdrawData.memo}
         networkName={networkOptions.find((o) => o.val === network).label}
         amount={withdrawData.amount}
         coin={coinData}
@@ -90,7 +91,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
 
   return (
     <Modal>
-      {balance ? (
+      {balance && coinData ? (
         <>
           <Title>
             <img src={WalletIcon} width={40} height={40} />
@@ -126,7 +127,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
               </Alert>
             ) : (
               <>
-                {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
+                {/* {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />} */}
                 <FormControl error={errors.address} fullWidth>
                   <Label style={{ marginTop: "24px" }}>
                     <FormattedMessage id="wallet.withdraw.address" />
@@ -144,6 +145,26 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                   />
                   {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
                 </FormControl>
+
+                {networkData?.memoRegex && (
+                  <FormControl error={errors.memo} fullWidth>
+                    <Label style={{ marginTop: "24px" }}>
+                      <FormattedMessage id="wallet.withdraw.memo" />
+                    </Label>
+                    <OutlinedInput
+                      className="customInput"
+                      inputRef={register({
+                        required: true,
+                        pattern: {
+                          value: RegExp(networkData?.memoRegex),
+                          message: intl.formatMessage({ id: "wallet.withdraw.memo.invalid" }),
+                        },
+                      })}
+                      name="memo"
+                    />
+                    {errors.memo && <FormHelperText>{errors.memo.message}</FormHelperText>}
+                  </FormControl>
+                )}
 
                 <AmountControl
                   balance={balanceAmount}

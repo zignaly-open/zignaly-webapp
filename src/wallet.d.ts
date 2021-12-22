@@ -1,5 +1,6 @@
 interface WalletNetwork {
   addressRegex: string;
+  memoRegex: string;
   depositEnable: boolean;
   integerMultiple: string;
   isDefault: boolean;
