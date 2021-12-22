@@ -121,7 +121,6 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             label={<FormattedMessage id="deposit.network" />}
           />
         </StyledCustomSelect>
-        {networkData && <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />}
       </Box>
       {address?.memo && (
         <>
@@ -170,6 +169,9 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
                   />
                 }
               />
+              {networkData && (
+                <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />
+              )}
               <QRCodeContainer>
                 <QRCode size={200} value={address.address} />
               </QRCodeContainer>

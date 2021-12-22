@@ -43,6 +43,7 @@ interface GetNetworkFeeRes {
 
 interface WidthdrawReq {
   network: string;
+  memo: string;
   currency: string;
   address: string;
   amount: string;

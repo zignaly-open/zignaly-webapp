@@ -37,7 +37,7 @@ const PositionsReportModal = ({ onClose, onSuccess }) => {
       justifyContent="space-between"
     >
       <Typography variant="h3">
-        <FormattedMessage id="srv.edit.cacheinfo.title" />
+        <FormattedMessage id="position.report.title" />
       </Typography>
 
       <Typography variant="body1">
