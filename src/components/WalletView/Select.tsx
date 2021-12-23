@@ -9,7 +9,8 @@ const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
     position: relative;
     border: 1px solid ${theme.newTheme.borderColor2};
     height: ${fullWidth ? "72px" : "40px"};
-    font-size: 20px;
+    font-size: 18px;
+    font-weight: 600;
 
     .MuiSelect-selectMenu {
       display: flex;
@@ -64,6 +65,10 @@ const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
     `}
 `;
 
+const Icon = styled.img`
+  margin: 0 22px 0 10px;
+`;
+
 interface FilterValue {
   value: string | number;
   label: string;
@@ -93,9 +98,7 @@ const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) =>
             key={typeof v === "object" ? v.value : v}
             value={typeof v === "object" ? v.value : v}
           >
-            {typeof v === "object" && v.icon && (
-              <img style={{ marginRight: "18px" }} width={40} height={40} src={v.icon} />
-            )}
+            {typeof v === "object" && v.icon && <Icon width={40} height={40} src={v.icon} />}
             {typeof v === "object" ? v.label : v}
           </MenuItem>
         ))}
