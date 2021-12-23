@@ -6,11 +6,10 @@ const StyledSelect = styled(SelectMui)<{ customVariant: string }>`
   ${({ theme, fullWidth }) => css`
     background: ${theme.palette.type === "dark" ? "#0C0D21" : "#ffffff"};
     color: ${theme.palette.type === "dark" ? theme.newTheme.neutralText : "#0C0D21"};
-    font-weight: 600;
     position: relative;
     border: 1px solid ${theme.newTheme.borderColor2};
     height: ${fullWidth ? "72px" : "40px"};
-    font-size: 24px;
+    font-size: 20px;
 
     .MuiSelect-selectMenu {
       display: flex;
@@ -95,7 +94,7 @@ const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) =>
             value={typeof v === "object" ? v.value : v}
           >
             {typeof v === "object" && v.icon && (
-              <img style={{ marginRight: "24px" }} width={40} height={40} src={v.icon} />
+              <img style={{ marginRight: "18px" }} width={40} height={40} src={v.icon} />
             )}
             {typeof v === "object" ? v.label : v}
           </MenuItem>
