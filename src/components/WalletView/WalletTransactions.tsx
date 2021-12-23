@@ -78,6 +78,7 @@ const StyledTitle = styled(Title)`
 `;
 
 const FiltersBox = styled.div`
+  text-transform: none;
   margin-left: auto;
   display: flex;
   align-items: center;

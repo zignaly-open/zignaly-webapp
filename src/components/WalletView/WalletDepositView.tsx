@@ -12,6 +12,7 @@ import QRCode from "qrcode.react";
 import { ErrorOutlineOutlined, FileCopy, FileCopyOutlined } from "@material-ui/icons";
 import { StyledCustomSelect } from "./styles";
 import Select from "./Select";
+import { getChainIcon } from "utils/chain";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -75,7 +76,11 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData
-    ? coinData.networks.map((n) => ({ value: n.network, label: n.name }))
+    ? coinData.networks.map((n) => ({
+        value: n.network,
+        label: n.name,
+        icon: getChainIcon(n.network),
+      }))
     : [];
   const coinsOptions = coins ? Object.keys(coins) : [];
   const [network, setNetwork] = useState("");

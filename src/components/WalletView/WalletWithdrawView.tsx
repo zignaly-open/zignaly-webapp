@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Label, Modal, TextDesc, Title } from "styles/styles";
+import { Input, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
 import {
   Box,
@@ -18,6 +18,8 @@ import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
 import AmountControl from "./AmountControl";
 import { Alert } from "@material-ui/lab";
+import Select from "./Select";
+import { getChainIcon } from "utils/chain";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -34,7 +36,11 @@ interface WalletDepositViewProps {
 const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData
-    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    ? coinData.networks.map((n) => ({
+        value: n.network,
+        label: n.name,
+        icon: getChainIcon(n.network),
+      }))
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
@@ -102,15 +108,15 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
               <FormattedMessage id="wallet.withdraw.desc" values={{ coin }} />
             </TextDesc>
             <br />
-            <StyledCustomSelect>
-              <CustomSelect
-                labelPlacement="top"
-                onChange={setNetwork}
-                options={networkOptions}
-                value={network}
-                label={<FormattedMessage id="deposit.network" />}
-              />
-            </StyledCustomSelect>
+            <Label style={{ marginTop: "24px" }}>
+              <FormattedMessage id="deposit.network" />
+            </Label>
+            <Select
+              values={networkOptions}
+              fullWidth
+              value={network}
+              handleChange={(e) => setNetwork(e.target.value)}
+            />
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
                 Due to the recent hack on Ascendex (
@@ -132,8 +138,10 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                   <Label style={{ marginTop: "24px" }}>
                     <FormattedMessage id="wallet.withdraw.address" />
                   </Label>
-                  <OutlinedInput
-                    className="customInput"
+                  <Input
+                    placeholder={intl.formatMessage({ id: "wallet.withdraw.address.paste" })}
+                    fullWidth
+                    name="address"
                     inputRef={register({
                       required: true,
                       pattern: {
@@ -141,7 +149,6 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                         message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
                       },
                     })}
-                    name="address"
                   />
                   {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
                 </FormControl>
@@ -151,8 +158,9 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                     <Label style={{ marginTop: "24px" }}>
                       <FormattedMessage id="wallet.withdraw.memo" />
                     </Label>
-                    <OutlinedInput
-                      className="customInput"
+                    <Input
+                      fullWidth
+                      name="memo"
                       inputRef={register({
                         required: true,
                         pattern: {
@@ -160,7 +168,6 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                           message: intl.formatMessage({ id: "wallet.withdraw.memo.invalid" }),
                         },
                       })}
-                      name="memo"
                     />
                     {errors.memo && <FormHelperText>{errors.memo.message}</FormHelperText>}
                   </FormControl>
@@ -174,6 +181,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                   control={control}
                   coin={coin}
                   label="wallet.withdraw.amount"
+                  newDesign={true}
                 />
 
                 <Box display="flex" flexDirection="row" mt="64px">
