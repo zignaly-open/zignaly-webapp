@@ -82,6 +82,7 @@ const getFromToName = (
       providerName
     );
   } else if (type === "internal") {
+    // todo: remove?
     return "Zignaly";
   }
 

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
-import { isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
+import { Input, isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
-import { Box, CircularProgress, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, CircularProgress, IconButton, OutlinedInput, Typography } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
 import CustomSelect from "components/CustomSelect";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
-import { ErrorOutlineOutlined } from "@material-ui/icons";
+import { ErrorOutlineOutlined, FileCopy, FileCopyOutlined } from "@material-ui/icons";
 import { StyledCustomSelect } from "./styles";
+import Select from "./Select";
+import { getChainIcon } from "utils/chain";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -31,7 +33,7 @@ const NotSure = styled.a`
   color: ${({ theme }) => theme.newTheme.linkText};
 `;
 
-const CopyButton = styled.img`
+const CopyButton = styled(FileCopyOutlined)`
   cursor: pointer;
 `;
 
@@ -74,7 +76,11 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData
-    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    ? coinData.networks.map((n) => ({
+        value: n.network,
+        label: n.name,
+        icon: getChainIcon(n.network),
+      }))
     : [];
   const coinsOptions = coins ? Object.keys(coins) : [];
   const [network, setNetwork] = useState("");
@@ -101,31 +107,33 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: selectedCoin }} />
       </TextDesc>
       {!coin && (
-        <StyledCustomSelect>
-          <CustomSelect
-            labelPlacement="top"
-            onChange={setSelectedCoin}
-            options={coinsOptions}
+        <>
+          <Label style={{ marginTop: "24px" }}>
+            <FormattedMessage id="deposit.selectcoin" />
+          </Label>
+          <Select
+            values={coinsOptions}
+            fullWidth
             value={selectedCoin}
-            label={<FormattedMessage id="deposit.selectcoin" />}
+            handleChange={(e) => setSelectedCoin(e.target.value)}
           />
-        </StyledCustomSelect>
+        </>
       )}
       <Box style={{ margin: "24px 0 12px" }}>
-        <StyledCustomSelect>
-          <CustomSelect
-            labelPlacement="top"
-            onChange={setNetwork}
-            options={networkOptions}
-            value={network}
-            label={<FormattedMessage id="deposit.network" />}
-          />
-        </StyledCustomSelect>
+        <Label style={{ marginTop: "24px" }}>
+          <FormattedMessage id="deposit.network" />
+        </Label>
+        <Select
+          values={networkOptions}
+          fullWidth
+          value={network}
+          handleChange={(e) => setNetwork(e.target.value)}
+        />
       </Box>
       {address?.memo && (
         <>
           <Label style={{ marginTop: "24px" }}>
-            <FormattedMessage id="withdraw.memo" />
+            <FormattedMessage id="wallet.withdraw.memo" />
           </Label>
           <OutlinedInput
             className="customInput"
@@ -154,19 +162,17 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           </Label>
           {address ? (
             <>
-              <OutlinedInput
-                className="customInput"
+              <Input
                 readOnly
+                fullWidth
                 value={address.address}
                 endAdornment={
-                  <CopyButton
-                    alt="copy"
-                    className="copy"
+                  <IconButton
+                    aria-label="Copy"
                     onClick={() => copyToClipboard(address.address, "deposit.address.copied")}
-                    src={CopyIcon}
-                    width={24}
-                    height={24}
-                  />
+                  >
+                    <FileCopyOutlined width={24} height={24} />
+                  </IconButton>
                 }
               />
               {networkData && (

@@ -34,6 +34,7 @@ interface AmountControlProps {
   coin: string;
   label?: string;
   minAmount?: number;
+  newDesign?: boolean;
 }
 
 const AmountControl = ({
@@ -44,6 +45,7 @@ const AmountControl = ({
   setBalanceMax,
   coin,
   label = "withdraw.amount",
+  newDesign = false,
   minAmount,
 }: AmountControlProps) => {
   const intl = useIntl();
@@ -55,6 +57,7 @@ const AmountControl = ({
         <FormattedMessage id={label} />
       </Label>
       <CustomNumberInput
+        newDesign={newDesign}
         showErrorMessage={false}
         errors={errors}
         endAdornment={
