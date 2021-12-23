@@ -82,7 +82,7 @@ export const Input = styled(OutlinedInput)`
 
     ${fullWidth &&
     css`
-      height: "72px";
+      height: 72px;
       /* svg {
         height: 40px;
       } */
