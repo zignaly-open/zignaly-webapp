@@ -82,6 +82,7 @@ const getFromToName = (
       providerName
     );
   } else if (type === "internal") {
+    // todo: remove?
     return "Zignaly";
   }
 
@@ -182,8 +183,8 @@ const Transfer = () => {
       transfers?.map((t) => ({
         coin: (
           <AlignCenter>
-            <CoinIcon width={32} height={32} coin={t.asset} />
-            <Typography style={{ marginLeft: "4px" }}>{t.asset}</Typography>
+            {/* <CoinIcon width={32} height={32} coin={t.asset} /> */}
+            <Typography>{t.asset}</Typography>
           </AlignCenter>
         ),
         date: (

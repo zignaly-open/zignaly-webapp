@@ -78,7 +78,10 @@ const StyledTitle = styled(Title)`
 `;
 
 const FiltersBox = styled.div`
+  text-transform: none;
   margin-left: auto;
+  display: flex;
+  align-items: center;
 
   ${isMobile(css`
     margin: 32px 0 0;
@@ -92,6 +95,7 @@ const ExportButton = styled(CustomButton)`
   text-transform: none;
   min-width: auto;
   width: auto;
+  margin-right: 18px;
 `;
 
 const StyledExportIcon = styled.svg.attrs(() => ({
@@ -410,6 +414,7 @@ const WalletTransactions = () => {
             values={types}
             value={type}
             handleChange={(e) => setType(e.target.value as TransactionType)}
+            variant="rainbow"
           />
         </FiltersBox>
       </StyledTitle>

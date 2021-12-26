@@ -3,6 +3,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { OutlinedInput, InputAdornment } from "@material-ui/core";
 import { isNil } from "lodash";
 import isNumeric from "utils/isNumeric";
+import { Input } from "styles/styles";
 // import MaskedInput from "@biproxi/react-text-mask";
 // import createNumberMask from "text-mask-addons/dist/createNumberMask";
 
@@ -69,6 +70,7 @@ import isNumeric from "utils/isNumeric";
  * @property {FieldErrors} [errors]
  * @property {boolean} [error]
  * @property {boolean} [showErrorMessage]
+ * @property {boolean} [newDesign]
  *
  * @typedef {InputProps & Props} EnhancedProps
  */
@@ -88,6 +90,7 @@ const CustomNumberInput = (props) => {
     control,
     showErrorMessage = true,
     type = "text",
+    newDesign = false,
     ...others
   } = props;
   const context = useFormContext();
@@ -148,18 +151,36 @@ const CustomNumberInput = (props) => {
         // Empty string if null/undefined value, to avoid swtiching from uncontrolled to controlled
         defaultValue={isNil(defaultValue) ? "" : defaultValue}
         name={name}
-        render={({ onChange: _onChange, value }) => (
-          <OutlinedInput
-            className="customInput outlineInput inputNoArrows"
-            endAdornment={suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null}
-            error={!!errors[name]}
-            name={name}
-            onChange={(e) => handleChange(e, _onChange)}
-            type={type}
-            value={type !== "number" ? value : transform.input(value)}
-            {...others}
-          />
-        )}
+        render={({ onChange: _onChange, value }) =>
+          newDesign ? (
+            <Input
+              className="inputNoArrows"
+              fullWidth
+              endAdornment={
+                suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null
+              }
+              error={!!errors[name]}
+              name={name}
+              onChange={(e) => handleChange(e, _onChange)}
+              type={type}
+              value={type !== "number" ? value : transform.input(value)}
+              {...others}
+            />
+          ) : (
+            <OutlinedInput
+              className="customInput outlineInput inputNoArrows"
+              endAdornment={
+                suffix ? <InputAdornment position="end">{suffix}</InputAdornment> : null
+              }
+              error={!!errors[name]}
+              name={name}
+              onChange={(e) => handleChange(e, _onChange)}
+              type={type}
+              value={type !== "number" ? value : transform.input(value)}
+              {...others}
+            />
+          )
+        }
         rules={rules}
       />
       {showErrorMessage && errors[name] && (

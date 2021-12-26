@@ -15,7 +15,7 @@ import { showErrorAlert } from "../store/actions/ui";
  * @returns {ExchangeAssetsDict} Balance.
  */
 const useUserExchangeAssets = (internalId, updatedAt) => {
-  const [assets, setAssets] = useState({});
+  const [assets, setAssets] = useState(null);
   const dispatch = useDispatch();
 
   const loadData = () => {
@@ -31,7 +31,6 @@ const useUserExchangeAssets = (internalId, updatedAt) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
-          setAssets({});
         });
     }
   };
