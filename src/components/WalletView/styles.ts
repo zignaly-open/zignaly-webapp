@@ -34,3 +34,7 @@ export const Rate = styled.span`
   margin: 0 8px;
   text-transform: uppercase;
 `;
+
+export const Control = styled.div`
+  margin-bottom: 24px;
+`;

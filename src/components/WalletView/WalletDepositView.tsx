@@ -9,8 +9,8 @@ import CustomSelect from "components/CustomSelect";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
-import { ErrorOutlineOutlined, FileCopy, FileCopyOutlined } from "@material-ui/icons";
-import { StyledCustomSelect } from "./styles";
+import { ErrorOutlineOutlined, FileCopyOutlined } from "@material-ui/icons";
+import { Control } from "./styles";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
 
@@ -107,8 +107,8 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
         <FormattedMessage id="wallet.deposit.desc" values={{ coin: selectedCoin }} />
       </TextDesc>
       {!coin && (
-        <>
-          <Label style={{ marginTop: "24px" }}>
+        <Control>
+          <Label>
             <FormattedMessage id="deposit.selectcoin" />
           </Label>
           <Select
@@ -117,10 +117,10 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             value={selectedCoin}
             handleChange={(e) => setSelectedCoin(e.target.value)}
           />
-        </>
+        </Control>
       )}
-      <Box style={{ margin: "24px 0 12px" }}>
-        <Label style={{ marginTop: "24px" }}>
+      <Control>
+        <Label>
           <FormattedMessage id="deposit.network" />
         </Label>
         <Select
@@ -129,10 +129,10 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           value={network}
           handleChange={(e) => setNetwork(e.target.value)}
         />
-      </Box>
+      </Control>
       {address?.memo && (
-        <>
-          <Label style={{ marginTop: "24px" }}>
+        <Control>
+          <Label>
             <FormattedMessage id="wallet.withdraw.memo" />
           </Label>
           <OutlinedInput
@@ -153,11 +153,11 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           <QRCodeContainer>
             <QRCode size={200} value={address.memo} />
           </QRCodeContainer>
-        </>
+        </Control>
       )}
       {network && (
-        <>
-          <Label style={{ marginTop: "24px" }}>
+        <Control>
+          <Label>
             <FormattedMessage id="deposit.address" />
           </Label>
           {address ? (
@@ -185,7 +185,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           ) : (
             <CircularProgress size={21} style={{ margin: "0 auto" }} />
           )}
-        </>
+        </Control>
       )}
     </Modal>
   );

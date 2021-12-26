@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import CustomSelect from "components/CustomSelect";
 import { NetworkCautionMessage } from "./WalletDepositView";
-import { StyledCustomSelect } from "./styles";
+import { Control, StyledCustomSelect } from "./styles";
 import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,10 @@ import { getChainIcon } from "utils/chain";
 const Button = styled(CustomButton)`
   margin-right: 8px;
   min-width: 121px;
+`;
+
+const FormControlStyled = styled(FormControl)`
+  margin-bottom: 24px;
 `;
 
 interface WalletDepositViewProps {
@@ -107,16 +111,17 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
             <TextDesc>
               <FormattedMessage id="wallet.withdraw.desc" values={{ coin }} />
             </TextDesc>
-            <br />
-            <Label style={{ marginTop: "24px" }}>
-              <FormattedMessage id="deposit.network" />
-            </Label>
-            <Select
-              values={networkOptions}
-              fullWidth
-              value={network}
-              handleChange={(e) => setNetwork(e.target.value)}
-            />
+            <Control>
+              <Label>
+                <FormattedMessage id="deposit.network" />
+              </Label>
+              <Select
+                values={networkOptions}
+                fullWidth
+                value={network}
+                handleChange={(e) => setNetwork(e.target.value)}
+              />
+            </Control>
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
                 Due to the recent hack on Ascendex (
@@ -134,7 +139,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
             ) : (
               <>
                 {/* {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />} */}
-                <FormControl error={errors.address} fullWidth>
+                <FormControlStyled error={errors.address} fullWidth>
                   <Label style={{ marginTop: "24px" }}>
                     <FormattedMessage id="wallet.withdraw.address" />
                   </Label>
@@ -151,10 +156,10 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                     })}
                   />
                   {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
-                </FormControl>
+                </FormControlStyled>
 
                 {networkData?.memoRegex && (
-                  <FormControl error={errors.memo} fullWidth>
+                  <FormControlStyled error={errors.memo} fullWidth>
                     <Label style={{ marginTop: "24px" }}>
                       <FormattedMessage id="wallet.withdraw.memo" />
                     </Label>
@@ -170,19 +175,21 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                       })}
                     />
                     {errors.memo && <FormHelperText>{errors.memo.message}</FormHelperText>}
-                  </FormControl>
+                  </FormControlStyled>
                 )}
 
-                <AmountControl
-                  balance={balanceAmount}
-                  setBalanceMax={setBalanceMax}
-                  decimals={coinData?.decimals}
-                  errors={errors}
-                  control={control}
-                  coin={coin}
-                  label="wallet.withdraw.amount"
-                  newDesign={true}
-                />
+                <Control>
+                  <AmountControl
+                    balance={balanceAmount}
+                    setBalanceMax={setBalanceMax}
+                    decimals={coinData?.decimals}
+                    errors={errors}
+                    control={control}
+                    coin={coin}
+                    label="wallet.withdraw.amount"
+                    newDesign={true}
+                  />
+                </Control>
 
                 <Box display="flex" flexDirection="row" mt="64px">
                   <Button className="textPurple borderPurple" onClick={onClose}>
