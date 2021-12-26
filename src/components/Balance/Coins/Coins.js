@@ -12,32 +12,45 @@ import useSelectedExchange from "hooks/useSelectedExchange";
  */
 
 const Coins = () => {
-  const [list, setList] = useState([]);
+  const [filteredCoins, setFilteredCoins] = useState(/** @type {Array<ExchangeAsset>} */ (null));
   const selectedExchange = useSelectedExchange();
   const [updatedAt, setUpdatedAt] = useState(null);
   const assets = useUserExchangeAssets(selectedExchange.internalId, updatedAt);
-  const data = Object.values(assets);
-  const loading = data.length === 0;
+  const coins = assets ? Object.values(assets) : null;
+  const [filterChecked, setFilterChecked] = useState(false);
 
   const initData = () => {
-    setList(data);
+    if (assets) {
+      filterCoins(filterChecked);
+    }
   };
-
-  useEffect(initData, [data.length]);
+  useEffect(initData, [assets]);
 
   /**
-   * @param {Array<ExchangeAsset>} filtered Filtered equity data.
+   * @param {boolean} checked
    * @returns {void}
    */
-  const handleChange = (filtered) => {
-    setList(filtered);
+  const filterCoins = (checked) => {
+    if (coins) {
+      setFilteredCoins(
+        checked ? coins.filter((item) => parseFloat(item.balanceTotalUSDT) > 1) : coins,
+      );
+    }
   };
 
-  const embedFilter = <CoinsFilter list={data} onChange={handleChange} />;
+  /**
+   * @param {React.ChangeEvent<HTMLInputElement>} e event
+   */
+  const handleFilterChecked = (e) => {
+    setFilterChecked(e.target.checked);
+    filterCoins(e.target.checked);
+  };
+
+  const embedFilter = <CoinsFilter checked={filterChecked} onChange={handleFilterChecked} />;
 
   return (
     <>
-      {loading && (
+      {!filteredCoins ? (
         <Box
           alignItems="center"
           className="loadingBox"
@@ -47,8 +60,7 @@ const Coins = () => {
         >
           <CircularProgress color="primary" size={40} />
         </Box>
-      )}
-      {!loading && (
+      ) : (
         <Box
           alignItems="flex-start"
           className="coins"
@@ -58,7 +70,7 @@ const Coins = () => {
         >
           <CoinsTable
             onRefreshCoins={() => setUpdatedAt(new Date())}
-            list={list}
+            list={filteredCoins}
             persistKey="exchangeAssets"
             title={embedFilter}
           />
