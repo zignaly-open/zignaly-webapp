@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CoinsFilter.scss";
 import { Box, Checkbox } from "@material-ui/core";
 import { FormattedMessage } from "react-intl";
@@ -10,8 +10,8 @@ import { FormattedMessage } from "react-intl";
 /**
  *
  * @typedef {Object} DefaultProps
- * @property {Array<ExchangeAsset>} list
- * @property {Function} onChange
+ * @property {Boolean} checked
+ * @property {function(React.ChangeEvent<HTMLInputElement>):void} onChange
  */
 
 /**
@@ -19,44 +19,13 @@ import { FormattedMessage } from "react-intl";
  * @param {DefaultProps} props Default props.
  */
 
-const CoinsFilter = ({ list, onChange }) => {
-  const [checked, setChecked] = useState(false);
-
-  /**
-   * Filter change handler.
-   *
-   * @param {React.ChangeEvent} e Change event.
-   * @returns {Void} None.
-   */
-  const handleChange = (e) => {
-    /* @ts-ignore */
-    setChecked(e.target.checked);
-    /* @ts-ignore */
-    const data = filterData(e.target.checked);
-    onChange(data);
-  };
-
-  /**
-   * Filter Daily balance data
-   *
-   * @param {Boolean} value
-   * @returns {Array<ExchangeAsset>}
-   */
-
-  const filterData = (value) => {
-    if (!value) {
-      return list;
-    }
-
-    return list.filter((item) => parseFloat(item.balanceTotalUSDT) > 1);
-  };
-
+const CoinsFilter = ({ checked, onChange }) => {
   return (
     <Box alignItems="center" className="coinsFilter" display="flex" flexDirection="row">
       <Checkbox
         checked={checked}
-        inputProps={{ "aria-label": "primary checkbox" }}
-        onChange={handleChange}
+        inputProps={{ "aria-label": "Hide low value" }}
+        onChange={onChange}
       />
       <FormattedMessage id="coins.filter.title" />
     </Box>
