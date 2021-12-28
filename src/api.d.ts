@@ -113,3 +113,13 @@ interface GetInternalTransfersHistory extends PaginationReq {
   exchangeInternalId: string;
   type: string;
 }
+
+interface LaunchpadProject {
+  coin: string;
+  name: string;
+  category: string;
+  minAmount: number;
+  offeredAmount: number;
+  endDate: string;
+  distributionDate: string;
+}

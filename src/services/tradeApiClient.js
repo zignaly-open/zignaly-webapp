@@ -2540,6 +2540,38 @@ class TradeApiClient {
   async getVaultOffers(payload) {
     return this.doRequest(`/get-programs/${payload.status}`, null, "GET", 3);
   }
+
+  /**
+   * Get launchpad projects
+   *
+   * @param {{status: 'active'|'expired'}} payload Payload
+   * @returns {Promise<Array<LaunchpadProject>>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getLaunchpadProjects(payload) {
+    return [
+      {
+        name: "test",
+        coin: "BTC",
+        category: "gaming",
+        minAmount: 0.1,
+        offeredAmount: 0.1,
+        endDate: "2021-01-30T08:02:17-05:00",
+        distributionDate: "2021-01-31T08:02:17-05:00",
+      },
+      {
+        name: "test 2",
+        coin: "ETH",
+        category: "gaming",
+        minAmount: 0.1,
+        offeredAmount: 0.1,
+        endDate: "2021-01-30T08:02:17-05:00",
+        distributionDate: "2021-01-31T08:02:17-05:00",
+      },
+    ];
+    // return this.doRequest(`/zigpad/${payload.status}`, null, "GET", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

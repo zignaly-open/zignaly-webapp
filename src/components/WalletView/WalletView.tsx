@@ -124,19 +124,12 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
-  margin-bottom: -6px;
-  position: absolute;
-  bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
   font-size: 12px;
   font-weight: 600;
   text-transform: none;
   align-self: flex-end;
-
-  ${isMobile(`
-    position: static;
-    margin-top: 12px;
-  `)}
+  margin-top: 4px;
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -284,6 +277,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
+  const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
   const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
@@ -321,6 +315,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
       tradeApi.getVaultOffers({ status: "active" }).then((response) => {
         setVaultOffers(response);
+      });
+
+      tradeApi.getLaunchpadProjects({ status: "active" }).then((response) => {
+        setLaunchpadProjects(response);
       });
     }
   }, [isOpen]);
@@ -524,11 +522,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </SubTitle>
           {vaultOffers && (
             <Box mt={1} display="flex" flexDirection="column">
-              {vaultOffers.slice(0, 4).map((v) => (
+              {vaultOffers.slice(0, 3).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
                   <VaultListItem
                     display="flex"
-                    key={v.id}
                     alignItems="center"
                     onClick={() => setSelectedVaultOffer(v)}
                   >
@@ -550,6 +547,32 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 <FormattedMessage
                   id="wallet.vaults.offers"
                   values={{ count: vaultOffers.length }}
+                />
+              </VaultButton>
+            </Box>
+          )}
+          {launchpadProjects && (
+            <Box mt={1} display="flex" flexDirection="column">
+              {launchpadProjects.slice(0, 1).map((v) => (
+                <Box display="flex" key={v.coin} flexDirection="column">
+                  <VaultListItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={() => setSelectedVaultOffer(v)}
+                  >
+                    <Box display="flex">
+                      <CoinIcon coin={v.coin} width={20} height={20} />
+                      <NeutralText>{v.name}</NeutralText>
+                    </Box>
+                    <ChevronRightStyled />
+                  </VaultListItem>
+                  <VaultDivider />
+                </Box>
+              ))}
+              <VaultButton endIcon={<ChevronRight />} href="#zigpad">
+                <FormattedMessage
+                  id="zigpad.projects"
+                  values={{ count: launchpadProjects.length }}
                 />
               </VaultButton>
             </Box>
