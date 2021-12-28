@@ -8,6 +8,7 @@ export const getChainIcon = (chain: string) => {
     case "BEP20 (BSC)":
     case "BEP20 (BINANCE SMART CHAIN)":
     case "BEP2 (BINANCE CHAIN)":
+    case "BNB":
       return BSCIcon;
     case "BITCOIN":
     case "BTC":
