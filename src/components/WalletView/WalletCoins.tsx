@@ -122,7 +122,7 @@ const WalletCoins = ({
       coin: (
         <CoinCell>
           <CoinIcon coin={coin} />
-          <Box display="flex" flexDirection="column" ml="16px">
+          <Box display="flex" flexDirection="column" ml="16px" alignItems="flex-start">
             <Box display="flex" alignItems="center" mb="4px">
               <TypographyAmount>
                 <NumberFormat

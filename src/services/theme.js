@@ -366,6 +366,7 @@ const theme = (darkStyle) => {
           backgroundAltColor: "#222249",
           secondaryText: "#9ca3af",
           borderColor: "#1e1c4f",
+          borderColor2: "#413BA0",
           green: "#26c4c1",
           yellow: "#F7CF00",
           red: "#F63F82",
@@ -373,6 +374,7 @@ const theme = (darkStyle) => {
           linkText: "#829fff",
           purple: colors.purpleLight,
           neutralText: "#f3f4f6",
+          neutralText3: "#65647E",
         }
       : {
           backgroundColor: "#ffffff",
@@ -380,7 +382,8 @@ const theme = (darkStyle) => {
           // backgroundColor: "#dcdaf4",
           secondaryText: "#6D6C96",
           // borderColor: "#c1c2f7",
-          borderColor: "rgba(0, 0, 0, 0.1);",
+          borderColor: "rgba(0, 0, 0, 0.1)",
+          borderColor2: "#9CA3AF",
           green: "#2EC9C0",
           yellow: "#C39713",
           red: "#F63F82",
@@ -388,6 +391,7 @@ const theme = (darkStyle) => {
           linkText: "#36A6F4",
           purple: colors.purple,
           neutralText: "#36373F",
+          neutralText3: "#5955B6",
         },
     transactionTable: darkStyle
       ? {

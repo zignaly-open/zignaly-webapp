@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Label, Modal, TextDesc, Title } from "styles/styles";
+import { Input, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
 import {
   Box,
@@ -12,16 +12,22 @@ import {
 } from "@material-ui/core";
 import CustomSelect from "components/CustomSelect";
 import { NetworkCautionMessage } from "./WalletDepositView";
-import { StyledCustomSelect } from "./styles";
+import { Control, StyledCustomSelect } from "./styles";
 import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
 import AmountControl from "./AmountControl";
 import { Alert } from "@material-ui/lab";
+import Select from "./Select";
+import { getChainIcon } from "utils/chain";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
   min-width: 121px;
+`;
+
+const FormControlStyled = styled(FormControl)`
+  margin-bottom: 24px;
 `;
 
 interface WalletDepositViewProps {
@@ -34,11 +40,15 @@ interface WalletDepositViewProps {
 const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData
-    ? coinData.networks.map((n) => ({ val: n.network, label: n.name }))
+    ? coinData.networks.map((n) => ({
+        value: n.network,
+        label: n.name,
+        icon: getChainIcon(n.network),
+      }))
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = false;
+  const withdrawDisabled = coin === "ZIG" && network === "ETH";
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -70,7 +80,8 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
       <WalletWithdrawConfirm
         address={withdrawData.address}
         network={network}
-        networkName={networkOptions.find((o) => o.val === network).label}
+        memo={withdrawData.memo}
+        networkName={networkOptions.find((o) => o.value === network).label}
         amount={withdrawData.amount}
         coin={coinData}
         onClose={onClose}
@@ -90,7 +101,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
 
   return (
     <Modal>
-      {balance ? (
+      {balance && coinData ? (
         <>
           <Title>
             <img src={WalletIcon} width={40} height={40} />
@@ -100,16 +111,17 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
             <TextDesc>
               <FormattedMessage id="wallet.withdraw.desc" values={{ coin }} />
             </TextDesc>
-            <br />
-            <StyledCustomSelect>
-              <CustomSelect
-                labelPlacement="top"
-                onChange={setNetwork}
-                options={networkOptions}
+            <Control>
+              <Label>
+                <FormattedMessage id="deposit.network" />
+              </Label>
+              <Select
+                values={networkOptions}
+                fullWidth
                 value={network}
-                label={<FormattedMessage id="deposit.network" />}
+                handleChange={(e) => setNetwork(e.target.value)}
               />
-            </StyledCustomSelect>
+            </Control>
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
                 Due to the recent hack on Ascendex (
@@ -126,13 +138,15 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
               </Alert>
             ) : (
               <>
-                {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
-                <FormControl error={errors.address} fullWidth>
+                {/* {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />} */}
+                <FormControlStyled error={errors.address} fullWidth>
                   <Label style={{ marginTop: "24px" }}>
                     <FormattedMessage id="wallet.withdraw.address" />
                   </Label>
-                  <OutlinedInput
-                    className="customInput"
+                  <Input
+                    placeholder={intl.formatMessage({ id: "wallet.withdraw.address.paste" })}
+                    fullWidth
+                    name="address"
                     inputRef={register({
                       required: true,
                       pattern: {
@@ -140,20 +154,42 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
                         message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
                       },
                     })}
-                    name="address"
                   />
                   {errors.address && <FormHelperText>{errors.address.message}</FormHelperText>}
-                </FormControl>
+                </FormControlStyled>
 
-                <AmountControl
-                  balance={balanceAmount}
-                  setBalanceMax={setBalanceMax}
-                  decimals={coinData?.decimals}
-                  errors={errors}
-                  control={control}
-                  coin={coin}
-                  label="wallet.withdraw.amount"
-                />
+                {networkData?.memoRegex && (
+                  <FormControlStyled error={errors.memo} fullWidth>
+                    <Label style={{ marginTop: "24px" }}>
+                      <FormattedMessage id="wallet.withdraw.memo" />
+                    </Label>
+                    <Input
+                      fullWidth
+                      name="memo"
+                      inputRef={register({
+                        required: true,
+                        pattern: {
+                          value: RegExp(networkData?.memoRegex),
+                          message: intl.formatMessage({ id: "wallet.withdraw.memo.invalid" }),
+                        },
+                      })}
+                    />
+                    {errors.memo && <FormHelperText>{errors.memo.message}</FormHelperText>}
+                  </FormControlStyled>
+                )}
+
+                <Control>
+                  <AmountControl
+                    balance={balanceAmount}
+                    setBalanceMax={setBalanceMax}
+                    decimals={coinData?.decimals}
+                    errors={errors}
+                    control={control}
+                    coin={coin}
+                    label="wallet.withdraw.amount"
+                    newDesign={true}
+                  />
+                </Control>
 
                 <Box display="flex" flexDirection="row" mt="64px">
                   <Button className="textPurple borderPurple" onClick={onClose}>
