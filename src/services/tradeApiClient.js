@@ -2552,7 +2552,9 @@ class TradeApiClient {
   async getLaunchpadProjects(payload) {
     return [
       {
-        name: "test",
+        name: "Test Project",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
         coin: "BTC",
         category: "gaming",
         minAmount: 0.1,
@@ -2560,9 +2562,13 @@ class TradeApiClient {
         distributedAmount: 1,
         endDate: "2021-01-30T08:02:17-05:00",
         distributionDate: "2021-01-31T08:02:17-05:00",
+        website: "https://test.com",
+        whitepaper: "https://test.com",
       },
       {
         name: "test",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
         coin: "ETH",
         category: "gaming",
         minAmount: 0.1,
@@ -2570,6 +2576,8 @@ class TradeApiClient {
         distributedAmount: 1,
         endDate: "2021-01-30T08:02:17-05:00",
         distributionDate: "2021-01-31T08:02:17-05:00",
+        website: "https://test.com",
+        whitepaper: "https://test.com",
       },
     ];
     // return this.doRequest(`/zigpad/${payload.status}`, null, "GET", 3);

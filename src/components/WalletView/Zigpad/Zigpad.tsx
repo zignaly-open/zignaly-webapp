@@ -15,7 +15,7 @@ import WalletIcon from "images/wallet/wallet.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
-import VaultOfferModal from "./VaultOfferModal";
+import VaultOfferModal from "./ProjectDetailsModal";
 import styled, { css } from "styled-components";
 import { ArrowBack, ChevronRight, SportsEsports } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import VaultMobile from "./VaultMobile";
 import { Terms } from "../styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
+import ProjectDetailsModal from "./ProjectDetailsModal";
 
 const Coin = styled.span`
   color: #65647e;
@@ -111,7 +112,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "category",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.minAmount" }),
+              Header: intl.formatMessage({ id: "zigpad.minContribution" }),
               accessor: "minAmount",
             },
             {
@@ -137,27 +138,16 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           ]
         : [
             {
-              Header: "",
-              accessor: "rewards",
+              Header: intl.formatMessage({ id: "zigpad.project" }),
+              accessor: "coin",
             },
             {
-              Header: intl.formatMessage({ id: "vault.offer" }),
-              accessor: "offer",
+              Header: intl.formatMessage({ id: "zigpad.category" }),
+              accessor: "category",
             },
             {
-              Header: intl.formatMessage({ id: "vault.minBalance" }),
-              accessor: "minBalance",
-              tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
-            },
-            {
-              Header: intl.formatMessage({ id: "vault.apr" }),
-              accessor: "earn",
-              tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
-            },
-            {
-              Header: intl.formatMessage({ id: "vault.stakingStats" }),
-              accessor: "startDate",
-              tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+              Header: intl.formatMessage({ id: "zigpad.offered" }),
+              accessor: "offeredAmount",
             },
             {
               Header: intl.formatMessage({ id: "vault.ended" }),
@@ -196,6 +186,19 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             </Typography>
           </AlignCenter>
         ),
+        coin: (
+          <AlignCenter>
+            <CoinIcon width={16} height={16} coin={p.coin} />
+            <Typography style={{ fontWeight: 600, marginLeft: "8px" }}>
+              {p.coin}
+              &nbsp;&nbsp;
+              <Terms onClick={() => setSelectedProject(p)}>
+                <FormattedMessage id="zigpad.details" />
+                <ChevronRight />
+              </Terms>
+            </Typography>
+          </AlignCenter>
+        ),
         category: (
           <AlignCenter>
             {getCategoryIcon(p.category)}
@@ -207,8 +210,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         minAmount: (
           <Value>
             <NumberFormat displayType="text" value={p.minAmount} />
-            <Coin>{p.coin}</Coin>
-            <CoinIcon width={16} height={16} coin={p.coin} />
+            <Coin>ZIG</Coin>
           </Value>
         ),
         offeredAmount: (
@@ -221,7 +223,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(p.endDate).format("MMM D, YYYY")}</Value>,
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
         price: <Value>1 {p.coin}=12 ZIG</Value>,
-        actions: <PledgeButton activated={p.coin === "ETH"} />,
+        actions: <PledgeButton onClick={() => {}} activated={p.coin === "ETH"} />,
       })),
     [launchpadProjects, tab],
   );
@@ -229,10 +231,10 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <>
       {selectedProject && (
-        <VaultOfferModal
+        <ProjectDetailsModal
           onClose={() => setSelectedProject(null)}
           open={true}
-          vault={selectedProject}
+          project={selectedProject}
         />
       )}
       <Title>

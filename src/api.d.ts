@@ -117,6 +117,9 @@ interface GetInternalTransfersHistory extends PaginationReq {
 interface LaunchpadProject {
   coin: string;
   name: string;
+  description: string;
+  website: string;
+  whitepaper: string;
   category: string;
   minAmount: number;
   offeredAmount: number;
