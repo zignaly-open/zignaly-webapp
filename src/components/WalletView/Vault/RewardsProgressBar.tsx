@@ -84,20 +84,21 @@ const Coin = styled.span`
 `;
 
 interface RewardsProgressBarProps {
-  vault: VaultOffer;
+  amountTotal: number;
+  amountRemaining: number;
+  coin: string;
 }
 
-const RewardsProgressBar = ({ vault }: RewardsProgressBarProps) => {
-  const { rewardsTotal, rewardsRemaining, coinReward } = vault;
-  const percFilled = ((rewardsTotal - rewardsRemaining) / rewardsTotal) * 100;
+const RewardsProgressBar = ({ amountTotal, amountRemaining, coin }: RewardsProgressBarProps) => {
+  const percFilled = ((amountTotal - amountRemaining) / amountTotal) * 100;
   return (
     <Bar>
       <BarFilled filled={percFilled}>
         <CoinCircle>
           <CoinsAmount>
-            {formatPrice(rewardsRemaining, "", " ", true)} <Coin>{coinReward}</Coin>
+            {formatPrice(amountRemaining, "", " ", true)} <Coin>{coin}</Coin>
           </CoinsAmount>
-          <CoinIcon coin={coinReward} />
+          <CoinIcon coin={coin} width={24} height={24} />
         </CoinCircle>
       </BarFilled>
     </Bar>

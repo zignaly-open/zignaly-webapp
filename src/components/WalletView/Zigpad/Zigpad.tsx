@@ -23,6 +23,7 @@ import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
 import VaultMobile from "./VaultMobile";
 import { Terms } from "../styles";
+import { PledgeButton } from "../Vault/VaultDepositButton";
 
 const Coin = styled.span`
   color: #65647e;
@@ -126,6 +127,10 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "distributionDate",
             },
             {
+              Header: intl.formatMessage({ id: "terminal.price" }),
+              accessor: "price",
+            },
+            {
               Header: "",
               accessor: "actions",
             },
@@ -168,7 +173,15 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
       launchpadProjects.map((p) => ({
         distribution: (
           <AlignCenter>
-            {/* {tab === 0 ? <RewardsProgressBar vault={p} /> : <CoinIcon coin={p.coinReward} />} */}
+            {tab === 0 ? (
+              <RewardsProgressBar
+                amountTotal={p.offeredAmount}
+                amountRemaining={p.offeredAmount - p.distributedAmount}
+                coin={p.coin}
+              />
+            ) : (
+              <CoinIcon coin={p.coin} />
+            )}
           </AlignCenter>
         ),
         project: (
@@ -207,7 +220,8 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         endDate: <Value>{dayjs(p.endDate).format("MMM D, YYYY")}</Value>,
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
-        actions: <></>,
+        price: <Value>1 {p.coin}=12 ZIG</Value>,
+        actions: <PledgeButton activated={p.coin === "ETH"} />,
       })),
     [launchpadProjects, tab],
   );

@@ -120,6 +120,7 @@ interface LaunchpadProject {
   category: string;
   minAmount: number;
   offeredAmount: number;
+  distributedAmount: number;
   endDate: string;
   distributionDate: string;
 }

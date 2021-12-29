@@ -59,3 +59,20 @@ const VaultDepositButton = ({ balance, vault, onClick }: VaultDepositButtonProps
 };
 
 export default VaultDepositButton;
+
+interface PledgeButtonProps {
+  onClick: () => void;
+  activated: boolean;
+}
+
+export const PledgeButton = ({ activated, onClick }: PledgeButtonProps) => {
+  return activated ? (
+    <ActivatedButton>
+      <FormattedMessage id="zigpad.pledged" />
+    </ActivatedButton>
+  ) : (
+    <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
+      <FormattedMessage id="zigpad.pledge" />
+    </ButtonStyled>
+  );
+};
