@@ -81,7 +81,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
         address={withdrawData.address}
         network={network}
         memo={withdrawData.memo}
-        networkName={networkOptions.find((o) => o.val === network).label}
+        networkName={networkOptions.find((o) => o.value === network).label}
         amount={withdrawData.amount}
         coin={coinData}
         onClose={onClose}

@@ -1336,7 +1336,7 @@ profile.email: "Email"
 profile.photo: "Profile Picture"
 profile.username: "Username"
 profile.userid: "User ID"
-profile.error.name: "Name is reuired of min 5 and max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
+profile.error.name: "Name is required of min 5 and max 50 characters. (Allowed characters, Numbers, Letters, $,-,_)"
 profile.changeemailtext: "Click here to change your email!"
 
 # MONTHS
