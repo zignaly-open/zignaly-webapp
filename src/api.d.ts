@@ -114,16 +114,23 @@ interface GetInternalTransfersHistory extends PaginationReq {
   type: string;
 }
 
+interface Social {
+  name: string;
+  url: string;
+}
 interface LaunchpadProject {
   coin: string;
   name: string;
-  description: string;
+  shortDescription: string;
+  details: string;
   website: string;
   whitepaper: string;
   category: string;
   minAmount: number;
   offeredAmount: number;
   distributedAmount: number;
+  startDate: string;
   endDate: string;
   distributionDate: string;
+  socials: Social[];
 }

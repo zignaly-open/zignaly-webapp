@@ -9,6 +9,17 @@ import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import CoinIcon from "../CoinIcon";
+import {
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+} from "@material-ui/lab";
+import { formatUTC } from "utils/format";
+import DOMPurify from "dompurify";
+import SocialIcon from "./SocialIcon";
 // const localizedFormat = require("dayjs/plugin/localizedFormat");
 // dayjs.extend(localizedFormat);
 
@@ -29,31 +40,10 @@ const ItemValue = styled.span`
   color: ${(props) => props.theme.palette.text.primary};
 `;
 
-const SecondaryText = styled.span`
-  color: ${(props) => props.theme.newTheme.secondaryText};
-  font-size: 14px;
-  font-style: italic;
-`;
-
 const Coin = styled.span`
   color: #65647e;
   font-size: 14px;
   margin-left: 12px;
-`;
-
-interface CompoundingTextProps {
-  compounding: boolean;
-}
-const CompoundingText = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-  color: ${(props) => props.theme.newTheme.red};
-
-  ${(props: CompoundingTextProps) =>
-    props.compounding &&
-    css`
-      color: ${props.theme.newTheme.green}};
-    `}
 `;
 
 const TitleDesc = styled(Typography)`
@@ -73,13 +63,31 @@ const MiniIconLink = styled.a.attrs(() => ({
   text-decoration: none;
   color: ${(props) => props.theme.newTheme.secondaryText};
 
-  svg {
-    margin-right: 4px;
+  span {
+    margin-left: 4px;
   }
 `;
 
 const StyledModal = styled(Modal)`
   align-items: flex-start;
+`;
+
+const StyledTimeline = styled(Timeline)`
+  width: 0;
+  padding: 0;
+`;
+
+const TimelineLabel = styled.div`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  font-size: 16px;
+  margin-bottom: 6px;
+  width: 400px;
+`;
+
+const HtmlContent = styled.div`
+  img {
+    max-width: 90%;
+  }
 `;
 
 interface ProjectDetailsModalProps {
@@ -88,15 +96,31 @@ interface ProjectDetailsModalProps {
   project: LaunchpadProject;
 }
 
-const formatUTC = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMMM DD, YYYY hh:mm A UTC");
-const formatDay = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMM D, YYYY");
-
 const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProps) => {
   const intl = useIntl();
-  const { minAmount, name, coin, description, website, whitepaper, category } = project;
+  const {
+    minAmount,
+    name,
+    coin,
+    shortDescription,
+    website,
+    whitepaper,
+    category,
+    endDate,
+    startDate,
+    distributionDate,
+  } = project;
+  const details = DOMPurify.sanitize(project.details);
 
   return (
-    <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
+    <CustomModal
+      onClose={onClose}
+      newTheme={true}
+      persist={false}
+      size="large"
+      state={open}
+      style={{ width: "1000px" }}
+    >
       <StyledModal>
         <Box display="flex" alignItems="center" mb={2}>
           <CoinIcon width={64} height={64} coin={coin} />
@@ -108,17 +132,65 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
           size="small"
           label={intl.formatMessage({ id: `zigpad.category.${category}` })}
         />
-        <ItemValue>{description}</ItemValue>
-        <Box display="flex" mt={2}>
+        <ItemValue>{shortDescription}</ItemValue>
+        <Box display="flex" mt={2} mb={3}>
           <MiniIconLink href={website}>
             <Link />
-            <FormattedMessage id="srv.edit.website" />
+            <FormattedMessage id="srv.edit.website" tagName="span" />
           </MiniIconLink>
           <MiniIconLink href={whitepaper}>
             <DescriptionOutlined />
-            <FormattedMessage id="zigpad.whitepaper" />
+            <FormattedMessage id="zigpad.whitepaper" tagName="span" />
           </MiniIconLink>
+          {project.socials.map((s, i) => (
+            <MiniIconLink href={s.url} key={i}>
+              <SocialIcon type={s.name} />
+            </MiniIconLink>
+          ))}
         </Box>
+        <Typography variant="h3">
+          <FormattedMessage id="zigpad.subscriptionTimeline" />
+        </Typography>
+        <StyledTimeline>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <TimelineLabel>
+                <FormattedMessage id="zigpad.subscriptionPeriod" />
+              </TimelineLabel>
+              <ItemValue>{formatUTC(startDate)}</ItemValue>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+              <TimelineConnector />
+            </TimelineSeparator>
+            <TimelineContent>
+              <TimelineLabel>
+                <FormattedMessage id="zigpad.calculationPeriod" />
+              </TimelineLabel>
+              <ItemValue>{formatUTC(dayjs(endDate).add(1, "d").format())}</ItemValue>
+            </TimelineContent>
+          </TimelineItem>
+          <TimelineItem>
+            <TimelineSeparator>
+              <TimelineDot />
+            </TimelineSeparator>
+            <TimelineContent>
+              <TimelineLabel>
+                <FormattedMessage id="zigpad.distributionPeriod" />
+              </TimelineLabel>
+              <ItemValue>{formatUTC(distributionDate)}</ItemValue>
+            </TimelineContent>
+          </TimelineItem>
+        </StyledTimeline>
+        <Typography variant="h3">
+          <FormattedMessage id="zigpad.contribute" />
+        </Typography>
         <ul>
           <ListItem>
             <ItemLabel>
@@ -133,21 +205,8 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
               />
             </ItemValue>
           </ListItem>
-          {/* <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.compounding" />
-            </ItemLabel>
-            <ItemValue>
-              <CompoundingText compounding={true}>
-                <FormattedMessage id="general.yes" />
-              </CompoundingText>
-              &nbsp;
-              <SecondaryText>
-                <FormattedMessage id="wallet.staking.offer.compounding.info" />
-              </SecondaryText>
-            </ItemValue>
-          </ListItem> */}
         </ul>
+        <HtmlContent dangerouslySetInnerHTML={{ __html: details }} />
       </StyledModal>
     </CustomModal>
   );

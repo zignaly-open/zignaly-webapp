@@ -2553,13 +2553,30 @@ class TradeApiClient {
     return [
       {
         name: "Test Project",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+        shortDescription: "Lorem ipsum dolor sit amet, consectetur",
+        details:
+          "<h2>Project Details</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut!</p><p>Impedit sit sunt quaerat, odit, tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam recusandae alias error harum maxime adipisci amet laborum.</p><h2>Another Title</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi</p><h2>Tokenomic</h2><img src='https://i.imgur.com/FA4RSEE.png'/>",
+        // details: [
+        //   {
+        //     title:
+        //   },
+        // ],
+        socials: [
+          {
+            url: "https://twitter.com/fcporto",
+            name: "twitter",
+          },
+          {
+            url: "https://twitter.com/fcporto",
+            name: "discord",
+          },
+        ],
         coin: "BTC",
         category: "gaming",
         minAmount: 0.1,
         offeredAmount: 100,
         distributedAmount: 1,
+        startDate: "2021-01-15T08:02:17-05:00",
         endDate: "2021-01-30T08:02:17-05:00",
         distributionDate: "2021-01-31T08:02:17-05:00",
         website: "https://test.com",
@@ -2567,13 +2584,13 @@ class TradeApiClient {
       },
       {
         name: "test",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+        shortDescription: "Lorem ipsum dolor sit amet, consectetur",
         coin: "ETH",
         category: "gaming",
         minAmount: 0.1,
         offeredAmount: 100,
         distributedAmount: 1,
+        startDate: "2021-01-15T08:02:17-05:00",
         endDate: "2021-01-30T08:02:17-05:00",
         distributionDate: "2021-01-31T08:02:17-05:00",
         website: "https://test.com",

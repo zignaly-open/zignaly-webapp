@@ -8,7 +8,7 @@ import { isMobile } from "styles/styles";
 
 const ButtonStyled = styled(CustomButton)`
   && {
-    min-width: 142px;
+    min-width: 115px;
     min-height: auto;
     width: 100%;
   }

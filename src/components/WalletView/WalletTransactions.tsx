@@ -196,7 +196,7 @@ const WalletTransactions = () => {
   const columns = useMemo(
     () => [
       {
-        Header: intl.formatMessage({ id: "col.date" }),
+        Header: intl.formatMessage({ id: "col.date" }).toLowerCase(),
         accessor: "date",
       },
       {
@@ -204,19 +204,19 @@ const WalletTransactions = () => {
         accessor: "type",
       },
       {
-        Header: intl.formatMessage({ id: "col.amount" }),
+        Header: intl.formatMessage({ id: "col.amount" }).toLowerCase(),
         accessor: "amount",
       },
       {
-        Header: intl.formatMessage({ id: "col.token" }),
+        Header: intl.formatMessage({ id: "col.token" }).toLowerCase(),
         accessor: "coin",
       },
       {
-        Header: intl.formatMessage({ id: "col.network" }),
+        Header: intl.formatMessage({ id: "col.network" }).toLowerCase(),
         accessor: "network",
       },
       {
-        Header: intl.formatMessage({ id: "col.stat" }),
+        Header: intl.formatMessage({ id: "col.stat" }).toLowerCase(),
         accessor: "status",
       },
       {

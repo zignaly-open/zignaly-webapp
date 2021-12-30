@@ -22,7 +22,7 @@ import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
 import VaultMobile from "./VaultMobile";
-import { Terms } from "../styles";
+import { Rate, Terms } from "../styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 
@@ -217,13 +217,19 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <Value>
             <NumberFormat displayType="text" value={p.offeredAmount} />
             <Coin>{p.coin}</Coin>
-            <CoinIcon width={16} height={16} coin={p.coin} />
           </Value>
         ),
         endDate: <Value>{dayjs(p.endDate).format("MMM D, YYYY")}</Value>,
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
-        price: <Value>1 {p.coin}=12 ZIG</Value>,
-        actions: <PledgeButton onClick={() => {}} activated={p.coin === "ETH"} />,
+        price: (
+          <Value>
+            @12 ZIG
+            <Rate>0.81$</Rate>
+          </Value>
+        ),
+        actions: (
+          <PledgeButton onClick={() => setSelectedProject(p)} activated={p.coin === "ETH"} />
+        ),
       })),
     [launchpadProjects, tab],
   );

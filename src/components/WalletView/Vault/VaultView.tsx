@@ -179,7 +179,15 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       vaultOffers.map((v) => ({
         rewards: (
           <AlignCenter>
-            {tab === 0 ? <RewardsProgressBar vault={v} /> : <CoinIcon coin={v.coinReward} />}
+            {tab === 0 ? (
+              <RewardsProgressBar
+                amountTotal={v.rewardsTotal}
+                amountRemaining={v.rewardsRemaining}
+                coin={v.coinReward}
+              />
+            ) : (
+              <CoinIcon coin={v.coinReward} />
+            )}
           </AlignCenter>
         ),
         offer: (
