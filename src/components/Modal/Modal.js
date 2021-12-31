@@ -10,7 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @property {DialogProps["onClose"]} onClose
  * @property {Boolean} [persist]
  * @property {Object} children
- * @property {Object} style
+ * @property {Object} [style]
  * @property {String} size
  * @property {boolean} [showCloseIcon]
  * @property {boolean} [newTheme]

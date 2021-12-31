@@ -1,9 +1,10 @@
 import { Box, Chip, Typography } from "@material-ui/core";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Link, DescriptionOutlined } from "@material-ui/icons";
 import CustomModal from "components/Modal";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Title, Modal } from "styles/styles";
-import PiggyIcon from "images/wallet/piggy.svg";
+import tradeApi from "services/tradeApiClient";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
@@ -20,8 +21,10 @@ import {
 import { formatUTC } from "utils/format";
 import DOMPurify from "dompurify";
 import SocialIcon from "./SocialIcon";
-// const localizedFormat = require("dayjs/plugin/localizedFormat");
-// dayjs.extend(localizedFormat);
+import AmountControl from "../AmountControl";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import CustomButton from "components/CustomButton";
+import { useForm } from "react-hook-form";
 
 const ListItem = styled.li`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -84,11 +87,28 @@ const TimelineLabel = styled.div`
   width: 400px;
 `;
 
-const HtmlContent = styled.div`
+const HtmlContent = styled(Typography)`
   img {
     max-width: 90%;
   }
 `;
+
+const Button = styled(CustomButton)`
+  margin: 16px 0;
+  min-width: 150px;
+`;
+
+// Force apply mui heading styles to html content
+const useStyles = makeStyles((theme) => {
+  const tags = ["h1", "h2", "h3", "h4", "h5", "h6"];
+  const nestedRules = {};
+  tags.forEach((tag) => {
+    nestedRules[`& ${tag}`] = { ...theme.typography[tag] };
+  });
+  return {
+    root: nestedRules,
+  };
+});
 
 interface ProjectDetailsModalProps {
   onClose: () => void;
@@ -97,6 +117,8 @@ interface ProjectDetailsModalProps {
 }
 
 const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProps) => {
+  const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
+  const ZIGAmount = walletBalance?.ZIG?.total || { balance: 0, availableBalance: 0 };
   const intl = useIntl();
   const {
     minAmount,
@@ -111,6 +133,30 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
     distributionDate,
   } = project;
   const details = DOMPurify.sanitize(project.details);
+  const {
+    handleSubmit,
+    register,
+    control,
+    errors,
+    formState: { isValid },
+    setValue,
+    trigger,
+  } = useForm({ mode: "onChange" });
+
+  const pledge = () => {};
+
+  useEffect(() => {
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  }, []);
+
+  const setBalanceMax = () => {
+    setValue("amount", ZIGAmount.availableBalance);
+    trigger("amount");
+  };
+
+  const classes = useStyles();
 
   return (
     <CustomModal
@@ -121,93 +167,98 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
       state={open}
       style={{ width: "1000px" }}
     >
-      <StyledModal>
-        <Box display="flex" alignItems="center" mb={2}>
-          <CoinIcon width={64} height={64} coin={coin} />
-          <TitleDesc>{name}</TitleDesc>
-          <Coin>{coin}</Coin>
-        </Box>
-        <Chip
-          style={{ marginBottom: "12px" }}
-          size="small"
-          label={intl.formatMessage({ id: `zigpad.category.${category}` })}
-        />
-        <ItemValue>{shortDescription}</ItemValue>
-        <Box display="flex" mt={2} mb={3}>
-          <MiniIconLink href={website}>
-            <Link />
-            <FormattedMessage id="srv.edit.website" tagName="span" />
-          </MiniIconLink>
-          <MiniIconLink href={whitepaper}>
-            <DescriptionOutlined />
-            <FormattedMessage id="zigpad.whitepaper" tagName="span" />
-          </MiniIconLink>
-          {project.socials.map((s, i) => (
-            <MiniIconLink href={s.url} key={i}>
-              <SocialIcon type={s.name} />
+      <form onSubmit={handleSubmit(pledge)}>
+        <StyledModal>
+          <Box display="flex" alignItems="center" mb={2}>
+            <CoinIcon width={64} height={64} coin={coin} />
+            <TitleDesc>{name}</TitleDesc>
+            <Coin>{coin}</Coin>
+          </Box>
+          <Chip
+            style={{ marginBottom: "12px" }}
+            size="small"
+            label={intl.formatMessage({ id: `zigpad.category.${category}` })}
+          />
+          <ItemValue>{shortDescription}</ItemValue>
+          <Box display="flex" mt={2} mb={3}>
+            <MiniIconLink href={website}>
+              <Link />
+              <FormattedMessage id="srv.edit.website" tagName="span" />
             </MiniIconLink>
-          ))}
-        </Box>
-        <Typography variant="h3">
-          <FormattedMessage id="zigpad.subscriptionTimeline" />
-        </Typography>
-        <StyledTimeline>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.subscriptionPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(startDate)}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.calculationPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(dayjs(endDate).add(1, "d").format())}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.distributionPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(distributionDate)}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-        </StyledTimeline>
-        <Typography variant="h3">
-          <FormattedMessage id="zigpad.contribute" />
-        </Typography>
-        <ul>
-          <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="zigpad.minContribution" />
-            </ItemLabel>
-            <ItemValue>
-              <NumberFormat
-                displayType="text"
-                value={minAmount}
-                suffix=" ZIG"
-                thousandSeparator={true}
-              />
-            </ItemValue>
-          </ListItem>
-        </ul>
-        <HtmlContent dangerouslySetInnerHTML={{ __html: details }} />
-      </StyledModal>
+            <MiniIconLink href={whitepaper}>
+              <DescriptionOutlined />
+              <FormattedMessage id="zigpad.whitepaper" tagName="span" />
+            </MiniIconLink>
+            {project.socials.map((s, i) => (
+              <MiniIconLink href={s.url} key={i}>
+                <SocialIcon type={s.name} />
+              </MiniIconLink>
+            ))}
+          </Box>
+          <Typography variant="h3">
+            <FormattedMessage id="zigpad.subscriptionTimeline" />
+          </Typography>
+          <StyledTimeline>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineLabel>
+                  <FormattedMessage id="zigpad.subscriptionPeriod" />
+                </TimelineLabel>
+                <ItemValue>{formatUTC(startDate)}</ItemValue>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot />
+                <TimelineConnector />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineLabel>
+                  <FormattedMessage id="zigpad.calculationPeriod" />
+                </TimelineLabel>
+                <ItemValue>{formatUTC(dayjs(endDate).add(1, "d").format())}</ItemValue>
+              </TimelineContent>
+            </TimelineItem>
+            <TimelineItem>
+              <TimelineSeparator>
+                <TimelineDot />
+              </TimelineSeparator>
+              <TimelineContent>
+                <TimelineLabel>
+                  <FormattedMessage id="zigpad.distributionPeriod" />
+                </TimelineLabel>
+                <ItemValue>{formatUTC(distributionDate)}</ItemValue>
+              </TimelineContent>
+            </TimelineItem>
+          </StyledTimeline>
+          <Typography variant="h3">
+            <FormattedMessage id="zigpad.contribute" />
+          </Typography>
+          <AmountControl
+            balance={ZIGAmount}
+            setBalanceMax={setBalanceMax}
+            decimals={2}
+            errors={errors}
+            control={control}
+            coin="ZIG"
+            label="zigpad.contribute.amount"
+            newDesign={true}
+            minAmount={minAmount}
+          />
+          <Button className="bgPurple" type="submit" disabled={!isValid}>
+            <FormattedMessage id="zigpad.contribute" />
+          </Button>
+          <HtmlContent
+            className={classes.root}
+            variant="body1"
+            dangerouslySetInnerHTML={{ __html: details }}
+          />
+        </StyledModal>
+      </form>
     </CustomModal>
   );
 };

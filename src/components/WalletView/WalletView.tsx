@@ -278,7 +278,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
-  const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
+  const balanceZIG = walletBalance?.ZIG?.total.balance || 0;
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
