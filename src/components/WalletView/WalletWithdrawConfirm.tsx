@@ -133,7 +133,8 @@ const WalletWithdrawConfirm = ({
   const amountReceived = fee ? Math.max(parseFloat(amount) - parseFloat(fee.floatFee), 0) : 0;
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
-  const feeConvertedToZig = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
+  // Withdrawing other coins than chain coins needs ZIG
+  const feesPaidFromZig = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
 
   const loadFee = () => {
     if (!done) {
@@ -245,7 +246,7 @@ const WalletWithdrawConfirm = ({
               <AmountLabel>
                 <FormattedMessage
                   id={`${
-                    feeConvertedToZig ? "wallet.withdraw.approximateFee" : "wallet.withdraw.fee"
+                    feesPaidFromZig ? "wallet.withdraw.approximateFee" : "wallet.withdraw.fee"
                   }`}
                 />
               </AmountLabel>
@@ -266,7 +267,7 @@ const WalletWithdrawConfirm = ({
               <CircularProgress size={21} style={{ margin: "0 auto" }} />
             )}
           </AmountBox>
-          {fee && feeConvertedToZig && zigBalance < parseFloat(fee.floatFee) && (
+          {fee && feesPaidFromZig && zigBalance < parseFloat(fee.floatFee) && (
             <StyledAlert severity="warning">
               <FormattedMessage id="wallet.withdraw.notEnough" />
             </StyledAlert>
@@ -278,7 +279,9 @@ const WalletWithdrawConfirm = ({
             <Button
               className="bgPurple"
               onClick={check2FA}
-              disabled={amountReceived <= 0}
+              disabled={
+                amountReceived <= 0 || (feesPaidFromZig && zigBalance < parseFloat(fee.floatFee))
+              }
               loading={loading}
             >
               <FormattedMessage id="wallet.withdraw.now" />
