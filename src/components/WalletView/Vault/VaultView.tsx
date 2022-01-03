@@ -274,6 +274,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
             {isMobile ? (
               <VaultMobile
                 vaults={vaultOffers}
+                type={tab === 0 ? "active" : "expired"}
                 onOfferClick={(coin) => setDepositCoin(coin)}
                 balance={walletBalance}
               />
