@@ -39,6 +39,7 @@ interface GetNetworkFeeRes {
   floatFee: string;
   expiration: number;
   key: string;
+  feeCurrency: string;
 }
 
 interface WidthdrawReq {
