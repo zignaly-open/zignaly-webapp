@@ -3,16 +3,8 @@ import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Input, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
-import {
-  Box,
-  CircularProgress,
-  FormControl,
-  FormHelperText,
-  OutlinedInput,
-} from "@material-ui/core";
-import CustomSelect from "components/CustomSelect";
-import { NetworkCautionMessage } from "./WalletDepositView";
-import { Control, StyledCustomSelect } from "./styles";
+import { Box, CircularProgress, FormControl, FormHelperText } from "@material-ui/core";
+import { Control } from "./styles";
 import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
