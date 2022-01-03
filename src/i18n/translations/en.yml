@@ -555,7 +555,6 @@ profit.subtitle: "Invest in expert traders and pay only a portion of the profits
 
 copyt.activate.title: "Last step - Deposit"
 copyt.activate.desc: "You are one step away from connecting to your dream crypto trader! Make a deposit to your Zignaly Exchange account today and start making profits right away!"
-copyt.allocated: "allocated of copytrader’s balance"
 copyt.copiers: "Copiers"
 srv.followers: "Followers"
 copyt.successfee: "Success Fee"
@@ -1039,8 +1038,6 @@ terminal.trailingstop.valid.percentage.greater: "Trailing stop percentage must b
 terminal.trailingstop.valid.percentage.lower: "Trailing stop percentage must be a number lower than {value}."
 terminal.trailingstop.valid.price: "Trailing stop price must be a number greater than 0."
 terminal.trailingstop: "Trailing Stop"
-terminal.trigger.help: "Once this price is reached, the trailing stop loss will active."
-terminal.trigger: "Trigger"
 terminal.units: "Units"
 terminal.units.help: "The quote currency units equivalent to the position size."
 terminal.units.long: "Units LONG"

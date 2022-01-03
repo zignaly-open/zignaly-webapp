@@ -116,10 +116,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "minAmount",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.offered" }),
-              accessor: "offeredAmount",
-            },
-            {
               Header: intl.formatMessage({ id: "zigpad.endDate" }),
               accessor: "endDate",
             },
@@ -176,7 +172,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         project: (
           <AlignCenter>
-            <Typography style={{ fontWeight: 600 }}>
+            <Typography style={{ fontWeight: 600, textAlign: "center" }}>
               {p.name}
               &nbsp;
               <Terms onClick={() => setSelectedProject(p)}>
