@@ -27,3 +27,4 @@ export const psCreateInfoUrl =
   "https://help.zignaly.com/hc/en-us/articles/360017318920-Create-a-Profit-Sharing-Service#h.ataed7sboy2f";
 export const ascendexUrl = "https://ascendex.com/en-us/register?inviteCode=I180THP3";
 export const mexcUrl = "https://mexc.com/auth/signup?inviteCode=1DHh4";
+export const gateioUrl = "https://www.gate.io/signup/9545237";

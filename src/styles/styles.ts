@@ -50,8 +50,7 @@ export const TextDesc = styled(Typography)`
   /* color: #f3f4f6; */
   font-size: 16px;
   letter-spacing: 0.33px;
-  /* line-height: 20px; */
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 
   ${isMobile(`
     margin-bottom: 32px;

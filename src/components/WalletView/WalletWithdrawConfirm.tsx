@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
@@ -14,6 +14,14 @@ import { getChainIcon } from "utils/chain";
 import CustomModal from "components/Modal";
 import TwoFAForm from "components/Forms/TwoFAForm";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import { Alert } from "@material-ui/lab";
+
+const StyledAlert = styled(Alert)`
+  width: 100%;
+  margin: 14px 0 -8px;
+  justify-content: center;
+`;
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -95,6 +103,28 @@ const StyledPanel = styled.div`
   margin-top: 16px;
   border-radius: 8px;
 `;
+
+const CoinAmount = ({
+  value,
+  big = false,
+  coin,
+}: {
+  value: string | number;
+  big?: boolean;
+  coin: WalletCoin;
+}) => (
+  <Box display="flex" flexDirection="row" alignItems="center">
+    <AmountTypography big={big}>
+      <NumberFormat
+        value={value}
+        displayType="text"
+        thousandSeparator={true}
+        decimalScale={coin.decimals}
+      />
+    </AmountTypography>
+    <Coin big={big}>{coin.name}</Coin>
+  </Box>
+);
 interface WalletWithdrawConfirmProps {
   address: string;
   memo: string;
@@ -102,6 +132,7 @@ interface WalletWithdrawConfirmProps {
   network: string;
   networkName: string;
   coin: WalletCoin;
+  zigCoin: WalletCoin;
   onClose: () => void;
   onCancel: () => void;
 }
@@ -114,15 +145,29 @@ const WalletWithdrawConfirm = ({
   network,
   networkName,
   coin,
+  zigCoin,
   memo,
 }: WalletWithdrawConfirmProps) => {
+  const { walletBalance } = useContext(PrivateAreaContext);
+  const zigBalance = walletBalance?.ZIG && walletBalance.ZIG[network].availableBalance;
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
   const [loading, setLoading] = useState(false);
-  const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
+  // Withdrawing other coins than chain coins needs ZIG
+  const feesPaidFromZigBalance = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
+  const feeCoin = feesPaidFromZigBalance ? zigCoin : coin;
+
+  let amountReceived = 0;
+  if (fee) {
+    if (feesPaidFromZigBalance) {
+      amountReceived = parseFloat(amount);
+    } else if (parseFloat(amount) > parseFloat(fee.floatFee)) {
+      amountReceived = parseFloat(amount) - parseFloat(fee.floatFee);
+    }
+  }
 
   const loadFee = () => {
     if (!done) {
@@ -170,20 +215,6 @@ const WalletWithdrawConfirm = ({
     }
   };
 
-  const CoinAmount = ({ value, big = false }: { value: string; big?: boolean }) => (
-    <Box display="flex" flexDirection="row" alignItems="center">
-      <AmountTypography big={big}>
-        <NumberFormat
-          value={value}
-          displayType="text"
-          thousandSeparator={true}
-          decimalScale={coin.decimals}
-        />
-      </AmountTypography>
-      <Coin big={big}>{coin.name}</Coin>
-    </Box>
-  );
-
   return (
     <Modal>
       <CustomModal
@@ -228,14 +259,20 @@ const WalletWithdrawConfirm = ({
               <AmountLabel>
                 <FormattedMessage id="wallet.withdraw.amount" />
               </AmountLabel>
-              <CoinAmount value={amount} />
+              <CoinAmount value={amount} coin={coin} />
             </AmountBox>
             <AmountBox flex={1}>
               <AmountLabel>
-                <FormattedMessage id="wallet.withdraw.fee" />
+                <FormattedMessage
+                  id={`${
+                    !feesPaidFromZigBalance
+                      ? "wallet.withdraw.approximateFee"
+                      : "wallet.withdraw.fee"
+                  }`}
+                />
               </AmountLabel>
               {fee ? (
-                <CoinAmount value={fee.floatFee} />
+                <CoinAmount value={fee.floatFee} coin={feeCoin} />
               ) : (
                 <CircularProgress size={21} style={{ margin: "0 auto" }} />
               )}
@@ -246,11 +283,16 @@ const WalletWithdrawConfirm = ({
               <FormattedMessage id="wallet.withdraw.receive" />
             </AmountLabel>
             {fee ? (
-              <CoinAmount big={true} value={amountReceived} />
+              <CoinAmount big={true} value={amountReceived} coin={coin} />
             ) : (
               <CircularProgress size={21} style={{ margin: "0 auto" }} />
             )}
           </AmountBox>
+          {feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee) && (
+            <StyledAlert severity="warning">
+              <FormattedMessage id="wallet.withdraw.notEnough" />
+            </StyledAlert>
+          )}
           <Box display="flex" flexDirection="row" mt="64px">
             <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
@@ -258,7 +300,10 @@ const WalletWithdrawConfirm = ({
             <Button
               className="bgPurple"
               onClick={check2FA}
-              disabled={amountReceived <= 0}
+              disabled={
+                amountReceived <= 0 ||
+                (feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee))
+              }
               loading={loading}
             >
               <FormattedMessage id="wallet.withdraw.now" />
