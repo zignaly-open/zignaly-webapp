@@ -26,15 +26,17 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import CustomButton from "components/CustomButton";
 import { useForm } from "react-hook-form";
 
-const ListItem = styled.li`
-  color: ${(props) => props.theme.newTheme.secondaryText};
-  margin-bottom: 16px;
+const MetricDetails = styled.div`
+  margin-right: 80px;
 `;
 
-const ItemLabel = styled.span`
+const MetricItem = styled(Typography)`
   font-weight: 600;
-  font-size: 16px;
-  margin-right: 8px;
+`;
+
+const MetricLabel = styled(Typography)`
+  font-weight: 600;
+  color: ${(props) => props.theme.newTheme.secondaryText};
 `;
 
 const ItemValue = styled.span`
@@ -194,6 +196,44 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
                 <SocialIcon type={s.name} />
               </MiniIconLink>
             ))}
+          </Box>
+          <Typography variant="h3">
+            <FormattedMessage id="zigpad.subscriptionInfo" />
+          </Typography>
+          <Box display="flex" mt={2} mb={3}>
+            <MetricDetails>
+              <MetricLabel>
+                <FormattedMessage id="terminal.price" />
+              </MetricLabel>
+              <MetricItem>
+                <NumberFormat
+                  displayType="text"
+                  value={project.price}
+                  prefix={`1 ${project.coin} = `}
+                  suffix=" ZIG"
+                />
+              </MetricItem>
+            </MetricDetails>
+            <MetricDetails>
+              <MetricLabel>
+                <FormattedMessage id="zigpad.offered" />
+              </MetricLabel>
+              <MetricItem>
+                <NumberFormat
+                  displayType="text"
+                  value={project.offeredAmount}
+                  suffix={` ${project.coin}`}
+                />
+              </MetricItem>
+            </MetricDetails>
+            <MetricDetails>
+              <MetricLabel>
+                <FormattedMessage id="zigpad.minContribution" />
+              </MetricLabel>
+              <MetricItem>
+                <NumberFormat displayType="text" value={project.minAmount} suffix={` ZIG`} />
+              </MetricItem>
+            </MetricDetails>
           </Box>
           <Typography variant="h3">
             <FormattedMessage id="zigpad.subscriptionTimeline" />

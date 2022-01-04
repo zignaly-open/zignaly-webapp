@@ -2581,6 +2581,7 @@ class TradeApiClient {
         distributionDate: "2021-01-31T08:02:17-05:00",
         website: "https://test.com",
         whitepaper: "https://test.com",
+        price: "0.01",
       },
       {
         name: "test",
@@ -2595,6 +2596,7 @@ class TradeApiClient {
         distributionDate: "2021-01-31T08:02:17-05:00",
         website: "https://test.com",
         whitepaper: "https://test.com",
+        price: "0.01",
       },
     ];
     // return this.doRequest(`/zigpad/${payload.status}`, null, "GET", 3);

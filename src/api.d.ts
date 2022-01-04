@@ -134,4 +134,5 @@ interface LaunchpadProject {
   endDate: string;
   distributionDate: string;
   socials: Social[];
+  price: string;
 }

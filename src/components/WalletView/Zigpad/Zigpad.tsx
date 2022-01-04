@@ -219,7 +219,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
-            @12 ZIG
+            @{p.price} ZIG
             <Rate>0.81$</Rate>
           </Value>
         ),
