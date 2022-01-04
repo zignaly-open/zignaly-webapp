@@ -41,7 +41,7 @@ const CopyButton = styled(FileCopyOutlined)`
 const QRCodeContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 48px;
+  margin-top: 38px;
 
   ${isMobile(`
     margin: 34px 40px;
