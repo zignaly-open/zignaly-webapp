@@ -13,6 +13,7 @@ import { ErrorOutlineOutlined, FileCopyOutlined } from "@material-ui/icons";
 import { Control } from "./styles";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
+import CoinIcon from "./CoinIcon";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -45,6 +46,12 @@ const QRCodeContainer = styled.div`
   ${isMobile(`
     margin: 34px 40px;
   `)}
+`;
+
+const TypographyToken = styled(Typography)`
+  font-weight: 600;
+  margin-left: 8px;
+  font-size: 18px;
 `;
 
 export const NetworkCautionMessage = ({ network, coin }: { network: string; coin: string }) =>
@@ -119,6 +126,15 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           />
         </Control>
       )}
+      <Control>
+        <Label>
+          <FormattedMessage id="transfer.internal.coin" />
+        </Label>
+        <Box display="flex" alignItems="center" pt="2px">
+          <CoinIcon width={32} height={32} coin={selectedCoin} />
+          <TypographyToken>{selectedCoin}</TypographyToken>
+        </Box>
+      </Control>
       <Control>
         <Label>
           <FormattedMessage id="deposit.network" />
