@@ -808,7 +808,7 @@ signalp.option.checkterms.long: "Long term"
 signalp.option.filterrisk.sub: "From 1 to 5, being 5 the riskier"
 signalp.option.minimumsuccess.sub: "Signals with success rate below this value will be ignored."
 signalp.option.disclaimer: "In order to use this Provider, you need to accept its {disclaimer}!"
-signalp.option.DCA.error: "IF you are accepting DCA/ReBuys signal, this value has to be greater than 1."
+signalp.option.DCA.error: "If you are accepting DCA/ReBuys signal, this value has to be greater than 1."
 signalp.option.minimumsuccess.error: "Minimum allowed success rate is 1."
 signalp.option.disclaimer.error: "You need to accept the disclaimer from this provider."
 
