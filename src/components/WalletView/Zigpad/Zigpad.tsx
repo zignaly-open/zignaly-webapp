@@ -8,23 +8,22 @@ import {
   Tab,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, Title } from "styles/styles";
 import WalletIcon from "images/wallet/wallet.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
-import VaultOfferModal from "./ProjectDetailsModal";
 import styled, { css } from "styled-components";
 import { ArrowBack, ChevronRight, SportsEsports } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
-import VaultMobile from "./VaultMobile";
 import { Rate, Terms } from "../styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
 import ProjectDetailsModal from "./ProjectDetailsModal";
+import ProjectsMobile from "./ProjectsMobile";
 
 const Coin = styled.span`
   color: #65647e;
@@ -253,17 +252,17 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               <StyledTab label={<FormattedMessage id="zigpad.active" />} />
               <StyledTab label={<FormattedMessage id="zigpad.past" />} />
             </StyledTabs>
-            {/* {isMobile ? (
-              <VaultMobile
-                vaults={vaultOffers}
-                onOfferClick={(coin) => setDepositCoin(coin)}
-                balance={walletBalance}
+            {isMobile ? (
+              <ProjectsMobile
+                projects={launchpadProjects}
+                type={tab === 0 ? "active" : "expired"}
+                onProjectClick={setSelectedProject}
               />
-            ) : ( */}
-            <TableLayout>
-              <Table data={data} columns={columns} />
-            </TableLayout>
-            {/* )} */}
+            ) : (
+              <TableLayout>
+                <Table data={data} columns={columns} />
+              </TableLayout>
+            )}
           </>
         ) : (
           <Box display="flex" flex={1} justifyContent="center">

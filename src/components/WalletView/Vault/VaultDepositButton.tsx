@@ -19,6 +19,12 @@ const ButtonStyled = styled(CustomButton)`
   }
 `;
 
+const PledgeButtonStyled = styled(ButtonStyled)`
+  && {
+    width: auto;
+  }
+`;
+
 const ActivatedButton = styled.div`
   min-width: 98px;
   background: rgba(38, 196, 193, 0.28);
@@ -71,8 +77,8 @@ export const PledgeButton = ({ activated, onClick }: PledgeButtonProps) => {
       <FormattedMessage id="zigpad.pledged" />
     </ActivatedButton>
   ) : (
-    <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
+    <PledgeButtonStyled className="textPurple borderPurple" onClick={onClick}>
       <FormattedMessage id="zigpad.pledge" />
-    </ButtonStyled>
+    </PledgeButtonStyled>
   );
 };

@@ -44,11 +44,11 @@ const Perc = styled.div`
 `;
 
 interface RewardsProgressCircleProps {
-  vault: VaultOffer;
+  rewardsTotal: number;
+  rewardsRemaining: number;
 }
 
-const RewardsProgressCircle = ({ vault }: RewardsProgressCircleProps) => {
-  const { rewardsTotal, rewardsRemaining, coinReward } = vault;
+const RewardsProgressCircle = ({ rewardsTotal, rewardsRemaining }: RewardsProgressCircleProps) => {
   const percFilled = ((rewardsTotal - rewardsRemaining) / rewardsTotal) * 100;
   return (
     <CircleContainer>
