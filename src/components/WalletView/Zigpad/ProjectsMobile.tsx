@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import dayjs from "dayjs";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -8,11 +8,14 @@ import { SecondaryText } from "styles/styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
 import RewardsProgressCircle from "../Vault/RewardsProgressCircle";
 import { Coin, Panel } from "../Vault/VaultMobile";
+import { Terms } from "../styles";
+import { ChevronRight } from "@material-ui/icons";
 
-const EarnText = styled.div`
+const TypographyProject = styled(Typography)`
   font-weight: 600;
   margin: 0 16px;
   line-height: 20px;
+  text-align: "center";
 `;
 
 const Label = styled(SecondaryText)`
@@ -45,7 +48,13 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
               rewardsTotal={p.offeredAmount}
               rewardsRemaining={p.offeredAmount - p.distributedAmount}
             />
-            <EarnText>{p.name}</EarnText>
+            <TypographyProject>
+              <div>{p.name}</div>
+              <Terms onClick={() => onProjectClick(p)}>
+                <FormattedMessage id="zigpad.details" />
+                <ChevronRight />
+              </Terms>
+            </TypographyProject>
             <Box flex={1} display="flex" justifyContent="flex-end">
               <PledgeButton onClick={() => onProjectClick(p)} activated={p.coin === "ETH"} />
             </Box>
