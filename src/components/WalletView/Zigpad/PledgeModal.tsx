@@ -2,17 +2,21 @@ import CustomButton from "components/CustomButton";
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
-import { Modal, Title } from "styles/styles";
+import { isMobile, Modal, Title } from "styles/styles";
 import AmountControl from "../AmountControl";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import tradeApi from "services/tradeApiClient";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Button = styled(CustomButton)`
   && {
     min-width: 150px;
     margin-top: 12px;
   }
+
+  ${isMobile(css`
+    width: 100%;
+  `)}
 `;
 
 interface PledgeModalProps {

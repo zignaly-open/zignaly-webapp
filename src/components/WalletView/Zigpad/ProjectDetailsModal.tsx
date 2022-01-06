@@ -3,9 +3,9 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Link, DescriptionOutlined } from "@material-ui/icons";
 import CustomModal from "components/Modal";
 import React, { useState } from "react";
-import { Modal } from "styles/styles";
+import { isMobile, Modal } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import CoinIcon from "../CoinIcon";
@@ -29,6 +29,7 @@ const MetricDetails = styled.div`
 
 const MetricItem = styled(Typography)`
   font-weight: 600;
+  margin-bottom: 16px;
 `;
 
 const MetricLabel = styled(Typography)`
@@ -72,24 +73,37 @@ const MiniIconLink = styled.a.attrs(() => ({
 
 const StyledModal = styled(Modal)`
   align-items: flex-start;
+
+  ${isMobile(css`
+    margin-bottom: 40px;
+  `)}
 `;
 
 const StyledTimeline = styled(Timeline)`
-  width: 0;
+  width: 100%;
   padding: 0;
+
+  .MuiTimelineItem-missingOppositeContent:before {
+    flex: initial;
+  }
 `;
 
 const TimelineLabel = styled.div`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-size: 16px;
   margin-bottom: 6px;
-  width: 400px;
 `;
 
 const HtmlContent = styled(Typography)`
   img {
     max-width: 90%;
   }
+
+  ${isMobile(css`
+    img {
+      max-width: 100%;
+    }
+  `)}
 `;
 
 const Button = styled(CustomButton)`
@@ -98,6 +112,27 @@ const Button = styled(CustomButton)`
   && {
     min-width: 150px;
   }
+
+  ${isMobile(css`
+    margin: 16px 0px 7px;
+
+    && {
+      width: auto;
+    }
+  `)}
+`;
+
+const MetricsBox = styled(Box)`
+  ${isMobile(css`
+    flex-direction: column;
+  `)}
+`;
+
+const CoinBox = styled(Box)`
+  ${isMobile(css`
+    flex-direction: column;
+    align-items: flex-start;
+  `)}
 `;
 
 // Force apply mui heading styles to html content
@@ -143,7 +178,7 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
       persist={false}
       size="large"
       state={open}
-      style={{ width: "1000px" }}
+      style={!isMobile ? { width: "1000px" } : null}
     >
       <CustomModal
         onClose={() => showPledgeModal(false)}
@@ -154,7 +189,7 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
         <PledgeModal project={project} />
       </CustomModal>
       <StyledModal>
-        <Box display="flex" justifyContent="space-between" width={1} mb={2}>
+        <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
           <Box display="flex" alignItems="center">
             <CoinIcon width={64} height={64} coin={coin} />
             <TitleDesc>{name}</TitleDesc>
@@ -163,7 +198,7 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
           <Button className="bgPurple" onClick={() => showPledgeModal(true)}>
             <FormattedMessage id="zigpad.contribute" />
           </Button>
-        </Box>
+        </CoinBox>
         <Chip
           style={{ marginBottom: "12px" }}
           size="small"
@@ -188,7 +223,7 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
         <Typography variant="h3">
           <FormattedMessage id="zigpad.subscriptionInfo" />
         </Typography>
-        <Box display="flex" mt={2} mb={4}>
+        <MetricsBox display="flex" mt={2} mb={4}>
           <MetricDetails>
             <MetricLabel>
               <FormattedMessage id="terminal.price" />
@@ -219,10 +254,10 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
               <FormattedMessage id="zigpad.minContribution" />
             </MetricLabel>
             <MetricItem>
-              <NumberFormat displayType="text" value={project.minAmount} suffix={` ZIG`} />
+              <NumberFormat displayType="text" value={project.minAmount} suffix=" ZIG" />
             </MetricItem>
           </MetricDetails>
-        </Box>
+        </MetricsBox>
         <Typography variant="h3">
           <FormattedMessage id="zigpad.subscriptionTimeline" />
         </Typography>
