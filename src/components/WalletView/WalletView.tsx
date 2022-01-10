@@ -404,6 +404,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           state={true}
         >
           <WalletWithdrawView
+            setPath={setPath}
             coins={coins}
             balance={walletBalance ? walletBalance[coinParam] || {} : null}
             onClose={() => setPath("")}

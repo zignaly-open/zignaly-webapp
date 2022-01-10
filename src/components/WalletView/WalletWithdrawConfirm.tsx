@@ -140,6 +140,7 @@ interface WalletWithdrawConfirmProps {
   zigCoin: WalletCoin;
   onClose: () => void;
   onCancel: () => void;
+  setPath: (path: string) => void;
 }
 
 const WalletWithdrawConfirm = ({
@@ -152,9 +153,10 @@ const WalletWithdrawConfirm = ({
   coin,
   zigCoin,
   memo,
+  setPath,
 }: WalletWithdrawConfirmProps) => {
   const { walletBalance } = useContext(PrivateAreaContext);
-  const zigBalance = walletBalance?.ZIG && walletBalance.ZIG[network].availableBalance;
+  const zigBalance = (walletBalance?.ZIG && walletBalance.ZIG[network].availableBalance) || 0;
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
@@ -296,8 +298,17 @@ const WalletWithdrawConfirm = ({
             )}
           </AmountBox>
           {feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee) && (
-            <StyledAlert severity="warning">
-              <FormattedMessage id="wallet.withdraw.notEnough" />
+            <StyledAlert severity="error">
+              <Box display="flex" flexDirection="column">
+                <FormattedMessage id="wallet.withdraw.notEnough" />
+                <CustomButton
+                  style={{ minHeight: "auto" }}
+                  className="textPurple"
+                  onClick={() => setPath("deposit/ZIG")}
+                >
+                  <FormattedMessage id="accounts.deposit" />
+                </CustomButton>
+              </Box>
             </StyledAlert>
           )}
           <Box display="flex" flexDirection="row" mt="64px">
