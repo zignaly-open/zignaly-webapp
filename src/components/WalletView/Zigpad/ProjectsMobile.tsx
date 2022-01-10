@@ -10,6 +10,7 @@ import RewardsProgressCircle from "../Vault/RewardsProgressCircle";
 import { Coin, Panel } from "../Vault/VaultMobile";
 import { Terms } from "../styles";
 import { ChevronRight } from "@material-ui/icons";
+import CoinIcon from "../CoinIcon";
 
 const TypographyProject = styled(Typography)`
   font-weight: 600;
@@ -44,10 +45,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
       {projects.map((p) => (
         <Panel key={p.name}>
           <Box display="flex" alignItems="center">
-            <RewardsProgressCircle
-              rewardsTotal={p.offeredAmount}
-              rewardsRemaining={p.offeredAmount - p.distributedAmount}
-            />
+            <CoinIcon width={32} height={32} coin={p.coin} />
             <TypographyProject>
               <div>{p.name}</div>
               <Terms onClick={() => onProjectClick(p)}>
