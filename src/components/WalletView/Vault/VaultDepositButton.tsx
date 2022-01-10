@@ -21,7 +21,9 @@ const ButtonStyled = styled(CustomButton)`
 
 const PledgeButtonStyled = styled(ButtonStyled)`
   && {
-    width: auto;
+    ${isMobile(css`
+      width: auto;
+    `)}
   }
 `;
 
