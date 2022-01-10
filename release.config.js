@@ -18,7 +18,7 @@ module.exports = {
         // },
       },
     ],
-    "@semantic-release/release-notes-generator",
+    // "@semantic-release/release-notes-generator",
     [
       "@semantic-release/github",
       {
@@ -32,17 +32,6 @@ module.exports = {
         prepareCmd:
           'rm -rf .semvernext && echo ${nextRelease.version} >> .semvernext && echo "\\"${nextRelease.version}\\"" > public/version.json && npm run build:package',
         publishCmd: "mv release.tar.gz zignaly-webapp2-${nextRelease.version}.tar.gz",
-      },
-    ],
-    [
-      "semantic-release-jira-releases",
-      {
-        projectId: "ZIG",
-        releaseNameTemplate: "webapp-${version}",
-        jiraHost: "zignaly.atlassian.net",
-        ticketPrefixes: ["ZIG"],
-        released: true,
-        setReleaseDate: true,
       },
     ],
   ],

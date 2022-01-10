@@ -26,7 +26,7 @@ import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
 import NumberFormat from "react-number-format";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
-import { ascendexUrl, mexcUrl } from "utils/affiliateURLs";
+import { ascendexUrl, gateioUrl, mexcUrl } from "utils/affiliateURLs";
 import { colors } from "services/theme";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
@@ -366,6 +366,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <a href={mexcUrl} rel="noreferrer" target="_blank">
                 MEXC &gt;
               </a>
+              <a href={gateioUrl} rel="noreferrer" target="_blank">
+                Gate.io &gt;
+              </a>
             </TooltipContainer>
           }
         >
@@ -401,6 +404,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           state={true}
         >
           <WalletWithdrawView
+            setPath={setPath}
             coins={coins}
             balance={walletBalance ? walletBalance[coinParam] || {} : null}
             onClose={() => setPath("")}

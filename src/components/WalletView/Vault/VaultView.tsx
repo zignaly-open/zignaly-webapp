@@ -177,6 +177,11 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
               tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
             },
             {
+              Header: intl.formatMessage({ id: "vault.paymentStarts" }),
+              accessor: "distributionDate",
+              tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
+            },
+            {
               Header: intl.formatMessage({ id: "vault.ended" }),
               accessor: "endDate",
             },
@@ -269,6 +274,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
             {isMobile ? (
               <VaultMobile
                 vaults={vaultOffers}
+                type={tab === 0 ? "active" : "expired"}
                 onOfferClick={(coin) => setDepositCoin(coin)}
                 balance={walletBalance}
               />

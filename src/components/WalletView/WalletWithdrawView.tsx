@@ -3,16 +3,8 @@ import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Input, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
-import {
-  Box,
-  CircularProgress,
-  FormControl,
-  FormHelperText,
-  OutlinedInput,
-} from "@material-ui/core";
-import CustomSelect from "components/CustomSelect";
-import { NetworkCautionMessage } from "./WalletDepositView";
-import { Control, StyledCustomSelect } from "./styles";
+import { Box, CircularProgress, FormControl, FormHelperText } from "@material-ui/core";
+import { Control } from "./styles";
 import CustomButton from "components/CustomButton";
 import WalletWithdrawConfirm from "./WalletWithdrawConfirm";
 import { useForm } from "react-hook-form";
@@ -35,9 +27,10 @@ interface WalletDepositViewProps {
   coin: string;
   balance: Record<string, BalanceData>;
   onClose: () => void;
+  setPath: (path: string) => void;
 }
 
-const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositViewProps) => {
+const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData
     ? coinData.networks.map((n) => ({
@@ -48,7 +41,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = coin === "ZIG" && network === "ETH";
+  const withdrawDisabled = false;
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -84,8 +77,10 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose }: WalletDepositView
         networkName={networkOptions.find((o) => o.value === network).label}
         amount={withdrawData.amount}
         coin={coinData}
+        zigCoin={coins?.ZIG}
         onClose={onClose}
         onCancel={() => setWithdrawData(null)}
+        setPath={setPath}
       />
     );
   }
