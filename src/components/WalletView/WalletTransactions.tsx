@@ -147,12 +147,36 @@ const WalletTransactions = () => {
       label: intl.formatMessage({ id: "wallet.type.deposit" }),
     },
     {
-      value: "internal",
-      label: intl.formatMessage({ id: "wallet.type.internal" }),
-    },
-    {
       value: "withdraw",
       label: intl.formatMessage({ id: "wallet.type.withdraw" }),
+    },
+    {
+      value: "cashback_volume",
+      label: intl.formatMessage({ id: "wallet.type.cashbackvolume" }),
+    },
+    {
+      value: "coin_salvage",
+      label: intl.formatMessage({ id: "wallet.type.coinsalvage" }),
+    },
+    {
+      value: "compensation",
+      label: intl.formatMessage({ id: "wallet.type.compensation" }),
+    },
+    {
+      value: "payment",
+      label: intl.formatMessage({ id: "wallet.type.payment" }),
+    },
+    {
+      value: "reward",
+      label: intl.formatMessage({ id: "wallet.type.reward" }),
+    },
+    {
+      value: "success_fee",
+      label: intl.formatMessage({ id: "wallet.type.successfee" }),
+    },
+    {
+      value: "withdraw_fee",
+      label: intl.formatMessage({ id: "wallet.type.withdrawfee" }),
     },
   ];
 
