@@ -46,8 +46,8 @@ const Withdraw = () => {
     setSelectedNetwork,
   } = useAssetsSelect(selectedAccount.internalId, selectedAccount.exchangeType, true, updatedAt);
 
-  const onSuccess = () => {
-    performWithdraw(formData);
+  const onSuccess = (code: string) => {
+    performWithdraw({ ...formData, code });
   };
 
   /**
@@ -55,6 +55,7 @@ const Withdraw = () => {
    * @property {String} address
    * @property {String} [memo]
    * @property {String} amount
+   * @property {String} [code]
    */
 
   /**
@@ -70,6 +71,7 @@ const Withdraw = () => {
       tag: data.memo,
       address: data.address,
       amount: parseFloat(data.amount),
+      code: data.code,
     };
 
     tradeApi
