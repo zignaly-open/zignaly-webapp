@@ -269,6 +269,16 @@ const VaultListItem = styled(Box)`
   cursor: pointer;
 `;
 
+const SubTitleSmall = styled(SubTitle)`
+  margin-bottom: 10px;
+`;
+
+const LaunchpadBox = styled(Box)`
+  ${isMobile(css`
+    margin-bottom: 0;
+  `)}
+`;
+
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -520,12 +530,12 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         </PanelItem>
         <Divider />
         <PanelItem>
-          <SubTitle>
+          <SubTitleSmall>
             <FormattedMessage id="wallet.staking" />
-          </SubTitle>
+          </SubTitleSmall>
           {vaultOffers && (
             <Box mt={1} display="flex" flexDirection="column">
-              {vaultOffers.slice(0, 3).map((v) => (
+              {vaultOffers.slice(0, 2).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
                   <VaultListItem
                     display="flex"
@@ -554,18 +564,21 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </VaultButton>
             </Box>
           )}
+          <SubTitleSmall>
+            <FormattedMessage id="zigpad.title" />
+          </SubTitleSmall>
           {launchpadProjects && (
-            <Box mt={1} display="flex" flexDirection="column">
-              {launchpadProjects.slice(0, 1).map((v) => (
-                <Box display="flex" key={v.coin} flexDirection="column">
+            <LaunchpadBox mt={1} mb="-22px" display="flex" flexDirection="column">
+              {launchpadProjects.slice(0, 1).map((p) => (
+                <Box display="flex" key={p.coin} flexDirection="column">
                   <VaultListItem
                     display="flex"
                     alignItems="center"
-                    onClick={() => setSelectedVaultOffer(v)}
+                    onClick={() => setSelectedVaultOffer(p)}
                   >
                     <Box display="flex">
-                      <CoinIcon coin={v.coin} width={20} height={20} />
-                      <NeutralText>{v.name}</NeutralText>
+                      <CoinIcon coin={p.coin} width={20} height={20} />
+                      <NeutralText>{p.name}</NeutralText>
                     </Box>
                     <ChevronRightStyled />
                   </VaultListItem>
@@ -578,7 +591,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   values={{ count: launchpadProjects.length }}
                 />
               </VaultButton>
-            </Box>
+            </LaunchpadBox>
           )}
         </PanelItem>
       </StyledPanel>
