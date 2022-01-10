@@ -78,7 +78,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
-  const [depositCoin, setDepositCoin] = useState<string>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);

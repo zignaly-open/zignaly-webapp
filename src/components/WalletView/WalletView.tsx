@@ -35,6 +35,7 @@ import WalletCoins from "./WalletCoins";
 import { Rate } from "./styles";
 import CoinIcon from "./CoinIcon";
 import VaultOfferModal from "./Vault/VaultOfferModal";
+import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -296,6 +297,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
+  const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -424,6 +426,13 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           onClose={() => setSelectedVaultOffer(null)}
           open={true}
           vault={selectedVaultOffer}
+        />
+      )}
+      {selectedProject && (
+        <ProjectDetailsModal
+          onClose={() => setSelectedProject(null)}
+          open={true}
+          project={selectedProject}
         />
       )}
       <Title>
@@ -574,7 +583,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultListItem
                     display="flex"
                     alignItems="center"
-                    onClick={() => setSelectedVaultOffer(p)}
+                    onClick={() => setSelectedProject(p)}
                   >
                     <Box display="flex">
                       <CoinIcon coin={p.coin} width={20} height={20} />
