@@ -104,6 +104,11 @@ const StyledPanel = styled.div`
   border-radius: 8px;
 `;
 
+const TypographyValue = styled(Typography)`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
 const CoinAmount = ({
   value,
   big = false,
@@ -248,12 +253,14 @@ const WalletWithdrawConfirm = ({
           </Label>
           <Box display="flex" mt="16px" alignItems="center">
             <img width={64} height={64} src={getChainIcon(network)} />
-            <Typography style={{ fontSize: "24px", marginLeft: "16px" }}>{networkName}</Typography>
+            <TypographyValue style={{ marginLeft: "16px" }}>{networkName}</TypographyValue>
           </Box>
           <Label style={{ marginTop: "24px" }}>
             <FormattedMessage id="wallet.withdraw.address" />
           </Label>
-          <StyledPanel>{address}</StyledPanel>
+          <StyledPanel>
+            <TypographyValue>{address}</TypographyValue>
+          </StyledPanel>
           <Box display="flex" mt="64px" mb="16px">
             <AmountBox flex={2}>
               <AmountLabel>
