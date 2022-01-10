@@ -126,13 +126,11 @@ const Deposit = () => {
                 </Box>
                 {selectedAsset && (
                   <Box className="networkColumn">
-                    {selectedAsset.networks.length > 1 && (
-                      <NetworksToggleGroup
-                        networks={selectedAsset.networks.map((n) => n.name)}
-                        selectedNetwork={selectedNetwork && selectedNetwork.name}
-                        setSelectedNetwork={setSelectedNetwork}
-                      />
-                    )}
+                    <NetworksToggleGroup
+                      networks={selectedAsset.networks.map((n) => n.name)}
+                      selectedNetwork={selectedNetwork && selectedNetwork.name}
+                      setSelectedNetwork={setSelectedNetwork}
+                    />
                     <Typography className="addressLabel" variant="body1">
                       {selectedAssetName} <FormattedMessage id="deposit.address" />
                     </Typography>
