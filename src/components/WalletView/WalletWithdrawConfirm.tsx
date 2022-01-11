@@ -166,6 +166,7 @@ const WalletWithdrawConfirm = ({
   // Withdrawing other coins than chain coins needs ZIG
   const feesPaidFromZigBalance = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
   const feeCoin = feesPaidFromZigBalance ? zigCoin : coin;
+  const notEnoughZIG = feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee);
 
   let amountReceived = 0;
   if (fee) {
@@ -287,17 +288,19 @@ const WalletWithdrawConfirm = ({
               )}
             </AmountBox>
           </Box>
-          <AmountBox primary>
-            <AmountLabel big={true}>
-              <FormattedMessage id="wallet.withdraw.receive" />
-            </AmountLabel>
-            {fee ? (
-              <CoinAmount big={true} value={amountReceived} coin={coin} />
-            ) : (
-              <CircularProgress size={21} style={{ margin: "0 auto" }} />
-            )}
-          </AmountBox>
-          {feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee) && (
+          {!notEnoughZIG && (
+            <AmountBox primary>
+              <AmountLabel big={true}>
+                <FormattedMessage id="wallet.withdraw.receive" />
+              </AmountLabel>
+              {fee ? (
+                <CoinAmount big={true} value={amountReceived} coin={coin} />
+              ) : (
+                <CircularProgress size={21} style={{ margin: "0 auto" }} />
+              )}
+            </AmountBox>
+          )}
+          {notEnoughZIG && (
             <StyledAlert severity="error">
               <Box display="flex" flexDirection="column">
                 <FormattedMessage id="wallet.withdraw.notEnough" />
@@ -307,6 +310,7 @@ const WalletWithdrawConfirm = ({
                   onClick={() => setPath("deposit/ZIG")}
                 >
                   <FormattedMessage id="accounts.deposit" />
+                  &nbsp;ZIG
                 </CustomButton>
               </Box>
             </StyledAlert>
@@ -318,10 +322,7 @@ const WalletWithdrawConfirm = ({
             <Button
               className="bgPurple"
               onClick={check2FA}
-              disabled={
-                amountReceived <= 0 ||
-                (feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee))
-              }
+              disabled={amountReceived <= 0 || notEnoughZIG}
               loading={loading}
             >
               <FormattedMessage id="wallet.withdraw.now" />
