@@ -164,18 +164,19 @@ const WalletWithdrawConfirm = ({
   const userData = useStoreUserData();
   const [twoFAModal, showTwoFAModal] = useState(false);
   // Withdrawing other coins than chain coins needs ZIG
-  const feesPaidFromZigBalance = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
-  const feeCoin = feesPaidFromZigBalance ? zigCoin : coin;
-  const notEnoughZIG = feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee);
+  // const feesPaidFromZigBalance = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
+  // const feeCoin = feesPaidFromZigBalance ? zigCoin : coin;
+  // const notEnoughZIG = feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee);
+  const amountReceived = fee ? parseFloat(amount) - parseFloat(fee.floatFee) : 0;
 
-  let amountReceived = 0;
-  if (fee) {
-    if (feesPaidFromZigBalance) {
-      amountReceived = parseFloat(amount);
-    } else if (parseFloat(amount) > parseFloat(fee.floatFee)) {
-      amountReceived = parseFloat(amount) - parseFloat(fee.floatFee);
-    }
-  }
+  // let amountReceived = 0;
+  // if (fee) {
+  //   if (feesPaidFromZigBalance) {
+  //     amountReceived = parseFloat(amount);
+  //   } else if (parseFloat(amount) > parseFloat(fee.floatFee)) {
+  //     amountReceived = parseFloat(amount) - parseFloat(fee.floatFee);
+  //   }
+  // }
 
   const loadFee = () => {
     if (!done) {
@@ -273,48 +274,25 @@ const WalletWithdrawConfirm = ({
             </AmountBox>
             <AmountBox flex={1}>
               <AmountLabel>
-                <FormattedMessage
-                  id={`${
-                    !feesPaidFromZigBalance
-                      ? "wallet.withdraw.approximateFee"
-                      : "wallet.withdraw.fee"
-                  }`}
-                />
+                <FormattedMessage id="wallet.withdraw.fee" />
               </AmountLabel>
               {fee ? (
-                <CoinAmount value={fee.floatFee} coin={feeCoin} />
+                <CoinAmount value={fee.floatFee} coin={coin} />
               ) : (
                 <CircularProgress size={21} style={{ margin: "0 auto" }} />
               )}
             </AmountBox>
           </Box>
-          {!notEnoughZIG && (
-            <AmountBox primary>
-              <AmountLabel big={true}>
-                <FormattedMessage id="wallet.withdraw.receive" />
-              </AmountLabel>
-              {fee ? (
-                <CoinAmount big={true} value={amountReceived} coin={coin} />
-              ) : (
-                <CircularProgress size={21} style={{ margin: "0 auto" }} />
-              )}
-            </AmountBox>
-          )}
-          {notEnoughZIG && (
-            <StyledAlert severity="error">
-              <Box display="flex" flexDirection="column">
-                <FormattedMessage id="wallet.withdraw.notEnough" />
-                <CustomButton
-                  style={{ minHeight: "auto" }}
-                  className="textPurple"
-                  onClick={() => setPath("deposit/ZIG")}
-                >
-                  <FormattedMessage id="accounts.deposit" />
-                  &nbsp;ZIG
-                </CustomButton>
-              </Box>
-            </StyledAlert>
-          )}
+          <AmountBox primary>
+            <AmountLabel big={true}>
+              <FormattedMessage id="wallet.withdraw.receive" />
+            </AmountLabel>
+            {fee ? (
+              <CoinAmount big={true} value={amountReceived} coin={coin} />
+            ) : (
+              <CircularProgress size={21} style={{ margin: "0 auto" }} />
+            )}
+          </AmountBox>
           <Box display="flex" flexDirection="row" mt="64px">
             <Button className="textPurple borderPurple" onClick={onCancel}>
               <FormattedMessage id="accounts.back" />
@@ -322,7 +300,7 @@ const WalletWithdrawConfirm = ({
             <Button
               className="bgPurple"
               onClick={check2FA}
-              disabled={amountReceived <= 0 || notEnoughZIG}
+              disabled={amountReceived <= 0}
               loading={loading}
             >
               <FormattedMessage id="wallet.withdraw.now" />
