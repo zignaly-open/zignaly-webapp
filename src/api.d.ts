@@ -116,3 +116,7 @@ interface GetInternalTransfersHistory extends PaginationReq {
   exchangeInternalId: string;
   type: string;
 }
+
+interface TotalSavings {
+  total: number;
+}
