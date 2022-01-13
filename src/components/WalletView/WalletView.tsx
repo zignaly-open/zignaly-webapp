@@ -292,6 +292,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
+  const [totalSavings, setTotalSavings] = useState(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -321,6 +322,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
       tradeApi.getVaultOffers({ status: "active" }).then((response) => {
         setVaultOffers(response);
+      });
+
+      tradeApi.getTotalSavings().then((response) => {
+        setTotalSavings(response.total);
       });
     }
   }, [isOpen]);
@@ -468,7 +473,11 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 <FormattedMessage id="wallet.rewards" />
               </SubTitle>
               <TextMain>
-                <NumberFormat value={10000} thousandSeparator={true} displayType="text" />
+                {totalSavings !== null ? (
+                  <NumberFormat value={totalSavings} thousandSeparator={true} displayType="text" />
+                ) : (
+                  "-"
+                )}
                 <ZigBig>ZIG</ZigBig>
               </TextMain>
               <TextSaving>
