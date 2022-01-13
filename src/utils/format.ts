@@ -148,3 +148,7 @@ export const FormatedDateTime = (date) =>
   //     year="numeric"
   //   />
   moment(date).format("YYYY/MM/DD HH:mm");
+
+export const floatify = (number: number) => {
+  return parseFloat(number.toFixed(10));
+};

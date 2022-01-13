@@ -700,6 +700,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} tag
  * @property {string} address
  * @property {number} amount
+ * @property {string} [code]
  */
 
 /**

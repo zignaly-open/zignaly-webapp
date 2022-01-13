@@ -49,9 +49,10 @@ interface VaultMobileProps {
   vaults: VaultOffer[];
   balance: WalletBalance;
   onOfferClick: (coin: string) => void;
+  type: string;
 }
 
-const VaultMobile = ({ vaults, balance, onOfferClick }: VaultMobileProps) => {
+const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) => {
   return (
     <Box>
       {vaults.map((v) => (
@@ -64,11 +65,13 @@ const VaultMobile = ({ vaults, balance, onOfferClick }: VaultMobileProps) => {
                 values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
               />
             </EarnText>
-            <VaultDepositButton
-              vault={v}
-              balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
-              onClick={() => onOfferClick(v.coin)}
-            />
+            {type === "active" && (
+              <VaultDepositButton
+                vault={v}
+                balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
+                onClick={() => onOfferClick(v.coin)}
+              />
+            )}
           </Box>
           <Box display="flex" justifyContent="space-between" mt="8px">
             <div>
