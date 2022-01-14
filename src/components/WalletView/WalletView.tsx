@@ -84,6 +84,7 @@ const NeutralText = styled(Typography)`
   font-size: 12px;
   margin-left: 10px;
   font-weight: 500;
+  white-space: nowrap;
 `;
 
 const Button = styled(CustomButton)`
@@ -130,7 +131,7 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
-  margin-bottom: -6px;
+  margin-bottom: -21px;
   position: absolute;
   bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
