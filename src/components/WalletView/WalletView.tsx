@@ -2,8 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import InfoIcon from "images/wallet/info.svg";
-import TrophyIcon from "images/wallet/trophy.inline.svg";
-import TrophyDarkIcon from "images/wallet/trophy-dark.inline.svg";
+import RewardsIcon from "images/wallet/rewards.inline.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
@@ -45,11 +44,12 @@ const CategIconStyled = styled.img`
   `)}
 `;
 
-const TrophyIconStyled = styled(CategIconStyled).attrs(({ theme }) => ({
-  as: theme.palette.type === "dark" ? TrophyDarkIcon : TrophyIcon,
+const RewardIconStyled = styled(CategIconStyled).attrs(() => ({
+  as: RewardsIcon,
 }))`
-  min-width: 64px;
-  min-height: 64px;
+  margin: 39px 14px 0 0;
+  width: 48px;
+  height: 48px;
 `;
 
 const StyledPanel = styled(Panel)`
@@ -96,8 +96,14 @@ const TextMain = styled(Typography)`
   /* color: #9ca3af; */
   font-size: 32px;
   font-weight: 500;
-  /* line-height: 40px; */
   letter-spacing: 0.66px;
+`;
+
+const TextSaving = styled(Typography)`
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin: 6px 0 10px;
 `;
 
 const Divider = styled.span`
@@ -229,6 +235,7 @@ const SwitchLabel = styled.span`
   letter-spacing: 0.33px;
   display: flex;
   align-items: center;
+  margin-left: 11px;
 
   ${(props) =>
     props.enabled &&
@@ -238,7 +245,7 @@ const SwitchLabel = styled.span`
 `;
 
 const StyledSwitch = styled(Switch)`
-  margin: 8px 0;
+  margin-left: 4px;
 
   .MuiSwitch-switchBase.Mui-checked {
     color: ${({ theme }) => theme.newTheme.green};
@@ -247,13 +254,6 @@ const StyledSwitch = styled(Switch)`
   .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
     background-color: ${({ theme }) => theme.newTheme.green};
   }
-`;
-
-const FeeLine = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 3px;
 `;
 
 const HeightFiller = styled.div`
@@ -298,6 +298,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const rateZIG = coins?.ZIG.usdPrice;
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
+  const [totalSavings, setTotalSavings] = useState(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -331,6 +332,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
       tradeApi.getLaunchpadProjects({ status: "active" }).then((response) => {
         setLaunchpadProjects(response);
+      });
+
+      tradeApi.getTotalSavings().then((response) => {
+        setTotalSavings(response.total);
       });
     }
   }, [isOpen]);
@@ -414,6 +419,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           state={true}
         >
           <WalletWithdrawView
+            setPath={setPath}
             coins={coins}
             balance={walletBalance ? walletBalance[coinParam] || {} : null}
             onClose={() => setPath("")}
@@ -476,22 +482,37 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </Box>
         </PanelItem>
         <Divider />
-        <PanelItem row>
-          <TrophyIconStyled />
-          <Box display="flex" flexDirection="column">
-            <SubTitle>
-              <FormattedMessage id="wallet.rewards" />
-            </SubTitle>
-            <TextMain>
-              <FormattedMessage id="wallet.fees.title" />
-            </TextMain>
+        <PanelItem>
+          <Box display="flex">
+            <RewardIconStyled />
+            <Box display="flex" flexDirection="column">
+              <SubTitle>
+                <FormattedMessage id="wallet.rewards" />
+              </SubTitle>
+              <TextMain>
+                {totalSavings !== null ? (
+                  <NumberFormat value={totalSavings} thousandSeparator={true} displayType="text" />
+                ) : (
+                  "-"
+                )}
+                <ZigBig>ZIG</ZigBig>
+              </TextMain>
+              <TextSaving>
+                <FormattedMessage id="wallet.saving.title" />
+              </TextSaving>
+            </Box>
+          </Box>
+          <div>
             <FormControlLabel
               control={<StyledSwitch checked={payFeeWithZig} onChange={onPayFeeChange} />}
               label={
                 <SwitchLabel enabled={payFeeWithZig}>
-                  <FormattedMessage
-                    id={payFeeWithZig ? "wallet.fees.enabled" : "wallet.fees.zig"}
-                  />
+                  <SecondaryText noWrap>
+                    <FormattedMessage id="wallet.fees.discount" />
+                  </SecondaryText>
+                  <ValueBig>
+                    <FormattedMessage id="wallet.fees.min" values={{ perc: 6 }} />
+                  </ValueBig>
                   <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
                     <div>
                       <StyledInfoIcon src={InfoIcon} width={24} height={24} />
@@ -506,11 +527,12 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               }
               label={
                 <SwitchLabel enabled={tradingFeeDiscount}>
-                  <FormattedMessage
-                    id={
-                      tradingFeeDiscount ? "wallet.fees.cashback.enabled" : "wallet.fees.cashback"
-                    }
-                  />
+                  <SecondaryText noWrap>
+                    <FormattedMessage id="wallet.fees.volume" />
+                  </SecondaryText>
+                  <ValueBig>
+                    <FormattedMessage id="wallet.fees.min" values={{ perc: 15 }} />
+                  </ValueBig>
                   <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
                     <div>
                       <StyledInfoIcon src={InfoIcon} width={24} height={24} />
@@ -519,23 +541,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 </SwitchLabel>
               }
             />
-            <FeeLine>
-              <SecondaryText noWrap>
-                <FormattedMessage id="wallet.fees.discount" />
-              </SecondaryText>
-              <ValueBig>
-                <FormattedMessage id="wallet.fees.min" values={{ perc: 6 }} />
-              </ValueBig>
-            </FeeLine>
-            <FeeLine>
-              <SecondaryText noWrap>
-                <FormattedMessage id="wallet.fees.volume" />
-              </SecondaryText>
-              <ValueBig>
-                <FormattedMessage id="wallet.fees.min" values={{ perc: 15 }} />
-              </ValueBig>
-            </FeeLine>
-          </Box>
+          </div>
         </PanelItem>
         <Divider />
         <PanelItem>

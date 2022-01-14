@@ -97,6 +97,7 @@ interface InternalTransfersHistory {
   from: string;
   fromExchangeInternalId: string;
   fromExchangeName: string;
+  fromExchangeInternalName: string;
   processedAt: number;
   providerId: string;
   providerName: string;
@@ -105,6 +106,7 @@ interface InternalTransfersHistory {
   to: string;
   toExchangeInternalId: string;
   toExchangeName: string;
+  toExchangeInternalName: string;
   transferType: string;
   txId: string;
   type: string;
@@ -135,4 +137,7 @@ interface LaunchpadProject {
   distributionDate: string;
   socials: Social[];
   price: string;
+}
+interface TotalSavings {
+  total: number;
 }

@@ -151,3 +151,7 @@ export const FormatedDateTime = (date) =>
 
 export const formatUTC = (date: string) =>
   dayjs(date, "YYYY-MM-DD").format("MMMM DD, YYYY hh:mm A UTC");
+
+export const floatify = (number: number) => {
+  return parseFloat(number.toFixed(10));
+};

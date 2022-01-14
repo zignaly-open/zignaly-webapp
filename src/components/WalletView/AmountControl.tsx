@@ -12,6 +12,7 @@ import {
 import CustomNumberInput from "components/Forms/CustomNumberInput";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
+import { floatify } from "utils/format";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -107,7 +108,7 @@ const AmountControl = ({
             </SecondaryText>
             <BalanceLabel>
               <NumberFormat
-                value={lockedBalance}
+                value={floatify(lockedBalance)}
                 displayType="text"
                 thousandSeparator={true}
                 decimalScale={decimals}

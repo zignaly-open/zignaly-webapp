@@ -2601,6 +2601,17 @@ class TradeApiClient {
     ];
     // return this.doRequest(`/zigpad/${payload.status}`, null, "GET", 3);
   }
+
+  /**
+   * Get ZIG total savings
+   *
+   * @returns {Promise<TotalSavings>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getTotalSavings() {
+    return this.doRequest("/total-savings", null, "GET", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class
