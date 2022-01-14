@@ -130,6 +130,7 @@ interface LaunchpadProject {
   whitepaper: string;
   category: string;
   minAmount: number;
+  maxAmount: number;
   offeredAmount: number;
   distributedAmount: number;
   startDate: string;

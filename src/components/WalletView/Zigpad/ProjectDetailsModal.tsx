@@ -257,6 +257,14 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
               <NumberFormat displayType="text" value={project.minAmount} suffix=" ZIG" />
             </MetricItem>
           </MetricDetails>
+          <MetricDetails>
+            <MetricLabel>
+              <FormattedMessage id="zigpad.maxContribution" />
+            </MetricLabel>
+            <MetricItem>
+              <NumberFormat displayType="text" value={project.maxAmount} suffix=" ZIG" />
+            </MetricItem>
+          </MetricDetails>
         </MetricsBox>
         <Typography variant="h3">
           <FormattedMessage id="zigpad.subscriptionTimeline" />

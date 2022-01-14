@@ -2555,12 +2555,25 @@ class TradeApiClient {
         name: "Test Project",
         shortDescription: "Lorem ipsum dolor sit amet, consectetur",
         details:
-          "<h3>Project Details</h3><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis obcaecati tenetur iure eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut!</p><p>Impedit sit sunt quaerat, odit, tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque error repudiandae fuga? Ipsa laudantium molestias eos sapiente officiis modi at sunt excepturi expedita sint? Sed quibusdam recusandae alias error harum maxime adipisci amet laborum.</p><h3>Another Title</h3><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi</p><h3>Tokenomic</h3><img src='https://i.imgur.com/FA4RSEE.png'/>",
-        // details: [
-        //   {
-        //     title:
-        //   },
-        // ],
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+        highlights:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
+        distribution: [
+          {
+            label: "Team",
+            value: 50,
+          },
+          {
+            label: "Test",
+            value: 50,
+          },
+        ],
+        tokenomic: {
+          hardCap: 1000000,
+          supplyTotalCap: 4000000,
+          supplyInitial: 20.1,
+          chain: "BEP20",
+        },
         socials: [
           {
             url: "https://twitter.com/fcporto",
@@ -2574,6 +2587,7 @@ class TradeApiClient {
         coin: "BTC",
         category: "gaming",
         minAmount: 0.1,
+        maxAmount: 10,
         offeredAmount: 100,
         distributedAmount: 1,
         startDate: "2021-01-15T08:02:17-05:00",
@@ -2581,7 +2595,7 @@ class TradeApiClient {
         distributionDate: "2021-01-31T08:02:17-05:00",
         website: "https://test.com",
         whitepaper: "https://test.com",
-        price: "0.01",
+        price: 0.01,
       },
       {
         name: "test",
