@@ -1798,7 +1798,7 @@ wallet.deposit.desc: "To deposit {coin} tokens, select the network and send to t
 wallet.deposit.notsure: "Not sure?"
 wallet.export: "Export"
 wallet.saving.title: "You are saving money with ZIG!"
-wallet.fees.min: "Min. {perc}%"
+wallet.fees.min: "min."
 wallet.fees.discount: "Success fee discount:"
 wallet.fees.tooltip: "Pay the success fees of any Profit Sharing Service with ZIG and get a discount on the amount to pay."
 wallet.fees.volume: "Volume Cashback:"
