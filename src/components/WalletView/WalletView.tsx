@@ -225,14 +225,22 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
-const ValueBig = styled.span`
+const FeeSavingText = styled(Typography)`
+  font-size: 14px;
+  color: ${({ theme }) => theme.newTheme.green};
+  font-weight: 500;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+`;
+
+const ValueBig = styled.span`
   font-weight: 600;
   font-size: 20px;
   line-height: 28px;
-  text-align: right;
-  color: ${({ theme }) => theme.newTheme.green};
-  margin-left: 8px;
+  margin-left: 3px;
+  position: relative;
 `;
 
 const SwitchLabel = styled.span`
@@ -269,7 +277,9 @@ const HeightFiller = styled.div`
 `;
 
 const StyledInfoIcon = styled.img`
-  margin-left: 7px;
+  position: absolute;
+  top: 2px;
+  right: -12px;
 `;
 
 const VaultListItem = styled(Box)`
@@ -494,14 +504,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <SecondaryText noWrap>
                     <FormattedMessage id="wallet.fees.discount" />
                   </SecondaryText>
-                  <ValueBig>
-                    <FormattedMessage id="wallet.fees.min" values={{ perc: 6 }} />
-                  </ValueBig>
-                  <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
-                    <div>
-                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
-                    </div>
-                  </Tooltip>
+                  <FeeSavingText>
+                    <FormattedMessage id="wallet.fees.min" />
+                    <ValueBig>
+                      6%
+                      <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
+                        <StyledInfoIcon src={InfoIcon} width={12} height={12} />
+                      </Tooltip>
+                    </ValueBig>
+                  </FeeSavingText>
                 </SwitchLabel>
               }
             />
@@ -514,14 +525,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <SecondaryText noWrap>
                     <FormattedMessage id="wallet.fees.volume" />
                   </SecondaryText>
-                  <ValueBig>
-                    <FormattedMessage id="wallet.fees.min" values={{ perc: 15 }} />
-                  </ValueBig>
-                  <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
-                    <div>
-                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
-                    </div>
-                  </Tooltip>
+                  <FeeSavingText>
+                    <FormattedMessage id="wallet.fees.min" />
+                    <ValueBig>
+                      15%
+                      <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
+                        <StyledInfoIcon src={InfoIcon} width={12} height={12} />
+                      </Tooltip>
+                    </ValueBig>
+                  </FeeSavingText>
                 </SwitchLabel>
               }
             />
