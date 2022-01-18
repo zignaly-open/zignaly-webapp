@@ -41,7 +41,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
     : [];
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
-  const withdrawDisabled = false;
+  const withdrawDisabled = coin === "ZIG";
   const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
@@ -119,7 +119,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
             </Control>
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
-                ZIG withdrawal is under maintenance until approximately 11am UTC.
+                ZIG withdrawal is under maintenance until approximately 4pm UTC.
               </Alert>
             ) : (
               <>
