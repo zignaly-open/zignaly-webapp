@@ -156,7 +156,7 @@ const WalletWithdrawConfirm = ({
   setPath,
 }: WalletWithdrawConfirmProps) => {
   const { walletBalance } = useContext(PrivateAreaContext);
-  const zigBalance = (walletBalance?.ZIG && walletBalance.ZIG.total?.availableBalance) || 0;
+  const zigBalance = (walletBalance?.ZIG && walletBalance.ZIG.total?.balance) || 0;
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);

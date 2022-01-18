@@ -75,7 +75,7 @@ const AmountControl = ({
             min: (value) =>
               minAmount
                 ? parseFloat(value) >= minAmount ||
-                  intl.formatMessage({ id: "convert.min" }, { amount: minAmount })
+                  intl.formatMessage({ id: "convert.min" }, { amount: minAmount, coin })
                 : parseFloat(value) > 0,
             max: (value) =>
               parseFloat(value) <= balance.availableBalance ||
