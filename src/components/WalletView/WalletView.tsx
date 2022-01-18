@@ -178,6 +178,13 @@ const PanelItem = styled.div`
   `)}
 `;
 
+const PanelItemMiddle = styled(PanelItem)`
+  align-items: center;
+  ${isMobile(css`
+    align-items: flex-start;
+  `)}
+`;
+
 const ButtonBuy = styled(MuiButton)`
   display: flex;
   padding: 4px 12px 4px 16px;
@@ -260,7 +267,10 @@ const SwitchLabel = styled.span`
 `;
 
 const StyledSwitch = styled(Switch)`
-  margin-left: 4px;
+  margin-left: 8px;
+  ${isMobile(css`
+    margin-left: 0;
+  `)}
 
   .MuiSwitch-switchBase.Mui-checked {
     color: ${({ theme }) => theme.newTheme.green};
@@ -476,7 +486,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </Box>
         </PanelItem>
         <Divider />
-        <PanelItem>
+        <PanelItemMiddle>
           <Box display="flex">
             <RewardIconStyled />
             <Box display="flex" flexDirection="column">
@@ -496,7 +506,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </TextSaving>
             </Box>
           </Box>
-          <div>
+          <Box display="flex" flexDirection="column" mt="2px">
             <FormControlLabel
               control={<StyledSwitch checked={payFeeWithZig} onChange={onPayFeeChange} />}
               label={
@@ -537,8 +547,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 </SwitchLabel>
               }
             />
-          </div>
-        </PanelItem>
+          </Box>
+        </PanelItemMiddle>
         <Divider />
         <PanelItem>
           <SubTitle>
