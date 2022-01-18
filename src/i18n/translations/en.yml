@@ -1219,7 +1219,7 @@ convert.preview: "You will receive approximately:"
 convert.selected: "Selected coins"
 convert.selectall: "Select All"
 convert.title: "Convert Coins"
-convert.min: "Minimum amount is {amount}."
+convert.min: "Minimum amount is {amount} {coin}."
 
 deleteaccount.title: "Delete Account"
 deleteaccount.confirm: "You are about to delete your Zignaly account. Are you sure you want to proceed?"
