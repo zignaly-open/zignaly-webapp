@@ -71,7 +71,8 @@ const getFromToName = (
   side: "from" | "to",
   providerLink = false,
 ) => {
-  const { toExchangeName, fromExchangeName, type, providerName, providerId } = transfer;
+  const { toExchangeInternalName, fromExchangeInternalName, type, providerName, providerId } =
+    transfer;
   if (
     (type === "psDeposit" && side === "to") ||
     ((type === "psWithdraw" || type === "psSuccessFee") && side === "from")
@@ -86,7 +87,7 @@ const getFromToName = (
     return "Zignaly";
   }
 
-  return side === "to" ? toExchangeName : fromExchangeName;
+  return side === "to" ? toExchangeInternalName : fromExchangeInternalName;
 };
 
 const Transfer = () => {
@@ -209,7 +210,7 @@ const Transfer = () => {
                 value={t.amount}
                 displayType="text"
                 thousandSeparator={true}
-                prefix={t.amount > 0 && "+"}
+                prefix={t.toExchangeInternalId === selectedAccount.internalId ? "+" : "-"}
                 decimalScale={8}
               />
               <Coin>{t.asset}</Coin>
