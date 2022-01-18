@@ -12,6 +12,9 @@ import AmountControl from "./AmountControl";
 import { Alert } from "@material-ui/lab";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
+import tradeApi from "services/tradeApiClient";
+import { useDispatch } from "react-redux";
+import { showErrorAlert } from "store/actions/ui";
 
 const Button = styled(CustomButton)`
   margin-right: 8px;
@@ -53,8 +56,12 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
     formState: { isValid },
     setValue,
     trigger,
+    watch,
   } = useForm({ mode: "onChange" });
   const intl = useIntl();
+  const dispatch = useDispatch();
+  const [minAmount, setMinAmount] = useState(null);
+  const amount = watch("amount");
 
   useEffect(() => {
     if (coinData && balance) {
@@ -67,6 +74,25 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
       }
     }
   }, [coinData, balance]);
+
+  useEffect(() => {
+    if (network) {
+      tradeApi
+        .getNetworkFee({ network, currency: coin })
+        .then((response) => {
+          setMinAmount(response.feeCurrency === coin ? response.floatFee : 0);
+          if (amount) {
+            // Update amount verification check. Without timeout, ROF doesn't check against updated minAmount...
+            setTimeout(() => {
+              trigger("amount");
+            }, 0);
+          }
+        })
+        .catch((e) => {
+          dispatch(showErrorAlert(e));
+        });
+    }
+  }, [network]);
 
   if (withdrawData) {
     return (
@@ -173,6 +199,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
                     coin={coin}
                     label="wallet.withdraw.amount"
                     newDesign={true}
+                    minAmount={minAmount}
                   />
                 </Control>
 
@@ -180,7 +207,11 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
                   <Button className="textPurple borderPurple" onClick={onClose}>
                     <FormattedMessage id="confirm.cancel" />
                   </Button>
-                  <Button className="bgPurple" type="submit" disabled={!isValid}>
+                  <Button
+                    className="bgPurple"
+                    type="submit"
+                    disabled={!isValid || minAmount === null}
+                  >
                     <FormattedMessage id="wallet.withdraw.continue" />
                   </Button>
                 </Box>
