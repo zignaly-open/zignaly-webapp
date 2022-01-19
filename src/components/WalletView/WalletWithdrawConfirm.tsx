@@ -156,7 +156,7 @@ const WalletWithdrawConfirm = ({
   setPath,
 }: WalletWithdrawConfirmProps) => {
   const { walletBalance } = useContext(PrivateAreaContext);
-  const zigBalance = (walletBalance?.ZIG && walletBalance.ZIG[network]?.availableBalance) || 0;
+  const zigBalance = (walletBalance?.ZIG && walletBalance.ZIG.total?.balance) || 0;
   const [fee, setFee] = useState<GetNetworkFeeRes>(null);
   const dispatch = useDispatch();
   const [done, setDone] = useState(false);
@@ -166,7 +166,8 @@ const WalletWithdrawConfirm = ({
   // Withdrawing other coins than chain coins needs ZIG
   const feesPaidFromZigBalance = fee && fee.feeCurrency === "ZIG" && coin.name !== "ZIG";
   const feeCoin = feesPaidFromZigBalance ? zigCoin : coin;
-  const notEnoughZIG = feesPaidFromZigBalance && zigBalance < parseFloat(fee.floatFee);
+  const notEnoughZIG =
+    (feesPaidFromZigBalance || coin.name === "ZIG") && fee && zigBalance < parseFloat(fee.floatFee);
 
   let amountReceived = 0;
   if (fee) {

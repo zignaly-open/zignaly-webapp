@@ -85,6 +85,7 @@ const NeutralText = styled(Typography)`
   font-size: 12px;
   margin-left: 10px;
   font-weight: 500;
+  white-space: nowrap;
 `;
 
 const Button = styled(CustomButton)`
@@ -131,6 +132,9 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
+  margin-bottom: -21px;
+  position: absolute;
+  bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
   font-size: 12px;
   font-weight: 600;
@@ -168,6 +172,13 @@ const PanelItem = styled.div`
     &:not(:first-child) {
       margin-top: 48px;
     }
+  `)}
+`;
+
+const PanelItemMiddle = styled(PanelItem)`
+  align-items: center;
+  ${isMobile(css`
+    align-items: flex-start;
   `)}
 `;
 
@@ -218,14 +229,22 @@ const RateText = styled.span`
   font-size: 16px;
 `;
 
-const ValueBig = styled.span`
+const FeeSavingText = styled(Typography)`
+  font-size: 14px;
+  color: ${({ theme }) => theme.newTheme.green};
+  font-weight: 500;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+`;
+
+const ValueBig = styled.span`
   font-weight: 600;
   font-size: 20px;
   line-height: 28px;
-  text-align: right;
-  color: ${({ theme }) => theme.newTheme.green};
-  margin-left: 8px;
+  margin-left: 3px;
+  position: relative;
 `;
 
 const SwitchLabel = styled.span`
@@ -245,7 +264,10 @@ const SwitchLabel = styled.span`
 `;
 
 const StyledSwitch = styled(Switch)`
-  margin-left: 4px;
+  margin-left: 8px;
+  ${isMobile(css`
+    margin-left: 0;
+  `)}
 
   .MuiSwitch-switchBase.Mui-checked {
     color: ${({ theme }) => theme.newTheme.green};
@@ -262,7 +284,9 @@ const HeightFiller = styled.div`
 `;
 
 const StyledInfoIcon = styled.img`
-  margin-left: 7px;
+  position: absolute;
+  top: 2px;
+  right: -12px;
 `;
 
 const VaultListItem = styled(Box)`
@@ -482,7 +506,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           </Box>
         </PanelItem>
         <Divider />
-        <PanelItem>
+        <PanelItemMiddle>
           <Box display="flex">
             <RewardIconStyled />
             <Box display="flex" flexDirection="column">
@@ -502,7 +526,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </TextSaving>
             </Box>
           </Box>
-          <div>
+          <Box display="flex" flexDirection="column" mt="2px">
             <FormControlLabel
               control={<StyledSwitch checked={payFeeWithZig} onChange={onPayFeeChange} />}
               label={
@@ -510,14 +534,15 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <SecondaryText noWrap>
                     <FormattedMessage id="wallet.fees.discount" />
                   </SecondaryText>
-                  <ValueBig>
-                    <FormattedMessage id="wallet.fees.min" values={{ perc: 6 }} />
-                  </ValueBig>
-                  <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
-                    <div>
-                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
-                    </div>
-                  </Tooltip>
+                  <FeeSavingText>
+                    <FormattedMessage id="wallet.fees.min" />
+                    <ValueBig>
+                      6%
+                      <Tooltip title={<FormattedMessage id="wallet.fees.tooltip" />}>
+                        <StyledInfoIcon src={InfoIcon} width={12} height={12} />
+                      </Tooltip>
+                    </ValueBig>
+                  </FeeSavingText>
                 </SwitchLabel>
               }
             />
@@ -530,19 +555,20 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <SecondaryText noWrap>
                     <FormattedMessage id="wallet.fees.volume" />
                   </SecondaryText>
-                  <ValueBig>
-                    <FormattedMessage id="wallet.fees.min" values={{ perc: 15 }} />
-                  </ValueBig>
-                  <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
-                    <div>
-                      <StyledInfoIcon src={InfoIcon} width={24} height={24} />
-                    </div>
-                  </Tooltip>
+                  <FeeSavingText>
+                    <FormattedMessage id="wallet.fees.min" />
+                    <ValueBig>
+                      15%
+                      <Tooltip title={<FormattedMessage id="wallet.fees.cashback.tooltip" />}>
+                        <StyledInfoIcon src={InfoIcon} width={12} height={12} />
+                      </Tooltip>
+                    </ValueBig>
+                  </FeeSavingText>
                 </SwitchLabel>
               }
             />
-          </div>
-        </PanelItem>
+          </Box>
+        </PanelItemMiddle>
         <Divider />
         <PanelItem>
           <SubTitleSmall>
