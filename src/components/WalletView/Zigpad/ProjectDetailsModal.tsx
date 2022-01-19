@@ -1,8 +1,7 @@
-import { Box, Chip, Typography } from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Box, Chip, CircularProgress, Typography } from "@material-ui/core";
 import { Link, DescriptionOutlined } from "@material-ui/icons";
 import CustomModal from "components/Modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isMobile, Modal } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
@@ -18,10 +17,10 @@ import {
   TimelineSeparator,
 } from "@material-ui/lab";
 import { formatUTC } from "utils/format";
-import DOMPurify from "dompurify";
 import SocialIcon from "./SocialIcon";
-import CustomButton from "components/CustomButton";
 import PledgeModal from "./PledgeModal";
+import tradeApi from "services/tradeApiClient";
+import { PledgeButton } from "../Vault/VaultDepositButton";
 
 const MetricDetails = styled.div`
   margin-right: 80px;
@@ -35,12 +34,6 @@ const MetricItem = styled(Typography)`
 const MetricLabel = styled(Typography)`
   font-weight: 600;
   color: ${(props) => props.theme.newTheme.secondaryText};
-`;
-
-const ItemValue = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-  color: ${(props) => props.theme.palette.text.primary};
 `;
 
 const Coin = styled.span`
@@ -82,6 +75,7 @@ const StyledModal = styled(Modal)`
 const StyledTimeline = styled(Timeline)`
   width: 100%;
   padding: 0;
+  margin: 0;
 
   .MuiTimelineItem-missingOppositeContent:before {
     flex: initial;
@@ -92,34 +86,6 @@ const TimelineLabel = styled.div`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-size: 16px;
   margin-bottom: 6px;
-`;
-
-const HtmlContent = styled(Typography)`
-  img {
-    max-width: 90%;
-  }
-
-  ${isMobile(css`
-    img {
-      max-width: 100%;
-    }
-  `)}
-`;
-
-const Button = styled(CustomButton)`
-  margin: 16px 42px;
-
-  && {
-    min-width: 150px;
-  }
-
-  ${isMobile(css`
-    margin: 16px 0px 7px;
-
-    && {
-      width: auto;
-    }
-  `)}
 `;
 
 const MetricsBox = styled(Box)`
@@ -135,41 +101,62 @@ const CoinBox = styled(Box)`
   `)}
 `;
 
-// Force apply mui heading styles to html content
-const useStyles = makeStyles((theme) => {
-  const tags = ["h1", "h2", "h3", "h4", "h5", "h6"];
-  const nestedRules = {};
-  tags.forEach((tag) => {
-    nestedRules[`& ${tag}`] = { ...theme.typography[tag] };
-  });
-  return {
-    root: nestedRules,
-  };
-});
+const Subtitle = styled(Typography).attrs(() => ({
+  variant: "h3",
+}))`
+  margin: 26px 0 14px;
+`;
+
+const List = styled.ul`
+  list-style-position: inside;
+  padding-left: 0;
+  margin: 0;
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const ListItem = styled.li`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  margin-bottom: 16px;
+`;
+
+const ItemLabel = styled.span`
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 8px;
+`;
+
+const ItemValue = styled.span`
+  font-weight: 600;
+  font-size: 16px;
+  color: ${(props) => props.theme.palette.text.primary};
+`;
 
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
-  project: LaunchpadProject;
+  projectId: number;
 }
 
-const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProps) => {
+const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalProps) => {
   const [pledgeModal, showPledgeModal] = useState(false);
+  const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
-  const {
-    name,
-    coin,
-    shortDescription,
-    website,
-    whitepaper,
-    category,
-    endDate,
-    startDate,
-    distributionDate,
-  } = project;
-  const details = DOMPurify.sanitize(project.details);
 
-  const classes = useStyles();
+  useEffect(() => {
+    tradeApi.getLaunchpadProjectDetails(projectId).then((response) => {
+      setProjectDetails(response);
+    });
+  }, []);
+
+  const onPledged = (amount: number) => {
+    setProjectDetails({
+      ...projectDetails,
+      pledged: amount,
+    });
+  };
 
   return (
     <CustomModal
@@ -180,137 +167,197 @@ const ProjectDetailsModal = ({ onClose, open, project }: ProjectDetailsModalProp
       state={open}
       style={!isMobile ? { width: "1000px" } : null}
     >
-      <CustomModal
-        onClose={() => showPledgeModal(false)}
-        size="small"
-        state={pledgeModal}
-        newTheme={true}
-      >
-        <PledgeModal project={project} />
-      </CustomModal>
       <StyledModal>
-        <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
-          <Box display="flex" alignItems="center">
-            <CoinIcon width={64} height={64} coin={coin} />
-            <TitleDesc>{name}</TitleDesc>
-            <Coin>{coin}</Coin>
-          </Box>
-          <Button className="bgPurple" onClick={() => showPledgeModal(true)}>
-            <FormattedMessage id="zigpad.contribute" />
-          </Button>
-        </CoinBox>
-        <Chip
-          style={{ marginBottom: "12px" }}
-          size="small"
-          label={intl.formatMessage({ id: `zigpad.category.${category}` })}
-        />
-        <ItemValue>{shortDescription}</ItemValue>
-        <Box display="flex" mt={2} mb={4}>
-          <MiniIconLink href={website}>
-            <Link />
-            <FormattedMessage id="srv.edit.website" tagName="span" />
-          </MiniIconLink>
-          <MiniIconLink href={whitepaper}>
-            <DescriptionOutlined />
-            <FormattedMessage id="zigpad.whitepaper" tagName="span" />
-          </MiniIconLink>
-          {project.socials.map((s, i) => (
-            <MiniIconLink href={s.url} key={i}>
-              <SocialIcon type={s.name} />
-            </MiniIconLink>
-          ))}
-        </Box>
-        <Typography variant="h3">
-          <FormattedMessage id="zigpad.subscriptionInfo" />
-        </Typography>
-        <MetricsBox display="flex" mt={2} mb={4}>
-          <MetricDetails>
-            <MetricLabel>
-              <FormattedMessage id="terminal.price" />
-            </MetricLabel>
-            <MetricItem>
-              <NumberFormat
-                displayType="text"
-                value={project.price}
-                prefix={`1 ${project.coin} = `}
-                suffix=" ZIG"
+        {projectDetails ? (
+          <>
+            <CustomModal
+              onClose={() => showPledgeModal(false)}
+              size="small"
+              state={pledgeModal}
+              newTheme={true}
+            >
+              <PledgeModal project={projectDetails} onPledged={onPledged} />
+            </CustomModal>
+            <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
+              <Box display="flex" alignItems="center">
+                <img src={projectDetails.logo} width={64} height={64} />
+                <TitleDesc>{projectDetails.name}</TitleDesc>
+                <Coin>{projectDetails.coin}</Coin>
+              </Box>
+              <PledgeButton
+                onClick={() => showPledgeModal(true)}
+                pledged={projectDetails.pledged}
               />
-            </MetricItem>
-          </MetricDetails>
-          <MetricDetails>
-            <MetricLabel>
-              <FormattedMessage id="zigpad.offered" />
-            </MetricLabel>
-            <MetricItem>
-              <NumberFormat
-                displayType="text"
-                value={project.offeredAmount}
-                suffix={` ${project.coin}`}
-              />
-            </MetricItem>
-          </MetricDetails>
-          <MetricDetails>
-            <MetricLabel>
-              <FormattedMessage id="zigpad.minContribution" />
-            </MetricLabel>
-            <MetricItem>
-              <NumberFormat displayType="text" value={project.minAmount} suffix=" ZIG" />
-            </MetricItem>
-          </MetricDetails>
-          <MetricDetails>
-            <MetricLabel>
-              <FormattedMessage id="zigpad.maxContribution" />
-            </MetricLabel>
-            <MetricItem>
-              <NumberFormat displayType="text" value={project.maxAmount} suffix=" ZIG" />
-            </MetricItem>
-          </MetricDetails>
-        </MetricsBox>
-        <Typography variant="h3">
-          <FormattedMessage id="zigpad.subscriptionTimeline" />
-        </Typography>
-        <StyledTimeline>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.subscriptionPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(startDate)}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-              <TimelineConnector />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.calculationPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(dayjs(endDate).add(1, "d").format())}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-          <TimelineItem>
-            <TimelineSeparator>
-              <TimelineDot />
-            </TimelineSeparator>
-            <TimelineContent>
-              <TimelineLabel>
-                <FormattedMessage id="zigpad.distributionPeriod" />
-              </TimelineLabel>
-              <ItemValue>{formatUTC(distributionDate)}</ItemValue>
-            </TimelineContent>
-          </TimelineItem>
-        </StyledTimeline>
-        <HtmlContent
-          className={classes.root}
-          variant="body1"
-          dangerouslySetInnerHTML={{ __html: details }}
-        />
+            </CoinBox>
+            <Chip
+              style={{ marginBottom: "12px" }}
+              size="small"
+              label={intl.formatMessage({
+                id: `zigpad.category.${projectDetails.category.toLowerCase()}`,
+              })}
+            />
+            <ItemValue>{projectDetails.shortDescription}</ItemValue>
+            <Box display="flex" mt={2} mb={3}>
+              <MiniIconLink href={projectDetails.website}>
+                <Link />
+                <FormattedMessage id="srv.edit.website" tagName="span" />
+              </MiniIconLink>
+              <MiniIconLink href={projectDetails.whitepaper}>
+                <DescriptionOutlined />
+                <FormattedMessage id="zigpad.whitepaper" tagName="span" />
+              </MiniIconLink>
+              {projectDetails.socials.map((s, i) => (
+                <MiniIconLink href={s.url} key={i}>
+                  <SocialIcon type={s.name} />
+                </MiniIconLink>
+              ))}
+            </Box>
+            <Subtitle>
+              <FormattedMessage id="zigpad.subscriptionInfo" />
+            </Subtitle>
+            <MetricsBox display="flex">
+              <MetricDetails>
+                <MetricLabel>
+                  <FormattedMessage id="terminal.price" />
+                </MetricLabel>
+                <MetricItem>
+                  <NumberFormat
+                    displayType="text"
+                    value={projectDetails.price}
+                    prefix={`1 ${projectDetails.coin} = `}
+                    suffix=" ZIG"
+                    thousandSeparator={true}
+                  />
+                </MetricItem>
+              </MetricDetails>
+              <MetricDetails>
+                <MetricLabel>
+                  <FormattedMessage id="zigpad.offered" />
+                </MetricLabel>
+                <MetricItem>
+                  <NumberFormat
+                    displayType="text"
+                    value={projectDetails.offeredAmount}
+                    suffix={` ${projectDetails.coin}`}
+                    thousandSeparator={true}
+                  />
+                </MetricItem>
+              </MetricDetails>
+              <MetricDetails>
+                <MetricLabel>
+                  <FormattedMessage id="zigpad.minContribution" />
+                </MetricLabel>
+                <MetricItem>
+                  <NumberFormat
+                    displayType="text"
+                    value={projectDetails.minAmount}
+                    suffix=" ZIG"
+                    thousandSeparator={true}
+                  />
+                </MetricItem>
+              </MetricDetails>
+              <MetricDetails>
+                <MetricLabel>
+                  <FormattedMessage id="zigpad.maxContribution" />
+                </MetricLabel>
+                <MetricItem>
+                  <NumberFormat
+                    displayType="text"
+                    value={projectDetails.maxAmount}
+                    suffix=" ZIG"
+                    thousandSeparator={true}
+                  />
+                </MetricItem>
+              </MetricDetails>
+            </MetricsBox>
+            <Subtitle>
+              <FormattedMessage id="zigpad.subscriptionTimeline" />
+            </Subtitle>
+            <StyledTimeline>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <TimelineLabel>
+                    <FormattedMessage id="zigpad.subscriptionPeriod" />
+                  </TimelineLabel>
+                  <ItemValue>{formatUTC(projectDetails.startDate)}</ItemValue>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <TimelineLabel>
+                    <FormattedMessage id="zigpad.calculationPeriod" />
+                  </TimelineLabel>
+                  <ItemValue>
+                    {formatUTC(dayjs(projectDetails.endDate).add(1, "d").format())}
+                  </ItemValue>
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <TimelineDot />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <TimelineLabel>
+                    <FormattedMessage id="zigpad.distributionPeriod" />
+                  </TimelineLabel>
+                  <ItemValue>{formatUTC(projectDetails.distributionDate)}</ItemValue>
+                </TimelineContent>
+              </TimelineItem>
+            </StyledTimeline>
+            <Subtitle>
+              <FormattedMessage id="zigpad.highlights" />
+            </Subtitle>
+            <Typography>{projectDetails.highlights}</Typography>
+            <Subtitle>
+              <FormattedMessage id="zigpad.tokenomic" />
+            </Subtitle>
+            <List>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.supply" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.supplyTotalCap}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={` ${projectDetails.coin}`}
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.supplyInitial" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.supplyInitial}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.type" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.chain}</ItemValue>
+              </ListItem>
+            </List>
+            <Subtitle>
+              <FormattedMessage id="zigpad.distribution" />
+            </Subtitle>
+            <Typography>todo</Typography>
+            <Subtitle>
+              <FormattedMessage id="zigpad.rules" />
+            </Subtitle>
+            <Typography>todo</Typography>
+          </>
+        ) : (
+          <CircularProgress size={50} style={{ margin: "0 auto" }} />
+        )}
       </StyledModal>
     </CustomModal>
   );

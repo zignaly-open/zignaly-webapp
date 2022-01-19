@@ -438,7 +438,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         <ProjectDetailsModal
           onClose={() => setSelectedProject(null)}
           open={true}
-          project={selectedProject}
+          projectId={selectedProject.id}
         />
       )}
       <Title>

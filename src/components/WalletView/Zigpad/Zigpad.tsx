@@ -24,6 +24,7 @@ import { Rate, Terms } from "../styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 import ProjectsMobile from "./ProjectsMobile";
+import { format2Dec } from "utils/formatters";
 
 const Coin = styled.span`
   color: #65647e;
@@ -81,17 +82,22 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
+  const [rateZIG, setRateZIG] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
       setLaunchpadProjects(null);
-      tradeApi
-        .getLaunchpadProjects({ status: tab === 0 ? "active" : "expired" })
-        .then((response) => {
-          setLaunchpadProjects(response);
-        });
+      tradeApi.getLaunchpadProjects({ status: tab === 0 ? "active" : "past" }).then((response) => {
+        setLaunchpadProjects(response);
+      });
     }
   }, [isOpen, tab]);
+
+  useEffect(() => {
+    tradeApi.getWalletCoins().then((response) => {
+      setRateZIG(response.ZIG.usdPrice);
+    });
+  }, []);
 
   const columns = useMemo(
     () =>
@@ -197,19 +203,19 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {getCategoryIcon(p.category)}
             <Value style={{ marginLeft: "8px" }}>
-              <FormattedMessage id={`zigpad.category.${p.category}`} />
+              <FormattedMessage id={`zigpad.category.${p.category.toLowerCase()}`} />
             </Value>
           </AlignCenter>
         ),
         minAmount: (
           <Value>
-            <NumberFormat displayType="text" value={p.minAmount} />
+            <NumberFormat displayType="text" value={p.minAmount} thousandSeparator={true} />
             <Coin>ZIG</Coin>
           </Value>
         ),
         offeredAmount: (
           <Value>
-            <NumberFormat displayType="text" value={p.offeredAmount} />
+            <NumberFormat displayType="text" value={p.offeredAmount} thousandSeparator={true} />
             <Coin>{p.coin}</Coin>
           </Value>
         ),
@@ -218,14 +224,12 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         price: (
           <Value>
             @{p.price} ZIG
-            <Rate>0.81$</Rate>
+            <Rate>{rateZIG ? format2Dec(p.price * rateZIG) : "-"}$</Rate>
           </Value>
         ),
-        actions: (
-          <PledgeButton onClick={() => setSelectedProject(p)} activated={p.coin === "ETH"} />
-        ),
+        actions: <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />,
       })),
-    [launchpadProjects, tab],
+    [launchpadProjects, tab, rateZIG],
   );
 
   return (
@@ -234,7 +238,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         <ProjectDetailsModal
           onClose={() => setSelectedProject(null)}
           open={true}
-          project={selectedProject}
+          projectId={selectedProject.id}
         />
       )}
       <Title>

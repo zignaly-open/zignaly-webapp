@@ -2544,12 +2544,13 @@ class TradeApiClient {
   /**
    * Get launchpad projects
    *
-   * @param {{status: 'active'|'expired'}} payload Payload
+   * @param {{status: 'active'|'past'}} payload Payload
    * @returns {Promise<Array<LaunchpadProject>>} Result
    *
    * @memberof TradeApiClient
    */
   async getLaunchpadProjects(payload) {
+    return this.doRequest(`/get-zigpad/${payload.status}`, null, "GET", 3);
     return [
       {
         name: "Test Project",
@@ -2613,7 +2614,31 @@ class TradeApiClient {
         price: "0.01",
       },
     ];
-    // return this.doRequest(`/zigpad/${payload.status}`, null, "GET", 3);
+  }
+
+  /**
+   * Get launchpad project details
+   *
+   * @param {number} projectId
+   * @returns {Promise<LaunchpadProjectDetails>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getLaunchpadProjectDetails(projectId) {
+    return this.doRequest(`/get-zigpad-program/${projectId}`, null, "GET", 3);
+  }
+
+  /**
+   * Launchpad Pledge
+   *
+   * @param {string} projectId
+   * @param {number} amount
+   * @returns {Promise<LaunchpadProjectDetails>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async pledge(projectId, amount) {
+    return this.doRequest(`/zigpad-apply/${projectId}`, { amount }, "POST", 3);
   }
 
   /**
