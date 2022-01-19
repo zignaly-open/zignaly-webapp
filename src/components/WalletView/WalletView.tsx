@@ -615,7 +615,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                     onClick={() => setSelectedProject(p)}
                   >
                     <Box display="flex">
-                      <CoinIcon coin={p.coin} width={20} height={20} />
+                      <img src={p.logo} height={20} width={20} />
                       <NeutralText>{p.name}</NeutralText>
                     </Box>
                     <ChevronRightStyled />
