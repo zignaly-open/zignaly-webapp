@@ -8,7 +8,7 @@ import { isMobile } from "styles/styles";
 
 const ButtonStyled = styled(CustomButton)`
   && {
-    min-width: 142px;
+    min-width: 115px;
     min-height: auto;
     width: 100%;
   }
@@ -16,6 +16,14 @@ const ButtonStyled = styled(CustomButton)`
   span {
     font-size: 13px;
     white-space: nowrap;
+  }
+`;
+
+const PledgeButtonStyled = styled(ButtonStyled)`
+  && {
+    ${isMobile(css`
+      width: auto;
+    `)}
   }
 `;
 
@@ -59,3 +67,20 @@ const VaultDepositButton = ({ balance, vault, onClick }: VaultDepositButtonProps
 };
 
 export default VaultDepositButton;
+
+interface PledgeButtonProps {
+  onClick: () => void;
+  pledged: number;
+}
+
+export const PledgeButton = ({ pledged, onClick }: PledgeButtonProps) => {
+  return pledged ? (
+    <ActivatedButton>
+      <FormattedMessage id="zigpad.pledged" values={{ amount: pledged, coin: "ZIG" }} />
+    </ActivatedButton>
+  ) : (
+    <PledgeButtonStyled className="textPurple borderPurple" onClick={onClick}>
+      <FormattedMessage id="zigpad.pledge" />
+    </PledgeButtonStyled>
+  );
+};

@@ -27,18 +27,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
 import VaultDepositButton from "./VaultDepositButton";
-
-const Terms = styled.a`
-  line-height: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 12px;
-  text-decoration: none;
-  color: ${({ theme }) => theme.newTheme.linkText};
-`;
+import { Terms } from "../styles";
 
 const Coin = styled.span`
   color: #65647e;
@@ -195,7 +184,15 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       vaultOffers.map((v) => ({
         rewards: (
           <AlignCenter>
-            {tab === 0 ? <RewardsProgressBar vault={v} /> : <CoinIcon coin={v.coinReward} />}
+            {tab === 0 ? (
+              <RewardsProgressBar
+                amountTotal={v.rewardsTotal}
+                amountRemaining={v.rewardsRemaining}
+                coin={v.coinReward}
+              />
+            ) : (
+              <CoinIcon coin={v.coinReward} />
+            )}
           </AlignCenter>
         ),
         offer: (

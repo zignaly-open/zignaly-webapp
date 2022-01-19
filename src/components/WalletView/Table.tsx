@@ -35,7 +35,7 @@ export const TableLayout = styled.div`
 
 
       thead tr th {
-        text-transform: uppercase;
+        text-transform: capitalize;
         font-weight: 100;
         font-size: 14px;
         padding: 22px;

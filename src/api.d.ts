@@ -117,6 +117,65 @@ interface GetInternalTransfersHistory extends PaginationReq {
   type: string;
 }
 
+interface Social {
+  name: string;
+  url: string;
+}
+interface LaunchpadProject {
+  id: number;
+  pledged: string;
+  coin: string;
+  name: string;
+  shortDescription: string;
+  details: string;
+  website: string;
+  whitepaper: string;
+  category: string;
+  minAmount: number;
+  maxAmount: number;
+  offeredAmount: number;
+  distributedAmount: number;
+  startDate: string;
+  endDate: string;
+  distributionDate: string;
+  socials: Social[];
+  price: string;
+  logo: string;
+}
+
+interface Tokenomic {
+  chain: string;
+  publicSalePrice: number;
+  supplyInitial: number;
+  supplyTotalCap: number;
+  tokenDistributionDate: string;
+  tokenSaleVestingPeriod: number;
+  tokensOffered: number;
+}
+
+interface LaunchpadProjectDetails {
+  id: number;
+  pledged: string;
+  coin: string;
+  name: string;
+  shortDescription: string;
+  details: string;
+  website: string;
+  whitepaper: string;
+  category: string;
+  minAmount: number;
+  maxAmount: number;
+  offeredAmount: number;
+  distributedAmount: number;
+  startDate: string;
+  endDate: string;
+  distributionDate: string;
+  socials: Social[];
+  price: string;
+  logo: string;
+  highlights: string;
+  tokenomic: Tokenomic;
+}
 interface TotalSavings {
   total: number;
 }
