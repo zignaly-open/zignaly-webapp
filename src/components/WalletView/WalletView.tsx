@@ -132,9 +132,6 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
-  margin-bottom: -21px;
-  position: absolute;
-  bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
   font-size: 12px;
   font-weight: 600;
