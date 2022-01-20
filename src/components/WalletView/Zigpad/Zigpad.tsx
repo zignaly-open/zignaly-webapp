@@ -8,7 +8,7 @@ import {
   Tab,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, Title } from "styles/styles";
 import WalletIcon from "images/wallet/wallet.svg";
@@ -63,6 +63,27 @@ const StyledTabs = styled(Tabs)`
 const StyledTab = styled(Tab)`
   text-transform: none;
   font-weight: 600;
+`;
+
+const Icon = styled.img`
+  margin-right: 6px;
+`;
+
+const StyledChevronRight = styled(ChevronRight)`
+  margin-right: -9px;
+`;
+
+const StyledTerms = styled(Terms)`
+  margin-top: 2px;
+`;
+
+const StyledTableLayout = styled(TableLayout)`
+  /* table {
+    tbody tr:hover {
+      background-color: rgba(25, 25, 39, 0.04);
+      cursor: pointer;
+    }
+  } */
 `;
 
 const getCategoryIcon = (category: string) => {
@@ -175,15 +196,17 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </AlignCenter>
         ),
         project: (
-          <AlignCenter>
+          <AlignCenter direction="column">
             <Typography style={{ fontWeight: 600, textAlign: "center" }}>
-              {p.name}
-              &nbsp;
-              <Terms onClick={() => setSelectedProject(p)}>
-                <FormattedMessage id="zigpad.details" />
-                <ChevronRight />
-              </Terms>
+              <Box display="flex" justifyContent="center">
+                <Icon src={p.logo} height={20} width={20} />
+                {p.name}
+              </Box>
             </Typography>
+            <StyledTerms onClick={() => setSelectedProject(p)}>
+              <FormattedMessage id="zigpad.details" />
+              <StyledChevronRight />
+            </StyledTerms>
           </AlignCenter>
         ),
         coin: (
@@ -228,8 +251,17 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </Value>
         ),
         actions: <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />,
+        id: p.id,
       })),
     [launchpadProjects, tab, rateZIG],
+  );
+
+  const onRowClick = useCallback(
+    (row) => {
+      // const project = launchpadProjects.find((p) => p.id === row.original.id);
+      // setSelectedProject(project);
+    },
+    [launchpadProjects],
   );
 
   return (
@@ -262,9 +294,9 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
                 onProjectClick={setSelectedProject}
               />
             ) : (
-              <TableLayout>
-                <Table data={data} columns={columns} />
-              </TableLayout>
+              <StyledTableLayout>
+                <Table data={data} columns={columns} onRowClick={onRowClick} />
+              </StyledTableLayout>
             )}
           </>
         ) : (

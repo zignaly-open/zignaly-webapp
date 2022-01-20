@@ -21,6 +21,7 @@ import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
 import tradeApi from "services/tradeApiClient";
 import { PledgeButton } from "../Vault/VaultDepositButton";
+import CustomButton from "components/CustomButton";
 
 const MetricDetails = styled.div`
   margin-right: 80px;
@@ -134,6 +135,19 @@ const ItemValue = styled.span`
   color: ${(props) => props.theme.palette.text.primary};
 `;
 
+const StyledPledgeButton = styled.div`
+  && button {
+    margin: 16px 42px;
+    width: auto;
+    min-width: 150px;
+    min-height: 48px;
+
+    ${isMobile(css`
+      margin: 16px 0px 7px;
+    `)}
+  }
+`;
+
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
@@ -156,6 +170,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       ...projectDetails,
       pledged: amount,
     });
+    showPledgeModal(false);
   };
 
   return (
@@ -184,10 +199,12 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
               </Box>
-              <PledgeButton
-                onClick={() => showPledgeModal(true)}
-                pledged={projectDetails.pledged}
-              />
+              <StyledPledgeButton>
+                <PledgeButton
+                  onClick={() => showPledgeModal(true)}
+                  pledged={projectDetails.pledged}
+                />
+              </StyledPledgeButton>
             </CoinBox>
             <Chip
               style={{ marginBottom: "12px" }}

@@ -55,7 +55,7 @@ export const TableLayout = styled.div`
   `}
 `;
 
-const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
+const Table = ({ columns, data, renderRowSubComponent, initialState = {}, onRowClick }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -102,6 +102,7 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
               <tr
                 {...row.getRowProps()}
                 {...(renderRowSubComponent && row.getToggleRowExpandedProps({}))}
+                onClick={() => onRowClick && onRowClick(row)}
               >
                 {row.cells.map((cell, cellIndex) => {
                   return (
