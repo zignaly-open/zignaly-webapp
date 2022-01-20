@@ -8,7 +8,7 @@ import {
   Tab,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, Title } from "styles/styles";
 import WalletIcon from "images/wallet/wallet.svg";
@@ -75,6 +75,15 @@ const StyledChevronRight = styled(ChevronRight)`
 
 const StyledTerms = styled(Terms)`
   margin-top: 2px;
+`;
+
+const StyledTableLayout = styled(TableLayout)`
+  /* table {
+    tbody tr:hover {
+      background-color: rgba(25, 25, 39, 0.04);
+      cursor: pointer;
+    }
+  } */
 `;
 
 const getCategoryIcon = (category: string) => {
@@ -242,8 +251,17 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </Value>
         ),
         actions: <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />,
+        id: p.id,
       })),
     [launchpadProjects, tab, rateZIG],
+  );
+
+  const onRowClick = useCallback(
+    (row) => {
+      // const project = launchpadProjects.find((p) => p.id === row.original.id);
+      // setSelectedProject(project);
+    },
+    [launchpadProjects],
   );
 
   return (
@@ -276,9 +294,9 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
                 onProjectClick={setSelectedProject}
               />
             ) : (
-              <TableLayout>
-                <Table data={data} columns={columns} />
-              </TableLayout>
+              <StyledTableLayout>
+                <Table data={data} columns={columns} onRowClick={onRowClick} />
+              </StyledTableLayout>
             )}
           </>
         ) : (
