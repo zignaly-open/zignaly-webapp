@@ -9,6 +9,8 @@ import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
+import { ConfirmDialog } from "components/Dialogs";
+import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
 
 const Button = styled(CustomButton)`
   && {
@@ -23,7 +25,7 @@ const Button = styled(CustomButton)`
 
 interface PledgeModalProps {
   project: LaunchpadProject;
-  onPledged: () => void;
+  onPledged: (amount: number) => void;
 }
 
 const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
@@ -34,11 +36,13 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
     formState: { isValid },
     setValue,
     trigger,
+    watch,
   } = useForm({ mode: "onChange" });
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const balanceZIG = walletBalance?.ZIG?.total || { balance: 0, availableBalance: 0 };
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const amount = watch("amount");
 
   useEffect(() => {
     tradeApi.getWalletBalance().then((response) => {
@@ -51,16 +55,20 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
     trigger("amount");
   };
 
-  const pledge = (data) => {
-    const { amount } = data;
+  const pledgeConfirm = () => {
+    setConfirmConfig((c) => ({ ...c, visible: true, values: { amount, coin: "ZIG" } }));
+  };
+
+  const pledge = () => {
     setLoading(true);
+    const amountValue = parseFloat(amount);
     tradeApi
-      .pledge(project.id, amount)
+      .pledge(project.id, amountValue)
       .then((response) => {
         setWalletBalance(response);
       })
       .then(() => {
-        onPledged();
+        onPledged(amountValue);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
@@ -68,13 +76,24 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
       });
   };
 
+  const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
+    titleTranslationId: "zigpad.pledge",
+    messageTranslationId: "zigpad.pledge.definitive",
+    visible: false,
+  });
+
   return (
     <Modal>
-      <form onSubmit={handleSubmit(pledge)}>
+      <form onSubmit={handleSubmit(pledgeConfirm)}>
         <Title>
           {project.coin}&nbsp;
           <FormattedMessage id="zigpad.pledge" />
         </Title>
+        <ConfirmDialog
+          confirmConfig={confirmConfig}
+          executeActionCallback={pledge}
+          setConfirmConfig={setConfirmConfig}
+        />
         <AmountControl
           balance={balanceZIG}
           setBalanceMax={setBalanceMax}
@@ -86,7 +105,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           newDesign={true}
           minAmount={project.minAmount}
         />
-        <Button className="bgPurple" type="submit" disabled={!isValid}>
+        <Button className="bgPurple" type="submit" disabled={!isValid} loading={loading}>
           <FormattedMessage id="zigpad.pledge" />
         </Button>
       </form>

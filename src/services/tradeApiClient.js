@@ -2551,69 +2551,6 @@ class TradeApiClient {
    */
   async getLaunchpadProjects(payload) {
     return this.doRequest(`/get-zigpad/${payload.status}`, null, "GET", 3);
-    return [
-      {
-        name: "Test Project",
-        shortDescription: "Lorem ipsum dolor sit amet, consectetur",
-        details:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
-        highlights:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna",
-        distribution: [
-          {
-            label: "Team",
-            value: 50,
-          },
-          {
-            label: "Test",
-            value: 50,
-          },
-        ],
-        tokenomic: {
-          hardCap: 1000000,
-          supplyTotalCap: 4000000,
-          supplyInitial: 20.1,
-          chain: "BEP20",
-        },
-        socials: [
-          {
-            url: "https://twitter.com/fcporto",
-            name: "twitter",
-          },
-          {
-            url: "https://twitter.com/fcporto",
-            name: "discord",
-          },
-        ],
-        coin: "BTC",
-        category: "gaming",
-        minAmount: 0.1,
-        maxAmount: 10,
-        offeredAmount: 100,
-        distributedAmount: 1,
-        startDate: "2021-01-15T08:02:17-05:00",
-        endDate: "2021-01-30T08:02:17-05:00",
-        distributionDate: "2021-01-31T08:02:17-05:00",
-        website: "https://test.com",
-        whitepaper: "https://test.com",
-        price: 0.01,
-      },
-      {
-        name: "test",
-        shortDescription: "Lorem ipsum dolor sit amet, consectetur",
-        coin: "ETH",
-        category: "gaming",
-        minAmount: 0.1,
-        offeredAmount: 100,
-        distributedAmount: 1,
-        startDate: "2021-01-15T08:02:17-05:00",
-        endDate: "2021-01-30T08:02:17-05:00",
-        distributionDate: "2021-01-31T08:02:17-05:00",
-        website: "https://test.com",
-        whitepaper: "https://test.com",
-        price: "0.01",
-      },
-    ];
   }
 
   /**
@@ -2631,7 +2568,7 @@ class TradeApiClient {
   /**
    * Launchpad Pledge
    *
-   * @param {string} projectId
+   * @param {number} projectId
    * @param {number} amount
    * @returns {Promise<LaunchpadProjectDetails>} Result
    *

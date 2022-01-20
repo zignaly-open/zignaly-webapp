@@ -170,6 +170,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       ...projectDetails,
       pledged: amount,
     });
+    showPledgeModal(false);
   };
 
   return (
