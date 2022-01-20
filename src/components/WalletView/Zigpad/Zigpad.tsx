@@ -65,6 +65,18 @@ const StyledTab = styled(Tab)`
   font-weight: 600;
 `;
 
+const Icon = styled.img`
+  margin-right: 6px;
+`;
+
+const StyledChevronRight = styled(ChevronRight)`
+  margin-right: -9px;
+`;
+
+const StyledTerms = styled(Terms)`
+  margin-top: 2px;
+`;
+
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case "gaming":
@@ -175,15 +187,17 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </AlignCenter>
         ),
         project: (
-          <AlignCenter>
+          <AlignCenter direction="column">
             <Typography style={{ fontWeight: 600, textAlign: "center" }}>
-              {p.name}
-              &nbsp;
-              <Terms onClick={() => setSelectedProject(p)}>
-                <FormattedMessage id="zigpad.details" />
-                <ChevronRight />
-              </Terms>
+              <Box display="flex" justifyContent="center">
+                <Icon src={p.logo} height={20} width={20} />
+                {p.name}
+              </Box>
             </Typography>
+            <StyledTerms onClick={() => setSelectedProject(p)}>
+              <FormattedMessage id="zigpad.details" />
+              <StyledChevronRight />
+            </StyledTerms>
           </AlignCenter>
         ),
         coin: (
