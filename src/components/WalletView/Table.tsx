@@ -100,9 +100,9 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {}, onRowC
           return (
             <React.Fragment key={`--group-column-row-${i.toString()}`}>
               <tr
+                onClick={() => onRowClick && onRowClick(row)}
                 {...row.getRowProps()}
                 {...(renderRowSubComponent && row.getToggleRowExpandedProps({}))}
-                onClick={() => onRowClick && onRowClick(row)}
               >
                 {row.cells.map((cell, cellIndex) => {
                   return (
