@@ -168,6 +168,7 @@ interface LaunchpadProjectDetails {
   offeredAmount: number;
   distributedAmount: number;
   startDate: string;
+  getReadyDate: string;
   endDate: string;
   distributionDate: string;
   socials: Social[];
