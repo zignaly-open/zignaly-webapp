@@ -580,7 +580,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                     alignItems="center"
                     onClick={() => setSelectedVaultOffer(v)}
                   >
-                    <Box display="flex">
+                    <Box display="flex" alignItems="center">
                       <CoinIcon coin={v.coinReward} width={20} height={20} />
                       <NeutralText>
                         <FormattedMessage
@@ -614,7 +614,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                     alignItems="center"
                     onClick={() => setSelectedProject(p)}
                   >
-                    <Box display="flex">
+                    <Box display="flex" alignItems="center">
                       <img src={p.logo} height={20} width={20} />
                       <NeutralText>{p.name}</NeutralText>
                     </Box>
