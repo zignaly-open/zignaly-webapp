@@ -1,13 +1,12 @@
 import { Box, Chip, CircularProgress, Typography } from "@material-ui/core";
-import { Link, DescriptionOutlined } from "@material-ui/icons";
+import { Link, DescriptionOutlined, Check } from "@material-ui/icons";
 import CustomModal from "components/Modal";
-import React, { useEffect, useState } from "react";
-import { isMobile, Modal } from "styles/styles";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, isMobile, Modal } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
-import CoinIcon from "../CoinIcon";
 import {
   Timeline,
   TimelineConnector,
@@ -21,7 +20,17 @@ import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
 import tradeApi from "services/tradeApiClient";
 import { PledgeButton } from "../Vault/VaultDepositButton";
-import CustomButton from "components/CustomButton";
+import Countdown, { CountdownProps, CountdownRenderProps, zeroPad } from "react-countdown";
+import PrivateAreaContext from "context/PrivateAreaContext";
+import WalletDepositView from "../WalletDepositView";
+import { gateioUrl } from "utils/affiliateURLs";
+import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
+
+const TitleContainer = styled(Box)`
+  ${isMobile(css`
+    margin-bottom: 6px;
+  `)}
+`;
 
 const MetricDetails = styled.div`
   margin-right: 80px;
@@ -83,8 +92,10 @@ const StyledTimeline = styled(Timeline)`
   }
 `;
 
-const TimelineLabel = styled.div`
-  color: ${(props) => props.theme.newTheme.secondaryText};
+const TimelineLabel = styled.div<{ active: boolean }>`
+  color: ${(props) =>
+    props.active ? props.theme.palette.primary.main : props.theme.newTheme.secondaryText};
+  font-weight: ${(props) => (props.active ? 700 : 400)};
   font-size: 16px;
   margin-bottom: 6px;
 `;
@@ -136,6 +147,9 @@ const ItemValue = styled.span`
 `;
 
 const StyledPledgeButton = styled.div`
+  display: flex;
+  justify-content: center;
+
   && button {
     margin: 16px 42px;
     width: auto;
@@ -148,6 +162,141 @@ const StyledPledgeButton = styled.div`
   }
 `;
 
+const CountdownContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+
+  ${isMobile(`
+    flex-direction: column;
+    margin: 12px 0;
+  `)}
+`;
+
+const CountdownPanel = styled.div`
+  background: ${(props) => props.theme.newTheme.backgroundAltColor};
+  padding: 18px;
+  max-width: 740px;
+  border-radius: 4px;
+  margin-top: 12px;
+
+  ${isMobile(`
+    text-align: center;
+  `)}
+`;
+
+const CountdownText = styled(Typography)`
+  margin-right: 80px;
+  font-size: 16px;
+  ${isMobile(`
+    margin: 0 0 6px;
+  `)}
+`;
+
+const CountdownDigit = styled(Typography)`
+  font-size: 18px;
+  ${({ theme }) => css`
+    border: 1px solid ${theme.newTheme.borderColor2};
+  `}
+  padding: 4px;
+  margin: 0 5px 0 17px;
+  font-weight: 700;
+`;
+
+const ZigAmount = styled(Typography)`
+  margin-bottom: 8px;
+  span {
+    font-weight: 700;
+  }
+`;
+
+const Divider = styled.span`
+  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
+  width: 1px;
+  height: 100%;
+  position: absolute;
+
+  ${isMobile(`
+    display: none;
+  `)}
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  margin-top: 18px;
+
+  ${isMobile(`
+    flex-direction: column;
+    align-items: center;
+  `)}
+`;
+
+const ButtonDesc = styled(Typography)`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  text-align: center;
+  justify-content: space-between;
+
+  ${isMobile(css`
+    width: 100%;
+    align-items: center;
+
+    &:last-child {
+      margin-top: 14px;
+    }
+
+    button,
+    a {
+      width: 200px;
+    }
+  `)}
+
+  p {
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+`;
+
+const StyledTimelineDot = styled(TimelineDot)`
+  width: 24px;
+  height: 24px;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CheckIcon = styled(Check)`
+  width: 18px;
+  height: 18px;
+`;
+
+const CustomTimelineDot = ({
+  done,
+  active,
+  step,
+}: {
+  done: boolean;
+  active: boolean;
+  step: number;
+}) => {
+  return (
+    <StyledTimelineDot color={active ? "primary" : "grey"}>
+      {done ? <CheckIcon /> : step}
+    </StyledTimelineDot>
+  );
+};
+
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
@@ -158,10 +307,31 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const [pledgeModal, showPledgeModal] = useState(false);
   const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
+  const { walletBalance } = useContext(PrivateAreaContext);
+  const balanceZIG = walletBalance?.ZIG?.total?.availableBalance || 0;
+  const [depositZIG, showDepositZIG] = useState(false);
+  const [coins, setCoins] = useState<WalletCoins>(null);
+
+  let step = 1;
+  if (projectDetails) {
+    if (dayjs() > dayjs(projectDetails.startDate)) {
+      step = 2;
+    }
+    if (dayjs() > dayjs(projectDetails.endDate)) {
+      step = 3;
+    }
+    if (dayjs() > dayjs(projectDetails.distributionDate)) {
+      step = 4;
+    }
+  }
 
   useEffect(() => {
     tradeApi.getLaunchpadProjectDetails(projectId).then((response) => {
       setProjectDetails(response);
+    });
+
+    tradeApi.getWalletCoins().then((response) => {
+      setCoins(response);
     });
   }, []);
 
@@ -173,6 +343,34 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
     showPledgeModal(false);
   };
 
+  const rendererCountdown = ({
+    days,
+    hours,
+    minutes,
+    seconds,
+    completed,
+  }: CountdownRenderProps) => {
+    if (completed) {
+      // Render a complete state
+      // return <Completionist />;
+      return "Done";
+    }
+
+    // Render a countdown
+    return (
+      <Box display="flex" alignItems="center">
+        <CountdownDigit>{zeroPad(days)}</CountdownDigit>
+        <FormattedMessage id="zigpad.days" />
+        <CountdownDigit>{zeroPad(hours)}</CountdownDigit>
+        <FormattedMessage id="zigpad.hours" />
+        <CountdownDigit>{zeroPad(minutes)}</CountdownDigit>
+        <FormattedMessage id="zigpad.mins" />
+        <CountdownDigit>{zeroPad(seconds)}</CountdownDigit>
+        <FormattedMessage id="zigpad.secs" />
+      </Box>
+    );
+  };
+
   return (
     <CustomModal
       onClose={onClose}
@@ -182,6 +380,15 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       state={open}
       style={!isMobile ? { width: "1000px" } : null}
     >
+      <CustomModal
+        onClose={() => showDepositZIG(false)}
+        newTheme={true}
+        persist={false}
+        size="medium"
+        state={depositZIG}
+      >
+        <WalletDepositView coins={coins} onClose={() => showDepositZIG(false)} coin="ZIG" />
+      </CustomModal>
       <StyledModal>
         {projectDetails ? (
           <>
@@ -194,11 +401,11 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               <PledgeModal project={projectDetails} onPledged={onPledged} />
             </CustomModal>
             <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
-              <Box display="flex" alignItems="center">
+              <TitleContainer display="flex" alignItems="center">
                 <img src={projectDetails.logo} width={64} height={64} />
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
-              </Box>
+              </TitleContainer>
               <StyledPledgeButton>
                 <PledgeButton
                   onClick={() => showPledgeModal(true)}
@@ -293,39 +500,133 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <StyledTimeline>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot />
+                  <CustomTimelineDot done={step > 1} active={step === 1} step={1} />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>
-                  <TimelineLabel>
-                    <FormattedMessage id="zigpad.subscriptionPeriod" />
+                  <TimelineLabel active={step === 1}>
+                    <FormattedMessage id="zigpad.getready" />
                   </TimelineLabel>
-                  <ItemValue>{formatUTC(projectDetails.startDate)}</ItemValue>
+                  <ItemValue>{formatUTC(projectDetails.getReadyDate)}</ItemValue>
+                  {step === 1 && (
+                    <>
+                      <CountdownContainer>
+                        <CountdownText>
+                          <FormattedMessage id="zigpad.timeLeftStart" />
+                        </CountdownText>
+                        <Countdown date={projectDetails.startDate} renderer={rendererCountdown} />
+                      </CountdownContainer>
+                      <CountdownPanel>
+                        <ZigAmount>
+                          <FormattedMessage id="zigpad.youHave" />
+                          &nbsp;
+                          <NumberFormat
+                            value={balanceZIG}
+                            thousandSeparator={true}
+                            displayType="text"
+                            suffix=" ZIG"
+                          />
+                        </ZigAmount>
+                        <ZigAmount>
+                          <FormattedMessage id="zigpad.getMore" />
+                        </ZigAmount>
+                        <ButtonsContainer>
+                          <ButtonBox>
+                            <ButtonDesc>
+                              <FormattedMessage id="zigpad.deposit.desc" />
+                            </ButtonDesc>
+                            <Button onClick={() => showDepositZIG(true)}>
+                              <FormattedMessage id="accounts.deposit" />
+                              &nbsp;ZIG
+                            </Button>
+                          </ButtonBox>
+                          <Divider />
+                          <ButtonBox>
+                            <ButtonDesc>
+                              <FormattedMessage id="zigpad.buy.desc" />
+                            </ButtonDesc>
+                            <Button href={gateioUrl} target="_blank" endIcon={<OpenArrowIcon />}>
+                              <FormattedMessage id="zigpad.buy" />
+                            </Button>
+                          </ButtonBox>
+                        </ButtonsContainer>
+                      </CountdownPanel>
+                    </>
+                  )}
                 </TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot />
+                  <CustomTimelineDot done={step > 2} active={step === 2} step={2} />
                   <TimelineConnector />
                 </TimelineSeparator>
                 <TimelineContent>
-                  <TimelineLabel>
+                  <TimelineLabel active={step === 2}>
+                    <FormattedMessage id="zigpad.subscriptionPeriod" />
+                  </TimelineLabel>
+                  <ItemValue>{formatUTC(projectDetails.startDate)}</ItemValue>
+                  {step === 2 && (
+                    <>
+                      <CountdownContainer>
+                        <CountdownText>
+                          <FormattedMessage id="zigpad.timeLeftEnd" />
+                        </CountdownText>
+                        <Countdown date={projectDetails.endDate} renderer={rendererCountdown} />
+                      </CountdownContainer>
+                      <CountdownPanel>
+                        {!projectDetails.pledged && (
+                          <Typography>
+                            <FormattedMessage id="zigpad.subscription.participate" />
+                          </Typography>
+                        )}
+                        <StyledPledgeButton>
+                          <PledgeButton
+                            onClick={() => showPledgeModal(true)}
+                            pledged={projectDetails.pledged}
+                          />
+                        </StyledPledgeButton>
+                      </CountdownPanel>
+                    </>
+                  )}
+                </TimelineContent>
+              </TimelineItem>
+              <TimelineItem>
+                <TimelineSeparator>
+                  <CustomTimelineDot done={step > 3} active={step === 3} step={3} />
+                  <TimelineConnector />
+                </TimelineSeparator>
+                <TimelineContent>
+                  <TimelineLabel active={step === 3}>
                     <FormattedMessage id="zigpad.calculationPeriod" />
                   </TimelineLabel>
                   <ItemValue>
                     {formatUTC(dayjs(projectDetails.endDate).add(1, "d").format())}
                   </ItemValue>
+                  {step === 3 && (
+                    <CountdownContainer>
+                      <CountdownText>
+                        <FormattedMessage id="zigpad.calculation.progress" />
+                      </CountdownText>
+                    </CountdownContainer>
+                  )}
                 </TimelineContent>
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <TimelineDot />
+                  <CustomTimelineDot done={step === 4} active={step === 4} step={4} />
                 </TimelineSeparator>
                 <TimelineContent>
-                  <TimelineLabel>
+                  <TimelineLabel active={step === 4}>
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
                   <ItemValue>{formatUTC(projectDetails.distributionDate)}</ItemValue>
+                  {step === 4 && (
+                    <CountdownContainer>
+                      <CountdownText>
+                        <FormattedMessage id="zigpad.distribution.done" />
+                      </CountdownText>
+                    </CountdownContainer>
+                  )}
                 </TimelineContent>
               </TimelineItem>
             </StyledTimeline>
