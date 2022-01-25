@@ -166,7 +166,7 @@ const StyledPledgeButton = styled.div`
 const CountdownContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 2px;
+  margin-top: 3px;
 
   ${isMobile(`
     flex-direction: column;
@@ -174,7 +174,7 @@ const CountdownContainer = styled.div`
   `)}
 `;
 
-const CountdownPanel = styled.div`
+const CountdownPanel = styled(Typography)`
   background: ${(props) => props.theme.newTheme.backgroundAltColor};
   padding: 18px;
   max-width: 740px;
@@ -316,17 +316,17 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
 
   const getStep = () => {
     if (projectDetails) {
-      if (dayjs() > dayjs(projectDetails.startDate)) {
-        // Subscription period
-        return 2;
+      if (dayjs().isAfter(projectDetails.vestingDate)) {
+        // Distribution period
+        return 4;
       }
-      if (dayjs() > dayjs(projectDetails.endDate).add(1, "d")) {
+      if (dayjs().isAfter(dayjs(projectDetails.endDate).add(1, "d"))) {
         // Calculation period
         return 3;
       }
-      if (dayjs() > dayjs(projectDetails.vestingDate)) {
-        // Distribution period
-        return 4;
+      if (dayjs().isAfter(projectDetails.startDate)) {
+        // Subscription period
+        return 2;
       }
     }
 
@@ -595,9 +595,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                       </CountdownContainer>
                       <CountdownPanel>
                         {!projectDetails.pledged && dayjs().isBefore(projectDetails.endDate) && (
-                          <Typography>
-                            <FormattedMessage id="zigpad.subscription.participate" />
-                          </Typography>
+                          <FormattedMessage id="zigpad.subscription.participate" />
                         )}
                         <StyledPledgeButton>
                           <PledgeButton
@@ -641,57 +639,55 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   </TimelineLabel>
                   <ItemValue>{formatUTC(projectDetails.vestingDate)}</ItemValue>
                   {step === 4 && (
-                    <CountdownContainer>
-                      <CountdownText>
-                        {dayjs().isBefore(projectDetails.distributionDate) ? (
-                          projectDetails.pledged ? (
-                            <>
-                              <FormattedMessage
-                                id="zigpad.calculation.done"
-                                values={{
-                                  reward: projectDetails.tokenReward,
-                                  realPledged: projectDetails.pledged - projectDetails.returned,
-                                  date: dayjs(projectDetails.distributionDate).format(
-                                    "MMM D, YYYY",
-                                  ),
-                                }}
-                              />
-                              {projectDetails.returned === 0 && (
-                                <FormattedMessage
-                                  id="zigpad.calculation.returned"
-                                  values={{
-                                    pledged: projectDetails.pledged,
-                                    returned: projectDetails.returned,
-                                  }}
-                                  tagName="div"
-                                />
-                              )}
-                            </>
+                    <>
+                      <CountdownContainer>
+                        <CountdownText>
+                          {dayjs().isBefore(projectDetails.distributionDate) ? (
+                            <FormattedMessage id="zigpad.calculation.done" />
                           ) : (
-                            <FormattedMessage id="zigpad.calculation.missed" />
-                          )
-                        ) : (
-                          <>
                             <FormattedMessage id="zigpad.distribution.done" />
-                            <CountdownPanel>
-                              <Typography>
-                                {projectDetails.pledged ? (
-                                  <FormattedMessage
-                                    id="zigpad.distribution.received"
-                                    values={{
-                                      reward: projectDetails.tokenReward,
-                                      realPledged: projectDetails.pledged - projectDetails.returned,
-                                    }}
-                                  />
-                                ) : (
-                                  <FormattedMessage id="zigpad.distribution.missed" />
-                                )}
-                              </Typography>
-                            </CountdownPanel>
+                          )}
+                        </CountdownText>
+                        <Countdown
+                          date={projectDetails.distributionDate}
+                          renderer={rendererCountdown}
+                        />
+                      </CountdownContainer>
+                      <CountdownPanel>
+                        {!projectDetails.pledged ? (
+                          <FormattedMessage id="zigpad.calculation.missed" />
+                        ) : dayjs().isBefore(projectDetails.distributionDate) ? (
+                          <>
+                            <FormattedMessage
+                              id="zigpad.calculation.receive"
+                              values={{
+                                reward: projectDetails.tokenReward,
+                                realPledged: projectDetails.pledged - projectDetails.returned,
+                                date: dayjs(projectDetails.distributionDate).format("MMM D, YYYY"),
+                              }}
+                            />
+                            {projectDetails.returned > 0 && (
+                              <FormattedMessage
+                                id="zigpad.calculation.returned"
+                                values={{
+                                  pledged: projectDetails.pledged,
+                                  returned: projectDetails.returned,
+                                }}
+                                tagName="div"
+                              />
+                            )}
                           </>
+                        ) : (
+                          <FormattedMessage
+                            id="zigpad.distribution.received"
+                            values={{
+                              reward: projectDetails.tokenReward,
+                              realPledged: projectDetails.pledged - projectDetails.returned,
+                            }}
+                          />
                         )}
-                      </CountdownText>
-                    </CountdownContainer>
+                      </CountdownPanel>
+                    </>
                   )}
                 </TimelineContent>
               </TimelineItem>
