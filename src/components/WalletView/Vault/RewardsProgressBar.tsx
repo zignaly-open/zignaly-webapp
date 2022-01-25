@@ -105,13 +105,20 @@ const Container = styled.div`
   min-width: 137px;
 `;
 interface RewardsProgressBarProps {
-  amountTotal: number;
-  amountRemaining: number;
+  amount: number;
   progress: number;
-  coin: string;
+  coin?: string;
+  icon?: string;
+  showHundredPercentMark?: boolean;
 }
 
-const RewardsProgressBar = ({ amount, coin, progress, icon }: RewardsProgressBarProps) => {
+const RewardsProgressBar = ({
+  amount,
+  coin,
+  progress,
+  icon,
+  showHundredPercentMark,
+}: RewardsProgressBarProps) => {
   const progressCapped = Math.min(progress, 1400);
   let max = Math.ceil(progressCapped / 100) * 100;
   if (max < 150) {
@@ -127,12 +134,18 @@ const RewardsProgressBar = ({ amount, coin, progress, icon }: RewardsProgressBar
       </CoinsAmount>
       <Bar>
         <CoinCircle>
-          <img src={icon} width={24} height={24} />
+          {icon ? (
+            <img src={icon} width={24} height={24} />
+          ) : (
+            <CoinIcon coin={coin} width={24} height={24} />
+          )}
         </CoinCircle>
         <BarFilled filled={progressNormalized} />
-        <HundredPercMark position={hundredNormalized}>
-          <span>100%</span>
-        </HundredPercMark>
+        {showHundredPercentMark && (
+          <HundredPercMark position={hundredNormalized}>
+            <span>100%</span>
+          </HundredPercMark>
+        )}
       </Bar>
     </Container>
   );

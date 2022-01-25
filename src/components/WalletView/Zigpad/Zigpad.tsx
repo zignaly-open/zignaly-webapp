@@ -195,6 +195,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
                 icon={p.logo}
                 amount={p.offeredAmount}
                 coin={p.coin}
+                showHundredPercentMark={true}
                 progress={p.progress * 100}
               />
             ) : (
@@ -248,8 +249,21 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
-            @{p.price} ZIG
-            <Rate>{rateZIG ? format2Dec(p.price * rateZIG) : "-"}$</Rate>
+            {p.price}$
+            <Rate>
+              {rateZIG ? (
+                <NumberFormat
+                  displayType="text"
+                  value={p.price / rateZIG}
+                  suffix=" ZIG"
+                  prefix="≈"
+                  thousandSeparator={true}
+                  decimalScale={2}
+                />
+              ) : (
+                "-"
+              )}
+            </Rate>
           </Value>
         ),
         actions: (
