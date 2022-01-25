@@ -25,6 +25,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import WalletDepositView from "../WalletDepositView";
 import { gateioUrl } from "utils/affiliateURLs";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
+import useInterval from "hooks/useInterval";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -311,19 +312,35 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const balanceZIG = walletBalance?.ZIG?.total?.availableBalance || 0;
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
+  const [step, setStep] = useState(1);
 
-  let step = 1;
-  if (projectDetails) {
-    if (dayjs() > dayjs(projectDetails.startDate)) {
-      step = 2;
+  const getStep = () => {
+    if (projectDetails) {
+      if (dayjs() > dayjs(projectDetails.startDate)) {
+        return 2;
+      }
+      if (dayjs() > dayjs(projectDetails.endDate)) {
+        return 3;
+      }
+      if (dayjs() > dayjs(projectDetails.distributionDate)) {
+        return 4;
+      }
     }
-    if (dayjs() > dayjs(projectDetails.endDate)) {
-      step = 3;
-    }
-    if (dayjs() > dayjs(projectDetails.distributionDate)) {
-      step = 4;
-    }
-  }
+
+    return 1;
+  };
+
+  useInterval(
+    () => {
+      setStep(getStep());
+    },
+    1000,
+    false,
+  );
+
+  useEffect(() => {
+    setStep(getStep());
+  }, [projectDetails]);
 
   useEffect(() => {
     tradeApi.getLaunchpadProjectDetails(projectId).then((response) => {
