@@ -382,9 +382,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
     completed,
   }: CountdownRenderProps) => {
     if (completed) {
-      // Render a complete state
-      // return <Completionist />;
-      return "Done";
+      return null;
     }
 
     // Render a countdown
@@ -666,7 +664,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
                   <ItemValue>{formatDateTime(projectDetails.distributionDate)}</ItemValue>
-                  {step === 4 && (
+                  {step >= 4 && (
                     <>
                       <CountdownContainer>
                         <CountdownText>
