@@ -195,7 +195,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
                 icon={p.logo}
                 amount={p.offeredAmount}
                 coin={p.coin}
-                showHundredPercentMark={true}
+                zigpadVariant={true}
                 progress={p.progress * 100}
               />
             ) : (

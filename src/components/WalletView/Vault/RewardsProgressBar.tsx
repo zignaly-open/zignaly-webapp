@@ -109,7 +109,7 @@ interface RewardsProgressBarProps {
   progress: number;
   coin?: string;
   icon?: string;
-  showHundredPercentMark?: boolean;
+  zigpadVariant?: boolean;
 }
 
 const RewardsProgressBar = ({
@@ -117,11 +117,11 @@ const RewardsProgressBar = ({
   coin,
   progress,
   icon,
-  showHundredPercentMark,
+  zigpadVariant,
 }: RewardsProgressBarProps) => {
   const progressCapped = Math.min(progress, 1400);
   let max = Math.ceil(progressCapped / 100) * 100;
-  if (max < 150) {
+  if (zigpadVariant && max < 150) {
     max = 150;
   }
   const progressNormalized = (progressCapped * 100) / max;
@@ -141,7 +141,7 @@ const RewardsProgressBar = ({
           )}
         </CoinCircle>
         <BarFilled filled={progressNormalized} />
-        {showHundredPercentMark && (
+        {zigpadVariant && (
           <HundredPercMark position={hundredNormalized}>
             <span>100%</span>
           </HundredPercMark>
