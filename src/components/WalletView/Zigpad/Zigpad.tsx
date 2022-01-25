@@ -11,7 +11,7 @@ import { useTheme } from "@material-ui/core/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, Title } from "styles/styles";
-import WalletIcon from "images/wallet/wallet.svg";
+import RocketIcon from "images/launchpad/rocket.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
@@ -277,7 +277,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         <ButtonMui href="#wallet" variant="outlined" color="grid.content" startIcon={<ArrowBack />}>
           <FormattedMessage id="accounts.back" />
         </ButtonMui>
-        <img src={WalletIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
+        <img src={RocketIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
         <FormattedMessage id="zigpad.title" />
       </Title>
       <Box mt="28px">
