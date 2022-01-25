@@ -123,7 +123,7 @@ interface Social {
 }
 interface LaunchpadProject {
   id: number;
-  pledged: string;
+  pledged: number;
   coin: string;
   name: string;
   shortDescription: string;
@@ -155,7 +155,6 @@ interface Tokenomic {
 
 interface LaunchpadProjectDetails {
   id: number;
-  pledged: string;
   coin: string;
   name: string;
   shortDescription: string;
@@ -171,11 +170,15 @@ interface LaunchpadProjectDetails {
   getReadyDate: string;
   endDate: string;
   distributionDate: string;
+  vestingDate: string;
   socials: Social[];
   price: string;
   logo: string;
   highlights: string;
   tokenomic: Tokenomic;
+  tokenReward: number;
+  returned: number;
+  pledged: number;
 }
 interface TotalSavings {
   total: number;
