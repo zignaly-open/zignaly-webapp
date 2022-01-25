@@ -315,15 +315,17 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const [step, setStep] = useState(1);
 
   const getStep = () => {
-    return 2;
     if (projectDetails) {
       if (dayjs() > dayjs(projectDetails.startDate)) {
+        // Subscription period
         return 2;
       }
-      if (dayjs() > dayjs(projectDetails.endDate)) {
+      if (dayjs() > dayjs(projectDetails.endDate).add(1, "d")) {
+        // Calculation period
         return 3;
       }
-      if (dayjs() > dayjs(projectDetails.distributionDate)) {
+      if (dayjs() > dayjs(projectDetails.vestingDate)) {
+        // Distribution period
         return 4;
       }
     }
@@ -637,11 +639,11 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <TimelineLabel active={step === 4}>
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatUTC(projectDetails.distributionDate)}</ItemValue>
+                  <ItemValue>{formatUTC(projectDetails.vestingDate)}</ItemValue>
                   {step === 4 && (
                     <CountdownContainer>
                       <CountdownText>
-                        {dayjs() < dayjs(projectDetails.distributionDate) ? (
+                        {dayjs().isBefore(projectDetails.distributionDate) ? (
                           projectDetails.pledged ? (
                             <>
                               <FormattedMessage
