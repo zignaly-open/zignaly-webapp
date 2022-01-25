@@ -45,7 +45,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
       {projects.map((p) => (
         <Panel key={p.name}>
           <Box display="flex" alignItems="center">
-            <CoinIcon width={32} height={32} coin={p.coin} />
+            <img width={32} height={32} src={p.logo} />
             <TypographyProject>
               <div>{p.name}</div>
               <Terms onClick={() => onProjectClick(p)}>
@@ -64,7 +64,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
               </Label>
               <Box display="flex">
                 <StartDate>{dayjs(p.startDate).format("MMM D")}</StartDate>
-                {dayjs(p.endDate).format("MMM D, YYYY")}
+                {dayjs(p.calculationDate).format("MMM D, YYYY")}
               </Box>
             </div>
             <div>
@@ -72,7 +72,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
                 <FormattedMessage id="zigpad.minContribution" />
               </Label>
               <Amount>
-                <NumberFormat displayType="text" value={p.minAmount} />
+                <NumberFormat displayType="text" value={p.minAmount} thousandSeparator={true} />
                 <Coin>ZIG</Coin>
               </Amount>
             </div>
@@ -82,7 +82,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
               </Label>
               <Amount>
                 <NumberFormat displayType="text" value={p.price} />
-                <Coin>ZIG</Coin>
+                <Coin>$</Coin>
               </Amount>
             </div>
           </Box>

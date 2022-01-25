@@ -68,6 +68,12 @@ const StyledTab = styled(Tab)`
   font-weight: 600;
 `;
 
+const StyledVaultDepositButton = styled.div`
+  button {
+    width: 100%;
+  }
+`;
+
 const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
@@ -186,9 +192,9 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {tab === 0 ? (
               <RewardsProgressBar
-                amountTotal={v.rewardsTotal}
-                amountRemaining={v.rewardsRemaining}
+                amount={v.rewardsTotal}
                 coin={v.coinReward}
+                progress={((v.rewardsTotal - v.rewardsRemaining) / v.rewardsTotal) * 100}
               />
             ) : (
               <CoinIcon coin={v.coinReward} />
@@ -222,11 +228,13 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         distributionDate: <Value>{dayjs(v.distributionDate).format("MMM D, YYYY")}</Value>,
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
-          <VaultDepositButton
-            vault={v}
-            balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
-            onClick={() => setDepositCoin(v.coin)}
-          />
+          <StyledVaultDepositButton>
+            <VaultDepositButton
+              vault={v}
+              balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
+              onClick={() => setDepositCoin(v.coin)}
+            />
+          </StyledVaultDepositButton>
         ),
       })),
     [vaultOffers, tab],

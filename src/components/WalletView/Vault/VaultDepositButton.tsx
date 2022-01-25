@@ -1,29 +1,13 @@
-import { Button } from "@material-ui/core";
-import CustomButton from "components/CustomButton";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
 import styled, { css } from "styled-components";
-import { isMobile } from "styles/styles";
+import { Button, isMobile } from "styles/styles";
 
-const ButtonStyled = styled(CustomButton)`
-  && {
-    min-width: 115px;
-    min-height: auto;
-    width: 100%;
-  }
-
+const ButtonStyled = styled(Button)`
   span {
     font-size: 13px;
     white-space: nowrap;
-  }
-`;
-
-const PledgeButtonStyled = styled(ButtonStyled)`
-  && {
-    ${isMobile(css`
-      width: auto;
-    `)}
   }
 `;
 
@@ -40,10 +24,11 @@ const ActivatedButton = styled.div`
   font-weight: 600;
   text-transform: uppercase;
   color: ${({ theme }) => (theme.palette.type === "dark" ? "#B1F7CA" : "#36373f")};
+`;
 
-  ${isMobile(css`
-    min-width: 98px;
-  `)}
+const ActivatedButtonPledge = styled(ActivatedButton)`
+  text-transform: capitalize;
+  padding: 12px;
 `;
 
 interface VaultDepositButtonProps {
@@ -75,12 +60,14 @@ interface PledgeButtonProps {
 
 export const PledgeButton = ({ pledged, onClick }: PledgeButtonProps) => {
   return pledged ? (
-    <ActivatedButton>
-      <FormattedMessage id="zigpad.pledged" values={{ amount: pledged, coin: "ZIG" }} />
-    </ActivatedButton>
+    <ActivatedButtonPledge>
+      <FormattedMessage id="zigpad.pledged" />
+      &nbsp;
+      <NumberFormat value={pledged} thousandSeparator={true} displayType="text" suffix=" ZIG" />
+    </ActivatedButtonPledge>
   ) : (
-    <PledgeButtonStyled className="textPurple borderPurple" onClick={onClick}>
+    <ButtonStyled onClick={onClick}>
       <FormattedMessage id="zigpad.pledge" />
-    </PledgeButtonStyled>
+    </ButtonStyled>
   );
 };

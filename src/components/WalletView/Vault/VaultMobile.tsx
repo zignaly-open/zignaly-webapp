@@ -44,6 +44,10 @@ export const Panel = styled.div`
   margin-bottom: 12px;
 `;
 
+const VaultDepositBox = styled.div`
+  margin-left: auto;
+`;
+
 interface VaultMobileProps {
   vaults: VaultOffer[];
   balance: WalletBalance;
@@ -68,11 +72,13 @@ const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) 
               />
             </EarnText>
             {type === "active" && (
-              <VaultDepositButton
-                vault={v}
-                balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
-                onClick={() => onOfferClick(v.coin)}
-              />
+              <VaultDepositBox>
+                <VaultDepositButton
+                  vault={v}
+                  balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
+                  onClick={() => onOfferClick(v.coin)}
+                />
+              </VaultDepositBox>
             )}
           </Box>
           <Box display="flex" justifyContent="space-between" mt="8px">

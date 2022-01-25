@@ -36,7 +36,7 @@ const CircularProgressFilled = styled(CircularProgress)`
 
 const Perc = styled.div`
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   position: absolute;
   left: 50%;
   top: 50%;

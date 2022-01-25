@@ -4,13 +4,13 @@ import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
 
 const Bar = styled.div`
-  margin: 0 10px 0 40px;
   display: flex;
   box-shadow: inset 0px 1px 1px -1px rgba(73, 9, 123, 0.25);
-  border-radius: 100px;
+  border-radius: 0 100px 100px 0;
   background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
   height: 16px;
   width: 100%;
+  position: relative;
 
   ${({ theme }) =>
     theme.palette.type === "dark" &&
@@ -22,8 +22,7 @@ const Bar = styled.div`
 const BarFilled = styled.div`
   height: 100%;
   background: linear-gradient(289.8deg, #149cad 0%, #4540c1 100%);
-  position: relative;
-  border-radius: 100px;
+  border-radius: 0 100px 100px 0;
 
   ${({ filled }: { filled: number }) =>
     css`
@@ -44,9 +43,30 @@ const BarFilled = styled.div`
     `}
 `;
 
+const HundredPercMark = styled.div`
+  width: 2px;
+  height: 100%;
+  margin-left: -1px;
+  background-color: #ffffff;
+  position: absolute;
+
+  ${({ position }: { position: number }) =>
+    css`
+      left: ${position}%;
+    `}
+
+  span {
+    font-size: 10px;
+    font-weight: 700;
+    position: absolute;
+    top: 17px;
+    left: -12px;
+  }
+`;
+
 const CoinCircle = styled.div`
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   background-color: #ffffff;
   border-radius: 50%;
   position: absolute;
@@ -54,7 +74,8 @@ const CoinCircle = styled.div`
   justify-content: center;
   align-items: center;
   top: -10px;
-  right: -16px;
+  left: -37px;
+  z-index: 1;
 
   img {
     width: 24px;
@@ -70,38 +91,63 @@ const CoinCircle = styled.div`
 `;
 
 const CoinsAmount = styled.div`
-  position: absolute;
-  font-size: 12px;
-  line-height: 14px;
-  top: -15px;
-  white-space: nowrap;
+  font-size: 16px;
   font-weight: 600;
+  margin-bottom: 4px;
 `;
 
-const Coin = styled.span`
-  font-size: 11px;
-  color: ${(props) => props.theme.newTheme.purple};
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 0 0 5px 37px;
+  min-width: 137px;
 `;
-
 interface RewardsProgressBarProps {
-  amountTotal: number;
-  amountRemaining: number;
-  coin: string;
+  amount: number;
+  progress: number;
+  coin?: string;
+  icon?: string;
+  showHundredPercentMark?: boolean;
 }
 
-const RewardsProgressBar = ({ amountTotal, amountRemaining, coin }: RewardsProgressBarProps) => {
-  const percFilled = ((amountTotal - amountRemaining) / amountTotal) * 100;
+const RewardsProgressBar = ({
+  amount,
+  coin,
+  progress,
+  icon,
+  showHundredPercentMark,
+}: RewardsProgressBarProps) => {
+  const progressCapped = Math.min(progress, 1400);
+  let max = Math.ceil(progressCapped / 100) * 100;
+  if (max < 150) {
+    max = 150;
+  }
+  const progressNormalized = (progressCapped * 100) / max;
+  const hundredNormalized = (100 * 100) / max;
+
   return (
-    <Bar>
-      <BarFilled filled={percFilled}>
+    <Container>
+      <CoinsAmount>
+        {formatPrice(amount, "", " ", true)} {coin}
+      </CoinsAmount>
+      <Bar>
         <CoinCircle>
-          <CoinsAmount>
-            {formatPrice(amountRemaining, "", " ", true)} <Coin>{coin}</Coin>
-          </CoinsAmount>
-          <CoinIcon coin={coin} width={24} height={24} />
+          {icon ? (
+            <img src={icon} width={24} height={24} />
+          ) : (
+            <CoinIcon coin={coin} width={24} height={24} />
+          )}
         </CoinCircle>
-      </BarFilled>
-    </Bar>
+        <BarFilled filled={progressNormalized} />
+        {showHundredPercentMark && (
+          <HundredPercMark position={hundredNormalized}>
+            <span>100%</span>
+          </HundredPercMark>
+        )}
+      </Bar>
+    </Container>
   );
 };
 
