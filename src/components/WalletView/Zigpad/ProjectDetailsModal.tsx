@@ -15,12 +15,12 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from "@material-ui/lab";
-import { formatUTC } from "utils/format";
+import { formatDateTime } from "utils/format";
 import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
 import tradeApi from "services/tradeApiClient";
 import { PledgeButton } from "../Vault/VaultDepositButton";
-import Countdown, { CountdownProps, CountdownRenderProps, zeroPad } from "react-countdown";
+import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import WalletDepositView from "../WalletDepositView";
 import { gateioUrl } from "utils/affiliateURLs";
@@ -151,7 +151,7 @@ const StyledPledgeButton = styled.div`
   display: flex;
   justify-content: center;
 
-  && button {
+  button {
     margin: 16px 42px;
     width: auto;
     min-width: 150px;
@@ -316,11 +316,15 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
 
   const getStep = () => {
     if (projectDetails) {
-      if (dayjs().isAfter(projectDetails.vestingDate)) {
+      if (dayjs().isAfter(projectDetails.distributionDate)) {
         // Distribution period
+        return 5;
+      }
+      if (dayjs().isAfter(projectDetails.vestingDate)) {
+        // Vesting period
         return 4;
       }
-      if (dayjs().isAfter(dayjs(projectDetails.endDate).add(1, "d"))) {
+      if (dayjs().isAfter(projectDetails.calculationDate)) {
         // Calculation period
         return 3;
       }
@@ -426,12 +430,14 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
               </TitleContainer>
-              <StyledPledgeButton>
-                <PledgeButton
-                  onClick={() => showPledgeModal(true)}
-                  pledged={projectDetails.pledged}
-                />
-              </StyledPledgeButton>
+              {step === 2 && (
+                <StyledPledgeButton>
+                  <PledgeButton
+                    onClick={() => showPledgeModal(true)}
+                    pledged={projectDetails.pledged}
+                  />
+                </StyledPledgeButton>
+              )}
             </CoinBox>
             <Chip
               style={{ marginBottom: "12px" }}
@@ -527,7 +533,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <TimelineLabel active={step === 1}>
                     <FormattedMessage id="zigpad.getready" />
                   </TimelineLabel>
-                  <ItemValue>{formatUTC(projectDetails.getReadyDate)}</ItemValue>
+                  <ItemValue>{formatDateTime(projectDetails.getReadyDate)}</ItemValue>
                   {step === 1 && (
                     <>
                       <CountdownContainer>
@@ -584,19 +590,20 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <TimelineLabel active={step === 2}>
                     <FormattedMessage id="zigpad.subscriptionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatUTC(projectDetails.startDate)}</ItemValue>
+                  <ItemValue>{formatDateTime(projectDetails.startDate)}</ItemValue>
                   {step === 2 && (
                     <>
                       <CountdownContainer>
                         <CountdownText>
                           <FormattedMessage id="zigpad.timeLeftEnd" />
                         </CountdownText>
-                        <Countdown date={projectDetails.endDate} renderer={rendererCountdown} />
+                        <Countdown
+                          date={projectDetails.calculationDate}
+                          renderer={rendererCountdown}
+                        />
                       </CountdownContainer>
                       <CountdownPanel>
-                        {!projectDetails.pledged && dayjs().isBefore(projectDetails.endDate) && (
-                          <FormattedMessage id="zigpad.subscription.participate" />
-                        )}
+                        <FormattedMessage id="zigpad.subscription.participate" />
                         <StyledPledgeButton>
                           <PledgeButton
                             onClick={() => showPledgeModal(true)}
@@ -617,9 +624,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <TimelineLabel active={step === 3}>
                     <FormattedMessage id="zigpad.calculationPeriod" />
                   </TimelineLabel>
-                  <ItemValue>
-                    {formatUTC(dayjs(projectDetails.endDate).add(1, "d").format())}
-                  </ItemValue>
+                  <ItemValue>{formatDateTime(projectDetails.calculationDate)}</ItemValue>
                   {step === 3 && (
                     <CountdownContainer>
                       <CountdownText>
@@ -631,13 +636,13 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <CustomTimelineDot done={step === 4} active={step === 4} step={4} />
+                  <CustomTimelineDot done={step > 4} active={step === 4} step={4} />
                 </TimelineSeparator>
                 <TimelineContent>
                   <TimelineLabel active={step === 4}>
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatUTC(projectDetails.vestingDate)}</ItemValue>
+                  <ItemValue>{formatDateTime(projectDetails.distributionDate)}</ItemValue>
                   {step === 4 && (
                     <>
                       <CountdownContainer>

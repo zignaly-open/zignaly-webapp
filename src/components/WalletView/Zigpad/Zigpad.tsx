@@ -86,6 +86,12 @@ const StyledTableLayout = styled(TableLayout)`
   } */
 `;
 
+const StyledPledgeButton = styled.div`
+  button {
+    width: 100%;
+  }
+`;
+
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case "gaming":
@@ -125,7 +131,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
       tab === 0
         ? [
             {
-              Header: intl.formatMessage({ id: "zigpad.remaning" }),
+              Header: "",
               accessor: "distribution",
             },
             {
@@ -186,9 +192,10 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {tab === 0 ? (
               <RewardsProgressBar
-                amountTotal={p.offeredAmount}
-                amountRemaining={p.offeredAmount - p.distributedAmount}
+                icon={p.logo}
+                amount={p.offeredAmount}
                 coin={p.coin}
+                progress={p.progress * 100}
               />
             ) : (
               <CoinIcon coin={p.coin} />
@@ -197,12 +204,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         project: (
           <AlignCenter direction="column">
-            <Typography style={{ fontWeight: 600, textAlign: "center" }}>
-              <Box display="flex" justifyContent="center">
-                <Icon src={p.logo} height={20} width={20} />
-                {p.name}
-              </Box>
-            </Typography>
+            <Typography style={{ fontWeight: 600, textAlign: "center" }}>{p.name}</Typography>
             <StyledTerms onClick={() => setSelectedProject(p)}>
               <FormattedMessage id="zigpad.details" />
               <StyledChevronRight />
@@ -242,7 +244,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             <Coin>{p.coin}</Coin>
           </Value>
         ),
-        endDate: <Value>{dayjs(p.endDate).format("MMM D, YYYY")}</Value>,
+        endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
@@ -250,7 +252,11 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             <Rate>{rateZIG ? format2Dec(p.price * rateZIG) : "-"}$</Rate>
           </Value>
         ),
-        actions: <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />,
+        actions: (
+          <StyledPledgeButton>
+            <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />
+          </StyledPledgeButton>
+        ),
         id: p.id,
       })),
     [launchpadProjects, tab, rateZIG],

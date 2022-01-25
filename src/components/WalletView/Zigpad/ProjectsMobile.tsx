@@ -64,7 +64,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
               </Label>
               <Box display="flex">
                 <StartDate>{dayjs(p.startDate).format("MMM D")}</StartDate>
-                {dayjs(p.endDate).format("MMM D, YYYY")}
+                {dayjs(p.calculationDate).format("MMM D, YYYY")}
               </Box>
             </div>
             <div>
