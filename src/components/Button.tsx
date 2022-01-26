@@ -17,7 +17,7 @@ const Button = (props: CustomButtonProps) => {
   const { loading, disabled, children, color = "primary", variant = "outlined", ...others } = props;
   return (
     <StyledButton disabled={loading || disabled} color={color} variant={variant} {...others}>
-      {loading ? <CircularProgress size={35} thickness={5} /> : children}
+      {loading ? <CircularProgress size={30} /> : children}
     </StyledButton>
   );
 };
