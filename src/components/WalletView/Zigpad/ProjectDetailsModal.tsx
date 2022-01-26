@@ -2,7 +2,7 @@ import { Box, Chip, CircularProgress, Typography } from "@material-ui/core";
 import { Link, DescriptionOutlined, Check } from "@material-ui/icons";
 import CustomModal from "components/Modal";
 import React, { useContext, useEffect, useState } from "react";
-import { Button, isMobile, Modal } from "styles/styles";
+import { isMobile, Modal } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
@@ -26,6 +26,7 @@ import WalletDepositView from "../WalletDepositView";
 import { gateioUrl } from "utils/affiliateURLs";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import useInterval from "hooks/useInterval";
+import Button from "components/Button";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -423,7 +424,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
           <>
             <CustomModal
               onClose={() => showPledgeModal(false)}
-              size="small"
+              size="medium"
               state={pledgeModal}
               newTheme={true}
             >

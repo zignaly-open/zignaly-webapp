@@ -1,8 +1,8 @@
+import Button from "components/Button";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
 import styled, { css } from "styled-components";
-import { Button, isMobile } from "styles/styles";
 
 const ButtonStyled = styled(Button)`
   span {

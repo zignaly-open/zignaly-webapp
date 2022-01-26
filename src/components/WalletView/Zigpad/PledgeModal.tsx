@@ -1,4 +1,3 @@
-import CustomButton from "components/CustomButton";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -11,12 +10,14 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import { ConfirmDialog } from "components/Dialogs";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
+import RocketIcon from "images/launchpad/rocket.svg";
+import Button from "components/Button";
+import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
+import { zigpadTermsUrl } from "utils/affiliateURLs";
 
-const Button = styled(CustomButton)`
-  && {
-    min-width: 150px;
-    margin-top: 12px;
-  }
+const StyledButton = styled(Button)`
+  width: 150px;
+  margin-top: 12px;
 
   ${isMobile(css`
     width: 100%;
@@ -43,6 +44,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const amount = watch("amount");
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     tradeApi.getWalletBalance().then((response) => {
@@ -86,6 +88,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
     <Modal>
       <form onSubmit={handleSubmit(pledgeConfirm)}>
         <Title>
+          <img src={RocketIcon} width={32} height={32} />
           {project.coin}&nbsp;
           <FormattedMessage id="zigpad.pledge" />
         </Title>
@@ -94,6 +97,14 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           executeActionCallback={pledge}
           setConfirmConfig={setConfirmConfig}
         />
+        <Typography>
+          <FormattedMessage id="zigpad.pledge.info1" values={{ project: project.name }} />
+        </Typography>
+        <br />
+        <Typography>
+          <FormattedMessage id="zigpad.pledge.info2" />
+        </Typography>
+
         <AmountControl
           balance={balanceZIG}
           setBalanceMax={setBalanceMax}
@@ -105,9 +116,33 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           newDesign={true}
           minAmount={project.minAmount}
         />
-        <Button className="bgPurple" type="submit" disabled={!isValid} loading={loading}>
+        <FormControlLabel
+          style={{
+            marginTop: "24px",
+            marginBottom: "12px",
+          }}
+          control={<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)} />}
+          label={
+            <FormattedMessage
+              id="zigpad.pledge.terms"
+              values={{
+                a: (chunks: string) => (
+                  <a target="_blank" rel="noreferrer" href={zigpadTermsUrl}>
+                    {chunks}
+                  </a>
+                ),
+              }}
+            />
+          }
+        />
+        <StyledButton
+          variant="contained"
+          type="submit"
+          disabled={!isValid || !checked}
+          loading={loading}
+        >
           <FormattedMessage id="zigpad.pledge" />
-        </Button>
+        </StyledButton>
       </form>
     </Modal>
   );
