@@ -57,6 +57,9 @@ const PledgeModalConfirm = ({ project, onPledged, amount, onCancel }: PledgeModa
           <img src={RocketIcon} width={40} height={40} />
           <FormattedMessage id="zigpad.pledge.confirm.title" values={{ project: project.name }} />
         </Title>
+        <Typography>
+          <FormattedMessage id="zigpad.pledge.confirm.desc" />
+        </Typography>
         <StyledLabel>
           <FormattedMessage id="zigpad.pledge.confirm.program" />
         </StyledLabel>
