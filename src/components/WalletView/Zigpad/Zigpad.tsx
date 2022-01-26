@@ -147,8 +147,8 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "minAmount",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.endDate" }),
-              accessor: "endDate",
+              Header: intl.formatMessage({ id: "zigpad.subscriptionDate" }),
+              accessor: "subscriptionDate",
             },
             {
               Header: intl.formatMessage({ id: "zigpad.distributionDate" }),
@@ -245,7 +245,11 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             <Coin>{p.coin}</Coin>
           </Value>
         ),
-        endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
+        subscriptionDate: (
+          <Value>
+            {dayjs(p.startDate).format("MMM D")} - {dayjs(p.calculationDate).format("MMM D, YYYY")}
+          </Value>
+        ),
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>

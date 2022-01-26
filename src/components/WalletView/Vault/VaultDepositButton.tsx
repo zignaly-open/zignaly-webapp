@@ -24,6 +24,9 @@ const ActivatedButton = styled.div`
   font-weight: 600;
   text-transform: uppercase;
   color: ${({ theme }) => (theme.palette.type === "dark" ? "#B1F7CA" : "#36373f")};
+  span {
+    white-space: nowrap;
+  }
 `;
 
 const ActivatedButtonPledge = styled(ActivatedButton)`

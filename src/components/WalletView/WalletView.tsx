@@ -602,7 +602,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </VaultButton>
             </Box>
           )}
-          <SubTitleSmall>
+          <SubTitleSmall style={{ textTransform: "uppercase" }}>
             <FormattedMessage id="zigpad.title" />
           </SubTitleSmall>
           {launchpadProjects && (
