@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Box, Button as ButtonMui, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography } from "@material-ui/core";
 
 export const isMobile = (query) => {
   return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
@@ -91,12 +91,4 @@ export const Input = styled(OutlinedInput)`
       color: #9ca3af;
     }
   `}
-`;
-
-export const Button = styled(ButtonMui)`
-  font-weight: 600;
-  text-transform: capitalize;
-  color: var(--purple);
-  border: 2px solid var(--purple);
-  font-size: 16px;
 `;

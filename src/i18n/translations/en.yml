@@ -1921,3 +1921,6 @@ zigpad.calculation.returned: "Because you invested {pledged}, we have returned t
 zigpad.calculation.missed: "You missed the chance to participate in the subscription of this project. No worries, we will bring you more projects."
 zigpad.distribution.done: "We have transferred the tokens to the investors' wallets. Enjoy!"
 zigpad.distribution.received: "You received {reward} Tokens for {realPledged} ZIG Coins in your wallet."
+zigpad.pledge.info1: "To invest in the {project} ZIGPad Program, introduce the amount you want to pledge and accept the terms."
+zigpad.pledge.info2: "Please consider that once you pledge, it is not possible to modify the amount or remove the investment."
+zigpad.pledge.terms: "I agree to the <a>terms of service</a> and I certified that I don't have residency in any of the countries banned to participate in the ZIGPad."
