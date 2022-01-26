@@ -119,13 +119,13 @@ const RewardsProgressBar = ({
   icon,
   zigpadVariant,
 }: RewardsProgressBarProps) => {
-  const progressCapped = Math.min(progress, 1400);
-  let max = Math.ceil(progressCapped / 100) * 100;
-  if (zigpadVariant && max < 150) {
-    max = 150;
-  }
-  const progressNormalized = (progressCapped * 100) / max;
-  const hundredNormalized = (100 * 100) / max;
+  let max = Math.ceil(progress / 100) * 100;
+  // if (zigpadVariant && max < 150) {
+  //   max = 150;
+  // }
+  const progressNormalized = (progress * 100) / max;
+  let hundredFloor = Math.floor(progress / 100) * 100;
+  const hundredFloorNormalized = (hundredFloor * 100) / max;
 
   return (
     <Container>
@@ -141,9 +141,9 @@ const RewardsProgressBar = ({
           )}
         </CoinCircle>
         <BarFilled filled={progressNormalized} />
-        {zigpadVariant && (
-          <HundredPercMark position={hundredNormalized}>
-            <span>100%</span>
+        {zigpadVariant && hundredFloor > 0 && (
+          <HundredPercMark position={hundredFloorNormalized}>
+            <span>{hundredFloor}%</span>
           </HundredPercMark>
         )}
       </Bar>

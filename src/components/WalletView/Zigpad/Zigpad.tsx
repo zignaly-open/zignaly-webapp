@@ -196,7 +196,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
                 amount={p.offeredAmount}
                 coin={p.coin}
                 zigpadVariant={true}
-                progress={p.progress * 100}
+                progress={p.progress}
               />
             ) : (
               <CoinIcon coin={p.coin} />
