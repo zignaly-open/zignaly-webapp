@@ -22,6 +22,7 @@ import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
 import { isNil } from "lodash";
+import { Help } from "@material-ui/icons";
 
 /**
  * @typedef {Object} DefaultProps
@@ -163,6 +164,11 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     // Add terms for futures PS
     terms.unshift("ack1");
   }
+  const helpUrls = {
+    ack1: "https://help.zignaly.com/hc/en-us/articles/360017357399#h_01FTBM69RSNKRQHD7F22PFWAHJ",
+    ack2: "https://help.zignaly.com/hc/en-us/articles/360017357399#h_01FD8B8FG4PBGHM4FASXFGWEBX",
+    ack3: "https://help.zignaly.com/hc/en-us/articles/360017357399#h_01FN1G0MEVR75AK8M0P92NJPV1",
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -288,6 +294,20 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                       id={`profitsharing.${ack}`}
                       values={{ quote: provider.copyTradingQuote }}
                     />
+                    <a
+                      style={{
+                        color: "currentcolor",
+                        verticalAlign: "middle",
+                        display: "inline",
+                        marginLeft: "2px",
+                      }}
+                      title="More Info"
+                      href={helpUrls[ack]}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Help style={{ fontSize: "22px" }} />
+                    </a>
                   </label>
                 </Box>
               ))}
