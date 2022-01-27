@@ -277,7 +277,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </Value>
         ),
         subscriptionDate: (
-          <Value>
+          <Value style={{ textAlign: "center", whiteSpace: "normal" }}>
             {dayjs(p.startDate).format("MMM D")} - {dayjs(p.calculationDate).format("MMM D, YYYY")}
           </Value>
         ),
