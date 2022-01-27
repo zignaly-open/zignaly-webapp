@@ -3,8 +3,10 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
 import styled, { css } from "styled-components";
+import { getStep } from "../Zigpad/ProjectDetailsModal";
 
 const ButtonStyled = styled(Button)`
+  max-width: 210px;
   span {
     font-size: 13px;
     white-space: nowrap;
@@ -17,13 +19,14 @@ const ActivatedButton = styled.div`
   border-radius: 40px;
   padding: 12px 24px;
   display: flex;
-  height: 32px;
+  min-height: 32px;
   justify-content: center;
   align-items: center;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   color: ${({ theme }) => (theme.palette.type === "dark" ? "#B1F7CA" : "#36373f")};
+  max-width: 210px;
   span {
     white-space: nowrap;
   }
@@ -31,7 +34,13 @@ const ActivatedButton = styled.div`
 
 const ActivatedButtonPledge = styled(ActivatedButton)`
   text-transform: capitalize;
-  padding: 12px;
+  padding: 5px 5px;
+  flex-wrap: wrap;
+  ${({ active = true }: { active: boolean }) =>
+    !active &&
+    css`
+      background: rgba(48, 122, 233, 0.28);
+    `}
 `;
 
 interface VaultDepositButtonProps {
@@ -58,15 +67,50 @@ export default VaultDepositButton;
 
 interface PledgeButtonProps {
   onClick: () => void;
-  pledged: number;
+  project: LaunchpadProject;
 }
 
-export const PledgeButton = ({ pledged, onClick }: PledgeButtonProps) => {
-  return pledged ? (
-    <ActivatedButtonPledge>
-      <FormattedMessage id="zigpad.pledged" />
-      &nbsp;
-      <NumberFormat value={pledged} thousandSeparator={true} displayType="text" suffix=" ZIG" />
+export const PledgeButton = ({ project, onClick }: PledgeButtonProps) => {
+  const status = getStep(project);
+
+  if (status === 1) {
+    return (
+      <ButtonStyled onClick={onClick}>
+        <FormattedMessage id="zigpad.getready" />
+      </ButtonStyled>
+    );
+  }
+
+  return status > 2 || project.pledged ? (
+    <ActivatedButtonPledge active={project.pledged > 0}>
+      <span>
+        {status === 2 ? (
+          <FormattedMessage id="zigpad.pledged" />
+        ) : status === 3 ? (
+          <FormattedMessage
+            id={`${project.pledged ? "zigpad.calculatingPledged" : "zigpad.calculating"}`}
+          />
+        ) : (
+          <FormattedMessage id="zigpad.waitingDistribution" />
+        )}
+        &nbsp;
+      </span>
+      {project.pledged > 0 &&
+        (status > 3 ? (
+          <NumberFormat
+            value={project.tokenReward}
+            thousandSeparator={true}
+            displayType="text"
+            suffix={` ${project.coin}`}
+          />
+        ) : (
+          <NumberFormat
+            value={project.pledged}
+            thousandSeparator={true}
+            displayType="text"
+            suffix=" ZIG"
+          />
+        ))}
     </ActivatedButtonPledge>
   ) : (
     <ButtonStyled onClick={onClick}>

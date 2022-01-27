@@ -272,7 +272,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         actions: (
           <StyledPledgeButton>
-            <PledgeButton onClick={() => setSelectedProject(p)} pledged={p.pledged} />
+            <PledgeButton onClick={() => setSelectedProject(p)} project={p} />
           </StyledPledgeButton>
         ),
         id: p.id,
