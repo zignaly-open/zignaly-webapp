@@ -27,18 +27,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
 import VaultDepositButton from "./VaultDepositButton";
-
-const Terms = styled.a`
-  line-height: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 12px;
-  text-decoration: none;
-  color: ${({ theme }) => theme.newTheme.linkText};
-`;
+import { Terms } from "../styles";
 
 const Coin = styled.span`
   color: #65647e;
@@ -77,6 +66,12 @@ const StyledTabs = styled(Tabs)`
 const StyledTab = styled(Tab)`
   text-transform: none;
   font-weight: 600;
+`;
+
+const StyledVaultDepositButton = styled.div`
+  button {
+    width: 100%;
+  }
 `;
 
 const VaultView = ({ isOpen }: { isOpen: boolean }) => {
@@ -195,7 +190,15 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       vaultOffers.map((v) => ({
         rewards: (
           <AlignCenter>
-            {tab === 0 ? <RewardsProgressBar vault={v} /> : <CoinIcon coin={v.coinReward} />}
+            {tab === 0 ? (
+              <RewardsProgressBar
+                amount={v.rewardsTotal}
+                coin={v.coinReward}
+                progress={((v.rewardsTotal - v.rewardsRemaining) / v.rewardsTotal) * 100}
+              />
+            ) : (
+              <CoinIcon coin={v.coinReward} />
+            )}
           </AlignCenter>
         ),
         offer: (
@@ -225,11 +228,13 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         distributionDate: <Value>{dayjs(v.distributionDate).format("MMM D, YYYY")}</Value>,
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
-          <VaultDepositButton
-            vault={v}
-            balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
-            onClick={() => setDepositCoin(v.coin)}
-          />
+          <StyledVaultDepositButton>
+            <VaultDepositButton
+              vault={v}
+              balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
+              onClick={() => setDepositCoin(v.coin)}
+            />
+          </StyledVaultDepositButton>
         ),
       })),
     [vaultOffers, tab],

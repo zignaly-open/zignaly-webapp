@@ -21,6 +21,7 @@ import useUpdatedBalance from "hooks/useUpdatedBalance";
 import tradeApi from "services/tradeApiClient";
 import InviteModal from "components/Navigation/Header/InviteModal";
 import VaultsView from "components/WalletView/Vault/VaultView";
+import Zigpad from "components/WalletView/Zigpad/Zigpad";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -81,6 +82,7 @@ const PrivateAreaLayout = (props) => {
         newTheme={true}
         showCloseIcon={true}
       />
+      <GlobalModal content={Zigpad} hash="zigpad" newTheme={true} showCloseIcon={true} />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
         <Hidden xsDown>

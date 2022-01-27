@@ -35,7 +35,7 @@ export const TableLayout = styled.div`
 
 
       thead tr th {
-        text-transform: uppercase;
+        text-transform: capitalize;
         font-weight: 100;
         font-size: 14px;
         padding: 22px;
@@ -55,7 +55,7 @@ export const TableLayout = styled.div`
   `}
 `;
 
-const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
+const Table = ({ columns, data, renderRowSubComponent, initialState = {}, onRowClick }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -100,6 +100,7 @@ const Table = ({ columns, data, renderRowSubComponent, initialState = {} }) => {
           return (
             <React.Fragment key={`--group-column-row-${i.toString()}`}>
               <tr
+                onClick={() => onRowClick && onRowClick(row)}
                 {...row.getRowProps()}
                 {...(renderRowSubComponent && row.getToggleRowExpandedProps({}))}
               >

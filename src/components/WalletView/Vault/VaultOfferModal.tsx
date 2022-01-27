@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
+import { formatUTC } from "utils/format";
 // const localizedFormat = require("dayjs/plugin/localizedFormat");
 // dayjs.extend(localizedFormat);
 
@@ -60,7 +61,6 @@ interface VaultOfferModalProps {
   vault: VaultOffer;
 }
 
-const formatUTC = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMMM DD, YYYY hh:mm A UTC");
 const formatDay = (date: string) => dayjs(date, "YYYY-MM-DD").format("MMM D, YYYY");
 
 const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {

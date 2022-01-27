@@ -34,6 +34,7 @@ import WalletCoins from "./WalletCoins";
 import { Rate } from "./styles";
 import CoinIcon from "./CoinIcon";
 import VaultOfferModal from "./Vault/VaultOfferModal";
+import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -131,19 +132,12 @@ const VaultDivider = styled.span`
 `;
 
 const VaultButton = styled(MuiButton)`
-  margin-bottom: -21px;
-  position: absolute;
-  bottom: 0;
   color: ${({ theme }) => theme.newTheme.linkText};
   font-size: 12px;
   font-weight: 600;
   text-transform: none;
   align-self: flex-end;
-
-  ${isMobile(`
-    position: static;
-    margin-top: 12px;
-  `)}
+  margin-top: 4px;
 `;
 
 const ChevronRightStyled = styled(ChevronRight)`
@@ -297,6 +291,16 @@ const VaultListItem = styled(Box)`
   cursor: pointer;
 `;
 
+const SubTitleSmall = styled(SubTitle)`
+  margin-bottom: 10px;
+`;
+
+const LaunchpadBox = styled(Box)`
+  ${isMobile(css`
+    margin-bottom: 0;
+  `)}
+`;
+
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
@@ -305,7 +309,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const coinParam = pathParams[1];
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
-  const balanceZIG = walletBalance?.ZIG?.total.balance || "0";
+  const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
+  const balanceZIG = walletBalance?.ZIG?.total.balance || 0;
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
@@ -313,6 +318,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const dispatch = useDispatch();
   const rateZIG = coins?.ZIG.usdPrice;
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
+  const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
   const [totalSavings, setTotalSavings] = useState(null);
 
   const handleTooltipClose = () => {
@@ -343,6 +349,10 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
 
       tradeApi.getVaultOffers({ status: "active" }).then((response) => {
         setVaultOffers(response);
+      });
+
+      tradeApi.getLaunchpadProjects({ status: "active" }).then((response) => {
+        setLaunchpadProjects(response);
       });
 
       tradeApi.getTotalSavings().then((response) => {
@@ -443,6 +453,13 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           onClose={() => setSelectedVaultOffer(null)}
           open={true}
           vault={selectedVaultOffer}
+        />
+      )}
+      {selectedProject && (
+        <ProjectDetailsModal
+          onClose={() => setSelectedProject(null)}
+          open={true}
+          projectId={selectedProject.id}
         />
       )}
       <Title>
@@ -551,20 +568,19 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         </PanelItemMiddle>
         <Divider />
         <PanelItem>
-          <SubTitle>
+          <SubTitleSmall>
             <FormattedMessage id="wallet.staking" />
-          </SubTitle>
+          </SubTitleSmall>
           {vaultOffers && (
             <Box mt={1} display="flex" flexDirection="column">
-              {vaultOffers.slice(0, 4).map((v) => (
+              {vaultOffers.slice(0, 2).map((v) => (
                 <Box display="flex" key={v.id} flexDirection="column">
                   <VaultListItem
                     display="flex"
-                    key={v.id}
                     alignItems="center"
                     onClick={() => setSelectedVaultOffer(v)}
                   >
-                    <Box display="flex">
+                    <Box display="flex" alignItems="center">
                       <CoinIcon coin={v.coinReward} width={20} height={20} />
                       <NeutralText>
                         <FormattedMessage
@@ -585,6 +601,35 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 />
               </VaultButton>
             </Box>
+          )}
+          <SubTitleSmall style={{ textTransform: "uppercase" }}>
+            <FormattedMessage id="zigpad.title" />
+          </SubTitleSmall>
+          {launchpadProjects && (
+            <LaunchpadBox mt={1} mb="-22px" display="flex" flexDirection="column">
+              {launchpadProjects.slice(0, 1).map((p) => (
+                <Box display="flex" key={p.coin} flexDirection="column">
+                  <VaultListItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={() => setSelectedProject(p)}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <img src={p.logo} height={20} width={20} />
+                      <NeutralText>{p.name}</NeutralText>
+                    </Box>
+                    <ChevronRightStyled />
+                  </VaultListItem>
+                  <VaultDivider />
+                </Box>
+              ))}
+              <VaultButton endIcon={<ChevronRight />} href="#zigpad">
+                <FormattedMessage
+                  id="zigpad.projects"
+                  values={{ count: launchpadProjects.length }}
+                />
+              </VaultButton>
+            </LaunchpadBox>
           )}
         </PanelItem>
       </StyledPanel>

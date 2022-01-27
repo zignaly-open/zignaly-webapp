@@ -29,6 +29,9 @@ interface TransactionsHistory {
   network: string;
   status: string;
   type: string;
+  zigpadName: string;
+  zigpadId: string;
+  zigpadLogo: string;
 }
 
 interface DownloadTransactionsReq {
@@ -117,6 +120,71 @@ interface GetInternalTransfersHistory extends PaginationReq {
   type: string;
 }
 
+interface Social {
+  name: string;
+  url: string;
+}
+interface LaunchpadProject {
+  id: number;
+  pledged: number;
+  coin: string;
+  name: string;
+  shortDescription: string;
+  details: string;
+  website: string;
+  whitepaper: string;
+  category: string;
+  minAmount: number;
+  maxAmount: number;
+  offeredAmount: number;
+  distributedAmount: number;
+  startDate: string;
+  calculationDate: string;
+  distributionDate: string;
+  socials: Social[];
+  price: string;
+  logo: string;
+  progress: number;
+  tokenReward: number;
+}
+
+interface Tokenomic {
+  chain: string;
+  publicSalePrice: number;
+  supplyInitial: number;
+  supplyTotalCap: number;
+  tokenDistributionDate: string;
+  tokenSaleVestingPeriod: number;
+  tokensOffered: number;
+}
+
+interface LaunchpadProjectDetails {
+  id: number;
+  coin: string;
+  name: string;
+  shortDescription: string;
+  details: string;
+  website: string;
+  whitepaper: string;
+  category: string;
+  minAmount: number;
+  maxAmount: number;
+  offeredAmount: number;
+  distributedAmount: number;
+  startDate: string;
+  getReadyDate: string;
+  calculationDate: string;
+  distributionDate: string;
+  vestingDate: string;
+  socials: Social[];
+  price: string;
+  logo: string;
+  highlights: string;
+  tokenomic: Tokenomic;
+  tokenReward: number;
+  returned: number;
+  pledged: number;
+}
 interface TotalSavings {
   total: number;
 }
