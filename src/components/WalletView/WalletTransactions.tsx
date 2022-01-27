@@ -343,27 +343,22 @@ const WalletTransactions = () => {
     const address = isWithdrawal ? toAddress : fromAddress;
     const name = isWithdrawal ? toName : fromName;
 
-    const TransferAddressContent = useCallback(
-      () => (
+    const TransferAddressContent = useCallback(() => {
+      return providerId || address ? (
         <>
-          {providerId || address ? (
-            <>
-              <TransferChainIcon network={network} />
-              <TypographyAddress>
-                {providerId ? (
-                  <ProviderLink providerId={providerId} providerName={providerName} />
-                ) : (
-                  address
-                )}
-              </TypographyAddress>
-            </>
-          ) : (
-            <TransferZigLabel name={name} />
-          )}
+          <TransferChainIcon network={network} />
+          <TypographyAddress>
+            {providerId ? (
+              <ProviderLink providerId={providerId} providerName={providerName} />
+            ) : (
+              address
+            )}
+          </TypographyAddress>
         </>
-      ),
-      [],
-    );
+      ) : (
+        <TransferZigLabel name={name} />
+      );
+    }, []);
 
     if ((side === "from" && isWithdrawal) || (side === "to" && !isWithdrawal)) {
       // Zig Wallet
