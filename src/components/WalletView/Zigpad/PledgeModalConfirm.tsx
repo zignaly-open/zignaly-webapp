@@ -10,6 +10,7 @@ import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
 import { Box, Typography } from "@material-ui/core";
 import NumberFormat from "react-number-format";
+import { ErrorOutlineOutlined } from "@material-ui/icons";
 
 const TypographyValue = styled(Typography)`
   font-size: 18px;
@@ -23,6 +24,17 @@ const StyledLabel = styled(Label)`
 const StyledButton = styled(Button)`
   min-width: 125px;
   margin-left: 12px;
+`;
+
+const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
+  margin-right: 7px;
+  color: ${({ theme }) => theme.newTheme.error};
+`;
+
+const TypographyError = styled(Typography)`
+  color: ${({ theme }) => theme.newTheme.error};
+  font-weight: 500;
+  font-size: 15px;
 `;
 
 interface PledgeModalConfirmProps {
@@ -73,10 +85,11 @@ const PledgeModalConfirm = ({ project, onPledged, amount, onCancel }: PledgeModa
         <TypographyValue>
           <NumberFormat displayType="text" value={amount} suffix=" ZIG" thousandSeparator={true} />
         </TypographyValue>
-        <Box my={3}>
-          <Typography>
+        <Box display="flex" my={3}>
+          <StyledErrorOutlined width={24} height={24} />
+          <TypographyError>
             <FormattedMessage id="zigpad.pledge.confirm.notice" />
-          </Typography>
+          </TypographyError>
         </Box>
         <Button variant="outlined" onClick={onCancel}>
           <FormattedMessage id="accounts.back" />
