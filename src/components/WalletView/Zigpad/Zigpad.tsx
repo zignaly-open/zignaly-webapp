@@ -10,7 +10,7 @@ import {
 import { useTheme } from "@material-ui/core/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { AlignCenter, Title } from "styles/styles";
+import { AlignCenter, isMobile, Title } from "styles/styles";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
@@ -24,7 +24,9 @@ import { Rate, Terms } from "../styles";
 import { PledgeButton } from "../Vault/VaultDepositButton";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 import ProjectsMobile from "./ProjectsMobile";
-import { format2Dec } from "utils/formatters";
+import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
+import Button from "components/Button";
+import { zigpadInfoUrl } from "utils/affiliateURLs";
 
 const Coin = styled.span`
   color: #65647e;
@@ -92,6 +94,35 @@ const StyledPledgeButton = styled.div`
   }
 `;
 
+const TypographyBenefits = styled(Typography)`
+  margin-bottom: 8px;
+  line-height: 26px;
+
+  div {
+    display: inline-flex;
+    flex-direction: column;
+    &:not(:last-child) {
+      margin-right: 55px;
+      ${isMobile(css`
+        margin: 0;
+      `)}
+    }
+  }
+`;
+
+const TypographyInfo = styled(Typography)`
+  padding-right: 125px;
+  margin-top: 4px;
+  line-height: 26px;
+  ${isMobile(css`
+    padding: 0;
+  `)}
+`;
+
+const HelpButton = styled(Button)`
+  display: inline;
+`;
+
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case "gaming":
@@ -107,7 +138,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
   const [rateZIG, setRateZIG] = useState(null);
 
@@ -251,6 +282,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           </Value>
         ),
         distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
+        endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
             {p.price}$
@@ -288,6 +320,8 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
     [launchpadProjects],
   );
 
+  const parseTranslationList = (id: string) => intl.formatMessage({ id }).split("\n");
+
   return (
     <>
       {selectedProject && (
@@ -304,6 +338,27 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         <img src={RocketIcon} width={40} height={40} style={{ marginLeft: "28px" }} />
         <FormattedMessage id="zigpad.title" />
       </Title>
+      <TypographyInfo>
+        <FormattedMessage id="zigpad.info" />
+        <HelpButton href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
+          <FormattedMessage id="zigpad.faq" />
+        </HelpButton>
+      </TypographyInfo>
+      <Typography style={{ marginTop: "22px", marginBottom: "8px", fontWeight: 600 }}>
+        <FormattedMessage id="vault.benefits" />
+      </Typography>
+      <TypographyBenefits>
+        <div>
+          {parseTranslationList("zigpad.benefits.info").map((t, i) => (
+            <div key={i}>{t}</div>
+          ))}
+        </div>
+        <div>
+          {parseTranslationList("zigpad.benefits.info2").map((t, i) => (
+            <div key={i}>{t}</div>
+          ))}
+        </div>
+      </TypographyBenefits>
       <Box mt="28px">
         {data ? (
           <>
@@ -311,7 +366,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               <StyledTab label={<FormattedMessage id="zigpad.active" />} />
               <StyledTab label={<FormattedMessage id="zigpad.past" />} />
             </StyledTabs>
-            {isMobile ? (
+            {isMobileQuery ? (
               <ProjectsMobile
                 projects={launchpadProjects}
                 type={tab === 0 ? "active" : "expired"}
