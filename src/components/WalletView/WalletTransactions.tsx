@@ -358,7 +358,12 @@ const WalletTransactions = () => {
     const TransferAddressContent = useCallback(() => {
       return transaction.zigpadId ? (
         <>
-          <img src={transaction.zigpadLogo} width={24} height={24} />
+          <StyledTransferImg
+            src={transaction.zigpadLogo}
+            width={24}
+            height={24}
+            style={{ marginRight: "8px" }}
+          />
           <TypographyLabel>{transaction.zigpadName}</TypographyLabel>
         </>
       ) : providerId || address ? (
