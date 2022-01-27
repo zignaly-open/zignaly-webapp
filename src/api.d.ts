@@ -29,6 +29,9 @@ interface TransactionsHistory {
   network: string;
   status: string;
   type: string;
+  zigpadName: string;
+  zigpadId: string;
+  zigpadLogo: string;
 }
 
 interface DownloadTransactionsReq {
