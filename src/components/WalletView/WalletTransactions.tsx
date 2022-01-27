@@ -344,7 +344,12 @@ const WalletTransactions = () => {
     const name = isWithdrawal ? toName : fromName;
 
     const TransferAddressContent = useCallback(() => {
-      return providerId || address ? (
+      return transaction.zigpadId ? (
+        <>
+          <img src={transaction.zigpadLogo} width={24} height={24} />
+          <TypographyLabel>{transaction.zigpadName}</TypographyLabel>
+        </>
+      ) : providerId || address ? (
         <>
           <TransferChainIcon network={network} />
           <TypographyAddress>
