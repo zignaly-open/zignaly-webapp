@@ -9,8 +9,8 @@ import styled, { css } from "styled-components";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
 import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
-import { zigpadTermsUrl } from "utils/affiliateURLs";
 import PledgeModalConfirm from "./PledgeModalConfirm";
+import { ConfirmDialog } from "components/Dialogs";
 
 const StyledButton = styled(Button)`
   min-width: 150px;
@@ -40,6 +40,11 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
   const balanceZIG = walletBalance?.ZIG?.total || { balance: 0, availableBalance: 0 };
   const amount = watch("amount");
   const [confirmAmount, setConfirmAmount] = useState(null);
+  const [confirmConfig, setConfirmConfig] = useState({
+    titleTranslationId: "zigpad.terms.title",
+    messageTranslationId: "zigpad.terms",
+    visible: false,
+  });
 
   useEffect(() => {
     tradeApi.getWalletBalance().then((response) => {
@@ -70,6 +75,11 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
   return (
     <Modal>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <ConfirmDialog
+          confirmConfig={confirmConfig}
+          showCancel={false}
+          setConfirmConfig={setConfirmConfig}
+        />
         <Title>
           <img src={RocketIcon} width={40} height={40} />
           {project.coin}&nbsp;
@@ -98,6 +108,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           style={{
             marginTop: "24px",
             marginBottom: "12px",
+            alignItems: "flex-start",
           }}
           control={
             <Controller
@@ -105,7 +116,11 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
               defaultValue={false}
               name="terms"
               render={({ onChange, value }) => (
-                <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
+                <Checkbox
+                  style={{ marginTop: "-9px" }}
+                  checked={value}
+                  onChange={(e) => onChange(e.target.checked)}
+                />
               )}
               rules={{
                 required: true,
@@ -117,7 +132,12 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
               id="zigpad.pledge.terms"
               values={{
                 a: (chunks: string) => (
-                  <a target="_blank" rel="noreferrer" href={zigpadTermsUrl}>
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    className="link"
+                    onClick={() => setConfirmConfig({ ...confirmConfig, visible: true })}
+                  >
                     {chunks}
                   </a>
                 ),

@@ -20,7 +20,7 @@ import { noop } from "lodash";
  * @typedef {Object} ConfirmDialogProps
  * @property {Function} setConfirmConfig Set state callback to control dialog configuration.
  * @property {ConfirmDialogConfig} confirmConfig Current dialog configuration.
- * @property {Function} executeActionCallback Callback to execute when the action is confirmed.
+ * @property {Function} [executeActionCallback] Callback to execute when the action is confirmed.
  * @property {Function} [executeCancelCallback] Callback to execute when the action is cancelled.
  * @property {Boolean} [showCancel]
  */
