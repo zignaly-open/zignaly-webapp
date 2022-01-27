@@ -178,6 +178,18 @@ const WalletTransactions = () => {
       value: "withdraw_fee",
       label: intl.formatMessage({ id: "wallet.type.withdrawfee" }),
     },
+    {
+      value: "zigpad_pledge",
+      label: intl.formatMessage({ id: "wallet.type.zigpadpledge" }),
+    },
+    {
+      value: "zigpad_return",
+      label: intl.formatMessage({ id: "wallet.type.zigpadreturn" }),
+    },
+    {
+      value: "zigpad_reward",
+      label: intl.formatMessage({ id: "wallet.type.zigpadtokensreward" }),
+    },
   ];
 
   const getTransactions = (_transactions: TransactionsHistory[]) => {
