@@ -142,6 +142,7 @@ interface LaunchpadProject {
   price: string;
   logo: string;
   progress: number;
+  tokenReward: number;
 }
 
 interface Tokenomic {

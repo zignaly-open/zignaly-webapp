@@ -54,7 +54,7 @@ const ProjectsMobile = ({ projects, onProjectClick }: ProjectsMobileProps) => {
               </Terms>
             </TypographyProject>
             <Box flex={1} display="flex" justifyContent="flex-end">
-              <PledgeButton onClick={() => onProjectClick(p)} activated={p.coin === "ETH"} />
+              <PledgeButton onClick={() => onProjectClick(p)} project={p} />
             </Box>
           </Box>
           <Box display="flex" justifyContent="space-between" mt="8px">

@@ -152,11 +152,19 @@ const StyledPledgeButton = styled.div`
   display: flex;
   justify-content: center;
 
+  > div {
+    padding: 5px 11px;
+    height: 32px;
+  }
+
   button {
-    margin: 16px 42px;
-    width: auto;
     min-width: 150px;
     min-height: 48px;
+  }
+
+  > div,
+  button {
+    margin: 16px 42px;
 
     ${isMobile(css`
       margin: 16px 0px 7px;
@@ -299,6 +307,29 @@ const CustomTimelineDot = ({
   );
 };
 
+export const getStep = (project: LaunchpadProjectDetails) => {
+  if (project) {
+    if (dayjs().isAfter(project.distributionDate)) {
+      // Distribution period
+      return 5;
+    }
+    if (dayjs().isAfter(project.vestingDate)) {
+      // Vesting period
+      return 4;
+    }
+    if (dayjs().isAfter(project.calculationDate)) {
+      // Calculation period
+      return 3;
+    }
+    if (dayjs().isAfter(project.startDate)) {
+      // Subscription period
+      return 2;
+    }
+  }
+
+  return 1;
+};
+
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
@@ -316,39 +347,16 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const [step, setStep] = useState(1);
   const [rateZIG, setRateZIG] = useState(null);
 
-  const getStep = () => {
-    if (projectDetails) {
-      if (dayjs().isAfter(projectDetails.distributionDate)) {
-        // Distribution period
-        return 5;
-      }
-      if (dayjs().isAfter(projectDetails.vestingDate)) {
-        // Vesting period
-        return 4;
-      }
-      if (dayjs().isAfter(projectDetails.calculationDate)) {
-        // Calculation period
-        return 3;
-      }
-      if (dayjs().isAfter(projectDetails.startDate)) {
-        // Subscription period
-        return 2;
-      }
-    }
-
-    return 1;
-  };
-
   useInterval(
     () => {
-      setStep(getStep());
+      setStep(getStep(projectDetails));
     },
     1000,
     false,
   );
 
   useEffect(() => {
-    setStep(getStep());
+    setStep(getStep(projectDetails));
   }, [projectDetails]);
 
   useEffect(() => {
@@ -386,7 +394,6 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       return null;
     }
 
-    // Render a countdown
     return (
       <Box display="flex" alignItems="center">
         <CountdownDigit>{zeroPad(days)}</CountdownDigit>
@@ -438,10 +445,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               </TitleContainer>
               {step === 2 && (
                 <StyledPledgeButton>
-                  <PledgeButton
-                    onClick={() => showPledgeModal(true)}
-                    pledged={projectDetails.pledged}
-                  />
+                  <PledgeButton onClick={() => showPledgeModal(true)} project={projectDetails} />
                 </StyledPledgeButton>
               )}
             </CoinBox>
@@ -629,7 +633,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                         <StyledPledgeButton>
                           <PledgeButton
                             onClick={() => showPledgeModal(true)}
-                            pledged={projectDetails.pledged}
+                            project={projectDetails}
                           />
                         </StyledPledgeButton>
                       </CountdownPanel>
