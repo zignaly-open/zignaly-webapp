@@ -11,6 +11,7 @@ import Button from "components/Button";
 import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import PledgeModalConfirm from "./PledgeModalConfirm";
 import { ConfirmDialog } from "components/Dialogs";
+import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
 
 const StyledButton = styled(Button)`
   min-width: 150px;
@@ -40,9 +41,10 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
   const balanceZIG = walletBalance?.ZIG?.total || { balance: 0, availableBalance: 0 };
   const amount = watch("amount");
   const [confirmAmount, setConfirmAmount] = useState(null);
-  const [confirmConfig, setConfirmConfig] = useState({
+  const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
     titleTranslationId: "zigpad.terms.title",
     messageTranslationId: "zigpad.terms",
+    values: { program: project.name },
     visible: false,
   });
 
