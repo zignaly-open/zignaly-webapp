@@ -81,10 +81,12 @@ export const PledgeButton = ({ project, onClick }: PledgeButtonProps) => {
     );
   }
 
-  return status >= 3 ? (
+  return status > 2 || project.pledged ? (
     <ActivatedButtonPledge active={project.pledged > 0}>
       <span>
-        {status === 3 ? (
+        {status === 2 ? (
+          <FormattedMessage id="zigpad.pledged" />
+        ) : status === 3 ? (
           <FormattedMessage
             id={`${project.pledged ? "zigpad.calculatingPledged" : "zigpad.calculating"}`}
           />
@@ -112,20 +114,7 @@ export const PledgeButton = ({ project, onClick }: PledgeButtonProps) => {
     </ActivatedButtonPledge>
   ) : (
     <ButtonStyled onClick={onClick}>
-      {project.pledged ? (
-        <>
-          <FormattedMessage id="zigpad.pledged" />
-          &nbsp;
-          <NumberFormat
-            value={project.pledged}
-            thousandSeparator={true}
-            displayType="text"
-            suffix=" ZIG"
-          />
-        </>
-      ) : (
-        <FormattedMessage id="zigpad.pledge" />
-      )}
+      <FormattedMessage id="zigpad.pledge" />
     </ButtonStyled>
   );
 };

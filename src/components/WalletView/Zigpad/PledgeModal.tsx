@@ -9,7 +9,6 @@ import styled, { css } from "styled-components";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
 import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
-import { zigpadTermsUrl } from "utils/affiliateURLs";
 import PledgeModalConfirm from "./PledgeModalConfirm";
 import { ConfirmDialog } from "components/Dialogs";
 
