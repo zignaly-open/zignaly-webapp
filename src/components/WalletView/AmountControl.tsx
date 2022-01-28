@@ -36,6 +36,7 @@ interface AmountControlProps {
   label?: string;
   minAmount?: number;
   newDesign?: boolean;
+  lockedDesc?: string;
 }
 
 const AmountControl = ({
@@ -48,6 +49,7 @@ const AmountControl = ({
   label = "withdraw.amount",
   newDesign = false,
   minAmount,
+  lockedDesc,
 }: AmountControlProps) => {
   const intl = useIntl();
   const lockedBalance = balance.balance - balance.availableBalance;
@@ -117,7 +119,7 @@ const AmountControl = ({
             </BalanceLabel>
           </Box>
           <Typography style={{ marginTop: "18px" }} color="textSecondary">
-            <FormattedMessage id="wallet.locked.desc" />
+            <FormattedMessage id={lockedDesc || "wallet.locked.desc"} />
           </Typography>
         </>
       )}
