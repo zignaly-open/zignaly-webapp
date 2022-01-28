@@ -387,7 +387,9 @@ class TradeApiClient {
 
     if (method === "GET") {
       if (payload) {
-        requestUrl += `?${new URLSearchParams(payload)}`;
+        requestUrl += `?${new URLSearchParams(
+          payload.page ? { ...payload, pag_format: "body" } : payload,
+        )}`;
       }
     } else {
       options.body = JSON.stringify(payload);
@@ -1143,17 +1145,25 @@ class TradeApiClient {
   /**
    * Get providers followers data.
    *
-   * @param {GetProviderFollowersPayload} payload Get providers followers payload.
+   * @param {GetProviderFollowersReq} payload Get providers followers payload.
    *
-   * @returns {Promise<Array<ProviderFollowersEntity>>} Returns promise that resolves provider followers entity.
+   * @returns {Promise<GetProviderFollowersRes>} Returns promise that resolves provider followers entity.
    *
    * @memberof TradeApiClient
    */
   async providerFollowersListGet(payload) {
-    const { providerId } = payload;
-    const responseData = await this.doRequest(`/providers/${providerId}/followers`, null, "GET", 2);
+    const { providerId, ...others } = payload;
+    const responseData = await this.doRequest(
+      `/providers/${providerId}/followers`,
+      others,
+      "GET",
+      2,
+    );
 
-    return providerFollowersListResponseTransform(responseData);
+    return {
+      ...responseData,
+      data: providerFollowersListResponseTransform(responseData.data),
+    };
   }
 
   /**
