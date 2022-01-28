@@ -244,6 +244,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const ButtonDesc = styled(Typography)`
+  color: ${({ theme }) => theme.newTheme.secondaryText};
   display: flex;
   flex: 1;
   justify-content: center;
@@ -284,6 +285,12 @@ const StyledTimelineDot = styled(TimelineDot)`
   display: flex;
   justify-content: center;
   align-items: center;
+  ${({ theme, color }) =>
+    theme.palette.type === "dark" &&
+    color === "grey" &&
+    css`
+      color: #36373f;
+    `}
 `;
 
 const CheckIcon = styled(Check)`
