@@ -74,7 +74,7 @@ const ProviderUsers = ({ provider }) => {
               setPaginationOptions({ ...paginationOptions, page: value });
             },
             onColumnSortChange: (value, direction) => {
-              setPaginationOptions({ ...paginationOptions, sort: value, direction: direction });
+              setPaginationOptions({ ...paginationOptions, sort: value, direction });
             },
           }}
         />

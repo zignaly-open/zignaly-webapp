@@ -119,7 +119,9 @@ const useProviderUsers = (provider, paginationOptions) => {
 
   const loadFollowersList = () => {
     if (provider.id && provider.isAdmin) {
-      setLoading(true);
+      if (!users.length) {
+        setLoading(true);
+      }
       const payload = {
         providerId: provider.id,
         connected: getFilterValue(filters.connected),
