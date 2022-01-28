@@ -31,7 +31,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @typedef {Object} TablePaginationOptions
  * @property {Number} total
  * @property {function(number): void} onRowsPerPageChange
- * @property {function(string, string): void} onColumnSortChange
+ * @property {function(string, PaginationOptions['direction']): void} onColumnSortChange
  * @property {function(number): void} onPageChange
  */
 
@@ -76,6 +76,7 @@ const Table = ({
         columns.length > 4
       : storeSettings.responsiveTables[persistKey];
   const [responsive, setResponsive] = useState(defaultReponsive);
+  const [page, setPage] = useState(0);
 
   /**
    * Function to create column labels.
@@ -231,10 +232,12 @@ const Table = ({
     // Server side pagination
     ...(paginationOptions && {
       count: paginationOptions.total,
+      page,
       serverSide: true,
       onTableChange: (action, tableState) => {
         if (action === "changePage") {
-          paginationOptions.onPageChange(tableState.page);
+          setPage(tableState.page);
+          paginationOptions.onPageChange(tableState.page + 1);
         }
       },
     }),
