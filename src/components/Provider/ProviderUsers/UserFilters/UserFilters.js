@@ -10,7 +10,6 @@ import { useIntl } from "react-intl";
  * @property {String} connected
  * @property {String} active
  * @property {String} suspended
- * @property {String} connectedExchange
  */
 
 /**
@@ -20,7 +19,6 @@ import { useIntl } from "react-intl";
  * @property {Array<OptionType>} connectedOptions Exchanges options.
  * @property {Array<OptionType>} activeOptions Exchange types options.
  * @property {Array<OptionType>} suspendedOptions Quotes options.
- * @property {Array<OptionType>} exchangeOptions Options array for user owned services select.
  */
 
 /**
@@ -33,7 +31,6 @@ const UserFilters = ({
   connectedOptions,
   activeOptions,
   suspendedOptions,
-  exchangeOptions,
   filters,
   setFilters,
 }) => {
@@ -66,13 +63,6 @@ const UserFilters = ({
         options={suspendedOptions}
         // @ts-ignore
         value={filters.suspended}
-      />
-      <CustomSelect
-        label={intl.formatMessage({ id: "fil.realexchange" })}
-        onChange={(/** @type {string} */ val) => setFilters({ ...filters, connectedExchange: val })}
-        options={exchangeOptions}
-        // @ts-ignore
-        value={filters.connectedExchange}
       />
     </Box>
   );
