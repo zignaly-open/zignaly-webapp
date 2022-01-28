@@ -6,6 +6,7 @@ import {
   useMediaQuery,
   Tabs,
   Tab,
+  Icon,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -67,10 +68,6 @@ const StyledTab = styled(Tab)`
   font-weight: 600;
 `;
 
-const Icon = styled.img`
-  margin-right: 6px;
-`;
-
 const StyledChevronRight = styled(ChevronRight)`
   margin-right: -9px;
 `;
@@ -124,13 +121,29 @@ const HelpButton = styled(Button)`
 `;
 
 const getCategoryIcon = (category: string) => {
-  switch (category) {
+  switch (category.toLowerCase()) {
     case "gaming":
-      return <SportsEsports />;
+      return SportsEsports;
     case "meme":
+      return SportsEsports;
+    case "platform":
+      return SportsEsports;
     default:
-      return <SportsEsports />;
+      return null;
   }
+};
+const CategoryIcon = ({ category }: { category: string }) => {
+  let IconMatch = getCategoryIcon(category);
+
+  if (!IconMatch) {
+    return null;
+  }
+
+  return (
+    <Icon role="img" title={category} style={{ marginRight: "4px" }}>
+      <IconMatch width={24} height={24} />
+    </Icon>
+  );
 };
 
 const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
@@ -170,10 +183,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "project",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.category" }),
-              accessor: "category",
-            },
-            {
               Header: intl.formatMessage({ id: "zigpad.minContribution" }),
               accessor: "minAmount",
             },
@@ -198,10 +207,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             {
               Header: intl.formatMessage({ id: "zigpad.project" }),
               accessor: "coin",
-            },
-            {
-              Header: intl.formatMessage({ id: "zigpad.category" }),
-              accessor: "category",
             },
             {
               Header: intl.formatMessage({ id: "zigpad.offered" }),
@@ -236,7 +241,12 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         project: (
           <AlignCenter direction="column">
-            <Typography style={{ fontWeight: 600, textAlign: "center" }}>{p.name}</Typography>
+            <Typography style={{ fontWeight: 600, textAlign: "center" }}>
+              <Box display="flex" justifyContent="center" whiteSpace="nowrap">
+                <CategoryIcon category={p.category} />
+                {p.name}
+              </Box>
+            </Typography>
             <StyledTerms onClick={() => setSelectedProject(p)}>
               <FormattedMessage id="zigpad.details" />
               <StyledChevronRight />

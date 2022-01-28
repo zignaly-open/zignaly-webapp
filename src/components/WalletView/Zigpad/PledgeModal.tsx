@@ -8,10 +8,11 @@ import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
-import { Checkbox, FormControlLabel, Typography } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Typography } from "@material-ui/core";
 import PledgeModalConfirm from "./PledgeModalConfirm";
 import { ConfirmDialog } from "components/Dialogs";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
+import { ErrorOutlineOutlined } from "@material-ui/icons";
 
 const StyledButton = styled(Button)`
   min-width: 150px;
@@ -20,6 +21,17 @@ const StyledButton = styled(Button)`
   ${isMobile(css`
     width: 100%;
   `)}
+`;
+
+const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
+  margin-right: 7px;
+  color: ${({ theme }) => theme.newTheme.error};
+`;
+
+const TypographyError = styled(Typography)`
+  color: ${({ theme }) => theme.newTheme.error};
+  font-weight: 500;
+  font-size: 15px;
 `;
 
 interface PledgeModalProps {
@@ -90,11 +102,12 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
         <Typography>
           <FormattedMessage id="zigpad.pledge.info1" values={{ project: project.name }} />
         </Typography>
-        <br />
-        <Typography>
-          <FormattedMessage id="zigpad.pledge.info2" />
-        </Typography>
-
+        <Box display="flex" my={3}>
+          <StyledErrorOutlined width={24} height={24} />
+          <TypographyError>
+            <FormattedMessage id="zigpad.pledge.info2" />
+          </TypographyError>
+        </Box>
         <AmountControl
           balance={balanceZIG}
           setBalanceMax={setBalanceMax}
