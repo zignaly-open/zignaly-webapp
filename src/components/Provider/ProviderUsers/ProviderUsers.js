@@ -28,8 +28,7 @@ const ProviderUsers = ({ provider }) => {
   });
 
   const {
-    loading,
-    list,
+    users,
     loadFollowersList,
     connectedOptions,
     activeOptions,
@@ -55,11 +54,12 @@ const ProviderUsers = ({ provider }) => {
 
   return (
     <>
-      {loading && <CircularProgress color="primary" />}
-      {!loading && (
+      {!users ? (
+        <CircularProgress color="primary" />
+      ) : (
         <UsersTable
           filtersVisibility={filtersVisibility}
-          list={list}
+          list={users}
           loadData={loadFollowersList}
           persistKey={persistKey}
           provider={provider}
@@ -74,7 +74,7 @@ const ProviderUsers = ({ provider }) => {
               setPaginationOptions({ ...paginationOptions, page: value });
             },
             onColumnSortChange: (value, direction) => {
-              setPaginationOptions({ ...paginationOptions, sort: value, direction: direction });
+              setPaginationOptions({ ...paginationOptions, sort: value, direction });
             },
           }}
         />

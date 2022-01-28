@@ -118,6 +118,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           label="zigpad.pledge.amount"
           newDesign={true}
           minAmount={project.minAmount}
+          lockedDesc="zigpad.locked"
         />
         <FormControlLabel
           style={{

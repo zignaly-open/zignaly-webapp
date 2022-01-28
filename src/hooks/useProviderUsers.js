@@ -15,8 +15,7 @@ import { useIntl } from "react-intl";
  * @property {String} suspended
  *
  * @typedef {Object} HookData
- * @property {Boolean} loading
- * @property {Array<ProviderFollowersEntity>} list
+ * @property {Array<ProviderFollowersEntity>} users
  * @property {Function} loadFollowersList
  * @property {Array<OptionType>} connectedOptions
  * @property {Array<OptionType>} activeOptions
@@ -35,8 +34,7 @@ import { useIntl } from "react-intl";
  * @returns {HookData} Hook Data.
  */
 const useProviderUsers = (provider, paginationOptions) => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState(null);
   const [filtersVisibility, setFiltersVisibility] = useState(false);
   const intl = useIntl();
   const initialFilters = {
@@ -119,7 +117,6 @@ const useProviderUsers = (provider, paginationOptions) => {
 
   const loadFollowersList = () => {
     if (provider.id && provider.isAdmin) {
-      setLoading(true);
       const payload = {
         providerId: provider.id,
         connected: getFilterValue(filters.connected),
@@ -132,11 +129,9 @@ const useProviderUsers = (provider, paginationOptions) => {
         .then((response) => {
           setUsers(response.data);
           setTotal(response.pagination.total);
-          setLoading(false);
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
-          setLoading(false);
         });
     }
   };
@@ -146,8 +141,7 @@ const useProviderUsers = (provider, paginationOptions) => {
   }, [filters, paginationOptions]);
 
   return {
-    loading,
-    list: users,
+    users,
     loadFollowersList,
     setFilters,
     connectedOptions,
