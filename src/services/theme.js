@@ -179,7 +179,7 @@ const theme = (darkStyle) => {
         content: darkStyle ? colors.lighterBlack : colors.white,
       },
       primary: {
-        main: colors.purple,
+        main: darkStyle ? colors.purpleLight : colors.purple,
       },
       secondary: {
         main: colors.purpleLight,
