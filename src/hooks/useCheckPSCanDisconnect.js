@@ -10,6 +10,11 @@ import useProviderUsers from "./useProviderUsers";
  * @typedef {import('services/tradeApiClient.types').ProviderEntity} ProviderEntity
  */
 
+const paginationOptions = {
+  page: 1,
+  maxPerPage: 10,
+};
+
 /**
  * @typedef {Object} ReturnData
  * @property {boolean} loading True if check is loading.
@@ -26,7 +31,7 @@ const useCheckPSCanDisconnect = (provider) => {
   const [canDisconnect, setCanDisconnect] = useState(null);
   const dispatch = useDispatch();
   const userData = useStoreUserData();
-  const { list } = useProviderUsers(provider);
+  const { list } = useProviderUsers(provider, paginationOptions);
   const providerFollowers = list.filter((user) => user.userId !== userData.userId);
 
   const loadPositions = () => {

@@ -53,7 +53,7 @@
 /**
  * @typedef {Object} SortColumnType
  * @property {string} name
- * @property {'asc'|'desc'} direction
+ * @property {PaginationOptions['direction']} direction
  */
 
 /**

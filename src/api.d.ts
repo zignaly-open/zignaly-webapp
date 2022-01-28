@@ -188,3 +188,30 @@ interface LaunchpadProjectDetails {
 interface TotalSavings {
   total: number;
 }
+
+interface PaginationOptions {
+  page: number;
+  maxPerPage: number;
+  sort?: string;
+  direction?: "asc" | "dsc";
+}
+
+interface PaginationsRes {
+  page: number;
+  max_per_page: number;
+  from: number;
+  to: number;
+  total: number;
+}
+
+interface GetProviderFollowersReq extends PaginationOptions {
+  providerId: string;
+  connected: number;
+  active: number;
+  suspended: number;
+}
+
+interface GetProviderFollowersRes {
+  pagination: PaginationsRes;
+  data: ProviderFollowersEntity[];
+}

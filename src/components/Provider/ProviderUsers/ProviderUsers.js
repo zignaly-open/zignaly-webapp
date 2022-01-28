@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { CircularProgress } from "@material-ui/core";
 import UsersTable from "./UsersTable";
 import useProviderUsers from "../../../hooks/useProviderUsers";
 import UserFilters from "./UserFilters";
+import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 
 /**
  * @typedef {Object} DefaultProps
@@ -15,6 +16,17 @@ import UserFilters from "./UserFilters";
  * @returns {JSX.Element} Component JSX.
  */
 const ProviderUsers = ({ provider }) => {
+  const persistKey = "copytProfileUsers";
+  const storeSettings = useStoreSettingsSelector();
+  const [paginationOptions, setPaginationOptions] = useState({
+    page: 1,
+    maxPerPage: storeSettings.rowsPerPage[persistKey] || 10,
+    sort: storeSettings.sortColumns[persistKey] ? storeSettings.sortColumns[persistKey].name : null,
+    direction: storeSettings.sortColumns[persistKey]
+      ? storeSettings.sortColumns[persistKey].direction
+      : null,
+  });
+
   const {
     loading,
     list,
@@ -22,19 +34,18 @@ const ProviderUsers = ({ provider }) => {
     connectedOptions,
     activeOptions,
     suspendedOptions,
-    exchangeOptions,
     filters,
     setFilters,
     filtersVisibility,
     setFiltersVisibility,
-  } = useProviderUsers(provider);
+    total,
+  } = useProviderUsers(provider, paginationOptions);
 
   const embedFilters = () => {
     return (
       <UserFilters
         activeOptions={activeOptions}
         connectedOptions={connectedOptions}
-        exchangeOptions={exchangeOptions}
         filters={filters}
         setFilters={setFilters}
         suspendedOptions={suspendedOptions}
@@ -50,10 +61,22 @@ const ProviderUsers = ({ provider }) => {
           filtersVisibility={filtersVisibility}
           list={list}
           loadData={loadFollowersList}
-          persistKey="copytProfileUsers"
+          persistKey={persistKey}
           provider={provider}
           setFiltersVisibility={setFiltersVisibility}
           title={embedFilters()}
+          paginationOptions={{
+            total,
+            onRowsPerPageChange: (value) => {
+              setPaginationOptions({ ...paginationOptions, maxPerPage: value });
+            },
+            onPageChange: (value) => {
+              setPaginationOptions({ ...paginationOptions, page: value });
+            },
+            onColumnSortChange: (value, direction) => {
+              setPaginationOptions({ ...paginationOptions, sort: value, direction: direction });
+            },
+          }}
         />
       )}
     </>
