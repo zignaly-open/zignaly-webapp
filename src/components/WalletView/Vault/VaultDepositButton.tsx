@@ -40,6 +40,7 @@ const ActivatedButtonPledge = styled(ActivatedButton)`
     !active &&
     css`
       background: rgba(48, 122, 233, 0.28);
+      color: #bec5fd;
     `}
 `;
 
