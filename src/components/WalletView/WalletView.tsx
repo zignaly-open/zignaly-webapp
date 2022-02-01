@@ -35,6 +35,7 @@ import { Rate } from "./styles";
 import CoinIcon from "./CoinIcon";
 import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
+import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -320,6 +321,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
   const [totalSavings, setTotalSavings] = useState(null);
+  const [buyZIG, showBuyZIG] = useState(false);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -462,6 +464,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           projectId={selectedProject.id}
         />
       )}
+      <BuyZIGModal coins={coins} onClose={() => showBuyZIG(false)} open={buyZIG} />
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig" />
@@ -498,6 +501,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </Button>
               <Button className="bgPurple" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
+              </Button>
+              <Button className="bgPurple" onClick={() => showBuyZIG(true)}>
+                <FormattedMessage id="wallet.zig.buy" />
               </Button>
             </Box>
           </Box>

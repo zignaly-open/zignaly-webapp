@@ -4,34 +4,18 @@ import { FormattedMessage } from "react-intl";
 import { Input, isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
 import { Box, CircularProgress, IconButton, OutlinedInput, Typography } from "@material-ui/core";
-import tradeApi from "services/tradeApiClient";
+import ZignalyIcon from "images/exchanges/zignaly.svg";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
 import { ErrorOutlineOutlined, FileCopyOutlined } from "@material-ui/icons";
-import { Control } from "./styles";
-import Select from "./Select";
+import { Control } from "../styles";
+import Select from "../Select";
 import { getChainIcon } from "utils/chain";
-import CoinIcon from "./CoinIcon";
-
-const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
-  margin-right: 7px;
-  color: ${({ theme }) => theme.newTheme.error};
-`;
-
-const TypographyError = styled(Typography)`
-  color: ${({ theme }) => theme.newTheme.error};
-  font-weight: 500;
-  font-size: 15px;
-`;
-
-const NotSure = styled.a`
-  margin-left: 17px;
-  font-weight: 600;
-  font-size: 12px;
-  text-decoration: none;
-  color: ${({ theme }) => theme.newTheme.linkText};
-`;
+import CoinIcon from "../CoinIcon";
+import { NetworkCautionMessage } from "../WalletDepositView";
+import useExchangeDepositAddress from "hooks/useExchangeDepositAddress";
+import { CoinNetwork } from "services/tradeApiClient.types";
 
 const CopyButton = styled(FileCopyOutlined)`
   cursor: pointer;
@@ -53,86 +37,63 @@ const TypographyToken = styled(Typography)`
   font-size: 18px;
 `;
 
-export const NetworkCautionMessage = ({ network, coin }: { network: string; coin: string }) =>
-  network && (
-    <Box display="flex" alignItems="center" mt={2}>
-      <StyledErrorOutlined width={24} height={24} />
-      <TypographyError>
-        <FormattedMessage
-          id="wallet.deposit.caution"
-          values={{
-            coin,
-            network,
-            b: (chunks: string) => <b>{chunks}</b>,
-          }}
-        />
-      </TypographyError>
-      <NotSure href="https://help.zignaly.com" target="_blank">
-        <FormattedMessage id="wallet.deposit.notsure" />
-      </NotSure>
-    </Box>
-  );
-
-interface WalletDepositViewProps {
-  coins: WalletCoins;
-  coin: string;
+interface BalanceExchange {
+  exchangeId: string;
+  name: string;
+  balance: number;
+  networks: CoinNetwork[];
 }
 
-const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
-  const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
-  const coinData = coins ? coins[selectedCoin] : null;
-  const networkOptions = coinData
-    ? coinData.networks.map((n) => ({
-        value: n.network,
-        label: n.name,
-        icon: getChainIcon(n.network),
-      }))
-    : [];
-  const coinsOptions = coins ? Object.keys(coins) : [];
-  const [network, setNetwork] = useState("");
-  const networkData = coinData?.networks.find((n) => n.network === network);
-  const [address, setAddress] = useState<WalletAddress>(null);
-  const copyToClipboard = useClipboard();
+interface DepositUSDTProps {
+  accountsBalances: BalanceExchange[];
+  coin?: string;
+}
 
-  useEffect(() => {
-    if (network) {
-      setAddress(null);
-      tradeApi.getWalletDepositAddress(network, selectedCoin).then((response) => {
-        setAddress(response);
-      });
-    }
-  }, [network]);
+const DepositUSDT = ({ accountsBalances, coin = "USDT" }: DepositUSDTProps) => {
+  const networkOptions = accountsBalances[0].networks.map((n) => ({
+    value: n.network,
+    label: n.name,
+    icon: getChainIcon(n.network),
+  }));
+  const [network, setNetwork] = useState("");
+  const networkData = accountsBalances[0].networks.find((n) => n.network === network);
+  const copyToClipboard = useClipboard();
+  const [internalId, setInternalId] = useState(null);
+  const address = useExchangeDepositAddress(internalId, coin, networkData);
+  const exchangeOptions = accountsBalances.map((a) => ({
+    value: a.exchangeId,
+    label: a.name,
+    icon: ZignalyIcon,
+  }));
 
   return (
     <Modal>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
-        <FormattedMessage id="accounts.deposit" /> {selectedCoin}
+        <FormattedMessage id="accounts.deposit" /> {coin}
       </Title>
       <TextDesc>
-        <FormattedMessage id="wallet.deposit.desc" values={{ coin: selectedCoin }} />
+        <FormattedMessage id="wallet.zig.deposit.subtitle" values={{ coin }} />
       </TextDesc>
-      {!coin && (
-        <Control>
-          <Label>
-            <FormattedMessage id="deposit.selectcoin" />
-          </Label>
-          <Select
-            values={coinsOptions}
-            fullWidth
-            value={selectedCoin}
-            handleChange={(e) => setSelectedCoin(e.target.value)}
-          />
-        </Control>
-      )}
       <Control>
         <Label>
           <FormattedMessage id="transfer.internal.coin" />
         </Label>
         <Box display="flex" alignItems="center" pt="2px">
-          <CoinIcon width={32} height={32} coin={selectedCoin} />
-          <TypographyToken>{selectedCoin}</TypographyToken>
+          <CoinIcon width={32} height={32} coin={coin} />
+          <TypographyToken>{coin}</TypographyToken>
         </Box>
+      </Control>
+      <Control>
+        <Label>
+          <FormattedMessage id="wallet.zig.deposit.exchangeaccount" />
+        </Label>
+        <Select
+          values={exchangeOptions}
+          fullWidth
+          value={internalId}
+          handleChange={(e) => setInternalId(e.target.value)}
+        />
       </Control>
       <Control>
         <Label>
@@ -145,7 +106,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           handleChange={(e) => setNetwork(e.target.value)}
         />
       </Control>
-      {address?.memo && (
+      {address?.tag && (
         <Control>
           <Label>
             <FormattedMessage id="wallet.withdraw.memo" />
@@ -153,12 +114,12 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           <OutlinedInput
             className="customInput"
             readOnly
-            value={address.memo}
+            value={address.tag}
             endAdornment={
               <CopyButton
                 alt="copy"
                 className="copy"
-                onClick={() => copyToClipboard(address.memo, "deposit.memo.copied")}
+                onClick={() => copyToClipboard(address.tag, "deposit.memo.copied")}
                 src={CopyIcon}
                 width={24}
                 height={24}
@@ -166,7 +127,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             }
           />
           <QRCodeContainer>
-            <QRCode size={200} value={address.memo} />
+            <QRCode size={200} value={address.tag} />
           </QRCodeContainer>
         </Control>
       )}
@@ -190,9 +151,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
                   </IconButton>
                 }
               />
-              {networkData && (
-                <NetworkCautionMessage network={networkData.name} coin={selectedCoin} />
-              )}
+              {networkData && <NetworkCautionMessage network={networkData.name} coin={coin} />}
               <QRCodeContainer>
                 <QRCode size={200} value={address.address} />
               </QRCodeContainer>
@@ -205,4 +164,4 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
     </Modal>
   );
 };
-export default WalletDepositView;
+export default DepositUSDT;
