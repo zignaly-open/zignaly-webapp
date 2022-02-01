@@ -113,6 +113,7 @@ interface InternalTransfersHistory {
   transferType: string;
   txId: string;
   type: string;
+  message: string;
 }
 
 interface GetInternalTransfersHistory extends PaginationReq {
