@@ -272,16 +272,20 @@ const Transfer = () => {
             </TypographyLabel>
             <TransferAddressPart side="to" transfer={transfer} />
           </Box>
-          {transfer.providerId && (
+          {(transfer.providerId || transfer.message) && (
             <Box display="flex" alignItems="center" mt="8px">
               <TypographyLabel>
                 <FormattedMessage id="wallet.note" />
               </TypographyLabel>
               <TypographyAddress>
-                <FormattedMessage
-                  id={getPSMessage(transfer.type)}
-                  values={{ service: transfer.providerName }}
-                />
+                {transfer.providerId ? (
+                  <FormattedMessage
+                    id={getPSMessage(transfer.type)}
+                    values={{ service: transfer.providerName }}
+                  />
+                ) : (
+                  transfer.message
+                )}
               </TypographyAddress>
             </Box>
           )}

@@ -187,7 +187,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "minAmount",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.subscriptionDate" }),
+              Header: intl.formatMessage({ id: "zigpad.subscriptionPeriod" }),
               accessor: "subscriptionDate",
             },
             {
