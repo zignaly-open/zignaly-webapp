@@ -152,7 +152,10 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
                     target="_blank"
                     rel="noreferrer"
                     className="link"
-                    onClick={() => setConfirmConfig({ ...confirmConfig, visible: true })}
+                    onClick={(e) => {
+                      setConfirmConfig({ ...confirmConfig, visible: true });
+                      e.preventDefault();
+                    }}
                   >
                     {chunks}
                   </a>

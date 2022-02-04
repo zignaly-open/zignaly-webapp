@@ -36,11 +36,11 @@ const ActivatedButtonPledge = styled(ActivatedButton)`
   text-transform: capitalize;
   padding: 5px 5px;
   flex-wrap: wrap;
-  ${({ active = true }: { active: boolean }) =>
+  ${({ active = true, theme }: { active: boolean }) =>
     !active &&
     css`
       background: rgba(48, 122, 233, 0.28);
-      color: #bec5fd;
+      color: ${theme.palette.type === "dark" ? "#bec5fd" : "#3244d3"};
     `}
 `;
 
