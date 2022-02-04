@@ -15,6 +15,7 @@ import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import useInterval from "hooks/useInterval";
+import SwapZIGConfirm from "./SwapZIGConfirm";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -40,6 +41,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
     formState: { isValid },
     errors,
     setValue,
+    handleSubmit,
     trigger,
     watch,
   } = useForm({ mode: "onChange" });
@@ -58,6 +60,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
   const [swapInfo, setSwapInfo] = useState<GenerateBuyPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
   const dispatch = useDispatch();
+  const [confirm, setConfirm] = useState(false);
 
   const setBalanceMax = () => {
     setValue("amount", balance);
@@ -94,8 +97,23 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
   );
   useEffect(updateSwapInfo, []);
 
+  interface FormData {
+    amount: string;
+    internalId: string;
+  }
+  const submitForm = (data: FormData) => {
+    console.log(data);
+    setConfirm(true);
+  };
+
+  if (confirm) {
+    return (
+      <SwapZIGConfirm coinFrom={coinFrom} coinTo={coinTo} amount={amountFrom} swapInfo={swapInfo} />
+    );
+  }
+
   return (
-    <>
+    <form onSubmit={handleSubmit(submitForm)}>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig.buy.title" values={{ coin: "ZIG" }} />
@@ -194,7 +212,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
           </Box>
         </>
       )}
-    </>
+    </form>
   );
 };
 export default SwapZIG;
