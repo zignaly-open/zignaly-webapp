@@ -28,7 +28,7 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
   const selectedExchange = useSelectedExchange();
   const [disconnectionType, setDisconnectType] = useState("soft");
   const [loader, setLoader] = useState(false);
-  const { canDisconnect, loading: canDisconnectLoading } = useCheckPSCanDisconnect(provider);
+  const canDisconnect = useCheckPSCanDisconnect(provider);
   const dispatch = useDispatch();
 
   const stopCopying = () => {
@@ -111,7 +111,7 @@ const StopCopyingTraderForm = ({ onClose, provider, callback }) => {
       flexDirection="column"
       justifyContent="flex-start"
     >
-      {canDisconnectLoading ? (
+      {canDisconnect === null ? (
         <Box
           alignItems="center"
           display="flex"
