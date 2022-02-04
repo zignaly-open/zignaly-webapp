@@ -31,8 +31,8 @@ const useCheckPSCanDisconnect = (provider) => {
   const [canDisconnect, setCanDisconnect] = useState(null);
   const dispatch = useDispatch();
   const userData = useStoreUserData();
-  const { list } = useProviderUsers(provider, paginationOptions);
-  const providerFollowers = list.filter((user) => user.userId !== userData.userId);
+  const { users } = useProviderUsers(provider, paginationOptions);
+  const providerFollowers = users.filter((user) => user.userId !== userData.userId);
 
   const loadPositions = () => {
     if (!provider) return;
