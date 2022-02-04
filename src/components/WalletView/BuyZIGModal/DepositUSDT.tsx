@@ -37,13 +37,6 @@ const TypographyToken = styled(Typography)`
   font-size: 18px;
 `;
 
-interface BalanceExchange {
-  exchangeId: string;
-  name: string;
-  balance: number;
-  networks: CoinNetwork[];
-}
-
 interface DepositUSDTProps {
   accountsBalances: BalanceExchange[];
   coin?: string;

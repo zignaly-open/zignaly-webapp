@@ -9,11 +9,11 @@ import { CircularProgress, Typography } from "@material-ui/core";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import { buyCryptoURL } from "utils/affiliateURLs";
 import DepositUSDT from "./DepositUSDT";
-import { CoinNetwork, ExchangeAssetsDict } from "services/tradeApiClient.types";
 import { useStoreUserSelector } from "hooks/useStoreUserSelector";
 import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
+import SwapZIG from "./SwapZIG";
 
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
@@ -118,13 +118,6 @@ const DepositUSDTChoices = ({ accountsBalances }: DepositUSDTChoicesProps) => {
   );
 };
 
-interface BalanceExchange {
-  exchangeId: string;
-  name: string;
-  balance: number;
-  networks: CoinNetwork[];
-}
-
 interface BuyZIGModalProps {
   onClose: () => void;
   open: boolean;
@@ -173,7 +166,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
         ) : !hasUSDT ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />
         ) : (
-          <DepositUSDTChoices accountsBalances={accountsBalances} />
+          <SwapZIG coinFrom="USDT" coinTo="ZIG" accountsBalances={accountsBalances} />
         )}
       </Modal>
     </CustomModal>

@@ -1877,6 +1877,7 @@ wallet.zig.deposit.desc: "Transfer crypto from an external wallet"
 wallet.zig.buy.desc: "I don't have any crypto yet"
 wallet.zig.deposit.subtitle: "Deposit {coin} to buy ZIG Tokens. Select the account, the network, and send them to the network below."
 wallet.zig.deposit.exchangeaccount: "Select Exchange Account"
+wallet.zig.buy.title: "Buy {coin} coins"
 
 zigpad.projects: "All {count} Launchpad projects"
 zigpad.title: "ZIGPad"
