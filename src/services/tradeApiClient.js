@@ -2598,6 +2598,18 @@ class TradeApiClient {
   async getTotalSavings() {
     return this.doRequest("/total-savings", null, "GET", 3);
   }
+
+  /**
+   * Get price for swap
+   *
+   * @param {GenerateBuyPriceReq} payload
+   * @returns {Promise<GenerateBuyPriceRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async generateBuyPrice(payload) {
+    return this.doRequest("/generate-buy-price", payload, "POST", 3);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

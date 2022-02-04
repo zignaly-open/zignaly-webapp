@@ -33,10 +33,6 @@ const NotSure = styled.a`
   color: ${({ theme }) => theme.newTheme.linkText};
 `;
 
-const CopyButton = styled(FileCopyOutlined)`
-  cursor: pointer;
-`;
-
 const QRCodeContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -52,6 +48,16 @@ const TypographyToken = styled(Typography)`
   margin-left: 8px;
   font-size: 18px;
 `;
+
+export const CopyButton = ({ value, success }: { value: string; success: string }) => {
+  const copyToClipboard = useClipboard();
+
+  return (
+    <IconButton aria-label="Copy" onClick={() => copyToClipboard(value, success)}>
+      <FileCopyOutlined width={24} height={24} />
+    </IconButton>
+  );
+};
 
 export const NetworkCautionMessage = ({ network, coin }: { network: string; coin: string }) =>
   network && (
@@ -92,7 +98,6 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
   const [address, setAddress] = useState<WalletAddress>(null);
-  const copyToClipboard = useClipboard();
 
   useEffect(() => {
     if (network) {
@@ -154,16 +159,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
             className="customInput"
             readOnly
             value={address.memo}
-            endAdornment={
-              <CopyButton
-                alt="copy"
-                className="copy"
-                onClick={() => copyToClipboard(address.memo, "deposit.memo.copied")}
-                src={CopyIcon}
-                width={24}
-                height={24}
-              />
-            }
+            endAdornment={<CopyButton value={address.address} success="deposit.memo.copied" />}
           />
           <QRCodeContainer>
             <QRCode size={200} value={address.memo} />
@@ -182,12 +178,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
                 fullWidth
                 value={address.address}
                 endAdornment={
-                  <IconButton
-                    aria-label="Copy"
-                    onClick={() => copyToClipboard(address.address, "deposit.address.copied")}
-                  >
-                    <FileCopyOutlined width={24} height={24} />
-                  </IconButton>
+                  <CopyButton value={address.address} success="deposit.address.copied" />
                 }
               />
               {networkData && (

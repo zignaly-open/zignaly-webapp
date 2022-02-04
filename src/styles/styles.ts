@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, FormControl, OutlinedInput, Typography } from "@material-ui/core";
 
 export const isMobile = (query) => {
   return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
@@ -91,4 +91,8 @@ export const Input = styled(OutlinedInput)`
       color: #9ca3af;
     }
   `}
+`;
+
+export const StyledFormControl = styled(FormControl)`
+  margin-bottom: 24px;
 `;
