@@ -317,6 +317,10 @@ const PrevRound = styled.div`
   }
 `;
 
+const Paragraph = styled(Typography)`
+  white-space: pre-wrap;
+`;
+
 const CustomTimelineDot = ({
   done,
   active,
@@ -756,7 +760,15 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <Subtitle>
               <FormattedMessage id="zigpad.highlights" />
             </Subtitle>
-            <Typography>{projectDetails.highlights}</Typography>
+            <Paragraph>{projectDetails.highlights}</Paragraph>
+            {projectDetails.additionalInfo && (
+              <>
+                <Subtitle>
+                  <FormattedMessage id="zigpad.additionalInfo" />
+                </Subtitle>
+                <Paragraph>{projectDetails.additionalInfo}</Paragraph>
+              </>
+            )}
             <Box style={{ maxWidth: "900px" }}>
               <Subtitle>
                 <FormattedMessage id="zigpad.tokenomic" />
