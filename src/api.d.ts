@@ -183,6 +183,7 @@ interface LaunchpadProjectDetails {
   price: string;
   logo: string;
   highlights: string;
+  additionalInfo: string;
   tokenomic: Tokenomic;
   tokenReward: number;
   privateRound: string;
