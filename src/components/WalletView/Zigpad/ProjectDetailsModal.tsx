@@ -307,6 +307,7 @@ const Image = styled.img`
 
 const PrevRound = styled.div`
   display: inline-flex;
+  width: calc(100% - 30px);
 
   span:nth-child(1) {
     white-space: nowrap;
