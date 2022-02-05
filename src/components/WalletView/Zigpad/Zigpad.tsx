@@ -141,8 +141,8 @@ export const CategoryIcon = ({
   height = 24,
 }: {
   category: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }) => {
   let IconMatch = getCategoryIcon(category);
 
@@ -255,7 +255,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {tab === 0 ? (
               <RewardsProgressBar
-                icon={p.logo}
                 amount={p.offeredAmount}
                 coin={p.coin}
                 zigpadVariant={true}
@@ -322,7 +321,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
-            {p.price}$
+            ${p.price}
             <Rate>
               {rateZIG ? (
                 <NumberFormat
@@ -377,7 +376,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
       </Title>
       <TypographyInfo>
         <FormattedMessage id="zigpad.info" />
-        <HelpButton href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
+        <HelpButton target="_blank" href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
           <FormattedMessage id="zigpad.faq" />
         </HelpButton>
       </TypographyInfo>

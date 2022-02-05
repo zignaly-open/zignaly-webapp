@@ -28,6 +28,8 @@ import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import useInterval from "hooks/useInterval";
 import Button from "components/Button";
 import { CategoryIcon } from "./Zigpad";
+import cloudinary from "services/cloudinary";
+import CoinIcon from "../CoinIcon";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -299,6 +301,10 @@ const CheckIcon = styled(Check)`
   height: 18px;
 `;
 
+const Image = styled.img`
+  max-width: 100%;
+`;
+
 const CustomTimelineDot = ({
   done,
   active,
@@ -447,7 +453,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             </CustomModal>
             <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
               <TitleContainer display="flex" alignItems="center">
-                <img src={projectDetails.logo} width={64} height={64} />
+                <CoinIcon coin={projectDetails.coin} width={64} height={64} />
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
               </TitleContainer>
@@ -497,8 +503,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <NumberFormat
                     displayType="text"
                     value={projectDetails.price}
-                    prefix={`1 ${projectDetails.coin} = `}
-                    suffix="$"
+                    prefix={`1 ${projectDetails.coin} = $`}
                     thousandSeparator={true}
                   />
                   {rateZIG ? (
@@ -842,9 +847,28 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               </ListItem>
             </List>
             <Subtitle>
+              <FormattedMessage id="zigpad.previousRounds" />
+            </Subtitle>
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="zigpad.privateRound" />
+              </ItemLabel>
+              <ItemValue>{projectDetails.privateRound}</ItemValue>
+            </ListItem>
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="zigpad.publicRound" />
+              </ItemLabel>
+              <ItemValue>{projectDetails.publicRound}</ItemValue>
+            </ListItem>
+            <Subtitle>
               <FormattedMessage id="zigpad.distribution" />
             </Subtitle>
-            <Typography>todo</Typography>
+            <Typography>
+              <Image
+                src={cloudinary({ folder: "zigpad", id: `${projectDetails.id}_tokenomics` })}
+              />
+            </Typography>
             <Subtitle>
               <FormattedMessage id="zigpad.rules" />
             </Subtitle>

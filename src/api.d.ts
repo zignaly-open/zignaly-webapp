@@ -185,6 +185,8 @@ interface LaunchpadProjectDetails {
   highlights: string;
   tokenomic: Tokenomic;
   tokenReward: number;
+  privateRound: string;
+  publicRound: string;
   returned: number;
   pledged: number;
 }
