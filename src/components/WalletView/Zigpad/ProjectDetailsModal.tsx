@@ -746,6 +746,19 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <List>
               <ListItem>
                 <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.hardCap" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.hardCap}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
                   <FormattedMessage id="zigpad.tokenomic.supply" />
                 </ItemLabel>
                 <ItemValue>
@@ -761,13 +774,71 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 <ItemLabel>
                   <FormattedMessage id="zigpad.tokenomic.supplyInitial" />
                 </ItemLabel>
-                <ItemValue>{projectDetails.tokenomic.supplyInitial}</ItemValue>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.supplyInitial}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={` ${projectDetails.coin}`}
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.publicSalePrice" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.publicSalePrice}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.offered" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.tokensOffered}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={` ${projectDetails.coin}`}
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.hardCapUser" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.maxAmount}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
               </ListItem>
               <ListItem>
                 <ItemLabel>
                   <FormattedMessage id="zigpad.tokenomic.type" />
                 </ItemLabel>
                 <ItemValue>{projectDetails.tokenomic.chain}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.tokenSaleVestingPeriod" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.tokenSaleVestingPeriod}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.tokenDistribution}</ItemValue>
               </ListItem>
             </List>
             <Subtitle>
