@@ -305,6 +305,18 @@ const Image = styled.img`
   max-width: 100%;
 `;
 
+const PrevRound = styled.div`
+  display: inline-flex;
+
+  span:nth-child(1) {
+    white-space: nowrap;
+  }
+
+  span:nth-child(2) {
+    white-space: pre-wrap;
+  }
+`;
+
 const CustomTimelineDot = ({
   done,
   active,
@@ -851,16 +863,20 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 <FormattedMessage id="zigpad.previousRounds" />
               </Subtitle>
               <ListItem>
-                <ItemLabel>
-                  <FormattedMessage id="zigpad.privateRound" />
-                </ItemLabel>
-                <ItemValue>{projectDetails.privateRound || " - "}</ItemValue>
+                <PrevRound>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.privateRound" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.privateRound || " - "}</ItemValue>
+                </PrevRound>
               </ListItem>
               <ListItem>
-                <ItemLabel>
-                  <FormattedMessage id="zigpad.publicRound" />
-                </ItemLabel>
-                <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
+                <PrevRound>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.publicRound" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
+                </PrevRound>
               </ListItem>
               <Subtitle>
                 <FormattedMessage id="zigpad.distribution" />
