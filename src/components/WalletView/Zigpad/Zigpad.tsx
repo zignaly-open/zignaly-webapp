@@ -17,7 +17,7 @@ import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
-import { ArrowBack, ChevronRight, SportsEsports } from "@material-ui/icons";
+import { ArrowBack, ChevronRight, PeopleOutline, SportsEsports } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -127,12 +127,23 @@ const getCategoryIcon = (category: string) => {
     case "meme":
       return SportsEsports;
     case "platform":
-      return SportsEsports;
+      return PeopleOutline;
+    case "social":
+      return PeopleOutline;
     default:
       return null;
   }
 };
-const CategoryIcon = ({ category }: { category: string }) => {
+
+export const CategoryIcon = ({
+  category,
+  width = 24,
+  height = 24,
+}: {
+  category: string;
+  width?: number;
+  height?: number;
+}) => {
   let IconMatch = getCategoryIcon(category);
 
   if (!IconMatch) {
@@ -140,8 +151,24 @@ const CategoryIcon = ({ category }: { category: string }) => {
   }
 
   return (
-    <Icon role="img" title={category} style={{ marginRight: "4px" }}>
-      <IconMatch width={24} height={24} />
+    <Icon
+      role="img"
+      title={category}
+      style={{
+        marginRight: "4px",
+        width,
+        height,
+        fontSize: "initial",
+      }}
+    >
+      <IconMatch
+        style={{
+          width,
+          height,
+        }}
+        width={width}
+        height={height}
+      />
     </Icon>
   );
 };
@@ -228,7 +255,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {tab === 0 ? (
               <RewardsProgressBar
-                icon={p.logo}
                 amount={p.offeredAmount}
                 coin={p.coin}
                 zigpadVariant={true}
@@ -295,7 +321,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
-            {p.price}$
+            ${p.price}
             <Rate>
               {rateZIG ? (
                 <NumberFormat
@@ -350,7 +376,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
       </Title>
       <TypographyInfo>
         <FormattedMessage id="zigpad.info" />
-        <HelpButton href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
+        <HelpButton target="_blank" href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
           <FormattedMessage id="zigpad.faq" />
         </HelpButton>
       </TypographyInfo>

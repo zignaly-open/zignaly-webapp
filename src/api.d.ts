@@ -154,8 +154,10 @@ interface Tokenomic {
   publicSalePrice: number;
   supplyInitial: number;
   supplyTotalCap: number;
+  hardCap: number;
   tokenDistributionDate: string;
-  tokenSaleVestingPeriod: number;
+  tokenSaleVestingPeriod: string;
+  tokenDistribution: string;
   tokensOffered: number;
 }
 
@@ -183,6 +185,8 @@ interface LaunchpadProjectDetails {
   highlights: string;
   tokenomic: Tokenomic;
   tokenReward: number;
+  privateRound: string;
+  publicRound: string;
   returned: number;
   pledged: number;
 }
