@@ -27,6 +27,9 @@ import { gateioUrl } from "utils/affiliateURLs";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import useInterval from "hooks/useInterval";
 import Button from "components/Button";
+import { CategoryIcon } from "./Zigpad";
+import cloudinary from "services/cloudinary";
+import CoinIcon from "../CoinIcon";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -298,6 +301,10 @@ const CheckIcon = styled(Check)`
   height: 18px;
 `;
 
+const Image = styled.img`
+  max-width: 100%;
+`;
+
 const CustomTimelineDot = ({
   done,
   active,
@@ -446,7 +453,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             </CustomModal>
             <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
               <TitleContainer display="flex" alignItems="center">
-                <img src={projectDetails.logo} width={64} height={64} />
+                <CoinIcon coin={projectDetails.coin} width={64} height={64} />
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
               </TitleContainer>
@@ -459,9 +466,14 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <Chip
               style={{ marginBottom: "12px" }}
               size="small"
-              label={intl.formatMessage({
-                id: `zigpad.category.${projectDetails.category.toLowerCase()}`,
-              })}
+              label={
+                <Box display="flex" alignItems="center">
+                  <CategoryIcon category={projectDetails.category} width={18} height={18} />
+                  <FormattedMessage
+                    id={`zigpad.category.${projectDetails.category.toLowerCase()}`}
+                  />
+                </Box>
+              }
             />
             <ItemValue>{projectDetails.shortDescription}</ItemValue>
             <Box display="flex" mt={2} mb={3}>
@@ -491,8 +503,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <NumberFormat
                     displayType="text"
                     value={projectDetails.price}
-                    prefix={`1 ${projectDetails.coin} = `}
-                    suffix="$"
+                    prefix={`1 ${projectDetails.coin} = $`}
                     thousandSeparator={true}
                   />
                   {rateZIG ? (
@@ -740,6 +751,19 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <List>
               <ListItem>
                 <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.hardCap" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.hardCap}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
                   <FormattedMessage id="zigpad.tokenomic.supply" />
                 </ItemLabel>
                 <ItemValue>
@@ -755,7 +779,53 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 <ItemLabel>
                   <FormattedMessage id="zigpad.tokenomic.supplyInitial" />
                 </ItemLabel>
-                <ItemValue>{projectDetails.tokenomic.supplyInitial}</ItemValue>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.supplyInitial}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={` ${projectDetails.coin}`}
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.publicSalePrice" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.publicSalePrice}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.offered" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.tokenomic.tokensOffered}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={` ${projectDetails.coin}`}
+                  />
+                </ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.hardCapUser" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    value={projectDetails.maxAmount}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix=" USD"
+                  />
+                </ItemValue>
               </ListItem>
               <ListItem>
                 <ItemLabel>
@@ -763,11 +833,42 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 </ItemLabel>
                 <ItemValue>{projectDetails.tokenomic.chain}</ItemValue>
               </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.tokenSaleVestingPeriod" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.tokenSaleVestingPeriod}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
+                </ItemLabel>
+                <ItemValue>{projectDetails.tokenomic.tokenDistribution}</ItemValue>
+              </ListItem>
             </List>
+            <Subtitle>
+              <FormattedMessage id="zigpad.previousRounds" />
+            </Subtitle>
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="zigpad.privateRound" />
+              </ItemLabel>
+              <ItemValue>{projectDetails.privateRound}</ItemValue>
+            </ListItem>
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="zigpad.publicRound" />
+              </ItemLabel>
+              <ItemValue>{projectDetails.publicRound}</ItemValue>
+            </ListItem>
             <Subtitle>
               <FormattedMessage id="zigpad.distribution" />
             </Subtitle>
-            <Typography>todo</Typography>
+            <Typography>
+              <Image
+                src={cloudinary({ folder: "zigpad", id: `${projectDetails.id}_tokenomics` })}
+              />
+            </Typography>
             <Subtitle>
               <FormattedMessage id="zigpad.rules" />
             </Subtitle>
