@@ -853,13 +853,13 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               <ItemLabel>
                 <FormattedMessage id="zigpad.privateRound" />
               </ItemLabel>
-              <ItemValue>{projectDetails.privateRound}</ItemValue>
+              <ItemValue>{projectDetails.privateRound || " - "}</ItemValue>
             </ListItem>
             <ListItem>
               <ItemLabel>
                 <FormattedMessage id="zigpad.publicRound" />
               </ItemLabel>
-              <ItemValue>{projectDetails.publicRound}</ItemValue>
+              <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
             </ListItem>
             <Subtitle>
               <FormattedMessage id="zigpad.distribution" />
