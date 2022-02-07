@@ -913,6 +913,10 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 }}
               />
             </Typography>
+            <Subtitle>
+              <FormattedMessage id="srv.disclaimer.title" />
+            </Subtitle>
+            <Typography>{projectDetails.terms}</Typography>
           </>
         ) : (
           <CircularProgress size={50} style={{ margin: "0 auto" }} />
