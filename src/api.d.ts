@@ -194,6 +194,8 @@ interface LaunchpadProjectDetails {
   publicRound: string;
   returned: number;
   pledged: number;
+  terms: string;
+  launchpadRules: string;
 }
 interface TotalSavings {
   total: number;
