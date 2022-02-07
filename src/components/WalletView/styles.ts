@@ -38,3 +38,15 @@ export const Rate = styled.span`
 export const Control = styled.div`
   margin-bottom: 24px;
 `;
+
+export const Terms = styled.a`
+  line-height: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+  color: ${({ theme }) => theme.newTheme.linkText};
+`;

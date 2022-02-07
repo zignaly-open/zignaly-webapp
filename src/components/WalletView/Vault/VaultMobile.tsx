@@ -2,7 +2,6 @@ import { Box } from "@material-ui/core";
 import dayjs from "dayjs";
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import NumberFormat from "react-number-format";
 import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
 import VaultDepositButton from "./VaultDepositButton";
@@ -16,7 +15,7 @@ const EarnText = styled.div`
   line-height: 20px;
 `;
 
-const Coin = styled.span`
+export const Coin = styled.span`
   font-weight: 600;
   font-size: 11px;
   line-height: 14px;
@@ -39,10 +38,14 @@ const Amount = styled.div`
   align-items: center;
 `;
 
-const Panel = styled.div`
+export const Panel = styled.div`
   padding: 12px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin-bottom: 12px;
+`;
+
+const VaultDepositBox = styled.div`
+  margin-left: auto;
 `;
 
 interface VaultMobileProps {
@@ -58,7 +61,10 @@ const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) 
       {vaults.map((v) => (
         <Panel key={v.id}>
           <Box display="flex" alignItems="center">
-            <RewardsProgressCircle vault={v} />
+            <RewardsProgressCircle
+              rewardsRemaining={v.rewardsRemaining}
+              rewardsTotal={v.rewardsTotal}
+            />
             <EarnText>
               <FormattedMessage
                 id="wallet.staking.earn"
@@ -66,11 +72,13 @@ const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) 
               />
             </EarnText>
             {type === "active" && (
-              <VaultDepositButton
-                vault={v}
-                balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
-                onClick={() => onOfferClick(v.coin)}
-              />
+              <VaultDepositBox>
+                <VaultDepositButton
+                  vault={v}
+                  balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
+                  onClick={() => onOfferClick(v.coin)}
+                />
+              </VaultDepositBox>
             )}
           </Box>
           <Box display="flex" justifyContent="space-between" mt="8px">

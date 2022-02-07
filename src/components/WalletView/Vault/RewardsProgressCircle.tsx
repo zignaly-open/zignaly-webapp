@@ -36,7 +36,7 @@ const CircularProgressFilled = styled(CircularProgress)`
 
 const Perc = styled.div`
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -44,11 +44,11 @@ const Perc = styled.div`
 `;
 
 interface RewardsProgressCircleProps {
-  vault: VaultOffer;
+  rewardsTotal: number;
+  rewardsRemaining: number;
 }
 
-const RewardsProgressCircle = ({ vault }: RewardsProgressCircleProps) => {
-  const { rewardsTotal, rewardsRemaining, coinReward } = vault;
+const RewardsProgressCircle = ({ rewardsTotal, rewardsRemaining }: RewardsProgressCircleProps) => {
   const percFilled = ((rewardsTotal - rewardsRemaining) / rewardsTotal) * 100;
   return (
     <CircleContainer>

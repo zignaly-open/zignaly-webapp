@@ -28,6 +28,14 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  */
 
 /**
+ * @typedef {Object} TablePaginationOptions
+ * @property {Number} total
+ * @property {function(number): void} onRowsPerPageChange
+ * @property {function(string, PaginationOptions['direction']): void} onColumnSortChange
+ * @property {function(number): void} onPageChange
+ */
+
+/**
  * Provides a table.
  *
  * @typedef {Object} DefaultProps
@@ -39,6 +47,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @property {*} [components] Custom table components.
  * @property {Function} [toggleFilters] Custom table components.
  * @property {number} [modifiedFiltersCount] Modified Filters count.
+ * @property {TablePaginationOptions} [paginationOptions] paginationOptions
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -53,6 +62,7 @@ const Table = ({
   components,
   toggleFilters,
   modifiedFiltersCount,
+  paginationOptions,
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
@@ -66,6 +76,7 @@ const Table = ({
         columns.length > 4
       : storeSettings.responsiveTables[persistKey];
   const [responsive, setResponsive] = useState(defaultReponsive);
+  const [page, setPage] = useState(0);
 
   /**
    * Function to create column labels.
@@ -143,12 +154,15 @@ const Table = ({
     search: false,
     print: false,
     sort: true,
-    pagination: countRows > 10,
+    pagination: Boolean(paginationOptions) || countRows > 10,
     rowsPerPageOptions: [10, 25, 50, 100],
     rowsPerPage: (persistKey && storeSettings.rowsPerPage[persistKey]) || 10,
     onChangeRowsPerPage: (numberOfRows) => {
       if (persistKey) {
         dispatch(setRowsPerPage({ numberOfRows, table: persistKey }));
+      }
+      if (paginationOptions) {
+        paginationOptions.onRowsPerPageChange(numberOfRows);
       }
     },
     onColumnViewChange: (changedColumn, action) => {
@@ -171,6 +185,9 @@ const Table = ({
             direction,
           }),
         );
+      }
+      if (paginationOptions) {
+        paginationOptions.onColumnSortChange(changedColumn, direction);
       }
     },
     fixedHeader: true,
@@ -212,6 +229,18 @@ const Table = ({
       sortOrder: storeSettings.sortColumns[persistKey],
     }),
     responsive: responsive ? "vertical" : "standard",
+    // Server side pagination
+    ...(paginationOptions && {
+      count: paginationOptions.total,
+      page,
+      serverSide: true,
+      onTableChange: (action, tableState) => {
+        if (action === "changePage") {
+          setPage(tableState.page);
+          paginationOptions.onPageChange(tableState.page + 1);
+        }
+      },
+    }),
   };
 
   const changeResponsiveView = () => {

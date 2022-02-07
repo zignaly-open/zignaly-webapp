@@ -19,8 +19,9 @@ import { findIndex } from "lodash";
 /** ]
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
- * @typedef {import("../../../../services/tradeApiClient.types").ProviderFollowersEntity} ProviderFollowersEntity
- * @typedef {import("../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("services/tradeApiClient.types").ProviderFollowersEntity} ProviderFollowersEntity
+ * @typedef {import("services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
+ * @typedef {import("components/Table/Table.js").TablePaginationOptions} TablePaginationOptions
  */
 
 /**
@@ -34,6 +35,7 @@ import { findIndex } from "lodash";
  * @property {Function} loadData
  * @property {Boolean} filtersVisibility
  * @property {React.SetStateAction<*>} setFiltersVisibility
+ * @property {TablePaginationOptions} paginationOptions
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -46,6 +48,7 @@ const UsersTable = ({
   loadData,
   filtersVisibility,
   setFiltersVisibility,
+  paginationOptions,
 }) => {
   const storeViews = useStoreViewsSelector();
   const intl = useIntl();
@@ -409,6 +412,7 @@ const UsersTable = ({
         persistKey={persistKey}
         title={title}
         toggleFilters={toggleFilters}
+        paginationOptions={paginationOptions}
       />
       <Modal onClose={handleModalClose} persist={false} size="small" state={modifyModal}>
         <ModifyUserSubscription

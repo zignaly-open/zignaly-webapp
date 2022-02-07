@@ -178,6 +178,18 @@ const WalletTransactions = () => {
       value: "withdraw_fee",
       label: intl.formatMessage({ id: "wallet.type.withdrawfee" }),
     },
+    {
+      value: "zigpad_pledge",
+      label: intl.formatMessage({ id: "wallet.type.zigpadpledge" }),
+    },
+    {
+      value: "zigpad_return",
+      label: intl.formatMessage({ id: "wallet.type.zigpadreturn" }),
+    },
+    {
+      value: "zigpad_reward",
+      label: intl.formatMessage({ id: "wallet.type.zigpadtokensreward" }),
+    },
   ];
 
   const getTransactions = (_transactions: TransactionsHistory[]) => {
@@ -220,7 +232,7 @@ const WalletTransactions = () => {
   const columns = useMemo(
     () => [
       {
-        Header: intl.formatMessage({ id: "col.date" }),
+        Header: intl.formatMessage({ id: "col.date" }).toLowerCase(),
         accessor: "date",
       },
       {
@@ -228,19 +240,19 @@ const WalletTransactions = () => {
         accessor: "type",
       },
       {
-        Header: intl.formatMessage({ id: "col.amount" }),
+        Header: intl.formatMessage({ id: "col.amount" }).toLowerCase(),
         accessor: "amount",
       },
       {
-        Header: intl.formatMessage({ id: "col.token" }),
+        Header: intl.formatMessage({ id: "col.token" }).toLowerCase(),
         accessor: "coin",
       },
       {
-        Header: intl.formatMessage({ id: "col.network" }),
+        Header: intl.formatMessage({ id: "col.network" }).toLowerCase(),
         accessor: "network",
       },
       {
-        Header: intl.formatMessage({ id: "col.stat" }),
+        Header: intl.formatMessage({ id: "col.stat" }).toLowerCase(),
         accessor: "status",
       },
       {
@@ -343,27 +355,32 @@ const WalletTransactions = () => {
     const address = isWithdrawal ? toAddress : fromAddress;
     const name = isWithdrawal ? toName : fromName;
 
-    const TransferAddressContent = useCallback(
-      () => (
+    const TransferAddressContent = useCallback(() => {
+      return transaction.zigpadId ? (
         <>
-          {providerId || address ? (
-            <>
-              <TransferChainIcon network={network} />
-              <TypographyAddress>
-                {providerId ? (
-                  <ProviderLink providerId={providerId} providerName={providerName} />
-                ) : (
-                  address
-                )}
-              </TypographyAddress>
-            </>
-          ) : (
-            <TransferZigLabel name={name} />
-          )}
+          <StyledTransferImg
+            src={transaction.zigpadLogo}
+            width={24}
+            height={24}
+            style={{ marginRight: "8px" }}
+          />
+          <TypographyLabel>{transaction.zigpadName}</TypographyLabel>
         </>
-      ),
-      [],
-    );
+      ) : providerId || address ? (
+        <>
+          <TransferChainIcon network={network} />
+          <TypographyAddress>
+            {providerId ? (
+              <ProviderLink providerId={providerId} providerName={providerName} />
+            ) : (
+              address
+            )}
+          </TypographyAddress>
+        </>
+      ) : (
+        <TransferZigLabel name={name} />
+      );
+    }, []);
 
     if ((side === "from" && isWithdrawal) || (side === "to" && !isWithdrawal)) {
       // Zig Wallet

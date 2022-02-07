@@ -246,7 +246,7 @@ const WalletWithdrawConfirm = ({
         {done ? (
           <FormattedMessage id="wallet.withdraw.sent.desc" />
         ) : (
-          <FormattedMessage id="wallet.withdraw.confirm.desc" values={{ coin: "ZIG" }} />
+          <FormattedMessage id="wallet.withdraw.confirm.desc" />
         )}
       </TextDesc>
       <br />

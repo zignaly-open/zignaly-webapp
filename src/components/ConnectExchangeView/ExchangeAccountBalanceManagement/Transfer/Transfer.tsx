@@ -128,11 +128,9 @@ const Transfer = () => {
   useEffect(() => {
     setTransfers(null);
 
-    if (process.env.GATSBY_HIDE_HISTORY !== "true") {
-      getInternalTransfersHistory(null).then((response) => {
-        setTransfers(response);
-      });
-    }
+    getInternalTransfersHistory(null).then((response) => {
+      setTransfers(response);
+    });
   }, [type]);
 
   const columns = useMemo(
@@ -272,16 +270,20 @@ const Transfer = () => {
             </TypographyLabel>
             <TransferAddressPart side="to" transfer={transfer} />
           </Box>
-          {transfer.providerId && (
+          {(transfer.providerId || transfer.message) && (
             <Box display="flex" alignItems="center" mt="8px">
               <TypographyLabel>
                 <FormattedMessage id="wallet.note" />
               </TypographyLabel>
               <TypographyAddress>
-                <FormattedMessage
-                  id={getPSMessage(transfer.type)}
-                  values={{ service: transfer.providerName }}
-                />
+                {transfer.providerId ? (
+                  <FormattedMessage
+                    id={getPSMessage(transfer.type)}
+                    values={{ service: transfer.providerName }}
+                  />
+                ) : (
+                  transfer.message
+                )}
               </TypographyAddress>
             </Box>
           )}
@@ -304,14 +306,13 @@ const Transfer = () => {
     <BalanceManagement>
       <Box className="exchangeAccountTransfer">
         <InternalTransferForm selectedExchange={selectedAccount} />
-        {process.env.GATSBY_HIDE_HISTORY !== "true" && (
-          <Box p="20px">
-            <StyledTitle>
-              <Box display="flex" alignItems="center">
-                <img src={ListIcon} width={40} height={40} />
-                <FormattedMessage id="transfer.internal.form.history" />
-              </Box>
-              {/* <FiltersBox>
+        <Box p="20px">
+          <StyledTitle>
+            <Box display="flex" alignItems="center">
+              <img src={ListIcon} width={40} height={40} />
+              <FormattedMessage id="transfer.internal.form.history" />
+            </Box>
+            {/* <FiltersBox>
             <ExportButton endIcon={<StyledExportIcon />} onClick={downloadTransactions}>
               <FormattedMessage id="wallet.export" />
             </ExportButton>
@@ -321,35 +322,34 @@ const Transfer = () => {
               handleChange={(e) => setType(e.target.value as TransactionType)}
             />
           </FiltersBox> */}
-            </StyledTitle>
-            {transfers ? (
-              <InfiniteScroll
-                style={{ overflow: "visible" }}
-                scrollableTarget={container}
-                dataLength={transfers.length}
-                next={fetchMoreData}
-                hasMore={hasMore}
-                loader={
-                  <Box display="flex" justifyContent="center">
-                    <CircularProgress />
-                  </Box>
-                }
-              >
-                <TableLayout>
-                  <Table
-                    data={data}
-                    columns={columns}
-                    renderRowSubComponent={renderRowSubComponent}
-                  />
-                </TableLayout>
-              </InfiniteScroll>
-            ) : (
-              <Box alignItems="center" display="flex" justifyContent="center">
-                <CircularProgress color="primary" size={40} />
-              </Box>
-            )}
-          </Box>
-        )}
+          </StyledTitle>
+          {transfers ? (
+            <InfiniteScroll
+              style={{ overflow: "visible" }}
+              scrollableTarget={container}
+              dataLength={transfers.length}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              loader={
+                <Box display="flex" justifyContent="center">
+                  <CircularProgress />
+                </Box>
+              }
+            >
+              <TableLayout>
+                <Table
+                  data={data}
+                  columns={columns}
+                  renderRowSubComponent={renderRowSubComponent}
+                />
+              </TableLayout>
+            </InfiniteScroll>
+          ) : (
+            <Box alignItems="center" display="flex" justifyContent="center">
+              <CircularProgress color="primary" size={40} />
+            </Box>
+          )}
+        </Box>
       </Box>
     </BalanceManagement>
   );

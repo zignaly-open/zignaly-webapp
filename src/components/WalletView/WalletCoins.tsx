@@ -78,11 +78,11 @@ const WalletCoins = ({
   const columns = useMemo(
     () => [
       {
-        Header: intl.formatMessage({ id: "col.coin" }),
+        Header: intl.formatMessage({ id: "col.coin" }).toLowerCase(),
         accessor: "coin",
       },
       {
-        Header: intl.formatMessage({ id: "col.value" }),
+        Header: intl.formatMessage({ id: "col.value" }).toLowerCase(),
         accessor: "value",
       },
       {
@@ -90,7 +90,7 @@ const WalletCoins = ({
         accessor: "earn",
       },
       {
-        Header: intl.formatMessage({ id: "col.actions" }),
+        Header: intl.formatMessage({ id: "col.actions" }).toLowerCase(),
         id: "actions",
         Cell: ({ row }) => {
           const { coinData } = row.original;

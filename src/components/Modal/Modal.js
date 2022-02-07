@@ -10,6 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
  * @property {DialogProps["onClose"]} onClose
  * @property {Boolean} [persist]
  * @property {Object} children
+ * @property {Object} [style]
  * @property {String} size
  * @property {boolean} [showCloseIcon]
  * @property {boolean} [newTheme]
@@ -30,6 +31,7 @@ const GenericModal = (props) => {
     size,
     showCloseIcon = true,
     newTheme = false,
+    style = {},
   } = props;
   const fullScreen = size === "fullscreen";
 
@@ -43,6 +45,9 @@ const GenericModal = (props) => {
         if (reason !== "backdropClick" || !persist) {
           onClose(event, reason);
         }
+      }}
+      PaperProps={{
+        style,
       }}
       open={state}
       //   keepMounted={fullScreen}
