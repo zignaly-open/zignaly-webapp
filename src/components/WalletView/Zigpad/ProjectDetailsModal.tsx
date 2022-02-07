@@ -340,7 +340,7 @@ const CustomTimelineDot = ({
 
 export const getStep = (project: LaunchpadProjectDetails) => {
   if (project) {
-    if (dayjs().isAfter(project.distributionDate)) {
+    if (dayjs().isAfter(project.distributionDates[0].date)) {
       // Distribution period
       return 5;
     }
@@ -687,33 +687,41 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <TimelineLabel active={step === 4}>
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatDateTime(projectDetails.distributionDate)}</ItemValue>
+                  <ItemValue>
+                    {formatDateTime(projectDetails.distributionDates[0].date)}
+                    {projectDetails.distributionDates.length > 1 && (
+                      <>
+                        - formatDateTime( projectDetails.distributionDates[
+                        projectDetails.distributionDates.length - 1 ].date
+                      </>
+                    )}
+                  </ItemValue>
                   {step >= 4 && (
                     <>
                       <CountdownContainer>
                         <CountdownText>
-                          {dayjs().isBefore(projectDetails.distributionDate) ? (
+                          {dayjs().isBefore(projectDetails.distributionDates[0].date) ? (
                             <FormattedMessage id="zigpad.calculation.done" />
                           ) : (
                             <FormattedMessage id="zigpad.distribution.done" />
                           )}
                         </CountdownText>
                         <Countdown
-                          date={projectDetails.distributionDate}
+                          date={projectDetails.distributionDates[0].date}
                           renderer={rendererCountdown}
                         />
                       </CountdownContainer>
                       <CountdownPanel>
                         {!projectDetails.pledged ? (
                           <FormattedMessage id="zigpad.calculation.missed" />
-                        ) : dayjs().isBefore(projectDetails.distributionDate) ? (
+                        ) : dayjs().isBefore(projectDetails.distributionDates[0].date) ? (
                           <>
                             <FormattedMessage
                               id="zigpad.calculation.receive"
                               values={{
                                 reward: projectDetails.tokenReward,
                                 realPledged: projectDetails.pledged - projectDetails.returned,
-                                date: dayjs(projectDetails.distributionDate).format("MMM D, YYYY"),
+                                date: dayjs(projectDetails.distributionDates[0].date).format("MMM D, YYYY"),
                               }}
                             />
                             {projectDetails.returned > 0 && (
