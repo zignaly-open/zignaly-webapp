@@ -30,6 +30,7 @@ import Button from "components/Button";
 import { CategoryIcon } from "./Zigpad";
 import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
+import DOMPurify from "dompurify";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -556,12 +557,16 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <FormattedMessage id="zigpad.maxContribution" />
                 </MetricLabel>
                 <MetricItem>
-                  <NumberFormat
-                    displayType="text"
-                    value={projectDetails.maxAmount}
-                    suffix=" ZIG"
-                    thousandSeparator={true}
-                  />
+                  {parseFloat(projectDetails.maxAmount) ? (
+                    <NumberFormat
+                      displayType="text"
+                      value={projectDetails.maxAmount}
+                      suffix=" ZIG"
+                      thousandSeparator={true}
+                    />
+                  ) : (
+                    "N/A"
+                  )}
                 </MetricItem>
               </MetricDetails>
             </MetricsBox>
@@ -901,7 +906,13 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <Subtitle>
               <FormattedMessage id="zigpad.rules" />
             </Subtitle>
-            <Typography>todo</Typography>
+            <Typography>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(projectDetails.launchpadRules),
+                }}
+              />
+            </Typography>
           </>
         ) : (
           <CircularProgress size={50} style={{ margin: "0 auto" }} />
