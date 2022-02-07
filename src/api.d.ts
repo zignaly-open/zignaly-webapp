@@ -141,7 +141,7 @@ interface LaunchpadProject {
   distributedAmount: number;
   startDate: string;
   calculationDate: string;
-  distributionDate: string;
+  distributionDates: DistributionDate[];
   socials: Social[];
   price: string;
   logo: string;
@@ -161,6 +161,10 @@ interface Tokenomic {
   tokensOffered: number;
 }
 
+interface DistributionDate {
+  date: string;
+  percent: number;
+}
 interface LaunchpadProjectDetails {
   id: number;
   coin: string;
@@ -177,7 +181,7 @@ interface LaunchpadProjectDetails {
   startDate: string;
   getReadyDate: string;
   calculationDate: string;
-  distributionDate: string;
+  distributionDates: DistributionDate[];
   vestingDate: string;
   socials: Social[];
   price: string;

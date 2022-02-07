@@ -218,7 +218,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "subscriptionDate",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.distributionDate" }),
+              Header: intl.formatMessage({ id: "zigpad.distributionStarts" }),
               accessor: "distributionDate",
             },
             {
@@ -317,7 +317,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             {dayjs(p.startDate).format("MMM D")} - {dayjs(p.calculationDate).format("MMM D, YYYY")}
           </Value>
         ),
-        distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
+        distributionDate: <Value>{dayjs(p.distributionDates[0].date).format("MMM D, YYYY")}</Value>,
         endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
