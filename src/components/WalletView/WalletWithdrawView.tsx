@@ -145,7 +145,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
             </Control>
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
-                ZIG withdrawal is under maintenance until approximately 11am UTC.
+                ZIG withdrawal is under maintenance until approximately 4pm UTC.
               </Alert>
             ) : (
               <>
