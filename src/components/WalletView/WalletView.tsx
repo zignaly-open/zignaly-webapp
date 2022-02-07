@@ -351,11 +351,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         setVaultOffers(response);
       });
 
-      if (process.env.GATSBY_HIDE_ZIGPAD !== "true") {
-        tradeApi.getLaunchpadProjects({ status: "active" }).then((response) => {
-          setLaunchpadProjects(response);
-        });
-      }
+      tradeApi.getLaunchpadProjects({ status: "active" }).then((response) => {
+        setLaunchpadProjects(response);
+      });
 
       tradeApi.getTotalSavings().then((response) => {
         setTotalSavings(response.total);
@@ -604,38 +602,34 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               </VaultButton>
             </Box>
           )}
-          {process.env.GATSBY_HIDE_ZIGPAD !== "true" && (
-            <>
-              <SubTitleSmall>
-                <FormattedMessage id="zigpad.title" />
-              </SubTitleSmall>
-              {launchpadProjects && (
-                <LaunchpadBox mt={1} mb="-22px" display="flex" flexDirection="column">
-                  {launchpadProjects.slice(0, 1).map((p) => (
-                    <Box display="flex" key={p.coin} flexDirection="column">
-                      <VaultListItem
-                        display="flex"
-                        alignItems="center"
-                        onClick={() => setSelectedProject(p)}
-                      >
-                        <Box display="flex" alignItems="center">
-                          <img src={p.logo} height={20} width={20} />
-                          <NeutralText>{p.name}</NeutralText>
-                        </Box>
-                        <ChevronRightStyled />
-                      </VaultListItem>
-                      <VaultDivider />
+          <SubTitleSmall>
+            <FormattedMessage id="zigpad.title" />
+          </SubTitleSmall>
+          {launchpadProjects && (
+            <LaunchpadBox mt={1} mb="-22px" display="flex" flexDirection="column">
+              {launchpadProjects.slice(0, 1).map((p) => (
+                <Box display="flex" key={p.coin} flexDirection="column">
+                  <VaultListItem
+                    display="flex"
+                    alignItems="center"
+                    onClick={() => setSelectedProject(p)}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <img src={p.logo} height={20} width={20} />
+                      <NeutralText>{p.name}</NeutralText>
                     </Box>
-                  ))}
-                  <VaultButton endIcon={<ChevronRight />} href="#zigpad">
-                    <FormattedMessage
-                      id="zigpad.projects"
-                      values={{ count: launchpadProjects.length }}
-                    />
-                  </VaultButton>
-                </LaunchpadBox>
-              )}
-            </>
+                    <ChevronRightStyled />
+                  </VaultListItem>
+                  <VaultDivider />
+                </Box>
+              ))}
+              <VaultButton endIcon={<ChevronRight />} href="#zigpad">
+                <FormattedMessage
+                  id="zigpad.projects"
+                  values={{ count: launchpadProjects.length }}
+                />
+              </VaultButton>
+            </LaunchpadBox>
           )}
         </PanelItem>
       </StyledPanel>

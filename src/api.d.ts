@@ -174,8 +174,8 @@ interface LaunchpadProjectDetails {
   website: string;
   whitepaper: string;
   category: string;
-  minAmount: number;
-  maxAmount: number;
+  minAmount: string;
+  maxAmount: string;
   offeredAmount: number;
   distributedAmount: number;
   startDate: string;

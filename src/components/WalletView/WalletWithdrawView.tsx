@@ -145,17 +145,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
             </Control>
             {withdrawDisabled ? (
               <Alert style={{ marginTop: "10px" }} severity="error">
-                Due to the recent hack on Ascendex (
-                <a
-                  href="https://twitter.com/AscendEX_Global/status/1469886844787691528"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="link"
-                >
-                  https://twitter.com/AscendEX_Global/status/1469886844787691528
-                </a>
-                ), withdrawals have been disabled. We expect to re-activate them in the following
-                hours.
+                ZIG withdrawal is under maintenance until approximately 4pm UTC.
               </Alert>
             ) : (
               <>

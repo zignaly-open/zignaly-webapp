@@ -848,12 +848,16 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                     <FormattedMessage id="zigpad.tokenomic.hardCapUser" />
                   </ItemLabel>
                   <ItemValue>
-                    <NumberFormat
-                      value={projectDetails.maxAmount}
-                      thousandSeparator={true}
-                      displayType="text"
-                      suffix=" USD"
-                    />
+                    {parseFloat(projectDetails.maxAmount) ? (
+                      <NumberFormat
+                        displayType="text"
+                        value={projectDetails.maxAmount}
+                        suffix=" ZIG"
+                        thousandSeparator={true}
+                      />
+                    ) : (
+                      "N/A"
+                    )}
                   </ItemValue>
                 </ListItem>
                 <ListItem>
