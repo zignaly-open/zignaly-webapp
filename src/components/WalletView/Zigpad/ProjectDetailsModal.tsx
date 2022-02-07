@@ -691,8 +691,12 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                     {formatDateTime(projectDetails.distributionDates[0].date)}
                     {projectDetails.distributionDates.length > 1 && (
                       <>
-                        - formatDateTime( projectDetails.distributionDates[
-                        projectDetails.distributionDates.length - 1 ].date
+                        &nbsp;-&nbsp;
+                        {formatDateTime(
+                          projectDetails.distributionDates[
+                            projectDetails.distributionDates.length - 1
+                          ].date,
+                        )}
                       </>
                     )}
                   </ItemValue>
@@ -721,7 +725,9 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                               values={{
                                 reward: projectDetails.tokenReward,
                                 realPledged: projectDetails.pledged - projectDetails.returned,
-                                date: dayjs(projectDetails.distributionDates[0].date).format("MMM D, YYYY"),
+                                date: dayjs(projectDetails.distributionDates[0].date).format(
+                                  "MMM D, YYYY",
+                                ),
                               }}
                             />
                             {projectDetails.returned > 0 && (
