@@ -180,7 +180,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const theme = useTheme();
   const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
-  const [rateZIG, setRateZIG] = useState(null);
+  // const [rateZIG, setRateZIG] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -191,11 +191,11 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
     }
   }, [isOpen, tab]);
 
-  useEffect(() => {
-    tradeApi.getWalletCoins().then((response) => {
-      setRateZIG(response.ZIG.usdPrice);
-    });
-  }, []);
+  // useEffect(() => {
+  //   tradeApi.getWalletCoins().then((response) => {
+  //     setRateZIG(response.ZIG.usdPrice);
+  //   });
+  // }, []);
 
   const columns = useMemo(
     () =>
@@ -322,7 +322,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         price: (
           <Value>
             ${p.price}
-            <Rate>
+            {/* <Rate>
               {rateZIG ? (
                 <NumberFormat
                   displayType="text"
@@ -335,7 +335,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               ) : (
                 "-"
               )}
-            </Rate>
+            </Rate> */}
           </Value>
         ),
         actions: (
@@ -345,7 +345,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         id: p.id,
       })),
-    [launchpadProjects, tab, rateZIG],
+    [launchpadProjects, tab /** rateZIG */],
   );
 
   const onRowClick = useCallback(

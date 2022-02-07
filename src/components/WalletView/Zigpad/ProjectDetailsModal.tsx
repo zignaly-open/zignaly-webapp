@@ -376,7 +376,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [step, setStep] = useState(1);
-  const [rateZIG, setRateZIG] = useState(null);
+  // const [rateZIG, setRateZIG] = useState(null);
 
   useInterval(
     () => {
@@ -400,11 +400,11 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
     });
   }, []);
 
-  useEffect(() => {
-    tradeApi.getWalletCoins().then((response) => {
-      setRateZIG(response.ZIG.usdPrice);
-    });
-  }, []);
+  // useEffect(() => {
+  //   tradeApi.getWalletCoins().then((response) => {
+  //     setRateZIG(response.ZIG.usdPrice);
+  //   });
+  // }, []);
 
   const onPledged = (amount: number) => {
     setProjectDetails({
@@ -523,22 +523,6 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                     prefix={`1 ${projectDetails.coin} = $`}
                     thousandSeparator={true}
                   />
-                  {rateZIG ? (
-                    <>
-                      &nbsp;(
-                      <NumberFormat
-                        displayType="text"
-                        value={projectDetails.price / rateZIG}
-                        suffix=" ZIG"
-                        prefix="≈"
-                        thousandSeparator={true}
-                        decimalScale={2}
-                      />
-                      )
-                    </>
-                  ) : (
-                    "-"
-                  )}
                 </MetricItem>
               </MetricDetails>
               <MetricDetails>
