@@ -30,6 +30,7 @@ import Button from "components/Button";
 import { CategoryIcon } from "./Zigpad";
 import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
+import DOMPurify from "dompurify";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -556,12 +557,16 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <FormattedMessage id="zigpad.maxContribution" />
                 </MetricLabel>
                 <MetricItem>
-                  <NumberFormat
-                    displayType="text"
-                    value={projectDetails.maxAmount}
-                    suffix=" ZIG"
-                    thousandSeparator={true}
-                  />
+                  {parseFloat(projectDetails.maxAmount) ? (
+                    <NumberFormat
+                      displayType="text"
+                      value={projectDetails.maxAmount}
+                      suffix=" ZIG"
+                      thousandSeparator={true}
+                    />
+                  ) : (
+                    "N/A"
+                  )}
                 </MetricItem>
               </MetricDetails>
             </MetricsBox>
@@ -691,8 +696,12 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                     {formatDateTime(projectDetails.distributionDates[0].date)}
                     {projectDetails.distributionDates.length > 1 && (
                       <>
-                        - formatDateTime( projectDetails.distributionDates[
-                        projectDetails.distributionDates.length - 1 ].date
+                        &nbsp;-&nbsp;
+                        {formatDateTime(
+                          projectDetails.distributionDates[
+                            projectDetails.distributionDates.length - 1
+                          ].date,
+                        )}
                       </>
                     )}
                   </ItemValue>
@@ -721,7 +730,9 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                               values={{
                                 reward: projectDetails.tokenReward,
                                 realPledged: projectDetails.pledged - projectDetails.returned,
-                                date: dayjs(projectDetails.distributionDates[0].date).format("MMM D, YYYY"),
+                                date: dayjs(projectDetails.distributionDates[0].date).format(
+                                  "MMM D, YYYY",
+                                ),
                               }}
                             />
                             {projectDetails.returned > 0 && (
@@ -895,7 +906,17 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <Subtitle>
               <FormattedMessage id="zigpad.rules" />
             </Subtitle>
-            <Typography>todo</Typography>
+            <Typography>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(projectDetails.launchpadRules),
+                }}
+              />
+            </Typography>
+            <Subtitle>
+              <FormattedMessage id="srv.disclaimer.title" />
+            </Subtitle>
+            <Typography>{projectDetails.terms}</Typography>
           </>
         ) : (
           <CircularProgress size={50} style={{ margin: "0 auto" }} />
