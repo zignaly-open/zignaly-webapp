@@ -505,7 +505,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async userRegister(payload) {
-    const responseData = await this.doRequest("/signup", payload, "POST");
+    const responseData = await this.doRequest("/signup", payload, "POST", 2, false);
 
     return userEntityResponseTransform(responseData);
   }
