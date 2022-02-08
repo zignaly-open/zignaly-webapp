@@ -48,6 +48,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @property {Function} [toggleFilters] Custom table components.
  * @property {number} [modifiedFiltersCount] Modified Filters count.
  * @property {TablePaginationOptions} [paginationOptions] paginationOptions
+ * @property {Boolean} [loading] loading
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -63,6 +64,7 @@ const Table = ({
   toggleFilters,
   modifiedFiltersCount,
   paginationOptions,
+  loading,
 }) => {
   const storeSettings = useStoreSettingsSelector();
   const dispatch = useDispatch();
@@ -262,6 +264,11 @@ const Table = ({
          * @type {*}
          */
         overrides: {
+          MUIDataTableBodyRow: {
+            root: loading && {
+              opacity: 0.15,
+            },
+          },
           MUIDataTableHeadRow: {
             root: {
               verticalAlign: "top",
@@ -324,7 +331,7 @@ const Table = ({
           },
         },
       }),
-    [theme],
+    [theme, loading],
   );
 
   return (
