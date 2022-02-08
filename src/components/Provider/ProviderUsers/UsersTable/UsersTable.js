@@ -36,6 +36,7 @@ import { findIndex } from "lodash";
  * @property {Boolean} filtersVisibility
  * @property {React.SetStateAction<*>} setFiltersVisibility
  * @property {TablePaginationOptions} paginationOptions
+ * @property {boolean} loading
  *
  * @param {DefaultProps} props Component props.
  * @returns {JSX.Element} Component JSX.
@@ -49,6 +50,7 @@ const UsersTable = ({
   filtersVisibility,
   setFiltersVisibility,
   paginationOptions,
+  loading,
 }) => {
   const storeViews = useStoreViewsSelector();
   const intl = useIntl();
@@ -64,7 +66,7 @@ const UsersTable = ({
   };
 
   const [modifyModal, showModifyModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
   const [followerId, setFollower] = useState("");
   const [actionType, setActionType] = useState("cancel");
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
@@ -208,7 +210,7 @@ const UsersTable = ({
       label: "col.users.cancel",
       options: {
         customBodyRender: (val) => {
-          return loading && followerId === val ? (
+          return cancelLoading && followerId === val ? (
             <CircularProgress color="primary" size={24} />
           ) : checkIfSuspended(val) ? (
             <Tooltip placement="top" title="Enable">
@@ -337,7 +339,7 @@ const UsersTable = ({
    * @returns {void} None.
    */
   const toggleSubscription = () => {
-    setLoading(true);
+    setCancelLoading(true);
     const payload = {
       providerId: storeViews.provider.id,
       followerId: followerId,
@@ -347,12 +349,12 @@ const UsersTable = ({
     tradeApi
       .cancelSubscription(payload)
       .then(() => {
-        setLoading(false);
+        setCancelLoading(false);
         loadData();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-        setLoading(false);
+        setCancelLoading(false);
       });
   };
 
@@ -413,6 +415,7 @@ const UsersTable = ({
         title={title}
         toggleFilters={toggleFilters}
         paginationOptions={paginationOptions}
+        loading={loading}
       />
       <Modal onClose={handleModalClose} persist={false} size="small" state={modifyModal}>
         <ModifyUserSubscription

@@ -25,6 +25,7 @@ import { useIntl } from "react-intl";
  * @property {Boolean} filtersVisibility
  * @property {React.SetStateAction<*>} setFiltersVisibility
  * @property {Number} total
+ * @property {Boolean} loading
  */
 
 /**
@@ -45,6 +46,7 @@ const useProviderUsers = (provider, paginationOptions) => {
   const [filters, setFilters] = useState(initialFilters);
   const dispatch = useDispatch();
   const [total, setTotal] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const connectedOptions = [
     {
@@ -117,6 +119,7 @@ const useProviderUsers = (provider, paginationOptions) => {
 
   const loadFollowersList = () => {
     if (provider.id && provider.isAdmin) {
+      setLoading(true);
       const payload = {
         providerId: provider.id,
         connected: getFilterValue(filters.connected),
@@ -132,6 +135,9 @@ const useProviderUsers = (provider, paginationOptions) => {
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   };
@@ -151,6 +157,7 @@ const useProviderUsers = (provider, paginationOptions) => {
     filtersVisibility,
     setFiltersVisibility,
     total,
+    loading,
   };
 };
 
