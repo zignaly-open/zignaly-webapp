@@ -306,7 +306,7 @@ const Image = styled.img`
   max-width: 100%;
 `;
 
-const PrevRound = styled.div`
+const MultiInlines = styled.div`
   display: inline-flex;
   width: calc(100% - 30px);
 
@@ -873,30 +873,44 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <ItemValue>{projectDetails.tokenomic.tokenSaleVestingPeriod}</ItemValue>
                 </ListItem>
                 <ListItem>
-                  <ItemLabel>
-                    <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
-                  </ItemLabel>
-                  <ItemValue>{projectDetails.tokenomic.tokenDistribution}</ItemValue>
+                  <MultiInlines>
+                    <ItemLabel>
+                      <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
+                    </ItemLabel>
+                    <ItemValue>
+                      {projectDetails.distributionDates.map((d) => (
+                        <div key={d.date}>
+                          <FormattedMessage
+                            id="zigpad.tokenomic.release"
+                            values={{
+                              perc: d.percent,
+                              date: dayjs(d.date).format("MMM D, YYYY"),
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </ItemValue>
+                  </MultiInlines>
                 </ListItem>
               </List>
               <Subtitle>
                 <FormattedMessage id="zigpad.previousRounds" />
               </Subtitle>
               <ListItem>
-                <PrevRound>
+                <MultiInlines>
                   <ItemLabel>
                     <FormattedMessage id="zigpad.privateRound" />
                   </ItemLabel>
                   <ItemValue>{projectDetails.privateRound || " - "}</ItemValue>
-                </PrevRound>
+                </MultiInlines>
               </ListItem>
               <ListItem>
-                <PrevRound>
+                <MultiInlines>
                   <ItemLabel>
                     <FormattedMessage id="zigpad.publicRound" />
                   </ItemLabel>
                   <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
-                </PrevRound>
+                </MultiInlines>
               </ListItem>
               <Subtitle>
                 <FormattedMessage id="zigpad.distribution" />

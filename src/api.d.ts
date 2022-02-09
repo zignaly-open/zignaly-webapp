@@ -157,13 +157,13 @@ interface Tokenomic {
   hardCap: number;
   tokenDistributionDate: string;
   tokenSaleVestingPeriod: string;
-  tokenDistribution: string;
   tokensOffered: number;
 }
 
 interface DistributionDate {
   date: string;
   percent: number;
+  finished: boolean;
 }
 interface LaunchpadProjectDetails {
   id: number;
