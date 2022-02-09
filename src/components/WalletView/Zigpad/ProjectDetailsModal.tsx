@@ -98,6 +98,14 @@ const StyledTimeline = styled(Timeline)`
   }
 `;
 
+const NestedTimeline = styled(StyledTimeline)`
+  margin-top: 18px;
+
+  .MuiTimelineItem-missingOppositeContent:before {
+    display: none;
+  }
+`;
+
 const TimelineLabel = styled.div<{ active: boolean }>`
   color: ${(props) =>
     props.active ? props.theme.palette.primary.main : props.theme.newTheme.secondaryText};
@@ -362,6 +370,124 @@ export const getStep = (project: LaunchpadProjectDetails) => {
   return 1;
 };
 
+const rendererCountdown = ({ days, hours, minutes, seconds, completed }: CountdownRenderProps) => {
+  if (completed) {
+    return null;
+  }
+
+  return (
+    <Box display="flex" alignItems="center">
+      <CountdownDigit>{zeroPad(days)}</CountdownDigit>
+      <FormattedMessage id="zigpad.days" />
+      <CountdownDigit>{zeroPad(hours)}</CountdownDigit>
+      <FormattedMessage id="zigpad.hours" />
+      <CountdownDigit>{zeroPad(minutes)}</CountdownDigit>
+      <FormattedMessage id="zigpad.mins" />
+      <CountdownDigit>{zeroPad(seconds)}</CountdownDigit>
+      <FormattedMessage id="zigpad.secs" />
+    </Box>
+  );
+};
+
+const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails }) => {
+  const currentIndex = project.distributionDates.findIndex((d) => !d.finished);
+  return (
+    <NestedTimeline>
+      {project.distributionDates.map((d, i) => (
+        <TimelineItem key={d.date}>
+          <TimelineSeparator>
+            <CustomTimelineDot done={currentIndex > i} active={currentIndex === i} step={i + 1} />
+            {i < project.distributionDates.length - 1 && <TimelineConnector />}
+          </TimelineSeparator>
+          <TimelineContent>
+            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.date)}</TimelineLabel>
+            <ItemValue>
+              <FormattedMessage
+                id="zigpad.distribution.release"
+                values={{
+                  perc: parseFloat(d.percent).toFixed(2),
+                  amount: "300",
+                  coin: project.coin,
+                }}
+              />
+            </ItemValue>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </NestedTimeline>
+  );
+};
+
+const currentDistributionDate = (project: LaunchpadProjectDetails) =>
+  project.distributionDates.find((d) => !d.finished);
+
+const DistributionContent = ({
+  project,
+  step,
+}: {
+  project: LaunchpadProjectDetails;
+  step: number;
+}) => {
+  const distributionDate = currentDistributionDate(project);
+
+  return (
+    <>
+      {step >= 4 && (
+        <CountdownPanel>
+          {!project.pledged ? (
+            <FormattedMessage id="zigpad.calculation.missed" />
+          ) : dayjs().isBefore(project.distributionDates[0].date) ? (
+            <>
+              <FormattedMessage
+                id="zigpad.calculation.receive"
+                values={{
+                  reward: project.tokenReward,
+                  realPledged: project.pledged - project.returned,
+                }}
+              />
+              {project.returned > 0 && (
+                <FormattedMessage
+                  id="zigpad.calculation.returned"
+                  values={{
+                    pledged: project.pledged,
+                    returned: project.returned,
+                  }}
+                  tagName="div"
+                />
+              )}
+            </>
+          ) : (
+            <FormattedMessage
+              id="zigpad.distribution.received"
+              values={{
+                reward: project.tokenReward,
+                realPledged: project.pledged - project.returned,
+              }}
+            />
+          )}
+        </CountdownPanel>
+      )}
+      {step >= 4 && (
+        <>
+          <DistributionTimeline project={project} />
+          <CountdownContainer style={{ marginTop: "8px" }}>
+            <CountdownText style={{ marginRight: "39px" }}>
+              {distributionDate ? (
+                <FormattedMessage id="zigpad.distribution.next" />
+              ) : (
+                <FormattedMessage id="zigpad.distribution.done" />
+              )}
+            </CountdownText>
+            {distributionDate && (
+              <Countdown date={distributionDate.date} renderer={rendererCountdown} />
+            )}
+          </CountdownContainer>
+        </>
+      )}
+    </>
+  );
+};
+
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
@@ -413,31 +539,6 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       pledged: amount,
     });
     showPledgeModal(false);
-  };
-
-  const rendererCountdown = ({
-    days,
-    hours,
-    minutes,
-    seconds,
-    completed,
-  }: CountdownRenderProps) => {
-    if (completed) {
-      return null;
-    }
-
-    return (
-      <Box display="flex" alignItems="center">
-        <CountdownDigit>{zeroPad(days)}</CountdownDigit>
-        <FormattedMessage id="zigpad.days" />
-        <CountdownDigit>{zeroPad(hours)}</CountdownDigit>
-        <FormattedMessage id="zigpad.hours" />
-        <CountdownDigit>{zeroPad(minutes)}</CountdownDigit>
-        <FormattedMessage id="zigpad.mins" />
-        <CountdownDigit>{zeroPad(seconds)}</CountdownDigit>
-        <FormattedMessage id="zigpad.secs" />
-      </Box>
-    );
   };
 
   return (
@@ -686,7 +787,11 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <CustomTimelineDot done={step > 4} active={step === 4} step={4} />
+                  <CustomTimelineDot
+                    done={!currentDistributionDate(projectDetails)}
+                    active={step >= 4 && Boolean(currentDistributionDate(projectDetails))}
+                    step={4}
+                  />
                 </TimelineSeparator>
                 <TimelineContent>
                   <TimelineLabel active={step === 4}>
@@ -705,59 +810,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                       </>
                     )}
                   </ItemValue>
-                  {step >= 4 && (
-                    <>
-                      <CountdownContainer>
-                        <CountdownText>
-                          {dayjs().isBefore(projectDetails.distributionDates[0].date) ? (
-                            <FormattedMessage id="zigpad.calculation.done" />
-                          ) : (
-                            <FormattedMessage id="zigpad.distribution.done" />
-                          )}
-                        </CountdownText>
-                        <Countdown
-                          date={projectDetails.distributionDates[0].date}
-                          renderer={rendererCountdown}
-                        />
-                      </CountdownContainer>
-                      <CountdownPanel>
-                        {!projectDetails.pledged ? (
-                          <FormattedMessage id="zigpad.calculation.missed" />
-                        ) : dayjs().isBefore(projectDetails.distributionDates[0].date) ? (
-                          <>
-                            <FormattedMessage
-                              id="zigpad.calculation.receive"
-                              values={{
-                                reward: projectDetails.tokenReward,
-                                realPledged: projectDetails.pledged - projectDetails.returned,
-                                date: dayjs(projectDetails.distributionDates[0].date).format(
-                                  "MMM D, YYYY",
-                                ),
-                              }}
-                            />
-                            {projectDetails.returned > 0 && (
-                              <FormattedMessage
-                                id="zigpad.calculation.returned"
-                                values={{
-                                  pledged: projectDetails.pledged,
-                                  returned: projectDetails.returned,
-                                }}
-                                tagName="div"
-                              />
-                            )}
-                          </>
-                        ) : (
-                          <FormattedMessage
-                            id="zigpad.distribution.received"
-                            values={{
-                              reward: projectDetails.tokenReward,
-                              realPledged: projectDetails.pledged - projectDetails.returned,
-                            }}
-                          />
-                        )}
-                      </CountdownPanel>
-                    </>
-                  )}
+                  <DistributionContent step={step} project={projectDetails} />
                 </TimelineContent>
               </TimelineItem>
             </StyledTimeline>
@@ -832,7 +885,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                 </ListItem>
                 <ListItem>
                   <ItemLabel>
-                    <FormattedMessage id="zigpad.offered" />
+                    <FormattedMessage id="zigpad.tokenomic.offered" />
                   </ItemLabel>
                   <ItemValue>
                     <NumberFormat

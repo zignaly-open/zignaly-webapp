@@ -155,7 +155,6 @@ interface Tokenomic {
   supplyInitial: number;
   supplyTotalCap: number;
   hardCap: number;
-  tokenDistributionDate: string;
   tokenSaleVestingPeriod: string;
   tokensOffered: number;
 }
