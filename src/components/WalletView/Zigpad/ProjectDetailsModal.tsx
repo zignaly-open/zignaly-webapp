@@ -23,7 +23,7 @@ import { PledgeButton } from "../Vault/VaultDepositButton";
 import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import WalletDepositView from "../WalletDepositView";
-import { gateioUrl } from "utils/affiliateURLs";
+import { gateioUrl, zigpadInfoUrl } from "utils/affiliateURLs";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import useInterval from "hooks/useInterval";
 import Button from "components/Button";
@@ -31,6 +31,7 @@ import { CategoryIcon } from "./Zigpad";
 import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
 import DOMPurify from "dompurify";
+import { format2Dec } from "utils/formatters";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -406,7 +407,14 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
                 id="zigpad.distribution.release"
                 values={{
                   perc: parseFloat(d.percent).toFixed(2),
-                  amount: "300",
+                  amount: (
+                    <NumberFormat
+                      value={(parseFloat(d.percent) / 100) * project.tokenReward}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${project.coin}`}
+                    />
+                  ),
                   coin: project.coin,
                 }}
               />
@@ -429,59 +437,107 @@ const DistributionContent = ({
   step: number;
 }) => {
   const distributionDate = currentDistributionDate(project);
+  const timesOversubscribed = format2Dec(project.progress / 100);
 
   return (
     <>
       {step >= 4 && (
         <CountdownPanel>
           {!project.pledged ? (
-            <FormattedMessage id="zigpad.calculation.missed" />
-          ) : dayjs().isBefore(project.distributionDates[0].date) ? (
             <>
               <FormattedMessage
-                id="zigpad.calculation.receive"
+                id={
+                  project.progress > 100
+                    ? "zigpad.distribution.missed.overpledged"
+                    : "zigpad.distribution.missed"
+                }
                 values={{
-                  reward: project.tokenReward,
-                  realPledged: project.pledged - project.returned,
+                  pledged: (
+                    <NumberFormat
+                      value={project.totalPledge}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  times: timesOversubscribed,
                 }}
               />
-              {project.returned > 0 && (
-                <FormattedMessage
-                  id="zigpad.calculation.returned"
-                  values={{
-                    pledged: project.pledged,
-                    returned: project.returned,
-                  }}
-                  tagName="div"
-                />
-              )}
+              <br />
+              <FormattedMessage id="zigpad.distribution.missed.plan" />
             </>
           ) : (
-            <FormattedMessage
-              id="zigpad.distribution.received"
-              values={{
-                reward: project.tokenReward,
-                realPledged: project.pledged - project.returned,
-              }}
-            />
+            <>
+              <FormattedMessage
+                id={
+                  project.progress > 100
+                    ? "zigpad.distribution.overpledged"
+                    : "zigpad.distribution.pledged"
+                }
+                values={{
+                  reward: (
+                    <NumberFormat
+                      value={project.tokenReward}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${project.coin}`}
+                    />
+                  ),
+                  realPledged: (
+                    <NumberFormat
+                      value={project.pledged - project.returned}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  returned: (
+                    <NumberFormat
+                      value={project.returned}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  pledged: (
+                    <NumberFormat
+                      value={project.totalPledge}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  times: timesOversubscribed,
+                  a: (chunks: string) => (
+                    <a target="_blank" rel="noreferrer" className="link" href={zigpadInfoUrl}>
+                      {chunks}
+                    </a>
+                  ),
+                }}
+              />
+              <br />
+              <FormattedMessage id="zigpad.distribution.plan" />
+            </>
           )}
         </CountdownPanel>
       )}
       {step >= 4 && (
         <>
           <DistributionTimeline project={project} />
-          <CountdownContainer style={{ marginTop: "8px" }}>
-            <CountdownText style={{ marginRight: "39px" }}>
-              {distributionDate ? (
-                <FormattedMessage id="zigpad.distribution.next" />
-              ) : (
-                <FormattedMessage id="zigpad.distribution.done" />
+          {project.pledged > 0 && (
+            <CountdownContainer style={{ marginTop: "8px" }}>
+              <CountdownText style={{ marginRight: "39px" }}>
+                {distributionDate ? (
+                  <FormattedMessage id="zigpad.distribution.next" />
+                ) : (
+                  <FormattedMessage id="zigpad.distribution.done" />
+                )}
+              </CountdownText>
+              {distributionDate && (
+                <Countdown date={distributionDate.date} renderer={rendererCountdown} />
               )}
-            </CountdownText>
-            {distributionDate && (
-              <Countdown date={distributionDate.date} renderer={rendererCountdown} />
-            )}
-          </CountdownContainer>
+            </CountdownContainer>
+          )}
         </>
       )}
     </>

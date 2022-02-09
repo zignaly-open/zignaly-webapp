@@ -28,4 +28,5 @@ export const psCreateInfoUrl =
 export const ascendexUrl = "https://ascendex.com/en-us/register?inviteCode=I180THP3";
 export const mexcUrl = "https://www.mexc.com/register?inviteCode=1DHh4";
 export const gateioUrl = "https://www.gate.io/signup/9545237";
-export const zigpadInfoUrl = "https://help.zignaly.com/hc/en-us/categories/4405994922898-ZIG-Coin";
+export const zigpadInfoUrl =
+  "https://help.zignaly.com/hc/en-us/articles/4416278630162-ZIGPad-is-here-#h_01FVAK0SS3QVFKMFDNN8NPT7K8";
