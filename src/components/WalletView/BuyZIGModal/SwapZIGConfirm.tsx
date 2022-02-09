@@ -31,7 +31,7 @@ const BalanceLabel = styled(Typography)`
 
 interface SwapZIGConfirmProps {
   amount: string;
-  swapInfo: GenerateBuyPriceRes;
+  swapInfo: GetSwapPriceRes;
   coinFrom: string;
   coinTo: string;
 }
@@ -42,7 +42,7 @@ const SwapZIGConfirm = ({
   amount,
   swapInfo: swapInfoOrig,
 }: SwapZIGConfirmProps) => {
-  const [swapInfo, setSwapInfo] = useState<GenerateBuyPriceRes>(swapInfoOrig);
+  const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(swapInfoOrig);
   const priceExpired = dayjs(swapInfo.expiration).isBefore(dayjs());
 
   const updateSwapInfo = () => {

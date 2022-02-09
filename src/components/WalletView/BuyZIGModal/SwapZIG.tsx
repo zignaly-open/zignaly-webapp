@@ -57,7 +57,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
     : null;
   const minAmount = 1;
   const intl = useIntl();
-  const [swapInfo, setSwapInfo] = useState<GenerateBuyPriceRes>(null);
+  const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState(false);

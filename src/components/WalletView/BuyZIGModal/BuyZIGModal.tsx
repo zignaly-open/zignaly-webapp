@@ -109,8 +109,7 @@ const DepositUSDTChoices = ({ accountsBalances }: DepositUSDTChoicesProps) => {
             <FormattedMessage id="wallet.zig.buy.desc" />
           </ButtonDesc>
           <Button href={buyCryptoURL} target="_blank" endIcon={<OpenArrowIcon />}>
-            <FormattedMessage id="zigpad.buy" />
-            &nbsp;USDT
+            <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "USDT" }} />
           </Button>
         </ButtonBox>
       </ButtonsContainer>
@@ -129,10 +128,17 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   const [accountsBalances, setAccountsBalances] = useState<BalanceExchange[]>(null);
   const hasUSDT = accountsBalances && accountsBalances.find((a) => a.balance > 0);
 
+  const zignalyExchangeAccounts = storeUser.userData.exchanges.filter(
+    (e) => e.exchangeName.toLowerCase() === "zignaly",
+  );
+  const zignalyExchangeAccountsActivated = zignalyExchangeAccounts.filter((e) => e.activated);
+
+  //useActivateSubAccount
+
   const fetchBalances = async () => {
-    const zignalyExchangeAccounts = storeUser.userData.exchanges.filter(
-      (e) => e.exchangeName.toLowerCase() === "zignaly",
-    );
+    if (!zignalyExchangeAccounts) {
+      // todo: create account
+    }
 
     const res = await Promise.all(
       zignalyExchangeAccounts.map(async (account) => {
@@ -161,9 +167,9 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
-        {accountsBalances === null ? (
+        {accountsBalances === null || !zignalyExchangeAccountsActivated.length ? (
           <CircularProgress color="primary" size={40} />
-        ) : !hasUSDT ? (
+        ) : hasUSDT ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />
         ) : (
           <SwapZIG coinFrom="USDT" coinTo="ZIG" accountsBalances={accountsBalances} />

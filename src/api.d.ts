@@ -228,3 +228,15 @@ interface GenerateBuyPriceRes {
   expiration: number;
   maxAmount: number;
 }
+
+interface GetSwapPriceReq {
+  coinFrom: string;
+  coinTo: string;
+}
+
+interface GetSwapPriceRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
+}

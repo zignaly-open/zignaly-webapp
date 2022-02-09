@@ -16,7 +16,6 @@ import {
   Switch,
 } from "@material-ui/core";
 import tradeApi from "services/tradeApiClient";
-import CustomButton from "components/CustomButton";
 import Modal from "components/Modal";
 import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
@@ -36,6 +35,7 @@ import CoinIcon from "./CoinIcon";
 import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
+import Button from "components/Button";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -89,7 +89,7 @@ const NeutralText = styled(Typography)`
   white-space: nowrap;
 `;
 
-const Button = styled(CustomButton)`
+const StyledButton = styled(Button)`
   margin-right: 8px;
   min-width: 121px;
 `;
@@ -496,13 +496,13 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <Button className="textPurple borderPurple" onClick={() => setPath("withdraw/ZIG")}>
+              <StyledButton variant="outlined" onClick={() => setPath("withdraw/ZIG")}>
                 <FormattedMessage id="accounts.withdraw" />
-              </Button>
-              <Button className="bgPurple" onClick={() => setPath("deposit/ZIG")}>
+              </StyledButton>
+              <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
-              </Button>
-              <Button className="bgPurple" onClick={() => showBuyZIG(true)}>
+              </StyledButton>
+              <Button variant="text" onClick={() => showBuyZIG(true)}>
                 <FormattedMessage id="wallet.zig.buy" />
               </Button>
             </Box>
