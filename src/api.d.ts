@@ -197,6 +197,7 @@ interface LaunchpadProjectDetails {
   launchpadRules: string;
   totalPledge: number;
   progress: number;
+  usdSubscription: number;
 }
 interface TotalSavings {
   total: number;

@@ -437,7 +437,7 @@ const DistributionContent = ({
   step: number;
 }) => {
   const distributionDate = currentDistributionDate(project);
-  const timesOversubscribed = format2Dec(project.progress / 100);
+  const timesOversubscribed = project.usdSubscription / project.tokenomic.hardCap;
 
   return (
     <>
@@ -447,7 +447,7 @@ const DistributionContent = ({
             <>
               <FormattedMessage
                 id={
-                  project.progress > 100
+                  timesOversubscribed > 1
                     ? "zigpad.distribution.missed.overpledged"
                     : "zigpad.distribution.missed"
                 }
@@ -460,7 +460,7 @@ const DistributionContent = ({
                       suffix=" ZIG"
                     />
                   ),
-                  times: timesOversubscribed,
+                  times: format2Dec(timesOversubscribed),
                 }}
               />
               <br />
@@ -470,7 +470,7 @@ const DistributionContent = ({
             <>
               <FormattedMessage
                 id={
-                  project.progress > 100
+                  timesOversubscribed > 1
                     ? "zigpad.distribution.overpledged"
                     : "zigpad.distribution.pledged"
                 }
@@ -507,7 +507,7 @@ const DistributionContent = ({
                       suffix=" ZIG"
                     />
                   ),
-                  times: timesOversubscribed,
+                  times: format2Dec(timesOversubscribed),
                   a: (chunks: string) => (
                     <a target="_blank" rel="noreferrer" className="link" href={zigpadInfoUrl}>
                       {chunks}
