@@ -34,9 +34,15 @@ interface SwapZIGProps {
   accountsBalances: BalanceExchange[];
   coinFrom?: string;
   coinTo?: string;
+  onDepositMore: () => void;
 }
 
-const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZIGProps) => {
+const SwapZIG = ({
+  coinFrom = "USDT",
+  coinTo = "ZIG",
+  accountsBalances,
+  onDepositMore,
+}: SwapZIGProps) => {
   const {
     control,
     formState: { isValid },
@@ -206,7 +212,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
             <Button type="submit" disabled={!isValid || !amountTo} variant="contained">
               <FormattedMessage id="wallet.withdraw.continue" />
             </Button>
-            <Button onClick={() => {}} variant="text" style={{ marginTop: "8px" }}>
+            <Button onClick={onDepositMore} variant="text" style={{ marginTop: "8px" }}>
               <FormattedMessage id="wallet.zig.depositMore" values={{ coin: coinFrom }} />
             </Button>
           </Box>
