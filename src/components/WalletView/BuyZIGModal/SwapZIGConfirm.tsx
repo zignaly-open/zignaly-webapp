@@ -11,6 +11,7 @@ import CoinIcon from "../CoinIcon";
 import { SwapHorizOutlined } from "@material-ui/icons";
 import { isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
+import { formatFloat } from "utils/format";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -24,15 +25,18 @@ const AmountLabel = styled(Typography)`
 `;
 
 const AmountSwapBox = styled.div`
+  align-items: center;
   display: flex;
+  img {
+    margin-right: 4px;
+  }
+`;
+
+const AmountSwapBoxTop = styled(AmountSwapBox)`
   flex-direction: column;
 
   > div {
     margin-top: 5px;
-  }
-
-  img {
-    margin-right: 4px;
   }
 `;
 
@@ -95,29 +99,29 @@ const SwapZIGConfirm = ({
       <Box px="82px" py="18px">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" justifyContent="center">
-            <AmountSwapBox>
+            <AmountSwapBoxTop>
               <AmountLabel>
                 <FormattedMessage id="transfer.internal.form.from" />
               </AmountLabel>
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" alignItems="center">
                 <CoinIcon coin={coinFrom} />
                 <CoinAmount value={amount} coin={coinFrom} />
               </Box>
-            </AmountSwapBox>
+            </AmountSwapBoxTop>
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="center">
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4px">
             <SwapHorizOutlined style={{ fontSize: "48px" }} />
           </Box>
           <Box display="flex" justifyContent="center">
-            <AmountSwapBox>
+            <AmountSwapBoxTop>
               <AmountLabel>
                 <FormattedMessage id="transfer.internal.form.to" />
               </AmountLabel>
-              <Box display="flex" flexDirection="row">
+              <Box display="flex" flexDirection="row" alignItems="center">
                 <CoinIcon coin={coinTo} />
                 <CoinAmount value={amountTo} coin={coinTo} />
               </Box>
-            </AmountSwapBox>
+            </AmountSwapBoxTop>
           </Box>
         </Box>
         <Divider />
@@ -144,12 +148,10 @@ const SwapZIGConfirm = ({
         <AmountLabel big={true}>
           <FormattedMessage id="wallet.withdraw.receive" />
         </AmountLabel>
-        <Box display="flex" alignItems="center">
-          <div style={{ marginRight: "4px" }}>
-            <CoinIcon coin={coinTo} />
-          </div>
+        <AmountSwapBox>
+          <CoinIcon coin={coinTo} />
           <CoinAmount big={true} value={amountTo} coin={coinTo} />
-        </Box>
+        </AmountSwapBox>
       </AmountBox>
       <Box display="flex" flexDirection="column" mt="64px" alignItems="center">
         <Button
