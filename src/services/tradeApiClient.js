@@ -2598,6 +2598,43 @@ class TradeApiClient {
   async getTotalSavings() {
     return this.doRequest("/total-savings", null, "GET", 3);
   }
+
+  /**
+   * Get price for swap
+   *
+   * @param {GenerateBuyPriceReq} payload
+   * @returns {Promise<GenerateBuyPriceRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async generateBuyPrice(payload) {
+    const test = Math.random() * (0.7 - 0.6) + 0.6;
+    return new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve({
+            key: "d7ae5d610241dcc9843d85eedb5f112e",
+            price: test.toFixed(8),
+            expiration: 1630156159,
+            maxAmount: 23450.65,
+          }),
+        1000,
+      ),
+    );
+    // return this.doRequest("/generate-buy-price", payload, "POST", 3);
+  }
+
+  /**
+   * Get price for swap
+   *
+   * @param {GetSwapPriceReq} payload
+   * @returns {Promise<GetSwapPriceRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async getSwapPrice({ coinFrom, coinTo }) {
+    return this.doRequest(`/prices/${coinFrom}/${coinTo}`, null, "GET", 2);
+  }
 }
 
 // JS export by default guarantee a singleton instance if we export the class

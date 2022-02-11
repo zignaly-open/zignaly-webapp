@@ -12,7 +12,6 @@ import { StyledCustomSelect } from "../WalletView/styles";
 import AmountControl from "components/WalletView/AmountControl";
 import useDebounce from "hooks/useDebounce";
 import NumberFormat from "react-number-format";
-import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 
 interface ConvertCoinFormProps {
   balance: string;

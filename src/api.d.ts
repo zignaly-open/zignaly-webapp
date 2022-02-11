@@ -229,3 +229,27 @@ interface GetProviderFollowersRes {
   pagination: PaginationsRes;
   data: ProviderFollowersEntity[];
 }
+
+interface GenerateBuyPriceReq {
+  from: string;
+  to: string;
+}
+
+interface GenerateBuyPriceRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
+}
+
+interface GetSwapPriceReq {
+  coinFrom: string;
+  coinTo: string;
+}
+
+interface GetSwapPriceRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
+}
