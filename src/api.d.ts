@@ -218,8 +218,8 @@ interface GetProviderFollowersRes {
 }
 
 interface GenerateBuyPriceReq {
-  coinFrom: string;
-  coinTo: string;
+  from: string;
+  to: string;
 }
 
 interface GenerateBuyPriceRes {

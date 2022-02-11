@@ -169,7 +169,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
       <Modal>
         {accountsBalances === null || !zignalyExchangeAccountsActivated.length ? (
           <CircularProgress color="primary" size={40} />
-        ) : hasUSDT ? (
+        ) : !hasUSDT ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />
         ) : (
           <SwapZIG coinFrom="USDT" coinTo="ZIG" accountsBalances={accountsBalances} />

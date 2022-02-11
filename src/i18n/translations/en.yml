@@ -1886,6 +1886,7 @@ wallet.zig.swapTo: "Swap to"
 wallet.zig.swap.max: "The maximumn amount is {amount} {coin}"
 wallet.zig.received: "Amount received"
 wallet.zig.depositMore: "Deposit More {coin}"
+wallet.zig.rate: "Rate:"
 
 zigpad.projects: "All {count} Launchpad projects"
 zigpad.title: "ZIGPad"

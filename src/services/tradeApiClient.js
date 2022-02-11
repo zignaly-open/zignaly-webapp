@@ -2608,7 +2608,20 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async generateBuyPrice(payload) {
-    return this.doRequest("/generate-buy-price", payload, "POST", 3);
+    const test = Math.random() * (0.7 - 0.6) + 0.6;
+    return new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve({
+            key: "d7ae5d610241dcc9843d85eedb5f112e",
+            price: test.toFixed(8),
+            expiration: 1630156159,
+            maxAmount: 23450.65,
+          }),
+        1000,
+      ),
+    );
+    // return this.doRequest("/generate-buy-price", payload, "POST", 3);
   }
 
   /**

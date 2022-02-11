@@ -59,6 +59,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
   const intl = useIntl();
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
+  console.log(amountTo, swapInfo);
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState(false);
 
@@ -69,18 +70,12 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
 
   const updateSwapInfo = () => {
     tradeApi
-      .generateBuyPrice({ coinFrom, coinTo })
+      .generateBuyPrice({ from: coinFrom, to: coinTo })
       .then((response) => {
         setSwapInfo(response);
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));
-        setSwapInfo({
-          key: "d7ae5d610241dcc9843d85eedb5f112e",
-          price: 0.076895,
-          expiration: 1630156159,
-          maxAmount: 23450.65,
-        });
         if (!isValid) {
           // Force refresh validation in case the user entered the amount before we got the swap info.
           trigger("amount");
@@ -92,7 +87,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
     () => {
       updateSwapInfo();
     },
-    30000,
+    15000,
     false,
   );
   useEffect(updateSwapInfo, []);
@@ -197,7 +192,7 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
             <Input
               readOnly
               fullWidth
-              value={amountTo}
+              value={amountTo?.toFixed(2)}
               endAdornment={coinTo}
               placeholder={intl.formatMessage({ id: "wallet.zig.received" })}
             />
