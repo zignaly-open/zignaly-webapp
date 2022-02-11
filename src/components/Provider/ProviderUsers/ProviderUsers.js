@@ -38,6 +38,7 @@ const ProviderUsers = ({ provider }) => {
     filtersVisibility,
     setFiltersVisibility,
     total,
+    loading,
   } = useProviderUsers(provider, paginationOptions);
 
   const embedFilters = () => {
@@ -65,6 +66,7 @@ const ProviderUsers = ({ provider }) => {
           provider={provider}
           setFiltersVisibility={setFiltersVisibility}
           title={embedFilters()}
+          loading={loading}
           paginationOptions={{
             total,
             onRowsPerPageChange: (value) => {

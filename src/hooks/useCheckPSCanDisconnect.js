@@ -31,17 +31,21 @@ const useCheckPSCanDisconnect = (provider) => {
   const [canDisconnect, setCanDisconnect] = useState(null);
   const dispatch = useDispatch();
   const userData = useStoreUserData();
-  const { list } = useProviderUsers(provider, paginationOptions);
-  const providerFollowers = list.filter((user) => user.userId !== userData.userId);
+  const { users } = useProviderUsers(provider, paginationOptions);
 
   const loadPositions = () => {
     if (!provider) return;
 
     if (!provider.disable && provider.profitSharing && provider.isAdmin) {
+      if (!users) return;
+
+      const providerFollowers = users.filter((user) => user.userId !== userData.userId);
       if (!providerFollowers.length) {
+        // Check no followers beside owner
         tradeApi
           .providerOpenPositions(provider.id)
           .then((response) => {
+            // Check no open positions
             setCanDisconnect(response.length === 0);
           })
           .catch((e) => {
@@ -55,9 +59,9 @@ const useCheckPSCanDisconnect = (provider) => {
     }
   };
 
-  useEffect(loadPositions, [provider]);
+  useEffect(loadPositions, [users]);
 
-  return { loading: canDisconnect === null, canDisconnect };
+  return canDisconnect;
 };
 
 export default useCheckPSCanDisconnect;

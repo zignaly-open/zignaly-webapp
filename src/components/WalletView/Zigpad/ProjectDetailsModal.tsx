@@ -23,10 +23,15 @@ import { PledgeButton } from "../Vault/VaultDepositButton";
 import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import WalletDepositView from "../WalletDepositView";
-import { gateioUrl } from "utils/affiliateURLs";
+import { gateioUrl, zigpadInfoUrl } from "utils/affiliateURLs";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import useInterval from "hooks/useInterval";
 import Button from "components/Button";
+import { CategoryIcon } from "./Zigpad";
+import cloudinary from "services/cloudinary";
+import CoinIcon from "../CoinIcon";
+import DOMPurify from "dompurify";
+import { format2Dec } from "utils/formatters";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -91,6 +96,14 @@ const StyledTimeline = styled(Timeline)`
 
   .MuiTimelineItem-missingOppositeContent:before {
     flex: initial;
+  }
+`;
+
+const NestedTimeline = styled(StyledTimeline)`
+  margin-top: 18px;
+
+  .MuiTimelineItem-missingOppositeContent:before {
+    display: none;
   }
 `;
 
@@ -298,6 +311,27 @@ const CheckIcon = styled(Check)`
   height: 18px;
 `;
 
+const Image = styled.img`
+  max-width: 100%;
+`;
+
+const MultiInlines = styled.div`
+  display: inline-flex;
+  width: calc(100% - 30px);
+
+  span:nth-child(1) {
+    white-space: nowrap;
+  }
+
+  span:nth-child(2) {
+    white-space: pre-wrap;
+  }
+`;
+
+const Paragraph = styled(Typography)`
+  white-space: pre-wrap;
+`;
+
 const CustomTimelineDot = ({
   done,
   active,
@@ -316,7 +350,7 @@ const CustomTimelineDot = ({
 
 export const getStep = (project: LaunchpadProjectDetails) => {
   if (project) {
-    if (dayjs().isAfter(project.distributionDate)) {
+    if (dayjs().isAfter(project.distributionDates[0].date)) {
       // Distribution period
       return 5;
     }
@@ -337,6 +371,179 @@ export const getStep = (project: LaunchpadProjectDetails) => {
   return 1;
 };
 
+const rendererCountdown = ({ days, hours, minutes, seconds, completed }: CountdownRenderProps) => {
+  if (completed) {
+    return null;
+  }
+
+  return (
+    <Box display="flex" alignItems="center">
+      <CountdownDigit>{zeroPad(days)}</CountdownDigit>
+      <FormattedMessage id="zigpad.days" />
+      <CountdownDigit>{zeroPad(hours)}</CountdownDigit>
+      <FormattedMessage id="zigpad.hours" />
+      <CountdownDigit>{zeroPad(minutes)}</CountdownDigit>
+      <FormattedMessage id="zigpad.mins" />
+      <CountdownDigit>{zeroPad(seconds)}</CountdownDigit>
+      <FormattedMessage id="zigpad.secs" />
+    </Box>
+  );
+};
+
+const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails }) => {
+  const currentIndex = project.distributionDates.findIndex((d) => !d.finished);
+  return (
+    <NestedTimeline>
+      {project.distributionDates.map((d, i) => (
+        <TimelineItem key={d.date}>
+          <TimelineSeparator>
+            <CustomTimelineDot done={currentIndex > i} active={currentIndex === i} step={i + 1} />
+            {i < project.distributionDates.length - 1 && <TimelineConnector />}
+          </TimelineSeparator>
+          <TimelineContent>
+            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.date)}</TimelineLabel>
+            <ItemValue>
+              <FormattedMessage
+                id="zigpad.distribution.release"
+                values={{
+                  perc: parseFloat(d.percent).toFixed(2),
+                  amount: (
+                    <NumberFormat
+                      value={(parseFloat(d.percent) / 100) * project.tokenReward}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${project.coin}`}
+                    />
+                  ),
+                  coin: project.coin,
+                }}
+              />
+            </ItemValue>
+          </TimelineContent>
+        </TimelineItem>
+      ))}
+    </NestedTimeline>
+  );
+};
+
+const currentDistributionDate = (project: LaunchpadProjectDetails) =>
+  project.distributionDates.find((d) => !d.finished);
+
+const DistributionContent = ({
+  project,
+  step,
+}: {
+  project: LaunchpadProjectDetails;
+  step: number;
+}) => {
+  const distributionDate = currentDistributionDate(project);
+  const timesOversubscribed = project.usdSubscription / project.tokenomic.hardCap;
+
+  return (
+    <>
+      {step >= 4 && (
+        <CountdownPanel>
+          {!project.pledged ? (
+            <>
+              <FormattedMessage
+                id={
+                  timesOversubscribed > 1
+                    ? "zigpad.distribution.missed.overpledged"
+                    : "zigpad.distribution.missed"
+                }
+                values={{
+                  pledged: (
+                    <NumberFormat
+                      value={project.totalPledge}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  times: format2Dec(timesOversubscribed),
+                }}
+              />
+              <br />
+              <FormattedMessage id="zigpad.distribution.missed.plan" />
+            </>
+          ) : (
+            <>
+              <FormattedMessage
+                id={
+                  timesOversubscribed > 1
+                    ? "zigpad.distribution.overpledged"
+                    : "zigpad.distribution.pledged"
+                }
+                values={{
+                  reward: (
+                    <NumberFormat
+                      value={project.tokenReward}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${project.coin}`}
+                    />
+                  ),
+                  realPledged: (
+                    <NumberFormat
+                      value={project.pledged - project.returned}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  returned: (
+                    <NumberFormat
+                      value={project.returned}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  pledged: (
+                    <NumberFormat
+                      value={project.totalPledge}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" ZIG"
+                    />
+                  ),
+                  times: format2Dec(timesOversubscribed),
+                  a: (chunks: string) => (
+                    <a target="_blank" rel="noreferrer" className="link" href={zigpadInfoUrl}>
+                      {chunks}
+                    </a>
+                  ),
+                }}
+              />
+              <br />
+              <FormattedMessage id="zigpad.distribution.plan" />
+            </>
+          )}
+        </CountdownPanel>
+      )}
+      {step >= 4 && (
+        <>
+          <DistributionTimeline project={project} />
+          {project.pledged > 0 && (
+            <CountdownContainer style={{ marginTop: "8px" }}>
+              <CountdownText style={{ marginRight: "39px" }}>
+                {distributionDate ? (
+                  <FormattedMessage id="zigpad.distribution.next" />
+                ) : (
+                  <FormattedMessage id="zigpad.distribution.done" />
+                )}
+              </CountdownText>
+              {distributionDate && (
+                <Countdown date={distributionDate.date} renderer={rendererCountdown} />
+              )}
+            </CountdownContainer>
+          )}
+        </>
+      )}
+    </>
+  );
+};
+
 interface ProjectDetailsModalProps {
   onClose: () => void;
   open: boolean;
@@ -352,7 +559,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [step, setStep] = useState(1);
-  const [rateZIG, setRateZIG] = useState(null);
+  // const [rateZIG, setRateZIG] = useState(null);
 
   useInterval(
     () => {
@@ -376,11 +583,11 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
     });
   }, []);
 
-  useEffect(() => {
-    tradeApi.getWalletCoins().then((response) => {
-      setRateZIG(response.ZIG.usdPrice);
-    });
-  }, []);
+  // useEffect(() => {
+  //   tradeApi.getWalletCoins().then((response) => {
+  //     setRateZIG(response.ZIG.usdPrice);
+  //   });
+  // }, []);
 
   const onPledged = (amount: number) => {
     setProjectDetails({
@@ -388,31 +595,6 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
       pledged: amount,
     });
     showPledgeModal(false);
-  };
-
-  const rendererCountdown = ({
-    days,
-    hours,
-    minutes,
-    seconds,
-    completed,
-  }: CountdownRenderProps) => {
-    if (completed) {
-      return null;
-    }
-
-    return (
-      <Box display="flex" alignItems="center">
-        <CountdownDigit>{zeroPad(days)}</CountdownDigit>
-        <FormattedMessage id="zigpad.days" />
-        <CountdownDigit>{zeroPad(hours)}</CountdownDigit>
-        <FormattedMessage id="zigpad.hours" />
-        <CountdownDigit>{zeroPad(minutes)}</CountdownDigit>
-        <FormattedMessage id="zigpad.mins" />
-        <CountdownDigit>{zeroPad(seconds)}</CountdownDigit>
-        <FormattedMessage id="zigpad.secs" />
-      </Box>
-    );
   };
 
   return (
@@ -446,7 +628,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             </CustomModal>
             <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
               <TitleContainer display="flex" alignItems="center">
-                <img src={projectDetails.logo} width={64} height={64} />
+                <CoinIcon coin={projectDetails.coin} width={64} height={64} />
                 <TitleDesc>{projectDetails.name}</TitleDesc>
                 <Coin>{projectDetails.coin}</Coin>
               </TitleContainer>
@@ -459,9 +641,14 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
             <Chip
               style={{ marginBottom: "12px" }}
               size="small"
-              label={intl.formatMessage({
-                id: `zigpad.category.${projectDetails.category.toLowerCase()}`,
-              })}
+              label={
+                <Box display="flex" alignItems="center">
+                  <CategoryIcon category={projectDetails.category} width={18} height={18} />
+                  <FormattedMessage
+                    id={`zigpad.category.${projectDetails.category.toLowerCase()}`}
+                  />
+                </Box>
+              }
             />
             <ItemValue>{projectDetails.shortDescription}</ItemValue>
             <Box display="flex" mt={2} mb={3}>
@@ -491,26 +678,9 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <NumberFormat
                     displayType="text"
                     value={projectDetails.price}
-                    prefix={`1 ${projectDetails.coin} = `}
-                    suffix="$"
+                    prefix={`1 ${projectDetails.coin} = $`}
                     thousandSeparator={true}
                   />
-                  {rateZIG ? (
-                    <>
-                      &nbsp;(
-                      <NumberFormat
-                        displayType="text"
-                        value={projectDetails.price / rateZIG}
-                        suffix=" ZIG"
-                        prefix="≈"
-                        thousandSeparator={true}
-                        decimalScale={2}
-                      />
-                      )
-                    </>
-                  ) : (
-                    "-"
-                  )}
                 </MetricItem>
               </MetricDetails>
               <MetricDetails>
@@ -544,12 +714,16 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
                   <FormattedMessage id="zigpad.maxContribution" />
                 </MetricLabel>
                 <MetricItem>
-                  <NumberFormat
-                    displayType="text"
-                    value={projectDetails.maxAmount}
-                    suffix=" ZIG"
-                    thousandSeparator={true}
-                  />
+                  {parseFloat(projectDetails.maxAmount) ? (
+                    <NumberFormat
+                      displayType="text"
+                      value={projectDetails.maxAmount}
+                      suffix=" ZIG"
+                      thousandSeparator={true}
+                    />
+                  ) : (
+                    "N/A"
+                  )}
                 </MetricItem>
               </MetricDetails>
             </MetricsBox>
@@ -669,109 +843,207 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               </TimelineItem>
               <TimelineItem>
                 <TimelineSeparator>
-                  <CustomTimelineDot done={step > 4} active={step === 4} step={4} />
+                  <CustomTimelineDot
+                    done={!currentDistributionDate(projectDetails)}
+                    active={step >= 4 && Boolean(currentDistributionDate(projectDetails))}
+                    step={4}
+                  />
                 </TimelineSeparator>
                 <TimelineContent>
                   <TimelineLabel active={step === 4}>
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatDateTime(projectDetails.distributionDate)}</ItemValue>
-                  {step >= 4 && (
-                    <>
-                      <CountdownContainer>
-                        <CountdownText>
-                          {dayjs().isBefore(projectDetails.distributionDate) ? (
-                            <FormattedMessage id="zigpad.calculation.done" />
-                          ) : (
-                            <FormattedMessage id="zigpad.distribution.done" />
-                          )}
-                        </CountdownText>
-                        <Countdown
-                          date={projectDetails.distributionDate}
-                          renderer={rendererCountdown}
-                        />
-                      </CountdownContainer>
-                      <CountdownPanel>
-                        {!projectDetails.pledged ? (
-                          <FormattedMessage id="zigpad.calculation.missed" />
-                        ) : dayjs().isBefore(projectDetails.distributionDate) ? (
-                          <>
-                            <FormattedMessage
-                              id="zigpad.calculation.receive"
-                              values={{
-                                reward: projectDetails.tokenReward,
-                                realPledged: projectDetails.pledged - projectDetails.returned,
-                                date: dayjs(projectDetails.distributionDate).format("MMM D, YYYY"),
-                              }}
-                            />
-                            {projectDetails.returned > 0 && (
-                              <FormattedMessage
-                                id="zigpad.calculation.returned"
-                                values={{
-                                  pledged: projectDetails.pledged,
-                                  returned: projectDetails.returned,
-                                }}
-                                tagName="div"
-                              />
-                            )}
-                          </>
-                        ) : (
-                          <FormattedMessage
-                            id="zigpad.distribution.received"
-                            values={{
-                              reward: projectDetails.tokenReward,
-                              realPledged: projectDetails.pledged - projectDetails.returned,
-                            }}
-                          />
+                  <ItemValue>
+                    {formatDateTime(projectDetails.distributionDates[0].date)}
+                    {projectDetails.distributionDates.length > 1 && (
+                      <>
+                        &nbsp;-&nbsp;
+                        {formatDateTime(
+                          projectDetails.distributionDates[
+                            projectDetails.distributionDates.length - 1
+                          ].date,
                         )}
-                      </CountdownPanel>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </ItemValue>
+                  <DistributionContent step={step} project={projectDetails} />
                 </TimelineContent>
               </TimelineItem>
             </StyledTimeline>
             <Subtitle>
               <FormattedMessage id="zigpad.highlights" />
             </Subtitle>
-            <Typography>{projectDetails.highlights}</Typography>
-            <Subtitle>
-              <FormattedMessage id="zigpad.tokenomic" />
-            </Subtitle>
-            <List>
+            <Paragraph>{projectDetails.highlights}</Paragraph>
+            {projectDetails.additionalInfo && (
+              <>
+                <Subtitle>
+                  <FormattedMessage id="zigpad.additionalInfo" />
+                </Subtitle>
+                <Paragraph>{projectDetails.additionalInfo}</Paragraph>
+              </>
+            )}
+            <Box style={{ maxWidth: "900px" }}>
+              <Subtitle>
+                <FormattedMessage id="zigpad.tokenomic" />
+              </Subtitle>
+              <List>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.hardCap" />
+                  </ItemLabel>
+                  <ItemValue>
+                    <NumberFormat
+                      value={projectDetails.tokenomic.hardCap}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" USD"
+                    />
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.supply" />
+                  </ItemLabel>
+                  <ItemValue>
+                    <NumberFormat
+                      value={projectDetails.tokenomic.supplyTotalCap}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${projectDetails.coin}`}
+                    />
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.supplyInitial" />
+                  </ItemLabel>
+                  <ItemValue>
+                    <NumberFormat
+                      value={projectDetails.tokenomic.supplyInitial}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${projectDetails.coin}`}
+                    />
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.publicSalePrice" />
+                  </ItemLabel>
+                  <ItemValue>
+                    <NumberFormat
+                      value={projectDetails.tokenomic.publicSalePrice}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix=" USD"
+                    />
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.offered" />
+                  </ItemLabel>
+                  <ItemValue>
+                    <NumberFormat
+                      value={projectDetails.tokenomic.tokensOffered}
+                      thousandSeparator={true}
+                      displayType="text"
+                      suffix={` ${projectDetails.coin}`}
+                    />
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.hardCapUser" />
+                  </ItemLabel>
+                  <ItemValue>
+                    {parseFloat(projectDetails.maxAmount) ? (
+                      <NumberFormat
+                        displayType="text"
+                        value={projectDetails.maxAmount}
+                        suffix=" ZIG"
+                        thousandSeparator={true}
+                      />
+                    ) : (
+                      "N/A"
+                    )}
+                  </ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.type" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.tokenomic.chain}</ItemValue>
+                </ListItem>
+                <ListItem>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.tokenomic.tokenSaleVestingPeriod" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.tokenomic.tokenSaleVestingPeriod}</ItemValue>
+                </ListItem>
+                <ListItem>
+                  <MultiInlines>
+                    <ItemLabel>
+                      <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
+                    </ItemLabel>
+                    <ItemValue>
+                      {projectDetails.distributionDates.map((d) => (
+                        <div key={d.date}>
+                          <FormattedMessage
+                            id="zigpad.tokenomic.release"
+                            values={{
+                              perc: d.percent,
+                              date: dayjs(d.date).format("MMM D, YYYY"),
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </ItemValue>
+                  </MultiInlines>
+                </ListItem>
+              </List>
+              <Subtitle>
+                <FormattedMessage id="zigpad.previousRounds" />
+              </Subtitle>
               <ListItem>
-                <ItemLabel>
-                  <FormattedMessage id="zigpad.tokenomic.supply" />
-                </ItemLabel>
-                <ItemValue>
-                  <NumberFormat
-                    value={projectDetails.tokenomic.supplyTotalCap}
-                    thousandSeparator={true}
-                    displayType="text"
-                    suffix={` ${projectDetails.coin}`}
-                  />
-                </ItemValue>
+                <MultiInlines>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.privateRound" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.privateRound || " - "}</ItemValue>
+                </MultiInlines>
               </ListItem>
               <ListItem>
-                <ItemLabel>
-                  <FormattedMessage id="zigpad.tokenomic.supplyInitial" />
-                </ItemLabel>
-                <ItemValue>{projectDetails.tokenomic.supplyInitial}</ItemValue>
+                <MultiInlines>
+                  <ItemLabel>
+                    <FormattedMessage id="zigpad.publicRound" />
+                  </ItemLabel>
+                  <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
+                </MultiInlines>
               </ListItem>
-              <ListItem>
-                <ItemLabel>
-                  <FormattedMessage id="zigpad.tokenomic.type" />
-                </ItemLabel>
-                <ItemValue>{projectDetails.tokenomic.chain}</ItemValue>
-              </ListItem>
-            </List>
-            <Subtitle>
-              <FormattedMessage id="zigpad.distribution" />
-            </Subtitle>
-            <Typography>todo</Typography>
+              <Subtitle>
+                <FormattedMessage id="zigpad.distribution" />
+              </Subtitle>
+              <Typography>
+                <Image
+                  src={cloudinary({ folder: "zigpad", id: `${projectDetails.id}_tokenomics` })}
+                />
+              </Typography>
+            </Box>
             <Subtitle>
               <FormattedMessage id="zigpad.rules" />
             </Subtitle>
-            <Typography>todo</Typography>
+            <Typography>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(projectDetails.launchpadRules),
+                }}
+              />
+            </Typography>
+            <Subtitle>
+              <FormattedMessage id="srv.disclaimer.title" />
+            </Subtitle>
+            <Typography>{projectDetails.terms}</Typography>
           </>
         ) : (
           <CircularProgress size={50} style={{ margin: "0 auto" }} />

@@ -17,7 +17,7 @@ import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
-import { ArrowBack, ChevronRight, SportsEsports } from "@material-ui/icons";
+import { ArrowBack, ChevronRight, PeopleOutline, SportsEsports } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -127,12 +127,23 @@ const getCategoryIcon = (category: string) => {
     case "meme":
       return SportsEsports;
     case "platform":
-      return SportsEsports;
+      return PeopleOutline;
+    case "social":
+      return PeopleOutline;
     default:
       return null;
   }
 };
-const CategoryIcon = ({ category }: { category: string }) => {
+
+export const CategoryIcon = ({
+  category,
+  width = 24,
+  height = 24,
+}: {
+  category: string;
+  width?: number;
+  height?: number;
+}) => {
   let IconMatch = getCategoryIcon(category);
 
   if (!IconMatch) {
@@ -140,8 +151,24 @@ const CategoryIcon = ({ category }: { category: string }) => {
   }
 
   return (
-    <Icon role="img" title={category} style={{ marginRight: "4px" }}>
-      <IconMatch width={24} height={24} />
+    <Icon
+      role="img"
+      title={category}
+      style={{
+        marginRight: "4px",
+        width,
+        height,
+        fontSize: "initial",
+      }}
+    >
+      <IconMatch
+        style={{
+          width,
+          height,
+        }}
+        width={width}
+        height={height}
+      />
     </Icon>
   );
 };
@@ -153,7 +180,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const theme = useTheme();
   const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
-  const [rateZIG, setRateZIG] = useState(null);
+  // const [rateZIG, setRateZIG] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -164,11 +191,11 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
     }
   }, [isOpen, tab]);
 
-  useEffect(() => {
-    tradeApi.getWalletCoins().then((response) => {
-      setRateZIG(response.ZIG.usdPrice);
-    });
-  }, []);
+  // useEffect(() => {
+  //   tradeApi.getWalletCoins().then((response) => {
+  //     setRateZIG(response.ZIG.usdPrice);
+  //   });
+  // }, []);
 
   const columns = useMemo(
     () =>
@@ -191,7 +218,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               accessor: "subscriptionDate",
             },
             {
-              Header: intl.formatMessage({ id: "zigpad.distributionDate" }),
+              Header: intl.formatMessage({ id: "zigpad.distributionStarts" }),
               accessor: "distributionDate",
             },
             {
@@ -228,7 +255,6 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             {tab === 0 ? (
               <RewardsProgressBar
-                icon={p.logo}
                 amount={p.offeredAmount}
                 coin={p.coin}
                 zigpadVariant={true}
@@ -291,12 +317,12 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
             {dayjs(p.startDate).format("MMM D")} - {dayjs(p.calculationDate).format("MMM D, YYYY")}
           </Value>
         ),
-        distributionDate: <Value>{dayjs(p.distributionDate).format("MMM D, YYYY")}</Value>,
+        distributionDate: <Value>{dayjs(p.distributionDates[0].date).format("MMM D, YYYY")}</Value>,
         endDate: <Value>{dayjs(p.calculationDate).format("MMM D, YYYY")}</Value>,
         price: (
           <Value>
-            {p.price}$
-            <Rate>
+            ${p.price}
+            {/* <Rate>
               {rateZIG ? (
                 <NumberFormat
                   displayType="text"
@@ -309,7 +335,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
               ) : (
                 "-"
               )}
-            </Rate>
+            </Rate> */}
           </Value>
         ),
         actions: (
@@ -319,7 +345,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         ),
         id: p.id,
       })),
-    [launchpadProjects, tab, rateZIG],
+    [launchpadProjects, tab /** rateZIG */],
   );
 
   const onRowClick = useCallback(
@@ -350,7 +376,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
       </Title>
       <TypographyInfo>
         <FormattedMessage id="zigpad.info" />
-        <HelpButton href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
+        <HelpButton target="_blank" href={zigpadInfoUrl} endIcon={<OpenArrowIcon />} variant="text">
           <FormattedMessage id="zigpad.faq" />
         </HelpButton>
       </TypographyInfo>
