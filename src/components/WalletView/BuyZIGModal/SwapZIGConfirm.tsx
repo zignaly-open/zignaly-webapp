@@ -42,6 +42,7 @@ const Divider = styled.span`
   height: 1px;
   align-self: center;
   margin: 32px 0 10px;
+  display: flex;
 
   ${isMobile(`
     display: none;
@@ -49,14 +50,22 @@ const Divider = styled.span`
 `;
 
 interface SwapZIGConfirmProps {
-  amount: string;
-  swapInfo: GetSwapPriceRes;
+  amount: number;
   coinFrom: string;
   coinTo: string;
+  internalId: string;
+  onCancel: () => void;
 }
 
-const SwapZIGConfirm = ({ coinFrom, coinTo, amount }: SwapZIGConfirmProps) => {
+const SwapZIGConfirm = ({
+  coinFrom,
+  coinTo,
+  amount,
+  internalId,
+  onCancel,
+}: SwapZIGConfirmProps) => {
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
+  const amountTo = swapInfo ? amount * swapInfo.price : null;
   // const priceExpired = dayjs(swapInfo.expiration).isBefore(dayjs());
 
   const updateSwapInfo = () => {
@@ -83,59 +92,54 @@ const SwapZIGConfirm = ({ coinFrom, coinTo, amount }: SwapZIGConfirmProps) => {
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig.swap.title" />
       </Title>
-      <Grid container alignItems="center" style={{ padding: "0 82px" }}>
-        <Grid item sm={5} xs={12} justifyContent="center" style={{ display: "flex" }}>
-          <AmountSwapBox>
-            <AmountLabel>
-              <FormattedMessage id="transfer.internal.form.from" />
-            </AmountLabel>
-            <Box display="flex" flexDirection="row">
-              <CoinIcon coin={coinFrom} />
-              <CoinAmount value={amount} coin={coinFrom} />
-            </Box>
-          </AmountSwapBox>
-        </Grid>
-        <Grid
-          item
-          sm={2}
-          xs={12}
-          style={{ display: "flex" }}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <SwapHorizOutlined style={{ fontSize: "48px" }} />
-        </Grid>
-        <Grid item sm={5} xs={12} justifyContent="center" style={{ display: "flex" }}>
-          <AmountSwapBox>
-            <AmountLabel>
-              <FormattedMessage id="transfer.internal.form.to" />
-            </AmountLabel>
-            <Box display="flex" flexDirection="row">
-              <CoinIcon coin={coinTo} />
-              {swapInfo ? (
-                <CoinAmount value={10} coin={coinTo} />
-              ) : (
-                <CircularProgress size={21} style={{ margin: "0 auto" }} />
-              )}
-            </Box>
-          </AmountSwapBox>
-        </Grid>
+      <Box px="82px" py="18px">
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box display="flex" justifyContent="center">
+            <AmountSwapBox>
+              <AmountLabel>
+                <FormattedMessage id="transfer.internal.form.from" />
+              </AmountLabel>
+              <Box display="flex" flexDirection="row">
+                <CoinIcon coin={coinFrom} />
+                <CoinAmount value={amount} coin={coinFrom} />
+              </Box>
+            </AmountSwapBox>
+          </Box>
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <SwapHorizOutlined style={{ fontSize: "48px" }} />
+          </Box>
+          <Box display="flex" justifyContent="center">
+            <AmountSwapBox>
+              <AmountLabel>
+                <FormattedMessage id="transfer.internal.form.to" />
+              </AmountLabel>
+              <Box display="flex" flexDirection="row">
+                <CoinIcon coin={coinTo} />
+                <CoinAmount value={amountTo} coin={coinTo} />
+              </Box>
+            </AmountSwapBox>
+          </Box>
+        </Box>
         <Divider />
         <Box display="flex" my={3}>
           <SecondaryText>
             <FormattedMessage id="wallet.zig.rate" />
           </SecondaryText>
-          <Typography style={{ fontWeight: 600 }}>
-            &nbsp;1&nbsp;{coinTo}=&nbsp;
-            <NumberFormat
-              value={swapInfo?.price}
-              thousandSeparator={true}
-              displayType="text"
-              suffix={` ${coinFrom}`}
-            />
+          <Typography style={{ fontWeight: 600, display: "flex" }}>
+            &nbsp;1&nbsp;{coinTo}&nbsp;=&nbsp;
+            {swapInfo ? (
+              <NumberFormat
+                value={swapInfo?.price}
+                thousandSeparator={true}
+                displayType="text"
+                suffix={` ${coinFrom}`}
+              />
+            ) : (
+              <CircularProgress size={21} />
+            )}
           </Typography>
         </Box>
-      </Grid>
+      </Box>
       <AmountBox primary>
         <AmountLabel big={true}>
           <FormattedMessage id="wallet.withdraw.receive" />
@@ -144,15 +148,20 @@ const SwapZIGConfirm = ({ coinFrom, coinTo, amount }: SwapZIGConfirmProps) => {
           <div style={{ marginRight: "4px" }}>
             <CoinIcon coin={coinTo} />
           </div>
-          <CoinAmount big={true} value={100} coin={coinTo} />
+          <CoinAmount big={true} value={amountTo} coin={coinTo} />
         </Box>
       </AmountBox>
-      <Box display="flex" flexDirection="row" mt="64px">
-        <Button onClick={() => {}} variant="text" style={{ marginTop: "8px" }}>
-          <FormattedMessage id="accounts.back" />
-        </Button>
-        <Button onClick={swap} disabled={!swapInfo} variant="contained">
+      <Box display="flex" flexDirection="column" mt="64px" alignItems="center">
+        <Button
+          onClick={swap}
+          disabled={!swapInfo}
+          variant="contained"
+          style={{ minWidth: "144px" }}
+        >
           <FormattedMessage id="wallet.zig.swap.now" />
+        </Button>
+        <Button onClick={onCancel} variant="text" style={{ marginTop: "8px" }}>
+          <FormattedMessage id="accounts.back" />
         </Button>
       </Box>
     </>

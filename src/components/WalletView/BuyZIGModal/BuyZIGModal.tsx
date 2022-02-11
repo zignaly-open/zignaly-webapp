@@ -168,7 +168,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
         {accountsBalances === null || !zignalyExchangeAccountsActivated.length ? (
-          <CircularProgress color="primary" size={40} />
+          <CircularProgress color="primary" size={40} style={{ margin: "0 auto" }} />
         ) : !hasUSDT ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />
         ) : (

@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import useInterval from "hooks/useInterval";
 import SwapZIGConfirm from "./SwapZIGConfirm";
+import { database } from "faker";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -59,9 +60,8 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
   const intl = useIntl();
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
-  console.log(amountTo, swapInfo);
   const dispatch = useDispatch();
-  const [confirm, setConfirm] = useState(false);
+  const [confirm, setConfirm] = useState<FormData>(null);
 
   const setBalanceMax = () => {
     setValue("amount", balance);
@@ -97,13 +97,18 @@ const SwapZIG = ({ coinFrom = "USDT", coinTo = "ZIG", accountsBalances }: SwapZI
     internalId: string;
   }
   const submitForm = (data: FormData) => {
-    console.log(data);
-    setConfirm(true);
+    setConfirm(data);
   };
 
   if (confirm) {
     return (
-      <SwapZIGConfirm coinFrom={coinFrom} coinTo={coinTo} amount={amountFrom} swapInfo={swapInfo} />
+      <SwapZIGConfirm
+        internalId={confirm.internalId}
+        coinFrom={coinFrom}
+        coinTo={coinTo}
+        amount={parseFloat(confirm.amount)}
+        onCancel={() => setConfirm(null)}
+      />
     );
   }
 
