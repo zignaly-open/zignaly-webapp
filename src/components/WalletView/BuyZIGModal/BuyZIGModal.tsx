@@ -126,7 +126,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   const storeUser = useStoreUserSelector();
   const dispatch = useDispatch();
   const [accountsBalances, setAccountsBalances] = useState<BalanceExchange[]>(null);
-  const hasUSDT = accountsBalances && accountsBalances.find((a) => a.balance > 0);
+  const [showDeposit, setShowDeposit] = useState(null);
 
   const zignalyExchangeAccounts = storeUser.userData.exchanges.filter(
     (e) => e.exchangeName.toLowerCase() === "zignaly",
@@ -158,6 +158,8 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
       }),
     );
     setAccountsBalances(res);
+    const hasUSDT = res.find((a) => a.balance > 0);
+    setShowDeposit(!hasUSDT);
   };
 
   useEffect(() => {
@@ -167,12 +169,17 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
-        {accountsBalances === null || !zignalyExchangeAccountsActivated.length ? (
+        {!zignalyExchangeAccountsActivated.length || showDeposit === null ? (
           <CircularProgress color="primary" size={40} style={{ margin: "0 auto" }} />
-        ) : !hasUSDT ? (
+        ) : showDeposit ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />
         ) : (
-          <SwapZIG coinFrom="USDT" coinTo="ZIG" accountsBalances={accountsBalances} />
+          <SwapZIG
+            coinFrom="USDT"
+            coinTo="ZIG"
+            accountsBalances={accountsBalances}
+            onDepositMore={() => setShowDeposit(true)}
+          />
         )}
       </Modal>
     </CustomModal>
