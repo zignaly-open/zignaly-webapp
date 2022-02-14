@@ -35,6 +35,7 @@ interface AmountControlProps {
   coin: string;
   label?: string;
   minAmount?: number;
+  maxAmount?: number;
   newDesign?: boolean;
   lockedDesc?: string;
 }
@@ -49,6 +50,7 @@ const AmountControl = ({
   label = "withdraw.amount",
   newDesign = false,
   minAmount,
+  maxAmount,
   lockedDesc,
 }: AmountControlProps) => {
   const intl = useIntl();
@@ -80,8 +82,11 @@ const AmountControl = ({
                   intl.formatMessage({ id: "convert.min" }, { amount: minAmount, coin })
                 : parseFloat(value) > 0,
             max: (value) =>
-              parseFloat(value) <= balance.availableBalance ||
-              intl.formatMessage({ id: "form.error.withdraw.max" }),
+              parseFloat(value) > balance.availableBalance
+                ? intl.formatMessage({ id: "form.error.withdraw.max" })
+                : !maxAmount ||
+                  parseFloat(value) <= maxAmount ||
+                  intl.formatMessage({ id: "wallet.zig.swap.max" }, { amount: maxAmount, coin }),
             // step: checkDecimals,
           },
         }}

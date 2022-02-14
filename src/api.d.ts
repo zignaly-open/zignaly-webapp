@@ -155,15 +155,14 @@ interface Tokenomic {
   supplyInitial: number;
   supplyTotalCap: number;
   hardCap: number;
-  tokenDistributionDate: string;
   tokenSaleVestingPeriod: string;
-  tokenDistribution: string;
   tokensOffered: number;
 }
 
 interface DistributionDate {
   date: string;
   percent: number;
+  finished: boolean;
 }
 interface LaunchpadProjectDetails {
   id: number;
@@ -174,8 +173,8 @@ interface LaunchpadProjectDetails {
   website: string;
   whitepaper: string;
   category: string;
-  minAmount: string;
-  maxAmount: string;
+  minAmount: number;
+  maxAmount: number;
   offeredAmount: number;
   distributedAmount: number;
   startDate: string;
@@ -196,6 +195,9 @@ interface LaunchpadProjectDetails {
   pledged: number;
   terms: string;
   launchpadRules: string;
+  totalPledge: number;
+  progress: number;
+  usdSubscription: number;
 }
 interface TotalSavings {
   total: number;
@@ -226,4 +228,28 @@ interface GetProviderFollowersReq extends PaginationOptions {
 interface GetProviderFollowersRes {
   pagination: PaginationsRes;
   data: ProviderFollowersEntity[];
+}
+
+interface GenerateBuyPriceReq {
+  from: string;
+  to: string;
+}
+
+interface GenerateBuyPriceRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
+}
+
+interface GetSwapPriceReq {
+  coinFrom: string;
+  coinTo: string;
+}
+
+interface GetSwapPriceRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
 }

@@ -47,3 +47,10 @@ interface VaultOffer {
   coinReward: string;
   stakingDays: number;
 }
+
+interface BalanceExchange {
+  exchangeId: string;
+  name: string;
+  balance: number;
+  networks: CoinNetwork[];
+}
