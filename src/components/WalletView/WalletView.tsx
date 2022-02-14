@@ -502,9 +502,11 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </StyledButton>
-              <Button variant="text" onClick={() => showBuyZIG(true)}>
-                <FormattedMessage id="wallet.zig.buy" />
-              </Button>
+              {process.env.GATSBY_HIDE_BUY !== "true" && (
+                <Button variant="text" onClick={() => showBuyZIG(true)}>
+                  <FormattedMessage id="wallet.zig.buy" />
+                </Button>
+              )}
             </Box>
           </Box>
         </PanelItem>
