@@ -28,7 +28,7 @@ const Button = styled(CustomButton)`
   min-width: 121px;
 `;
 
-const AmountBox = styled(Box)`
+export const AmountBox = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,14 +109,14 @@ const TypographyValue = styled(Typography)`
   font-weight: bold;
 `;
 
-const CoinAmount = ({
+export const CoinAmount = ({
   value,
   big = false,
   coin,
 }: {
   value: string | number;
   big?: boolean;
-  coin: WalletCoin;
+  coin: WalletCoin | string;
 }) => (
   <Box display="flex" flexDirection="row" alignItems="center">
     <AmountTypography big={big}>
@@ -124,10 +124,10 @@ const CoinAmount = ({
         value={value}
         displayType="text"
         thousandSeparator={true}
-        decimalScale={coin.decimals}
+        decimalScale={typeof coin === "string" ? 8 : coin.decimals}
       />
     </AmountTypography>
-    <Coin big={big}>{coin.name}</Coin>
+    <Coin big={big}>{typeof coin === "string" ? coin : coin.name}</Coin>
   </Box>
 );
 interface WalletWithdrawConfirmProps {

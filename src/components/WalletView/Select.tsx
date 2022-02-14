@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { FormControl, Select as SelectMui, MenuItem } from "@material-ui/core";
 import styled, { css } from "styled-components";
 
@@ -72,7 +72,7 @@ const Icon = styled.img`
 interface FilterValue {
   value: string | number;
   label: string;
-  icon?: string;
+  icon?: any;
 }
 
 interface ISelect {
