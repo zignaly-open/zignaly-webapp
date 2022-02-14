@@ -25,7 +25,6 @@ const AmountLabel = styled(Typography)`
 `;
 
 const AmountSwapBox = styled.div`
-  align-items: center;
   display: flex;
   img {
     margin-right: 4px;
@@ -38,6 +37,10 @@ const AmountSwapBoxTop = styled(AmountSwapBox)`
   > div {
     margin-top: 5px;
   }
+`;
+
+const AmountSwapBoxBottom = styled(AmountSwapBox)`
+  align-items: center;
 `;
 
 const Divider = styled.span`
@@ -94,9 +97,9 @@ const SwapZIGConfirm = ({
     <>
       <Title>
         <img src={WalletIcon} width={40} height={40} />
-        <FormattedMessage id="wallet.zig.swap.title" />
+        <FormattedMessage id="wallet.zig.swap.title" values={{ coin: coinTo }} />
       </Title>
-      <Box px="82px" py="18px">
+      <Box px="51px" py="18px">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Box display="flex" justifyContent="center">
             <AmountSwapBoxTop>
@@ -109,7 +112,7 @@ const SwapZIGConfirm = ({
               </Box>
             </AmountSwapBoxTop>
           </Box>
-          <Box display="flex" alignItems="center" justifyContent="center" mt="4px">
+          <Box display="flex" alignItems="center" justifyContent="center" mt="4px" mx="12px">
             <SwapHorizOutlined style={{ fontSize: "48px" }} />
           </Box>
           <Box display="flex" justifyContent="center">
@@ -148,10 +151,10 @@ const SwapZIGConfirm = ({
         <AmountLabel big={true}>
           <FormattedMessage id="wallet.withdraw.receive" />
         </AmountLabel>
-        <AmountSwapBox>
+        <AmountSwapBoxBottom>
           <CoinIcon coin={coinTo} />
           <CoinAmount big={true} value={amountTo} coin={coinTo} />
-        </AmountSwapBox>
+        </AmountSwapBoxBottom>
       </AmountBox>
       <Box display="flex" flexDirection="column" mt="64px" alignItems="center">
         <Button
@@ -160,7 +163,7 @@ const SwapZIGConfirm = ({
           variant="contained"
           style={{ minWidth: "144px" }}
         >
-          <FormattedMessage id="wallet.zig.swap.now" />
+          <FormattedMessage id="wallet.zig.swap.now" values={{ coin: coinTo }} />
         </Button>
         <Button onClick={onCancel} variant="text" style={{ marginTop: "8px" }}>
           <FormattedMessage id="accounts.back" />
