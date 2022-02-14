@@ -496,14 +496,14 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
-              <StyledButton variant="outlined" onClick={() => setPath("withdraw/ZIG")}>
-                <FormattedMessage id="accounts.withdraw" />
-              </StyledButton>
               <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </StyledButton>
+              <StyledButton variant="outlined" onClick={() => setPath("withdraw/ZIG")}>
+                <FormattedMessage id="accounts.withdraw" />
+              </StyledButton>
               {process.env.GATSBY_HIDE_BUY !== "true" && (
-                <Button variant="text" onClick={() => showBuyZIG(true)}>
+                <Button variant="contained" onClick={() => showBuyZIG(true)}>
                   <FormattedMessage id="wallet.zig.buy" />
                 </Button>
               )}
