@@ -124,7 +124,7 @@ export const CoinAmount = ({
         value={value}
         displayType="text"
         thousandSeparator={true}
-        decimalScale={typeof coin === "string" ? 8 : coin.decimals}
+        decimalScale={typeof coin === "string" ? 2 : coin.decimals}
       />
     </AmountTypography>
     <Coin big={big}>{typeof coin === "string" ? coin : coin.name}</Coin>

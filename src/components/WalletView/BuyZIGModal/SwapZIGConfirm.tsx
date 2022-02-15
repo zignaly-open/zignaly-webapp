@@ -188,6 +188,7 @@ const SwapZIGConfirm = ({
                 thousandSeparator={true}
                 displayType="text"
                 suffix={` ${coinFrom}`}
+                decimalScale={2}
               />
             ) : (
               <CircularProgress size={21} />
