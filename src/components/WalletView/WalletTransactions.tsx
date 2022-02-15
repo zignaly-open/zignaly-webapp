@@ -393,7 +393,7 @@ const WalletTransactions = () => {
   const renderRowSubComponent = useCallback(
     ({ row }) => {
       const { transactionId, note } = row.values;
-      const transaction = transactions.find((t) => t.transactionId === transactionId);
+      const transaction = transactions[row.index];
       const isWithdrawal = transaction.formattedAmount.startsWith("-");
 
       return (
