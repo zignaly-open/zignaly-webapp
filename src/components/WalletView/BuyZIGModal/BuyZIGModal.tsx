@@ -14,6 +14,7 @@ import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import SwapZIG from "./SwapZIG";
+import useActivateSubAccount from "hooks/useActivateSubAccount";
 
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
@@ -133,11 +134,14 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   );
   const zignalyExchangeAccountsActivated = zignalyExchangeAccounts.filter((e) => e.activated);
 
-  //useActivateSubAccount
+  // Activate default zignaly exchange account if needed
+  const accountToActivate = zignalyExchangeAccounts.find((a) => !a.activated);
+  useActivateSubAccount(accountToActivate);
 
   const fetchBalances = async () => {
-    if (!zignalyExchangeAccounts) {
-      // todo: create account
+    if (!zignalyExchangeAccounts.length) {
+      // should not happen anymore since all the users now have a zignaly exchange account
+      return;
     }
 
     const res = await Promise.all(

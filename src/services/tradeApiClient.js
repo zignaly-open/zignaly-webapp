@@ -2608,20 +2608,19 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async generateBuyPrice(payload) {
-    const test = Math.random() * (0.7 - 0.6) + 0.6;
-    return new Promise((resolve) =>
-      setTimeout(
-        () =>
-          resolve({
-            key: "d7ae5d610241dcc9843d85eedb5f112e",
-            price: test.toFixed(8),
-            expiration: 1630156159,
-            maxAmount: 23450.65,
-          }),
-        1000,
-      ),
-    );
-    // return this.doRequest("/generate-buy-price", payload, "POST", 3);
+    return this.doRequest("/generate-buy-price", payload, "POST", 3);
+  }
+
+  /**
+   * Get price for swap
+   *
+   * @param {BuyCoinReq} payload
+   * @returns {Promise<BuyCoinRes>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async buyCoin(payload) {
+    return this.doRequest("/buy-coin", payload, "POST", 3);
   }
 
   /**

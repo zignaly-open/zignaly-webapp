@@ -62,7 +62,6 @@ const SwapZIG = ({
   const balance = selectedExchangeId
     ? accountsBalances.find((b) => b.exchangeId === selectedExchangeId).balance
     : null;
-  const minAmount = 1;
   const intl = useIntl();
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
@@ -162,10 +161,11 @@ const SwapZIG = ({
               rules={{
                 validate: {
                   min: (value) =>
-                    parseFloat(value) >= minAmount ||
+                    !swapInfo ||
+                    parseFloat(value) >= swapInfo.minAmount ||
                     intl.formatMessage(
                       { id: "convert.min" },
-                      { amount: minAmount, coin: coinFrom },
+                      { amount: swapInfo.minAmount, coin: coinFrom },
                     ),
                   max: (value) =>
                     parseFloat(value) > balance
