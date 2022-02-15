@@ -11,19 +11,21 @@ import tradeApi from "services/tradeApiClient";
 /**
  * Hook to activate subaccount if needed
  * @param {ExchangeConnectionEntity} account Zignaly account
- * @param {function} callback Callback
+ * @param {function} [callback] Callback
  * @returns {void}
  */
 const useActivateSubAccount = (account, callback) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!account.activated) {
+    if (account && !account.activated) {
       tradeApi
         .activateSubaccount({ internalExchangeId: account.internalId })
         .then(() => {
           dispatch(activateSubAccount(account.internalId));
-          callback();
+          if (callback) {
+            callback();
+          }
         })
         .catch((e) => {
           dispatch(showErrorAlert(e));

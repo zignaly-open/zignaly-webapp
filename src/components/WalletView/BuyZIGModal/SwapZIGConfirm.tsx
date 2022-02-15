@@ -12,6 +12,8 @@ import { SwapHorizOutlined } from "@material-ui/icons";
 import { isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
 import { useTheme } from "@material-ui/core/styles";
+import { showErrorAlert } from "store/actions/ui";
+import { useDispatch } from "react-redux";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -69,11 +71,15 @@ const SwapContainer = styled.div`
 `;
 
 const SwapTopContainerBox = styled(Box)`
-  flex-direction: column;
+  ${isMobile(css`
+    flex-direction: column;
+  `)};
 `;
 
 const RateBox = styled(Box)`
-  justify-content: center;
+  ${isMobile(css`
+    justify-content: center;
+  `)};
 `;
 
 interface SwapZIGConfirmProps {
@@ -96,6 +102,8 @@ const SwapZIGConfirm = ({
   // const priceExpired = dayjs(swapInfo.expiration).isBefore(dayjs());
   const theme = useTheme();
   const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const updateSwapInfo = () => {
     tradeApi.generateBuyPrice({ from: coinFrom, to: coinTo }).then((response) => {
@@ -105,15 +113,31 @@ const SwapZIGConfirm = ({
 
   useInterval(
     () => {
-      setSwapInfo(null);
-      updateSwapInfo();
+      if (!loading) {
+        setSwapInfo(null);
+        updateSwapInfo();
+      }
     },
     10000,
     false,
   );
   useEffect(updateSwapInfo, []);
 
-  const swap = () => {};
+  const swap = () => {
+    setLoading(true);
+
+    tradeApi
+      .buyCoin({ price: swapInfo.key, amount, exchangeInternalId: internalId })
+      .then((response) => {
+        setSwapInfo(response);
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -183,9 +207,10 @@ const SwapZIGConfirm = ({
       <Box display="flex" flexDirection="column" mt="64px" alignItems="center">
         <Button
           onClick={swap}
-          disabled={!swapInfo}
+          disabled={!swapInfo || loading}
           variant="contained"
           style={{ minWidth: "144px" }}
+          loading={loading}
         >
           <FormattedMessage id="wallet.zig.swap.now" values={{ coin: coinTo }} />
         </Button>
