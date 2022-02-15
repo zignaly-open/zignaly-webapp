@@ -464,7 +464,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           projectId={selectedProject.id}
         />
       )}
-      <BuyZIGModal coins={coins} onClose={() => showBuyZIG(false)} open={buyZIG} />
+      {buyZIG && <BuyZIGModal coins={coins} onClose={() => showBuyZIG(false)} open={buyZIG} />}
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig" />
