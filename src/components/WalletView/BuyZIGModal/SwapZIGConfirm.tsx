@@ -64,7 +64,7 @@ const Divider = styled.span`
 `;
 
 const SwapContainer = styled.div`
-  padding: 18px 51px;
+  padding: 18px 21px;
   ${isMobile(css`
     padding: 0 0 18px;
   `)};
