@@ -43,15 +43,20 @@ interface DepositUSDTProps {
 }
 
 const DepositUSDT = ({ accountsBalances, coin = "USDT" }: DepositUSDTProps) => {
-  const networkOptions = accountsBalances[0].networks.map((n) => ({
-    value: n.network,
-    label: n.name,
-    icon: getChainIcon(n.network),
-  }));
   const [network, setNetwork] = useState("");
-  const networkData = accountsBalances[0].networks.find((n) => n.network === network);
   const copyToClipboard = useClipboard();
   const [internalId, setInternalId] = useState(null);
+  const selectedAccount = accountsBalances.find((a) => a.exchangeId === internalId);
+  const networkOptions = selectedAccount
+    ? selectedAccount.networks.map((n) => ({
+        value: n.network,
+        label: n.name,
+        icon: getChainIcon(n.network),
+      }))
+    : [];
+  const networkData = selectedAccount
+    ? selectedAccount.networks.find((n) => n.network === network)
+    : null;
   const address = useExchangeDepositAddress(internalId, coin, networkData);
   const exchangeOptions = accountsBalances.map((a) => ({
     value: a.exchangeId,
@@ -88,35 +93,35 @@ const DepositUSDT = ({ accountsBalances, coin = "USDT" }: DepositUSDTProps) => {
           handleChange={(e) => setInternalId(e.target.value)}
         />
       </Control>
-      <Control>
-        <Label>
-          <FormattedMessage id="deposit.network" />
-        </Label>
-        <Select
-          values={networkOptions}
-          fullWidth
-          value={network}
-          handleChange={(e) => setNetwork(e.target.value)}
-        />
-      </Control>
+      {selectedAccount && (
+        <Control>
+          <Label>
+            <FormattedMessage id="deposit.network" />
+          </Label>
+          <Select
+            values={networkOptions}
+            fullWidth
+            value={network}
+            handleChange={(e) => setNetwork(e.target.value)}
+          />
+        </Control>
+      )}
       {address?.tag && (
         <Control>
           <Label>
             <FormattedMessage id="wallet.withdraw.memo" />
           </Label>
-          <OutlinedInput
-            className="customInput"
+          <Input
             readOnly
+            fullWidth
             value={address.tag}
             endAdornment={
-              <CopyButton
-                alt="copy"
-                className="copy"
+              <IconButton
+                aria-label="Copy"
                 onClick={() => copyToClipboard(address.tag, "deposit.memo.copied")}
-                src={CopyIcon}
-                width={24}
-                height={24}
-              />
+              >
+                <FileCopyOutlined width={24} height={24} />
+              </IconButton>
             }
           />
           <QRCodeContainer>

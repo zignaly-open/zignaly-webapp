@@ -632,12 +632,12 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {string} exchangeId
  * @property {string} internalName
  * @property {string} exchangeType
- * @property {string} key
- * @property {string} secret
+ * @property {string} [key]
+ * @property {string} [secret]
  * @property {string} [password]
- * @property {boolean} mainAccount
- * @property {boolean} isPaperTrading
- * @property {boolean} testNet
+ * @property {boolean} [mainAccount]
+ * @property {boolean} [isPaperTradin]
+ * @property {boolean} [testNet]
  */
 
 /**

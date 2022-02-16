@@ -240,6 +240,21 @@ interface GenerateBuyPriceRes {
   price: number;
   expiration: number;
   maxAmount: number;
+  minAmount: number;
+}
+
+interface BuyCoinReq {
+  price: string;
+  amount: string;
+  exchangeInternalId: string;
+}
+
+interface BuyCoinRes {
+  key: string;
+  price: number;
+  expiration: number;
+  maxAmount: number;
+  minAmount: number;
 }
 
 interface GetSwapPriceReq {
@@ -252,4 +267,5 @@ interface GetSwapPriceRes {
   price: number;
   expiration: number;
   maxAmount: number;
+  minAmount: number;
 }
