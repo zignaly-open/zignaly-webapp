@@ -67,6 +67,7 @@ const SwapZIG = ({
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState<FormData>(null);
+  const [loading, setLoading] = useState(false);
 
   const setBalanceMax = () => {
     setValue("amount", balance);
@@ -74,25 +75,31 @@ const SwapZIG = ({
   };
 
   const updateSwapInfo = () => {
+    setLoading(true);
     tradeApi
       .generateBuyPrice({ from: coinFrom, to: coinTo })
       .then((response) => {
         setSwapInfo(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
         if (!isValid) {
           // Force refresh validation in case the user entered the amount before we got the swap info.
           trigger("amount");
         }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   useInterval(
     () => {
-      updateSwapInfo();
+      if (!loading) {
+        updateSwapInfo();
+      }
     },
-    15000,
+    20000,
     false,
   );
   useEffect(updateSwapInfo, []);

@@ -90,8 +90,10 @@ const NeutralText = styled(Typography)`
 `;
 
 const StyledButton = styled(Button)`
-  margin-right: 8px;
-  min-width: 121px;
+  :not(:last-child) {
+    margin-right: 8px;
+  }
+  /* min-width: 121px; */
 `;
 
 const TextMain = styled(Typography)`
@@ -496,17 +498,17 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {walletBalance && !walletBalance.ZIG && <BuyZig />}
             </HeightFiller>
             <Box display="flex" flexDirection="row" mt="12px">
+              {process.env.GATSBY_HIDE_BUY !== "true" && (
+                <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
+                  <FormattedMessage id="wallet.zig.buy" />
+                </StyledButton>
+              )}
               <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </StyledButton>
               <StyledButton variant="outlined" onClick={() => setPath("withdraw/ZIG")}>
                 <FormattedMessage id="accounts.withdraw" />
               </StyledButton>
-              {process.env.GATSBY_HIDE_BUY !== "true" && (
-                <Button variant="contained" onClick={() => showBuyZIG(true)}>
-                  <FormattedMessage id="wallet.zig.buy" />
-                </Button>
-              )}
             </Box>
           </Box>
         </PanelItem>

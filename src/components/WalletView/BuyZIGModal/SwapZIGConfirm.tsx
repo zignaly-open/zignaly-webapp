@@ -103,22 +103,29 @@ const SwapZIGConfirm = ({
   const theme = useTheme();
   const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
   const [loading, setLoading] = useState(false);
+  const [priceLoading, setPriceLoading] = useState(false);
   const dispatch = useDispatch();
 
   const updateSwapInfo = () => {
-    tradeApi.generateBuyPrice({ from: coinFrom, to: coinTo }).then((response) => {
-      setSwapInfo(response);
-    });
+    setPriceLoading(true);
+    tradeApi
+      .generateBuyPrice({ from: coinFrom, to: coinTo })
+      .then((response) => {
+        setSwapInfo(response);
+      })
+      .finally(() => {
+        setPriceLoading(false);
+      });
   };
 
   useInterval(
     () => {
-      if (!loading) {
+      if (!priceLoading && !loading) {
         setSwapInfo(null);
         updateSwapInfo();
       }
     },
-    10000,
+    20000,
     false,
   );
   useEffect(updateSwapInfo, []);
