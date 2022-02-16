@@ -438,6 +438,7 @@ const DistributionContent = ({
 }) => {
   const distributionDate = currentDistributionDate(project);
   const timesOversubscribed = project.usdSubscription / project.tokenomic.hardCap;
+  console.log(project.pledged, project.returned);
 
   return (
     <>
@@ -489,6 +490,7 @@ const DistributionContent = ({
                       thousandSeparator={true}
                       displayType="text"
                       suffix=" ZIG"
+                      decimalScale={2}
                     />
                   ),
                   returned: (
