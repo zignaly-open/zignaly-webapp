@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import WalletIcon from "images/wallet/wallet.svg";
 import Button from "components/Button";
 import styled, { css } from "styled-components";
-import { CircularProgress, Tooltip, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import { buyCryptoURL } from "utils/affiliateURLs";
 import DepositUSDT from "./DepositUSDT";
@@ -16,6 +16,7 @@ import { showErrorAlert } from "store/actions/ui";
 import SwapZIG from "./SwapZIG";
 import useActivateSubAccount from "hooks/useActivateSubAccount";
 import ExchangesTooltip from "../ExchangesTooltip";
+import { getUserData } from "store/actions/user";
 
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
@@ -141,6 +142,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
   const dispatch = useDispatch();
   const [accountsBalances, setAccountsBalances] = useState<BalanceExchange[]>(null);
   const [showDeposit, setShowDeposit] = useState(null);
+  const [creating, setCreating] = useState(false);
 
   const zignalyExchangeAccounts = storeUser.userData.exchanges.filter(
     (e) => e.exchangeName.toLowerCase() === "zignaly",
@@ -153,21 +155,23 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
 
   const fetchBalances = async () => {
     if (!zignalyExchangeAccounts.length) {
-      // should not happen anymore since all the users now have a zignaly exchange account
+      // No zignaly exchange account
       return;
     }
 
-    const res = await Promise.all(
+    const res = [] as BalanceExchange[];
+
+    await Promise.all(
       zignalyExchangeAccounts.map(async (account) => {
         return await tradeApi
           .exchangeAssetsGet({ internalId: account.internalId })
           .then((data) => {
-            return {
+            res.push({
               exchangeId: account.internalId,
               balance: parseFloat(data.USDT.balanceFree),
               networks: data.USDT.networks,
               name: account.internalName,
-            };
+            });
           })
           .catch((e) => {
             dispatch(showErrorAlert(e));
@@ -181,12 +185,42 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
 
   useEffect(() => {
     fetchBalances();
-  }, []);
+  }, [storeUser.userData.exchanges]);
+
+  // Create a new zignaly exchange account
+  const createExchangeAccount = () => {
+    setCreating(true);
+    tradeApi
+      .exchangeAdd({
+        exchangeId: "5e662c1c3e3b24c186ed9c24",
+        internalName: "My Account",
+        exchangeType: "spot",
+      })
+      .then(() => {
+        dispatch(getUserData(true));
+      })
+      .catch(() => {
+        setCreating(false);
+      });
+  };
 
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
-        {!zignalyExchangeAccountsActivated.length || showDeposit === null ? (
+        {!zignalyExchangeAccounts.length ? (
+          <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+            <Typography>
+              <FormattedMessage id="wallet.zig.createAccount" />
+            </Typography>
+            <Button
+              onClick={createExchangeAccount}
+              style={{ marginTop: "24px" }}
+              loading={creating}
+            >
+              <FormattedMessage id="action.continue" />
+            </Button>
+          </Box>
+        ) : !zignalyExchangeAccountsActivated.length || showDeposit === null ? (
           <CircularProgress color="primary" size={40} style={{ margin: "0 auto" }} />
         ) : showDeposit ? (
           <DepositUSDTChoices accountsBalances={accountsBalances} />

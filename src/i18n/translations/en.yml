@@ -1643,6 +1643,7 @@ action.accept: "Accept"
 action.proceed: "Proceed"
 action.view: "View"
 action.dismiss: "Dismiss"
+action.continue: "Continue"
 
 # FORM
 form.button.save: "Save"
@@ -1876,6 +1877,7 @@ wallet.zig.deposit: "To buy ZIGs you will need first to deposit {coin} in your Z
 wallet.zig.buy.exchange: "If you want to spend more than 5000 USDT, buy ZIG from one of the <a>available exchanges.</a>"
 wallet.zig.deposit.desc: "Transfer crypto from an external wallet"
 wallet.zig.buy.desc: "I don't have any crypto yet"
+wallet.zig.createAccount: "To continue, you need to have a Zignaly Exchange Account."
 wallet.zig.deposit.subtitle: "Deposit {coin} to buy ZIG Tokens. Select the account, the network, and send them to the network below."
 wallet.zig.deposit.exchangeaccount: "Select Exchange Account"
 wallet.zig.buy.title: "Buy {coin} coins"
