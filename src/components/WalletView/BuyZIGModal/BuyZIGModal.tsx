@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import WalletIcon from "images/wallet/wallet.svg";
 import Button from "components/Button";
 import styled, { css } from "styled-components";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { CircularProgress, Tooltip, Typography } from "@material-ui/core";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import { buyCryptoURL } from "utils/affiliateURLs";
 import DepositUSDT from "./DepositUSDT";
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import SwapZIG from "./SwapZIG";
 import useActivateSubAccount from "hooks/useActivateSubAccount";
+import ExchangesTooltip from "../ExchangesTooltip";
 
 const Divider = styled.span`
   background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
@@ -93,6 +94,18 @@ const DepositUSDTChoices = ({ accountsBalances }: DepositUSDTChoicesProps) => {
       </Title>
       <TextDesc>
         <FormattedMessage id="wallet.zig.deposit" values={{ coin: "USDT" }} />
+        <Typography>
+          <FormattedMessage
+            id="wallet.zig.buy.exchange"
+            values={{
+              a: (chunk: string) => (
+                <Tooltip interactive placement="bottom" title={<ExchangesTooltip />}>
+                  <a className="link">{chunk}</a>
+                </Tooltip>
+              ),
+            }}
+          />
+        </Typography>
       </TextDesc>
       <ButtonsContainer>
         <ButtonBox>

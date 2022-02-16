@@ -24,8 +24,6 @@ import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
 import NumberFormat from "react-number-format";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
-import { ascendexUrl, gateioUrl, mexcUrl } from "utils/affiliateURLs";
-import { colors } from "services/theme";
 import { useDispatch } from "react-redux";
 import { getUserData } from "store/actions/user";
 import WalletWithdrawView from "./WalletWithdrawView";
@@ -36,6 +34,7 @@ import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 import Button from "components/Button";
+import ExchangesTooltip from "./ExchangesTooltip";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -199,25 +198,6 @@ const ButtonBuy = styled(MuiButton)`
   font-weight: 600;
   font-size: 13px;
   line-height: 16px;
-`;
-
-const TooltipContainer = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 8px 16px;
-
-  a {
-    text-decoration: none;
-    color: ${colors.purpleLight};
-  }
-`;
-
-const TypographyTooltip = styled.span`
-  /* color: #0c0d21; */
-  margin-bottom: 3px;
 `;
 
 const RateText = styled.span`
@@ -395,22 +375,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           PopperProps={{
             disablePortal: true,
           }}
-          title={
-            <TooltipContainer>
-              <TypographyTooltip>
-                <FormattedMessage id="wallet.buy.tooltip" />
-              </TypographyTooltip>
-              <a href={ascendexUrl} rel="noreferrer" target="_blank">
-                AscendEX &gt;
-              </a>
-              <a href={mexcUrl} rel="noreferrer" target="_blank">
-                MEXC &gt;
-              </a>
-              <a href={gateioUrl} rel="noreferrer" target="_blank">
-                Gate.io &gt;
-              </a>
-            </TooltipContainer>
-          }
+          title={<ExchangesTooltip />}
         >
           <ButtonBuy onClick={handleTooltipOpen}>
             <FormattedMessage id="wallet.buy" />

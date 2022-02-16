@@ -191,11 +191,11 @@ const SwapZIGConfirm = ({
             &nbsp;1&nbsp;{coinTo}&nbsp;=&nbsp;
             {swapInfo ? (
               <NumberFormat
-                value={swapInfo?.price}
+                value={swapInfo.price ? 1 / swapInfo.price : null}
                 thousandSeparator={true}
                 displayType="text"
                 suffix={` ${coinFrom}`}
-                decimalScale={2}
+                decimalScale={4}
               />
             ) : (
               <CircularProgress size={21} />

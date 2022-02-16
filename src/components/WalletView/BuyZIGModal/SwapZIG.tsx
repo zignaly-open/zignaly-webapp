@@ -6,7 +6,14 @@ import Select from "../Select";
 import { Control } from "../styles";
 import ZignalyIcon from "images/exchanges/zignaly.svg";
 import { Controller, useForm } from "react-hook-form";
-import { Box, FormControl, FormHelperText, InputAdornment, Typography } from "@material-ui/core";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
@@ -16,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import useInterval from "hooks/useInterval";
 import SwapZIGConfirm from "./SwapZIGConfirm";
-import { database } from "faker";
+import ExchangesTooltip from "../ExchangesTooltip";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -130,6 +137,20 @@ const SwapZIG = ({
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig.buy.title" values={{ coin: "ZIG" }} />
       </Title>
+      <Box mb="24px">
+        <Typography>
+          <FormattedMessage
+            id="wallet.zig.buy.exchange"
+            values={{
+              a: (chunk: string) => (
+                <Tooltip interactive placement="bottom" title={<ExchangesTooltip />}>
+                  <a className="link">{chunk}</a>
+                </Tooltip>
+              ),
+            }}
+          />
+        </Typography>
+      </Box>
       <Control>
         <Label>
           <FormattedMessage id="wallet.zig.deposit.exchangeaccount" />
