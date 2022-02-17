@@ -419,6 +419,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             balance={walletBalance ? walletBalance[coinParam] || {} : null}
             onClose={() => setPath("")}
             coin={coinParam}
+            onDone={() => {
+              setUpdateAt(new Date());
+            }}
           />
         </Modal>
       )}
@@ -434,6 +437,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           onClose={() => setSelectedProject(null)}
           open={true}
           projectId={selectedProject.id}
+          onPledged={() => setUpdateAt(new Date())}
         />
       )}
       {buyZIG && (

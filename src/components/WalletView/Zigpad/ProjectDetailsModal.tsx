@@ -548,11 +548,12 @@ const DistributionContent = ({
 
 interface ProjectDetailsModalProps {
   onClose: () => void;
+  onPledged?: () => void;
   open: boolean;
   projectId: number;
 }
 
-const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalProps) => {
+const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDetailsModalProps) => {
   const [pledgeModal, showPledgeModal] = useState(false);
   const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
@@ -591,12 +592,15 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
   //   });
   // }, []);
 
-  const onPledged = (amount: number) => {
+  const handlePledged = (amount: number) => {
     setProjectDetails({
       ...projectDetails,
       pledged: amount,
     });
     showPledgeModal(false);
+    if (onPledged) {
+      onPledged();
+    }
   };
 
   return (
@@ -626,7 +630,7 @@ const ProjectDetailsModal = ({ onClose, open, projectId }: ProjectDetailsModalPr
               state={pledgeModal}
               newTheme={true}
             >
-              <PledgeModal project={projectDetails} onPledged={onPledged} />
+              <PledgeModal project={projectDetails} onPledged={handlePledged} />
             </CustomModal>
             <CoinBox display="flex" justifyContent="space-between" width={1} mb={2}>
               <TitleContainer display="flex" alignItems="center">

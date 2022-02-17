@@ -30,10 +30,18 @@ interface WalletDepositViewProps {
   coin: string;
   balance: Record<string, BalanceData>;
   onClose: () => void;
+  onDone: () => void;
   setPath: (path: string) => void;
 }
 
-const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDepositViewProps) => {
+const WalletWithdrawView = ({
+  coins,
+  coin,
+  balance,
+  onClose,
+  onDone,
+  setPath,
+}: WalletDepositViewProps) => {
   const coinData = coins ? coins[coin] : null;
   const networkOptions = coinData
     ? coinData.networks.map((n) => ({
@@ -105,6 +113,7 @@ const WalletWithdrawView = ({ coins, coin, balance, onClose, setPath }: WalletDe
         coin={coinData}
         zigCoin={coins?.ZIG}
         onClose={onClose}
+        onDone={onDone}
         onCancel={() => setWithdrawData(null)}
         setPath={setPath}
       />
