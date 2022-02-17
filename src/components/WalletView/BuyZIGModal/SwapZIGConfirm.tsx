@@ -12,7 +12,7 @@ import { SwapHorizOutlined } from "@material-ui/icons";
 import { isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
 import { useTheme } from "@material-ui/core/styles";
-import { showErrorAlert } from "store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
 
 const SecondaryText = styled(Typography)`
@@ -88,6 +88,7 @@ interface SwapZIGConfirmProps {
   coinTo: string;
   internalId: string;
   onCancel: () => void;
+  onDone: () => void;
 }
 
 const SwapZIGConfirm = ({
@@ -96,6 +97,7 @@ const SwapZIGConfirm = ({
   amount,
   internalId,
   onCancel,
+  onDone,
 }: SwapZIGConfirmProps) => {
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo ? amount * swapInfo.price : null;
@@ -105,6 +107,7 @@ const SwapZIGConfirm = ({
   const [loading, setLoading] = useState(false);
   const [priceLoading, setPriceLoading] = useState(false);
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const updateSwapInfo = () => {
     setPriceLoading(true);
@@ -136,7 +139,13 @@ const SwapZIGConfirm = ({
     tradeApi
       .buyCoin({ price: swapInfo.key, amount, exchangeInternalId: internalId })
       .then((response) => {
-        setSwapInfo(response);
+        dispatch(
+          showSuccessAlert(
+            "",
+            intl.formatMessage({ id: "wallet.zig.swap.done" }, { coin: coinTo }),
+          ),
+        );
+        onDone();
       })
       .catch((e) => {
         dispatch(showErrorAlert(e));

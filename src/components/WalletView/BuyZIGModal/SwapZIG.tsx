@@ -42,6 +42,7 @@ interface SwapZIGProps {
   coinFrom?: string;
   coinTo?: string;
   onDepositMore: () => void;
+  onDone: () => void;
 }
 
 const SwapZIG = ({
@@ -49,6 +50,7 @@ const SwapZIG = ({
   coinTo = "ZIG",
   accountsBalances,
   onDepositMore,
+  onDone,
 }: SwapZIGProps) => {
   const {
     control,
@@ -127,6 +129,7 @@ const SwapZIG = ({
         coinTo={coinTo}
         amount={parseFloat(confirm.amount)}
         onCancel={() => setConfirm(null)}
+        onDone={onDone}
       />
     );
   }
