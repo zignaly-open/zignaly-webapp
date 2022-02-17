@@ -8,12 +8,12 @@ import tradeApi from "services/tradeApiClient";
 import useInterval from "hooks/useInterval";
 import { AmountBox, CoinAmount } from "../WalletWithdrawConfirm";
 import CoinIcon from "../CoinIcon";
-import { SwapHorizOutlined } from "@material-ui/icons";
 import { isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
 import { useTheme } from "@material-ui/core/styles";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
+import { ArrowForwardOutlined } from "@material-ui/icons";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -176,7 +176,7 @@ const SwapZIGConfirm = ({
           </Box>
           {!isMobileQuery && (
             <Box display="flex" alignItems="center" justifyContent="center" mt="4px" mx="12px">
-              <SwapHorizOutlined style={{ fontSize: "48px" }} />
+              <ArrowForwardOutlined style={{ fontSize: "48px" }} />
             </Box>
           )}
           <Box display="flex" justifyContent="center">
