@@ -6,6 +6,7 @@ import SOLIcon from "images/wallet/sol.svg";
 import TRXIcon from "images/wallet/trx.svg";
 
 export const getChainIcon = (chain: string) => {
+  console.log(chain);
   switch (chain.toUpperCase()) {
     case "BSC":
     case "BEP20 (BSC)":
@@ -19,6 +20,7 @@ export const getChainIcon = (chain: string) => {
     case "MATIC":
       return MATICIcon;
     case "SOL":
+    case "Solana":
       return SOLIcon;
     case "TRX":
       return TRXIcon;
