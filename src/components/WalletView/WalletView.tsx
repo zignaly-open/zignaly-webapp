@@ -92,7 +92,7 @@ const StyledButton = styled(Button)`
   :not(:last-child) {
     margin-right: 8px;
   }
-  /* min-width: 121px; */
+  min-width: 107px;
 `;
 
 const TextMain = styled(Typography)`
@@ -304,6 +304,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
   const [totalSavings, setTotalSavings] = useState(null);
   const [buyZIG, showBuyZIG] = useState(false);
+  const [updateAt, setUpdateAt] = useState(null);
 
   const handleTooltipClose = () => {
     setTooltipOpen(false);
@@ -327,10 +328,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
         setCoins(response);
       });
 
-      tradeApi.getWalletBalance().then((response) => {
-        setWalletBalance(response);
-      });
-
       tradeApi.getVaultOffers({ status: "active" }).then((response) => {
         setVaultOffers(response);
       });
@@ -344,6 +341,14 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
       });
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      tradeApi.getWalletBalance().then((response) => {
+        setWalletBalance(response);
+      });
+    }
+  }, [isOpen, updateAt]);
 
   const onPayFeeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.checked;
@@ -431,7 +436,17 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           projectId={selectedProject.id}
         />
       )}
-      {buyZIG && <BuyZIGModal coins={coins} onClose={() => showBuyZIG(false)} open={buyZIG} />}
+      {buyZIG && (
+        <BuyZIGModal
+          coins={coins}
+          onClose={() => showBuyZIG(false)}
+          onDone={() => {
+            showBuyZIG(false);
+            setUpdateAt(new Date());
+          }}
+          open={buyZIG}
+        />
+      )}
       <Title>
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig" />
@@ -617,7 +632,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           setSelectedVaultOffer={setSelectedVaultOffer}
         />
       </Box>
-      <WalletTransactions />
+      <WalletTransactions updateAt={updateAt} />
     </>
   );
 };
