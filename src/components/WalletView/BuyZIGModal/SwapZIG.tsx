@@ -87,7 +87,7 @@ const SwapZIG = ({
       .generateBuyPrice({ from: coinFrom, to: coinTo })
       .then((response) => {
         setSwapInfo(response);
-        if (!isValid) {
+        if (!isValid && amountFrom) {
           // Force refresh validation in case the user entered the amount before we got the swap info.
           trigger("amount");
         }
