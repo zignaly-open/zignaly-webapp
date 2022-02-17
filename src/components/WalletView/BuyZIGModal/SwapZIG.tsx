@@ -42,6 +42,7 @@ interface SwapZIGProps {
   coinFrom?: string;
   coinTo?: string;
   onDepositMore: () => void;
+  onDone: () => void;
 }
 
 const SwapZIG = ({
@@ -49,6 +50,7 @@ const SwapZIG = ({
   coinTo = "ZIG",
   accountsBalances,
   onDepositMore,
+  onDone,
 }: SwapZIGProps) => {
   const {
     control,
@@ -87,7 +89,7 @@ const SwapZIG = ({
       .generateBuyPrice({ from: coinFrom, to: coinTo })
       .then((response) => {
         setSwapInfo(response);
-        if (!isValid) {
+        if (!isValid && amountFrom) {
           // Force refresh validation in case the user entered the amount before we got the swap info.
           trigger("amount");
         }
@@ -127,6 +129,7 @@ const SwapZIG = ({
         coinTo={coinTo}
         amount={parseFloat(confirm.amount)}
         onCancel={() => setConfirm(null)}
+        onDone={onDone}
       />
     );
   }

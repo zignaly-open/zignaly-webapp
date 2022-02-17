@@ -129,7 +129,7 @@ const TransferZigLabel = ({ name }: { name?: string }) => (
   </>
 );
 
-const WalletTransactions = () => {
+const WalletTransactions = ({ updateAt }: { updateAt: Date }) => {
   const [transactions, setTransactions] = useState<TransactionsHistory[]>();
   const [hasMore, setHasMore] = useState(true);
   const [type, setType] = useState<TransactionType>("all");
@@ -190,6 +190,10 @@ const WalletTransactions = () => {
       value: "zigpad_reward",
       label: intl.formatMessage({ id: "wallet.type.zigpadtokensreward" }),
     },
+    {
+      value: "buy_zig",
+      label: intl.formatMessage({ id: "wallet.type.buyzig" }),
+    },
   ];
 
   const getTransactions = (_transactions: TransactionsHistory[]) => {
@@ -221,7 +225,7 @@ const WalletTransactions = () => {
     getTransactions(null).then((response) => {
       setTransactions(response);
     });
-  }, [type]);
+  }, [type, updateAt]);
 
   const downloadTransactions = () => {
     tradeApi.downloadTransactions().catch((e) => {
@@ -290,7 +294,7 @@ const WalletTransactions = () => {
         type: (
           <AlignCenter>
             <TypographyRow>
-              <FormattedMessage id={`wallet.type.${t.type.replace("_", "").toLowerCase()}`} />
+              <FormattedMessage id={`wallet.type.${t.type.replace(/_/g, "").toLowerCase()}`} />
             </TypographyRow>
           </AlignCenter>
         ),

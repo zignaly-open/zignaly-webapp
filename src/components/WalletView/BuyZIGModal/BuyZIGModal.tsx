@@ -134,15 +134,17 @@ const DepositUSDTChoices = ({ accountsBalances }: DepositUSDTChoicesProps) => {
 
 interface BuyZIGModalProps {
   onClose: () => void;
+  onDone: () => void;
   open: boolean;
 }
 
-const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
+const BuyZIGModal = ({ open, onClose, onDone }: BuyZIGModalProps) => {
   const storeUser = useStoreUserSelector();
   const dispatch = useDispatch();
   const [accountsBalances, setAccountsBalances] = useState<BalanceExchange[]>(null);
   const [showDeposit, setShowDeposit] = useState(null);
   const [creating, setCreating] = useState(false);
+  const [reloadBalance, setReloadBalance] = useState(null);
 
   const zignalyExchangeAccounts = storeUser.userData.exchanges.filter(
     (e) => e.exchangeName.toLowerCase() === "zignaly",
@@ -151,10 +153,12 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
 
   // Activate default zignaly exchange account if needed
   const accountToActivate = zignalyExchangeAccounts.find((a) => !a.activated);
-  useActivateSubAccount(accountToActivate);
+  useActivateSubAccount(accountToActivate, () => {
+    setReloadBalance(new Date());
+  });
 
   const fetchBalances = async () => {
-    if (!zignalyExchangeAccounts.length) {
+    if (!zignalyExchangeAccountsActivated.length) {
       // No zignaly exchange account
       return;
     }
@@ -162,7 +166,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
     const res = [] as BalanceExchange[];
 
     await Promise.all(
-      zignalyExchangeAccounts.map(async (account) => {
+      zignalyExchangeAccountsActivated.map(async (account) => {
         return await tradeApi
           .exchangeAssetsGet({ internalId: account.internalId })
           .then((data) => {
@@ -185,7 +189,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
 
   useEffect(() => {
     fetchBalances();
-  }, [storeUser.userData.exchanges]);
+  }, [storeUser.userData.exchanges, reloadBalance]);
 
   // Create a new zignaly exchange account
   const createExchangeAccount = () => {
@@ -230,6 +234,7 @@ const BuyZIGModal = ({ open, onClose }: BuyZIGModalProps) => {
             coinTo="ZIG"
             accountsBalances={accountsBalances}
             onDepositMore={() => setShowDeposit(true)}
+            onDone={onDone}
           />
         )}
       </Modal>
