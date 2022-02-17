@@ -140,6 +140,7 @@ interface WalletWithdrawConfirmProps {
   zigCoin: WalletCoin;
   onClose: () => void;
   onCancel: () => void;
+  onDone: () => void;
   setPath: (path: string) => void;
 }
 
@@ -148,6 +149,7 @@ const WalletWithdrawConfirm = ({
   amount,
   onClose,
   onCancel,
+  onDone,
   network,
   networkName,
   coin,
@@ -209,6 +211,7 @@ const WalletWithdrawConfirm = ({
       .then(() => {
         setDone(true);
         showTwoFAModal(false);
+        onDone();
       })
       .catch((e) => {
         setLoading(false);
