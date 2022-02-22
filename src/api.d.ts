@@ -267,5 +267,6 @@ interface GetSwapPriceRes {
   price: number;
   expiration: number;
   maxAmount: number;
+  timeForMax: number;
   minAmount: number;
 }

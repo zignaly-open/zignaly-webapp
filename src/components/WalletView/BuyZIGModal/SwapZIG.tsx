@@ -24,6 +24,7 @@ import { showErrorAlert } from "store/actions/ui";
 import useInterval from "hooks/useInterval";
 import SwapZIGConfirm from "./SwapZIGConfirm";
 import ExchangesTooltip from "../ExchangesTooltip";
+import dayjs from "dayjs";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -61,11 +62,13 @@ const SwapZIG = ({
     trigger,
     watch,
   } = useForm({ mode: "onChange" });
-  const exchangeOptions = accountsBalances.map((a) => ({
-    value: a.exchangeId,
-    label: a.name,
-    icon: ZignalyIcon,
-  }));
+  const exchangeOptions = accountsBalances
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((a) => ({
+      value: a.exchangeId,
+      label: a.name,
+      icon: ZignalyIcon,
+    }));
   const selectedExchangeId = watch("internalId");
   const amountFrom = watch("amount");
   const balance = selectedExchangeId
@@ -77,6 +80,9 @@ const SwapZIG = ({
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState<FormData>(null);
   const [loading, setLoading] = useState(false);
+  const timeForMaxDiff = swapInfo
+    ? Math.ceil(dayjs.unix(swapInfo.timeForMax).diff(dayjs()) / 60000)
+    : 0;
 
   const setBalanceMax = () => {
     setValue("amount", balance);
@@ -204,8 +210,17 @@ const SwapZIG = ({
                       : !swapInfo ||
                         parseFloat(value) <= swapInfo.maxAmount ||
                         intl.formatMessage(
-                          { id: "wallet.zig.swap.max" },
-                          { amount: swapInfo.maxAmount, coin: coinFrom },
+                          {
+                            id:
+                              timeForMaxDiff > 0
+                                ? "wallet.zig.swap.max.left"
+                                : "wallet.zig.swap.max",
+                          },
+                          {
+                            amount: swapInfo.maxAmount,
+                            coin: coinFrom,
+                            mins: timeForMaxDiff,
+                          },
                         ),
                 },
               }}
