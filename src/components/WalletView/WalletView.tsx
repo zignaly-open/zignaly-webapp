@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import WalletIcon from "images/wallet/wallet.svg";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import InfoIcon from "images/wallet/info.svg";
@@ -8,9 +8,8 @@ import { isMobile, Panel, SubTitle, Title } from "styles/styles";
 import styled, { css } from "styled-components";
 import {
   Button as MuiButton,
-  Box,
-  ClickAwayListener,
   Tooltip,
+  Box,
   Typography,
   FormControlLabel,
   Switch,
@@ -34,7 +33,6 @@ import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 import Button from "components/Button";
-import ExchangesTooltip from "./ExchangesTooltip";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -181,25 +179,6 @@ const PanelItemMiddle = styled(PanelItem)`
   `)}
 `;
 
-const ButtonBuy = styled(MuiButton)`
-  display: flex;
-  padding: 4px 12px 4px 16px;
-  /* box-shadow: 0px 4px 8px -4px rgba(90, 81, 245, 0.25); */
-  border-radius: 4px;
-  border: 1px solid;
-  font-size: 13px;
-  border-image: linear-gradient(
-    312.12deg,
-    rgba(134, 113, 247, 0.33) 14.16%,
-    rgba(126, 201, 249, 0.33) 83.59%
-  );
-  border-image-slice: 1;
-  text-transform: none;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 16px;
-`;
-
 const RateText = styled.span`
   margin-top: 2px;
   display: flex;
@@ -256,11 +235,6 @@ const StyledSwitch = styled(Switch)`
   .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
     background-color: ${({ theme }) => theme.newTheme.green};
   }
-`;
-
-const HeightFiller = styled.div`
-  height: 37px;
-  padding-top: 6px;
 `;
 
 const StyledInfoIcon = styled.img`
@@ -366,32 +340,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
     });
   };
 
-  const BuyZig = useCallback(
-    () => (
-      <ClickAwayListener onClickAway={handleTooltipClose}>
-        <Tooltip
-          interactive
-          placement="right"
-          onClose={handleTooltipClose}
-          open={tooltipOpen}
-          disableFocusListener
-          disableHoverListener
-          disableTouchListener
-          PopperProps={{
-            disablePortal: true,
-          }}
-          title={<ExchangesTooltip />}
-        >
-          <ButtonBuy onClick={handleTooltipOpen}>
-            <FormattedMessage id="wallet.buy" />
-            <ChevronRightStyled />
-          </ButtonBuy>
-        </Tooltip>
-      </ClickAwayListener>
-    ),
-    [tooltipOpen],
-  );
-
   return (
     <>
       {page === "deposit" && (
@@ -477,10 +425,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
-            <HeightFiller>
+            <Box pt="6px">
               <BalanceChain coins={coins} walletBalance={walletBalance} />
-              {walletBalance && !walletBalance.ZIG && <BuyZig />}
-            </HeightFiller>
+            </Box>
             <Box display="flex" flexDirection="row" mt="12px">
               {process.env.GATSBY_HIDE_BUY !== "true" && (
                 <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
