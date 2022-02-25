@@ -6,7 +6,14 @@ import Select from "../Select";
 import { Control } from "../styles";
 import ZignalyIcon from "images/exchanges/zignaly.svg";
 import { Controller, useForm } from "react-hook-form";
-import { Box, FormControl, FormHelperText, InputAdornment, Typography } from "@material-ui/core";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputAdornment,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
@@ -16,7 +23,8 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import useInterval from "hooks/useInterval";
 import SwapZIGConfirm from "./SwapZIGConfirm";
-import { database } from "faker";
+import ExchangesTooltip from "../ExchangesTooltip";
+import dayjs from "dayjs";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -35,6 +43,7 @@ interface SwapZIGProps {
   coinFrom?: string;
   coinTo?: string;
   onDepositMore: () => void;
+  onDone: () => void;
 }
 
 const SwapZIG = ({
@@ -42,6 +51,7 @@ const SwapZIG = ({
   coinTo = "ZIG",
   accountsBalances,
   onDepositMore,
+  onDone,
 }: SwapZIGProps) => {
   const {
     control,
@@ -52,22 +62,27 @@ const SwapZIG = ({
     trigger,
     watch,
   } = useForm({ mode: "onChange" });
-  const exchangeOptions = accountsBalances.map((a) => ({
-    value: a.exchangeId,
-    label: a.name,
-    icon: ZignalyIcon,
-  }));
+  const exchangeOptions = accountsBalances
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((a) => ({
+      value: a.exchangeId,
+      label: a.name,
+      icon: ZignalyIcon,
+    }));
   const selectedExchangeId = watch("internalId");
   const amountFrom = watch("amount");
   const balance = selectedExchangeId
     ? accountsBalances.find((b) => b.exchangeId === selectedExchangeId).balance
     : null;
-  const minAmount = 1;
   const intl = useIntl();
   const [swapInfo, setSwapInfo] = useState<GetSwapPriceRes>(null);
   const amountTo = swapInfo && amountFrom ? amountFrom * swapInfo.price : null;
   const dispatch = useDispatch();
   const [confirm, setConfirm] = useState<FormData>(null);
+  const [loading, setLoading] = useState(false);
+  const timeForMaxDiff = swapInfo
+    ? Math.ceil(dayjs.unix(swapInfo.timeForMax).diff(dayjs()) / 60000)
+    : 0;
 
   const setBalanceMax = () => {
     setValue("amount", balance);
@@ -75,25 +90,31 @@ const SwapZIG = ({
   };
 
   const updateSwapInfo = () => {
+    setLoading(true);
     tradeApi
       .generateBuyPrice({ from: coinFrom, to: coinTo })
       .then((response) => {
         setSwapInfo(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-        if (!isValid) {
+        if (!isValid && amountFrom) {
           // Force refresh validation in case the user entered the amount before we got the swap info.
           trigger("amount");
         }
+      })
+      .catch((e) => {
+        dispatch(showErrorAlert(e));
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   useInterval(
     () => {
-      updateSwapInfo();
+      if (!loading) {
+        updateSwapInfo();
+      }
     },
-    15000,
+    20000,
     false,
   );
   useEffect(updateSwapInfo, []);
@@ -114,6 +135,7 @@ const SwapZIG = ({
         coinTo={coinTo}
         amount={parseFloat(confirm.amount)}
         onCancel={() => setConfirm(null)}
+        onDone={onDone}
       />
     );
   }
@@ -124,6 +146,20 @@ const SwapZIG = ({
         <img src={WalletIcon} width={40} height={40} />
         <FormattedMessage id="wallet.zig.buy.title" values={{ coin: "ZIG" }} />
       </Title>
+      <Box mb="24px">
+        <Typography>
+          <FormattedMessage
+            id="wallet.zig.buy.exchange"
+            values={{
+              a: (chunk: string) => (
+                <Tooltip interactive placement="bottom" title={<ExchangesTooltip />}>
+                  <a className="link">{chunk}</a>
+                </Tooltip>
+              ),
+            }}
+          />
+        </Typography>
+      </Box>
       <Control>
         <Label>
           <FormattedMessage id="wallet.zig.deposit.exchangeaccount" />
@@ -162,10 +198,11 @@ const SwapZIG = ({
               rules={{
                 validate: {
                   min: (value) =>
-                    parseFloat(value) >= minAmount ||
+                    !swapInfo ||
+                    parseFloat(value) >= swapInfo.minAmount ||
                     intl.formatMessage(
                       { id: "convert.min" },
-                      { amount: minAmount, coin: coinFrom },
+                      { amount: swapInfo.minAmount, coin: coinFrom },
                     ),
                   max: (value) =>
                     parseFloat(value) > balance
@@ -173,8 +210,17 @@ const SwapZIG = ({
                       : !swapInfo ||
                         parseFloat(value) <= swapInfo.maxAmount ||
                         intl.formatMessage(
-                          { id: "wallet.zig.swap.max" },
-                          { amount: swapInfo.maxAmount, coin: coinFrom },
+                          {
+                            id:
+                              timeForMaxDiff > 0
+                                ? "wallet.zig.swap.max.left"
+                                : "wallet.zig.swap.max",
+                          },
+                          {
+                            amount: swapInfo.maxAmount,
+                            coin: coinFrom,
+                            mins: timeForMaxDiff,
+                          },
                         ),
                 },
               }}
