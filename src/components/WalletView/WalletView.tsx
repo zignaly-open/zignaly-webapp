@@ -429,11 +429,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <BalanceChain coins={coins} walletBalance={walletBalance} />
             </Box>
             <Box display="flex" flexDirection="row" mt="12px">
-              {process.env.GATSBY_HIDE_BUY !== "true" && (
-                <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
-                  <FormattedMessage id="wallet.zig.buy" />
-                </StyledButton>
-              )}
+              <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
+                <FormattedMessage id="wallet.zig.buy" />
+              </StyledButton>
               <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
               </StyledButton>
