@@ -91,6 +91,7 @@ const StyledButton = styled(Button)`
     margin-right: 8px;
   }
   min-width: 107px;
+  white-space: nowrap;
 `;
 
 const TextMain = styled(Typography)`
@@ -430,7 +431,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             </Box>
             <Box display="flex" flexDirection="row" mt="12px">
               <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
-                <FormattedMessage id="wallet.zig.buy" />
+                <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "ZIG" }} />
               </StyledButton>
               <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
                 <FormattedMessage id="accounts.deposit" />
