@@ -77,6 +77,7 @@ const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) 
                   vault={v}
                   balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
                   onClick={() => onOfferClick(v.coin)}
+                  depositEnabled={v.coin === "ZIG"}
                 />
               </VaultDepositBox>
             )}
