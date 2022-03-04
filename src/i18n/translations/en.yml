@@ -762,7 +762,7 @@ signalp.settings.allowedside.help: "Choose to receive LONG, SHORT or BOTH types 
 alert.profileedit.title: "Profile Edited"
 alert.profileedit.body: "Your profile has been successfully updated!"
 alert.forgotpassword.step1.title: "Request Processed"
-alert.forgotpassword.step1.body: "An email has been sent to your provided email for further instructions."
+alert.forgotpassword.step1.body: "If user with this email address exists, you will receive an email with instructions about how to reset your password in a few minutes."
 alert.forgotpassword.step3.body: "Your password has been reset. You can now login with new password!"
 alert.changeemail.confirm.body: "Your email has been reset. You can now login with new email!"
 alert.payment.title: "Payment Completed"
