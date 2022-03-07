@@ -53,9 +53,10 @@ interface VaultMobileProps {
   balance: WalletBalance;
   onOfferClick: (coin: string) => void;
   type: string;
+  coins: WalletCoins;
 }
 
-const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) => {
+const VaultMobile = ({ vaults, balance, coins, onOfferClick, type }: VaultMobileProps) => {
   return (
     <Box>
       {vaults.map((v) => (
@@ -77,7 +78,7 @@ const VaultMobile = ({ vaults, balance, onOfferClick, type }: VaultMobileProps) 
                   vault={v}
                   balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
                   onClick={() => onOfferClick(v.coin)}
-                  depositEnabled={v.coin === "ZIG"}
+                  depositEnabled={coins && coins[v.coin]?.allowDeposit}
                 />
               </VaultDepositBox>
             )}

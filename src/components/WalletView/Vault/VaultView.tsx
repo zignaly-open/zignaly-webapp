@@ -49,8 +49,8 @@ const StyledTabs = styled(Tabs)`
     border-radius: 6px;
 
     ${({ theme }) =>
-    theme.palette.type === "light" &&
-    css`
+      theme.palette.type === "light" &&
+      css`
         background: linear-gradient(
           121.21deg,
           #a600fb 10.7%,
@@ -110,77 +110,77 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
     () =>
       tab === 0
         ? [
-          {
-            Header: intl.formatMessage({ id: "vault.rewardsRemaning" }),
-            accessor: "rewards",
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.offer" }),
-            accessor: "offer",
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.minBalance" }),
-            accessor: "minBalance",
-            tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.apr" }),
-            accessor: "earn",
-            tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.stakingStats" }),
-            accessor: "startDate",
-            tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.paymentStarts" }),
-            accessor: "distributionDate",
-            tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.ends" }),
-            accessor: "endDate",
-          },
-          {
-            Header: "",
-            accessor: "actions",
-          },
-        ]
+            {
+              Header: intl.formatMessage({ id: "vault.rewardsRemaning" }),
+              accessor: "rewards",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.offer" }),
+              accessor: "offer",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.minBalance" }),
+              accessor: "minBalance",
+              tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.apr" }),
+              accessor: "earn",
+              tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.stakingStats" }),
+              accessor: "startDate",
+              tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.paymentStarts" }),
+              accessor: "distributionDate",
+              tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.ends" }),
+              accessor: "endDate",
+            },
+            {
+              Header: "",
+              accessor: "actions",
+            },
+          ]
         : [
-          {
-            Header: "",
-            accessor: "rewards",
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.offer" }),
-            accessor: "offer",
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.minBalance" }),
-            accessor: "minBalance",
-            tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.apr" }),
-            accessor: "earn",
-            tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.stakingStats" }),
-            accessor: "startDate",
-            tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.paymentStarts" }),
-            accessor: "distributionDate",
-            tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
-          },
-          {
-            Header: intl.formatMessage({ id: "vault.ended" }),
-            accessor: "endDate",
-          },
-        ],
+            {
+              Header: "",
+              accessor: "rewards",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.offer" }),
+              accessor: "offer",
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.minBalance" }),
+              accessor: "minBalance",
+              tooltip: intl.formatMessage({ id: "vault.minBalance.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.apr" }),
+              accessor: "earn",
+              tooltip: intl.formatMessage({ id: "vault.apr.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.stakingStats" }),
+              accessor: "startDate",
+              tooltip: intl.formatMessage({ id: "vault.stakingStats.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.paymentStarts" }),
+              accessor: "distributionDate",
+              tooltip: intl.formatMessage({ id: "vault.paymentStarts.tooltip" }),
+            },
+            {
+              Header: intl.formatMessage({ id: "vault.ended" }),
+              accessor: "endDate",
+            },
+          ],
     [tab],
   );
 
@@ -233,7 +233,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
               vault={v}
               balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
               onClick={() => setDepositCoin(v.coin)}
-              depositEnabled={v.coin === "ZIG"}
+              depositEnabled={coins && coins[v.coin]?.allowDeposit}
             />
           </StyledVaultDepositButton>
         ),
