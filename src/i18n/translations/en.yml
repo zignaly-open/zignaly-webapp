@@ -1786,6 +1786,7 @@ vault.benefits.info2: |
   • Your funds are always available for withdrawal
 vault.active: "Active Vault Offers"
 vault.expired: "Expired Offers"
+vault.holders: "For {coin} holders"
 
 # WALLET
 wallet.addcoin: "Add coin"

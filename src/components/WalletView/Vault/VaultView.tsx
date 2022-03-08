@@ -233,6 +233,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
               vault={v}
               balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
               onClick={() => setDepositCoin(v.coin)}
+              depositEnabled={coins && coins[v.coin]?.allowDeposit}
             />
           </StyledVaultDepositButton>
         ),

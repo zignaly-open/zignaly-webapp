@@ -48,20 +48,23 @@ interface VaultDepositButtonProps {
   onClick: () => void;
   vault: VaultOffer;
   balance: number;
+  depositEnabled: boolean;
 }
 
-const VaultDepositButton = ({ balance, vault, onClick }: VaultDepositButtonProps) => {
+const VaultDepositButton = ({ balance, vault, depositEnabled, onClick }: VaultDepositButtonProps) => {
   return balance >= vault.minBalance ? (
     <ActivatedButton>
       <FormattedMessage id="vault.activated" />
     </ActivatedButton>
-  ) : (
+  ) : depositEnabled ? (
     <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
       <FormattedMessage id="accounts.deposit" />
       &nbsp;
       <NumberFormat value={vault.minBalance} displayType="text" suffix={` ${vault.coin}`} />
-    </ButtonStyled>
-  );
+    </ButtonStyled >
+  ) : <ButtonStyled className="textPurple borderPurple">
+    <FormattedMessage id="vault.holders" values={{ coin: vault.coin }} />
+  </ButtonStyled >;
 };
 
 export default VaultDepositButton;
