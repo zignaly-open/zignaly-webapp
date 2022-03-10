@@ -123,6 +123,7 @@ const HelpButton = styled(Button)`
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case "gaming":
+    case "esports_gaming":
       return SportsEsports;
     case "meme":
       return SportsEsports;
