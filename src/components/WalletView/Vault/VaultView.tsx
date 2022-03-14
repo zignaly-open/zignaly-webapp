@@ -206,7 +206,11 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
             <Typography style={{ fontWeight: 600 }}>
               <FormattedMessage
                 id="wallet.staking.earn"
-                values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
+                values={{
+                  coin: v.coin,
+                  reward: v.coinReward,
+                  amount: <NumberFormat displayType="text" value={v.minBalance} />,
+                }}
               />
               &nbsp;
               <Terms onClick={() => setSelectedVaultOffer(v)}>
