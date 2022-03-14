@@ -350,7 +350,7 @@ const CustomTimelineDot = ({
 
 export const getStep = (project: LaunchpadProjectDetails) => {
   if (project) {
-    if (dayjs().isAfter(project.distributionDates[0].date)) {
+    if (dayjs().isAfter(project.distributionPeriods[0].dateFrom)) {
       // Distribution period
       return 5;
     }
@@ -391,17 +391,17 @@ const rendererCountdown = ({ days, hours, minutes, seconds, completed }: Countdo
 };
 
 const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails }) => {
-  const currentIndex = project.distributionDates.findIndex((d) => !d.finished);
+  const currentIndex = project.distributionPeriods.findIndex((d) => !d.finished);
   return (
     <NestedTimeline>
-      {project.distributionDates.map((d, i) => (
-        <TimelineItem key={d.date}>
+      {project.distributionPeriods.map((d, i) => (
+        <TimelineItem key={d.dateFrom}>
           <TimelineSeparator>
             <CustomTimelineDot done={currentIndex > i} active={currentIndex === i} step={i + 1} />
-            {i < project.distributionDates.length - 1 && <TimelineConnector />}
+            {i < project.distributionPeriods.length - 1 && <TimelineConnector />}
           </TimelineSeparator>
           <TimelineContent>
-            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.date)}</TimelineLabel>
+            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.dateFrom)}</TimelineLabel>
             <ItemValue>
               <FormattedMessage
                 id="zigpad.distribution.release"
@@ -427,7 +427,7 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
 };
 
 const currentDistributionDate = (project: LaunchpadProjectDetails) =>
-  project.distributionDates.find((d) => !d.finished);
+  project.distributionPeriods.find((d) => !d.finished);
 
 const DistributionContent = ({
   project,
@@ -536,7 +536,7 @@ const DistributionContent = ({
                 )}
               </CountdownText>
               {distributionDate && (
-                <Countdown date={distributionDate.date} renderer={rendererCountdown} />
+                <Countdown date={distributionDate.dateFrom} renderer={rendererCountdown} />
               )}
             </CountdownContainer>
           )}
@@ -860,16 +860,23 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
                   <ItemValue>
-                    {formatDateTime(projectDetails.distributionDates[0].date)}
-                    {projectDetails.distributionDates.length > 1 && (
+                    {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                    {projectDetails.distributionPeriods.length > 1 ? (
                       <>
                         &nbsp;-&nbsp;
                         {formatDateTime(
-                          projectDetails.distributionDates[
-                            projectDetails.distributionDates.length - 1
-                          ].date,
+                          projectDetails.distributionPeriods[
+                            projectDetails.distributionPeriods.length - 1
+                          ].dateTo,
                         )}
                       </>
+                    ) : (
+                      projectDetails.distributionPeriods[0].type !== "ONCE" && (
+                        <>
+                          &nbsp;-&nbsp;
+                          {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                        </>
+                      )
                     )}
                   </ItemValue>
                   <DistributionContent step={step} project={projectDetails} />
@@ -993,13 +1000,16 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                       <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
                     </ItemLabel>
                     <ItemValue>
-                      {projectDetails.distributionDates.map((d) => (
-                        <div key={d.date}>
+                      {projectDetails.distributionPeriods.map((d) => (
+                        <div key={d.dateFrom}>
                           <FormattedMessage
-                            id="zigpad.tokenomic.release"
+                            id={`zigpad.tokenomic.release${
+                              d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
+                            }`}
                             values={{
                               perc: d.percent,
-                              date: dayjs(d.date).format("MMM D, YYYY"),
+                              date: dayjs(d.dateFrom).format("MMM D, YYYY"),
+                              dateTo: dayjs(d.dateTo).format("MMM D, YYYY"),
                             }}
                           />
                         </div>
