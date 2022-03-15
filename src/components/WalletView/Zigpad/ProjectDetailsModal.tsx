@@ -31,7 +31,7 @@ import { CategoryIcon } from "./Zigpad";
 import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
 import DOMPurify from "dompurify";
-import { format2Dec } from "utils/formatters";
+import { format2Dec, formatPrice } from "utils/formatters";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -401,15 +401,20 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
             {i < project.distributionPeriods.length - 1 && <TimelineConnector />}
           </TimelineSeparator>
           <TimelineContent>
-            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.dateFrom)}</TimelineLabel>
+            <TimelineLabel active={currentIndex === i}>
+              {formatDateTime(d.dateFrom)}
+              {d.type !== "ONCE" && <> - {formatDateTime(d.dateTo)}</>}
+            </TimelineLabel>
             <ItemValue>
               <FormattedMessage
-                id="zigpad.distribution.release"
+                id={`zigpad.distribution.release${
+                  d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
+                }`}
                 values={{
                   perc: parseFloat(d.percent).toFixed(2),
                   amount: (
                     <NumberFormat
-                      value={(parseFloat(d.percent) / 100) * project.tokenReward}
+                      value={formatPrice((parseFloat(d.percent) / 100) * project.tokenReward)}
                       thousandSeparator={true}
                       displayType="text"
                       suffix={` ${project.coin}`}
@@ -438,7 +443,6 @@ const DistributionContent = ({
 }) => {
   const distributionDate = currentDistributionDate(project);
   const timesOversubscribed = project.usdSubscription / project.tokenomic.hardCap;
-  console.log(project.pledged, project.returned);
 
   return (
     <>
