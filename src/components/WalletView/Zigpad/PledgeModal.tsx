@@ -166,7 +166,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           }
         />
         <StyledButton variant="contained" type="submit" disabled={!isValid}>
-          <FormattedMessage id="zigpad.pledge" />
+          <FormattedMessage id="wallet.withdraw.continue" />
         </StyledButton>
       </form>
     </Modal>
