@@ -412,7 +412,7 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
                   d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
                 }`}
                 values={{
-                  perc: parseFloat(d.percent).toFixed(2),
+                  perc: parseFloat(d.percent),
                   amount: (
                     <NumberFormat
                       value={formatPrice((parseFloat(d.percent) / 100) * project.tokenReward)}
