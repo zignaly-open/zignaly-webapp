@@ -7,6 +7,7 @@ import {
   Tabs,
   Tab,
   Icon,
+  SvgIcon,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -14,6 +15,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, isMobile, Title } from "styles/styles";
 import RocketIcon from "images/launchpad/rocket.svg";
 import InvestmentIcon from "images/launchpad/investment.inline.svg";
+import InvestmentWhiteIcon from "images/launchpad/investmentWhite.inline.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
@@ -121,13 +123,14 @@ const HelpButton = styled(Button)`
   display: inline;
 `;
 
+const Investment = () => <SvgIcon component={InvestmentIcon} viewBox="0 0 116.14 122.88" />;
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case "gaming":
     case "esports_gaming":
       return SportsEsports;
     case "investment_platform":
-      return InvestmentIcon;
+      return Investment;
     case "meme":
       return SportsEsports;
     case "platform":
