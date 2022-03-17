@@ -19,7 +19,7 @@ export const getChainIcon = (chain: string) => {
     case "MATIC":
       return MATICIcon;
     case "SOL":
-    case "Solana":
+    case "SOLANA":
       return SOLIcon;
     case "TRX":
       return TRXIcon;
