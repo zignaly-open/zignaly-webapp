@@ -281,14 +281,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [buyZIG, showBuyZIG] = useState(false);
   const [updateAt, setUpdateAt] = useState(null);
 
-  const handleTooltipClose = () => {
-    setTooltipOpen(false);
-  };
-
-  const handleTooltipOpen = () => {
-    setTooltipOpen(true);
-  };
-
   useEffect(() => {
     // Reload user data
     setTradingFeeDiscount(userData.tradingFeeDiscount);
@@ -391,7 +383,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
       )}
       {buyZIG && (
         <BuyZIGModal
-          coins={coins}
           onClose={() => showBuyZIG(false)}
           onDone={() => {
             showBuyZIG(false);
