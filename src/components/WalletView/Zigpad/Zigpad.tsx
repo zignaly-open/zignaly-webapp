@@ -7,17 +7,20 @@ import {
   Tabs,
   Tab,
   Icon,
+  SvgIcon,
 } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, isMobile, Title } from "styles/styles";
 import RocketIcon from "images/launchpad/rocket.svg";
+import InvestmentIcon from "images/launchpad/investment.inline.svg";
+import InvestmentWhiteIcon from "images/launchpad/investmentWhite.inline.svg";
 import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
-import { ArrowBack, ChevronRight, PeopleOutline, SportsEsports } from "@material-ui/icons";
+import { ArrowBack, ChevronRight, People, SportsEsports } from "@material-ui/icons";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -120,17 +123,20 @@ const HelpButton = styled(Button)`
   display: inline;
 `;
 
+const Investment = () => <SvgIcon component={InvestmentIcon} viewBox="0 0 116.14 122.88" />;
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case "gaming":
     case "esports_gaming":
       return SportsEsports;
+    case "investment_platform":
+      return Investment;
     case "meme":
       return SportsEsports;
     case "platform":
-      return PeopleOutline;
+      return People;
     case "social":
-      return PeopleOutline;
+      return People;
     default:
       return null;
   }
@@ -269,7 +275,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
         project: (
           <AlignCenter direction="column">
             <Typography style={{ fontWeight: 600, textAlign: "center" }}>
-              <Box display="flex" justifyContent="center" whiteSpace="nowrap">
+              <Box display="flex" justifyContent="center" alignItems="center" whiteSpace="nowrap">
                 <CategoryIcon category={p.category} />
                 {p.name}
               </Box>
