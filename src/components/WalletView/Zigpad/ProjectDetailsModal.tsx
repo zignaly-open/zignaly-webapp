@@ -32,6 +32,7 @@ import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
 import DOMPurify from "dompurify";
 import { format2Dec, formatPrice } from "utils/formatters";
+import BuyZIGModal from "../BuyZIGModal/BuyZIGModal";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -561,12 +562,14 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
   const [pledgeModal, showPledgeModal] = useState(false);
   const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
-  const { walletBalance } = useContext(PrivateAreaContext);
+  const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const balanceZIG = walletBalance?.ZIG?.total?.availableBalance || 0;
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [step, setStep] = useState(1);
   // const [rateZIG, setRateZIG] = useState(null);
+  const [buyZIG, showBuyZIG] = useState(false);
+  const [updateAt, setUpdateAt] = useState(null);
 
   useInterval(
     () => {
@@ -590,11 +593,11 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
     });
   }, []);
 
-  // useEffect(() => {
-  //   tradeApi.getWalletCoins().then((response) => {
-  //     setRateZIG(response.ZIG.usdPrice);
-  //   });
-  // }, []);
+  useEffect(() => {
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  }, [updateAt]);
 
   const handlePledged = (amount: number) => {
     setProjectDetails({
@@ -625,6 +628,16 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
       >
         <WalletDepositView coins={coins} onClose={() => showDepositZIG(false)} coin="ZIG" />
       </CustomModal>
+      {buyZIG && (
+        <BuyZIGModal
+          onClose={() => showBuyZIG(false)}
+          onDone={() => {
+            showBuyZIG(false);
+            setUpdateAt(new Date());
+          }}
+          open={buyZIG}
+        />
+      )}
       <StyledModal>
         {projectDetails ? (
           <>
@@ -788,7 +801,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                             <ButtonDesc>
                               <FormattedMessage id="zigpad.buy.desc" />
                             </ButtonDesc>
-                            <Button href={gateioUrl} target="_blank" endIcon={<OpenArrowIcon />}>
+                            <Button onClick={() => showBuyZIG(true)}>
                               <FormattedMessage id="zigpad.buy" />
                             </Button>
                           </ButtonBox>
@@ -1036,7 +1049,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
               <ListItem>
                 <MultiInlines>
                   <ItemLabel>
-                    <FormattedMessage id="zigpad.publicRound" />
+                    <FormattedMessage id="zigpad.otherRound" />
                   </ItemLabel>
                   <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
                 </MultiInlines>
