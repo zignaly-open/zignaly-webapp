@@ -123,7 +123,9 @@ const HelpButton = styled(Button)`
   display: inline;
 `;
 
-const Investment = () => <SvgIcon component={InvestmentIcon} viewBox="0 0 116.14 122.88" />;
+const Investment = (props: any) => (
+  <SvgIcon component={InvestmentIcon} viewBox="0 0 116.14 122.88" {...props} />
+);
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case "gaming":
