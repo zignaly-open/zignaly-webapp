@@ -141,7 +141,7 @@ interface LaunchpadProject {
   distributedAmount: number;
   startDate: string;
   calculationDate: string;
-  distributionDates: DistributionDate[];
+  distributionPeriods: DistributionDate[];
   socials: Social[];
   price: string;
   logo: string;
