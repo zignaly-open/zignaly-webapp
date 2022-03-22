@@ -1,16 +1,16 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import {
   Checkbox,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   FormControlLabel,
   FormControl,
   Typography,
   OutlinedInput,
-} from "@material-ui/core";
-import { CheckBoxOutlineBlank, CheckBox, Help } from "@material-ui/icons";
+} from "@mui/material";
+import { CheckBoxOutlineBlank, CheckBox, Help } from "@mui/icons-material";
 import { Controller, useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ChevronDown } from "react-feather";
@@ -55,13 +55,13 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
 
   return (
     <div className="providerUserOptions">
-      <ExpansionPanel classes={{ root: "accordion" }} defaultExpanded={true}>
-        <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
+      <Accordion classes={{ root: "accordion" }} defaultExpanded={true}>
+        <AccordionSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
             <FormattedMessage id="signalp.general" />
           </Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
+        </AccordionSummary>
+        <AccordionDetails classes={{ root: "accordionDetails" }}>
           <Box display="flex" flexDirection="column" width={1}>
             <FormControl classes={{ root: "inputBox listBox" }} error={!!errors.exchanges}>
               <label className="customLabel">
@@ -157,15 +157,15 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
               {errors.disclaimer && <span className="errorText">{errors.disclaimer.message}</span>}
             </Box>
           </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel classes={{ root: "accordion" }}>
-        <ExpansionPanelSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion classes={{ root: "accordion" }}>
+        <AccordionSummary classes={{ root: "accordionSummary" }} expandIcon={<ChevronDown />}>
           <Typography variant="h3">
             <FormattedMessage id="signalp.useroption.title" />
           </Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails classes={{ root: "accordionDetails" }}>
+        </AccordionSummary>
+        <AccordionDetails classes={{ root: "accordionDetails" }}>
           <Box display="flex" flexDirection="column" width={1}>
             <Box className="inputBox listBox" display="flex" flexDirection="column">
               {userOptions.map((o) => (
@@ -187,8 +187,8 @@ const ProviderUserOptions = ({ exchangeOptions, quotes }) => {
               ))}
             </Box>
           </Box>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 };

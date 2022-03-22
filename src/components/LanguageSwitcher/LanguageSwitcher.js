@@ -4,7 +4,7 @@ import { languages } from "../../i18n";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../store/actions/settings";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 // import FlagIcon from "components/FlagIcon";
 import tradeApi from "../../services/tradeApiClient";
 import { getUserData } from "store/actions/user";

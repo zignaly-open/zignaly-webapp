@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { size } from "lodash";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect/CustomSelect";

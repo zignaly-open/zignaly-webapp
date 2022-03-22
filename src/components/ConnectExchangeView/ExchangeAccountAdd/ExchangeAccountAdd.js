@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useImperativeHandle } from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import "./ExchangeAccountAdd.scss";
 import { Controller, useFormContext } from "react-hook-form";
 import CustomSelect from "../../CustomSelect";

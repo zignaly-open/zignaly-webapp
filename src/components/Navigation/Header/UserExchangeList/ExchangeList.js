@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, MenuItem } from "@material-ui/core";
+import { Box, MenuItem } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "../../../../store/actions/settings";
 import { FormattedMessage } from "react-intl";

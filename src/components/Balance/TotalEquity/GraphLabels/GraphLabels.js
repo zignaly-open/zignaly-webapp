@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./GraphLabels.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import dayjs from "dayjs";
 

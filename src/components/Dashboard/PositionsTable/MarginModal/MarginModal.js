@@ -13,7 +13,7 @@ import {
   Typography,
   InputAdornment,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./MarginModal.scss";
 import { formatNumber } from "utils/formatters";

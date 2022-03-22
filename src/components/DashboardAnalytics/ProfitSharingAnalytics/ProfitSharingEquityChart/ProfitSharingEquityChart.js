@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import TotalEquityGraph from "../../../Balance/TotalEquity/TotalEquityGraph";
 import EquityFilter from "../../../Balance/TotalEquity//EquityFilter";
 import EquityGraphLabels from "../../../Balance/TotalEquity//GraphLabels";

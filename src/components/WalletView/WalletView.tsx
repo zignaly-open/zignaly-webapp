@@ -13,12 +13,12 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-} from "@material-ui/core";
+} from "@mui/material";
 import tradeApi from "services/tradeApiClient";
 import Modal from "components/Modal";
 import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import { ChevronRight } from "@material-ui/icons";
+import { ChevronRight } from "@mui/icons-material";
 import WalletTransactions from "./WalletTransactions";
 import BalanceChain from "./BalanceChain";
 import NumberFormat from "react-number-format";
@@ -109,7 +109,7 @@ const TextSaving = styled(Typography)`
 `;
 
 const Divider = styled.span`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
+  background: ${({ theme }) => (theme.palette.mode === "dark" ? "#222249" : "#ACB6FF")};
   width: 1px;
   height: 128px;
   align-self: center;
@@ -121,7 +121,7 @@ const Divider = styled.span`
 `;
 
 const VaultDivider = styled.span`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
+  background: ${({ theme }) => (theme.palette.mode === "dark" ? "#222249" : "#CCCAEF")};
   height: 1px;
   width: calc(100% - 31px);
   align-self: flex-end;

@@ -3,7 +3,7 @@ import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
 import { isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled, { css } from "styled-components";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import tradeApi from "services/tradeApiClient";
 import CustomButton from "components/CustomButton";
 import NumberFormat from "react-number-format";
@@ -15,7 +15,7 @@ import CustomModal from "components/Modal";
 import TwoFAForm from "components/Forms/TwoFAForm";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 
 const StyledAlert = styled(Alert)`
   width: 100%;
@@ -98,7 +98,7 @@ const AmountTypography = styled(Typography)`
 const StyledPanel = styled.div`
   background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
   color: ${(props) => props.theme.newTheme.secondaryText};
-  border: 1px dashed ${({ theme }) => (theme.palette.type === "dark" ? "#5A51F5" : "#996BDE")};
+  border: 1px dashed ${({ theme }) => (theme.palette.mode === "dark" ? "#5A51F5" : "#996BDE")};
   padding: 20px 35px;
   margin-top: 16px;
   border-radius: 8px;

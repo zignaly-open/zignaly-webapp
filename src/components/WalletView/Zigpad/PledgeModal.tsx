@@ -8,11 +8,11 @@ import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
-import { Box, Checkbox, FormControlLabel, Typography } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import PledgeModalConfirm from "./PledgeModalConfirm";
 import { ConfirmDialog } from "components/Dialogs";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
-import { ErrorOutlineOutlined } from "@material-ui/icons";
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 
 const StyledButton = styled(Button)`
   min-width: 150px;

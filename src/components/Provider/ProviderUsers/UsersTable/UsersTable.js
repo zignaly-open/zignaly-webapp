@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./UsersTable.scss";
-import { Box, CircularProgress, Tooltip } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
 import Table from "../../../Table";
 import { FormattedMessage, useIntl } from "react-intl";
 import EditIcon from "../../../../images/ct/edit.svg";
@@ -12,8 +12,8 @@ import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../../../store/actions/ui";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { findIndex } from "lodash";
 
 /** ]

@@ -1,6 +1,6 @@
 import React from "react";
 import "./balance.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import TotalEquity from "../../../components/Balance/TotalEquity";

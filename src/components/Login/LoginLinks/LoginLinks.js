@@ -1,6 +1,6 @@
 import React from "react";
 import "./LoginLinks.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import Link from "../../LocalizedLink";
 import { FormattedMessage } from "react-intl";
 

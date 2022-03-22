@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./OrdersTable.scss";
-import { Box, CircularProgress, Tooltip } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
 import Table from "../../../../Table";
 import tradeApi from "../../../../../services/tradeApiClient";
 import { ConfirmDialog } from "../../../../Dialogs";
@@ -19,8 +19,8 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeOpenOrdersObject} ExchangeOpenOrdersObject
  * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("@mui/material/styles").ThemeOptions} DeprecatedThemeOptions
+ * @typedef {import("@mui/material/styles").Theme} Theme
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  */

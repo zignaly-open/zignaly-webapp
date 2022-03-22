@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { navigate } from "gatsby";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { assign, concat, isEmpty, isFunction, isObject, range, forIn, noop } from "lodash";
 import { useDispatch } from "react-redux";

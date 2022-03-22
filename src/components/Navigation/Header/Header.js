@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { Box, Grow, Typography, Popper, ClickAwayListener } from "@material-ui/core";
+import { Box, Grow, Typography, Popper, ClickAwayListener } from "@mui/material";
 import LogoWhite from "../../../images/logo/logoNW.svg";
 import LogoBlack from "../../../images/logo/logoNB.svg";
 import ProfileIcon from "../../../images/header/profileIcon.svg";

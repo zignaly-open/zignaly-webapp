@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { SpotProfitSharingSummary } from "./ManagementSummary";
 import ManagementTabs from "./ManagementTabs";
 import tradeApi from "../../../services/tradeApiClient";

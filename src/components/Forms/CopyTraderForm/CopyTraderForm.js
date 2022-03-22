@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderForm.scss";
-import { Box, TextField, Typography } from "@material-ui/core";
+import { Box, TextField, Typography } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -9,11 +9,11 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 import tradeApi from "../../../services/tradeApiClient";
 import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import Alert from "@material-ui/lab/Alert";
+import Alert from '@mui/material/Alert';
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
 import NumberInput from "../NumberInput";
-import { Help } from "@material-ui/icons";
+import { Help } from "@mui/icons-material";
 
 /**
  * @typedef {Object} DefaultProps

@@ -1,6 +1,6 @@
 import React from "react";
 import QRCode from "qrcode.react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import "./DepositQRCodes.scss";
 import { FormattedMessage } from "react-intl";
 /**

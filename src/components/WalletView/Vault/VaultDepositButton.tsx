@@ -25,7 +25,7 @@ const ActivatedButton = styled.div`
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  color: ${({ theme }) => (theme.palette.type === "dark" ? "#B1F7CA" : "#36373f")};
+  color: ${({ theme }) => (theme.palette.mode === "dark" ? "#B1F7CA" : "#36373f")};
   max-width: 210px;
   span {
     white-space: nowrap;
@@ -40,7 +40,7 @@ const ActivatedButtonPledge = styled(ActivatedButton)`
     !active &&
     css`
       background: rgba(48, 122, 233, 0.28);
-      color: ${theme.palette.type === "dark" ? "#bec5fd" : "#3244d3"};
+      color: ${theme.palette.mode === "dark" ? "#bec5fd" : "#3244d3"};
     `}
 `;
 

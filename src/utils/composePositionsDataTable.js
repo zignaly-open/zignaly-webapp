@@ -14,9 +14,9 @@ import {
 import { formatNumber, formatPrice } from "./formatters";
 import { colors } from "../services/theme";
 import { FormattedMessage } from "react-intl";
-import { IconButton } from "@material-ui/core";
-import { Tooltip } from "@material-ui/core";
-import { Box } from "@material-ui/core";
+import { IconButton } from "@mui/material";
+import { Tooltip } from "@mui/material";
+import { Box } from "@mui/material";
 import { store } from "../store/store.js";
 
 /**
@@ -415,7 +415,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
               data-position-id={position.positionId}
               disabled={status > 9}
               onClick={confirmActionHandler}
-            >
+              size="large">
               <LogOut />
             </IconButton>
           </div>
@@ -433,7 +433,7 @@ export function composeAllActionButtons(position, confirmActionHandler) {
             data-action={"abort"}
             data-position-id={position.positionId}
             onClick={confirmActionHandler}
-          >
+            size="large">
             <Delete />
           </IconButton>
         </Tooltip>

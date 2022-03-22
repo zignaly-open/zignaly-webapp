@@ -1,7 +1,7 @@
 import React from "react";
 import "./Testimonial.scss";
-import { Box } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
+import { Box } from "@mui/material";
+import Rating from '@mui/material/Rating';
 import FacebookIcon from "../../../images/facebook-icon.svg";
 import moment from "moment";
 import { FormattedMessage } from "react-intl";

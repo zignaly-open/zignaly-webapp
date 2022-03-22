@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./InternalTransferForm.scss";
-import { Box, TextField, InputAdornment, Typography, CircularProgress } from "@material-ui/core";
+import { Box, TextField, InputAdornment, Typography, CircularProgress } from "@mui/material";
 import {
   Timeline,
   TimelineContent,
@@ -8,7 +8,7 @@ import {
   TimelineItem,
   TimelineConnector,
   TimelineSeparator,
-} from "@material-ui/lab";
+} from "@mui/lab";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -16,7 +16,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import { showSuccessAlert, showErrorAlert } from "../../../store/actions/ui";
-import SyncAltIcon from "@material-ui/icons/SyncAlt";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import CustomSelect from "components/CustomSelect";
 import useEffectSkipFirst from "hooks/useEffectSkipFirst";
 import useAssetsAndBalance from "hooks/useAssetsAndBalance";

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import "./ProvidersProfitsTable.scss";
-import { Box } from "@material-ui/core";
-import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import { ThemeProvider, StyledEngineProvider, useTheme } from "@mui/material/styles";
 import { Link } from "gatsby";
 import WinRate from "./WinRate";
 import { formatFloat, formatFloat2Dec, formatTime } from "../../../utils/format";
@@ -14,8 +14,8 @@ import { merge } from "lodash";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../services/tradeApiClient.types").ProvidersStatsCollection} ProvidersStatsCollection
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("@mui/material/styles").ThemeOptions} DeprecatedThemeOptions
+ * @typedef {import("@mui/material/styles").Theme} Theme
  */
 
 /**
@@ -459,7 +459,7 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
   };
 
   /**
-   * @param {ThemeOptions} theme Material UI theme options.
+   * @param {DeprecatedThemeOptions} theme Material UI theme options.
    * @returns {Theme} Theme overridden.
    */
   const extendedTheme = useMemo(
@@ -479,15 +479,17 @@ const ProvidersProfitsTable = ({ stats, title, persistKey, type }) => {
 
   return (
     <Box className="providersProfitsTable" display="flex" flexDirection="column" width={1}>
-      <MuiThemeProvider theme={extendedTheme}>
-        <Table
-          columns={columns}
-          data={stats}
-          options={options}
-          persistKey={persistKey}
-          title={title}
-        />
-      </MuiThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={extendedTheme}>
+          <Table
+            columns={columns}
+            data={stats}
+            options={options}
+            persistKey={persistKey}
+            title={title}
+          />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </Box>
   );
 };

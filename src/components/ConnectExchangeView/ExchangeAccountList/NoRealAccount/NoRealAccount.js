@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import "./NoRealAccount.scss";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import ModalPathContext from "../../ModalPathContext";
 import useExchangeList from "../../../../hooks/useExchangeList";
 import { getExchangeNamesCombined } from "../../../../utils/helpers";

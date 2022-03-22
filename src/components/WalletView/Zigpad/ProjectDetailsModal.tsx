@@ -1,5 +1,5 @@
-import { Box, Chip, CircularProgress, Typography } from "@material-ui/core";
-import { Link, DescriptionOutlined, Check } from "@material-ui/icons";
+import { Box, Chip, CircularProgress, Typography } from "@mui/material";
+import { Link, DescriptionOutlined, Check } from "@mui/icons-material";
 import CustomModal from "components/Modal";
 import React, { useContext, useEffect, useState } from "react";
 import { isMobile, Modal } from "styles/styles";
@@ -14,7 +14,7 @@ import {
   TimelineDot,
   TimelineItem,
   TimelineSeparator,
-} from "@material-ui/lab";
+} from "@mui/lab";
 import { formatDateTime } from "utils/format";
 import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
@@ -234,7 +234,7 @@ const ZigAmount = styled(Typography)`
 `;
 
 const Divider = styled.span`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
+  background: ${({ theme }) => (theme.palette.mode === "dark" ? "#222249" : "#CCCAEF")};
   width: 1px;
   height: 100%;
   position: absolute;
@@ -299,7 +299,7 @@ const StyledTimelineDot = styled(TimelineDot)`
   justify-content: center;
   align-items: center;
   ${({ theme, color }) =>
-    theme.palette.type === "dark" &&
+    theme.palette.mode === "dark" &&
     color === "grey" &&
     css`
       color: #36373f;

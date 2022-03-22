@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as ButtonMui, ButtonProps, CircularProgress } from "@material-ui/core";
+import { Button as ButtonMui, ButtonProps, CircularProgress } from "@mui/material";
 import styled from "styled-components";
 
 interface CustomButtonProps extends ButtonProps {

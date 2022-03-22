@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl, FormattedMessage } from "react-intl";
-import { Box, FormHelperText, Tooltip } from "@material-ui/core";
+import { Box, FormHelperText, Tooltip } from "@mui/material";
 
 /**
  * @typedef {Object} HelperLabelProps

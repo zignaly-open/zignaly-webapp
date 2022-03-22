@@ -7,8 +7,8 @@ import {
   Tabs,
   Tab,
   Icon,
-} from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, isMobile, Title } from "styles/styles";
@@ -17,7 +17,7 @@ import Table, { TableLayout } from "../Table";
 import RewardsProgressBar from "../Vault/RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import styled, { css } from "styled-components";
-import { ArrowBack, ChevronRight, PeopleOutline, SportsEsports } from "@material-ui/icons";
+import { ArrowBack, ChevronRight, PeopleOutline, SportsEsports } from "@mui/icons-material";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -49,7 +49,7 @@ const StyledTabs = styled(Tabs)`
     border-radius: 6px;
 
     ${({ theme }) =>
-      theme.palette.type === "light" &&
+      theme.palette.mode === "light" &&
       css`
         background: linear-gradient(
           121.21deg,
@@ -178,7 +178,7 @@ const Zigpad = ({ isOpen }: { isOpen: boolean }) => {
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
   const [selectedProject, setSelectedProject] = useState<LaunchpadProject>(null);
   const theme = useTheme();
-  const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down('md'));
   const [tab, setTab] = useState(0);
   // const [rateZIG, setRateZIG] = useState(null);
 

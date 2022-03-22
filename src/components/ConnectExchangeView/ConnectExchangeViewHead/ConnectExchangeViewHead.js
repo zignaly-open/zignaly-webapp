@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import ModalPathContext from "../ModalPathContext";
 import LeftIcon from "../../../images/header/chevron-left.svg";
-import { Box, TextField, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
 import CustomButton from "../../CustomButton";
 import "./ConnectExchangeViewHead.scss";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -10,7 +10,7 @@ import MobileExchangeList from "../../Navigation/MobileHeader/MobileExchangeList
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import { useFormContext } from "react-hook-form";
 import GlobalModalHead from "../GlobalModalHead";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 
 /**
  * @typedef {Object} DefaultProps
@@ -32,7 +32,7 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
   const methods = useFormContext();
   const exchangeConnections = useStoreUserExchangeConnections();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const intl = useIntl();
 
   /**

@@ -1,9 +1,9 @@
 import React from "react";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import "./CustomTooltip.scss";
 
 /**
- * @typedef {import('@material-ui/core/Tooltip').TooltipProps} TooltipProps
+ * @typedef {import('@mui/material/Tooltip').TooltipProps} TooltipProps
  */
 
 /**

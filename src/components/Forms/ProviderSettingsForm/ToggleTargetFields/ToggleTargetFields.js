@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ToggleTargetFields.scss";
-import { Box, Switch } from "@material-ui/core";
+import { Box, Switch } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import TargetFields from "../TargetFields";
 

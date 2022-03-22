@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./Orders.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";

@@ -1,6 +1,6 @@
 import React from "react";
 import "./PaymentResponse.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 /**

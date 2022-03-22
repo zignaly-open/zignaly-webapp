@@ -8,7 +8,7 @@ import {
   TextField,
   Tooltip,
   FormHelperText,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -25,7 +25,7 @@ import { getUserData } from "store/actions/user";
 import CustomNumberInput from "../CustomNumberInput";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 import { psCreateInfoUrl } from "utils/affiliateURLs";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 
 const MODEL_PROFIT_SHARING = 0;
 const MODEL_MONHTLY_FEE = 1;

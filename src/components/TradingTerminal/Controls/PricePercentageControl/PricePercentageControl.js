@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box, Tooltip } from "@mui/material";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
 import { useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";

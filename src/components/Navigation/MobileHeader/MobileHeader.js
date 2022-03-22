@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MobileHeader.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import Enabled from "../../../images/header/enabled.svg";
 import EnabledWhite from "../../../images/header/enabledWhite.svg";
 import Disabled from "../../../images/header/disabled.svg";

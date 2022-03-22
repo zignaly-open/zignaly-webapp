@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CustomSelect from "../../CustomSelect";
 import { useFormContext, Controller } from "react-hook-form";
 import { useIntl, FormattedMessage } from "react-intl";
@@ -10,7 +10,7 @@ import {
   Switch,
   Typography,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./IncreaseStrategyPanel.scss";
 import usePositionSizeHandlers from "../../../hooks/usePositionSizeHandlers";

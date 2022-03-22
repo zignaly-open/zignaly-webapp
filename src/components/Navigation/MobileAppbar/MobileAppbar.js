@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MobileAppbar.scss";
-import { Box, Slide } from "@material-ui/core";
+import { Box, Slide } from "@mui/material";
 import Link from "../../LocalizedLink";
 // import { useDispatch } from "react-redux";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";

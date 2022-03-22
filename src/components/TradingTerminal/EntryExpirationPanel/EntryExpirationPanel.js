@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
-import { Box, Typography, Switch } from "@material-ui/core";
+import { Box, Typography, Switch } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import "./EntryExpirationPanel.scss";

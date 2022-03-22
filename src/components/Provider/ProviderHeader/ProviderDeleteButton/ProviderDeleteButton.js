@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ProviderDeleteButton.scss";
-import { Box, Tooltip, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@mui/material";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";

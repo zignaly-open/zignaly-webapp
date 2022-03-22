@@ -1,7 +1,7 @@
 import React from "react";
 import "./FAQ.scss";
-import { Box } from "@material-ui/core";
-// import { Box, Typography } from "@material-ui/core";
+import { Box } from "@mui/material";
+// import { Box, Typography } from "@mui/material";
 // import { FormattedMessage } from "react-intl";
 // import DocsIcon from "../../images/documents.svg";
 

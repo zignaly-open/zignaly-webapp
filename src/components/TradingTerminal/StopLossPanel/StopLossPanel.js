@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { isNumber, some } from "lodash";
-import { Box, Typography, Switch, FormHelperText } from "@material-ui/core";
+import { Box, Typography, Switch, FormHelperText } from "@mui/material";
 import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";

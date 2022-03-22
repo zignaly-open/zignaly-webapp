@@ -1,6 +1,6 @@
 import React from "react";
 import "./TraderHeaderActions.scss";
-import { Box, Typography, Hidden } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@mui/material";
 import CopyTraderButton from "../CopyTraderButton";
 import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
@@ -64,7 +64,7 @@ const TraderHeaderActions = ({ provider }) => {
       ) : (
         <FollowProviderButton provider={provider} />
       )}
-      <Hidden xsDown>
+      <Hidden smDown>
         {!provider.profitSharing && provider.internalPaymentInfo && (
           <TrialPeriod provider={provider} />
         )}

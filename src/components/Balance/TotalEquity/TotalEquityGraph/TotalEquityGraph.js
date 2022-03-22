@@ -1,7 +1,7 @@
 import React from "react";
 import "./TotalEquityGraph.scss";
 import GenericChart from "../../../Graphs/GradientLineChart";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 import { colors } from "../../../../services/theme";
 import { formatFloat } from "../../../../utils/format";

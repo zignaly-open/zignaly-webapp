@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Box, FormControl, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, FormControl, OutlinedInput, Typography } from "@mui/material";
 
 export const isMobile = (query) => {
   return `@media screen and (min-width: 0px) and (max-width: 990px) { ${query} }`;
@@ -37,8 +37,8 @@ export const Panel = styled(Box)`
 `;
 
 export const Modal = styled(Box)`
-  /* background: ${({ theme }) => (theme.palette.type === "dark" ? "#0C0D21" : "#E4E3F4")}; */
-  /* border: 1px solid ${({ theme }) => (theme.palette.type === "dark" ? "#413BA0" : "#A586DF")}; */
+  /* background: ${({ theme }) => (theme.palette.mode === "dark" ? "#0C0D21" : "#E4E3F4")}; */
+  /* border: 1px solid ${({ theme }) => (theme.palette.mode === "dark" ? "#413BA0" : "#A586DF")}; */
   /* border-radius: 16px; */
   display: flex;
   flex: 1;

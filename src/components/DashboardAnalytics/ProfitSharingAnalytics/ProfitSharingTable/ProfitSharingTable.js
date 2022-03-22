@@ -5,8 +5,8 @@ import { formatDate } from "../../../../utils/format";
 import { formatPrice } from "../../../../utils/formatters";
 import "./ProfitSharingTable.scss";
 import AccountingFilter from "../AccountingFilter";
-import { Box, Tooltip } from "@material-ui/core";
-import HelpIcon from "@material-ui/icons/Help";
+import { Box, Tooltip } from "@mui/material";
+import HelpIcon from "@mui/icons-material/Help";
 import { pnlRetainInfoUrl } from "utils/affiliateURLs";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
 

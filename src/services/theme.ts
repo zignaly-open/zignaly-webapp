@@ -7,7 +7,7 @@ import PlexMonoBoldttf from "../styles/fonts/Mono/IBMPlexMono-Bold.ttf";
 import PlexMonoMediumttf from "../styles/fonts/Mono/IBMPlexMono-Medium.ttf";
 
 /**
- * @typedef {import("@material-ui/styles").CSSProperties} CSSProperties
+ * @typedef {import("@mui/styles").CSSProperties} CSSProperties
  */
 
 /**
@@ -132,19 +132,19 @@ export const colors = {
 };
 
 /**
- * @typedef {Object} ThemeOptionsGrid
+ * @typedef {Object} DeprecatedThemeOptionsGrid
  * @property {string} main
  * @property {string} content
  */
 
 /**
  * @typedef {Object} ExtendedPaletteColorOptions
- * @property {ThemeOptionsGrid} grid
+ * @property {DeprecatedThemeOptionsGrid} grid
  */
 
 /**
  * @typedef {Object} CustomPaletteOptions
- * @typedef {import('@material-ui/core/styles').PaletteColorOptions} PaletteColorOptions
+ * @typedef {import('@mui/material/styles').PaletteColorOptions} PaletteColorOptions
  * @typedef {PaletteColorOptions & ExtendedPaletteColorOptions} ExtendedPaletteOptions
  */
 
@@ -155,8 +155,8 @@ export const colors = {
  */
 
 /**
- * @typedef {import('@material-ui/core/styles').ThemeOptions} ThemeOptions
- * @typedef {ThemeOptions & ExtendedThemeOptions} CustomThemeOptions
+ * @typedef {import('@mui/material/styles').ThemeOptions} DeprecatedThemeOptions
+ * @typedef {DeprecatedThemeOptions & ExtendedThemeOptions} CustomThemeOptions
  */
 
 /**
@@ -169,7 +169,7 @@ export const colors = {
 const theme = (darkStyle) => {
   return {
     palette: {
-      type: darkStyle ? "dark" : "light",
+      mode: darkStyle ? "dark" : "light",
       background: {
         default: darkStyle ? colors.lightBlack : colors.offWhite,
         paper: darkStyle ? colors.lighterBlack : colors.white,

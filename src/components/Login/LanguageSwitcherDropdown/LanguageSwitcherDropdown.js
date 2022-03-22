@@ -4,7 +4,7 @@ import { languages } from "../../../i18n";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { changeLanguage } from "../../../store/actions/settings";
-import { Select, MenuItem } from "@material-ui/core";
+import { Select, MenuItem } from "@mui/material";
 // import FlagIcon from "components/FlagIcon";
 
 const LanguageSwitcher = () => {

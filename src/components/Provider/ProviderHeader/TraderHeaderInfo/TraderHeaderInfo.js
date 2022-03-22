@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./TraderHeaderInfo.scss";
-import { Box, Typography, Hidden, Tooltip } from "@material-ui/core";
+import { Box, Typography, Hidden, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../../ExchangeIcon";
 import EditIcon from "../../../../images/ct/edit.svg";

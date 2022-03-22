@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Typography,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import { formatPrice } from "../../../utils/formatters";
 import { formatFloat2Dec } from "../../../utils/format";
@@ -22,7 +22,7 @@ import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
 import MarginButtons from "../Controls/MarginControl";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**

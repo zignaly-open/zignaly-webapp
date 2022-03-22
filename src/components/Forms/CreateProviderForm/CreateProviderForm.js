@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CreateProviderForm.scss";
-import { Box, Typography, OutlinedInput, CircularProgress } from "@material-ui/core";
+import { Box, Typography, OutlinedInput, CircularProgress } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";

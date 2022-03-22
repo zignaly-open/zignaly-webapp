@@ -1,6 +1,6 @@
 import React from "react";
 import "./NoExchanges.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import { navigate as navigateReach } from "@reach/router";

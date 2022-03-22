@@ -1,11 +1,11 @@
 import React from "react";
 import "./Performance.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { formatPrice } from "utils/formatters";
 import PerformanceGraph from "./PerformanceGraph";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 import { isNumber } from "lodash";
 

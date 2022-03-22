@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip, Typography } from "@mui/material";
 import React, { useMemo } from "react";
 import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -8,7 +8,7 @@ import styled, { css } from "styled-components";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
-import { Add } from "@material-ui/icons";
+import { Add } from "@mui/icons-material";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 const TypographyAmount = styled(Typography)`

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, OutlinedInput, Typography } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";

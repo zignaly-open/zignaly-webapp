@@ -8,7 +8,7 @@ import { FormattedMessage } from "react-intl";
 import defaultProviderLogo from "../images/defaultProviderLogo.png";
 import { composeAllActionButtons } from "../utils/composePositionsDataTable";
 import { useStoreUserData } from "./useStoreUserSelector";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { useIntl } from "react-intl";
 import moment from "moment";
 import EditIcon from "images/ct/edit.svg";

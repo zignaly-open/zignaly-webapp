@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./StatsFilter.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import useExchangesOptions from "../../../../../hooks/useExchangesOptions";
 import CustomSelect from "../../../../CustomSelect";
 import { useIntl } from "react-intl";

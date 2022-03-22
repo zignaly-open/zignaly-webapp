@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import "./DashboardHeader.scss";
-import { Box, Typography, Tooltip } from "@material-ui/core";
+import { Box, Typography, Tooltip } from "@mui/material";
 import SubNavHeader from "../../SubNavHeader";
 import { routesMapping } from "../../../utils/routesMapping";
 import { FormattedMessage } from "react-intl";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import LinkIcon from "@material-ui/icons/Link";
-import LinkOffIcon from "@material-ui/icons/LinkOff";
+import LinkIcon from "@mui/icons-material/Link";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
 import PrivateAreaContext from "context/PrivateAreaContext";
 
 /**

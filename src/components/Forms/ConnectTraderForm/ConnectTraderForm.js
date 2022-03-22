@@ -1,10 +1,10 @@
 import React from "react";
 import "./ConnectTraderForm.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { useIntl } from "react-intl";
-import { Help } from "@material-ui/icons";
+import { Help } from "@mui/icons-material";
 import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import CopyTraderForm from "components/Forms/CopyTraderForm";
 import CopyPSForm from "components/Forms/CopyPSForm";

@@ -7,9 +7,9 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-} from "@material-ui/core";
+  withStyles,
+} from "@mui/material";
 import { FormattedMessage } from "react-intl";
-import { withStyles } from "@material-ui/core/styles";
 import "./PrivacySlider.scss";
 import usePrevious from "hooks/usePrevious";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";

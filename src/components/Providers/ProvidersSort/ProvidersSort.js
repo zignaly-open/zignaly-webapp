@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import "./ProvidersSort.scss";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";

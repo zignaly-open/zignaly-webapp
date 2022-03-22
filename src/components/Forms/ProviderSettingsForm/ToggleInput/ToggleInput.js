@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./ToggleInput.scss";
-import { Box, Typography, TextField, Tooltip, Switch, InputAdornment } from "@material-ui/core";
+import { Box, Typography, TextField, Tooltip, Switch, InputAdornment } from "@mui/material";
 import { FormattedMessage } from "react-intl";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**

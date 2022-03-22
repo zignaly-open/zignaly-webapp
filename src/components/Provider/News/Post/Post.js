@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Paper, Typography, MenuItem, Menu, IconButton } from "@material-ui/core";
+import { Box, Paper, Typography, MenuItem, Menu, IconButton } from "@mui/material";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import CustomButton from "../../../CustomButton";
 import "./Post.scss";
@@ -10,7 +10,7 @@ import tradeApi from "../../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import { MoreHoriz } from "@material-ui/icons";
+import { MoreHoriz } from "@mui/icons-material";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import useStoreViewsSelector from "hooks/useStoreViewsSelector";
 import Modal from "../../../Modal";
@@ -284,7 +284,7 @@ const Post = ({ post: _post, onPostDeleted }) => {
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={handleMenuOpen}
-                  >
+                    size="large">
                     <MoreHoriz />
                   </IconButton>
                   <Menu

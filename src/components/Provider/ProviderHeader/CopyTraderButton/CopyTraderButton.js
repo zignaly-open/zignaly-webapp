@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CopyTraderButton.scss";
-import { Box, Typography, Tooltip } from "@material-ui/core";
+import { Box, Typography, Tooltip } from "@mui/material";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Modal from "../../../Modal";

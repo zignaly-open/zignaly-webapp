@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useMediaQuery, Box, Typography, CircularProgress } from "@material-ui/core";
+import { useMediaQuery, Box, Typography, CircularProgress } from "@mui/material";
 import TotalEquity from "../../../Balance/TotalEquity";
 import CryptoComposition from "../../../Balance/CryptoComposition";
 import { SpotAvailableBalance, FuturesAvailableBalance } from "../../../Balance/AvailableBalance";
@@ -9,7 +9,7 @@ import useEquity from "../../../../hooks/useEquity";
 import useBalance from "../../../../hooks/useBalance";
 import { FormattedMessage, useIntl } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import ProfitLossAnalysis from "../../../Balance/ProfitLossAnalysis";
 import tradeApi from "services/tradeApiClient";
 
@@ -47,7 +47,7 @@ const ExchangeAccountData = ({ account }) => {
 
   const intl = useIntl();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box className="exchangeAccountData">

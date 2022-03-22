@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../../Table";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import tradeApi from "../../../../../services/tradeApiClient";
 import { FormattedMessage } from "react-intl";
 import { FormatedDateTime } from "../../../../../utils/format";

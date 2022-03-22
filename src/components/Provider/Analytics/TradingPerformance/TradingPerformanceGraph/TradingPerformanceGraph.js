@@ -2,8 +2,8 @@ import React from "react";
 import "./TradingPerformanceGraph.scss";
 import BarChart from "../../../../Graphs/BarChart";
 import { formatPrice } from "../../../../../utils/formatters";
-import { Box, useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { Box, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 /**
  *
@@ -34,7 +34,7 @@ import { useTheme } from "@material-ui/core/styles";
  */
 const PerformanceGraph = ({ quarter, unit = "%" }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const values =
     quarter && quarter.weeklyStats ? quarter.weeklyStats.map((item) => item.return) : [];
   const labels = quarter && quarter.weeklyStats ? quarter.weeklyStats.map(() => "") : [];

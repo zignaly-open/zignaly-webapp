@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, useMediaQuery, CircularProgress } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { Paper, Box, Typography, useMediaQuery, CircularProgress } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage } from "react-intl";
 import "./AnalyticsChart.scss";
@@ -29,7 +29,7 @@ import { formatFloat } from "../../../utils/format";
  */
 const AnalyticsChart = ({ stats, timeFrame, quote, loading, provider }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [tabValue, setTabValue] = useState(0);
 
   /**

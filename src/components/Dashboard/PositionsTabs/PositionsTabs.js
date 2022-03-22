@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import TabsMenu from "../../TabsMenu";
 import "./PositionsTabs.scss";
 import { navigate as navigateReach } from "@reach/router";

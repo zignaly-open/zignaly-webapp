@@ -1,6 +1,6 @@
 import React from "react";
 import "./TotalEquityBar.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 /**
  * @typedef {Object} DefaultProps

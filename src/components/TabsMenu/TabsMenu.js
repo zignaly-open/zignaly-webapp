@@ -1,6 +1,6 @@
 import React from "react";
 import "./TabsMenu.scss";
-import { Tab, Tabs } from "@material-ui/core";
+import { Tab, Tabs } from "@mui/material";
 
 /**
  *
@@ -11,7 +11,7 @@ import { Tab, Tabs } from "@material-ui/core";
 
 /**
  *
- * @typedef {import("@material-ui/core").TabTypeMap} TabTypeMap
+ * @typedef {import("@mui/material").TabTypeMap} TabTypeMap
  * @typedef {Object} DefaultProps
  * @property {Number} tabValue
  * @property {TabTypeMap["props"]["onChange"]} changeTab

@@ -1,6 +1,6 @@
 import React from "react";
 import "./management.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";

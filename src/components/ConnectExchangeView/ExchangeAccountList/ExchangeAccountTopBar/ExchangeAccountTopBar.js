@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
-import { Box, useMediaQuery, Typography, Tooltip } from "@material-ui/core";
+import { Box, useMediaQuery, Typography, Tooltip } from "@mui/material";
 import "./ExchangeAccountTopBar.scss";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeIcon from "../../../ExchangeIcon";
 import CustomButton from "../../../CustomButton";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import { Settings, Sunset, Sunrise, Repeat, Layers } from "react-feather";
 import CustomToolip from "../../../CustomTooltip";
-import LinkIcon from "@material-ui/icons/Link";
-import LinkOffIcon from "@material-ui/icons/LinkOff";
-import SyncAltIcon from "@material-ui/icons/SyncAlt";
+import LinkIcon from "@mui/icons-material/Link";
+import LinkOffIcon from "@mui/icons-material/LinkOff";
+import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 
 /**
@@ -32,7 +32,7 @@ const ExchangeAccountTopBar = ({ account }) => {
   const selectedExchange = useSelectedExchange();
   const { navigateToPath } = useContext(ModalPathContext);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { exchanges } = useStoreUserData();
 
   const selectedExchangeInternalId = selectedExchange.internalId;

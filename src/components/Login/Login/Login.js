@@ -1,6 +1,6 @@
 import React from "react";
 import "./Login.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import Logo from "images/logo/logoNB.svg";
 import Trophy from "images/login/trophy.svg";
 import Coins from "images/login/coins.svg";

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import CustomButton from "components/CustomButton";
 import PrivateAreaContext from "context/PrivateAreaContext";
-import { Box, Tooltip, Typography } from "@material-ui/core";
+import { Box, Tooltip, Typography } from "@mui/material";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { isMobile } from "styles/styles";
 import NumberFormat from "react-number-format";

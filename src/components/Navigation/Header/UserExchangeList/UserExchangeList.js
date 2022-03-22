@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Popover } from "@material-ui/core";
+import { Box, Popover } from "@mui/material";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import ExchangeList from "./ExchangeList";
 import ExchangeIcon from "../../../ExchangeIcon";

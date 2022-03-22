@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./TargetFields.scss";
-import { Box, TextField, InputAdornment } from "@material-ui/core";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Box, TextField, InputAdornment } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 /**
  * @typedef {Object} TargetObject

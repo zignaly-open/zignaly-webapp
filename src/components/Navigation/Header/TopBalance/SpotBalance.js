@@ -1,8 +1,8 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { formatFloat } from "../../../../utils/format";
-import AllInclusiveIcon from "@material-ui/icons/AllInclusive";
+import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import BalanceBox from "./BalanceBox";
 import BalaneBox from "./BalanceBox";
 

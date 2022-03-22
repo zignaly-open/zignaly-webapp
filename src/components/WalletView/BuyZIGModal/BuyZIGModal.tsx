@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import WalletIcon from "images/wallet/wallet.svg";
 import Button from "components/Button";
 import styled, { css } from "styled-components";
-import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip, Typography } from "@mui/material";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
 import { buyCryptoURL } from "utils/affiliateURLs";
 import DepositUSDT from "./DepositUSDT";
@@ -19,7 +19,7 @@ import ExchangesTooltip from "../ExchangesTooltip";
 import { getUserData } from "store/actions/user";
 
 const Divider = styled.span`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#CCCAEF")};
+  background: ${({ theme }) => (theme.palette.mode === "dark" ? "#222249" : "#CCCAEF")};
   width: 1px;
   height: 100%;
   position: absolute;

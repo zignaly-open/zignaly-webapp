@@ -13,14 +13,14 @@ import { useDispatch } from "react-redux";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { showErrorAlert } from "../../../store/actions/ui";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import ExchangeIcon from "../../ExchangeIcon";
 import { getUserData } from "../../../store/actions/user";
 
 /**
- * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
+ * @typedef {import("@mui/material").OutlinedInputProps} OutlinedInputProps
  */
 
 /**

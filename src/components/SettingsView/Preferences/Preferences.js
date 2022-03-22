@@ -6,7 +6,7 @@ import {
   // FormControlLabel,
   Tooltip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 // import { toggleBalanceBox } from "../../../store/actions/settings";

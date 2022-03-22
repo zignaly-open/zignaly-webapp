@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import tradeApi from "services/tradeApiClient";
 import { AlignCenter, isMobile, Title } from "styles/styles";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import ZIGIcon from "images/wallet/zignaly-coin.svg";
 import ExportIcon from "images/wallet/export.inline.svg";
@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import NumberFormat from "react-number-format";
 import { getChainIcon } from "utils/chain";
 import { ChevronDown, ChevronUp } from "react-feather";
-import { ArrowRightAlt, Share } from "@material-ui/icons";
+import { ArrowRightAlt, Share } from "@mui/icons-material";
 import CoinIcon from "./CoinIcon";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ListIcon from "images/wallet/list.svg";

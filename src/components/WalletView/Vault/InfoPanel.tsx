@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@material-ui/core";
-import { Info } from "@material-ui/icons";
+import { Box, Button, Typography } from "@mui/material";
+import { Info } from "@mui/icons-material";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -24,7 +24,7 @@ const Panel = styled.div`
   margin-bottom: 16px;
 
   ${({ theme }) =>
-    theme.palette.type === "light" &&
+    theme.palette.mode === "light" &&
     css`
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.1);

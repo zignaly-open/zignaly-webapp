@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProfitLossAnalysis.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { formatNumber } from "../../../utils/formatters";
 

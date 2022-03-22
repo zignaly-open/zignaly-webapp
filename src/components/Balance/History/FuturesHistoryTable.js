@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { formatFloat } from "../../../utils/format";
 import Table from "../../Table";
 // import { formatNumber } from "../../../utils/formatters";

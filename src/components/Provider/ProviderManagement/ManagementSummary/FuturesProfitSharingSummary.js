@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 import { formatFloat, formatFloat2Dec } from "../../../../utils/format";

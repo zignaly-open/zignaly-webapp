@@ -1,11 +1,11 @@
 import React from "react";
 import "./ManagementSummaryCard.scss";
-import { Box, Tooltip, Typography } from "@material-ui/core";
-import PeopleIcon from "@material-ui/icons/People";
-import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
-import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
-import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
-import LocalMallIcon from "@material-ui/icons/LocalMall";
+import { Box, Tooltip, Typography } from "@mui/material";
+import PeopleIcon from "@mui/icons-material/People";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 /**
  * @typedef {Object} DefaultProps

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ResetForm.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import Logo from "images/logo/logoNW.svg";
 import { FormattedMessage } from "react-intl";
 import Link from "components/LocalizedLink";

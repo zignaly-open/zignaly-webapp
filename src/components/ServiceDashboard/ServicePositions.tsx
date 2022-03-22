@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
@@ -112,7 +112,7 @@ const ServicePositions = () => {
       {
         Header: (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton icon={OptionsDotsIcon} />
+            <IconButton icon={OptionsDotsIcon} size="large" />
           </div>
         ),
         accessor: "action",

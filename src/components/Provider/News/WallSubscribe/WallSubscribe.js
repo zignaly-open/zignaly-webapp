@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { NotificationsNone, NotificationsActive } from "@material-ui/icons";
-import { Box, Tooltip, Typography } from "@material-ui/core";
+import { NotificationsNone, NotificationsActive } from "@mui/icons-material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import "./WallSubscribe.scss";
 import tradeApi from "../../../../services/tradeApiClient";

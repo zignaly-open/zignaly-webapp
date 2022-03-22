@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import tradeApi from "../../../../services/tradeApiClient";
 import { showErrorAlert } from "../../../../store/actions/ui";
 import useInterval from "../../../../hooks/useInterval";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import ManagementTable from "./ManagementTable";
 
 /**

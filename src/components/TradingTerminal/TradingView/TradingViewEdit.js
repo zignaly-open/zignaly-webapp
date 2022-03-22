@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import tradeApi from "../../../services/tradeApiClient";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import PositionsTable from "../../Dashboard/PositionsTable/PositionsTable";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";

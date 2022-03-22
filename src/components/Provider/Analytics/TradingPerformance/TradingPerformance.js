@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TradingPerformance.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import TradingPerformanceGraph from "./TradingPerformanceGraph";
 import WeeklyData from "./WeeklyData";
 import { generateStats } from "../../../../utils/stats";

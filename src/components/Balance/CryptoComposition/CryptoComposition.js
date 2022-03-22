@@ -1,6 +1,6 @@
 import React from "react";
 import "./CryptoComposition.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CompositionGraph from "./CompositionGraph";
 

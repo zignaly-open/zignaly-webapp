@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Grid, OutlinedInput, Switch, Typography } from "@material-ui/core";
+import { Box, FormControlLabel, Grid, OutlinedInput, Switch, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import useClipboard from "hooks/useClipboard";

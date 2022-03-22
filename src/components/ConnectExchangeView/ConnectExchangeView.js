@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ConnectExchangeView.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import ConnectExchangeViewContent from "./ConnectExchangeViewContent";
 import ConnectExchangeViewHead from "./ConnectExchangeViewHead";
 import ModalPathContext from "./ModalPathContext";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { formatFloat2Dec } from "../../../../../utils/format";
 import Table from "../../../../Table";
 import ExchangeIcon from "../../../../ExchangeIcon";
@@ -11,8 +11,8 @@ import ExchangeIcon from "../../../../ExchangeIcon";
  * @typedef {import("mui-datatables").MUIDataTableMeta} MUIDataTableMeta
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {import("../../../../../services/tradeApiClient.types").ProfileProviderStatsSignalsObject} ProfileProviderStatsSignalsObject
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("@mui/material/styles").ThemeOptions} DeprecatedThemeOptions
+ * @typedef {import("@mui/material/styles").Theme} Theme
  */
 
 /**

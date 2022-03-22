@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Paper, Box, Typography, useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { Paper, Box, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import BarChart from "../../Graphs/BarChart";
 import { FormattedMessage } from "react-intl";
 import "./ProvidersProfitsChart.scss";
@@ -28,7 +28,7 @@ import { formatFloat2Dec } from "../../../utils/format";
  */
 const ProvidersProfitsChart = ({ stats, timeFrame, base, quote }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [tabValue, setTabValue] = useState(0);
 
   /**

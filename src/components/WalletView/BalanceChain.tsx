@@ -1,5 +1,5 @@
-import { Box } from "@material-ui/core";
-import { ChevronRight } from "@material-ui/icons";
+import { Box } from "@mui/material";
+import { ChevronRight } from "@mui/icons-material";
 import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";

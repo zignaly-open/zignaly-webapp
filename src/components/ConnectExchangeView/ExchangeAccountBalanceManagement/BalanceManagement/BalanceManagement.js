@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { SubNavModalHeader } from "../../../SubNavHeader";
 import "./BalanceManagement.scss";
 import ModalPathContext from "../../ModalPathContext";

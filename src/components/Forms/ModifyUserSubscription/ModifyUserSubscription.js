@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./ModifyUserSubscription.scss";
-import { Box, Typography, Slider } from "@material-ui/core";
+import { Box, Typography, Slider } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { FormattedMessage } from "react-intl";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";

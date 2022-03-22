@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { isEmpty } from "lodash";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Table from "../../Table";
 import { ConfirmDialog } from "../../Dialogs";

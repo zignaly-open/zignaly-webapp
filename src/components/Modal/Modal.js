@@ -1,10 +1,10 @@
 import React from "react";
 import "./Modal.scss";
-import { Dialog } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Dialog } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 /**
- * @typedef {import('@material-ui/core/Dialog').DialogProps} DialogProps
+ * @typedef {import('@mui/material/Dialog').DialogProps} DialogProps
  * @typedef {Object} DefaultProps
  * @property {Boolean} state
  * @property {DialogProps["onClose"]} onClose

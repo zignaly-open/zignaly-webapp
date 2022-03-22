@@ -1,11 +1,11 @@
 import React from "react";
 import "./CustomButton.scss";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress } from "@mui/material";
 
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {import('react').ButtonHTMLAttributes<HTMLButtonElement>} ButtonHTMLAttributes
- * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
+ * @typedef {import('@mui/material').ButtonProps} ButtonProps
  */
 
 /**

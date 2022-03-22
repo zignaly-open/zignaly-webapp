@@ -1,8 +1,8 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { colors } from "../../../services/theme";
-import { Box, FormHelperText, Tooltip } from "@material-ui/core";
-import { Help } from "@material-ui/icons";
+import { Box, FormHelperText, Tooltip } from "@mui/material";
+import { Help } from "@mui/icons-material";
 import "./StopLossStatus.scss";
 
 /**

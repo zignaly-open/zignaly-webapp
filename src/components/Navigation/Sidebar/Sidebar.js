@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Sidebar.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import Link from "../../LocalizedLink";
 import SignalWhite from "../../../images/sidebar/signalWhite.svg";
 import SignalBlack from "../../../images/sidebar/signalBlack.svg";

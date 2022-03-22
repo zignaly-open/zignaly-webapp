@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Analytics.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CopiersGraph from "../../../components/Provider/Analytics/CopiersGraph";
 import TradingPerformance from "../../../components/Provider/Analytics/TradingPerformance";

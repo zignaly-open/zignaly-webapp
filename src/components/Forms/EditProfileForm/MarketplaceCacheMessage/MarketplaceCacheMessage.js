@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MarketplaceCacheMessage.scss";
-import { Box, Typography, Checkbox } from "@material-ui/core";
+import { Box, Typography, Checkbox } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
 

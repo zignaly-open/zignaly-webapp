@@ -5,7 +5,7 @@ import ProvidersSort from "../ProvidersSort";
 import ProvidersList from "../ProvidersList";
 import TimeFrameSelectRow from "../TimeFrameSelectRow";
 import useProvidersList from "hooks/useProvidersList";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").NewAPIProvidersPayload} NewAPIProvidersPayload

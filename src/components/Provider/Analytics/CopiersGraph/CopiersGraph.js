@@ -1,6 +1,6 @@
 import React from "react";
 import GenericChart from "../../../Graphs/LineChart";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 
 /**
  *

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import SpotBalance from "./SpotBalance";
 import FuturesBalance from "./FuturesBalance";

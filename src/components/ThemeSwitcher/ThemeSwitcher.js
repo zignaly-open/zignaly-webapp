@@ -3,7 +3,7 @@ import "./ThemeSwitcher.scss";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";
 import { selectDarkTheme } from "../../store/actions/settings";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import OutlineWhite from "../../images/sidebar/outlineWhite.svg";
 import OutlineBlack from "../../images/sidebar/outlineBlack.svg";
 import FillWhite from "../../images/sidebar/fillWhite.svg";

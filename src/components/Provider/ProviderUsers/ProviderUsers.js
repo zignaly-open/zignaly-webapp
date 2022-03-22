@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import UsersTable from "./UsersTable";
 import useProviderUsers from "../../../hooks/useProviderUsers";
 import UserFilters from "./UserFilters";

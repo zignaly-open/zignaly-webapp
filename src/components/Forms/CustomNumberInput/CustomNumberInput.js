@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { OutlinedInput, InputAdornment } from "@material-ui/core";
+import { OutlinedInput, InputAdornment } from "@mui/material";
 import { isNil } from "lodash";
 import isNumeric from "utils/isNumeric";
 import { Input } from "styles/styles";
@@ -55,7 +55,7 @@ import { Input } from "styles/styles";
  * @typedef {import("react-hook-form/dist/types").ValidationRules} ValidationRules
  * @typedef {import("react-hook-form/dist/types").Control} Control
  * @typedef {import("react-hook-form/dist/types/form").FieldErrors} FieldErrors
- * @typedef {import("@material-ui/core/Input").InputProps} InputProps
+ * @typedef {import("@mui/material/Input").InputProps} InputProps
  */
 
 /**

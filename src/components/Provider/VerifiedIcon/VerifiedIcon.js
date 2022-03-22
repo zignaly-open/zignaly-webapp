@@ -1,5 +1,5 @@
 import React from "react";
-import { VerifiedUser } from "@material-ui/icons";
+import { VerifiedUser } from "@mui/icons-material";
 import "./VerifiedIcon.scss";
 import { useIntl } from "react-intl";
 

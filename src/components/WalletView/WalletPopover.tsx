@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import BSCIcon from "images/wallet/bsc.svg";
 import ETHIcon from "images/wallet/eth.svg";
-import { Box, Grid, Popover, Typography } from "@material-ui/core";
+import { Box, Grid, Popover, Typography } from "@mui/material";
 
 const StyledPopover = styled(Popover)`
   .MuiPopover-paper {

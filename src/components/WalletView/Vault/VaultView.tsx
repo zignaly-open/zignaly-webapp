@@ -6,8 +6,8 @@ import {
   useMediaQuery,
   Tabs,
   Tab,
-} from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AlignCenter, Title } from "styles/styles";
@@ -17,7 +17,7 @@ import RewardsProgressBar from "./RewardsProgressBar";
 import tradeApi from "services/tradeApiClient";
 import VaultOfferModal from "./VaultOfferModal";
 import styled, { css } from "styled-components";
-import { ArrowBack, ChevronRight } from "@material-ui/icons";
+import { ArrowBack, ChevronRight } from "@mui/icons-material";
 import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
@@ -49,7 +49,7 @@ const StyledTabs = styled(Tabs)`
     border-radius: 6px;
 
     ${({ theme }) =>
-      theme.palette.type === "light" &&
+      theme.palette.mode === "light" &&
       css`
         background: linear-gradient(
           121.21deg,
@@ -82,7 +82,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [tab, setTab] = useState(0);
 
   useEffect(() => {

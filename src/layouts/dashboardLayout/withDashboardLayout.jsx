@@ -1,7 +1,7 @@
 import React from "react";
 import "./DashboardLayout.scss";
 import getDisplayName from "../../utils/getDisplayName";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import FAQ from "../../components/FAQ";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import {

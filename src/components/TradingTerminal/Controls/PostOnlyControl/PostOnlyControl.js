@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import HelperLabel from "../../HelperLabel/HelperLabel";
 import useSelectedExchange from "hooks/useSelectedExchange";

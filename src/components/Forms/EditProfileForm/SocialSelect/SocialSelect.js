@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./SocialSelect.scss";
-import { Box, FormControl, Select, MenuItem, TextField } from "@material-ui/core";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Box, FormControl, Select, MenuItem, TextField } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useIntl } from "react-intl";
 
 /**

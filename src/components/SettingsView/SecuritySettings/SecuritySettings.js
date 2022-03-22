@@ -1,7 +1,7 @@
 import React from "react";
 import UpdatePassword from "./UpdatePassword";
 import Enable2FA from "./Enable2FA";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import "./SecuritySettings.scss";
 import FAQ from "../../FAQ";
 

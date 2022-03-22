@@ -1,10 +1,10 @@
 import React from "react";
 import "./Options.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import ProviderOptionsForm from "../../../Forms/ProviderOptionsForm";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useProfileBoxShow from "../../../../hooks/useProfileBoxShow";
 
 /**

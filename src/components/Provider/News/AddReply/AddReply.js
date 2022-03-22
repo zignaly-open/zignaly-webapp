@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, OutlinedInput } from "@material-ui/core";
+import { Box, OutlinedInput } from "@mui/material";
 import ProviderLogo from "../../ProviderHeader/ProviderLogo";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";

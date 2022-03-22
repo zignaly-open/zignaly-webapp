@@ -2,8 +2,8 @@ import React from "react";
 import CustomFilters from "../../CustomFilters";
 import CustomSelect from "../../CustomSelect";
 import { FormattedMessage } from "react-intl";
-import { Checkbox } from "@material-ui/core";
-import { Box } from "@material-ui/core";
+import { Checkbox } from "@mui/material";
+import { Box } from "@mui/material";
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").UserPositionsCollection} UserPositionsCollection

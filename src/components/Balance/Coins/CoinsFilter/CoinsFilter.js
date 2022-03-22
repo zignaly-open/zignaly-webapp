@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./CoinsFilter.scss";
-import { Box, Checkbox } from "@material-ui/core";
+import { Box, Checkbox } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 /**
  *

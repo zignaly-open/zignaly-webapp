@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { ExchangeContractsObject, ExchangeOpenOrdersObject } from "services/tradeApiClient.types";
 import styled from "styled-components";
@@ -64,7 +64,7 @@ const ServiceContracts = () => {
       {
         Header: (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton icon={OptionsDotsIcon} />
+            <IconButton icon={OptionsDotsIcon} size="large" />
           </div>
         ),
         accessor: "action",

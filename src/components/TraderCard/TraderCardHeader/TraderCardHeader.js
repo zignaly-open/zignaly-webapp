@@ -1,6 +1,6 @@
 import React from "react";
 import "./TraderCardHeader.scss";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import ExchangeIcon from "../../ExchangeIcon";
 import { FormattedMessage } from "react-intl";
 import ProviderLogo from "../../Provider/ProviderHeader/ProviderLogo";

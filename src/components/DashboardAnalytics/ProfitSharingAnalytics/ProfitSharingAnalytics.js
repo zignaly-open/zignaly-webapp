@@ -3,7 +3,7 @@ import tradeApi from "../../../services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import TradingPerformance from "../../Provider/Analytics/TradingPerformance";
 import TotalEquityBar from "../../TotalEquityBar";
 import EquityPart from "../../TotalEquityBar/EquityPart";

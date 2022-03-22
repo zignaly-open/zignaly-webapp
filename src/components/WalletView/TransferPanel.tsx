@@ -1,10 +1,10 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import styled from "styled-components";
 import React from "react";
 
 export const TransferPanel = styled.div`
   background-color: ${({ theme }) => theme.newTheme.backgroundAltColor};
-  border: 1px dashed ${({ theme }) => (theme.palette.type === "dark" ? "#5A51F5" : "#a586e0")};
+  border: 1px dashed ${({ theme }) => (theme.palette.mode === "dark" ? "#5A51F5" : "#a586e0")};
   margin: 0 16px;
   padding: 28px 20px;
   border-radius: 8px;

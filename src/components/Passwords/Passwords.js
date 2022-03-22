@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Box, Popper, useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { Box, Popper, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import PasswordStrength from "./PasswordStrength";
 import PasswordInput from "./PasswordInput";
 import { validatePassword } from "../../utils/validators";
@@ -29,7 +29,7 @@ const Passwords = ({ formMethods, edit }) => {
   const [strength, setStrength] = useState(0);
   const { register, errors, getValues } = formMethods;
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const intl = useIntl();
 
   /**

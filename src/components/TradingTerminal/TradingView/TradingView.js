@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
 import { createWidgetOptions } from "../../../tradingView/tradingViewOptions";
 import StrategyForm from "../StrategyForm/StrategyForm";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import TradingViewHeader from "./TradingViewHeader";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useStoreUserSelector } from "../../../hooks/useStoreUserSelector";

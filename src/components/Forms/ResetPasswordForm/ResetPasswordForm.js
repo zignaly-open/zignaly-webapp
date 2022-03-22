@@ -8,11 +8,11 @@ import {
   OutlinedInput,
   Popper,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { validatePassword } from "../../../utils/validators";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import PasswordStrength from "../../Passwords/PasswordStrength";
 import { useForm } from "react-hook-form";
 import tradeApi from "../../../services/tradeApiClient";
@@ -185,7 +185,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                  <IconButton onClick={() => setShowPassword(!showPassword)} size="large">
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
@@ -213,7 +213,7 @@ const ResetPasswordForm = ({ code, setExpired }) => {
             <OutlinedInput
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
+                  <IconButton onClick={() => setShowRepeatPassword(!showRepeatPassword)} size="large">
                     {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>

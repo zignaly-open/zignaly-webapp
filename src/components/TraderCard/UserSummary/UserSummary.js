@@ -1,6 +1,6 @@
 import React from "react";
 import "./UserSummary.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { formatFloat2Dec, formatFloat } from "../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import CustomTooltip from "../../CustomTooltip";

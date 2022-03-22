@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./History.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import SpotHistoryTable from "./SpotHistoryTable";
 import EquityFilter from "../TotalEquity/EquityFilter";
 import FuturesHistoryTable from "./FuturesHistoryTable";

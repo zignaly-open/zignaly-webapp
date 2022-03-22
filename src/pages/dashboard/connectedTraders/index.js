@@ -1,6 +1,6 @@
 import React from "react";
 import "./connectedTraders.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import withDashboardLayout from "../../../layouts/dashboardLayout";
 import { Helmet } from "react-helmet";
 import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";

@@ -11,8 +11,8 @@ import {
   Radio,
   FormHelperText,
   FormControlLabel,
-} from "@material-ui/core";
-import { AddCircle, RemoveCircle } from "@material-ui/icons";
+} from "@mui/material";
+import { AddCircle, RemoveCircle } from "@mui/icons-material";
 import { useFormContext, Controller } from "react-hook-form";
 import { formatFloat2Dec } from "../../../utils/format";
 import useExpandable from "../../../hooks/useExpandable";

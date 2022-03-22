@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import ManagementSummaryCard from "../ManagementSummaryCard";
 import { formatFloat, formatFloat2Dec } from "../../../../utils/format";

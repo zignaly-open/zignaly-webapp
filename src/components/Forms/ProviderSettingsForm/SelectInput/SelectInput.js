@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./SelectInput.scss";
-import { Box, Typography, TextField, Select, MenuItem, Tooltip } from "@material-ui/core";
+import { Box, Typography, TextField, Select, MenuItem, Tooltip } from "@mui/material";
 import { Controller } from "react-hook-form";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**

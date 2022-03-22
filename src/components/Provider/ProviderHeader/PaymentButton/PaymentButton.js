@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./PaymentButton.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import Modal from "../../../Modal";
 import Disclaimer from "../../Profile/Disclaimer";
 

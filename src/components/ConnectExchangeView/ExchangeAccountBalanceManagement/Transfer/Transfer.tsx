@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ModalPathContext from "../../ModalPathContext";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import "./Transfer.scss";
 import BalanceManagement from "../BalanceManagement";
 import InternalTransferForm from "components/Forms/InternalTransferForm";
@@ -24,7 +24,7 @@ import {
   TypographyAddress,
   TypographyLabel,
 } from "components/WalletView/TransferPanel";
-import { ArrowRightAlt } from "@material-ui/icons";
+import { ArrowRightAlt } from "@mui/icons-material";
 import ListIcon from "images/wallet/list.svg";
 import Select from "components/WalletView/Select";
 

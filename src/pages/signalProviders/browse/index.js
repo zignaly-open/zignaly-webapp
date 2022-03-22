@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { useIntl } from "react-intl";
 import withProvidersLayout from "../../../layouts/providersLayout/withProvidersLayout";
 import { Helmet } from "react-helmet";

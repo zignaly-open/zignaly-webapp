@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Box, OutlinedInput, Typography, Switch, InputAdornment } from "@material-ui/core";
+import { Box, OutlinedInput, Typography, Switch, InputAdornment } from "@mui/material";
 import "./ExchangeAccountForm.scss";
 import { FormattedMessage } from "react-intl";
-import { Help } from "@material-ui/icons";
+import { Help } from "@mui/icons-material";
 import CustomTooltip from "../../CustomTooltip";
 import { Controller, useFormContext } from "react-hook-form";
 
 /**
- * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
+ * @typedef {import("@mui/material").OutlinedInputProps} OutlinedInputProps
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
  */
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import CustomSelect from "../../../CustomSelect";
 import { formatFloat } from "../../../../utils/format";
 

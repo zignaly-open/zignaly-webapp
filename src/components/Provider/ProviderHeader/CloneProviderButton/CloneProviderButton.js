@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CloneProviderButton.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";

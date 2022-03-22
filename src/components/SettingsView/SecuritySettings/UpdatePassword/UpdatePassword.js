@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";

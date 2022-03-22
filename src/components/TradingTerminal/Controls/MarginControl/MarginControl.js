@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, Switch, Typography } from "@material-ui/core";
+import { Box, Button, Switch, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useFormContext } from "react-hook-form";
 import LeverageForm from "../../LeverageForm/LeverageForm";

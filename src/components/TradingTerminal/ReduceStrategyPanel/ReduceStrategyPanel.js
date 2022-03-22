@@ -9,7 +9,7 @@ import {
   FormControlLabel,
   Switch,
   Box,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
 import HelperLabel from "../HelperLabel/HelperLabel";
 import "./ReduceStrategyPanel.scss";
@@ -17,7 +17,7 @@ import usePositionEntry from "../../../hooks/usePositionEntry";
 import useEffectSkipFirst from "../../../hooks/useEffectSkipFirst";
 import { formatPrice } from "../../../utils/formatters";
 import useValidation from "../../../hooks/useValidation";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 import TradingViewContext from "../TradingView/TradingViewContext";
 import PostOnlyControl from "../Controls/PostOnlyControl/PostOnlyControl";
 

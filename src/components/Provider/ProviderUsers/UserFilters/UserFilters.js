@@ -1,7 +1,7 @@
 import React from "react";
 import "./UserFilters.scss";
 import CustomSelect from "../../../CustomSelect";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { useIntl } from "react-intl";
 
 /**

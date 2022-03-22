@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import "./BarChart.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { Bar, HorizontalBar } from "react-chartjs-2";
 import "../Chart.roundedBarCharts";
 import LogoIcon from "../../../images/logo/logoIcon.svg";

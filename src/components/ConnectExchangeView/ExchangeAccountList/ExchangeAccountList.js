@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import "./ExchangeAccountList.scss";
 import { useStoreUserExchangeConnections } from "../../../hooks/useStoreUserSelector";
 import ExchangeAccountData from "./ExchangeAccountData";

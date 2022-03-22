@@ -1,8 +1,8 @@
 import React from "react";
 import "./PerformanceGraph.scss";
 import BarChart from "../../../../Graphs/BarChart";
-import { Box, useMediaQuery, Typography } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { Box, useMediaQuery, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { formatFloat2Dec } from "../../../../../utils/format";
 
 /**
@@ -24,7 +24,7 @@ import { formatFloat2Dec } from "../../../../../utils/format";
 
 const PerformanceGraph = ({ provider }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   /**
    * @typedef {Object} ValuesObject

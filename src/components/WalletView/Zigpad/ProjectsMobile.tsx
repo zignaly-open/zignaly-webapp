@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -9,7 +9,7 @@ import { PledgeButton } from "../Vault/VaultDepositButton";
 import RewardsProgressCircle from "../Vault/RewardsProgressCircle";
 import { Coin, Panel } from "../Vault/VaultMobile";
 import { Terms } from "../styles";
-import { ChevronRight } from "@material-ui/icons";
+import { ChevronRight } from "@mui/icons-material";
 import CoinIcon from "../CoinIcon";
 
 const TypographyProject = styled(Typography)`

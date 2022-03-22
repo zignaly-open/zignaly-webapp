@@ -1,10 +1,10 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { TradingView } from "../../components/TradingTerminal";
 import { FormattedMessage } from "react-intl";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import "./tradingTerminal.scss";
 
 const TradingTerminal = () => {

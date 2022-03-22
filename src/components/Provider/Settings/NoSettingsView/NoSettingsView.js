@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./NoSettingsView.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { useStoreUserExchangeConnections } from "../../../../hooks/useStoreUserSelector";
 import useStoreViewsSelector from "../../../../hooks/useStoreViewsSelector";

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ToggleTextarea.scss";
-import { Box, Typography, TextField, Tooltip, Switch } from "@material-ui/core";
+import { Box, Typography, TextField, Tooltip, Switch } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import { Controller } from "react-hook-form";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 import useStoreSettingsSelector from "../../../../hooks/useStoreSettingsSelector";
 
 /**

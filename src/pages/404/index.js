@@ -1,9 +1,9 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { FormattedMessage } from "react-intl";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import "./404.scss";
 import AnimalImage from "../../images/404/animal.svg";
 import CustomButton from "../../components/CustomButton";

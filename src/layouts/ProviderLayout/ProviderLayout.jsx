@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProviderLayout.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import ProviderHeader from "../../components/Provider/ProviderHeader";
 import FAQ from "../../components/FAQ";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";

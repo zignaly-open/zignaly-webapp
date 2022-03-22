@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./ChangeEmailButton.scss";
-import { Box, CircularProgress, Tooltip } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
 import tradeApi from "../../../../services/tradeApiClient";
 import useStoreSessionSelector from "../../../../hooks/useStoreSessionSelector";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
-import EditIcon from "@material-ui/icons/Edit";
+import EditIcon from "@mui/icons-material/Edit";
 import { FormattedMessage } from "react-intl";
 import { endTradeApiSession } from "store/actions/session";
 import { navigateLogin } from "services/navigation";

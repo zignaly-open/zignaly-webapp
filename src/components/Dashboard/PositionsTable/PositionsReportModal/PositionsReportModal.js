@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./PositionsReportModal.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../../CustomButton";
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Slider, Typography } from "@material-ui/core";
+import { Box, Slider, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import "./LeverageForm.scss";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

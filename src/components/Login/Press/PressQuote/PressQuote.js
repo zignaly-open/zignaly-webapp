@@ -1,6 +1,6 @@
 import React from "react";
 import "./PressQuote.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 /**

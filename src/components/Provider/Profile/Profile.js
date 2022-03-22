@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Profile.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import AboutUs from "../../../components/Provider/Profile/AboutUs";
 import Strategy from "../../../components/Provider/Profile/Strategy";
 import WhoWeAre from "../../../components/Provider/Profile/WhoWeAre";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Paper, Typography } from "@material-ui/core";
+import { Paper, Typography } from "@mui/material";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import "./EditPost.scss";

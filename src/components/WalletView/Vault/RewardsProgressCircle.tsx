@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { format2Dec, formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 
 const CircleContainer = styled.div`
   position: relative;
@@ -27,7 +27,7 @@ const CircularProgressFilled = styled(CircularProgress)`
     stroke: url(#filled_gradient_dark);
 
     ${({ theme }) =>
-      theme.palette.type === "light" &&
+      theme.palette.mode === "light" &&
       css`
         stroke: url(#filled_gradient_light);
       `}

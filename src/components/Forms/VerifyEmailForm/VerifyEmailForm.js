@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./VerifyEmailForm.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";

@@ -1,6 +1,6 @@
 import React from "react";
 import "./SelectionActions.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CustomButton from "../../../../../CustomButton";
 import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../../../../../store/actions/ui";

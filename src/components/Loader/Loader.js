@@ -1,6 +1,6 @@
 import React from "react";
 import "./Loader.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import LogoWhite from "../../images/logo/logoNW.svg";
 import LogoBlack from "../../images/logo/logoNB.svg";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./SyncBalanceButton.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
-import SyncIcon from "@material-ui/icons/Sync";
+import SyncIcon from "@mui/icons-material/Sync";
 import { getDailyUserBalance } from "store/actions/user";
 
 /**

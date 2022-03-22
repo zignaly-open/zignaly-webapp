@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./TotalEquity.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import TotalEquityGraph from "./TotalEquityGraph";
 import TitleBar from "./TitleBar";
 import EquityFilter from "./EquityFilter";

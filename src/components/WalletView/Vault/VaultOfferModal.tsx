@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import CustomModal from "components/Modal";
 import React from "react";
 import { Title, Modal } from "styles/styles";

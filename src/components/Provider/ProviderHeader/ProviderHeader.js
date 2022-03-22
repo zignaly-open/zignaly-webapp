@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ProviderHeader.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import SubNavHeader from "../../SubNavHeader";
 import {
   createProviderRoutes,

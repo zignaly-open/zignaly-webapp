@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import WalletIcon from "images/wallet/wallet.svg";
-import { Box, CircularProgress, Grid, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, CircularProgress, Grid, Typography, useMediaQuery } from "@mui/material";
 import styled, { css } from "styled-components";
 import Button from "components/Button";
 import tradeApi from "services/tradeApiClient";
@@ -10,10 +10,10 @@ import { AmountBox, CoinAmount } from "../WalletWithdrawConfirm";
 import CoinIcon from "../CoinIcon";
 import { isMobile, Title } from "styles/styles";
 import NumberFormat from "react-number-format";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { useDispatch } from "react-redux";
-import { ArrowForwardOutlined } from "@material-ui/icons";
+import { ArrowForwardOutlined } from "@mui/icons-material";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -51,7 +51,7 @@ const AmountSwapBoxBottom = styled(AmountSwapBox)`
 `;
 
 const Divider = styled.span`
-  background: ${({ theme }) => (theme.palette.type === "dark" ? "#222249" : "#ACB6FF")};
+  background: ${({ theme }) => (theme.palette.mode === "dark" ? "#222249" : "#ACB6FF")};
   width: 100%;
   height: 1px;
   align-self: center;
@@ -103,7 +103,7 @@ const SwapZIGConfirm = ({
   const amountTo = swapInfo ? amount * swapInfo.price : null;
   // const priceExpired = dayjs(swapInfo.expiration).isBefore(dayjs());
   const theme = useTheme();
-  const isMobileQuery = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobileQuery = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = useState(false);
   const [priceLoading, setPriceLoading] = useState(false);
   const dispatch = useDispatch();

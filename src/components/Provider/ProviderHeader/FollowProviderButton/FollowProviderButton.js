@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./FollowProviderButton.scss";
-import { Box, Typography, Tooltip } from "@material-ui/core";
+import { Box, Typography, Tooltip } from "@mui/material";
 import CustomButton from "../../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import tradeApi from "../../../../services/tradeApiClient";

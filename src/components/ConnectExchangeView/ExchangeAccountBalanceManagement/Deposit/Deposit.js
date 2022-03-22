@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import ModalPathContext from "../../ModalPathContext";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import "./Deposit.scss";
 import CustomButton from "../../../CustomButton";
 import MastercardIcon from "../../../../images/exchangeAccount/mastercard.svg";
@@ -21,7 +21,7 @@ import NetworksToggleGroup from "../NetworksToggleGroup";
 import TipBox from "../TipBox";
 import Modal from "../../../Modal";
 import DepositQRCodes from "./DepositQRCodes";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 
 const Deposit = () => {
   const {

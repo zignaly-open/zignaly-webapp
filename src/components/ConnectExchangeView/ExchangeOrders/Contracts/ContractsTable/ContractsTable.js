@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ContractsTable.scss";
-import { Box, CircularProgress, Tooltip } from "@material-ui/core";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
 import Table from "../../../../Table";
 import { formatFloat } from "../../../../../utils/format";
 import { Link } from "gatsby";
@@ -19,8 +19,8 @@ import { FormattedMessage } from "react-intl";
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeContractsObject} ExchangeContractsObject
  * @typedef {import("../../../../../services/tradeApiClient.types").ExchangeConnectionEntity} ExchangeConnectionEntity
  * @typedef {import("../../../../../services/tradeApiClient.types").DefaultProviderGetObject} DefaultProviderGetObject
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("@mui/material/styles").ThemeOptions} DeprecatedThemeOptions
+ * @typedef {import("@mui/material/styles").Theme} Theme
  * @typedef {import("../../../../../utils/composePositionsDataTable").DataTableContent} DataTableContent
  */
 

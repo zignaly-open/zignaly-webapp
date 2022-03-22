@@ -9,8 +9,8 @@ import {
   Tooltip,
   Switch,
   FormControlLabel,
-} from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
+} from "@mui/material";
+import Alert from '@mui/material/Alert';
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -38,7 +38,7 @@ import { setMarketplaceCacheModal } from "store/actions/settings";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import CustomNumberInput from "../CustomNumberInput";
 import TooltipWithUrl from "components/Controls/TooltipWithUrl";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 import { highWaterMarkInfoUrl } from "utils/affiliateURLs";
 import PrivacySlider from "./PrivacySlider";
 import { ConfirmDialog } from "components/Dialogs";

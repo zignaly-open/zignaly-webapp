@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ProviderStats.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import StatsFilter from "./StatsFilter";
 import StatsTable from "./StatsTable";
 

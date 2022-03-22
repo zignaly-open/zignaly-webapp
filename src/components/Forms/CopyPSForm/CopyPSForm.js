@@ -7,7 +7,7 @@ import {
   FormHelperText,
   Checkbox,
   OutlinedInput,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import { FormattedMessage } from "react-intl";
@@ -18,11 +18,11 @@ import { getProvider } from "../../../store/actions/views";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { useIntl } from "react-intl";
 import useAvailableBalance from "../../../hooks/useAvailableBalance";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
+import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
 import { isNil } from "lodash";
-import { Help } from "@material-ui/icons";
+import { Help } from "@mui/icons-material";
 
 /**
  * @typedef {Object} DefaultProps

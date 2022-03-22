@@ -5,7 +5,7 @@ import TwitterIcon from "../../../../images/ct/twitter.svg";
 import DiscordIcon from "../../../../images/ct/discord.svg";
 import LinkedinIcon from "../../../../images/ct/linkedin.svg";
 import TelegramIcon from "../../../../images/ct/telegram.svg";
-import EmailIcon from "@material-ui/icons/Email";
+import EmailIcon from "@mui/icons-material/Email";
 import { prefixLinkForXSS } from "utils/formatters";
 import { Link } from "gatsby";
 

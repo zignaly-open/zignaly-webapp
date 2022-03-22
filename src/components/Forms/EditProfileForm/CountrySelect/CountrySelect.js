@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./CountrySelect.scss";
-import { Box, TextField, FormControl, Select, MenuItem } from "@material-ui/core";
+import { Box, TextField, FormControl, Select, MenuItem } from "@mui/material";
 import { countries } from "countries-list";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useIntl } from "react-intl";
 import FlagIcon from "components/FlagIcon";
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Typography } from "@material-ui/core";
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
+import { Typography } from "@mui/material";
+import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { FormattedMessage } from "react-intl";
 
 /**

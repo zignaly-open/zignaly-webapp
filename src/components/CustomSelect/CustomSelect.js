@@ -7,13 +7,13 @@ import {
   Typography,
   TextField,
   Tooltip,
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+} from "@mui/material";
+import { Autocomplete } from '@mui/material';
 import "./CustomSelect.scss";
 import ConditionalWrapper from "../ConditionalWrapper";
 
 /**
- * @typedef {import("@material-ui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
+ * @typedef {import("@mui/lab").AutocompleteProps<*, false, false, false>['renderOption']} renderOption
  */
 
 /**
@@ -192,7 +192,7 @@ const CustomSelect = (props) => {
             disableCloseOnSelect={disableCloseOnSelect}
             disabled={disabled}
             getOptionLabel={(option) => extractLabel(option, options)}
-            getOptionSelected={(option, v) => {
+            isOptionEqualToValue={(option, v) => {
               const optionVal = extractVal(option);
               const val = extractVal(v);
               return optionVal === val;

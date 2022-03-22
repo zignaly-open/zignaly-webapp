@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./MobileExchangeList.scss";
-import { Box, Slide, Typography } from "@material-ui/core";
+import { Box, Slide, Typography } from "@mui/material";
 import CloseBlack from "../../../../images/sidebar/closeBlack.svg";
 import CloseWhite from "../../../../images/sidebar/closeWhite.svg";
 import { FormattedMessage } from "react-intl";

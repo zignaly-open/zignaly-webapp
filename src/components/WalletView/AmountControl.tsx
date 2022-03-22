@@ -8,7 +8,7 @@ import {
   InputAdornment,
   Button as ButtonMui,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";

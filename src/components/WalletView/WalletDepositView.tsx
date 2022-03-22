@@ -3,12 +3,12 @@ import WalletIcon from "images/wallet/wallet.svg";
 import { FormattedMessage } from "react-intl";
 import { Input, isMobile, Label, Modal, TextDesc, Title } from "styles/styles";
 import styled from "styled-components";
-import { Box, CircularProgress, IconButton, OutlinedInput, Typography } from "@material-ui/core";
+import { Box, CircularProgress, IconButton, OutlinedInput, Typography } from "@mui/material";
 import tradeApi from "services/tradeApiClient";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import useClipboard from "hooks/useClipboard";
 import QRCode from "qrcode.react";
-import { ErrorOutlineOutlined, FileCopyOutlined } from "@material-ui/icons";
+import { ErrorOutlineOutlined, FileCopyOutlined } from "@mui/icons-material";
 import { Control } from "./styles";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
@@ -53,7 +53,10 @@ export const CopyButton = ({ value, success }: { value: string; success: string 
   const copyToClipboard = useClipboard();
 
   return (
-    <IconButton aria-label="Copy" onClick={() => copyToClipboard(value, success)}>
+    <IconButton
+      aria-label="Copy"
+      onClick={() => copyToClipboard(value, success)}
+      size="large">
       <FileCopyOutlined width={24} height={24} />
     </IconButton>
   );

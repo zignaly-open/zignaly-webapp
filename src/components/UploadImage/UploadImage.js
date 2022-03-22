@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./UploadImage.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CustomButton from "../CustomButton/CustomButton";
 import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";

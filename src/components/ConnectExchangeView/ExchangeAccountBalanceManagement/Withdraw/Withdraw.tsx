@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@material-ui/core";
+import { Box, Typography, CircularProgress, OutlinedInput, FormControl } from "@mui/material";
 import "./Withdraw.scss";
 import TransferCoinPicker from "../TransferCoinPicker";
 import TipBox from "../TipBox";
@@ -20,7 +20,7 @@ import ModalPathContext from "../../ModalPathContext";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import Modal from "../../../Modal";
 import TwoFAForm from "../../../Forms/TwoFAForm";
-import { Alert } from "@material-ui/lab";
+import { Alert } from '@mui/material';
 import { validateDecimals, precisionNumberToDecimals } from "../../../../utils/validators";
 
 const Withdraw = () => {

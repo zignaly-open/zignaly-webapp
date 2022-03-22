@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import Post from "../Post";
 import "./Posts.scss";
 import Astronaut from "../../../Astronaut";

@@ -8,9 +8,9 @@ import {
   Radio,
   Tooltip,
   Switch,
-} from "@material-ui/core";
+} from "@mui/material";
 import { FormattedMessage } from "react-intl";
-import HelpIcon from "@material-ui/icons/Help";
+import HelpIcon from "@mui/icons-material/Help";
 
 /**
  * @typedef {Object} OptionType

@@ -1,12 +1,9 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
-import {
-  ThemeProvider as MuiThemeProvider,
-  createTheme,
-  StylesProvider,
-} from "@material-ui/core/styles";
+import { StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material/styles";
 import { StyleSheetManager, ThemeProvider as ThemeProviderSC } from "styled-components";
-import { ThemeProvider } from "zignaly-ui";
-import { CssBaseline } from "@material-ui/core";
+// import { ThemeProvider as ThemeProviderMui } from "zignaly-ui";
+// import { dark, light } from "zignaly-ui";
+import { CssBaseline } from "@mui/material";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
 import SuccessAlert from "../../components/Alerts/SuccessAlert";
@@ -23,7 +20,6 @@ import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import { dark, light } from "zignaly-ui";
 
 /**
  *
@@ -51,7 +47,8 @@ const AppLayout = (props) => {
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
   const theme = useMemo(() => createTheme(options), [darkTheme]);
-  const sharedTheme = darkTheme ? dark : light;
+  console.log(theme);
+  // const sharedTheme = darkTheme ? dark : light;
   const prevLocation = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -97,7 +94,14 @@ const AppLayout = (props) => {
     // Save prev location
     prevLocation.current = window.location.href;
   }, [href]);
-
+  const theme2 = createTheme({
+    palette: {
+      primary: { main: "#ff4400" },
+      secondary: {
+        main: "#000000",
+      },
+    },
+  });
   return (
     <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
       <GoogleReCaptchaProvider
@@ -112,21 +116,13 @@ const AppLayout = (props) => {
         useEnterprise={false}
         useRecaptchaNet={true}
       >
-        <StylesProvider injectFirst>
-          <MuiThemeProvider theme={theme}>
-            <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === "development"}>
-              <ThemeProviderSC theme={theme}>
-                <ThemeProvider theme={sharedTheme}>
-                  <CssBaseline />
-                  <ErrorAlert />
-                  <SuccessAlert />
-                  {storeLoader && <Loader />}
-                  {children}
-                </ThemeProvider>
-              </ThemeProviderSC>
-            </StyleSheetManager>
-          </MuiThemeProvider>
-        </StylesProvider>
+        <ThemeProvider theme={theme2}>
+          <CssBaseline />
+          <ErrorAlert />
+          <SuccessAlert />
+          {storeLoader && <Loader />}
+          {children}
+        </ThemeProvider>
       </GoogleReCaptchaProvider>
     </IntlProvider>
   );

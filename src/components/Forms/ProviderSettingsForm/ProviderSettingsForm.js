@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./ProviderSettingsForm.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Box, Typography, MenuItem, Menu, IconButton } from "@material-ui/core";
+import { Box, Typography, MenuItem, Menu, IconButton } from "@mui/material";
 import "./Reply.scss";
 import ProfileIcon from "../../../../images/header/profileIcon.svg";
 import ProviderLogo from "../../../Provider/ProviderHeader/ProviderLogo";
 import { formatDate } from "../../../../utils/format";
 import { FormattedMessage } from "react-intl";
 import AddReply from "../AddReply";
-import { MoreHoriz } from "@material-ui/icons";
+import { MoreHoriz } from "@mui/icons-material";
 import { ConfirmDialog } from "../../../Dialogs";
 import { useStoreUserData } from "../../../../hooks/useStoreUserSelector";
 import useStoreViewsSelector from "hooks/useStoreViewsSelector";
@@ -191,7 +191,11 @@ const Reply = ({ postId, reply, showAddReply, onReplyDeleted }) => {
           <Typography className="date callout1">{formatDate(reply.createdAt)}</Typography>
         </Box>
         <div className="replyMenu">
-          <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleMenuOpen}>
+          <IconButton
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleMenuOpen}
+            size="large">
             <MoreHoriz />
           </IconButton>
           <Menu

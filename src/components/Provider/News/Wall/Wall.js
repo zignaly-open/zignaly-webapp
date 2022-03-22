@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import CreatePost from "../CreatePost";
 import Posts from "../Posts";
 import WallSubscribe from "../WallSubscribe";

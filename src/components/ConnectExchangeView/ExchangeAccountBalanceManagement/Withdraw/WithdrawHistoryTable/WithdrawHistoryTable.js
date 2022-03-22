@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Table from "../../../../Table";
 import tradeApi from "../../../../../services/tradeApiClient";

@@ -1,6 +1,6 @@
 import React from "react";
 import "./CustomFilters.scss";
-import { Box, Collapse } from "@material-ui/core";
+import { Box, Collapse } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CustomButtom from "../CustomButton";
 import ConditionalWrapper from "../ConditionalWrapper";

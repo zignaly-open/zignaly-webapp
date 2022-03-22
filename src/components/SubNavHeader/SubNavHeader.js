@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Link, Tooltip } from "@material-ui/core";
+import { Box, Link, Tooltip } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import GatsbyLink from "../LocalizedLink";
 import "./SubNavHeader.scss";

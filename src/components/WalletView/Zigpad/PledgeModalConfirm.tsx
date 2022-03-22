@@ -8,9 +8,9 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import RocketIcon from "images/launchpad/rocket.svg";
 import Button from "components/Button";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import NumberFormat from "react-number-format";
-import { ErrorOutlineOutlined } from "@material-ui/icons";
+import { ErrorOutlineOutlined } from "@mui/icons-material";
 
 const TypographyValue = styled(Typography)`
   font-size: 18px;

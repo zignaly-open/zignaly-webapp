@@ -1,6 +1,6 @@
 import React from "react";
 import "./MoreInfo.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CalendarIcon from "../../../../images/ct/calendar.svg";
 import ExchangeIcon from "../../../../images/ct/exchange.svg";

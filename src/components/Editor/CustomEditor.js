@@ -40,7 +40,7 @@ const ImagePluginFactory = (editor) => {
 /**
  * @typedef {import('react').MouseEventHandler} MouseEventHandler
  * @typedef {import('react').ButtonHTMLAttributes<HTMLButtonElement>} ButtonHTMLAttributes
- * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
+ * @typedef {import('@mui/material').ButtonProps} ButtonProps
  */
 
 /**

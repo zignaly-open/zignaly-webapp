@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import "./Convert.scss";
 import { FormattedMessage } from "react-intl";
 import BalanceManagement from "../BalanceManagement";

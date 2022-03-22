@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./LoginForm.scss";
-import { Box, TextField } from "@material-ui/core";
+import { Box, TextField } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";

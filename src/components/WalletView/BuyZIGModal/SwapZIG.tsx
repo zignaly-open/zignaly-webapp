@@ -13,7 +13,7 @@ import {
   InputAdornment,
   Tooltip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import CustomNumberInput from "components/Forms/CustomNumberInput";

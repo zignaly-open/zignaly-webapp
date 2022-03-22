@@ -3,7 +3,7 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 import tradeApi from "../../services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showSuccessAlert, showErrorAlert } from "../../store/actions/ui";
-import { Typography, Box, CircularProgress } from "@material-ui/core";
+import { Typography, Box, CircularProgress } from "@mui/material";
 import CustomButton from "components/CustomButton";
 import { FormattedMessage, useIntl } from "react-intl";
 import CustomSelect from "components/CustomSelect";

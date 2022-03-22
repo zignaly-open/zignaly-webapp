@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Controller } from "react-hook-form";
-import { TextField, InputAdornment } from "@material-ui/core";
+import { TextField, InputAdornment } from "@mui/material";
 /**
  * @typedef {import('react-hook-form').Control} Control
  */

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./settings.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import ProviderSettingsForm from "../../../components/Forms/ProviderSettingsForm";

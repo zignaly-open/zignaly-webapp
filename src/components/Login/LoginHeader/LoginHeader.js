@@ -1,6 +1,6 @@
 import React from "react";
 import "./LoginHeader.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import Logo from "../../../images/logo/logoNW.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import { FormattedMessage } from "react-intl";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ExpandedRow.scss";
-import { TableRow, TableCell, Checkbox, CircularProgress } from "@material-ui/core";
+import { TableRow, TableCell, Checkbox, CircularProgress } from "@mui/material";
 import useStoreSettingsSelector from "../../../../../hooks/useStoreSettingsSelector";
 import { composeManagementPositionsDataTable } from "../../../../../utils/composePositionsDataTable";
 

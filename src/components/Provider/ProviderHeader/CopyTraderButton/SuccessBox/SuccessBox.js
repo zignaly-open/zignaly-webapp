@@ -1,6 +1,6 @@
 import React from "react";
 import "./SuccessBox.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import Link from "../../../../LocalizedLink";
 import { FormattedMessage } from "react-intl";
 

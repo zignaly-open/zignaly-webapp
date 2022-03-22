@@ -11,11 +11,11 @@ import {
   setResponsiveTable,
 } from "../../store/actions/settings";
 import useStoreSettingsSelector from "../../hooks/useStoreSettingsSelector";
-import { Box, Hidden, IconButton, Tooltip, Typography } from "@material-ui/core";
-import { MuiThemeProvider, useTheme } from "@material-ui/core/styles";
+import { Box, Hidden, IconButton, Tooltip, Typography } from "@mui/material";
+import { ThemeProvider, StyledEngineProvider, useTheme } from "@mui/material/styles";
 import { merge } from "lodash";
-import TableChartIcon from "@material-ui/icons/TableChart";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 /**
  * @typedef {import("../../store/initialState").DefaultState} DefaultStateType
@@ -23,8 +23,8 @@ import FilterListIcon from "@material-ui/icons/FilterList";
  * @typedef {import("mui-datatables").MUIDataTableColumn} MUIDataTableColumn
  * @typedef {import("mui-datatables").MUIDataTableOptions} MUIDataTableOptions
  * @typedef {MUIDataTableOptions["onColumnViewChange"]} OnColumnViewChange
- * @typedef {import("@material-ui/core/styles").ThemeOptions} ThemeOptions
- * @typedef {import("@material-ui/core/styles").Theme} Theme
+ * @typedef {import("@mui/material/styles").ThemeOptions} DeprecatedThemeOptions
+ * @typedef {import("@mui/material/styles").Theme} Theme
  */
 
 /**
@@ -135,12 +135,12 @@ const Table = ({
       return (
         <Hidden smUp>
           <Tooltip placement="bottom" title="Change View">
-            <IconButton onClick={changeResponsiveView}>
+            <IconButton onClick={changeResponsiveView} size="large">
               <TableChartIcon />
             </IconButton>
           </Tooltip>
           {toggleFilters && (
-            <IconButton onClick={() => toggleFilters()}>
+            <IconButton onClick={() => toggleFilters()} size="large">
               <FilterListIcon />
               {modifiedFiltersCount > 0 && (
                 <Typography className="modified" variant="subtitle1">
@@ -254,7 +254,7 @@ const Table = ({
 
   /**
    * Customizing styling here to avoid lint warning camelCase class-name-format
-   * @param {ThemeOptions} theme Material UI theme options.
+   * @param {DeprecatedThemeOptions} theme Material UI theme options.
    * @returns {Theme} Theme overridden.
    */
   const extendedTheme = useMemo(
@@ -306,7 +306,7 @@ const Table = ({
               minWidth: "80px",
               padding: "12px",
               whiteSpace: "nowrap",
-              [theme.breakpoints.down("sm")]: {
+              [theme.breakpoints.down('md')]: {
                 height: "auto",
                 textAlign: "left",
                 whiteSpace: "normal",
@@ -317,14 +317,14 @@ const Table = ({
           },
           MUIDataTablePagination: {
             root: {
-              [theme.breakpoints.down("sm")]: {
+              [theme.breakpoints.down('md')]: {
                 "&:last-child": {
                   paddingLeft: 0,
                 },
               },
             },
             toolbar: {
-              [theme.breakpoints.down("sm")]: {
+              [theme.breakpoints.down('md')]: {
                 paddingLeft: 0,
               },
             },
@@ -336,15 +336,17 @@ const Table = ({
 
   return (
     <Box className="customTable">
-      <MuiThemeProvider theme={extendedTheme}>
-        <MUIDataTable
-          columns={columnsCustom}
-          components={components}
-          data={data}
-          options={options}
-          title={title}
-        />
-      </MuiThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={extendedTheme}>
+          <MUIDataTable
+            columns={columnsCustom}
+            components={components}
+            data={data}
+            options={options}
+            title={title}
+          />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </Box>
   );
 };

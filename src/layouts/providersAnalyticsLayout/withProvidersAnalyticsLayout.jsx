@@ -1,7 +1,7 @@
 import React from "react";
 import "./ProvidersAnalyticsLayout.scss";
 import getDisplayName from "../../utils/getDisplayName";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import FAQ from "../../components/FAQ";
 import ProvidersHeader from "../../components/Providers/ProvidersHeader";
 

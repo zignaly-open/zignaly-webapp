@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, CircularProgress, Typography, Hidden } from "@material-ui/core";
+import { Box, CircularProgress, Typography, Hidden } from "@mui/material";
 import "./ExchangeAccountConnect.scss";
 import { useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -21,7 +21,7 @@ import {
   vcceUrl,
   ascendexApiUrl,
 } from "../../../utils/affiliateURLs";
-import Alert from "@material-ui/lab/Alert";
+import Alert from '@mui/material/Alert';
 
 /**
  * @typedef {import("../../../services/tradeApiClient.types").ExchangeListEntity} ExchangeListEntity
@@ -268,7 +268,7 @@ const ExchangeAccountConnect = () => {
               </Box>
 
               {step === 2 && (
-                <Hidden xsDown>
+                <Hidden smDown>
                   <CustomButton
                     className="bgPurple bold"
                     disabled={!isValid}

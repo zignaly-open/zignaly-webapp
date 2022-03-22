@@ -1,6 +1,6 @@
 import React from "react";
 import "./edit.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import EditProfileForm from "../../../components/Forms/EditProfileForm";
 import useStoreViewsSelector from "../../../hooks/useStoreViewsSelector";
 import { Helmet } from "react-helmet";

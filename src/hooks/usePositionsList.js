@@ -17,8 +17,8 @@ import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../store/actions/ui";
 import useStoreViewsSelector from "./useStoreViewsSelector";
-import { useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import useFilters from "./useFilters";
 
 /**
@@ -81,7 +81,7 @@ const usePositionsList = (
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"), {
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'), {
     // Fix wrong value at first render
     noSsr: true,
   });

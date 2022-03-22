@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
 import Table from "../../../../Table";
 import { ConfirmDialog } from "../../../../Dialogs";

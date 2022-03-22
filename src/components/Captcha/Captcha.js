@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "../../store/actions/ui";
-import { Modal } from "@material-ui/core";
+import { Modal } from "@mui/material";
 
 /**
  * @typedef {Object} CaptchaPropTypes

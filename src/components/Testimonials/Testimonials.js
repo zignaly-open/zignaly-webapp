@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Testimonials.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import Testimonial from "./Testimonial";
 import CustomButton from "../CustomButton";
 import testominalFeed from "../../utils/testimonialFeed.json";

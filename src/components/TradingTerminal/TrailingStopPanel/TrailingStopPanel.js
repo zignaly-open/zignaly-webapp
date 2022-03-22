@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import HelperLabel from "../HelperLabel/HelperLabel";
-import { Box, Typography, Switch } from "@material-ui/core";
+import { Box, Typography, Switch } from "@mui/material";
 import { formatPrice, format2Dec } from "../../../utils/formatters";
 import { useFormContext } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";

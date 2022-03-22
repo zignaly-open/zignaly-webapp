@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./PrivateAreaLayout.scss";
-import { Box, Hidden } from "@material-ui/core";
+import { Box, Hidden } from "@mui/material";
 import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
@@ -85,7 +85,7 @@ const PrivateAreaLayout = (props) => {
       <GlobalModal content={Zigpad} hash="zigpad" newTheme={true} showCloseIcon={true} />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
-        <Hidden xsDown>
+        <Hidden smDown>
           <Header />
         </Hidden>
         <Hidden smUp>
@@ -93,7 +93,7 @@ const PrivateAreaLayout = (props) => {
           <MobileAppbar />
         </Hidden>
         <Box className={"body"} display="flex" flexDirection="row" flexWrap="nowrap">
-          <Hidden xsDown>
+          <Hidden smDown>
             <Box className={"side"}>
               <Sidebar />
             </Box>

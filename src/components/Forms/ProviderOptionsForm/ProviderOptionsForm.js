@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ProviderOptionsForm.scss";
-import { Box, Checkbox, TextField, InputAdornment } from "@material-ui/core";
+import { Box, Checkbox, TextField, InputAdornment } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";

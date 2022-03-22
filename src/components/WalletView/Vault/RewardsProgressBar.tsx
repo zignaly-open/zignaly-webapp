@@ -13,7 +13,7 @@ const Bar = styled.div`
   position: relative;
 
   ${({ theme }) =>
-    theme.palette.type === "dark" &&
+    theme.palette.mode === "dark" &&
     css`
       border: 1px solid #413ba0;
     `}
@@ -30,7 +30,7 @@ const BarFilled = styled.div`
     `}
 
   ${({ theme }) =>
-    theme.palette.type === "light" &&
+    theme.palette.mode === "light" &&
     css`
       background: linear-gradient(
         121.21deg,
@@ -83,7 +83,7 @@ const CoinCircle = styled.div`
   }
 
   ${({ theme }) =>
-    theme.palette.type === "light" &&
+    theme.palette.mode === "light" &&
     css`
       // todo: temp for old theme
       border: 1px solid rgba(0, 0, 0, 0.1);

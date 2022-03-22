@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Coins.scss";
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@mui/material";
 import CoinsTable from "../../../Balance/Coins/CoinsTable";
 import CoinsFilter from "../../../Balance/Coins/CoinsFilter";
 import useProviderAssets from "hooks/useProviderAssets";

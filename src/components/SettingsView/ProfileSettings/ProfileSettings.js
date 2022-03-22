@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, OutlinedInput } from "@material-ui/core";
+import { Box, Typography, OutlinedInput } from "@mui/material";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useStoreUserData } from "../../../hooks/useStoreUserSelector";
 import "./ProfileSettings.scss";

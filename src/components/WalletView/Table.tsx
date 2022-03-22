@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useExpanded, useTable } from "react-table";
-import { Typography, Tooltip } from "@material-ui/core";
+import { Typography, Tooltip } from "@mui/material";
 import { isMobile } from "styles/styles";
 import ConditionalWrapper from "components/ConditionalWrapper";
 

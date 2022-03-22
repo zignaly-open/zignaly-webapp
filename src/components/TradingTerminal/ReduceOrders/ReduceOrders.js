@@ -11,9 +11,9 @@ import {
   FormHelperText,
   Tooltip,
   Switch,
-} from "@material-ui/core";
+} from "@mui/material";
 import CustomNumberInput from "components/Forms/CustomNumberInput";
-import { RemoveCircle, Help } from "@material-ui/icons";
+import { RemoveCircle, Help } from "@mui/icons-material";
 import { useFormContext, Controller } from "react-hook-form";
 import useExpandable from "../../../hooks/useExpandable";
 import "./ReduceOrders.scss";

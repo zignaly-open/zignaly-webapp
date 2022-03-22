@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Typography, Hidden, useMediaQuery } from "@material-ui/core";
+import { Box, Typography, Hidden, useMediaQuery } from "@mui/material";
 import TimeFrameSelect from "../../TimeFrameSelect";
 import "./TimeFrameSelectRow.scss";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { showCreateProvider, showCreateTrader } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import ServiceIcon from "../../../images/offerServiceIcon.svg";
 
 /**
@@ -26,7 +26,7 @@ import ServiceIcon from "../../../images/offerServiceIcon.svg";
 const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const createButtonText = () => {
     if (isMobile) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TraderCardBody.scss";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";

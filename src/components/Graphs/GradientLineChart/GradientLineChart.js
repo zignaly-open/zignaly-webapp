@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import "./GradientLineChart.scss";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { Line } from "react-chartjs-2";
 import { isEqual } from "lodash";
 import TooltipChart from "../TooltipChart";

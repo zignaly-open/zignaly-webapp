@@ -1,6 +1,6 @@
 import React from "react";
 import "./SettingsView.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import CustomButton from "../CustomButton";
 import { FormattedMessage } from "react-intl";
 import Preferences from "./Preferences";

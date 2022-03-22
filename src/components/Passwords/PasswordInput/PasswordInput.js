@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { FormControl, OutlinedInput, InputAdornment } from "@material-ui/core";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import { FormControl, OutlinedInput, InputAdornment } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 /**
- * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
+ * @typedef {import("@mui/material").OutlinedInputProps} OutlinedInputProps
  */
 
 /**

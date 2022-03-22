@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
+// import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
@@ -75,7 +75,7 @@ const Positions = () => {
       {
         Header: (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton icon={OptionsDotsIcon} />
+            <IconButton icon={OptionsDotsIcon} size="large" />
           </div>
         ),
         accessor: "action",
@@ -189,7 +189,7 @@ const Positions = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      {balance && <Table columns={columns} data={data} />}
+      {/* {balance && <Table columns={columns} data={data} />} */}
     </>
   );
 };

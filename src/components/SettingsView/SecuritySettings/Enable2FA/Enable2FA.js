@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, CircularProgress, OutlinedInput } from "@material-ui/core";
+import { Box, Typography, CircularProgress, OutlinedInput } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import "./Enable2FA.scss";

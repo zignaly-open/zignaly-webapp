@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import "./ExchangeOrders.scss";
 import ModalPathContext from "../ModalPathContext";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import ExchangeIcon from "../../ExchangeIcon";
 import OrdersTabs from "./OrdersTabs";

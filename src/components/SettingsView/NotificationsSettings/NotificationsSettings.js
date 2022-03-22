@@ -7,8 +7,8 @@ import {
   Typography,
   OutlinedInput,
   CircularProgress,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+} from "@mui/material";
+import { Alert } from '@mui/material';
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import "./NotificationsSettings.scss";

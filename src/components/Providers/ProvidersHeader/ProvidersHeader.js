@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProvidersHeader.scss";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography } from "@mui/material";
 import { routesMapping } from "../../../utils/routesMapping";
 import SubNavHeader from "../../SubNavHeader";
 import { FormattedMessage } from "react-intl";

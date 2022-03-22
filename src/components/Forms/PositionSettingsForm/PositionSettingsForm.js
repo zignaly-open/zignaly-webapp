@@ -1,7 +1,7 @@
 import React from "react";
 import "./PositionSettingsForm.scss";
-import { Box } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Box } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 /**
  * @typedef {Object} DefaultProps

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import { TradingViewEdit } from "../../components/TradingTerminal";

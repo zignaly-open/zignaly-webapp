@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import getDisplayName from "../../utils/getDisplayName";
-import { Box, Typography, Hidden, useMediaQuery } from "@material-ui/core";
+import { Box, Typography, Hidden, useMediaQuery } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import SortIcon from "../../images/filters/sort.svg";
 import SortFillIcon from "../../images/filters/sort-fill.svg";
@@ -16,7 +16,7 @@ import { showCreateProvider, showCreateTrader } from "../../store/actions/ui";
 import useStoreUIModalSelector from "../../hooks/useStoreUIModalSelector";
 import { useDispatch } from "react-redux";
 import "./ProvidersLayout.scss";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import ServiceIcon from "../../images/offerServiceIcon.svg";
 
 /**
@@ -48,7 +48,7 @@ const withProvidersLayout = (Component) => {
     const isCopyTrading = props.path.startsWith("/copyTraders");
     const isProfitSharing = props.path.startsWith("/profitSharing");
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const dispatch = useDispatch();
     const toggleFilters = () => {
       setShowFilters(!showFilters);
@@ -86,7 +86,7 @@ const withProvidersLayout = (Component) => {
         >
           <CreateTraderForm isCopyTrading={isCopyTrading} />
         </Modal>
-        <Hidden xsDown>
+        <Hidden smDown>
           <CustomButton
             className="textPurple borderPurple becomeProviderButton"
             onClick={() =>

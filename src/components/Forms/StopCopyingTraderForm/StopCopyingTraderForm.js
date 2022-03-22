@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./StopCopyingTraderForm.scss";
-import { Box, Typography, CircularProgress } from "@material-ui/core";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
 import tradeApi from "../../../services/tradeApiClient";
