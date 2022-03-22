@@ -4,7 +4,8 @@ import {
   createTheme,
   StylesProvider,
 } from "@material-ui/core/styles";
-import { ThemeProvider, StyleSheetManager } from "styled-components";
+import { StyleSheetManager, ThemeProvider as ThemeProviderSC } from "styled-components";
+import { ThemeProvider } from "zignaly-ui";
 import { CssBaseline } from "@material-ui/core";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
@@ -22,6 +23,7 @@ import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { dark, light } from "zignaly-ui";
 
 /**
  *
@@ -49,6 +51,7 @@ const AppLayout = (props) => {
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
   const theme = useMemo(() => createTheme(options), [darkTheme]);
+  const sharedTheme = darkTheme ? dark : light;
   const prevLocation = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");
 
@@ -112,13 +115,15 @@ const AppLayout = (props) => {
         <StylesProvider injectFirst>
           <MuiThemeProvider theme={theme}>
             <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === "development"}>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <ErrorAlert />
-                <SuccessAlert />
-                {storeLoader && <Loader />}
-                {children}
-              </ThemeProvider>
+              <ThemeProviderSC theme={theme}>
+                <ThemeProvider theme={sharedTheme}>
+                  <CssBaseline />
+                  <ErrorAlert />
+                  <SuccessAlert />
+                  {storeLoader && <Loader />}
+                  {children}
+                </ThemeProvider>
+              </ThemeProviderSC>
             </StyleSheetManager>
           </MuiThemeProvider>
         </StylesProvider>

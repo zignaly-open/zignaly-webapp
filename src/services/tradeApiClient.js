@@ -1492,6 +1492,25 @@ class TradeApiClient {
   }
 
   /**
+   * Get service positions
+   *
+   * @param {string} providerId
+   *
+   * @returns {Promise<Array<ManagementPositionsEntity>>} positions
+   *
+   * @memberof TradeApiClient
+   */
+  async servicePositions(providerId) {
+    const responseData = await this.doRequest(
+      `/user/providers/${providerId}/positions`,
+      null,
+      "GET",
+    );
+    const res = Object.keys(responseData).map((k) => responseData[k][0]);
+    return res;
+  }
+
+  /**
    * Function to get Management positions and Balance of provider.
    *
    * @param {GetProviderFollowersPayload} payload Management poistions payload.
@@ -1951,10 +1970,10 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async providerContractsGet(payload) {
-    const { providerId, ...data } = payload;
+    const { providerId, exchangeInternalId } = payload;
     const responseData = await this.doRequest(
-      `/user/exchanges/{exchangeInternalId}/providers/${providerId}/contracts`,
-      data,
+      `/user/exchanges/${exchangeInternalId}/providers/${providerId}/contracts`,
+      null,
       "GET",
       2,
     );
@@ -2633,6 +2652,17 @@ class TradeApiClient {
    */
   async getSwapPrice({ coinFrom, coinTo }) {
     return this.doRequest(`/prices/${coinFrom}/${coinTo}`, null, "GET", 2);
+  }
+
+  /**
+   * Get exchange assets.
+   *
+   * @param {ExchangeAssetsPayload} payload Get Exchange Assets Payload.
+   * @returns {Promise<ExchangeAssetsDict>} Promise that resolves exchange assets.
+   * @memberof TradeApiClient
+   */
+  async getExchangeAssets(internalId) {
+    return this.doRequest(`/user/exchanges/${internalId}/assets?view=reduced`, null, "GET", 2);
   }
 }
 

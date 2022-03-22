@@ -442,6 +442,7 @@ const WalletTransactions = ({ updateAt }: { updateAt: Date }) => {
   };
 
   // Get scroll container manually since InfiniteScroll only supports ids
+  // todo: https://github.com/ankeetmaini/react-infinite-scroll-component/issues/181#issuecomment-1054072225 ?
   const container = document.getElementsByClassName("MuiDialog-paperScrollPaper")[0];
 
   return (
