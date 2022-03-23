@@ -44,14 +44,6 @@
     "crypto-browserify": "^3.12.0",
     "dayjs": "^1.10.7",
     "dompurify": "^2.3.3",
-    "gatsby": "^4.2.0",
-    "gatsby-plugin-google-tagmanager": "^4.0.0",
-    "gatsby-plugin-layout": "^3.0.0",
-    "gatsby-plugin-manifest": "^4.2.0",
-    "gatsby-plugin-material-ui": "^4.1.0",
-    "gatsby-plugin-react-helmet": "^4.10.0",
-    "gatsby-plugin-react-svg": "^3.1.0",
-    "gatsby-plugin-styled-components": "^5.2.0",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "moment": "^2.29.1",
@@ -184,7 +176,8 @@
     "stylelint-processor-styled-components": "^1.10.0",
     "stylelint-scss": "^3.0.0",
     "ts-jest": "^27.0.7",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "yaml-loader": "^0.6.0"
   },
   "commitlint": {
     "extends": [

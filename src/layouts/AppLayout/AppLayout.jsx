@@ -94,14 +94,7 @@ const AppLayout = (props) => {
     // Save prev location
     prevLocation.current = window.location.href;
   }, [href]);
-  const theme2 = createTheme({
-    palette: {
-      primary: { main: "#ff4400" },
-      secondary: {
-        main: "#000000",
-      },
-    },
-  });
+
   return (
     <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
       <GoogleReCaptchaProvider

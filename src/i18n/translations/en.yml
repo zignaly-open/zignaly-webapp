@@ -1995,3 +1995,7 @@ zigpad.locked: "Zig Coins related to the Referral program [Locked] cannot be use
 position.side.buy: "Buy"
 position.side.sell: "Sell"
 position.side.both: "Both"
+
+dashboard.openPositions: "Open Positions"
+dashboard.closedPositions: "Closed Positions"
+dashboard.exchangeOrders: "Exchange Orders"

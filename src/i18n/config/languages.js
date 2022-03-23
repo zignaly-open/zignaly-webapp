@@ -56,7 +56,7 @@ const LocalizationLanguages = [
   },
 ];
 
-if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
+if (process.env.NEXT_PUBLIC_TEST_TRANSLATIONS === "true") {
   // Test localization
   LocalizationLanguages.push({
     locale: "cs",

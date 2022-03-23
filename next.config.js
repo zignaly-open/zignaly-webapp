@@ -7,6 +7,11 @@ module.exports = withTM({
       ...config.resolve.alias,
       "@mui/styled-engine": "@mui/styled-engine-sc",
     };
+    config.module.rules.push({
+      test: /\.ya?ml$/,
+      type: "json",
+      use: "yaml-loader",
+    });
     return config;
   },
 });
