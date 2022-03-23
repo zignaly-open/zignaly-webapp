@@ -79,3 +79,7 @@ cypress/screenshots
 
 # Storybook
 storybook-static
+
+# next.js
+/.next/
+/out/

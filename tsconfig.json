@@ -12,7 +12,7 @@
     "declaration": false,
     "emitDeclarationOnly": false,
     "outDir": "types",
-    "jsx": "react",
+    "jsx": "preserve",
     "lib": [
       "dom",
       "esnext"
@@ -27,7 +27,12 @@
       ]
     },
     "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true
   },
   "include": [
     "src/**/*",
