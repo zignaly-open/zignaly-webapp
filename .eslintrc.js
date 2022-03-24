@@ -30,6 +30,7 @@ module.exports = {
     "plugin:react/recommended",
     // "plugin:@typescript-eslint/recommended",
     "plugin:cypress/recommended",
+    "next/core-web-vitals",
   ],
   rules: {
     "formatjs/no-offset": "error",

@@ -1,10 +1,11 @@
 // import '../styles/globals.css'
 import React, { useEffect, useMemo, useState } from "react";
 // import {  } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
 import { createGlobalStyle } from "styled-components";
-import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
+// import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
+import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -84,12 +85,15 @@ function MyApp({ Component, pageProps }: AppProps) {
         useEnterprise={false}
         useRecaptchaNet={true}
       >
-        <ThemeProvider theme={theme}>
-          {/* <GlobalStyle /> */}
-          <Typography>aa</Typography>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <ThemeProviderUI theme={dark}>
+              {/* <GlobalStyle /> */}
+              <CssBaseline />
+              <Component {...pageProps} />
+            </ThemeProviderUI>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </GoogleReCaptchaProvider>
     </IntlProvider>
   );
