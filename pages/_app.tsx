@@ -1,9 +1,10 @@
 // import '../styles/globals.css'
 import React, { useEffect, useMemo, useState } from "react";
 // import {  } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -12,10 +13,12 @@ import translations from "../src/i18n/translations";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import useStoreSettingsSelector from "../src/hooks/useStoreSettingsSelector";
+import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { Provider } from "react-redux";
 import { store } from "../src/store/store.js";
 import "./legacy.scss";
 import { useRouter } from "next/router";
+import { setToken } from "../lib/useRequest";
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -34,11 +37,18 @@ const WithReduxProvider = (Component) => (props) =>
   );
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const storeSession = useStoreSessionSelector();
   const { darkStyle, locale } = useStoreSettingsSelector();
   const router = useRouter();
   const darkTheme = router.pathname !== "/" && true;
   const theme = useMemo(() => createTheme(getTheme(darkTheme)), [darkTheme]);
   const [messages, setMessages] = useState(null);
+  const token = storeSession.tradeApi.accessToken;
+  // useEffect(() => {
+  // Init api auth token with persisted value
+  setToken(token);
+  console.log("set", token);
+  // }, [token]);
 
   /**
    *
@@ -76,6 +86,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ThemeProvider theme={theme}>
           {/* <GlobalStyle /> */}
+          <Typography>aa</Typography>
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
@@ -83,5 +94,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     </IntlProvider>
   );
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  console.log("aaa");
+  // const appProps = await App.getInitialProps(appContext);
+  // return { ...appProps };
+};
 
 export default WithReduxProvider(MyApp);

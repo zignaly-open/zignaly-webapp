@@ -17,6 +17,8 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
 import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
+import { login } from "../../../../lib/useRequest";
+import { useRouter } from "next/router";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -48,6 +50,7 @@ const LoginForm = () => {
     // Don't render form statically
     return null;
   }
+  const router = useRouter();
 
   /**
    *
@@ -62,6 +65,24 @@ const LoginForm = () => {
       setLoading(false);
     } else {
       dispatch(startTradeApiSession(response, "login"));
+
+      // const params = new URLSearchParams(window.location.search);
+      // let path = newUserPath || "/dashboard";
+      // if (params.get("ret")) {
+      //   // Redirect to last visited page
+      //   const ret = decodeURIComponent(params.get("ret"));
+      //   // Ensure we are not redirecting to an external domain
+      //   if (ret.indexOf(".") === -1) {
+      //     path = ret;
+      //   }
+      // }
+
+      // const pathPrefix = process.env.GATSBY_BASE_PATH || "";
+      // const pathWithoutPrefix = path.replace(pathPrefix, "");
+      // navigate(pathWithoutPrefix);
+
+      const returnUrl = router.query.returnUrl || "/service";
+      router.push(returnUrl);
     }
   };
 
@@ -90,8 +111,7 @@ const LoginForm = () => {
       gRecaptchaResponse = await executeRecaptcha("login");
       c = 3;
     }
-    tradeApi
-      .userLogin({ ...data, gRecaptchaResponse, c })
+    login({ ...data, gRecaptchaResponse, c })
       .then((response) => {
         setLoginResponse(response);
         check2FA(response);

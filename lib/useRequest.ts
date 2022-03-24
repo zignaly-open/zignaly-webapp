@@ -27,19 +27,24 @@
 import useSWR from "swr";
 
 let _token = null;
+// let _token = localStorage.getItem("auth");
+// console.log(_token);
 
 const getToken = () => _token;
-const setToken = (t) => {
+export const setToken = (t) => {
   _token = t;
+  // localStorage.setItem("auth", t);
 };
 
 const fetcher = (url, payload) => {
   return fetch(url, {
-    // "Content-Type": "application/json",
     method: payload ? "POST" : "GET",
-    ...(payload && { body: payload }),
-    "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-    ...(getToken() && { Authorization: "Bearer " + getToken() }),
+    ...(payload && { body: JSON.stringify(payload) }),
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
+      ...(getToken() && { Authorization: "Bearer " + getToken() }),
+    },
   }).then((res) => res.json());
 };
 
@@ -47,7 +52,15 @@ const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
 export const login = (payload) => {
   const path = "/login";
-  fetcher(baseUrl + path, payload);
+  return fetcher(baseUrl + path, payload).then((res) => {
+    setToken(res.token);
+    return res;
+  });
+};
+
+export const verify2FA = (payload) => {
+  const path = "/user/verify_2fa";
+  return fetcher(baseUrl + path, payload);
 };
 
 export const useRequest = (path, name) => {
@@ -56,12 +69,13 @@ export const useRequest = (path, name) => {
   }
 
   const url = name ? baseUrl + path + "/" + name : baseUrl + path;
-  const { data, error } = useSWR(path, fetcher);
+  const { data, error } = useSWR(url, fetcher);
 
   return { data, error };
 };
 
 export const useGetServicePositions = (providerId) => {
+  console.log("q", getToken());
   const path = `/user/providers/${providerId}/positions`;
 
   // const url = baseUrl + path;
@@ -69,6 +83,6 @@ export const useGetServicePositions = (providerId) => {
   // const res =
 
   // return { data: res, error };
-  const res = fetcher(baseUrl + path);
-  return { ...res, data: Object.keys(res.data).map((k) => res.data[k][0]) };
+  const res = useRequest(path);
+  return { ...res, data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data };
 };

@@ -7,6 +7,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 import useStoreSessionSelector from "hooks/useStoreSessionSelector";
+import { verify2FA } from "../../../../lib/useRequest";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -65,8 +66,7 @@ const TwoFAForm = ({ loginData, onComplete }) => {
       code,
       token,
     };
-    tradeApi
-      .verify2FA(payload)
+    verify2FA(payload)
       .then(() => {
         setIs2FAVerified(true);
         if (isKnownDeviceVerified) {

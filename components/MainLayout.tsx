@@ -1,8 +1,7 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 
-export default function MainLayout({ children }) {
-  const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
     ${({ theme }) => `
       body {
         background: url(${theme.background.image.src}) no-repeat center center fixed;
@@ -11,6 +10,7 @@ export default function MainLayout({ children }) {
     `}
   `;
 
+export default function MainLayout({ children }) {
   return (
     <>
       <GlobalStyle />

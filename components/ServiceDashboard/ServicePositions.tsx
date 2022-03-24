@@ -11,7 +11,7 @@ import CoinIcon from "components/WalletView/CoinIcon";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { ManagementPositionsEntity } from "services/tradeApiClient.types";
-import { useGetServicePositions } from "lib/useRequest";
+import { useGetServicePositions } from "../../lib/useRequest";
 
 const Cell = styled(Box)`
   display: flex;
@@ -82,7 +82,8 @@ const ServicePositions = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
   const { data: positions, error } = useGetServicePositions("6058df72ab6a99353e06e8fc");
-
+  console.log(positions);
+  return <Table columns={undefined} data={undefined} />;
   const columns = useMemo(
     () => [
       {

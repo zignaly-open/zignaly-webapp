@@ -16,10 +16,10 @@ module.exports = withTM({
   env,
   reactStrictMode: true,
   webpack: (config) => {
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
-    //   "@mui/styled-engine": "@mui/styled-engine-sc",
-    // };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@mui/styled-engine": "@mui/styled-engine-sc",
+    };
     config.module.rules.push(
       {
         test: /\.ya?ml$/,
@@ -33,8 +33,8 @@ module.exports = withTM({
     );
     return config;
   },
-  compiler: {
-    // ssr and displayName are configured by default
-    styledComponents: true,
-  },
+  // compiler: {
+  //   // ssr and displayName are configured by default
+  //   styledComponents: true,
+  // },
 });

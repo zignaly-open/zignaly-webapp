@@ -6,7 +6,7 @@
 // import { getAllPosts } from "../lib/api";
 import { Button, Container } from "@mui/material";
 import Head from "next/head";
-import type { NextPage } from "next";
+// import type { NextPage } from "next";
 import Login from "../src/components/Login/Login";
 import LoginTabs from "../src/components/Login/LoginTabs";
 import LoginForm from "../src/components/Forms/LoginForm";
@@ -18,20 +18,20 @@ type Props = {
   // allPosts: Post[];
 };
 
-const GlobalStyle = createGlobalStyle`
-  ${({ theme }) => `
-    body {
-      background-color: #fbfafc;
-    }
-  `}
-`;
+// const GlobalStyle = createGlobalStyle`
+//   ${({ theme }) => `
+//     body {
+//       background-color: #fbfafc;
+//     }
+//   `}
+// `;
 
 const Index = ({}: Props) => {
   // const heroPost = allPosts[0];
   // const morePosts = allPosts.slice(1);
   return (
     <Container maxWidth="lg">
-      <GlobalStyle />
+      {/* <GlobalStyle /> */}
       <Head>
         <title>Next.js Blog Example with {CMS_NAME}</title>
       </Head>
