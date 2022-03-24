@@ -44,13 +44,13 @@ const LoginForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
+  const router = useRouter();
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
     // Don't render form statically
     return null;
   }
-  const router = useRouter();
 
   /**
    *

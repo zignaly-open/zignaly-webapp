@@ -42,9 +42,9 @@ module.exports = withBundleAnalyzer(
       );
       return config;
     },
-    // compiler: {
-    //   // ssr and displayName are configured by default
-    //   styledComponents: true,
-    // },
+    compiler: {
+      // ssr and displayName are configured by default
+      styledComponents: true,
+    },
   }),
 );

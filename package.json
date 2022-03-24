@@ -138,7 +138,6 @@
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.2.4",
     "babel-plugin-istanbul": "^6.1.1",
-    "babel-plugin-styled-components": "^2.0.6",
     "babel-plugin-transform-imports": "^2.0.0",
     "babel-preset-react-app": "^10.0.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
@@ -242,5 +241,8 @@
     "semantic-release": "semantic-release",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
+  },
+  "alias": {
+    "@mui/styled-engine": "@mui/styled-engine-sc"
   }
 }
