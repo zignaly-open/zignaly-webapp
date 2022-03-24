@@ -166,8 +166,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   constructor() {
-    this.baseUrlv1 = process.env.GATSBY_TRADEAPI_URL;
-    this.baseUrlv2 = process.env.GATSBY_TRADEAPI_URL_NEW;
+    this.baseUrlv2 = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
     /**
      * @type {Object<string, number>} Tracks request average latency.
@@ -341,10 +340,7 @@ class TradeApiClient {
    */
   getUrl(endpointPath, apiVersion) {
     let baseUrl = this.baseUrlv2;
-    if (apiVersion === 1) {
-      // Old api
-      baseUrl = this.baseUrlv1;
-    } else if (apiVersion === 0) {
+    if (apiVersion === 0) {
       // Cloudflare url
       baseUrl = baseUrl.split("/new_api")[0];
     } else if (apiVersion === 3) {

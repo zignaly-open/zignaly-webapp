@@ -7,40 +7,39 @@
 import { Button, Container } from "@mui/material";
 import Head from "next/head";
 import type { NextPage } from "next";
-import Login from "../src/components/Login/Login";
-import LoginTabs from "../src/components/Login/LoginTabs";
-import LoginForm from "../src/components/Forms/LoginForm";
+import ServiceDashboard from "../components/ServiceDashboard/ServiceDashboard";
 import { CMS_NAME } from "../lib/constants";
+import MainLayout from "../components/MainLayout";
 // import Post from "../types/post";
-import { createGlobalStyle } from "styled-components";
 
-type Props = {
-  // allPosts: Post[];
-};
-
-const GlobalStyle = createGlobalStyle`
-  ${({ theme }) => `
-    body {
-      background-color: #fbfafc;
-    }
-  `}
-`;
+type Props = {};
 
 const Index = ({}: Props) => {
   // const heroPost = allPosts[0];
   // const morePosts = allPosts.slice(1);
   return (
-    <Container maxWidth="lg">
-      <GlobalStyle />
-      <Head>
-        <title>Next.js Blog Example with {CMS_NAME}</title>
-      </Head>
-      <Login>
-        <LoginTabs>
-          <LoginForm />
-        </LoginTabs>
-      </Login>
-    </Container>
+    <MainLayout>
+      <Container maxWidth="lg">
+        <Head>
+          <title>Next.js Blog Example with {CMS_NAME}</title>
+        </Head>
+        {/* <Container>
+          <Intro />
+          {heroPost && (
+            <HeroPost
+              title={heroPost.title}
+              coverImage={heroPost.coverImage}
+              date={heroPost.date}
+              author={heroPost.author}
+              slug={heroPost.slug}
+              excerpt={heroPost.excerpt}
+            />
+          )}
+          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+        </Container> */}
+        <ServiceDashboard />
+      </Container>
+    </MainLayout>
   );
 };
 

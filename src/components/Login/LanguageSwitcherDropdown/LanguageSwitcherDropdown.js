@@ -1,5 +1,4 @@
 import React from "react";
-import "./LanguageSwitcherDropdown.scss";
 import { languages } from "../../../i18n";
 import useStoreSettingsSelector from "../../../hooks/useStoreSettingsSelector";
 import { useDispatch } from "react-redux";

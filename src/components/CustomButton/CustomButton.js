@@ -1,5 +1,4 @@
 import React from "react";
-import "./CustomButton.scss";
 import { Button, CircularProgress } from "@mui/material";
 
 /**

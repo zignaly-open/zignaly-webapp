@@ -1,5 +1,4 @@
 import React from "react";
-import "./Press.scss";
 import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 import ChartBg from "images/login/chartBg.svg";
@@ -21,8 +20,7 @@ const quotes = [
     date: dayjs("2021-04-14"),
     quote:
       "Zignaly has built a business to leverage the social predisposition of humans to lower the barrier of entry to cryptocurrency trading",
-    url:
-      "https://www.forbes.com/sites/tatianakoffman/2021/04/14/how-copy-trader-platforms-are-capitalizing-on-the-crypto-boom",
+    url: "https://www.forbes.com/sites/tatianakoffman/2021/04/14/how-copy-trader-platforms-are-capitalizing-on-the-crypto-boom",
     logo: Forbes,
   },
   {
@@ -38,7 +36,7 @@ const Press = () => {
   return (
     <Box className="press">
       <div className="chart">
-        <img src={ChartBg} />
+        <ChartBg />
         <div className="slide" />
       </div>
       <Typography variant="h2">

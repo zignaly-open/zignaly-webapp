@@ -22,10 +22,10 @@ export const colors = {
   lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
-const getTheme = (mode: PaletteMode) => ({
+const getTheme = (darkMode: boolean) => ({
   palette: {
-    mode,
-    ...(mode === "light"
+    mode: darkMode ? "dark" : "light",
+    ...(!darkMode
       ? {
           // primary: amber,
           // divider: amber[200],
@@ -33,6 +33,22 @@ const getTheme = (mode: PaletteMode) => ({
           //   primary: grey[900],
           //   secondary: grey[800],
           // },
+          primary: { main: colors.purple },
+          // divider: deepOrange[700],
+          background: {
+            default: colors.offWhite,
+            paper: colors.white,
+          },
+          text: {
+            primary: colors.black,
+          },
+          secondary: {
+            main: colors.purpleLight,
+          },
+          grid: {
+            main: colors.white,
+            content: colors.white,
+          },
         }
       : {
           primary: { main: colors.purpleLight },

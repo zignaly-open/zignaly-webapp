@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ForgotPasswordForm.scss";
 import { Box, TextField, Typography } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";

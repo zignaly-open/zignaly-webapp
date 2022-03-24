@@ -1,5 +1,4 @@
 import React from "react";
-import "./Modal.scss";
 import { Dialog } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 

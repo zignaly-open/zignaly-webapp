@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./VerifyEmailForm.scss";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";
 import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import { navigate } from "@reach/router";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import { useRouter } from "next/router";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -32,11 +31,12 @@ const VerifyEmailForm = ({ token, onComplete }) => {
   const [done, setDone] = useState(false);
   const dispatch = useDispatch();
   const storeUserData = useStoreUserData();
+  const router = useRouter();
 
   useEffect(() => {
     // Trigger tz
     if (storeUserData.userId) {
-      navigate("#verify");
+      router.push("#verify");
     }
   }, [storeUserData.userId]);
 

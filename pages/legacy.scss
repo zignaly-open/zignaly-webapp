@@ -1,0 +1,751 @@
+@import "../src/styles/colors.scss";
+@import "../src/styles/breakpoints.scss";
+
+.captchaTerms {
+  h6 {
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.customButton {
+  min-height: 48px;
+  min-width: 250px;
+
+  .buttonIcon {
+    height: 30px;
+    margin-left: 10px;
+  }
+
+  span {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+  }
+
+  .loader {
+    color: $white;
+    height: 20px;
+    width: 20px;
+  }
+
+  &.submitButton {
+    background: $purple;
+    color: $white;
+    padding: 0 20px;
+
+    &:hover {
+      background: $purpleLight;
+    }
+  }
+
+  &.disabledButton {
+    background: $lightGrey;
+    color: $black;
+
+    &:hover {
+      background: $lightGrey;
+    }
+  }
+
+  &[disabled] {
+    opacity: 0.6;
+  }
+
+  &.loadMoreButton {
+    background: transparent;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    min-height: 50px;
+    min-width: 250px;
+
+    .loader {
+      color: var(--purple);
+    }
+  }
+
+  &.textPurple {
+    background: transparent;
+    color: var(--purple);
+    min-width: 120px;
+
+    .loader {
+      color: var(--purple);
+    }
+  }
+
+  &.bgPurple {
+    background: $purple;
+    color: $white;
+
+    &:hover {
+      background: $purpleLight;
+    }
+  }
+
+  &.borderPurple {
+    border: 2px solid var(--purple);
+  }
+
+  &.textDefault {
+    background: transparent;
+    min-width: 120px;
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  &.headerButton {
+    background: $green;
+    color: $white;
+    margin: 0 12px;
+    min-height: 36px;
+    min-width: 200px;
+    padding: 0 20px;
+
+    &:hover {
+      background: $green;
+    }
+  }
+
+  &.exchangeButton {
+    min-width: 336px;
+  }
+
+  &.deleteButton {
+    color: $red;
+    min-width: 0;
+
+    .loader {
+      color: var(--purple);
+    }
+  }
+}
+
+@include media("<=sm") {
+  .customButton {
+    width: 90%;
+
+    &.exchangeButton {
+      min-width: 100%;
+    }
+  }
+}
+
+.forgotPasswordForm {
+  background-color: $white;
+  padding: 40px;
+
+  h3 {
+    color: $lighterBlack;
+    margin-bottom: 40px;
+  }
+
+  .inputBox {
+    margin-bottom: 40px;
+    width: 264px;
+
+    .customLabel {
+      color: $lighterBlack;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .customInput {
+    border: 1px solid $lightGrey;
+
+    input {
+      color: $lighterBlack;
+    }
+
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+}
+
+.loginForm {
+  padding: 48px 110px;
+
+  .inputBox {
+    margin-bottom: 40px;
+    width: 264px;
+  }
+
+  .customLabel {
+    color: $lighterBlack;
+  }
+
+  .customInput {
+    input {
+      color: $lighterBlack;
+    }
+
+    svg {
+      color: $lightGrey;
+    }
+
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .passwordInput {
+    &:hover {
+      fieldset {
+        border-color: $lightGrey;
+      }
+    }
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.42px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .errorText {
+    color: $red;
+    font-size: 11px;
+  }
+}
+
+.resetTwoFAForm {
+  h3 {
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
+  .answers {
+    margin-top: 18px;
+  }
+
+  .answerAction {
+    margin: 6px 18px 10px;
+  }
+}
+
+@include media("<=sm") {
+  .resetTwoFAForm {
+    padding: 60px 12px;
+  }
+}
+
+.twoFAForm {
+  padding: 60px 75px;
+
+  .faBox:not(:first-child) {
+    margin-top: 42px;
+  }
+
+  h3 {
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
+  .verifyBox,
+  .faBox {
+    .callout1 {
+      margin: 12px 0 20px;
+    }
+  }
+
+  .inputBox {
+    width: fit-content;
+  }
+
+  .linkBox {
+    height: 18px;
+    margin: 20px 0 40px;
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .codeInput {
+    text-align: center;
+    width: auto;
+  }
+
+  .spinner {
+    margin-left: 4px;
+  }
+}
+
+@include media("<=sm") {
+  .twoFAForm {
+    padding: 60px 12px;
+
+    .codeInput {
+      input {
+        max-height: 46px;
+        max-width: 43px;
+      }
+    }
+  }
+}
+
+.verifyEmailModal {
+  padding: 60px 75px;
+
+  h3 {
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
+  .inputBox {
+    width: fit-content;
+  }
+
+  .codeInput {
+    text-align: center;
+    width: auto;
+  }
+
+  .spinner {
+    margin-left: 4px;
+  }
+
+  .linkBox {
+    height: 18px;
+    margin: 20px 0 40px;
+  }
+
+  .link {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+@include media("<=sm") {
+  .verifyEmailModal {
+    padding: 60px 12px;
+
+    .codeInput {
+      input {
+        max-height: 46px;
+        max-width: 43px;
+      }
+    }
+  }
+}
+
+.languageSwitcher {
+  .languageSelect {
+    width: 100px;
+  }
+}
+
+.flag {
+  height: auto;
+  width: 24px;
+}
+
+.loginPage {
+  background-color: $paleGrey;
+  margin: 42px auto;
+  max-width: 1077px;
+  padding: 0 8px;
+
+  h1 {
+    font-size: 40px;
+    letter-spacing: normal;
+    padding-bottom: 40px;
+    text-transform: none;
+
+    strong {
+      color: $purple;
+    }
+  }
+
+  .logo {
+    width: 163px;
+  }
+
+  .heroBox {
+    margin: 88px 0;
+    position: relative;
+    z-index: 3;
+  }
+
+  .heroSide {
+    margin-right: 75px;
+  }
+
+  .sect {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    margin: 40px 71px 0 0;
+
+    img,
+    svg {
+      margin-right: 24px;
+      width: 72px;
+      flex-shrink: 0;
+    }
+
+    .sectDescBox {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sectHeader {
+      color: $purple;
+      font-weight: 600;
+    }
+
+    .sectTitle {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 31px;
+      margin-top: 24px;
+    }
+  }
+}
+
+@include media(">sm", "<=md") {
+  .loginPage {
+    .heroSide {
+      margin-right: 22px;
+    }
+
+    .sect {
+      margin-right: 10px;
+    }
+  }
+}
+
+@include media("<=sm") {
+  .loginPage {
+    .loginTabs {
+      order: 1;
+    }
+
+    .heroSide {
+      margin: 36px 0 0;
+      order: 2;
+    }
+
+    .heroBox {
+      flex-direction: column;
+      margin-top: 60px;
+    }
+
+    .sect {
+      margin-right: 0;
+    }
+
+    .press {
+      h2 {
+        padding-top: 75px;
+      }
+
+      .quotes {
+        margin-top: 38px;
+      }
+    }
+  }
+}
+
+.loginLinks {
+  border-bottom: 2px solid $borderColor;
+  width: 100%;
+
+  .loginLinkItem {
+    align-items: center;
+    color: $black;
+    display: flex;
+    flex-direction: row;
+    font-size: 21px;
+    font-weight: 700;
+    height: 70px;
+    justify-content: center;
+    padding: 10px 20px;
+    text-decoration: none;
+  }
+
+  .activeLink {
+    border-bottom: 2px solid $purple;
+  }
+}
+
+@include media("<=sm") {
+  .loginlinks {
+    border-radius: 0;
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
+.loginTabs {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  min-height: 450px;
+  overflow-y: visible;
+  position: relative;
+  width: 485px;
+  z-index: 100;
+
+  .section {
+    min-height: 450px;
+  }
+
+  .captchaTerms {
+    bottom: 12px;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@include media("<=sm") {
+  .loginTabs {
+    border-radius: 0;
+    width: 100%;
+  }
+}
+
+.press {
+  margin-top: 8px;
+
+  .chart {
+    left: 0;
+    margin-top: -20%;
+    position: absolute;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .slide {
+    animation: slider ease-in 4s;
+    background-color: $paleGrey;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  @keyframes slider {
+    from {
+      width: 100%;
+    }
+
+    to {
+      width: 0;
+    }
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 42px;
+    padding-top: 200px;
+    position: relative;
+    text-align: center;
+    z-index: 3;
+  }
+
+  .quotes {
+    height: 385px;
+    margin: 72px -8px;
+
+    .pressQuote {
+      z-index: 2;
+    }
+  }
+}
+
+.pressQuote {
+  background-color: $white;
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.06);
+  height: 262px;
+  margin: 8px;
+  padding: 35px 40px 22px;
+  position: relative;
+  width: 343px;
+
+  .readMore {
+    color: $purple;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 21px;
+    text-decoration: none;
+  }
+
+  .quoteIcon {
+    color: $purple;
+    font-size: 160px;
+    font-weight: bold;
+    left: -9px;
+    line-height: 208px;
+    opacity: 0.1;
+    position: absolute;
+    top: 4px;
+  }
+
+  .date {
+    display: flex;
+    font-size: 14px;
+    font-weight: 300;
+    justify-content: flex-end;
+    line-height: 18px;
+  }
+
+  .content {
+    margin-top: 36px;
+  }
+
+  .quoteFooter {
+    bottom: 22px;
+    padding: 0 40px;
+    position: absolute;
+    right: 0;
+    width: 100%;
+  }
+}
+
+.modal {
+  border-radius: 4px;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  overflow: visible;
+  overflow-y: auto;
+  position: relative;
+
+  &.newTheme {
+    /* // todo: use correct color, same as other modals? */
+    /* // background: #e7e5f8; */
+    border-radius: 16px;
+    /* // border: 1px solid #c1c2f7;border */
+    padding: 40px;
+  }
+
+  .closeIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+  }
+
+  &:not(.fullscreen) {
+    height: fit-content;
+    /* // max-height: 700px; */
+  }
+
+  &.mini {
+    width: 380px;
+  }
+
+  &.small {
+    width: 500px;
+  }
+
+  &.medium {
+    width: 800px;
+  }
+
+  &.large {
+    width: 1200px;
+  }
+
+  &.fullscreen {
+    height: auto;
+    margin: 0 100px;
+    min-height: 75%;
+  }
+}
+
+@include media("<=sm") {
+  .modal {
+    &.newTheme {
+      padding: 16px;
+    }
+
+    .closeIcon {
+      cursor: pointer;
+      height: 20px;
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      width: 20px;
+    }
+
+    &.fullscreen {
+      height: 100%;
+      margin: 0;
+    }
+
+    &.small {
+      margin: 15px;
+    }
+
+    &.medium {
+      margin: 15px;
+    }
+
+    &.large {
+      margin: 15px;
+    }
+  }
+}
+
+[data-theme="dark"] {
+  .modal {
+    background: $lightestBlack;
+
+    &.newTheme {
+      /* // todo: use correct color */
+      background: #060a1f;
+      border: 1px solid #413ba0;
+
+      &.fullscreen {
+        border-color: #1e1c4f;
+      }
+    }
+
+    [class^="MuiPaper"],
+    [class^="MuiTableCell"] {
+      background: transparent;
+      border-color: $lighterBlackBorder;
+    }
+  }
+}

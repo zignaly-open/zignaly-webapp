@@ -109,7 +109,7 @@ const AppLayout = (props) => {
         useEnterprise={false}
         useRecaptchaNet={true}
       >
-        <ThemeProvider theme={theme2}>
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <ErrorAlert />
           <SuccessAlert />

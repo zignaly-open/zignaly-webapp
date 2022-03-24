@@ -3,7 +3,7 @@ import "./ResetForm.scss";
 import { Box, Typography } from "@mui/material";
 import Logo from "images/logo/logoNW.svg";
 import { FormattedMessage } from "react-intl";
-import Link from "components/LocalizedLink";
+import Link from "next/link";
 
 /**
  * @param {Object} props Props.
@@ -32,7 +32,7 @@ const ResetForm = ({ code, form: Form }) => {
           <Typography variant="h3">
             <FormattedMessage id="recover.error" />
           </Typography>
-          <Link className="loginLink" to="/login">
+          <Link className="loginLink" href="/login">
             <FormattedMessage id="backtologin.text" />
           </Link>
         </Box>

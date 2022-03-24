@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ResetTwoFAForm.scss";
 import { Radio, RadioGroup, FormControlLabel, Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import tradeApi from "../../../services/tradeApiClient";

@@ -1,7 +1,7 @@
 import React from "react";
-import "./PressQuote.scss";
 import { Box } from "@mui/material";
 import { FormattedMessage } from "react-intl";
+import Image from "next/image";
 
 /**
  * @typedef {import("dayjs").Dayjs} Dayjs
@@ -38,7 +38,7 @@ const PressQuote = ({ quote }) => {
         <a className="readMore" href={quote.url} rel="noreferrer" target="_blank">
           <FormattedMessage id="login.readmore" />
         </a>
-        <img src={quote.logo} />
+        <Image src={quote.logo} />
       </Box>
     </Box>
   );

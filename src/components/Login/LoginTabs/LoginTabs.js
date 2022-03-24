@@ -1,5 +1,4 @@
 import React from "react";
-import "./LoginTabs.scss";
 import { Box } from "@mui/material";
 import LoginLinks from "../LoginLinks";
 

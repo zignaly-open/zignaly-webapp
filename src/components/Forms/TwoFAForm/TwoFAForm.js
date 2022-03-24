@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./TwoFAForm.scss";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch } from "react-redux";

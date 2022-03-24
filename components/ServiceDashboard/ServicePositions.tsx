@@ -11,6 +11,7 @@ import CoinIcon from "components/WalletView/CoinIcon";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { ManagementPositionsEntity } from "services/tradeApiClient.types";
+import { useGetServicePositions } from "lib/useRequest";
 
 const Cell = styled(Box)`
   display: flex;
@@ -66,21 +67,21 @@ const renderProfit = (position: ManagementPositionsEntity["position"]) => {
 };
 
 const ServicePositions = () => {
-  useEffect(() => {
-    tradeApi
-      .servicePositions("6058df72ab6a99353e06e8fc")
-      .then((response) => {
-        setPositions(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  }, []);
+  //   useEffect(() => {
+  //     tradeApi
+  //       .servicePositions("a")
+  //       .then((response) => {
+  //         setPositions(response);
+  //       })
+  //       .catch((e) => {
+  //         dispatch(showErrorAlert(e));
+  //       });
+  //   }, []);
 
   const selectedExchange = useSelectedExchange();
-  const [positions, setPositions] = useState(null);
   const dispatch = useDispatch();
   const intl = useIntl();
+  const { data: positions, error } = useGetServicePositions("6058df72ab6a99353e06e8fc");
 
   const columns = useMemo(
     () => [

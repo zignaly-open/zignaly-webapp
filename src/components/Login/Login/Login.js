@@ -1,13 +1,12 @@
 import React from "react";
-import "./Login.scss";
-import { Box, Typography } from "@mui/material";
-import Logo from "images/logo/logoNB.svg";
+import { Box, SvgIcon, Typography } from "@mui/material";
 import Trophy from "images/login/trophy.svg";
 import Coins from "images/login/coins.svg";
 import OneDollar from "images/login/$1.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
+import Image from "next/image";
 
 /**
  *
@@ -24,9 +23,12 @@ import { FormattedMessage } from "react-intl";
 const Login = ({ children }) => {
   return (
     <Box className="loginPage">
-      <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
+      <Box
+        className="headerBox"
+        sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
+      >
         <a href="https://www.zignaly.com">
-          <img alt="Zignaly" className="logo" src={Logo} />
+          <Image alt="Zignaly" className="logo" src="/zignaly.svg" width={163} height={42} />
         </a>
         <Box className="languageBox">
           <LanguageSwitcherDropdown />
@@ -41,7 +43,7 @@ const Login = ({ children }) => {
             />
           </Typography>
           <div className="sect">
-            <img src={Trophy} />
+            <Trophy />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.record" />
@@ -52,7 +54,7 @@ const Login = ({ children }) => {
             </div>
           </div>
           <div className="sect">
-            <img src={Coins} />
+            <Coins />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.fees" />
@@ -63,7 +65,7 @@ const Login = ({ children }) => {
             </div>
           </div>
           <div className="sect">
-            <img src={OneDollar} />
+            <OneDollar />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.min" />

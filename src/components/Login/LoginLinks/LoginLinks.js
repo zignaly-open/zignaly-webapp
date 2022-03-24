@@ -1,7 +1,6 @@
 import React from "react";
-import "./LoginLinks.scss";
 import { Box } from "@mui/material";
-import Link from "../../LocalizedLink";
+import Link from "next/link";
 import { FormattedMessage } from "react-intl";
 
 const LoginLinks = () => {
@@ -33,13 +32,13 @@ const LoginLinks = () => {
     >
       <Link
         className={"loginLinkItem " + (active("login") ? "activeLink" : "")}
-        to={"/login" + urlSearch}
+        href={"/login" + urlSearch}
       >
         <FormattedMessage id="login.title" />
       </Link>
       <Link
         className={"loginLinkItem " + (active("signup") ? "activeLink" : "")}
-        to={"/signup" + urlSearch}
+        href={"/signup" + urlSearch}
       >
         <FormattedMessage id="action.signup" />
       </Link>
