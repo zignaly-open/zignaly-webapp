@@ -25,10 +25,10 @@ module.exports = withBundleAnalyzer(
     env,
     reactStrictMode: true,
     webpack: (config) => {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        "@mui/styled-engine": "@mui/styled-engine-sc",
-      };
+      // config.resolve.alias = {
+      //   ...config.resolve.alias,
+      //   "@mui/styled-engine": "@mui/styled-engine-sc",
+      // };
       config.module.rules.push(
         {
           test: /\.ya?ml$/,
