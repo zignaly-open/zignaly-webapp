@@ -15,6 +15,7 @@ interface WalletCoin {
   name: string;
   networks: WalletNetwork[];
   usdPrice: number;
+  allowDeposit: boolean;
 }
 
 type WalletCoins = Record<string, WalletCoin>;

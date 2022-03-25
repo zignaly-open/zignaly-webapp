@@ -20,6 +20,7 @@ import { analyticsPageView } from "utils/analyticsJsApi";
 import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { Helmet } from "react-helmet";
 
 /**
  *
@@ -95,8 +96,15 @@ const AppLayout = (props) => {
     prevLocation.current = window.location.href;
   }, [href]);
 
+  const lang = getLanguageCodefromLocale(locale);
+
   return (
-    <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
+    <IntlProvider locale={lang} messages={messages || ENMessages}>
+      <Helmet
+        htmlAttributes={{
+          lang,
+        }}
+      />
       <GoogleReCaptchaProvider
         language="en"
         reCaptchaKey={process.env.GATSBY_RECAPTCHA_KEY}

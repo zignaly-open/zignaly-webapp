@@ -164,6 +164,11 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     // Add terms for futures PS
     terms.unshift("ack1");
   }
+  if (provider.privacy !== "listed_marketplace") {
+    // Risky service
+    terms.push("ack4");
+  }
+
   const helpUrls = {
     ack1: "https://help.zignaly.com/hc/en-us/articles/360017357399#h_01FTBM69RSNKRQHD7F22PFWAHJ",
     ack2: "https://help.zignaly.com/hc/en-us/articles/360017357399#h_01FD8B8FG4PBGHM4FASXFGWEBX",
@@ -294,20 +299,22 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
                       id={`profitsharing.${ack}`}
                       values={{ quote: provider.copyTradingQuote }}
                     />
-                    <a
-                      style={{
-                        color: "currentcolor",
-                        verticalAlign: "middle",
-                        display: "inline",
-                        marginLeft: "2px",
-                      }}
-                      title="More Info"
-                      href={helpUrls[ack]}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Help style={{ fontSize: "22px" }} />
-                    </a>
+                    {helpUrls[ack] && (
+                      <a
+                        style={{
+                          color: "currentcolor",
+                          verticalAlign: "middle",
+                          display: "inline",
+                          marginLeft: "2px",
+                        }}
+                        title="More Info"
+                        href={helpUrls[ack]}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Help style={{ fontSize: "22px" }} />
+                      </a>
+                    )}
                   </label>
                 </Box>
               ))}

@@ -31,7 +31,8 @@ import { CategoryIcon } from "./Zigpad";
 import cloudinary from "services/cloudinary";
 import CoinIcon from "../CoinIcon";
 import DOMPurify from "dompurify";
-import { format2Dec } from "utils/formatters";
+import { format2Dec, formatPrice } from "utils/formatters";
+import BuyZIGModal from "../BuyZIGModal/BuyZIGModal";
 
 const TitleContainer = styled(Box)`
   ${isMobile(css`
@@ -350,7 +351,7 @@ const CustomTimelineDot = ({
 
 export const getStep = (project: LaunchpadProjectDetails) => {
   if (project) {
-    if (dayjs().isAfter(project.distributionDates[0].date)) {
+    if (dayjs().isAfter(project.distributionPeriods[0].dateFrom)) {
       // Distribution period
       return 5;
     }
@@ -391,25 +392,30 @@ const rendererCountdown = ({ days, hours, minutes, seconds, completed }: Countdo
 };
 
 const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails }) => {
-  const currentIndex = project.distributionDates.findIndex((d) => !d.finished);
+  const currentIndex = project.distributionPeriods.findIndex((d) => !d.finished);
   return (
     <NestedTimeline>
-      {project.distributionDates.map((d, i) => (
-        <TimelineItem key={d.date}>
+      {project.distributionPeriods.map((d, i) => (
+        <TimelineItem key={d.dateFrom}>
           <TimelineSeparator>
             <CustomTimelineDot done={currentIndex > i} active={currentIndex === i} step={i + 1} />
-            {i < project.distributionDates.length - 1 && <TimelineConnector />}
+            {i < project.distributionPeriods.length - 1 && <TimelineConnector />}
           </TimelineSeparator>
           <TimelineContent>
-            <TimelineLabel active={currentIndex === i}>{formatDateTime(d.date)}</TimelineLabel>
+            <TimelineLabel active={currentIndex === i}>
+              {formatDateTime(d.dateFrom)}
+              {d.type !== "ONCE" && <> - {formatDateTime(d.dateTo)}</>}
+            </TimelineLabel>
             <ItemValue>
               <FormattedMessage
-                id="zigpad.distribution.release"
+                id={`zigpad.distribution.release${
+                  d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
+                }`}
                 values={{
-                  perc: parseFloat(d.percent).toFixed(2),
+                  perc: parseFloat(d.percent),
                   amount: (
                     <NumberFormat
-                      value={(parseFloat(d.percent) / 100) * project.tokenReward}
+                      value={formatPrice((parseFloat(d.percent) / 100) * project.tokenReward)}
                       thousandSeparator={true}
                       displayType="text"
                       suffix={` ${project.coin}`}
@@ -427,7 +433,7 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
 };
 
 const currentDistributionDate = (project: LaunchpadProjectDetails) =>
-  project.distributionDates.find((d) => !d.finished);
+  project.distributionPeriods.find((d) => !d.finished);
 
 const DistributionContent = ({
   project,
@@ -438,7 +444,6 @@ const DistributionContent = ({
 }) => {
   const distributionDate = currentDistributionDate(project);
   const timesOversubscribed = project.usdSubscription / project.tokenomic.hardCap;
-  console.log(project.pledged, project.returned);
 
   return (
     <>
@@ -536,7 +541,7 @@ const DistributionContent = ({
                 )}
               </CountdownText>
               {distributionDate && (
-                <Countdown date={distributionDate.date} renderer={rendererCountdown} />
+                <Countdown date={distributionDate.dateFrom} renderer={rendererCountdown} />
               )}
             </CountdownContainer>
           )}
@@ -557,12 +562,14 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
   const [pledgeModal, showPledgeModal] = useState(false);
   const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
-  const { walletBalance } = useContext(PrivateAreaContext);
+  const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const balanceZIG = walletBalance?.ZIG?.total?.availableBalance || 0;
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [step, setStep] = useState(1);
   // const [rateZIG, setRateZIG] = useState(null);
+  const [buyZIG, showBuyZIG] = useState(false);
+  const [updateAt, setUpdateAt] = useState(null);
 
   useInterval(
     () => {
@@ -586,11 +593,11 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
     });
   }, []);
 
-  // useEffect(() => {
-  //   tradeApi.getWalletCoins().then((response) => {
-  //     setRateZIG(response.ZIG.usdPrice);
-  //   });
-  // }, []);
+  useEffect(() => {
+    tradeApi.getWalletBalance().then((response) => {
+      setWalletBalance(response);
+    });
+  }, [updateAt]);
 
   const handlePledged = (amount: number) => {
     setProjectDetails({
@@ -621,6 +628,16 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
       >
         <WalletDepositView coins={coins} onClose={() => showDepositZIG(false)} coin="ZIG" />
       </CustomModal>
+      {buyZIG && (
+        <BuyZIGModal
+          onClose={() => showBuyZIG(false)}
+          onDone={() => {
+            showBuyZIG(false);
+            setUpdateAt(new Date());
+          }}
+          open={buyZIG}
+        />
+      )}
       <StyledModal>
         {projectDetails ? (
           <>
@@ -784,7 +801,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                             <ButtonDesc>
                               <FormattedMessage id="zigpad.buy.desc" />
                             </ButtonDesc>
-                            <Button href={gateioUrl} target="_blank" endIcon={<OpenArrowIcon />}>
+                            <Button onClick={() => showBuyZIG(true)}>
                               <FormattedMessage id="zigpad.buy" />
                             </Button>
                           </ButtonBox>
@@ -860,16 +877,23 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
                   <ItemValue>
-                    {formatDateTime(projectDetails.distributionDates[0].date)}
-                    {projectDetails.distributionDates.length > 1 && (
+                    {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                    {projectDetails.distributionPeriods.length > 1 ? (
                       <>
                         &nbsp;-&nbsp;
                         {formatDateTime(
-                          projectDetails.distributionDates[
-                            projectDetails.distributionDates.length - 1
-                          ].date,
+                          projectDetails.distributionPeriods[
+                            projectDetails.distributionPeriods.length - 1
+                          ].dateTo,
                         )}
                       </>
+                    ) : (
+                      projectDetails.distributionPeriods[0].type !== "ONCE" && (
+                        <>
+                          &nbsp;-&nbsp;
+                          {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                        </>
+                      )
                     )}
                   </ItemValue>
                   <DistributionContent step={step} project={projectDetails} />
@@ -993,13 +1017,16 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                       <FormattedMessage id="zigpad.tokenomic.tokenDistribution" />
                     </ItemLabel>
                     <ItemValue>
-                      {projectDetails.distributionDates.map((d) => (
-                        <div key={d.date}>
+                      {projectDetails.distributionPeriods.map((d) => (
+                        <div key={d.dateFrom}>
                           <FormattedMessage
-                            id="zigpad.tokenomic.release"
+                            id={`zigpad.tokenomic.release${
+                              d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
+                            }`}
                             values={{
                               perc: d.percent,
-                              date: dayjs(d.date).format("MMM D, YYYY"),
+                              date: dayjs(d.dateFrom).format("MMM D, YYYY"),
+                              dateTo: dayjs(d.dateTo).format("MMM D, YYYY"),
                             }}
                           />
                         </div>
@@ -1022,7 +1049,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
               <ListItem>
                 <MultiInlines>
                   <ItemLabel>
-                    <FormattedMessage id="zigpad.publicRound" />
+                    <FormattedMessage id="zigpad.otherRound" />
                   </ItemLabel>
                   <ItemValue>{projectDetails.publicRound || " - "}</ItemValue>
                 </MultiInlines>

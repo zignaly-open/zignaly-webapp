@@ -96,15 +96,14 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
+              {coinData?.allowDeposit && (
+                <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
+                  <FormattedMessage id="accounts.deposit" />
+                </Button>
+              )}
               <Button className="textPurple" onClick={() => setPath(`withdraw/${coinData.name}`)}>
                 <FormattedMessage id="accounts.withdraw" />
               </Button>
-              {/* <Button
-                className="textPurple borderPurple"
-                onClick={() => setPath(`deposit/${coinData.name}`)}
-              >
-                <FormattedMessage id="accounts.deposit" />
-              </Button> */}
             </AlignCenter>
           );
         },

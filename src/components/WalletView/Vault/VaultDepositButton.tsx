@@ -24,7 +24,7 @@ const ActivatedButton = styled.div`
   align-items: center;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: ${({ theme }) => (theme.palette.mode === "dark" ? "#B1F7CA" : "#36373f")};
   max-width: 210px;
   span {
@@ -33,10 +33,9 @@ const ActivatedButton = styled.div`
 `;
 
 const ActivatedButtonPledge = styled(ActivatedButton)`
-  text-transform: capitalize;
-  padding: 5px 5px;
+  padding: 5px 7px;
   flex-wrap: wrap;
-  ${({ active = true, theme }: { active: boolean }) =>
+  ${({ active, theme }: { active?: boolean }) =>
     !active &&
     css`
       background: rgba(48, 122, 233, 0.28);
@@ -44,23 +43,37 @@ const ActivatedButtonPledge = styled(ActivatedButton)`
     `}
 `;
 
+const InactiveButton = styled(ActivatedButtonPledge)`
+  white-space: nowrap;
+`;
+
 interface VaultDepositButtonProps {
   onClick: () => void;
   vault: VaultOffer;
   balance: number;
+  depositEnabled: boolean;
 }
 
-const VaultDepositButton = ({ balance, vault, onClick }: VaultDepositButtonProps) => {
+const VaultDepositButton = ({
+  balance,
+  vault,
+  depositEnabled,
+  onClick,
+}: VaultDepositButtonProps) => {
   return balance >= vault.minBalance ? (
     <ActivatedButton>
       <FormattedMessage id="vault.activated" />
     </ActivatedButton>
-  ) : (
+  ) : depositEnabled ? (
     <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
       <FormattedMessage id="accounts.deposit" />
       &nbsp;
       <NumberFormat value={vault.minBalance} displayType="text" suffix={` ${vault.coin}`} />
     </ButtonStyled>
+  ) : (
+    <InactiveButton>
+      <FormattedMessage id="vault.holders" values={{ coin: vault.coin }} />
+    </InactiveButton>
   );
 };
 
