@@ -179,18 +179,25 @@ const WalletCoins = ({
     };
   };
 
-  const data = useMemo(
-    () =>
-      Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
-        Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-          if (coin !== "ZIG" && key !== "total") {
-            accData.push(makeData(coin, key, networkBalance));
-          }
-        });
-        return accData;
-      }, []),
-    [walletBalance, coins, offers],
-  );
+  const data = useMemo(() => {
+    if (!walletBalance.NEOFI) {
+      // Force NEOFI in the list
+      walletBalance.NEOFI = {
+        dummy: {
+          availableBalance: 0,
+          balance: 0,
+        },
+      };
+    }
+    return Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
+      Object.entries(networkBalances).forEach(([key, networkBalance]) => {
+        if (coin !== "ZIG" && key !== "total") {
+          accData.push(makeData(coin, key, networkBalance));
+        }
+      });
+      return accData;
+    }, []);
+  }, [walletBalance, coins, offers]);
 
   if (!walletBalance) {
     return null;
