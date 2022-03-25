@@ -54,6 +54,12 @@ const LocalizationLanguages = [
     countryCode: "pt",
     languageCode: "pt",
   },
+  {
+    locale: "tr",
+    label: "Türkçe",
+    countryCode: "tr",
+    languageCode: "tr",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
@@ -63,12 +69,6 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     label: "Čeština",
     countryCode: "cz",
     languageCode: "cs",
-  });
-  LocalizationLanguages.push({
-    locale: "tr",
-    label: "Türkçe",
-    countryCode: "tr",
-    languageCode: "tr",
   });
 }
 
