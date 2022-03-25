@@ -96,7 +96,7 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {coinData?.allowDeposit && (
+              {(coinData?.allowDeposit || coinData?.name === "NEOFI") && (
                 <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
@@ -133,7 +133,7 @@ const WalletCoins = ({
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
             </Box>
-            <TypographySecondary>{networkData?.name}</TypographySecondary>
+            {networkData && <TypographySecondary>{networkData?.name}</TypographySecondary>}
           </Box>
         </CoinCell>
       ),
