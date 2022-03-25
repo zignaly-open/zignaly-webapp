@@ -70,11 +70,9 @@ const getTheme = (darkMode: boolean) => ({
         }),
   },
   components: {
-    // Name of the component
     MuiButtonBase: {
       defaultProps: {
-        // The props to change the default for.
-        disableRipple: true, // No more ripple!
+        disableRipple: true,
       },
     },
   },

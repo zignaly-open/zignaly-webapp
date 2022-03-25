@@ -1,4 +1,4 @@
-import { Box, Button, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 // import ServiceContracts from "./ServiceContracts";
@@ -6,57 +6,8 @@ import { useIntl } from "react-intl";
 import ServicePositions from "./ServicePositions";
 // import TabPanel from "@mui/lab/TabPanel";
 import styled from "styled-components";
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-const StyledTabs = styled(Tabs)`
-  .MuiTabs-indicator {
-    background: linear-gradient(289.8deg, #149cad 0%, #4540c1 100%);
-    border-radius: 6px;
-  }
-
-  .MuiTab-root {
-    text-transform: initial;
-    color: #9ca3af;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
-    padding-left: 0;
-    padding-right: 0;
-    margin: 0 16px;
-    position: relative;
-
-    &:before {
-      /* Hack to avoid the button from changing size when bold */
-      content: attr(data-text);
-      font-weight: bold;
-      visibility: hidden;
-    }
-  }
-
-  .Mui-selected {
-    color: #f3f4f6;
-    font-weight: 600;
-  }
-`;
+// import { Tab, TabPanel, Tabs } from "zignaly-ui";
+import { Avatar } from "zignaly-ui";
 
 const ServiceDashboard = () => {
   const intl = useIntl();
@@ -67,30 +18,14 @@ const ServiceDashboard = () => {
   };
   return (
     <>
-      {/* <TabContext value={value}> */}
       <Box>
-        <StyledTabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab
-            label={intl.formatMessage({ id: "dashboard.openPositions" })}
-            data-text={intl.formatMessage({ id: "dashboard.openPositions" })}
-          />
-          <Tab
-            label={intl.formatMessage({ id: "dashboard.closedPositions" })}
-            data-text={intl.formatMessage({ id: "dashboard.closedPositions" })}
-          />
-          <Tab
-            label={intl.formatMessage({ id: "dashboard.exchangeOrders" })}
-            data-text={intl.formatMessage({ id: "dashboard.exchangeOrders" })}
-          />
-          <Tab
-            label={intl.formatMessage({ id: "accounts.contracts" })}
-            data-text={intl.formatMessage({ id: "accounts.contracts" })}
-          />
-          <Tab
-            label={intl.formatMessage({ id: "dashboard.positions.log" })}
-            data-text={intl.formatMessage({ id: "dashboard.positions.log" })}
-          />
-        </StyledTabs>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label={intl.formatMessage({ id: "dashboard.openPositions" })} />
+          <Tab label={intl.formatMessage({ id: "dashboard.closedPositions" })} />
+          <Tab label={intl.formatMessage({ id: "dashboard.exchangeOrders" })} />
+          <Tab label={intl.formatMessage({ id: "accounts.contracts" })} />
+          <Tab label={intl.formatMessage({ id: "dashboard.positions.log" })} />
+        </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         {/* <ServicePositions /> */}
@@ -102,7 +37,6 @@ const ServiceDashboard = () => {
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
-      {/* </TabContext> */}
       {/* <ServicePositions />
       <br />
       <ServiceOrders />
