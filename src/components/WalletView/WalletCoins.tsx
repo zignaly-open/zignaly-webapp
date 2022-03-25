@@ -182,7 +182,7 @@ const WalletCoins = ({
   };
 
   const data = useMemo(() => {
-    if (walletBalance && !walletBalance.NEOFI && coins.NEOFI) {
+    if (walletBalance && !walletBalance.NEOFI && coins?.NEOFI) {
       // Force NEOFI in the list
       walletBalance.NEOFI = {
         dummy: {
