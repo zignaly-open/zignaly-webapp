@@ -96,7 +96,7 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {coinData?.allowDeposit && (
+              {(coinData?.allowDeposit || coinData?.name === "NEOFI") && (
                 <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
@@ -114,7 +114,9 @@ const WalletCoins = ({
 
   const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
-    const networkData = coinData?.networks.find((n) => n.network === network);
+    // Find coin network data or use the first one if network not found, for coins such as NEOFI
+    const networkData =
+      coinData?.networks.find((n) => n.network === network) || coinData?.networks[0];
     const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
