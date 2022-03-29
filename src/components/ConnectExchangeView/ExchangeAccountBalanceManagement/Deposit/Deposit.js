@@ -135,9 +135,9 @@ const Deposit = () => {
                       {selectedAssetName} <FormattedMessage id="deposit.address" />
                     </Typography>
                     <Box display="flex" flexDirection="row">
-                      {selectedNetwork && !selectedNetwork.withdrawEnable ? (
+                      {selectedNetwork && !selectedNetwork.depositEnable ? (
                         <Alert severity="error">
-                          {selectedNetwork.withdrawDesc || (
+                          {selectedNetwork.depositDesc || (
                             <FormattedMessage id="withdraw.notavailable" />
                           )}
                         </Alert>
