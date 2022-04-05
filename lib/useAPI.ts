@@ -62,9 +62,10 @@ export default useAPI;
 export const useGetServicePositions = (providerId: string) => {
   const path = `/user/providers/${providerId}/positions`;
   const res = useAPIFetch(path);
+  const positions = res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data;
   return {
     ...res,
-    data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : (res.data as Position[]),
+    data: positions as Position[],
   };
 };
 
