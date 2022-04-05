@@ -3,7 +3,7 @@ import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
+import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui2";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";

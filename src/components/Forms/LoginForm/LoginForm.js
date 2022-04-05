@@ -82,6 +82,7 @@ const LoginForm = () => {
       // navigate(pathWithoutPrefix);
 
       const returnUrl = router.query.returnUrl || "/service";
+      console.log("redir", returnUrl);
       router.push(returnUrl);
     }
   };

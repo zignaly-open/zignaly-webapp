@@ -72,4 +72,4 @@ if (process.env.NEXT_PUBLIC_TEST_TRANSLATIONS === "true") {
   });
 }
 
-module.exports = LocalizationLanguages;
+export default LocalizationLanguages;

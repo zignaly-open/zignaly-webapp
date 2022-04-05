@@ -5,21 +5,25 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/
 import type { AppProps } from "next/app";
 import { createGlobalStyle } from "styled-components";
 // import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui";
+import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test2";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
 import ENMessages from "../src/i18n/translations/en.yml";
 import translations from "../src/i18n/translations";
-import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import useStoreSettingsSelector from "../src/hooks/useStoreSettingsSelector";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { store } from "../src/store/store.js";
 import "./legacy.scss";
 import { useRouter } from "next/router";
 import { setToken } from "../lib/useRequest";
+import { getLanguageCodefromLocale } from "../src/i18n";
+import { RouteGuard } from "../components/RouteGuard";
+import ErrorBoundary from "../components/ErrorBoundary";
+import { SWRConfig } from "swr";
+import { endTradeApiSession } from "../src/store/actions/session";
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -37,26 +41,52 @@ const WithReduxProvider = (Component) => (props) =>
     </Provider>
   );
 
-function MyApp({ Component, pageProps }: AppProps) {
+const ConfigureAuthFetch = ({ children }) => {
   const storeSession = useStoreSessionSelector();
+  const token = storeSession.tradeApi.accessToken;
+  const dispatch = useDispatch();
+
+  return (
+    <SWRConfig
+      value={{
+        fetcher: async (url, options) => {
+          const res = await fetch(url, {
+            method: options?.payload ? "POST" : "GET",
+            ...options,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+              "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
+              ...(options?.payload && { body: JSON.stringify(options.payload) }),
+              ...options?.headers,
+            },
+          });
+          if (!res.ok) {
+            if (res.status === 401) {
+              dispatch(endTradeApiSession());
+              console.log("401 caught");
+            } else {
+              throw Error(res.statusText);
+            }
+          }
+          return res.json();
+          // res.ok ? res.json() : Promise.reject(res)
+        },
+      }}
+    >
+      {children}
+    </SWRConfig>
+  );
+};
+
+function MyApp({ Component, pageProps }: AppProps) {
   const { darkStyle, locale } = useStoreSettingsSelector();
   const router = useRouter();
   const darkTheme = router.pathname !== "/" && true;
-  const theme = useMemo(() => createTheme(getTheme(darkTheme)), [darkTheme]);
+  const theme = useMemo(() => createTheme({ ...dark, ...getTheme(darkTheme) }), [darkTheme]);
   const [messages, setMessages] = useState(null);
-  const token = storeSession.tradeApi.accessToken;
-  // useEffect(() => {
-  // Init api auth token with persisted value
-  setToken(token);
-  console.log("set", token);
-  // }, [token]);
 
-  /**
-   *
-   * @param {string} localeValue locale code
-   * @returns {Promise<MessageRecord>} returns a record
-   */
-  const getMessages = async (localeValue) => {
+  const getMessages = async (localeValue: string): Promise<Record<string, string>> => {
     const lang = getLanguageCodefromLocale(localeValue);
     return await translations[lang]();
   };
@@ -87,10 +117,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <ThemeProviderUI theme={dark}>
+            <ThemeProviderUI theme={theme}>
               {/* <GlobalStyle /> */}
               <CssBaseline />
-              <Component {...pageProps} />
+              <RouteGuard>
+                {/* <ErrorBoundary> */}
+                <ConfigureAuthFetch>
+                  <Component {...pageProps} />
+                </ConfigureAuthFetch>
+                {/* </ErrorBoundary> */}
+              </RouteGuard>
             </ThemeProviderUI>
           </ThemeProvider>
         </StyledEngineProvider>
@@ -99,10 +135,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-MyApp.getInitialProps = async (appContext) => {
-  console.log("aaa");
-  // const appProps = await App.getInitialProps(appContext);
-  // return { ...appProps };
-};
+// MyApp.getInitialProps = async (appContext) => {};
 
 export default WithReduxProvider(MyApp);

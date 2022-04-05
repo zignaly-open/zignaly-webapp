@@ -85,7 +85,8 @@
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.3",
     "swr": "^1.2.2",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "zignaly-ui-test2": "^0.0.4"
   },
   "resolutions": {
     "moment": "2.24.0",

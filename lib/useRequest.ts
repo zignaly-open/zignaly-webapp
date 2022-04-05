@@ -26,28 +26,6 @@
 
 import useSWR from "swr";
 
-let _token = null;
-// let _token = localStorage.getItem("auth");
-// console.log(_token);
-
-const getToken = () => _token;
-export const setToken = (t) => {
-  _token = t;
-  // localStorage.setItem("auth", t);
-};
-
-const fetcher = (url, payload) => {
-  return fetch(url, {
-    method: payload ? "POST" : "GET",
-    ...(payload && { body: JSON.stringify(payload) }),
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-      ...(getToken() && { Authorization: "Bearer " + getToken() }),
-    },
-  }).then((res) => res.json());
-};
-
 const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
 export const login = (payload) => {
@@ -63,26 +41,31 @@ export const verify2FA = (payload) => {
   return fetcher(baseUrl + path, payload);
 };
 
-export const useRequest = (path, name) => {
+// const fetcher = (url, payload) => {
+//   return fetch(url, {
+//     method: payload ? "POST" : "GET",
+//     ...(payload && { body: JSON.stringify(payload) }),
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
+//       ...(getToken() && { Authorization: "Bearer " + getToken() }),
+//     },
+//   }).then((res) => res.json());
+// };
+
+export const useRequest = (path: string, name?: string) => {
   if (!path) {
     throw new Error("Path is required");
   }
 
   const url = name ? baseUrl + path + "/" + name : baseUrl + path;
-  const { data, error } = useSWR(url, fetcher);
+  const { data, error } = useSWR(url);
 
   return { data, error };
 };
 
-export const useGetServicePositions = (providerId) => {
-  console.log("q", getToken());
+export const useGetServicePositions = (providerId: string) => {
   const path = `/user/providers/${providerId}/positions`;
-
-  // const url = baseUrl + path;
-  // const { data, error } = useSWR(url, fetcher);
-  // const res =
-
-  // return { data: res, error };
   const res = useRequest(path);
   return { ...res, data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data };
 };

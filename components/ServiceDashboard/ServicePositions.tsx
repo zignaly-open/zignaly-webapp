@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
+import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui-test2";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
@@ -77,13 +77,11 @@ const ServicePositions = () => {
   //         dispatch(showErrorAlert(e));
   //       });
   //   }, []);
-
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const { data: positions, error } = useGetServicePositions("6058df72ab6a99353e06e8fc");
-  console.log(positions);
-  return <Table columns={undefined} data={undefined} />;
+
+  const { data: positions, error } = useGetServicePositions("612f43288aedc6362e6f7745");
   const columns = useMemo(
     () => [
       {
@@ -111,15 +109,15 @@ const ServicePositions = () => {
         accessor: "invested",
       },
       { Header: intl.formatMessage({ id: "col.side" }), accessor: "side" },
-      {
-        Header: (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton icon={OptionsDotsIcon} size="large" />
-          </div>
-        ),
-        accessor: "action",
-        disableSortBy: true,
-      },
+      // {
+      //   Header: (
+      //     <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      //       <IconButton icon={OptionsDotsIcon} size="large" />
+      //     </div>
+      //   ),
+      //   accessor: "action",
+      //   disableSortBy: true,
+      // },
     ],
     [],
   );
