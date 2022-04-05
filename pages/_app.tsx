@@ -45,7 +45,7 @@ const ConfigureAuthFetch = ({ children }) => {
   const storeSession = useStoreSessionSelector();
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
-
+  const router = useRouter();
   return (
     <SWRConfig
       value={{
@@ -64,7 +64,11 @@ const ConfigureAuthFetch = ({ children }) => {
           if (!res.ok) {
             if (res.status === 401) {
               dispatch(endTradeApiSession());
-              console.log("401 caught");
+              console.log("401 caught, redir to login");
+              router.push({
+                pathname: "/",
+                query: { returnUrl: router.asPath },
+              });
             } else {
               throw Error(res.statusText);
             }

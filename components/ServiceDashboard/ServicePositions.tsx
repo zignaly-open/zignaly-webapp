@@ -12,6 +12,7 @@ import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { ManagementPositionsEntity } from "services/tradeApiClient.types";
 import { useGetServicePositions } from "../../lib/useRequest";
+import { useAPI } from "../../lib/useAPI";
 
 const Cell = styled(Box)`
   display: flex;
@@ -80,7 +81,7 @@ const ServicePositions = () => {
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const intl = useIntl();
-
+  const { useGetServicePositions } = useAPI();
   const { data: positions, error } = useGetServicePositions("612f43288aedc6362e6f7745");
   const columns = useMemo(
     () => [

@@ -32,7 +32,7 @@ function RouteGuard({ children }) {
       // router.events.off("routeChangeStart", hideContent);
       // router.events.off("routeChangeComplete", authCheck);
     };
-  }, [token]);
+  }, []);
 
   const authCheck = (url) => {
     // redirect to login page if accessing a private page and not logged in
@@ -52,8 +52,8 @@ function RouteGuard({ children }) {
     } else {
       if (path === "/" && sessionValid) {
         const returnUrl = router.query.returnUrl || "/service";
-        console.log("session already valid, redir", returnUrl);
         router.push(returnUrl);
+        console.log("session already valid, redir", returnUrl);
       } else {
         setAuthorized(true);
       }

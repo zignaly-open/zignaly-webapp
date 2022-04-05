@@ -1,3 +1,4 @@
+import useSWR, { useSWRConfig } from "swr";
 // import { useEffect } from "react";
 // import Router from "next/router";
 // import useSWR from "swr";
@@ -24,36 +25,9 @@
 //   return { user, mutateUser };
 // }
 
-import useSWR from "swr";
-
 const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
-export const login = (payload) => {
-  const path = "/login";
-  return fetcher(baseUrl + path, payload).then((res) => {
-    setToken(res.token);
-    return res;
-  });
-};
-
-export const verify2FA = (payload) => {
-  const path = "/user/verify_2fa";
-  return fetcher(baseUrl + path, payload);
-};
-
-// const fetcher = (url, payload) => {
-//   return fetch(url, {
-//     method: payload ? "POST" : "GET",
-//     ...(payload && { body: JSON.stringify(payload) }),
-//     headers: {
-//       "Content-Type": "application/json",
-//       "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-//       ...(getToken() && { Authorization: "Bearer " + getToken() }),
-//     },
-//   }).then((res) => res.json());
-// };
-
-export const useRequest = (path: string, name?: string) => {
+export const useAPIFetch = (path: string, name?: string) => {
   if (!path) {
     throw new Error("Path is required");
   }
@@ -64,8 +38,24 @@ export const useRequest = (path: string, name?: string) => {
   return { data, error };
 };
 
-export const useGetServicePositions = (providerId: string) => {
-  const path = `/user/providers/${providerId}/positions`;
-  const res = useRequest(path);
-  return { ...res, data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data };
+export const useAPI = () => {
+  // const fetchWrapper = useFetchWrapper();
+  const { fetcher } = useSWRConfig();
+
+  const login = (payload) => {
+    const path = "/login";
+    return fetcher(baseUrl + path, payload);
+  };
+
+  const verify2FA = (payload) => {
+    const path = "/user/verify_2fa";
+    return fetcher(baseUrl + path, payload);
+  };
+
+  const useGetServicePositions = (providerId: string) => {
+    const path = `/user/providers/${providerId}/positions`;
+    const res = useAPIFetch(path);
+    return { ...res, data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data };
+  };
+  return { useGetServicePositions, login, verify2FA };
 };
