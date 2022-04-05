@@ -1,4 +1,6 @@
-import useSWR, { useSWRConfig } from "swr";
+import { UserLoginPayload, LoginResponse } from "services/tradeApiClient";
+import { TwoFAPayload } from "services/tradeApiClient.types";
+import useSWR, { SWRHook, SWRResponse, useSWRConfig } from "swr";
 // import { useEffect } from "react";
 // import Router from "next/router";
 // import useSWR from "swr";
@@ -27,35 +29,46 @@ import useSWR, { useSWRConfig } from "swr";
 
 const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
-export const useAPIFetch = (path: string, name?: string) => {
+export const useAPIFetch = <Data = any, Error = any>(
+  path: string,
+  name?: string,
+): SWRResponse<Data, Error> => {
   if (!path) {
     throw new Error("Path is required");
   }
 
   const url = name ? baseUrl + path + "/" + name : baseUrl + path;
-  const { data, error } = useSWR(url);
-
-  return { data, error };
+  return useSWR(url);
 };
 
-export const useAPI = () => {
-  // const fetchWrapper = useFetchWrapper();
-  const { fetcher } = useSWRConfig();
+const useAPI = () => {
+  const { fetcher }: { fetcher?: any } = useSWRConfig();
 
-  const login = (payload) => {
-    const path = "/login";
-    return fetcher(baseUrl + path, payload);
+  const login = (payload: UserLoginPayload): Promise<LoginResponse> => {
+    return fetcher(baseUrl + "/login", { body: payload, headers: { Authorization: null } });
   };
 
-  const verify2FA = (payload) => {
-    const path = "/user/verify_2fa";
-    return fetcher(baseUrl + path, payload);
+  const verify2FA = (payload: TwoFAPayload): Promise<Boolean> => {
+    return fetcher(baseUrl + "/user/verify_2fa", {
+      body: payload,
+      headers: { Authorization: `Bearer ${payload.token}` },
+    });
   };
 
-  const useGetServicePositions = (providerId: string) => {
-    const path = `/user/providers/${providerId}/positions`;
-    const res = useAPIFetch(path);
-    return { ...res, data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data };
+  return { fetcher, login, verify2FA };
+};
+export default useAPI;
+
+export const useGetServicePositions = (providerId: string) => {
+  const path = `/user/providers/${providerId}/positions`;
+  const res = useAPIFetch(path);
+  return {
+    ...res,
+    data: res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : (res.data as Position[]),
   };
-  return { useGetServicePositions, login, verify2FA };
+};
+
+export const test = (providerId: string) => {
+  // const path = `/user/providers/${providerId}/positions`;
+  // return useAPIFetch<Position[]>(path);
 };

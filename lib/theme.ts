@@ -23,45 +23,45 @@ export const colors = {
 };
 
 const getTheme = (darkMode: boolean) => ({
-  // palette: {
-  //   mode: (darkMode ? "dark" : "light") as PaletteMode,
-  //   ...(!darkMode
-  //     ? {
-  //         primary: { main: colors.purple },
-  //         background: {
-  //           default: colors.offWhite,
-  //           paper: colors.white,
-  //         },
-  //         text: {
-  //           primary: colors.black,
-  //         },
-  //         secondary: {
-  //           main: colors.purpleLight,
-  //         },
-  //         grid: {
-  //           main: colors.white,
-  //           content: colors.white,
-  //         },
-  //       }
-  //     : {
-  //         primary: { main: colors.purpleLight },
-  //         // divider: deepOrange[700],
-  //         background: {
-  //           default: colors.lightBlack,
-  //           paper: colors.lighterBlack,
-  //         },
-  //         text: {
-  //           primary: colors.lightWhite,
-  //         },
-  //         secondary: {
-  //           main: colors.purpleLight,
-  //         },
-  //         grid: {
-  //           main: colors.lighterBlack,
-  //           content: colors.lighterBlack,
-  //         },
-  //       }),
-  // },
+  palette: {
+    mode: (darkMode ? "dark" : "light") as PaletteMode,
+    ...(!darkMode
+      ? {
+          primary: { main: colors.purple },
+          background: {
+            default: colors.offWhite,
+            paper: colors.white,
+          },
+          text: {
+            primary: colors.black,
+          },
+          secondary: {
+            main: colors.purpleLight,
+          },
+          grid: {
+            main: colors.white,
+            content: colors.white,
+          },
+        }
+      : {
+          primary: { main: colors.purpleLight },
+          // divider: deepOrange[700],
+          background: {
+            default: colors.lightBlack,
+            paper: colors.lighterBlack,
+          },
+          text: {
+            primary: colors.lightWhite,
+          },
+          secondary: {
+            main: colors.purpleLight,
+          },
+          grid: {
+            main: colors.lighterBlack,
+            content: colors.lighterBlack,
+          },
+        }),
+  },
   // components: {
   //   MuiButtonBase: {
   //     defaultProps: {

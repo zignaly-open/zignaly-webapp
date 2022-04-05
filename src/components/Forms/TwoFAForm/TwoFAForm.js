@@ -7,7 +7,8 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 import useStoreSessionSelector from "hooks/useStoreSessionSelector";
-import { verify2FA } from "../../../../lib/useRequest";
+import useAPI from "../../../../lib/useAPI";
+import useRedirection from "../../../../lib/useRedirection";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent
@@ -46,6 +47,8 @@ const TwoFAForm = ({ loginData, onComplete }) => {
   const dispatch = useDispatch();
   const storeSession = useStoreSessionSelector();
   const token = loginData?.token || storeSession.tradeApi.accessToken;
+  const { verify2FA } = useAPI();
+  const { redirectDashboard } = useRedirection();
 
   /**
    * Function to submit code to backend.

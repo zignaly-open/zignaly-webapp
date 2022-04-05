@@ -50,17 +50,24 @@ const ConfigureAuthFetch = ({ children }) => {
     <SWRConfig
       value={{
         fetcher: async (url, options) => {
-          const res = await fetch(url, {
-            method: options?.payload ? "POST" : "GET",
+          const o = {
+            method: options?.body ? "POST" : "GET",
             ...options,
+            ...(options?.body && { body: JSON.stringify(options.body) }),
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
               "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-              ...(options?.payload && { body: JSON.stringify(options.payload) }),
               ...options?.headers,
             },
-          });
+          };
+
+          // Remove authorization key when not needed
+          if (options?.headers?.Authorization === null) {
+            delete o.headers.Authorization;
+          }
+
+          const res = await fetch(url, o);
           if (!res.ok) {
             if (res.status === 401) {
               dispatch(endTradeApiSession());

@@ -17,8 +17,8 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
 import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
-import { login } from "../../../../lib/useRequest";
-import { useRouter } from "next/router";
+import useAPI from "../../../../lib/useAPI";
+import useRedirection from "../../../../lib/useRedirection";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -44,7 +44,8 @@ const LoginForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
-  const router = useRouter();
+  const { login } = useAPI();
+  const { redirectDashboard } = useRedirection();
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
@@ -65,30 +66,13 @@ const LoginForm = () => {
       setLoading(false);
     } else {
       dispatch(startTradeApiSession(response, "login"));
-
-      // const params = new URLSearchParams(window.location.search);
-      // let path = newUserPath || "/dashboard";
-      // if (params.get("ret")) {
-      //   // Redirect to last visited page
-      //   const ret = decodeURIComponent(params.get("ret"));
-      //   // Ensure we are not redirecting to an external domain
-      //   if (ret.indexOf(".") === -1) {
-      //     path = ret;
-      //   }
-      // }
-
-      // const pathPrefix = process.env.GATSBY_BASE_PATH || "";
-      // const pathWithoutPrefix = path.replace(pathPrefix, "");
-      // navigate(pathWithoutPrefix);
-
-      const returnUrl = router.query.returnUrl || "/service";
-      console.log("redir", returnUrl);
-      router.push(returnUrl);
+      redirectDashboard();
     }
   };
 
   const onSuccess = () => {
     dispatch(startTradeApiSession(loginResponse, "login"));
+    redirectDashboard();
   };
 
   /**
