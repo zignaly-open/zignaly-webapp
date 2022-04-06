@@ -10,22 +10,19 @@ import { Tab, TabPanel, Tabs } from "zignaly-ui-test2";
 
 const ServiceDashboard = () => {
   const intl = useIntl();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
     <>
-      <Box>
-        <Tabs value={value} onChange={handleChange}>
-          <Tab label={intl.formatMessage({ id: "dashboard.openPositions" })} />
-          <Tab label={intl.formatMessage({ id: "dashboard.closedPositions" })} />
-          <Tab label={intl.formatMessage({ id: "dashboard.exchangeOrders" })} />
-          <Tab label={intl.formatMessage({ id: "accounts.contracts" })} />
-          <Tab label={intl.formatMessage({ id: "dashboard.positions.log" })} />
-        </Tabs>
-      </Box>
+      <Tabs value={value} onChange={handleChange}>
+        <Tab label={intl.formatMessage({ id: "dashboard.openPositions" })} />
+        <Tab label={intl.formatMessage({ id: "dashboard.closedPositions" })} />
+        <Tab label={intl.formatMessage({ id: "dashboard.exchangeOrders" })} />
+        <Tab label={intl.formatMessage({ id: "accounts.contracts" })} />
+        <Tab label={intl.formatMessage({ id: "dashboard.positions.log" })} />
+      </Tabs>
       <TabPanel value={value} index={0}>
         <ServicePositions />
       </TabPanel>

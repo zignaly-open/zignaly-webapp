@@ -1,10 +1,9 @@
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import Head from "next/head";
-import { CMS_NAME as PRODUCT_NAME } from "../lib/constants";
+import { PRODUCT_NAME } from "../lib/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
 import ServiceInvestors from "../components/ServiceInvestors/ServiceInvestors";
-import Link from "next/link";
 
 type Props = {};
 
@@ -16,10 +15,7 @@ const Investors = ({}: Props) => {
         <Head>
           <title>{`${intl.formatMessage({ id: "service.investors" })} | ${PRODUCT_NAME}`}</title>
         </Head>
-        <Link href="/service">
-          <a>Service</a>
-        </Link>
-        {/* <ServiceInvestors /> */}
+        <ServiceInvestors />
       </Container>
     </MainLayout>
   );

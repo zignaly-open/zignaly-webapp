@@ -1,3 +1,4 @@
+import { ExchangeAssetsDict } from "services/tradeApiClient.types";
 import useSWR, { SWRResponse, useSWRConfig } from "swr";
 // import { User } from "pages/api/user";
 
@@ -63,7 +64,7 @@ const useAPI = () => {
 };
 export default useAPI;
 
-export const useGetServicePositions = (providerId: string) => {
+export const useServicePositions = (providerId: string) => {
   const path = `/user/providers/${providerId}/positions`;
   const res = useAPIFetch(path);
   const positions = res.data ? Object.keys(res.data).map((k) => res.data[k][0]) : res.data;
@@ -73,7 +74,7 @@ export const useGetServicePositions = (providerId: string) => {
   };
 };
 
-export const test = (providerId: string) => {
-  // const path = `/user/providers/${providerId}/positions`;
-  // return useAPIFetch<Position[]>(path);
+export const useExchangeAssets = (internalId: string) => {
+  const path = `/user/exchanges/${internalId}/assets?view=reduced`;
+  return useAPIFetch<ExchangeAssetsDict>(path);
 };
