@@ -15,10 +15,12 @@ import CaptchaTerms from "components/Captcha/CaptchaTerms";
 // import Captcha from "../../Captcha";
 import { showErrorAlert } from "store/actions/ui";
 import tradeApi from "services/tradeApiClient";
-import { startTradeApiSession } from "store/actions/session";
+import { setSessionData, startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
+import useAPI from "../../../../lib/useAPI";
+import useRedirection from "../../../../lib/useRedirection";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -34,6 +36,8 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
+  const { getSession } = useAPI();
+  const { redirectDashboard } = useRedirection();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -100,8 +104,11 @@ const SignupForm = () => {
       });
   };
 
-  const onVerified = () => {
+  const onVerified = async () => {
     dispatch(startTradeApiSession(loginResponse, "signup"));
+    const res = await getSession(loginResponse.token);
+    dispatch(setSessionData(res));
+    redirectDashboard();
   };
 
   return (

@@ -13,6 +13,10 @@ import LoginForm from "../src/components/Forms/LoginForm";
 import { CMS_NAME } from "../lib/constants";
 // import Post from "../types/post";
 import { createGlobalStyle } from "styled-components";
+import { useEffect } from "react";
+import { verifySessionData } from "../lib/auth";
+import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
+import useRedirection from "../lib/useRedirection";
 
 type Props = {
   // allPosts: Post[];
@@ -27,8 +31,18 @@ type Props = {
 // `;
 
 const Index = ({}: Props) => {
-  // const heroPost = allPosts[0];
-  // const morePosts = allPosts.slice(1);
+  const storeSession = useStoreSessionSelector();
+  const token = storeSession.tradeApi.accessToken;
+  const { redirectDashboard } = useRedirection();
+
+  useEffect(() => {
+    const sessionValid = verifySessionData(token, storeSession.sessionData);
+    if (sessionValid) {
+      // move to index page?
+      redirectDashboard();
+      console.log("session already valid, redirecting");
+    }
+  }, []);
   return (
     <Container maxWidth="lg">
       {/* <GlobalStyle /> */}

@@ -53,5 +53,4 @@ export async function getServerSideProps(context) {
 //     props: { user: req.session.user },
 //   }
 // },
-
 export default Investors;

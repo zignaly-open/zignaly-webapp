@@ -1,9 +1,4 @@
-import { UserLoginPayload, LoginResponse } from "services/tradeApiClient";
-import { TwoFAPayload } from "services/tradeApiClient.types";
-import useSWR, { SWRHook, SWRResponse, useSWRConfig } from "swr";
-// import { useEffect } from "react";
-// import Router from "next/router";
-// import useSWR from "swr";
+import useSWR, { SWRResponse, useSWRConfig } from "swr";
 // import { User } from "pages/api/user";
 
 // export default function useUser({ redirectTo = "", redirectIfFound = false } = {}) {
@@ -44,18 +39,27 @@ export const useAPIFetch = <Data = any, Error = any>(
 const useAPI = () => {
   const { fetcher }: { fetcher?: any } = useSWRConfig();
 
-  const login = (payload: UserLoginPayload): Promise<LoginResponse> => {
+  const login = (payload: LoginReq): Promise<LoginRes> => {
     return fetcher(baseUrl + "/login", { body: payload, headers: { Authorization: null } });
   };
 
-  const verify2FA = (payload: TwoFAPayload): Promise<Boolean> => {
+  const verify2FA = (payload: verify2FAReq): Promise<{}> => {
+    const { token, ...data } = payload;
     return fetcher(baseUrl + "/user/verify_2fa", {
-      body: payload,
-      headers: { Authorization: `Bearer ${payload.token}` },
+      body: data,
+      headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  return { fetcher, login, verify2FA };
+  const getSession = (token?: string): Promise<GetSessionRes> => {
+    return fetcher(baseUrl + "/user/session", {
+      headers: { ...(token && { Authorization: `Bearer ${token}` }) },
+    }).then((res: any) => ({
+      validUntil: res.validUntil * 1000,
+    }));
+  };
+
+  return { fetcher, login, verify2FA, getSession };
 };
 export default useAPI;
 

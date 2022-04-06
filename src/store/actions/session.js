@@ -41,8 +41,8 @@ export const startTradeApiSession = (response, eventType) => {
     };
 
     dispatch(action);
-    dispatch(refreshSessionData());
-    dispatch(getUserData(true, (data) => initExternalWidgets(data, eventType)));
+    // dispatch(refreshSessionData());
+    // dispatch(getUserData(true, (data) => initExternalWidgets(data, eventType)));
   };
 };
 
@@ -71,21 +71,22 @@ export const endTradeApiSession = () => {
 /**
  * @returns {AppThunk} Thunk Action.
  */
-export const refreshSessionData = () => {
-  return async (dispatch) => {
-    try {
-      const responseData = await tradeApi.sessionDataGet();
-      const action = {
-        type: REFRESH_SESSION_DATA,
-        payload: responseData,
-      };
+// export const refreshSessionData = () => {
+//   const { getSession } = useAPI();
+//   return async (dispatch) => {
+//     try {
+//       const responseData = await getSession();
+//       const action = {
+//         type: REFRESH_SESSION_DATA,
+//         payload: responseData,
+//       };
 
-      dispatch(action);
-    } catch (e) {
-      dispatch(showErrorAlert(e));
-    }
-  };
-};
+//       dispatch(action);
+//     } catch (e) {
+//       dispatch(showErrorAlert(e));
+//     }
+//   };
+// };
 
 /**
  * Function to initialize enternal widgets like GTM, AnalyticsJS etc
@@ -132,5 +133,12 @@ export const setAppVersion = (version) => {
 export const clearSessionData = () => {
   return {
     type: CLEAR_SESSION_DATA,
+  };
+};
+
+export const setSessionData = (payload) => {
+  return {
+    type: REFRESH_SESSION_DATA,
+    payload,
   };
 };

@@ -19,9 +19,9 @@ import { store } from "../src/store/store.js";
 import "./legacy.scss";
 import { useRouter } from "next/router";
 import { getLanguageCodefromLocale } from "../src/i18n";
-import { RouteGuard } from "../components/RouteGuard";
 import { SWRConfig } from "swr";
 import { endTradeApiSession } from "../src/store/actions/session";
+import Auth from "../components/Auth";
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -132,11 +132,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ThemeProviderUI theme={theme}>
               {/* <GlobalStyle /> */}
               <CssBaseline />
-              <RouteGuard>
-                <ConfigureAuthFetch>
+              <ConfigureAuthFetch>
+                <Auth>
                   <Component {...pageProps} />
-                </ConfigureAuthFetch>
-              </RouteGuard>
+                </Auth>
+              </ConfigureAuthFetch>
             </ThemeProviderUI>
           </ThemeProvider>
         </StyledEngineProvider>

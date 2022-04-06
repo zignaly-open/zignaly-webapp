@@ -5,7 +5,7 @@ import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { startTradeApiSession } from "../../../store/actions/session";
+import { setSessionData, startTradeApiSession } from "../../../store/actions/session";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage, useIntl } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
@@ -44,7 +44,7 @@ const LoginForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
-  const { login } = useAPI();
+  const { login, getSession } = useAPI();
   const { redirectDashboard } = useRedirection();
 
   const hasMounted = useHasMounted();
@@ -65,13 +65,14 @@ const LoginForm = () => {
       showTwoFAModal(true);
       setLoading(false);
     } else {
-      dispatch(startTradeApiSession(response, "login"));
-      redirectDashboard();
+      onSuccess();
     }
   };
 
-  const onSuccess = () => {
+  const onSuccess = async () => {
     dispatch(startTradeApiSession(loginResponse, "login"));
+    const res = await getSession(loginResponse.token);
+    dispatch(setSessionData(res));
     redirectDashboard();
   };
 

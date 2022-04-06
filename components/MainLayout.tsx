@@ -1,5 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GlobalStyles } from "@mui/material";
+import { useDispatch } from "react-redux";
+import {
+  endTradeApiSession,
+  refreshSessionData,
+  setSessionData,
+} from "../src/store/actions/session";
+import useInterval from "../src/hooks/useInterval";
+import useAPI from "../lib/useAPI";
 
 // const GlobalStyle = createGlobalStyle`
 //     ${({ theme }) => `
@@ -21,6 +29,14 @@ const inputGlobalStyles = (
 );
 
 export default function MainLayout({ children }) {
+  const { getSession } = useAPI();
+  const dispatch = useDispatch();
+  const updateSession = async () => {
+    const res = await getSession();
+    dispatch(setSessionData(res));
+  };
+  useInterval(updateSession, 60 * 1000, true);
+
   return (
     <>
       {inputGlobalStyles}
