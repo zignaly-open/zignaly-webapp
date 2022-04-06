@@ -2007,3 +2007,5 @@ position.side.both: "Both"
 dashboard.openPositions: "Open Positions"
 dashboard.closedPositions: "Closed Positions"
 dashboard.exchangeOrders: "Exchange Orders"
+
+service.investors: "Investors"

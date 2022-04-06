@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/
 import type { AppProps } from "next/app";
 import { createGlobalStyle } from "styled-components";
 // import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test2";
+import { dark, light, ThemeProvider as ThemeProviderUI, PriceLabel } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -18,10 +18,8 @@ import { Provider, useDispatch } from "react-redux";
 import { store } from "../src/store/store.js";
 import "./legacy.scss";
 import { useRouter } from "next/router";
-import { setToken } from "../lib/useRequest";
 import { getLanguageCodefromLocale } from "../src/i18n";
 import { RouteGuard } from "../components/RouteGuard";
-import ErrorBoundary from "../components/ErrorBoundary";
 import { SWRConfig } from "swr";
 import { endTradeApiSession } from "../src/store/actions/session";
 
@@ -83,6 +81,9 @@ const ConfigureAuthFetch = ({ children }) => {
           return res.json();
           // res.ok ? res.json() : Promise.reject(res)
         },
+        onError: (err) => {
+          console.error(err);
+        },
       }}
     >
       {children}
@@ -132,11 +133,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               {/* <GlobalStyle /> */}
               <CssBaseline />
               <RouteGuard>
-                {/* <ErrorBoundary> */}
                 <ConfigureAuthFetch>
                   <Component {...pageProps} />
                 </ConfigureAuthFetch>
-                {/* </ErrorBoundary> */}
               </RouteGuard>
             </ThemeProviderUI>
           </ThemeProvider>

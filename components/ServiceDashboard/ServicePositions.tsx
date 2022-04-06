@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui-test2";
+import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
@@ -67,16 +67,6 @@ const renderProfit = (position: ManagementPositionsEntity["position"]) => {
 };
 
 const ServicePositions = () => {
-  //   useEffect(() => {
-  //     tradeApi
-  //       .servicePositions("a")
-  //       .then((response) => {
-  //         setPositions(response);
-  //       })
-  //       .catch((e) => {
-  //         dispatch(showErrorAlert(e));
-  //       });
-  //   }, []);
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -108,15 +98,6 @@ const ServicePositions = () => {
         accessor: "invested",
       },
       { Header: intl.formatMessage({ id: "col.side" }), accessor: "side" },
-      // {
-      //   Header: (
-      //     <div style={{ display: "flex", justifyContent: "flex-end" }}>
-      //       <IconButton icon={OptionsDotsIcon} size="large" />
-      //     </div>
-      //   ),
-      //   accessor: "action",
-      //   disableSortBy: true,
-      // },
     ],
     [],
   );

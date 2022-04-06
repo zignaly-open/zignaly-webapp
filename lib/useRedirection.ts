@@ -11,7 +11,9 @@ const useRedirection = () => {
     console.log("redir", returnUrl);
     router.push(returnUrl);
   };
-  return { redirectDashboard };
+  return {
+    redirectDashboard,
+  };
 };
 
 export default useRedirection;
