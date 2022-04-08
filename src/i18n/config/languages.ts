@@ -54,6 +54,12 @@ const LocalizationLanguages = [
     countryCode: "pt",
     languageCode: "pt",
   },
+  {
+    locale: "tr",
+    label: "Türkçe",
+    countryCode: "tr",
+    languageCode: "tr",
+  },
 ];
 
 if (process.env.NEXT_PUBLIC_TEST_TRANSLATIONS === "true") {
@@ -63,12 +69,6 @@ if (process.env.NEXT_PUBLIC_TEST_TRANSLATIONS === "true") {
     label: "Čeština",
     countryCode: "cz",
     languageCode: "cs",
-  });
-  LocalizationLanguages.push({
-    locale: "tr",
-    label: "Türkçe",
-    countryCode: "tr",
-    languageCode: "tr",
   });
 }
 

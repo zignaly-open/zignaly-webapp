@@ -96,7 +96,7 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {coinData?.allowDeposit && (
+              {(coinData?.allowDeposit || coinData?.name === "NEOFI") && (
                 <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
@@ -114,7 +114,9 @@ const WalletCoins = ({
 
   const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
-    const networkData = coinData?.networks.find((n) => n.network === network);
+    // Find coin network data or use the first one if network not found, for coins such as NEOFI
+    const networkData =
+      coinData?.networks.find((n) => n.network === network) || coinData?.networks[0];
     const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
@@ -179,18 +181,25 @@ const WalletCoins = ({
     };
   };
 
-  const data = useMemo(
-    () =>
-      Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
-        Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-          if (coin !== "ZIG" && key !== "total") {
-            accData.push(makeData(coin, key, networkBalance));
-          }
-        });
-        return accData;
-      }, []),
-    [walletBalance, coins, offers],
-  );
+  const data = useMemo(() => {
+    if (walletBalance && !walletBalance.NEOFI && coins?.NEOFI) {
+      // Force NEOFI in the list
+      walletBalance.NEOFI = {
+        dummy: {
+          availableBalance: 0,
+          balance: 0,
+        },
+      };
+    }
+    return Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
+      Object.entries(networkBalances).forEach(([key, networkBalance]) => {
+        if (coin !== "ZIG" && key !== "total") {
+          accData.push(makeData(coin, key, networkBalance));
+        }
+      });
+      return accData;
+    }, []);
+  }, [walletBalance, coins, offers]);
 
   if (!walletBalance) {
     return null;
