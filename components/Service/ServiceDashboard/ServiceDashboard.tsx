@@ -6,7 +6,9 @@ import { useIntl } from "react-intl";
 import ServicePositions from "./ServicePositions";
 // import TabPanel from "@mui/lab/TabPanel";
 import styled from "styled-components";
-import { Tab, TabPanel, Tabs } from "zignaly-ui-test2";
+import { Tab, TabPanel, Tabs } from "zignaly-ui";
+import ServiceContracts from "./ServiceContracts";
+import ServiceOrders from "./ServiceOrders";
 
 const ServiceDashboard = () => {
   const intl = useIntl();
@@ -27,16 +29,14 @@ const ServiceDashboard = () => {
         <ServicePositions />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        Todo Closed Positions
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <ServiceOrders />
       </TabPanel>
-      {/* <ServicePositions />
-      <br />
-      <ServiceOrders />
-      <br />
-      <ServiceContracts /> */}
+      <TabPanel value={value} index={3}>
+        <ServiceContracts />
+      </TabPanel>
     </>
   );
 };

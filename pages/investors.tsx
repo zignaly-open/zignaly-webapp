@@ -3,7 +3,8 @@ import Head from "next/head";
 import { PRODUCT_NAME } from "../lib/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
-import ServiceInvestors from "../components/ServiceInvestors/ServiceInvestors";
+import ServiceInvestors from "../components/Service/ServiceInvestors/ServiceInvestors";
+import ServiceLayout from "../components/Service/ServiceLayout";
 
 type Props = {};
 
@@ -11,18 +12,17 @@ const Investors = ({}: Props) => {
   const intl = useIntl();
   return (
     <MainLayout>
-      <Container maxWidth="lg">
+      <ServiceLayout>
         <Head>
           <title>{`${intl.formatMessage({ id: "service.investors" })} | ${PRODUCT_NAME}`}</title>
         </Head>
         <ServiceInvestors />
-      </Container>
+      </ServiceLayout>
     </MainLayout>
   );
 };
 
 export async function getServerSideProps(context) {
-  console.log(context);
   return {
     props: {}, // will be passed to the page component as props
   };

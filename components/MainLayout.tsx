@@ -8,6 +8,7 @@ import {
 } from "../src/store/actions/session";
 import useInterval from "../src/hooks/useInterval";
 import useAPI from "../lib/useAPI";
+import { Container } from "@mui/material";
 
 // const GlobalStyle = createGlobalStyle`
 //     ${({ theme }) => `
@@ -40,7 +41,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       {inputGlobalStyles}
-      {children}
+      <Container maxWidth="lg">{children}</Container>
     </>
   );
 }

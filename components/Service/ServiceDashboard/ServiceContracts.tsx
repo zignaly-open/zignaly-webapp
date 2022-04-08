@@ -3,13 +3,14 @@ import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
+import { Table, IconButton, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { ExchangeContractsObject, ExchangeOpenOrdersObject } from "services/tradeApiClient.types";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
+import { useContracts } from "../../../lib/useAPI";
 
 const Cell = styled(Box)`
   display: flex;
@@ -20,24 +21,11 @@ const Cell = styled(Box)`
 
 const ServiceContracts = () => {
   const selectedExchange = useSelectedExchange();
-  const dispatch = useDispatch();
-  const [contracts, setContracts] = useState<ExchangeContractsObject[]>(null);
   const intl = useIntl();
-
-  useEffect(() => {
-    const payload = {
-      exchangeInternalId: selectedExchange.internalId,
-      providerId: "6058df72ab6a99353e06e8fc",
-    };
-    tradeApi
-      .providerContractsGet(payload)
-      .then((response) => {
-        setContracts(response);
-      })
-      .catch((e) => {
-        dispatch(showErrorAlert(e));
-      });
-  }, []);
+  const { data: contracts, error } = useContracts(
+    selectedExchange.internalId || "Zignaly1629446605_611f61cd2d6b4",
+    "612f43288aedc6362e6f7745",
+  );
 
   const columns = useMemo(
     () => [
@@ -61,15 +49,6 @@ const ServiceContracts = () => {
       { Header: intl.formatMessage({ id: "col.entryprice" }), accessor: "entryPrice" },
       { Header: intl.formatMessage({ id: "col.price.market" }), accessor: "marketPrice" },
       { Header: intl.formatMessage({ id: "col.margin" }), accessor: "margin" },
-      {
-        Header: (
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <IconButton icon={OptionsDotsIcon} size="large" />
-          </div>
-        ),
-        accessor: "action",
-        disableSortBy: true,
-      },
     ],
     [],
   );
@@ -77,43 +56,33 @@ const ServiceContracts = () => {
     () =>
       contracts
         ? contracts.map((contract) => ({
-            date: (
-              <Box>
-                <div>{dayjs().format("h:mma")}</div>
-                <div>{dayjs().format("MMM DD, YYYY")}</div>
-              </Box>
-            ),
-            position: <Cell>{contract.positionId}</Cell>,
-            pair: <Cell>{contract.symbol}</Cell>,
+            date: <DateLabel date={new Date()} />,
+            position: contract.positionId,
+            pair: contract.symbol,
             amount: (
-              <Cell>
-                <NumberFormat value={contract.amount} displayType="text" thousandSeparator={true} />
-              </Cell>
+              <NumberFormat value={contract.amount} displayType="text" thousandSeparator={true} />
             ),
-            side: (
-              <Cell>
-                <FormattedMessage id={`position.side.${contract.side}`} />
-              </Cell>
-            ),
+            side: <FormattedMessage id={`position.side.${contract.side}`} />,
             entryPrice: (
-              <Cell>
-                <NumberFormat
-                  value={contract.entryprice}
-                  displayType="text"
-                  thousandSeparator={true}
-                />
-              </Cell>
+              <NumberFormat
+                value={contract.entryprice}
+                displayType="text"
+                thousandSeparator={true}
+              />
             ),
             marketPrice: (
-              <Cell>
-                <NumberFormat
-                  value={contract.markprice}
-                  displayType="text"
-                  thousandSeparator={true}
-                />
-              </Cell>
+              <NumberFormat
+                value={contract.markprice}
+                displayType="text"
+                thousandSeparator={true}
+              />
             ),
-            margin: <Cell>{contract.margin}</Cell>,
+            margin: contract.margin,
+            action: (
+              <ButtonGroup>
+                <TableButton icon={CloseIcon} caption={"Close"} />
+              </ButtonGroup>
+            ),
           }))
         : undefined,
     [contracts],

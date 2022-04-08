@@ -292,7 +292,21 @@ interface LoginRes {
   emailUnconfirmed: boolean;
 }
 
-interface verify2FAReq {
+interface Verify2FAReq {
   code: string;
   token: string;
+}
+
+interface InvestorsRes {
+  investment: string;
+  profitLosses: string;
+  profitLossesPercent: string;
+  profitLossesTotal: string;
+  totalFeesPaid: string;
+  status: string;
+  successFee: number;
+  feesInZig: boolean;
+  userExchangeId: string;
+  email: string;
+  userId: string;
 }

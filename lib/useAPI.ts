@@ -1,4 +1,8 @@
-import { ExchangeAssetsDict } from "services/tradeApiClient.types";
+import {
+  ExchangeAssetsDict,
+  ExchangeContractsObject,
+  ExchangeOpenOrdersObject,
+} from "services/tradeApiClient.types";
 import useSWR, { SWRResponse, useSWRConfig } from "swr";
 // import { User } from "pages/api/user";
 
@@ -44,7 +48,7 @@ const useAPI = () => {
     return fetcher(baseUrl + "/login", { body: payload, headers: { Authorization: null } });
   };
 
-  const verify2FA = (payload: verify2FAReq): Promise<{}> => {
+  const verify2FA = (payload: Verify2FAReq): Promise<{}> => {
     const { token, ...data } = payload;
     return fetcher(baseUrl + "/user/verify_2fa", {
       body: data,
@@ -74,7 +78,22 @@ export const useServicePositions = (providerId: string) => {
   };
 };
 
-export const useExchangeAssets = (internalId: string) => {
-  const path = `/user/exchanges/${internalId}/assets?view=reduced`;
+export const useExchangeAssets = (exchangeInternalId: string) => {
+  const path = `/user/exchanges/${exchangeInternalId}/assets?view=reduced`;
   return useAPIFetch<ExchangeAssetsDict>(path);
+};
+
+export const useInvestors = (providerId: string) => {
+  const path = `/providers/${providerId}/investors`;
+  return useAPIFetch<InvestorsRes>(path);
+};
+
+export const useContracts = (exchangeInternalId: string, providerId: string) => {
+  const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/contracts`;
+  return useAPIFetch<ExchangeContractsObject>(path);
+};
+
+export const useServiceOrders = (exchangeInternalId: string, providerId: string) => {
+  const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`;
+  return useAPIFetch<ExchangeOpenOrdersObject>(path);
 };

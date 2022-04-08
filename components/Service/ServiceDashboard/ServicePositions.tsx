@@ -3,7 +3,16 @@ import { Box, Typography } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
+import {
+  Table,
+  IconButton,
+  TableButton,
+  ButtonGroup,
+  OptionsDotsIcon,
+  DateLabel,
+  PriceLabel,
+  PercentageIndicator,
+} from "zignaly-ui";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
@@ -11,7 +20,7 @@ import CoinIcon from "components/WalletView/CoinIcon";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { ManagementPositionsEntity } from "services/tradeApiClient.types";
-import { useServicePositions } from "../../lib/useAPI";
+import { useServicePositions } from "../../../lib/useAPI";
 
 const Cell = styled(Box)`
   display: flex;
@@ -107,23 +116,21 @@ const ServicePositions = () => {
         ? positions
             .sort((a, b) => a.openDate - b.openDate)
             .map((position) => ({
-              openDate: (
-                <Box>
-                  <div>{dayjs(position.openDate).format("h:mma")}</div>
-                  <div>{dayjs(position.openDate).format("MMM DD, YYYY")}</div>
-                </Box>
-              ),
+              openDate: <DateLabel date={position.openDate} />,
               amount: (
-                <Cell>
-                  <NumberFormat
-                    value={position.amount}
-                    displayType="text"
-                    thousandSeparator={true}
-                  />
-                </Cell>
+                <NumberFormat value={position.amount} displayType="text" thousandSeparator={true} />
               ),
-              pair: <Cell>{position.pair}</Cell>,
-              profit: renderProfit(position),
+              pair: position.pair,
+              // profit: renderProfit(position),
+              profit: (
+                <PriceLabel
+                  token={"USDT"}
+                  value={"37.5"}
+                  bottomElement={
+                    <PercentageIndicator value={position.profitPercentage.toFixed(2)} />
+                  }
+                />
+              ),
               buyPrice: (
                 <Cell>
                   <NumberFormat

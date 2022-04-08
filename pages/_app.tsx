@@ -3,9 +3,9 @@ import React, { useEffect, useMemo, useState } from "react";
 // import {  } from "@mui/material";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-import { createGlobalStyle } from "styled-components";
+// import { createGlobalStyle } from "styled-components";
 // import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
-import { dark, light, ThemeProvider as ThemeProviderUI, PriceLabel } from "zignaly-ui";
+import { dark, light, ThemeProvider as ThemeProviderUI, Table } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -113,6 +113,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     });
   }, [locale]);
 
+  console.log(theme);
   return (
     <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
       <GoogleReCaptchaProvider

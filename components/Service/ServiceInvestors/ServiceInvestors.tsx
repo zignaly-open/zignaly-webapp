@@ -1,4 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useInvestors } from "../../../lib/useAPI";
+import {
+  PriceLabel,
+  PercentageIndicator,
+  ConnectionStateLabel,
+  IconButton,
+  OptionsDotsIcon,
+  Table,
+  CheckIcon,
+} from "zignaly-ui";
+
+// import { Test } from "react-component-library-test";
+
 // import { Box, Typography } from "@mui/material";
 // import { FormattedMessage, useIntl } from "react-intl";
 // import tradeApi from "services/tradeApiClient";
@@ -67,7 +80,8 @@ import React, { useEffect, useMemo, useState } from "react";
 // };
 
 const ServiceInvestors = () => {
-  return <></>;
+  // const { data: investors, error } = useInvestors("todo");
+
   // const selectedExchange = useSelectedExchange();
   // const dispatch = useDispatch();
   // const intl = useIntl();
@@ -87,11 +101,11 @@ const ServiceInvestors = () => {
     },
     {
       Header: "P & L",
-      accessor: "pyd",
+      accessor: "pnl",
     },
     {
       Header: "P & L Total",
-      accessor: "pydTotal",
+      accessor: "pnlTotal",
     },
     {
       Header: "Total Fees Paid",
@@ -116,23 +130,23 @@ const ServiceInvestors = () => {
       userId: "5f886d29da8e9666b1684c9a",
       email: "tec**@zig**.com",
       investment: <PriceLabel token={"USDT"} value={"1250"} />,
-      pyd: (
+      pnl: (
         <PriceLabel
           token={"USDT"}
           value={"37.5"}
           bottomElement={<PercentageIndicator value={3} />}
         />
       ),
-      pydTotal: <PriceLabel token={"USDT"} value={"145"} />,
+      pnlTotal: <PriceLabel token={"USDT"} value={"145"} />,
       totalFeesPaid: <PriceLabel token={"USDT"} value={"218"} />,
       successFee: "10%",
       feesInZig: <img src={CheckIcon} />,
-      status: <ConnectionStateLabel stateId={connectionStateTypesId.CONNECTED} />,
+      status: <ConnectionStateLabel stateId="connected" />,
       action: <IconButton icon={OptionsDotsIcon} />,
     },
   ];
 
-  // return <>{positions && <Table columns={columns} data={data} />}</>;
+  return true ? <Table columns={columns} data={data} /> : null;
 };
 
 export default ServiceInvestors;

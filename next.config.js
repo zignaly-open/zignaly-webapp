@@ -16,6 +16,8 @@ Object.keys(process.env).forEach((key) => {
   }
 });
 
+const path = require("path");
+
 module.exports = withBundleAnalyzer(
   withTM({
     env,
@@ -25,6 +27,17 @@ module.exports = withBundleAnalyzer(
       //   ...config.resolve.alias,
       //   "@mui/styled-engine": "@mui/styled-engine-sc",
       // };
+      if (process.env.NODE_ENV === "development") {
+        config.resolve.alias["react"] = path.resolve("./node_modules/react");
+        config.resolve.alias["react-dom"] = path.resolve("./node_modules/react-dom");
+        config.resolve.alias["@mui/material"] = path.resolve("./node_modules/@mui/material");
+        // config.resolve.alias["@emotion/styled"] = path.resolve("./node_modules/@emotion/styled");
+        // config.resolve.alias["@emotion/react"] = path.resolve("./node_modules/@emotion/react");
+        config.resolve.alias["styled-components"] = path.resolve(
+          "./node_modules/styled-components",
+        );
+      }
+
       config.module.rules.push(
         {
           test: /\.ya?ml$/,
@@ -36,6 +49,7 @@ module.exports = withBundleAnalyzer(
           use: ["@svgr/webpack"],
         },
       );
+
       return config;
     },
     compiler: {
