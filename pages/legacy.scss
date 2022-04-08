@@ -481,7 +481,7 @@
   border-bottom: 2px solid $borderColor;
   width: 100%;
 
-  .loginLinkItem {
+  a {
     align-items: center;
     color: $black;
     display: flex;
@@ -494,7 +494,7 @@
     text-decoration: none;
   }
 
-  .activeLink {
+  .active {
     border-bottom: 2px solid $purple;
   }
 }
@@ -546,7 +546,8 @@
     position: absolute;
     width: 100%;
 
-    img {
+    img,
+    svg {
       width: 100%;
     }
   }

@@ -2,25 +2,10 @@ import React from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import { FormattedMessage } from "react-intl";
+import { useRouter } from "next/router";
 
 const LoginLinks = () => {
-  const urlSearch = typeof window !== "undefined" ? window.location.search : "";
-
-  /**
-   *
-   * @param {string} link String to test in the url.
-   * @returns {Boolean} Flag if the link is active or not.
-   */
-  const active = (link) => {
-    let url = "";
-    if (typeof window !== "undefined") {
-      url = window.location.href;
-    }
-    if (url.includes(link)) {
-      return true;
-    }
-    return false;
-  };
+  const router = useRouter();
 
   return (
     <Box
@@ -30,17 +15,15 @@ const LoginLinks = () => {
       flexDirection="row"
       justifyContent="space-evenly"
     >
-      <Link
-        className={"loginLinkItem " + (active("login") ? "activeLink" : "")}
-        href={"/login" + urlSearch}
-      >
-        <FormattedMessage id="login.title" />
+      <Link href={{ pathname: "/login", query: router.query }}>
+        <a className={router.pathname == "/" || router.pathname == "/login" ? "active" : ""}>
+          <FormattedMessage id="login.title" />
+        </a>
       </Link>
-      <Link
-        className={"loginLinkItem " + (active("signup") ? "activeLink" : "")}
-        href={"/signup" + urlSearch}
-      >
-        <FormattedMessage id="action.signup" />
+      <Link href={{ pathname: "/signup", query: router.query }}>
+        <a className={router.pathname == "/signup" ? "active" : ""}>
+          <FormattedMessage id="action.signup" />
+        </a>
       </Link>
     </Box>
   );
