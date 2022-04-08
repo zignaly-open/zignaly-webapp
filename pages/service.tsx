@@ -21,19 +21,10 @@ const Index = ({}: Props) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  console.log("s");
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   };
+// }
 
 export default Index;
-
-// export const getStaticProps = async () => {
-//   const allPosts = getAllPosts(["title", "date", "slug", "author", "coverImage", "excerpt"]);
-
-//   return {
-//     props: { allPosts },
-//   };
-// };

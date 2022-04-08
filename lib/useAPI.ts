@@ -3,7 +3,7 @@ import {
   ExchangeContractsObject,
   ExchangeOpenOrdersObject,
 } from "services/tradeApiClient.types";
-import useSWR, { SWRResponse, useSWRConfig } from "swr";
+import useSWR, { SWRConfiguration, SWRResponse, useSWRConfig } from "swr";
 // import { User } from "pages/api/user";
 
 // export default function useUser({ redirectTo = "", redirectIfFound = false } = {}) {
@@ -31,14 +31,12 @@ const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
 export const useAPIFetch = <Data = any, Error = any>(
   path: string,
-  name?: string,
+  // name?: string,
+  options?: SWRConfiguration,
 ): SWRResponse<Data, Error> => {
-  if (!path) {
-    throw new Error("Path is required");
-  }
-
-  const url = name ? baseUrl + path + "/" + name : baseUrl + path;
-  return useSWR(url);
+  // const url = name ? baseUrl + path + "/" + name : baseUrl + path;
+  const url = path ? baseUrl + path : null;
+  return useSWR(url, options);
 };
 
 const useAPI = () => {
@@ -68,6 +66,10 @@ const useAPI = () => {
 };
 export default useAPI;
 
+export const useSessionData = (options?: SWRConfiguration) => {
+  return useAPIFetch<GetSessionRes>("/user/session", options);
+};
+
 export const useServicePositions = (providerId: string) => {
   const path = `/user/providers/${providerId}/positions`;
   const res = useAPIFetch(path);
@@ -79,21 +81,23 @@ export const useServicePositions = (providerId: string) => {
 };
 
 export const useExchangeAssets = (exchangeInternalId: string) => {
-  const path = `/user/exchanges/${exchangeInternalId}/assets?view=reduced`;
+  const path = exchangeInternalId
+    ? `/user/exchanges/${exchangeInternalId}/assets?view=reduced`
+    : null;
   return useAPIFetch<ExchangeAssetsDict>(path);
 };
 
 export const useInvestors = (providerId: string) => {
   const path = `/providers/${providerId}/investors`;
-  return useAPIFetch<InvestorsRes>(path);
+  return useAPIFetch<InvestorsRes[]>(path);
 };
 
 export const useContracts = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/contracts`;
-  return useAPIFetch<ExchangeContractsObject>(path);
+  return useAPIFetch<ExchangeContractsObject[]>(path);
 };
 
 export const useServiceOrders = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`;
-  return useAPIFetch<ExchangeOpenOrdersObject>(path);
+  return useAPIFetch<ExchangeOpenOrdersObject[]>(path);
 };

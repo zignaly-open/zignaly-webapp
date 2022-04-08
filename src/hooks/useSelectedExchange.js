@@ -21,38 +21,7 @@ const useStoreSettingsSelector = () => {
    */
   const selectStoreSettings = (state) => {
     const { selectedExchangeId } = state.settings;
-    return (
-      exchangeConnections.find((c) => c.internalId === selectedExchangeId) || {
-        id: "",
-        name: "",
-        exchangeId: "",
-        exchangeName: "",
-        internalId: "",
-        internalName: "",
-        key: false,
-        secret: false,
-        areKeysValid: false,
-        paperTrading: false,
-        exchangeType: "",
-        isTestnet: false,
-        disable: false,
-        positionSize: 0,
-        managed: false,
-        internal: false,
-        isBrokerAccount: false,
-        subAccountId: "",
-        binanceBrokerId: "",
-        checkAuthCount: 0,
-        globalDelisting: false,
-        globalBlacklist: false,
-        globalMaxPositions: false,
-        globalMinVolume: false,
-        globalPositionsPerMarket: false,
-        globalWhitelist: false,
-        balanceSynced: false,
-        activated: false,
-      }
-    );
+    return exchangeConnections.find((c) => c.internalId === selectedExchangeId);
   };
 
   return useSelector(selectStoreSettings);

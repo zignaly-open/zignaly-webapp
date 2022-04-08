@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es2018",
@@ -20,13 +20,18 @@
     "removeComments": false,
     "pretty": true,
     "resolveJsonModule": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "test-utils": [
         "utils/test/test-utils"
       ],
       "@mui/styled-engine": [
         "./node_modules/@mui/styled-engine-sc"
+      ],
+      // legacy baseUrl
+      "*": [
+        "*",
+        "src/*",
       ]
     },
     "moduleResolution": "node",
@@ -37,10 +42,6 @@
     "incremental": true,
     "isolatedModules": true
   },
-  "include": [
-    "src/**/*",
-    "types/global.d.ts"
-  ],
   "exclude": [
     "node_modules",
     "static/charting_library"
@@ -48,5 +49,10 @@
   "typeRoots": [
     "./src/types",
     "./node_modules/@types"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }

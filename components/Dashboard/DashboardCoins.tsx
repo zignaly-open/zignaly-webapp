@@ -46,7 +46,7 @@ const DashboardCoins = () => {
   const intl = useIntl();
   const selectedExchange = useSelectedExchange();
   const { data: balance, error } = useExchangeAssets(
-    selectedExchange.internalId || "Zignaly1629446605_611f61cd2d6b4",
+    selectedExchange?.internalId || "Zignaly1629446605_611f61cd2d6b4",
   );
 
   const columns = useMemo(
@@ -78,6 +78,7 @@ const DashboardCoins = () => {
     ],
     [],
   );
+
   const data = useMemo(
     () =>
       balance

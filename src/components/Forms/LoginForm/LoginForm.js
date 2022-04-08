@@ -71,8 +71,8 @@ const LoginForm = () => {
 
   const onSuccess = async () => {
     dispatch(startTradeApiSession(loginResponse, "login"));
-    const res = await getSession(loginResponse.token);
-    dispatch(setSessionData(res));
+    // const res = await getSession(loginResponse.token);
+    // dispatch(setSessionData(res));
     redirectDashboard();
   };
 

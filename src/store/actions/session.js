@@ -31,13 +31,12 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  */
 export const startTradeApiSession = (response, eventType) => {
   return async (dispatch) => {
-    if (!response.token) return;
     // const state = store.getState();
-    tradeApi.setToken(response.token);
+    // tradeApi.setToken(response.token);
 
     const action = {
       type: START_TRADE_API_SESSION,
-      payload: response,
+      payload: response.token,
     };
 
     dispatch(action);

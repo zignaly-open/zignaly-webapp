@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-
-import { verifySessionData } from "../lib/auth";
+import { verifySessionData } from "lib/auth";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
-import { endTradeApiSession } from "../src/store/actions/session";
+import { endTradeApiSession, setSessionData } from "../src/store/actions/session";
 import { useDispatch } from "react-redux";
+import { useAPIFetch } from "lib/useAPI";
+
+const isValid = (sessionData) => sessionData.validUntil * 1000 > new Date().getTime();
 
 function Auth({ children }) {
   const router = useRouter();
@@ -12,24 +14,32 @@ function Auth({ children }) {
   const storeSession = useStoreSessionSelector();
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
-
+  const sessionValid = token && isValid(storeSession.sessionData);
+  const { data: sessionData } = useAPIFetch<GetSessionRes>(sessionValid ? "/user/session" : null, {
+    refreshInterval: 60000,
+    // revalidateOnFocus: false,
+  });
   const publicPaths = ["/login", "/"];
   const path = router.asPath.split("?")[0];
   const isPublic = publicPaths.includes(path);
   const firstCheck = useRef(true);
 
   useEffect(() => {
-    const sessionValid = verifySessionData(token, storeSession.sessionData);
+    if (sessionData) {
+      // Store locally so we know if the session is expired when the user refreshes the page.
+      dispatch(setSessionData(sessionData));
+    }
+  }, [sessionData]);
 
+  useEffect(() => {
     if (!isPublic && !sessionValid) {
-      // Navigating to a private page with an invalid token
-      // Redirect to login unless it's the app has already loaded, which means the redirection is caused by
-      // a login. In that case the session should become valid as soon as the session fetch responds.
+      // Only check for session validity during the app load. After that, isPublic will only be modified
+      // by a successful login. So instead of waiting for getSession to return and then check again here, continue.
       if (firstCheck.current) {
         setAuthorized(false);
         dispatch(endTradeApiSession());
         router.push({
-          pathname: "/",
+          pathname: "/login",
           query: { returnUrl: router.asPath },
         });
       }
@@ -39,7 +49,7 @@ function Auth({ children }) {
     }
 
     firstCheck.current = false;
-  }, [isPublic, storeSession.sessionData]);
+  }, [isPublic]);
 
   return authorized && children;
 }

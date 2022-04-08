@@ -31,13 +31,13 @@ const inputGlobalStyles = (
 );
 
 export default function MainLayout({ children }) {
-  const { getSession } = useAPI();
-  const dispatch = useDispatch();
-  const updateSession = async () => {
-    const res = await getSession();
-    dispatch(setSessionData(res));
-  };
-  useInterval(updateSession, 60 * 1000, true);
+  // const { getSession } = useAPI();
+  // const dispatch = useDispatch();
+  // const updateSession = async () => {
+  //   const res = await getSession();
+  //   dispatch(setSessionData(res));
+  // };
+  // useInterval(updateSession, 60 * 1000, true);
 
   return (
     <>

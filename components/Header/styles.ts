@@ -9,5 +9,9 @@ export const Layout = styled.div`
   a {
     width: 230px;
     text-decoration: none;
+
+    &.active {
+      color: white;
+    }
   }
 `;

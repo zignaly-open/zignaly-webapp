@@ -67,7 +67,7 @@ const ConfigureAuthFetch = ({ children }) => {
               dispatch(endTradeApiSession());
               console.log("401 caught, redir to login");
               router.push({
-                pathname: "/",
+                pathname: "/login",
                 query: { returnUrl: router.asPath },
               });
             } else {

@@ -4167,7 +4167,7 @@ const createEmptyExchangeOpenOrdersEntity = () => {
 /**
  * @typedef {Object} ExchangeContractsObject
  * @property {String} id
- * @property {String} positionId
+ * @property {String} position
  * @property {Number} amount
  * @property {Number} entryprice
  * @property {Number} leverage

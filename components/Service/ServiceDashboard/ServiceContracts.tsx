@@ -1,29 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
-import tradeApi from "services/tradeApiClient";
-import useSelectedExchange from "hooks/useSelectedExchange";
-import { useDispatch } from "react-redux";
-import { showErrorAlert } from "store/actions/ui";
-import { Table, IconButton, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
+import React, { useMemo } from "react";
+import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/material";
-import dayjs from "dayjs";
-import { ExchangeContractsObject, ExchangeOpenOrdersObject } from "services/tradeApiClient.types";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import { useContracts } from "../../../lib/useAPI";
-
-const Cell = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-`;
+import useUser from "lib/useUser";
 
 const ServiceContracts = () => {
-  const selectedExchange = useSelectedExchange();
+  const { user, selectedExchange } = useUser();
   const intl = useIntl();
   const { data: contracts, error } = useContracts(
-    selectedExchange.internalId || "Zignaly1629446605_611f61cd2d6b4",
+    selectedExchange?.internalId || "Zignaly1629446605_611f61cd2d6b4",
     "612f43288aedc6362e6f7745",
   );
 
@@ -57,7 +45,7 @@ const ServiceContracts = () => {
       contracts
         ? contracts.map((contract) => ({
             date: <DateLabel date={new Date()} />,
-            position: contract.positionId,
+            position: contract.position,
             pair: contract.symbol,
             amount: (
               <NumberFormat value={contract.amount} displayType="text" thousandSeparator={true} />

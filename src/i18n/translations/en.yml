@@ -2010,3 +2010,4 @@ service.exchangeOrders: "Exchange Orders"
 service.investors: "Investors"
 
 dashboard.myCoins: "My Coins"
+dashboard.type: "Type:"
