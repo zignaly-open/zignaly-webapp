@@ -19,9 +19,9 @@ const ServiceDashboard = () => {
   return (
     <>
       <Tabs value={value} onChange={handleChange}>
-        <Tab label={intl.formatMessage({ id: "dashboard.openPositions" })} />
-        <Tab label={intl.formatMessage({ id: "dashboard.closedPositions" })} />
-        <Tab label={intl.formatMessage({ id: "dashboard.exchangeOrders" })} />
+        <Tab label={intl.formatMessage({ id: "services.openPositions" })} />
+        <Tab label={intl.formatMessage({ id: "services.closedPositions" })} />
+        <Tab label={intl.formatMessage({ id: "service.exchangeOrders" })} />
         <Tab label={intl.formatMessage({ id: "accounts.contracts" })} />
         <Tab label={intl.formatMessage({ id: "dashboard.positions.log" })} />
       </Tabs>

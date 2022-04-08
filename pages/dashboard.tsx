@@ -6,6 +6,7 @@ import { PRODUCT_NAME } from "../lib/constants";
 import DashboardCoins from "../components/Dashboard/DashboardCoins";
 import { Tabs, Tab, TabPanel } from "zignaly-ui";
 import { useState } from "react";
+import AccountSelector from "../components/Dashboard/AccountSelector/AccountSelector";
 
 type Props = {};
 
@@ -24,8 +25,9 @@ const Dashboard = ({}: Props) => {
             id: "dashboard.positions",
           })} | ${PRODUCT_NAME}`}</title>
         </Head>
+        <AccountSelector />
         <Tabs value={value} onChange={handleChange}>
-          <Tab label={intl.formatMessage({ id: "management.coins" })} />
+          <Tab label={intl.formatMessage({ id: "dashboard.myCoins" })} />
         </Tabs>
         <TabPanel value={value} index={0}>
           <DashboardCoins />

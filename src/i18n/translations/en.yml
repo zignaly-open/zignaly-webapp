@@ -2004,8 +2004,9 @@ position.side.buy: "Buy"
 position.side.sell: "Sell"
 position.side.both: "Both"
 
-dashboard.openPositions: "Open Positions"
-dashboard.closedPositions: "Closed Positions"
-dashboard.exchangeOrders: "Exchange Orders"
-
+services.openPositions: "Open Positions"
+services.closedPositions: "Closed Positions"
+service.exchangeOrders: "Exchange Orders"
 service.investors: "Investors"
+
+dashboard.myCoins: "My Coins"

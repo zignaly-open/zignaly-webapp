@@ -9,9 +9,9 @@ import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import Dashboard from "../../pages/dashboard";
-import { unsetSelectedExchange } from "../../src/store/actions/settings";
 import { useExchangeAssets } from "../../lib/useAPI";
 import CoinIcon from "../../src/components/WalletView/CoinIcon";
+import useSelectedExchange from "../../src/hooks/useSelectedExchange";
 
 const CoinCell = styled.div`
   display: flex;
@@ -44,7 +44,7 @@ const CellValue = styled.div`
 
 const DashboardCoins = () => {
   const intl = useIntl();
-  const selectedExchange = unsetSelectedExchange();
+  const selectedExchange = useSelectedExchange();
   const { data: balance, error } = useExchangeAssets(
     selectedExchange.internalId || "Zignaly1629446605_611f61cd2d6b4",
   );

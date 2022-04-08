@@ -1,10 +1,6 @@
-// import '../styles/globals.css'
 import React, { useEffect, useMemo, useState } from "react";
-// import {  } from "@mui/material";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-// import { createGlobalStyle } from "styled-components";
-// import { dark, light, ThemeProvider as ThemeProviderUI, Typography } from "zignaly-ui";
 import { dark, light, ThemeProvider as ThemeProviderUI, Table } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
@@ -94,7 +90,7 @@ const ConfigureAuthFetch = ({ children }) => {
 function MyApp({ Component, pageProps }: AppProps) {
   const { darkStyle, locale } = useStoreSettingsSelector();
   const router = useRouter();
-  const darkTheme = router.pathname !== "/" && true;
+  const darkTheme = !["/", "/login", "/signup"].includes(router.pathname);
   const theme = useMemo(() => createTheme({ ...dark, ...getTheme(darkTheme) }), [darkTheme]);
   const [messages, setMessages] = useState(null);
 
@@ -113,7 +109,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     });
   }, [locale]);
 
-  console.log(theme);
   return (
     <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
       <GoogleReCaptchaProvider
