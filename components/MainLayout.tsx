@@ -9,6 +9,7 @@ import {
 import useInterval from "../src/hooks/useInterval";
 import useAPI from "../lib/useAPI";
 import { Container } from "@mui/material";
+import Header from "./Header/Header";
 
 // const GlobalStyle = createGlobalStyle`
 //     ${({ theme }) => `
@@ -41,6 +42,7 @@ export default function MainLayout({ children }) {
   return (
     <>
       {inputGlobalStyles}
+      <Header />
       <Container maxWidth="lg">{children}</Container>
     </>
   );

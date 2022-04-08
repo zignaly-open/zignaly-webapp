@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import Link from "next/link";
 import * as styled from "./styles";
 
