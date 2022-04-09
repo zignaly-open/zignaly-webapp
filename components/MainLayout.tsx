@@ -4,14 +4,6 @@ import { Container } from "@mui/material";
 import Header from "./Header/Header";
 import useUser from "lib/useUser";
 
-// const GlobalStyle = createGlobalStyle`
-//     ${({ theme }) => `
-//       body {
-//         background: url(${theme.background.image.src}) no-repeat center center fixed;
-//         background-size: cover;
-//       }
-//     `}
-//   `;
 const inputGlobalStyles = (
   <GlobalStyles
     styles={(theme) => ({

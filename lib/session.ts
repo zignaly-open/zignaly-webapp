@@ -7,7 +7,7 @@ import gtmPushApi from "src/utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "src/utils/liveSessionApi";
 import useAPI from "./useAPI";
 import useRedirection from "./useRedirection";
-import { keys } from "lib/cache";
+import { keys, setItemCache } from "lib/cache";
 
 export const isSessionValid = (sessionData: GetSessionRes) =>
   sessionData && sessionData.validUntil * 1000 > new Date().getTime();
@@ -57,8 +57,13 @@ export const useSession = () => {
   const startSession = async (token, type: "login" | "signup") => {
     dispatch(startTradeApiSession(token));
     const user = await getUserData(token);
+    // Save user in cache and mark it as validated to avoid being reloaded by useUser
+    setItemCache(keys.user, { ...user, _validated: true });
+    // Init 3rd party scripts
     initExternalWidgets(user, type);
+    // Init selected exchange
     dispatch(setSelectedExchange(initSelectedExchange(user, selectedExchangeId)));
+
     redirectDashboard();
   };
 

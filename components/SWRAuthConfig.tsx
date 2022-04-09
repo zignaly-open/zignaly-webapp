@@ -3,6 +3,7 @@ import { endTradeApiSession } from "../src/store/actions/session";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { localStorageProvider } from "lib/cache";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useStoreSessionSelector();
@@ -13,6 +14,8 @@ const SWRAuthConfig = ({ children }) => {
   return (
     <SWRConfig
       value={{
+        provider: localStorageProvider,
+        revalidateOnFocus: false,
         fetcher: async (url, customOptions) => {
           const options = {
             method: customOptions?.body ? "POST" : "GET",

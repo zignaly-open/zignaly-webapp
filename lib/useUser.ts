@@ -1,28 +1,29 @@
 import { useSelector } from "react-redux";
-import { mutate } from "swr";
+import useSWR from "swr";
 import { UserEntity } from "../src/services/tradeApiClient.types";
-import { useAPIFetch } from "./useAPI";
-import { keys } from "lib/cache";
+import { keys, cache, setItemCache } from "lib/cache";
 
-if (typeof window !== "undefined") {
-  // Load user data from cache for faster page load
-  const data = localStorage.getItem(keys.user);
-  if (data) {
-    mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user`, JSON.parse(data), false);
-  }
-}
+// let localData;
+// if (typeof window !== "undefined") {
+//   // Load user data from cache for faster page load
+//   localData = localStorage.getItem(keys.user);
+//   if (localData) {
+//     // mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user`, JSON.parse(localData), false);
+//   }
+// }
 
 const useUser = () => {
+  const initialData = cache.get(keys.user);
   const {
     data: user,
     mutate,
     error,
-  } = useAPIFetch<UserEntity>("/user", {
-    // onFailure() {
-    //   localStorage.removeItem(key)
-    // }
+  } = useSWR<UserEntity>(keys.user, {
+    // Don't fetch update if the data has just been loaded in login (_validated)
+    revalidateOnMount: initialData?._validated !== true,
+    // revalidateIfStale: false,
     onSuccess(user) {
-      localStorage.setItem(keys.user, JSON.stringify(user));
+      setItemCache(keys.user, user);
     },
   });
   // const loading = !user && !error ? true : false;

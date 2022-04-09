@@ -3,30 +3,31 @@ import { useRouter } from "next/router";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useAPIFetch } from "lib/useAPI";
 import { isSessionValid, useSession } from "lib/session";
-import { keys } from "lib/cache";
+import { cache, keys, setItemCache } from "lib/cache";
 
-let sessionDataLocal;
-if (typeof window !== "undefined") {
-  const data = localStorage.getItem(keys.session);
-  sessionDataLocal = JSON.parse(data);
-  // if (data) {
-  //   mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user/session`, JSON.parse(data), false);
-  // }
-}
+// let sessionDataLocal;
+// if (typeof window !== "undefined") {
+//   const data = localStorage.getItem(keys.session);
+//   sessionDataLocal = JSON.parse(data);
+//   // if (data) {
+//   //   mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user/session`, JSON.parse(data), false);
+//   // }
+// }
 
 function Auth({ children }) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(true);
   const storeSession = useStoreSessionSelector();
   const token = storeSession.tradeApi.accessToken;
-  const sessionValid = token && isSessionValid(sessionDataLocal);
+  const initialSessionData = cache.get(keys.session);
+  const sessionValid = token && isSessionValid(initialSessionData);
   const { endSession } = useSession();
 
   useAPIFetch<GetSessionRes>(token ? "/user/session" : null, {
-    refreshInterval: 60000,
-    // revalidateOnFocus: false,
+    refreshInterval: 60 * 5 * 1000,
     onSuccess(data) {
-      localStorage.setItem(keys.session, JSON.stringify(data));
+      // localStorage.setItem(keys.session, JSON.stringify(data));
+      setItemCache(keys.user, data);
     },
   });
   const path = router.asPath.split(/[#?]/)[0];
