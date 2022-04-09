@@ -9,6 +9,7 @@
 // };
 
 const CURRENT_VERSION = 1;
+const CACHE_KEY = "app-cache";
 
 export const keys = {
   session: `${process.env.NEXT_PUBLIC_TRADEAPI_URL}/session`,
@@ -20,7 +21,7 @@ export let cache = new Map();
 export const localStorageProvider = () => {
   if (typeof window === "undefined") return cache;
   // When initializing, we restore the data from `localStorage` into a map.
-  const data = JSON.parse(localStorage.getItem("app-cache") || "{}");
+  const data = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
   if (data.version >= CURRENT_VERSION) {
     cache = new Map(data.cache);
   }
@@ -50,5 +51,9 @@ export const setItemCache = (key: string, value: any) => {
     return result;
   }, []);
   const appCache = JSON.stringify({ version: CURRENT_VERSION, cache: arrayToSave });
-  localStorage.setItem("app-cache", appCache);
+  localStorage.setItem(CACHE_KEY, appCache);
+};
+
+export const clearCache = () => {
+  localStorage.removeItem(CACHE_KEY);
 };

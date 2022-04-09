@@ -13,10 +13,10 @@ const useRedirection = () => {
     router.push(returnUrl);
   };
 
-  const redirectLogin = () => {
+  const redirectLogin = (withReturnUrl: boolean) => {
     router.push({
       pathname: "/login",
-      query: { returnUrl: router.asPath },
+      query: withReturnUrl ? { returnUrl: router.asPath } : null,
     });
   };
 

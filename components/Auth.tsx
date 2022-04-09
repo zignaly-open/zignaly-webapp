@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useAPIFetch } from "lib/useAPI";
 import { isSessionValid, useSession } from "lib/session";
-import { cache, keys, setItemCache } from "lib/cache";
+import { cache, keys, setItemCache } from "lib/cacheAPI";
 
 // let sessionDataLocal;
 // if (typeof window !== "undefined") {
@@ -27,7 +27,7 @@ function Auth({ children }) {
     refreshInterval: 60 * 5 * 1000,
     onSuccess(data) {
       // localStorage.setItem(keys.session, JSON.stringify(data));
-      setItemCache(keys.user, data);
+      setItemCache(keys.session, data);
     },
   });
   const path = router.asPath.split(/[#?]/)[0];
@@ -42,7 +42,7 @@ function Auth({ children }) {
       if (firstCheck.current && !sessionValid) {
         // Direct access a private page with an expired session. Don't render until we are redirected to login.
         setAuthorized(false);
-        endSession();
+        endSession(true);
       }
     } else {
       // Public page

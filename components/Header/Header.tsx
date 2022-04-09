@@ -1,17 +1,15 @@
 import Link from "next/link";
 import React from "react";
 import * as styled from "./styles";
+import { useSession } from "lib/session";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { endTradeApiSession } from "../../src/store/actions/session";
 
 const Header = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const { endSession } = useSession();
 
   const logout = () => {
-    dispatch(endTradeApiSession());
-    router.push({ pathname: "/login" });
+    endSession(false);
   };
 
   return (

@@ -3,7 +3,7 @@ import { endTradeApiSession } from "../src/store/actions/session";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { localStorageProvider } from "lib/cache";
+import { localStorageProvider } from "lib/cacheAPI";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useStoreSessionSelector();

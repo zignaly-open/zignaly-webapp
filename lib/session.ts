@@ -7,7 +7,7 @@ import gtmPushApi from "src/utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "src/utils/liveSessionApi";
 import useAPI from "./useAPI";
 import useRedirection from "./useRedirection";
-import { keys, setItemCache } from "lib/cache";
+import { clearCache, keys, setItemCache } from "lib/cacheAPI";
 
 export const isSessionValid = (sessionData: GetSessionRes) =>
   sessionData && sessionData.validUntil * 1000 > new Date().getTime();
@@ -43,11 +43,6 @@ const initSelectedExchange = (user: UserEntity, selectedExchangeId: string) => {
   return null;
 };
 
-const clearCache = () => {
-  const keysToRemove = [keys.session, keys.user];
-  keysToRemove.forEach((k) => localStorage.removeItem(k));
-};
-
 export const useSession = () => {
   const dispatch = useDispatch();
   const { redirectDashboard, redirectLogin } = useRedirection();
@@ -67,11 +62,11 @@ export const useSession = () => {
     redirectDashboard();
   };
 
-  const endSession = async () => {
+  const endSession = async (withReturnUrl: boolean) => {
     dispatch(endTradeApiSession());
     clearCache();
     endLiveSession();
-    redirectLogin();
+    redirectLogin(withReturnUrl);
   };
 
   return { startSession, endSession };
