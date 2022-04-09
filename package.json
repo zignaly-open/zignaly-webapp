@@ -54,7 +54,7 @@
     "gatsby-plugin-styled-components": "^5.2.0",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "mui-datatables": "^3.7.8",
     "node-sass": "^6.0.1",
     "puff-puff": "^1.2.0",
