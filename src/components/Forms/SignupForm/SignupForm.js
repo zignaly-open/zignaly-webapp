@@ -21,6 +21,7 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import useAPI from "../../../../lib/useAPI";
 import useRedirection from "../../../../lib/useRedirection";
+import { useSession } from "lib/session";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ const SignupForm = () => {
   const [loginResponse, setLoginResponse] = useState(null);
   const { getSession } = useAPI();
   const { redirectDashboard } = useRedirection();
+  const { startSession } = useSession();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -105,10 +107,11 @@ const SignupForm = () => {
   };
 
   const onVerified = async () => {
-    dispatch(startTradeApiSession(loginResponse, "signup"));
-    const res = await getSession(loginResponse.token);
-    dispatch(setSessionData(res));
-    redirectDashboard();
+    // dispatch(startTradeApiSession(loginResponse, "signup"));
+    // const res = await getSession(loginResponse.token);
+    // dispatch(setSessionData(res));
+    // redirectDashboard();
+    startSession(loginResponse.token, "signup");
   };
 
   return (

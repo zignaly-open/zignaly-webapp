@@ -19,6 +19,7 @@ import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
 import useAPI from "../../../../lib/useAPI";
 import useRedirection from "../../../../lib/useRedirection";
+import { useSession } from "lib/session";
 
 /**
  * @typedef {import("../../../store/initialState").DefaultState} DefaultStateType
@@ -33,7 +34,7 @@ const LoginForm = () => {
   const [forgotModal, showForgotModal] = useState(false);
   const [verifyEmailModal, showVerifyEmailModal] = useState(false);
   const [twoFAModal, showTwoFAModal] = useState(false);
-  const [loginResponse, setLoginResponse] = useState(null);
+  const [loginResponse, setLoginResponse] = useState(/** @type {LoginRes} */ (null));
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
   const { handleSubmit, errors, register } = useForm({
@@ -46,6 +47,7 @@ const LoginForm = () => {
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const { login, getSession } = useAPI();
   const { redirectDashboard } = useRedirection();
+  const { startSession } = useSession();
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
@@ -70,10 +72,11 @@ const LoginForm = () => {
   };
 
   const onSuccess = async () => {
-    dispatch(startTradeApiSession(loginResponse, "login"));
+    // dispatch(startTradeApiSession(loginResponse, "login"));
     // const res = await getSession(loginResponse.token);
     // dispatch(setSessionData(res));
-    redirectDashboard();
+    startSession(loginResponse.token, "login");
+    // redirectDashboard();
   };
 
   /**

@@ -2,6 +2,7 @@ import {
   ExchangeAssetsDict,
   ExchangeContractsObject,
   ExchangeOpenOrdersObject,
+  UserEntity,
 } from "services/tradeApiClient.types";
 import useSWR, { SWRConfiguration, SWRResponse, useSWRConfig } from "swr";
 // import { User } from "pages/api/user";
@@ -57,12 +58,16 @@ const useAPI = () => {
   const getSession = (token?: string): Promise<GetSessionRes> => {
     return fetcher(baseUrl + "/user/session", {
       headers: { ...(token && { Authorization: `Bearer ${token}` }) },
-    }).then((res: any) => ({
-      validUntil: res.validUntil * 1000,
-    }));
+    });
   };
 
-  return { fetcher, login, verify2FA, getSession };
+  const getUserData = (token?: string): Promise<UserEntity> => {
+    return fetcher(baseUrl + "/user", {
+      headers: { ...(token && { Authorization: `Bearer ${token}` }) },
+    });
+  };
+
+  return { fetcher, login, verify2FA, getSession, getUserData };
 };
 export default useAPI;
 

@@ -26,6 +26,8 @@ export const InfoBox = styled.div`
   }
 `;
 
-export const Type = styled(Typography)`
-  font-size: 13px;
+export const TypographyType = styled(Typography).attrs({ variant: "h4" })`
+  &:first-child {
+    color: #9ca3af;
+  }
 `;

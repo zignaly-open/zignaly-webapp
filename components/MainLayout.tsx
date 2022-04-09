@@ -1,15 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { GlobalStyles } from "@mui/material";
-import { useDispatch } from "react-redux";
-import {
-  endTradeApiSession,
-  refreshSessionData,
-  setSessionData,
-} from "../src/store/actions/session";
-import useInterval from "../src/hooks/useInterval";
-import useAPI from "../lib/useAPI";
 import { Container } from "@mui/material";
 import Header from "./Header/Header";
+import useUser from "lib/useUser";
 
 // const GlobalStyle = createGlobalStyle`
 //     ${({ theme }) => `
@@ -31,19 +24,14 @@ const inputGlobalStyles = (
 );
 
 export default function MainLayout({ children }) {
-  // const { getSession } = useAPI();
-  // const dispatch = useDispatch();
-  // const updateSession = async () => {
-  //   const res = await getSession();
-  //   dispatch(setSessionData(res));
-  // };
-  // useInterval(updateSession, 60 * 1000, true);
+  // Wait until we have the user data before rendering (localstorage)
+  const { user } = useUser();
 
   return (
     <>
       {inputGlobalStyles}
       <Header />
-      <Container maxWidth="lg">{children}</Container>
+      <Container maxWidth="lg">{user && children}</Container>
     </>
   );
 }

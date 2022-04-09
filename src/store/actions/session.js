@@ -29,14 +29,14 @@ export const SET_APP_VERSION = "SET_APP_VERSION";
  * @param {'login'|'signup'} eventType User event.
  * @returns {AppThunk} return action object.
  */
-export const startTradeApiSession = (response, eventType) => {
+export const startTradeApiSession = (token) => {
   return async (dispatch) => {
     // const state = store.getState();
     // tradeApi.setToken(response.token);
 
     const action = {
       type: START_TRADE_API_SESSION,
-      payload: response.token,
+      payload: token,
     };
 
     dispatch(action);
@@ -54,13 +54,13 @@ export const endTradeApiSession = () => {
       const action = {
         type: END_TRADE_API_SESSION,
       };
-      endLiveSession();
+      // endLiveSession();
       dispatch(action);
-      dispatch(unsetUser());
-      dispatch(unsetProvider());
-      dispatch(clearSessionData());
-      dispatch(toggleBalanceBox(false));
-      tradeApi.setToken();
+      // dispatch(unsetUser());
+      // dispatch(unsetProvider());
+      // dispatch(clearSessionData());
+      // dispatch(toggleBalanceBox(false));
+      // tradeApi.setToken();
     } catch (e) {
       dispatch(showErrorAlert(e));
     }

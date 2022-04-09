@@ -34,7 +34,7 @@ const sendTz = (data) => {
 export const triggerTz = async (location, prevLocation, userData) => {
   // Root page will be redirected
   if (location.pathname === "/") return;
-  if (userData.isAdmin || process.env.GATSBY_ENABLE_TRACKING !== "true") return;
+  if (userData.isAdmin || process.env.NEXT_PUBLIC_ENABLE_TRACKING !== "true") return;
 
   const data = {
     action: "sData",

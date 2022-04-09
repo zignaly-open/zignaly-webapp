@@ -7,7 +7,7 @@ import { PRODUCT_NAME } from "../lib/constants";
 import { useIntl } from "react-intl";
 import { useEffect } from "react";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
-import { verifySessionData } from "lib/auth";
+import { isSessionValid } from "lib/session";
 import useRedirection from "lib/useRedirection";
 import { useRouter } from "next/router";
 
@@ -18,7 +18,7 @@ const LoginPage = () => {
   const intl = useIntl();
 
   useEffect(() => {
-    const sessionValid = verifySessionData(token, storeSession.sessionData);
+    const sessionValid = isSessionValid(storeSession.sessionData);
     if (sessionValid) {
       router.push({
         pathname: "/",

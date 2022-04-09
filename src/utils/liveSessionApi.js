@@ -13,7 +13,7 @@ const liveSessionTrackID = "4c9e2f89.fe420345";
  * @returns {void} None.
  */
 export const startLiveSession = (responseData) => {
-  if (process.env.GATSBY_ENABLE_TRACKING) {
+  if (process.env.NEXT_PUBLIC_ENABLE_TRACKING) {
     ls.init(liveSessionTrackID);
     ls.identify({
       name: responseData.firstName,
@@ -32,7 +32,7 @@ export const startLiveSession = (responseData) => {
 };
 
 export const endLiveSession = () => {
-  if (process.env.GATSBY_ENABLE_TRACKING) {
+  if (process.env.NEXT_PUBLIC_ENABLE_TRACKING) {
     ls.init(liveSessionTrackID);
     ls.invalidateSession();
   }

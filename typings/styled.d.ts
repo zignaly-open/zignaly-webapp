@@ -1,13 +1,8 @@
 import "styled-components";
 import { Theme } from "@mui/material/styles";
 interface CustomTheme {
-  bg: {
-    main: string;
-    light: string;
-  };
-  text: {
-    main: string;
-    light: string;
+  background?: {
+    image: any;
   };
 }
 declare module "@mui/material/styles" {

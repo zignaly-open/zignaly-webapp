@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-import { dark, light, ThemeProvider as ThemeProviderUI, Table } from "zignaly-ui";
+import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -9,15 +9,14 @@ import ENMessages from "../src/i18n/translations/en.yml";
 import translations from "../src/i18n/translations";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import useStoreSettingsSelector from "../src/hooks/useStoreSettingsSelector";
-import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "../src/store/store.js";
-import "./legacy.scss";
 import { useRouter } from "next/router";
 import { getLanguageCodefromLocale } from "../src/i18n";
-import { SWRConfig } from "swr";
-import { endTradeApiSession } from "../src/store/actions/session";
 import Auth from "../components/Auth";
+import SWRAuthConfig from "components/SWRAuthConfig";
+import "./legacy.scss";
+import { ThemeOptions } from "@mui/material";
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -35,63 +34,14 @@ const WithReduxProvider = (Component) => (props) =>
     </Provider>
   );
 
-const ConfigureAuthFetch = ({ children }) => {
-  const storeSession = useStoreSessionSelector();
-  const token = storeSession.tradeApi.accessToken;
-  const dispatch = useDispatch();
-  const router = useRouter();
-  return (
-    <SWRConfig
-      value={{
-        fetcher: async (url, options) => {
-          const o = {
-            method: options?.body ? "POST" : "GET",
-            ...options,
-            ...(options?.body && { body: JSON.stringify(options.body) }),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-              "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-              ...options?.headers,
-            },
-          };
-
-          // Remove authorization key when not needed
-          if (options?.headers?.Authorization === null) {
-            delete o.headers.Authorization;
-          }
-
-          const res = await fetch(url, o);
-          if (!res.ok) {
-            if (res.status === 401) {
-              dispatch(endTradeApiSession());
-              console.log("401 caught, redir to login");
-              router.push({
-                pathname: "/login",
-                query: { returnUrl: router.asPath },
-              });
-            } else {
-              throw Error(res.statusText);
-            }
-          }
-          return res.json();
-          // res.ok ? res.json() : Promise.reject(res)
-        },
-        onError: (err) => {
-          console.error(err);
-        },
-      }}
-    >
-      {children}
-    </SWRConfig>
-  );
-};
-
 function MyApp({ Component, pageProps }: AppProps) {
   const { darkStyle, locale } = useStoreSettingsSelector();
   const router = useRouter();
   const darkTheme = !["/", "/login", "/signup"].includes(router.pathname);
-  const theme = useMemo(() => createTheme({ ...dark, ...getTheme(darkTheme) }), [darkTheme]);
+  const theme = useMemo(
+    () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme) }),
+    [darkTheme],
+  );
   const [messages, setMessages] = useState(null);
 
   const getMessages = async (localeValue: string): Promise<Record<string, string>> => {
@@ -128,11 +78,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ThemeProviderUI theme={theme}>
               {/* <GlobalStyle /> */}
               <CssBaseline />
-              <ConfigureAuthFetch>
+              <SWRAuthConfig>
                 <Auth>
                   <Component {...pageProps} />
                 </Auth>
-              </ConfigureAuthFetch>
+              </SWRAuthConfig>
             </ThemeProviderUI>
           </ThemeProvider>
         </StyledEngineProvider>

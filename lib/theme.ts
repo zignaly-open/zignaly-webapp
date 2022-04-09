@@ -1,4 +1,4 @@
-import { createTheme, PaletteMode } from "@mui/material";
+import { createTheme, PaletteMode, ThemeOptions } from "@mui/material";
 import BackgroundImage from "../src/images/bg.jpg";
 
 export const colors = {
@@ -22,7 +22,7 @@ export const colors = {
   lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
-const getTheme = (darkMode: boolean) => ({
+const getTheme = (darkMode: boolean): ThemeOptions => ({
   palette: {
     mode: (darkMode ? "dark" : "light") as PaletteMode,
     ...(!darkMode
