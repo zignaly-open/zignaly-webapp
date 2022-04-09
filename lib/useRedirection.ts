@@ -10,7 +10,6 @@ const useRedirection = () => {
     if (customReturnUrl && customReturnUrl.indexOf(".") === -1) {
       returnUrl = customReturnUrl;
     }
-    console.log("redir", returnUrl);
     router.push(returnUrl);
   };
 

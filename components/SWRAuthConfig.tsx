@@ -10,32 +10,28 @@ const SWRAuthConfig = ({ children }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log("SWRAuthConfig1", token, new Date());
-
   return (
     <SWRConfig
       value={{
-        fetcher: async (url, options) => {
-          console.log("SWRAuthConfig2", token, new Date(), url);
-
-          const o = {
-            method: options?.body ? "POST" : "GET",
-            ...options,
-            ...(options?.body && { body: JSON.stringify(options.body) }),
+        fetcher: async (url, customOptions) => {
+          const options = {
+            method: customOptions?.body ? "POST" : "GET",
+            ...customOptions,
+            ...(customOptions?.body && { body: JSON.stringify(customOptions.body) }),
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
               "X-API-KEY": process.env.NEXT_PUBLIC_KEY || "",
-              ...options?.headers,
+              ...customOptions?.headers,
             },
           };
 
           // Remove authorization key when not needed
-          if (options?.headers?.Authorization === null) {
-            delete o.headers.Authorization;
+          if (customOptions?.headers?.Authorization === null) {
+            delete options.headers.Authorization;
           }
 
-          const res = await fetch(url, o);
+          const res = await fetch(url, options);
           if (!res.ok) {
             if (res.status === 401) {
               dispatch(endTradeApiSession());

@@ -13,7 +13,6 @@ if (typeof window !== "undefined") {
 }
 
 const useUser = () => {
-  // check if token
   const {
     data: user,
     mutate,
@@ -31,7 +30,6 @@ const useUser = () => {
   const selectedExchange = user?.exchanges.find((e) => e.internalId === selectedExchangeId);
 
   return {
-    // loading,
     selectedExchange,
     user,
     mutate,
