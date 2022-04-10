@@ -32,6 +32,8 @@ module.exports = withBundleAnalyzer(
       //   "@mui/styled-engine": "@mui/styled-engine-sc",
       // };
       if (process.env.NODE_ENV === "development") {
+        // This part is needed when using zignaly-ui package locally with npm link, to avoid errors about
+        // multiple versions of the same package running
         config.resolve.alias["react"] = path.resolve("./node_modules/react");
         config.resolve.alias["react-dom"] = path.resolve("./node_modules/react-dom");
         config.resolve.alias["@mui/material"] = path.resolve("./node_modules/@mui/material");
