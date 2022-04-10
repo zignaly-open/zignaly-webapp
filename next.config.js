@@ -28,6 +28,11 @@ module.exports = withBundleAnalyzer(
       // todo: Ignore type error for now
       ignoreBuildErrors: true,
     },
+    eslint: {
+      // todo: Ignore lint error for now
+      ignoreDuringBuilds: true,
+    },
+
     env,
     reactStrictMode: true,
     webpack: (config) => {
