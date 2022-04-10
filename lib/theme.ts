@@ -63,6 +63,7 @@ const getTheme = (darkMode: boolean, login: boolean): ThemeOptions => ({
         }),
   },
   typography: {
+    fontFamily: "Avenir Next, Helvetica Neue, Helvetica, Arial, sans-serif",
     ...(login && {
       fontFamily: "PlexSans, Roboto, Helvetica, Arial, sans-serif",
       // This is from legacy theme for login page

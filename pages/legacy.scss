@@ -1,5 +1,6 @@
 @import "../src/styles/colors.scss";
 @import "../src/styles/breakpoints.scss";
+@import "../src/styles/colors.scss";
 @import "../src/components/Forms/SignupForm/SignupForm.scss";
 @import "../src/components/Passwords/PasswordStrength/PasswordStrength.scss";
 
@@ -750,5 +751,85 @@
       background: transparent;
       border-color: $lighterBlackBorder;
     }
+  }
+}
+
+.errorText {
+  color: $red;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.customLabel {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 12px;
+
+  &.dark {
+    color: $white;
+  }
+
+  &.light {
+    color: $black;
+  }
+}
+
+.customInput {
+  height: 32px;
+  margin: 0;
+  width: 100%;
+
+  input {
+    height: 32px;
+    padding: 0 10px;
+  }
+
+  &.error {
+    border: 1px solid $red;
+  }
+
+  div {
+    height: 32px;
+  }
+
+  > div {
+    padding-right: 10px;
+  }
+
+  svg {
+    color: $lightGrey;
+  }
+}
+
+.selectInput {
+  border-radius: 4px;
+  height: 32px;
+
+  .select {
+    > div {
+      align-items: center;
+      display: flex;
+      height: 32px;
+      opacity: 1;
+      padding: 0 14px;
+    }
+
+    svg {
+      color: $lightGrey;
+    }
+  }
+
+  .option {
+    font-weight: 700;
+  }
+}
+
+.checkboxInput {
+  color: $purple;
+  margin: 0 0.5rem 0 0;
+  padding: 0;
+
+  &.error {
+    color: $red;
   }
 }
