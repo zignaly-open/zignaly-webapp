@@ -107,7 +107,7 @@ const AppLayout = (props) => {
       />
       <GoogleReCaptchaProvider
         language="en"
-        reCaptchaKey={process.env.GATSBY_RECAPTCHA_KEY}
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
         scriptProps={{
           async: false, // optional, default to false,
           defer: false, // optional, default to false

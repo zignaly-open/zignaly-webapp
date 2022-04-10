@@ -5,12 +5,10 @@ import Modal from "../../Modal";
 import ForgotPasswordForm from "../ForgotPasswordForm";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { setSessionData, startTradeApiSession } from "../../../store/actions/session";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage, useIntl } from "react-intl";
 import TwoFAForm from "../../../components/Forms/TwoFAForm";
 import { showErrorAlert } from "../../../store/actions/ui";
-import tradeApi from "../../../services/tradeApiClient";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
@@ -18,7 +16,6 @@ import CaptchaTerms from "components/Captcha/CaptchaTerms";
 import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
 import useAPI from "../../../../lib/useAPI";
-import useRedirection from "../../../../lib/useRedirection";
 import { useSession } from "lib/session";
 
 /**
@@ -45,8 +42,7 @@ const LoginForm = () => {
   const captchaFallback = useRef(null);
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
-  const { login, getSession } = useAPI();
-  const { redirectDashboard } = useRedirection();
+  const { login } = useAPI();
   const { startSession } = useSession();
 
   const hasMounted = useHasMounted();
