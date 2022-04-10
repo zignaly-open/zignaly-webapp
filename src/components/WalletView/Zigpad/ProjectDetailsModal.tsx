@@ -1021,7 +1021,13 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                         <div key={d.dateFrom}>
                           <FormattedMessage
                             id={`zigpad.tokenomic.release${
-                              d.type === "WEEK" ? ".weekly" : d.type === "DAY" ? ".daily" : ""
+                              d.type === "WEEK"
+                                ? ".weekly"
+                                : d.type === "MONTH"
+                                ? ".monthly"
+                                : d.type === "DAY"
+                                ? ".daily"
+                                : ""
                             }`}
                             values={{
                               perc: d.percent,
