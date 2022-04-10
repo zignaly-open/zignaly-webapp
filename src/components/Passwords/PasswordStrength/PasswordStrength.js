@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./PasswordStrength.scss";
+// import "./PasswordStrength.scss";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 

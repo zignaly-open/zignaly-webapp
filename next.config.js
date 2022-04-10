@@ -32,7 +32,6 @@ module.exports = withBundleAnalyzer(
       // todo: Ignore lint error for now
       ignoreDuringBuilds: true,
     },
-
     env,
     reactStrictMode: true,
     webpack: (config) => {
