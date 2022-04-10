@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Table, DateLabel } from "zignaly-ui";
+import { Table, DateLabel } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import { useServiceOrders } from "../../../lib/useAPI";

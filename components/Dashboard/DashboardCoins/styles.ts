@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Typography } from "zignaly-ui";
+import { Typography } from "zignaly-ui-test";
 
 export const CoinCell = styled.div`
   display: flex;

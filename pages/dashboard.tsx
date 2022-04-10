@@ -4,7 +4,7 @@ import MainLayout from "components/MainLayout";
 import { useIntl } from "react-intl";
 import { PRODUCT_NAME } from "../lib/constants";
 import DashboardCoins from "components/Dashboard/DashboardCoins/DashboardCoins";
-import { Tabs, Tab, TabPanel } from "zignaly-ui";
+import { Tabs, Tab, TabPanel } from "zignaly-ui-test";
 import { useState } from "react";
 import AccountSelector from "components/Dashboard/AccountSelector/AccountSelector";
 

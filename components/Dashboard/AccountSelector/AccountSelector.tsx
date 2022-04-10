@@ -1,6 +1,6 @@
 import Image from "next/image";
 import useUser from "lib/useUser";
-import { Typography } from "zignaly-ui";
+import { Typography } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";

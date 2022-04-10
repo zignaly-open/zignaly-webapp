@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui";
+import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";

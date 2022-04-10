@@ -1,8 +1,8 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
 import { StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material/styles";
 import { StyleSheetManager, ThemeProvider as ThemeProviderSC } from "styled-components";
-// import { ThemeProvider as ThemeProviderMui } from "zignaly-ui";
-// import { dark, light } from "zignaly-ui";
+// import { ThemeProvider as ThemeProviderMui } from "zignaly-ui-test";
+// import { dark, light } from "zignaly-ui-test";
 import { CssBaseline } from "@mui/material";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";

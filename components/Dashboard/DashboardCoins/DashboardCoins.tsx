@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
-import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui";
+import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui-test";
 import NumberFormat from "react-number-format";
 import { useExchangeAssets } from "lib/useAPI";
 import CoinIcon from "../../../src/components/WalletView/CoinIcon";

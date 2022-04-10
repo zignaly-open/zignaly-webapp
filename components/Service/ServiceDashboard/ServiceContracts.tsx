@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
+import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/material";
 import styled from "styled-components";

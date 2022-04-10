@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Table, DateLabel, PriceLabel, PercentageIndicator } from "zignaly-ui";
+import { Table, DateLabel, PriceLabel, PercentageIndicator } from "zignaly-ui-test";
 import NumberFormat from "react-number-format";
 import { useServicePositions } from "../../../lib/useAPI";
 

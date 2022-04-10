@@ -8,7 +8,7 @@ import {
   OptionsDotsIcon,
   Table,
   CheckIcon,
-} from "zignaly-ui";
+} from "zignaly-ui-test";
 
 // import { Test } from "react-component-library-test";
 
@@ -16,7 +16,7 @@ import {
 // import { FormattedMessage, useIntl } from "react-intl";
 // import tradeApi from "services/tradeApiClient";
 // import useSelectedExchange from "hooks/useSelectedExchange";
-// import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui-test2";
+// import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui-test-test2";
 // import { useDispatch } from "react-redux";
 // import { showErrorAlert } from "store/actions/ui";
 // import styled, { css } from "styled-components";
