@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "./SignupForm.scss";
+// import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
