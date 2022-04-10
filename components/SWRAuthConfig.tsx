@@ -1,3 +1,4 @@
+import React from "react";
 import { SWRConfig } from "swr";
 import { endTradeApiSession } from "../src/store/actions/session";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
