@@ -52,6 +52,11 @@ function Auth({ children }) {
         router.push({
           pathname: "/service",
         });
+      } else if (!sessionValid && router.pathname === "/") {
+        // Redirect / to login
+        router.push({
+          pathname: "/login",
+        });
       }
     }
 

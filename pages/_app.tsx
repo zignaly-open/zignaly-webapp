@@ -38,8 +38,7 @@ const WithReduxProvider = (Component) => (props) =>
 function MyApp({ Component, pageProps }: AppProps) {
   const { darkStyle, locale } = useStoreSettingsSelector();
   const router = useRouter();
-  // const path = router.asPath.split(/[#?]/)[0];
-  const isLogin = ["/login", "/signup"].includes(router.pathname);
+  const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
   const darkTheme = !isLogin;
   const theme = useMemo(
     () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
