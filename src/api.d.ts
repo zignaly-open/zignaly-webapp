@@ -164,7 +164,7 @@ interface DistributionDate {
   dateTo: string;
   percent: number;
   finished: boolean;
-  type: "ONCE" | "DAY" | "WEEK";
+  type: "ONCE" | "DAY" | "WEEK" | "MONTH";
 }
 interface LaunchpadProjectDetails {
   id: number;
