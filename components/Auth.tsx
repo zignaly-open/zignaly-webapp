@@ -30,10 +30,9 @@ function Auth({ children }) {
       setItemCache(keys.session, data);
     },
   });
-  const path = router.asPath.split(/[#?]/)[0];
   const isPublic =
-    path === "/" ||
-    path.match(/^\/login|\/signup|\/recover|\/disable2fa|\/changeEmail|\/deleteAccount/);
+    router.pathname === "/" ||
+    router.pathname.match(/^\/login|\/signup|\/recover|\/disable2fa|\/changeEmail|\/deleteAccount/);
   const firstCheck = useRef(true);
 
   useEffect(() => {

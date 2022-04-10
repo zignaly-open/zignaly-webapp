@@ -22,7 +22,7 @@ export const colors = {
   lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
-const getTheme = (darkMode: boolean): ThemeOptions => ({
+const getTheme = (darkMode: boolean, login: boolean): ThemeOptions => ({
   palette: {
     mode: (darkMode ? "dark" : "light") as PaletteMode,
     ...(!darkMode
@@ -61,6 +61,77 @@ const getTheme = (darkMode: boolean): ThemeOptions => ({
             content: colors.lighterBlack,
           },
         }),
+  },
+  typography: {
+    ...(login && {
+      fontFamily: "PlexSans, Roboto, Helvetica, Arial, sans-serif",
+      // This is from legacy theme for login page
+      h1: {
+        fontSize: "33px",
+        fontWeight: 700,
+        textTransform: "capitalize",
+        lineHeight: 1.21,
+        letterSpacing: "1.25px",
+        "@media (max-width:600px)": {
+          fontSize: "21px",
+        },
+      },
+      h3: {
+        fontSize: "21px",
+        fontWeight: 700,
+        textTransform: "capitalize",
+        lineHeight: 1.24,
+        letterSpacing: "0.8px",
+      },
+      h4: {
+        fontSize: "16px",
+        fontWeight: 600,
+        lineHeight: 1.31,
+        letterSpacing: "0.61px",
+      },
+      h5: {
+        fontSize: "14px",
+        // fontFamily: "PlexMono-Medium",
+        fontWeight: 500,
+        textTransform: "capitalize",
+        lineHeight: 1.5,
+        letterSpacing: "0.53px",
+      },
+      subtitle1: {
+        fontSize: "11px",
+        fontWeight: 700,
+        lineHeight: 1.45,
+        letterSpacing: ".42px",
+        textTransform: "uppercase",
+        opacity: "0.6",
+      },
+      subtitle2: {
+        fontSize: "12px",
+        fontWeight: 700,
+        textTransform: "capitalize",
+        lineHeight: 1.08,
+        letterSpacing: "0.46px",
+      },
+      h6: {
+        fontSize: "14px",
+        fontWeight: 600,
+        textTransform: "capitalize",
+        lineHeight: 1.43,
+        letterSpacing: "0.53px",
+      },
+      caption: {
+        fontSize: "14px",
+        fontWeight: 400,
+        lineHeight: 1.43,
+        letterSpacing: "0.53px",
+      },
+      body1: {
+        fontSize: "16px",
+        fontWeight: 400,
+        letterSpacing: "0.61px",
+        lineHeight: 1.31,
+      },
+    }),
   },
   // components: {
   //   MuiButtonBase: {

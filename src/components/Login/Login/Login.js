@@ -28,7 +28,7 @@ const Login = ({ children }) => {
         sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
       >
         <a href="https://www.zignaly.com">
-          <Image alt="Zignaly" className="logo" src="/zignaly.svg" width={163} height={42} />
+          <Image alt="Zignaly" className="logo" src="/images/zignaly.svg" width={163} height={42} />
         </a>
         <Box className="languageBox">
           <LanguageSwitcherDropdown />
