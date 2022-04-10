@@ -3,6 +3,7 @@ import { GlobalStyles } from "@mui/material";
 import { Container } from "@mui/material";
 import Header from "./Header/Header";
 import useUser from "lib/useUser";
+import Head from "next/head";
 
 const inputGlobalStyles = (
   <GlobalStyles
@@ -21,6 +22,21 @@ export default function MainLayout({ children }) {
 
   return (
     <>
+      <Head>
+        {/* Preload fonts */}
+        <link
+          rel="preload"
+          href="/fonts/AvenirNext/AvenirNextLTPro-Regular.otf"
+          as="font"
+          crossOrigin=""
+        />
+        <link
+          rel="preload"
+          href="/fonts/PlexSans/IBMPlexSans-Regular.ttf"
+          as="font"
+          crossOrigin=""
+        />
+      </Head>
       {inputGlobalStyles}
       <Header />
       <Container maxWidth="lg">{user && children}</Container>
