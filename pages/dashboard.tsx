@@ -1,12 +1,12 @@
 import { Container } from "@mui/material";
 import Head from "next/head";
-import MainLayout from "../components/MainLayout";
+import MainLayout from "components/MainLayout";
 import { useIntl } from "react-intl";
 import { PRODUCT_NAME } from "../lib/constants";
-import DashboardCoins from "../components/Dashboard/DashboardCoins";
+import DashboardCoins from "components/Dashboard/DashboardCoins/DashboardCoins";
 import { Tabs, Tab, TabPanel } from "zignaly-ui";
 import { useState } from "react";
-import AccountSelector from "../components/Dashboard/AccountSelector/AccountSelector";
+import AccountSelector from "components/Dashboard/AccountSelector/AccountSelector";
 
 type Props = {};
 

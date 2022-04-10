@@ -1,19 +1,18 @@
 import Image from "next/image";
 import useUser from "lib/useUser";
-import * as styled from "./styles";
-import { Select, Typography } from "zignaly-ui";
-import useSelectedExchange from "../../../src/hooks/useSelectedExchange";
+import { Typography } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
-import dispatch from "cypress/utils/dispatch";
 import { useDispatch } from "react-redux";
 import { setSelectedExchange } from "src/store/actions/settings";
+
+import * as styled from "./styles";
 
 const AccountSelector = () => {
   const intl = useIntl();
   const {
     user,
-    selectedExchange: { internalName, exchangeType },
+    selectedExchange: { internalName, exchangeType, internalId },
   } = useUser();
   console.log(internalName);
   const dispatch = useDispatch();
@@ -33,12 +32,20 @@ const AccountSelector = () => {
     <styled.Layout>
       <Image src="/avatar.svg" width={68} height={68} />
       <styled.InfoBox>
-        <Typography variant="h1">{internalName}</Typography>
+        <Box display="flex">
+          <Typography variant="h1">{internalName}</Typography>
+          <styled.SelectorContainer>
+            <styled.Selector
+              // initialSelectedIndex={exchangeAccounts.findIndex((e) => e.value === internalId) + 1}
+              options={exchangeAccounts}
+              onSelectItem={handleExchangeAccountChange}
+              mode="collapsed"
+            />
+          </styled.SelectorContainer>
+        </Box>
         <styled.TypographyType>
-          <Box>
-            <FormattedMessage id="dashboard.type" />
-            <Select options={exchangeAccounts} onSelectItem={handleExchangeAccountChange} />
-          </Box>
+          <FormattedMessage id="dashboard.type" />
+          &nbsp;
           <FormattedMessage
             id={exchangeType === "futures" ? "exchange.type.futures" : "exchange.type.spot"}
           />
