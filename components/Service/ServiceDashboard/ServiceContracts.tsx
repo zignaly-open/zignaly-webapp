@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/material";
@@ -6,14 +6,13 @@ import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import { useContracts } from "../../../lib/useAPI";
 import useUser from "lib/useUser";
+import { ServiceContext } from "../ServiceContext";
 
 const ServiceContracts = () => {
   const { user, selectedExchange } = useUser();
   const intl = useIntl();
-  const { data: contracts, error } = useContracts(
-    selectedExchange?.internalId || "Zignaly1629446605_611f61cd2d6b4",
-    "612f43288aedc6362e6f7745",
-  );
+  const { selectedService } = useContext(ServiceContext);
+  const { data: contracts, error } = useContracts(selectedExchange.internalId, selectedService.id);
 
   const columns = useMemo(
     () => [

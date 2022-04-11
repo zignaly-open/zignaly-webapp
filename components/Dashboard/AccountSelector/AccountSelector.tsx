@@ -15,7 +15,6 @@ const AccountSelector = () => {
     user,
     selectedExchange: { internalName, exchangeType, internalId },
   } = useUser();
-  console.log(internalName);
   const dispatch = useDispatch();
 
   const exchangeAccounts = user.exchanges.map((e) => ({
@@ -25,7 +24,6 @@ const AccountSelector = () => {
   }));
 
   const handleExchangeAccountChange = (e) => {
-    console.log(e);
     dispatch(setSelectedExchange(e.value));
   };
 

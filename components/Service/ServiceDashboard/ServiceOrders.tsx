@@ -1,17 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { Table, DateLabel } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import { useServiceOrders } from "../../../lib/useAPI";
 import useUser from "lib/useUser";
+import { ServiceContext } from "../ServiceContext";
 
 const ServiceOrders = () => {
   const { user, selectedExchange } = useUser();
   const intl = useIntl();
-  const { data: orders, error } = useServiceOrders(
-    selectedExchange.internalId || "Zignaly1629446605_611f61cd2d6b4",
-    "612f43288aedc6362e6f7745",
-  );
+  const { selectedService } = useContext(ServiceContext);
+  const { data: orders, error } = useServiceOrders(selectedExchange.internalId, selectedService.id);
 
   const columns = useMemo(
     () => [

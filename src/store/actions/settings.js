@@ -6,6 +6,7 @@ export const SET_SORT_COLUMN = "SET_SORT_COLUMN";
 export const SET_RESPONSIVE_TABLE = "SET_RESPONSIVE_TABLE";
 export const SET_SELECTED_EXCHANGE = "SET_SELECTED_EXCHANGE";
 export const UNSET_SELECTED_EXCHANGE = "UNSET_SELECTED_EXCHANGE";
+export const SET_SELECTED_SERVICE = "SET_SELECTED_SERVICE";
 export const SET_SHOW_BALANCE = "SET_SHOW_BALANCE";
 export const SET_ROWS_PER_PAGE = "SET_ROWS_PER_PAGE";
 export const SET_TIMEFRAME = "SET_TIMEFRAME";
@@ -95,6 +96,13 @@ export const setSelectedExchange = (payload) => {
 export const unsetSelectedExchange = () => {
   return {
     type: UNSET_SELECTED_EXCHANGE,
+  };
+};
+
+export const setSelectedService = (payload) => {
+  return {
+    type: SET_SELECTED_SERVICE,
+    payload,
   };
 };
 

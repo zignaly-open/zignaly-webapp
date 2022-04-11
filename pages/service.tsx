@@ -1,3 +1,4 @@
+import React from "react";
 import Head from "next/head";
 import ServiceDashboard from "../components/Service/ServiceDashboard/ServiceDashboard";
 import { PRODUCT_NAME } from "../lib/constants";

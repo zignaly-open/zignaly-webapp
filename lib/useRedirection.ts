@@ -8,7 +8,7 @@ const useRedirection = () => {
     if (useReturnUrl) {
       const val = router.query.returnUrl;
       const customReturnUrl = Array.isArray(val) ? val[0] : val;
-      if (customReturnUrl && customReturnUrl.indexOf(".") === -1) {
+      if (customReturnUrl && customReturnUrl.indexOf(".") === -1 && customReturnUrl !== "/login") {
         returnUrl = customReturnUrl;
       }
     }

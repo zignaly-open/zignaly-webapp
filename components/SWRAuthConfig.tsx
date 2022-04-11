@@ -5,12 +5,14 @@ import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { localStorageProvider } from "lib/cacheAPI";
+import useRedirection from "lib/useRedirection";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useStoreSessionSelector();
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
   const router = useRouter();
+  const { redirectLogin } = useRedirection();
 
   return (
     <SWRConfig
@@ -35,20 +37,30 @@ const SWRAuthConfig = ({ children }) => {
             delete options.headers.Authorization;
           }
 
-          const res = await fetch(url, options);
-          if (!res.ok) {
-            if (res.status === 401) {
-              dispatch(endTradeApiSession());
-              console.log("401 caught, redir to login");
-              router.push({
-                pathname: "/login",
-                query: { returnUrl: router.asPath },
-              });
-            } else {
-              throw Error(res.statusText);
+          let error;
+          let json;
+          try {
+            const res = await fetch(url, options);
+            json = await res.json();
+            if (!res.ok) {
+              error = json;
             }
+          } catch (e) {
+            error = e.message;
           }
-          return res.json();
+
+          if (error) {
+            // if (res.status === 401) {
+            if (json.error === 13) {
+              console.log("api session expired, redir to login");
+              dispatch(endTradeApiSession());
+              redirectLogin(true);
+            }
+
+            throw error;
+          }
+
+          return json;
           // res.ok ? res.json() : Promise.reject(res)
         },
         onError: (err) => {

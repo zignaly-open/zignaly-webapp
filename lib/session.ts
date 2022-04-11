@@ -59,7 +59,7 @@ export const useSession = () => {
     // Init selected exchange
     dispatch(setSelectedExchange(initSelectedExchange(user, selectedExchangeId)));
 
-    redirectDashboard();
+    redirectDashboard(true);
   };
 
   const endSession = async (withReturnUrl: boolean) => {

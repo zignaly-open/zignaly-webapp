@@ -4,11 +4,11 @@ import { useIntl } from "react-intl";
 import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui-test";
 import NumberFormat from "react-number-format";
 import { useExchangeAssets } from "lib/useAPI";
-import CoinIcon from "../../../src/components/WalletView/CoinIcon";
 import useUser from "lib/useUser";
 
 import * as styled from "./styles";
 import Loader from "components/Loader/Loader";
+import CoinIcon from "components/CoinIcon";
 
 const DashboardCoins = () => {
   const intl = useIntl();
@@ -53,14 +53,8 @@ const DashboardCoins = () => {
             .map(([coin, balanceData]) => ({
               coin: (
                 <styled.CoinCell>
-                  <CoinIcon coin="BTC" />
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    ml="8px"
-                    alignItems="flex-start"
-                    // style={{ minWidth: "140px" }}
-                  >
+                  <CoinIcon slug={balanceData.name.replace(" ", "-")} />
+                  <Box display="flex" flexDirection="column" ml="12px" alignItems="flex-start">
                     <Typography style={{ lineHeight: "20px" }}>{coin}</Typography>
                     <styled.TypographySecondary>{balanceData.name}</styled.TypographySecondary>
                   </Box>
@@ -89,6 +83,7 @@ const DashboardCoins = () => {
         : undefined,
     [balance],
   );
+  console.log(data);
 
   return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };

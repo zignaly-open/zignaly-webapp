@@ -17,7 +17,7 @@ import {
   SET_MARKETPLACE_CACHE_MODAL,
   SET_TEST_AB,
   IGNORE_NOTICE,
-  ignoreNotice,
+  SET_SELECTED_SERVICE,
 } from "../actions/settings";
 import { createReducer } from "@reduxjs/toolkit";
 
@@ -67,6 +67,10 @@ const settings = createReducer(initialState.settings, {
 
   [UNSET_SELECTED_EXCHANGE]: (state) => {
     state.selectedExchangeId = null;
+  },
+
+  [SET_SELECTED_SERVICE]: (state, action) => {
+    state.selectedService = action.payload;
   },
 
   [SET_DISPLAY_COLUMN]: (state, action) => {

@@ -2,6 +2,7 @@ import {
   ExchangeAssetsDict,
   ExchangeContractsObject,
   ExchangeOpenOrdersObject,
+  ProviderEntity,
   UserEntity,
 } from "services/tradeApiClient.types";
 import useSWR, { SWRConfiguration, SWRResponse, useSWRConfig } from "swr";
@@ -105,4 +106,9 @@ export const useContracts = (exchangeInternalId: string, providerId: string) => 
 export const useServiceOrders = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`;
   return useAPIFetch<ExchangeOpenOrdersObject[]>(path);
+};
+
+export const useUserServices = (timeFrame: number = 7) => {
+  const path = `/providers/user_services/${timeFrame}`;
+  return useAPIFetch<ProviderEntity[]>(path);
 };

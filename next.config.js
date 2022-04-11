@@ -34,6 +34,9 @@ module.exports = withBundleAnalyzer(
     },
     env,
     reactStrictMode: true,
+    images: {
+      domains: ["res.cloudinary.com"],
+    },
     webpack: (config) => {
       // config.resolve.alias = {
       //   ...config.resolve.alias,
