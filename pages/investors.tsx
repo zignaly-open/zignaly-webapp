@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import React from "react";
 import Head from "next/head";
 import { PRODUCT_NAME } from "../lib/constants";
 import MainLayout from "../components/MainLayout";
@@ -6,9 +6,7 @@ import { useIntl } from "react-intl";
 import ServiceInvestors from "../components/Service/ServiceInvestors/ServiceInvestors";
 import ServiceLayout from "../components/Service/ServiceLayout";
 
-type Props = {};
-
-const Investors = ({}: Props) => {
+const Investors = () => {
   const intl = useIntl();
   return (
     <MainLayout>

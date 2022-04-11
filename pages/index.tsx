@@ -1,6 +1,5 @@
+import React from "react";
 import Login from "./login";
-
-type Props = {};
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -10,7 +9,7 @@ type Props = {};
 //   `}
 // `;
 
-const Index = ({}: Props) => {
+const Index = () => {
   return <Login />;
 };
 

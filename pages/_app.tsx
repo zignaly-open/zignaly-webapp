@@ -18,6 +18,7 @@ import SWRAuthConfig from "components/SWRAuthConfig";
 import "./legacy.scss";
 import "./styles.css";
 import { ThemeOptions } from "@mui/material";
+import Head from "next/head";
 
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
@@ -82,6 +83,15 @@ function MyApp({ Component, pageProps }: AppProps) {
               <CssBaseline />
               <SWRAuthConfig>
                 <Auth>
+                  <Head>
+                    {/* Preload fonts */}
+                    <link
+                      rel="preload"
+                      href="/fonts/PlexSans/IBMPlexSans-Regular.ttf"
+                      as="font"
+                      crossOrigin=""
+                    />
+                  </Head>
                   <Component {...pageProps} />
                 </Auth>
               </SWRAuthConfig>

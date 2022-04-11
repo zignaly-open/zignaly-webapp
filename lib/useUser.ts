@@ -22,8 +22,8 @@ const useUser = () => {
     // Don't fetch update if the data has just been loaded in login (_validated)
     revalidateOnMount: initialData?._validated !== true,
     // revalidateIfStale: false,
-    onSuccess(user) {
-      setItemCache(keys.user, user);
+    onSuccess(newUser) {
+      setItemCache(keys.user, newUser);
     },
   });
   // const loading = !user && !error ? true : false;

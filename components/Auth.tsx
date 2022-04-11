@@ -4,6 +4,7 @@ import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useAPIFetch } from "lib/useAPI";
 import { isSessionValid, useSession } from "lib/session";
 import { cache, keys, setItemCache } from "lib/cacheAPI";
+import useRedirection from "lib/useRedirection";
 
 // let sessionDataLocal;
 // if (typeof window !== "undefined") {
@@ -22,6 +23,7 @@ function Auth({ children }) {
   const initialSessionData = cache.get(keys.session);
   const sessionValid = token && isSessionValid(initialSessionData);
   const { endSession } = useSession();
+  const { redirectDashboard, redirectLogin } = useRedirection();
 
   useAPIFetch<GetSessionRes>(token ? "/user/session" : null, {
     refreshInterval: 60 * 5 * 1000,
@@ -49,14 +51,10 @@ function Auth({ children }) {
 
       if (firstCheck.current && sessionValid) {
         // Direct access to login page with an active session. Redirect to dashboard.
-        router.push({
-          pathname: "/service",
-        });
+        redirectDashboard(false);
       } else if (!sessionValid && router.pathname === "/") {
         // Redirect / to login
-        router.push({
-          pathname: "/login",
-        });
+        redirectLogin(false);
       }
     }
 

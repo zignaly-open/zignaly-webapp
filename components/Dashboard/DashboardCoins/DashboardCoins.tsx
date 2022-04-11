@@ -8,6 +8,7 @@ import CoinIcon from "../../../src/components/WalletView/CoinIcon";
 import useUser from "lib/useUser";
 
 import * as styled from "./styles";
+import Loader from "components/Loader/Loader";
 
 const DashboardCoins = () => {
   const intl = useIntl();
@@ -89,7 +90,7 @@ const DashboardCoins = () => {
     [balance],
   );
 
-  return <>{balance && <Table columns={columns} data={data} />}</>;
+  return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default DashboardCoins;

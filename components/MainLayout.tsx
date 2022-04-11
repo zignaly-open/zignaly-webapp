@@ -1,9 +1,9 @@
 import React from "react";
 import { GlobalStyles } from "@mui/material";
-import { Container } from "@mui/material";
 import Header from "./Header/Header";
 import useUser from "lib/useUser";
 import Head from "next/head";
+import styled from "styled-components";
 
 const inputGlobalStyles = (
   <GlobalStyles
@@ -15,6 +15,12 @@ const inputGlobalStyles = (
     })}
   />
 );
+
+const Container = styled.div`
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: 0 auto;
+`;
 
 export default function MainLayout({ children }) {
   // Wait until we have the user data before rendering (localstorage)
@@ -30,16 +36,10 @@ export default function MainLayout({ children }) {
           as="font"
           crossOrigin=""
         />
-        <link
-          rel="preload"
-          href="/fonts/PlexSans/IBMPlexSans-Regular.ttf"
-          as="font"
-          crossOrigin=""
-        />
       </Head>
       {inputGlobalStyles}
       <Header />
-      <Container maxWidth="lg">{user && children}</Container>
+      <Container>{user && children}</Container>
     </>
   );
 }
