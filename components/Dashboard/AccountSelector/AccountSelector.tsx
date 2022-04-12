@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+import ImageWithBasePath from "components/ImageWithBasePath";
 import useUser from "lib/useUser";
 import { Typography } from "zignaly-ui-test";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -29,7 +29,7 @@ const AccountSelector = () => {
 
   return (
     <styled.Layout>
-      <Image src="/images/avatar.svg" width={68} height={68} />
+      <ImageWithBasePath src="/images/avatar.svg" width={68} height={68} />
       <styled.InfoBox>
         <Box display="flex">
           <Typography variant="h1">{internalName}</Typography>
