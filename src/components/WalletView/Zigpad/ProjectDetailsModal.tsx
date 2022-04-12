@@ -15,7 +15,7 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from "@material-ui/lab";
-import { formatDateTime } from "utils/format";
+import { formatDateTimeUTC } from "utils/format";
 import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
 import tradeApi from "services/tradeApiClient";
@@ -403,8 +403,8 @@ const DistributionTimeline = ({ project }: { project: LaunchpadProjectDetails })
           </TimelineSeparator>
           <TimelineContent>
             <TimelineLabel active={currentIndex === i}>
-              {formatDateTime(d.dateFrom)}
-              {d.type !== "ONCE" && <> - {formatDateTime(d.dateTo)}</>}
+              {formatDateTimeUTC(d.dateFrom)}
+              {d.type !== "ONCE" && <> - {formatDateTimeUTC(d.dateTo)}</>}
             </TimelineLabel>
             <ItemValue>
               <FormattedMessage
@@ -763,7 +763,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                   <TimelineLabel active={step === 1}>
                     <FormattedMessage id="zigpad.getready" />
                   </TimelineLabel>
-                  <ItemValue>{formatDateTime(projectDetails.getReadyDate)}</ItemValue>
+                  <ItemValue>{formatDateTimeUTC(projectDetails.getReadyDate)}</ItemValue>
                   {step === 1 && (
                     <>
                       <CountdownContainer>
@@ -820,7 +820,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                   <TimelineLabel active={step === 2}>
                     <FormattedMessage id="zigpad.subscriptionPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatDateTime(projectDetails.startDate)}</ItemValue>
+                  <ItemValue>{formatDateTimeUTC(projectDetails.startDate)}</ItemValue>
                   {step === 2 && (
                     <>
                       <CountdownContainer>
@@ -854,7 +854,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                   <TimelineLabel active={step === 3}>
                     <FormattedMessage id="zigpad.calculationPeriod" />
                   </TimelineLabel>
-                  <ItemValue>{formatDateTime(projectDetails.calculationDate)}</ItemValue>
+                  <ItemValue>{formatDateTimeUTC(projectDetails.calculationDate)}</ItemValue>
                   {step === 3 && (
                     <CountdownContainer>
                       <CountdownText>
@@ -877,11 +877,11 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                     <FormattedMessage id="zigpad.distributionPeriod" />
                   </TimelineLabel>
                   <ItemValue>
-                    {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                    {formatDateTimeUTC(projectDetails.distributionPeriods[0].dateFrom)}
                     {projectDetails.distributionPeriods.length > 1 ? (
                       <>
                         &nbsp;-&nbsp;
-                        {formatDateTime(
+                        {formatDateTimeUTC(
                           projectDetails.distributionPeriods[
                             projectDetails.distributionPeriods.length - 1
                           ].dateTo,
@@ -891,7 +891,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
                       projectDetails.distributionPeriods[0].type !== "ONCE" && (
                         <>
                           &nbsp;-&nbsp;
-                          {formatDateTime(projectDetails.distributionPeriods[0].dateFrom)}
+                          {formatDateTimeUTC(projectDetails.distributionPeriods[0].dateFrom)}
                         </>
                       )
                     )}
