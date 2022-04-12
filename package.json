@@ -217,7 +217,7 @@
     "build:prod": "STAGE=prod GATSBY_NEWRELIC_ENV=prod GATSBY_API_KEY=\"\" npm run build",
     "checkall": "npm run stylelint && npm run tscheck && npm run jslint",
     "clean": "rm -rf node_modules/*",
-    "develop": "gatsby develop -p 3000 -H 0.0.0.0",
+    "develop": "gatsby develop -p 3001 -H 0.0.0.0",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx,ts,tsx}\"",

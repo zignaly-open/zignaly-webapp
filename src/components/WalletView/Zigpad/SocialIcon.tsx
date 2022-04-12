@@ -4,10 +4,11 @@ import TwitterIcon from "images/launchpad/twitter.inline.svg";
 import DiscordIcon from "images/launchpad/discord.inline.svg";
 import TelegramIcon from "images/launchpad/telegram.inline.svg";
 import MediumIcon from "images/launchpad/medium.inline.svg";
-import YoutubeIcon from "images/launchpad/reddit.inline.svg";
+import YoutubeIcon from "images/launchpad/youtube.inline.svg";
 import RedditIcon from "images/launchpad/reddit.inline.svg";
 import InstagramIcon from "images/launchpad/instagram.inline.svg";
 import TiktokIcon from "images/launchpad/tiktok.inline.svg";
+import LindekinIcon from "images/launchpad/lindekin.inline.svg";
 
 const getIcon = (type: string) => {
   switch (type) {
@@ -29,6 +30,8 @@ const getIcon = (type: string) => {
       return InstagramIcon;
     case "tiktok":
       return TiktokIcon;
+    case "lindekin":
+      return LindekinIcon;
     default:
       return null;
   }
