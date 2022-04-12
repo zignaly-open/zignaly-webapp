@@ -22,11 +22,10 @@ Object.keys(process.env).forEach((key) => {
 
 const path = require("path");
 
-console.log(process.env.NODE_ENV === "production");
 module.exports = withBundleAnalyzer(
   withTM({
     basePath: process.env.NODE_ENV === "production" ? "/ps2" : "",
-    assetPrefix: process.env.NODE_ENV === "production" ? "/ps2" : "",
+    assetPrefix: process.env.NODE_ENV === "production" ? "/ps2/" : "",
     typescript: {
       // todo: Ignore type error for now
       ignoreBuildErrors: true,
