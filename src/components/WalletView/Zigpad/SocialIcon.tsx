@@ -8,7 +8,7 @@ import YoutubeIcon from "images/launchpad/youtube.inline.svg";
 import RedditIcon from "images/launchpad/reddit.inline.svg";
 import InstagramIcon from "images/launchpad/instagram.inline.svg";
 import TiktokIcon from "images/launchpad/tiktok.inline.svg";
-import LindekinIcon from "images/launchpad/lindekin.inline.svg";
+import LinkedinIcon from "images/launchpad/linkedin.inline.svg";
 
 const getIcon = (type: string) => {
   switch (type) {
@@ -30,8 +30,8 @@ const getIcon = (type: string) => {
       return InstagramIcon;
     case "tiktok":
       return TiktokIcon;
-    case "lindekin":
-      return LindekinIcon;
+    case "linkedin":
+      return LinkedinIcon;
     default:
       return null;
   }
