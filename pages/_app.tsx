@@ -20,6 +20,8 @@ import "./styles.css";
 import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
+
 // const GlobalStyle = createGlobalStyle`
 //   ${({ theme }) => `
 //     body {
@@ -87,7 +89,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     {/* Preload fonts */}
                     <link
                       rel="preload"
-                      href="/fonts/PlexSans/IBMPlexSans-Regular.ttf"
+                      href={`${basePath}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
                       as="font"
                       crossOrigin=""
                     />
