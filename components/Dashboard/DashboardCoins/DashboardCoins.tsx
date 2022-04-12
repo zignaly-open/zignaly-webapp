@@ -5,7 +5,6 @@ import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly
 import NumberFormat from "react-number-format";
 import { useExchangeAssets } from "lib/useAPI";
 import useUser from "lib/useUser";
-
 import * as styled from "./styles";
 import Loader from "components/Loader/Loader";
 import CoinIcon from "components/CoinIcon";
@@ -49,24 +48,25 @@ const DashboardCoins = () => {
     () =>
       balance
         ? Object.entries(balance)
+            // todo: remove once sorting fixed
             .sort((a, b) => parseFloat(b[1].balanceTotalUSDT) - parseFloat(a[1].balanceTotalUSDT))
-            .map(([coin, balanceData]) => ({
+            .map(([coin, coinBalance]) => ({
               coin: (
                 <styled.CoinCell>
-                  <CoinIcon slug={balanceData.name.replace(" ", "-")} />
+                  <CoinIcon coin={coin} />
                   <Box display="flex" flexDirection="column" ml="12px" alignItems="flex-start">
                     <Typography style={{ lineHeight: "20px" }}>{coin}</Typography>
-                    <styled.TypographySecondary>{balanceData.name}</styled.TypographySecondary>
+                    <styled.TypographySecondary>{coinBalance.name}</styled.TypographySecondary>
                   </Box>
                 </styled.CoinCell>
               ),
-              totalBalance: <PriceLabel token={coin} value={balanceData.balanceTotal} />,
-              availableBalance: <PriceLabel token={coin} value={balanceData.balanceFree} />,
-              lockedBalance: <PriceLabel token={coin} value={balanceData.balanceLocked} />,
-              totalBTC: <PriceLabel token={coin} value={balanceData.balanceTotalBTC} />,
+              totalBalance: <PriceLabel token={coin} value={coinBalance.balanceTotal} />,
+              availableBalance: <PriceLabel token={coin} value={coinBalance.balanceFree} />,
+              lockedBalance: <PriceLabel token={coin} value={coinBalance.balanceLocked} />,
+              totalBTC: <PriceLabel token={coin} value={coinBalance.balanceTotalBTC} />,
               totalUSD: (
                 <NumberFormat
-                  value={balanceData.balanceTotalUSDT}
+                  value={coinBalance.balanceTotalUSDT}
                   displayType="text"
                   thousandSeparator={true}
                   prefix="$"
@@ -75,17 +75,16 @@ const DashboardCoins = () => {
               ),
               action: (
                 <ButtonGroup>
-                  <TableButton caption={"Deposit"} />
-                  <TableButton caption={"Withdraw"} />
+                  <TableButton caption="Deposit" />
+                  <TableButton caption="Withdraw" />
                 </ButtonGroup>
               ),
             }))
         : undefined,
     [balance],
   );
-  console.log(data);
 
-  return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return <>{false ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default DashboardCoins;

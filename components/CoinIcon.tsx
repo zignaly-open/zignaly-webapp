@@ -3,16 +3,18 @@ import cloudinary from "lib/cloudinary";
 import Image from "next/image";
 
 const CoinIcon = ({
-  slug,
+  coin,
   width = 32,
   height = 32,
 }: {
-  slug: string;
+  coin: string;
   width?: number;
   height?: number;
 }) => {
-  const image = cloudinary({ folder: "coins-slug", id: slug.replace(/ /g, "").toLowerCase() });
-  return <Image src={image} width={width} height={height} />;
+  // const imageUrl = cloudinary({ folder: "coins-slug", id: slug.replace(/ /g, "").toLowerCase() });
+  const imageUrl = cloudinary({ folder: "coins-binance", id: coin });
+  // return <Image src={`./${coin}`} width={width} height={height} />;
+  return <Image src={imageUrl} width={width} height={height} layout="fixed" />;
 };
 
 export default CoinIcon;
