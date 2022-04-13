@@ -130,6 +130,8 @@ const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
     case "gaming":
     case "esports_gaming":
+    case "metaverse":
+    case "metaverse_earn_nft":
       return SportsEsports;
     case "investment_platform":
       return Investment;

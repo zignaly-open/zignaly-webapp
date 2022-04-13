@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
-import { formatUTC } from "utils/format";
+import { formatDateUTC } from "utils/format";
 // const localizedFormat = require("dayjs/plugin/localizedFormat");
 // dayjs.extend(localizedFormat);
 
@@ -124,7 +124,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               <FormattedMessage id="wallet.staking.offer.stakingBegins" />
             </ItemLabel>
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
-            <ItemValue>{formatUTC(startDate)}</ItemValue>
+            <ItemValue>{formatDateUTC(startDate)}</ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
