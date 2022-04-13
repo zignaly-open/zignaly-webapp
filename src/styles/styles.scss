@@ -450,7 +450,7 @@ table {
 
 @include media("<=sm") {
   .intercom-lightweight-app-launcher {
-    bottom: 60px;
-    right: 10px;
+    bottom: 60px !important;
+    right: 10px !important;
   }
 }
