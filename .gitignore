@@ -79,3 +79,5 @@ cypress/screenshots
 
 # Storybook
 storybook-static
+
+.next
