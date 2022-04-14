@@ -1,5 +1,5 @@
-export const EXAMPLE_PATH = "blog-starter-typescript";
 export const PRODUCT_NAME = "Zignaly";
-export const HEAD_PREFIX = "wn";
-export const HOME_OG_IMAGE_URL =
-  "https://og-image.vercel.app/Next.js%20Blog%20Starter%20Example.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg";
+export const URL_SIGNALS_SEND =
+  "https://help.zignaly.com/hc/en-us/articles/360017846139-Guide-to-sending-signals";
+export const URL_SIGNALS_PARAMS =
+  "https://help.zignaly.com/hc/en-us/articles/360015933199-Signal-Parameters";

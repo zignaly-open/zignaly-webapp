@@ -22,15 +22,6 @@ import Head from "next/head";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
 
-// const GlobalStyle = createGlobalStyle`
-//   ${({ theme }) => `
-//     body {
-//       background: url(${theme.background.image.src}) no-repeat center center fixed;
-//       background-size: cover;
-//     }
-//   `}
-// `;
-
 const WithReduxProvider = (Component) => (props) =>
   (
     <Provider store={store}>

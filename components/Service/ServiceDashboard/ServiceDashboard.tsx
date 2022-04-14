@@ -1,11 +1,6 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
-// import ServiceContracts from "./ServiceContracts";
-// import ServiceOrders from "./ServiceOrders";
 import ServicePositions from "./ServicePositions";
-// import TabPanel from "@mui/lab/TabPanel";
-import styled from "styled-components";
 import { Tab, TabPanel, Tabs } from "zignaly-ui-test";
 import ServiceContracts from "./ServiceContracts";
 import ServiceOrders from "./ServiceOrders";
