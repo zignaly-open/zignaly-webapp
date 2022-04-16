@@ -2015,3 +2015,10 @@ dashboard.type: "Type:"
 
 exchange.type.spot: "Spot"
 exchange.type.futures: "Futures"
+
+signals.menu: "Signals"
+signals.trade: "Trade with signals"
+signals.desc: "Automate your trades be sending signals to Zignaly. Positions will appear on the <a>positions page</a>."
+signals.desc2: "To create signals, use the url below with your secret key and desired parameters. Docs and help creating signals can be found here:"
+signal.help.how: "How to send signals"
+signal.help.params: "All signals parameters"

@@ -1,4 +1,5 @@
 import {
+  DefaultProviderGetObject,
   ExchangeAssetsDict,
   ExchangeContractsObject,
   ExchangeOpenOrdersObject,
@@ -6,28 +7,6 @@ import {
   UserEntity,
 } from "services/tradeApiClient.types";
 import useSWR, { SWRConfiguration, SWRResponse, useSWRConfig } from "swr";
-// import { User } from "pages/api/user";
-
-// export default function useUser({ redirectTo = "", redirectIfFound = false } = {}) {
-//   const { data: user, mutate: mutateUser } = useSWR<User>("/api/user");
-
-//   useEffect(() => {
-//     // if no redirect needed, just return (example: already on /dashboard)
-//     // if user data not yet there (fetch in progress, logged in or not) then don't do anything yet
-//     if (!redirectTo || !user) return;
-
-//     if (
-//       // If redirectTo is set, redirect if the user was not found.
-//       (redirectTo && !redirectIfFound && !user?.isLoggedIn) ||
-//       // If redirectIfFound is also set, redirect if the user was found
-//       (redirectIfFound && user?.isLoggedIn)
-//     ) {
-//       Router.push(redirectTo);
-//     }
-//   }, [user, redirectIfFound, redirectTo]);
-
-//   return { user, mutateUser };
-// }
 
 const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
@@ -111,4 +90,9 @@ export const useServiceOrders = (exchangeInternalId: string, providerId: string)
 export const useUserServices = (timeFrame: number = 7) => {
   const path = `/providers/user_services/${timeFrame}`;
   return useAPIFetch<ProviderEntity[]>(path);
+};
+
+export const useUserService = (exchangeInternalId: string, providerId: string) => {
+  const path = `/user/providers/${providerId}`;
+  return useAPIFetch<DefaultProviderGetObject>(path, { exchangeInternalId });
 };

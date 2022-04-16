@@ -84,7 +84,7 @@ const DashboardCoins = () => {
     [balance],
   );
 
-  return <>{false ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default DashboardCoins;

@@ -27,9 +27,7 @@ const renderProfit = (position: Position) => {
 
 const ServicePositions = () => {
   const intl = useIntl();
-  // const selectedService = useSelector((state: any) => state.settings.selectedService);
   const { selectedService } = useContext(ServiceContext);
-  // const { selectedExchange } = useUser();
   const { data: positions, error } = useServicePositions(selectedService.id);
   const columns = useMemo(
     () => [
