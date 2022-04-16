@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import { Box } from "@mui/system";
 import Loader from "components/Loader/Loader";
 import { useUserService } from "lib/useAPI";
@@ -6,14 +6,14 @@ import useUser from "lib/useUser";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { FormattedMessage } from "react-intl";
-import { Button, Typography } from "zignaly-ui-test";
+import { Typography } from "zignaly-ui-test";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
 import OpenArrowIcon from "public/images/openArrow.svg";
 import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "lib/constants";
 
-const getSignalURL = (key) =>
-  `https://zignaly.com/api/signals.php?key=${key}&type=entry&exchange=zignaly&pair=ethusdt&orderType=limit&positionSize=10&signalId=123&limitPrice=3420&takeProfitPercentage1=20&takeProfitAmountPercentage1=100&stopLossPercentage=-5`;
+const SIGNAL_URL =
+  "https://zignaly.com/api/signals.php?key=YOURSECRETKEY&type=entry&exchange=zignaly&pair=ethusdt&orderType=limit&positionSize=10&signalId=123&limitPrice=3420&takeProfitPercentage1=20&takeProfitAmountPercentage1=100&stopLossPercentage=-5";
 
 const ServiceSignals = () => {
   const { selectedService } = useContext(ServiceContext);
@@ -62,7 +62,7 @@ const ServiceSignals = () => {
             />
           </Box>
           <TextField
-            value={getSignalURL(data.key)}
+            value={SIGNAL_URL}
             fullWidth
             multiline
             InputProps={{
