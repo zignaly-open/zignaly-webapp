@@ -22,6 +22,9 @@ import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { Helmet } from "react-helmet";
 
+// Components
+import SuperModal from "../../shared/components/modals/SuperModal";
+
 /**
  *
  * @typedef {Record<string, string>} MessageRecord
@@ -123,6 +126,7 @@ const AppLayout = (props) => {
           <SuccessAlert />
           {storeLoader && <Loader />}
           {children}
+          <SuperModal />
         </ThemeProvider>
       </GoogleReCaptchaProvider>
     </IntlProvider>

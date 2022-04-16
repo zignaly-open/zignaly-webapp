@@ -1,0 +1,68 @@
+// Dependencies
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
+
+// Styled Components
+import {
+  ModalContainer,
+  Title,
+  Body,
+  Actions
+} from "../styles";
+
+// Assets
+import {
+  WarningOutline
+} from "react-ionicons";
+import Button from "../../../../../components/Button";
+import { closeModal } from "../../../../../store/actions/ui";
+
+type ErrorModalTypesProps = {
+  title: string;
+  description: string;
+  action?: any
+}
+
+function ErrorModal({
+  title,
+  description,
+  action = null
+}: ErrorModalTypesProps): React.ReactElement {
+  // Hooks
+  const dispatch = useDispatch();
+
+  /**
+   * @function handleDefaultAction
+   * @description handle the default action
+   */
+  const handleDefaultAction = useCallback(() => {
+    dispatch(closeModal());
+  }, []);
+
+  return (
+    <ModalContainer width={"420px"}>
+      <WarningOutline
+        color={"#ffa837"}
+        height={"46px"}
+        width={"46px"}
+      />
+      <Title>
+        {title}
+      </Title>
+      <Body>
+        {description}
+      </Body>
+      <Actions columns={1}>
+        {/* <Button
+            caption={"Ok"}
+            onClick={action}
+          />*/}
+        <Button onClick={action ?? handleDefaultAction}>
+          Ok
+        </Button>
+      </Actions>
+    </ModalContainer>
+  );
+}
+
+export default ErrorModal;
