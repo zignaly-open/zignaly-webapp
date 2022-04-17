@@ -8,7 +8,8 @@ import {
   OptionsDotsIcon,
   Table,
   CheckIcon,
-} from "zignaly-ui-test";
+} from "zignaly-ui";
+import Loader from "components/Loader/Loader";
 
 const ServiceInvestors = () => {
   const columns = [
@@ -71,7 +72,7 @@ const ServiceInvestors = () => {
     },
   ];
 
-  return true ? <Table columns={columns} data={data} /> : null;
+  return data ? <Table columns={columns} data={data} /> : <Loader />;
 };
 
 export default ServiceInvestors;

@@ -1,7 +1,7 @@
 import React from "react";
 import ImageWithBasePath from "components/ImageWithBasePath";
 import useUser from "lib/useUser";
-import { Typography } from "zignaly-ui-test";
+import { Typography } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";

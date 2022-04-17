@@ -2022,3 +2022,6 @@ signals.desc: "Automate your trades be sending signals to Zignaly. Positions wil
 signals.desc2: "To create signals, use the url below with your secret key and desired parameters. Docs and help creating signals can be found here:"
 signal.help.how: "How to send signals"
 signal.help.params: "All signals parameters"
+
+deposit.title: "Deposit Crypto"
+deposit.reflect: "Deposits may take up to 3 hours to reflect in your balance."

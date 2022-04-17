@@ -67,7 +67,7 @@
     "react-google-recaptcha": "^2.1.0",
     "react-google-recaptcha-v3": "^1.9.7",
     "react-helmet": "^6.1.0",
-    "react-hook-form": "6.4.1",
+    "react-hook-form": "^7.30.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^5.21.2",
     "react-ionicons": "^4.2.0",
@@ -87,10 +87,10 @@
     "remark-breaks": "^2.0.2",
     "sharp": "^0.29.2",
     "stream-browserify": "^3.0.0",
-    "swr": "^1.2.2",
-    "zignaly-ui-test": "^0.0.11",
     "styled-components": "^5.3.5",
-    "whatwg-fetch": "^3.6.2"
+    "swr": "^1.2.2",
+    "whatwg-fetch": "^3.6.2",
+    "zignaly-ui": "^0.0.4"
   },
   "resolutions": {
     "moment": "2.24.0",

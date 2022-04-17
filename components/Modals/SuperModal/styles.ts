@@ -1,12 +1,12 @@
 // Dependencies
 import styled from "styled-components";
-import {animated} from "react-spring";
-import { isConditional } from "../../../utils/styled-components";
+import { animated } from "react-spring";
+import { isConditional } from "utils/styled-components";
 
 type BackDropTypeProps = {
   visible: boolean;
   isFirefox: boolean;
-}
+};
 export const Backdrop = styled.div<BackDropTypeProps>`
   position: fixed;
   top: 0;
@@ -27,13 +27,16 @@ export const Backdrop = styled.div<BackDropTypeProps>`
     visibility: ${visible ? "visible" : "hidden"};
     opacity: ${visible ? "1" : "0"};
 
-    ${isConditional(isFirefox, `
+    ${isConditional(
+      isFirefox,
+      `
       background: rgba(0, 0, 0, 0.7);
-    `)}
+    `,
+    )}
   `}
 `;
 
 type AnimationTypeProps = {
   style?: any;
-}
+};
 export const Animation = styled(animated.div)<AnimationTypeProps>``;

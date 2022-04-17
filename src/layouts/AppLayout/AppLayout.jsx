@@ -1,8 +1,8 @@
 import React, { useMemo, useEffect, useRef, useLayoutEffect, useState } from "react";
 import { StyledEngineProvider, createTheme, ThemeProvider } from "@mui/material/styles";
 import { StyleSheetManager, ThemeProvider as ThemeProviderSC } from "styled-components";
-// import { ThemeProvider as ThemeProviderMui } from "zignaly-ui-test";
-// import { dark, light } from "zignaly-ui-test";
+// import { ThemeProvider as ThemeProviderMui } from "zignaly-ui";
+// import { dark, light } from "zignaly-ui";
 import { CssBaseline } from "@mui/material";
 import themeData from "../../services/theme";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
@@ -51,7 +51,6 @@ const AppLayout = (props) => {
   const darkTheme = !forceLightTheme && darkStyle;
   const options = themeData(darkTheme);
   const theme = useMemo(() => createTheme(options), [darkTheme]);
-  console.log(theme);
   // const sharedTheme = darkTheme ? dark : light;
   const prevLocation = useRef(null);
   useScript(process.env.NODE_ENV !== "development" ? withPrefix("widgets/externalWidgets.js") : "");

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test";
+import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -19,6 +19,7 @@ import "./legacy.scss";
 import "./styles.css";
 import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
+import SuperModal from "components/Modals/SuperModal";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
 
@@ -86,6 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     />
                   </Head>
                   <Component {...pageProps} />
+                  <SuperModal />
                 </Auth>
               </SWRAuthConfig>
             </ThemeProviderUI>

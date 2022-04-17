@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Typography, Select } from "zignaly-ui-test";
+import { Typography, Select } from "zignaly-ui";
 
 export const Layout = styled.div`
   height: 56px;

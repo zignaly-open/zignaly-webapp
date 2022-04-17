@@ -1,18 +1,22 @@
 import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
-import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui-test";
+import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui";
 import NumberFormat from "react-number-format";
 import { useExchangeAssets } from "lib/useAPI";
 import useUser from "lib/useUser";
 import * as styled from "./styles";
 import Loader from "components/Loader/Loader";
 import CoinIcon from "components/CoinIcon";
+import { useDispatch } from "react-redux";
+import { openModal } from "src/store/actions/ui";
+import { ModalTypesId } from "typings/modal";
 
 const DashboardCoins = () => {
   const intl = useIntl();
   const { selectedExchange } = useUser();
-  const { data: balance, error } = useExchangeAssets(selectedExchange?.internalId);
+  const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, true);
+  const dispatch = useDispatch();
 
   const columns = useMemo(
     () => [
@@ -46,8 +50,8 @@ const DashboardCoins = () => {
 
   const data = useMemo(
     () =>
-      balance
-        ? Object.entries(balance)
+      assets
+        ? Object.entries(assets)
             // todo: remove once sorting fixed
             .sort((a, b) => parseFloat(b[1].balanceTotalUSDT) - parseFloat(a[1].balanceTotalUSDT))
             .map(([coin, coinBalance]) => ({
@@ -75,13 +79,22 @@ const DashboardCoins = () => {
               ),
               action: (
                 <ButtonGroup>
-                  <TableButton caption="Deposit" />
+                  <TableButton
+                    caption="Deposit"
+                    onClick={() =>
+                      dispatch(
+                        openModal(ModalTypesId.DEPOSIT_MODAL, {
+                          initialCoin: coin,
+                        }),
+                      )
+                    }
+                  />
                   <TableButton caption="Withdraw" />
                 </ButtonGroup>
               ),
             }))
         : undefined,
-    [balance],
+    [assets],
   );
 
   return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
