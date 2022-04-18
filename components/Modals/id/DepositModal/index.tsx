@@ -1,6 +1,7 @@
 // Dependencies
 import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
+import QRCode from "qrcode.react";
 
 // Styled Components
 import { ModalContainer, Title, Body, Actions } from "../styles";
@@ -77,15 +78,31 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
                   placeholder={intl.formatMessage({ id: "deposit.network" })}
                 />
                 {selectedNetwork &&
-                  (depositAddress?.address ? (
-                    <TextField
-                      value={depositAddress?.address}
-                      fullWidth
-                      multiline
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                    />
+                  (depositAddress ? (
+                    <>
+                      <TextField
+                        value={depositAddress.address}
+                        fullWidth
+                        multiline
+                        InputProps={{
+                          readOnly: true,
+                        }}
+                      />
+                      <QRCode size={200} value={depositAddress.address} />
+                      {depositAddress.tag && (
+                        <>
+                          <TextField
+                            value={depositAddress.tag}
+                            fullWidth
+                            multiline
+                            InputProps={{
+                              readOnly: true,
+                            }}
+                          />
+                          <QRCode size={200} value={depositAddress.tag} />
+                        </>
+                      )}
+                    </>
                   ) : (
                     <Loader />
                   ))}
