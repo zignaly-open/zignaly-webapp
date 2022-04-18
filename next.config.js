@@ -1,3 +1,4 @@
+const path = require("path");
 const withTM = require("next-transpile-modules")(["@mui/material", "@mui/system", "zignaly-ui"]); // pass the modules you would like to see transpiled
 
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -9,18 +10,17 @@ require("dotenv-flow").config({
   node_env: process.env.APP_ENV || process.env.NODE_ENV || "development",
 });
 
-const env = {};
+const env = {
+  BASE_PATH: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_BASE_PATH : "",
+};
 Object.keys(process.env).forEach((key) => {
   if (key.startsWith("NEXT_PUBLIC_")) {
     env[key] = process.env[key];
   }
 });
-
-const path = require("path");
-
 module.exports = withBundleAnalyzer(
   withTM({
-    basePath: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_BASE_PATH : "",
+    basePath: env.BASE_PATH,
     // assetPrefix: process.env.NODE_ENV !== "production" ? "/ps2/" : "",
     typescript: {
       // todo: Ignore type error for now

@@ -21,8 +21,6 @@ import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
 import SuperModal from "components/Modals/SuperModal";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
-
 const WithReduxProvider = (Component) => (props) =>
   (
     <Provider store={store}>
@@ -81,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     {/* Preload fonts */}
                     <link
                       rel="preload"
-                      href={`${basePath}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
+                      href={`${process.env.BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
                       as="font"
                       crossOrigin=""
                     />
