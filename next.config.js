@@ -43,7 +43,7 @@ module.exports = withBundleAnalyzer(
       // };
       if (process.env.NODE_ENV === "development") {
         // This part is needed when using zignaly-ui package locally with npm link, to avoid errors about
-        // multiple versions of the same package running
+        // multiple versions of the same package running. (Invalid hook call)
         config.resolve.alias["react"] = path.resolve("./node_modules/react");
         config.resolve.alias["react-dom"] = path.resolve("./node_modules/react-dom");
         config.resolve.alias["@mui/material"] = path.resolve("./node_modules/@mui/material");
@@ -52,6 +52,8 @@ module.exports = withBundleAnalyzer(
         config.resolve.alias["styled-components"] = path.resolve(
           "./node_modules/styled-components",
         );
+        // Seems to fix hot reload when using linked packages
+        config.resolve.symlinks = false;
       }
 
       config.module.rules.push(
