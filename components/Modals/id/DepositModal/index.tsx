@@ -7,7 +7,7 @@ import QRCode from "qrcode.react";
 import { ModalContainer, Title, Body, Actions } from "../styles";
 
 // Assets
-import { Button, Select } from "zignaly-ui";
+import { Button, Select, Typography } from "zignaly-ui";
 import { closeModal } from "src/store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets, useExchangeDepositAddress } from "lib/useAPI";
@@ -15,6 +15,9 @@ import useUser from "lib/useUser";
 import Loader from "components/Loader/Loader";
 import CoinIcon from "components/CoinIcon";
 import { TextField } from "@mui/material";
+
+import * as styled from "./styles";
+import { getChainIcon } from "src/utils/chain";
 
 type DepositModalTypesProps = {
   action?: any;
@@ -29,9 +32,9 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const { data: depositAddress } = useExchangeDepositAddress(
     selectedExchange?.internalId,
+    selectedCoin,
     selectedNetwork,
   );
-  console.log(depositAddress);
 
   const coinsOptions =
     assets &&
@@ -51,8 +54,8 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
       return {
         caption: n.name,
         value: n.network,
-        // todo: return coin as network coin
-        // leftElement: <CoinIcon coin={n.coin} />,
+        // leftElement: <CoinIcon coin={n.network} />,
+        leftElement: getChainIcon(n.network),
       };
     });
 
@@ -70,12 +73,17 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
       <Body>
         {assets ? (
           <>
-            <FormattedMessage id="deposit.reflect" />
+            <styled.Typo variant="h3">
+              <FormattedMessage id="deposit.reflect" />
+            </styled.Typo>
             <Select
               options={coinsOptions}
               initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
               onSelectItem={(item) => setSelectedCoin(item.value)}
               placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
+              label={
+                <Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>
+              }
             />
             {selectedCoin && (
               <>
@@ -83,6 +91,11 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
                   options={networkOptions}
                   onSelectItem={(item) => setSelectedNetwork(item.value)}
                   placeholder={intl.formatMessage({ id: "deposit.network" })}
+                  label={
+                    <Typography variant="h3">
+                      {intl.formatMessage({ id: "deposit.network" })}
+                    </Typography>
+                  }
                 />
                 {selectedNetwork &&
                   (depositAddress ? (

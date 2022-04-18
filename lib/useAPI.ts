@@ -112,9 +112,15 @@ export const useUserService = (exchangeInternalId: string, providerId: string) =
   return useAPIFetch<DefaultProviderGetObject>(path);
 };
 
-export const useExchangeDepositAddress = (exchangeInternalId: string, network: string) => {
-  const path = valid(exchangeInternalId, network)
-    ? `/user/exchanges/${exchangeInternalId}/deposit_address/${network}`
+export const useExchangeDepositAddress = (
+  exchangeInternalId: string,
+  coin: string,
+  network: string,
+) => {
+  const path = valid(exchangeInternalId, coin, network)
+    ? `/user/exchanges/${exchangeInternalId}/deposit_address/${coin}?${new URLSearchParams({
+        network,
+      })}`
     : null;
   return useAPIFetch<ExchangeDepositAddress>(path);
 };
