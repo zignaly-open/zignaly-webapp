@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import QRCode from "qrcode.react";
 
@@ -31,6 +31,7 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
     selectedExchange?.internalId,
     selectedNetwork,
   );
+  console.log(depositAddress);
 
   const coinsOptions =
     assets &&
@@ -54,6 +55,12 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
         // leftElement: <CoinIcon coin={n.coin} />,
       };
     });
+
+  useEffect(() => {
+    // Reset selected network on coin change
+    // todo: doesn't work due to Select component controlled
+    setSelectedNetwork(null);
+  }, [selectedCoin]);
 
   return (
     <ModalContainer width={"420px"}>
