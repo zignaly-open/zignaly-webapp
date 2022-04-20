@@ -74,15 +74,20 @@ const LoginForm = () => {
       showTwoFAModal(true);
       setLoading(false);
     } else {
-      onSuccess();
+      onSuccess(response);
     }
   };
 
-  const onSuccess = async () => {
+  /**
+   *
+   * @param {LoginResponse} response User login response.
+   * @returns {void} None.
+   */
+  const onSuccess = (response) => {
     // dispatch(startTradeApiSession(loginResponse, "login"));
     // const res = await getSession(loginResponse.token);
     // dispatch(setSessionData(res));
-    startSession(loginResponse.token, "login");
+    startSession(response.token, "login");
     // redirectDashboard();
   };
 
@@ -136,7 +141,7 @@ const LoginForm = () => {
         <ForgotPasswordForm />
       </Modal>
       <Modal onClose={() => showTwoFAModal(false)} persist={false} size="small" state={twoFAModal}>
-        <TwoFAForm loginData={loginResponse} onComplete={onSuccess} />
+        <TwoFAForm loginData={loginResponse} onComplete={() => onSuccess(loginResponse)} />
       </Modal>
       <Modal
         onClose={() => {}}
