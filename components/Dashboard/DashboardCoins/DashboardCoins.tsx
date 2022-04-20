@@ -7,7 +7,7 @@ import { useExchangeAssets } from "lib/useAPI";
 import useUser from "lib/useUser";
 import * as styled from "./styles";
 import Loader from "components/Loader/Loader";
-import CoinIcon from "components/CoinIcon";
+import CoinIcon from "components/common/CoinIcon";
 import { useDispatch } from "react-redux";
 import { openModal } from "src/store/actions/ui";
 import { ModalTypesId } from "typings/modal";
@@ -80,7 +80,7 @@ const DashboardCoins = () => {
               action: (
                 <ButtonGroup>
                   <TableButton
-                    caption="Deposit"
+                    caption={intl.formatMessage({ id: "action.deposit" })}
                     onClick={() =>
                       dispatch(
                         openModal(ModalTypesId.DEPOSIT_MODAL, {
@@ -89,7 +89,16 @@ const DashboardCoins = () => {
                       )
                     }
                   />
-                  <TableButton caption="Withdraw" />
+                  <TableButton
+                    caption={intl.formatMessage({ id: "action.withdraw" })}
+                    onClick={() =>
+                      dispatch(
+                        openModal(ModalTypesId.WITHDRAW_MODAL, {
+                          initialCoin: coin,
+                        }),
+                      )
+                    }
+                  />
                 </ButtonGroup>
               ),
             }))

@@ -134,13 +134,13 @@ const getTheme = (darkMode: boolean, login: boolean): ThemeOptions => ({
       },
     }),
   },
-  // components: {
-  //   MuiButtonBase: {
-  //     defaultProps: {
-  //       disableRipple: true,
-  //     },
-  //   },
-  // },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
   background: {
     image: BackgroundImage,
   },

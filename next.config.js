@@ -73,9 +73,17 @@ module.exports = withBundleAnalyzer(
         //   resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
         //   use: ["@svgr/webpack"],
         // },
+        // {
+        //   test: /\.svg$/i,
+        //   type: "asset",
+        // },
         {
-          test: /\.svg$/i,
-          type: "asset",
+          test: /\.svg$/,
+          use: ["@svgr/webpack"],
+          // loader: "@svgr/webpack",
+          // options: {
+          //   exportType: "named",
+          // },
         },
       );
 

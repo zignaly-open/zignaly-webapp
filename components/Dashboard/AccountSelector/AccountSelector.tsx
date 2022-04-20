@@ -1,5 +1,5 @@
 import React from "react";
-import ImageWithBasePath from "components/ImageWithBasePath";
+import ImageWithBasePath from "components/common/ImageWithBasePath";
 import useUser from "lib/useUser";
 import { Typography } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";

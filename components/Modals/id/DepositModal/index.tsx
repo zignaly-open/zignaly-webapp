@@ -13,11 +13,11 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets, useExchangeDepositAddress } from "lib/useAPI";
 import useUser from "lib/useUser";
 import Loader from "components/Loader/Loader";
-import CoinIcon from "components/CoinIcon";
+import AssetSelect from "components/common/AssetSelect";
+import NetworkSelect from "components/common/NetworkSelect";
 import { TextField } from "@mui/material";
 
 import * as styled from "./styles";
-import { getChainIcon } from "src/utils/chain";
 import NumberFormat from "react-number-format";
 
 type DepositModalTypesProps = {
@@ -37,29 +37,6 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
     selectedNetwork,
   );
 
-  const coinsOptions =
-    assets &&
-    Object.keys(assets)
-      .map((coin) => {
-        return {
-          caption: coin,
-          value: coin,
-          leftElement: <CoinIcon coin={coin} />,
-        };
-      })
-      .sort((a, b) => a.caption.localeCompare(b.caption));
-
-  const networkOptions =
-    assets &&
-    assets[selectedCoin]?.networks.map((n) => {
-      return {
-        caption: n.name,
-        value: n.network,
-        // leftElement: <CoinIcon coin={n.network} />,
-        leftElement: getChainIcon(n.network),
-      };
-    });
-
   useEffect(() => {
     // Reset selected network on coin change
     // todo: doesn't work due to Select component controlled
@@ -78,14 +55,10 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
               <FormattedMessage id="deposit.reflect" />
             </styled.Desc>
             <styled.SelectCoinContainer>
-              <Select
-                options={coinsOptions}
-                initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
+              <AssetSelect
+                assets={assets}
+                // initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
                 onSelectItem={(item) => setSelectedCoin(item.value)}
-                placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
-                label={
-                  <Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>
-                }
               />
               {selectedCoin && (
                 <styled.Balances>
@@ -95,7 +68,7 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
                       value={assets[selectedCoin].balanceTotal}
                       displayType="text"
                       prefix=" "
-                      suffx=" "
+                      suffix=" "
                       thousandSeparator={true}
                     />
                     {selectedCoin}
@@ -127,15 +100,9 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
             </styled.SelectCoinContainer>
             {selectedCoin && (
               <>
-                <Select
-                  options={networkOptions}
+                <NetworkSelect
+                  networks={assets[selectedCoin].networks}
                   onSelectItem={(item) => setSelectedNetwork(item.value)}
-                  placeholder={intl.formatMessage({ id: "deposit.network" })}
-                  label={
-                    <Typography variant="h3">
-                      {intl.formatMessage({ id: "deposit.network" })}
-                    </Typography>
-                  }
                 />
                 {selectedNetwork &&
                   (depositAddress ? (

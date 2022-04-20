@@ -2027,3 +2027,9 @@ deposit.reflect: "Deposits may take up to 3 hours to reflect in your balance."
 deposit.coin: "Coin"
 deposit.network: "Network"
 deposit.inOrders: "In Orders:"
+
+withdraw.title: "Withdraw Crypto"
+withdraw.desc: "Withdraw crypto to an external account. To move funds between Zignaly accounts, use a transfer instead."
+
+action.deposit: "Deposit"
+action.withdraw: "Withdraw"

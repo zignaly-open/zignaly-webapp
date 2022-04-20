@@ -18,6 +18,7 @@ import { Backdrop, Animation } from "./styles";
 
 // Selectors
 import { getCurrentModal } from "src/store/selectors/ui";
+import WithdrawModal from "../id/WithdrawModal";
 
 function SuperModal() {
   // Context
@@ -42,6 +43,13 @@ function SuperModal() {
       case ModalTypesId.DEPOSIT_MODAL:
         return (
           <DepositModal
+            action={currentModal.data.action}
+            initialCoin={currentModal.data.initialCoin}
+          />
+        );
+      case ModalTypesId.WITHDRAW_MODAL:
+        return (
+          <WithdrawModal
             action={currentModal.data.action}
             initialCoin={currentModal.data.initialCoin}
           />

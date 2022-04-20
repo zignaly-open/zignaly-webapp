@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider as ThemeProviderUI } from "styled-components";
 import type { AppProps } from "next/app";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -34,7 +34,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
   const darkTheme = !isLogin;
   const theme = useMemo(
-    () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
+    // () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
+    () => createTheme(getTheme(darkTheme, isLogin)),
     [darkTheme, isLogin],
   );
   const [messages, setMessages] = useState(null);
