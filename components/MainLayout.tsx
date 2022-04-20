@@ -32,7 +32,7 @@ export default function MainLayout({ children }) {
         {/* Preload fonts */}
         <link
           rel="preload"
-          href={`${process.env.BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
           as="font"
           crossOrigin=""
         />

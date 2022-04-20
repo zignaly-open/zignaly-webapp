@@ -10,18 +10,21 @@ require("dotenv-flow").config({
   node_env: process.env.APP_ENV || process.env.NODE_ENV || "development",
 });
 
-const env = {
-  BASE_PATH: process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_BASE_PATH : "",
-};
+const env = {};
 Object.keys(process.env).forEach((key) => {
   if (key.startsWith("NEXT_PUBLIC_")) {
     env[key] = process.env[key];
   }
 });
+// Don't use basePath in dev
+if (process.env.NODE_ENV !== "production") {
+  env.NEXT_PUBLIC_BASE_PATH = "/";
+}
+
 module.exports = withBundleAnalyzer(
   withTM({
-    basePath: env.BASE_PATH,
-    // assetPrefix: process.env.NODE_ENV !== "production" ? "/ps2/" : "",
+    basePath: env.NEXT_PUBLIC_BASE_PATH,
+    // assetPrefix: process.env.NODE_ENV === "production" ? "/ps2/" : "",
     typescript: {
       // todo: Ignore type error for now
       ignoreBuildErrors: true,
