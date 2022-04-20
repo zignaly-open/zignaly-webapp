@@ -6,15 +6,6 @@ import { isSessionValid, useSession } from "lib/session";
 import { cache, keys, setItemCache } from "lib/cacheAPI";
 import useRedirection from "lib/useRedirection";
 
-// let sessionDataLocal;
-// if (typeof window !== "undefined") {
-//   const data = localStorage.getItem(keys.session);
-//   sessionDataLocal = JSON.parse(data);
-//   // if (data) {
-//   //   mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user/session`, JSON.parse(data), false);
-//   // }
-// }
-
 function Auth({ children }) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(true);
@@ -28,7 +19,6 @@ function Auth({ children }) {
   useAPIFetch<GetSessionRes>(token ? "/user/session" : null, {
     refreshInterval: 60 * 5 * 1000,
     onSuccess(data) {
-      // localStorage.setItem(keys.session, JSON.stringify(data));
       setItemCache(keys.session, data);
     },
   });

@@ -18,6 +18,7 @@ import { TextField } from "@mui/material";
 
 import * as styled from "./styles";
 import { getChainIcon } from "src/utils/chain";
+import NumberFormat from "react-number-format";
 
 type DepositModalTypesProps = {
   action?: any;
@@ -73,18 +74,57 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
       <Body>
         {assets ? (
           <>
-            <styled.Typo variant="h3">
+            <styled.Desc variant="h3">
               <FormattedMessage id="deposit.reflect" />
-            </styled.Typo>
-            <Select
-              options={coinsOptions}
-              initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
-              onSelectItem={(item) => setSelectedCoin(item.value)}
-              placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
-              label={
-                <Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>
-              }
-            />
+            </styled.Desc>
+            <styled.SelectCoinContainer>
+              <Select
+                options={coinsOptions}
+                initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
+                onSelectItem={(item) => setSelectedCoin(item.value)}
+                placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
+                label={
+                  <Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>
+                }
+              />
+              {selectedCoin && (
+                <styled.Balances>
+                  <Typography>
+                    <FormattedMessage id="wallet.balance" />
+                    <NumberFormat
+                      value={assets[selectedCoin].balanceTotal}
+                      displayType="text"
+                      prefix=" "
+                      suffx=" "
+                      thousandSeparator={true}
+                    />
+                    {selectedCoin}
+                  </Typography>
+                  <Typography>
+                    <FormattedMessage id="deposit.inOrders" />
+                    <NumberFormat
+                      value={assets[selectedCoin].balanceLocked}
+                      displayType="text"
+                      prefix=" "
+                      suffix=" "
+                      thousandSeparator={true}
+                    />
+                    {selectedCoin}
+                  </Typography>
+                  <Typography>
+                    <FormattedMessage id="balance.avail" />
+                    <NumberFormat
+                      value={assets[selectedCoin].balanceFree}
+                      displayType="text"
+                      prefix=" "
+                      suffix=" "
+                      thousandSeparator={true}
+                    />
+                    {selectedCoin}
+                  </Typography>
+                </styled.Balances>
+              )}
+            </styled.SelectCoinContainer>
             {selectedCoin && (
               <>
                 <Select
