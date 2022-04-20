@@ -1,3 +1,4 @@
+// @ts-nocheck
 import initialState from "../initialState";
 import { assign } from "lodash";
 import {
@@ -10,6 +11,8 @@ import {
   SHOW_CREATE_PROVIDER,
   SHOW_CREATE_TRADER,
   SHOW_GLOBAL_MODAL,
+  OPEN_MODAL,
+  CLOSE_MODAL,
 } from "../actions/ui";
 
 /**
@@ -91,6 +94,23 @@ const ui = (state = initialState.ui, action) => {
 
     case SHOW_GLOBAL_MODAL:
       newState.modal = { ...state.modal, globalModal: action.payload };
+      break;
+
+    case OPEN_MODAL:
+      newState.modal = {
+        ...state.modal,
+        modal: {
+          id: action.payload.id,
+          data: action.payload.data,
+        }
+      };
+      break;
+
+    case CLOSE_MODAL:
+      newState.modal = {
+        ...state.modal,
+        modal: initialState.ui.modal.modal
+      };
       break;
 
     default:

@@ -6,7 +6,7 @@ import OneDollar from "images/login/$1.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
-import Image from "next/image";
+import ImageWithBasePath from "components/common/ImageWithBasePath";
 
 /**
  *
@@ -28,7 +28,13 @@ const Login = ({ children }) => {
         sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}
       >
         <a href="https://www.zignaly.com">
-          <Image alt="Zignaly" className="logo" src="/images/zignaly.svg" width={163} height={42} />
+          <ImageWithBasePath
+            alt="Zignaly"
+            className="logo"
+            src="/images/zignaly.svg"
+            width={163}
+            height={42}
+          />
         </a>
         <Box className="languageBox">
           <LanguageSwitcherDropdown />

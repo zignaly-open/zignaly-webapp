@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider as ThemeProviderUI } from "styled-components";
 import type { AppProps } from "next/app";
-import { dark, light, ThemeProvider as ThemeProviderUI } from "zignaly-ui-test";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
@@ -19,15 +19,7 @@ import "./legacy.scss";
 import "./styles.css";
 import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
-
-// const GlobalStyle = createGlobalStyle`
-//   ${({ theme }) => `
-//     body {
-//       background: url(${theme.background.image.src}) no-repeat center center fixed;
-//       background-size: cover;
-//     }
-//   `}
-// `;
+import SuperModal from "components/Modals/SuperModal";
 
 const WithReduxProvider = (Component) => (props) =>
   (
@@ -42,7 +34,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
   const darkTheme = !isLogin;
   const theme = useMemo(
-    () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
+    // () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
+    () => createTheme(getTheme(darkTheme, isLogin)),
     [darkTheme, isLogin],
   );
   const [messages, setMessages] = useState(null);
@@ -87,12 +80,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                     {/* Preload fonts */}
                     <link
                       rel="preload"
-                      href="/fonts/PlexSans/IBMPlexSans-Regular.ttf"
+                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
                       as="font"
                       crossOrigin=""
                     />
                   </Head>
                   <Component {...pageProps} />
+                  <SuperModal />
                 </Auth>
               </SWRAuthConfig>
             </ThemeProviderUI>

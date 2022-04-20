@@ -3,15 +3,6 @@ import useSWR from "swr";
 import { UserEntity } from "../src/services/tradeApiClient.types";
 import { keys, cache, setItemCache } from "lib/cacheAPI";
 
-// let localData;
-// if (typeof window !== "undefined") {
-//   // Load user data from cache for faster page load
-//   localData = localStorage.getItem(keys.user);
-//   if (localData) {
-//     // mutate(`${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user`, JSON.parse(localData), false);
-//   }
-// }
-
 const useUser = () => {
   const initialData = cache.get(keys.user);
   const {
@@ -19,7 +10,7 @@ const useUser = () => {
     mutate,
     error,
   } = useSWR<UserEntity>(keys.user, {
-    // Don't fetch update if the data has just been loaded in login (_validated)
+    // Don't fetch updated data right away if the data has just been loaded in login (_validated)
     revalidateOnMount: initialData?._validated !== true,
     // revalidateIfStale: false,
     onSuccess(newUser) {

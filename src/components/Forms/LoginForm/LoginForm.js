@@ -34,7 +34,18 @@ const LoginForm = () => {
   const [loginResponse, setLoginResponse] = useState(/** @type {LoginRes} */ (null));
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
-  const { handleSubmit, errors, register } = useForm({
+  // const { handleSubmit, errors, register } = useForm({});
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm({
+    // defaultValues: {
+    //   firstName: "",
+    //   lastName: "",
+    //   checkbox: [],
+    //   radio: "",
+    // },
     mode: "onBlur",
     reValidateMode: "onChange",
   });
@@ -159,14 +170,13 @@ const LoginForm = () => {
               className="customInput"
               error={!!errors.email}
               fullWidth
-              inputRef={register({
+              {...register("email", {
                 required: intl.formatMessage({ id: "security.email.error.empty" }),
                 pattern: {
                   value: emailRegex,
                   message: intl.formatMessage({ id: "security.email.error.invalid" }),
                 },
               })}
-              name="email"
               type="email"
               variant="outlined"
             />
@@ -181,11 +191,10 @@ const LoginForm = () => {
           >
             <PasswordInput
               error={!!errors.password}
-              inputRef={register({
+              {...register("password", {
                 required: intl.formatMessage({ id: "security.password.error.empty" }),
               })}
               label={<FormattedMessage id={"security.password"} />}
-              name="password"
             />
             {errors.password && <span className="errorText">{errors.password.message}</span>}
           </Box>

@@ -1,11 +1,12 @@
 import React, { useContext, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Table, DateLabel, PriceLabel, PercentageIndicator } from "zignaly-ui-test";
+import { Table, DateLabel, PriceLabel, PercentageIndicator } from "zignaly-ui";
 import NumberFormat from "react-number-format";
 import { useServicePositions } from "../../../lib/useAPI";
 import useUser from "lib/useUser";
 import { useSelector } from "react-redux";
 import { ServiceContext } from "../ServiceContext";
+import Loader from "components/Loader/Loader";
 
 const renderProfit = (position: Position) => {
   return (
@@ -27,9 +28,7 @@ const renderProfit = (position: Position) => {
 
 const ServicePositions = () => {
   const intl = useIntl();
-  // const selectedService = useSelector((state: any) => state.settings.selectedService);
   const { selectedService } = useContext(ServiceContext);
-  // const { selectedExchange } = useUser();
   const { data: positions, error } = useServicePositions(selectedService.id);
   const columns = useMemo(
     () => [
@@ -91,7 +90,7 @@ const ServicePositions = () => {
     [positions],
   );
 
-  return <>{positions && <Table columns={columns} data={data} />}</>;
+  return <>{positions ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default ServicePositions;

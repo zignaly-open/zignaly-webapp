@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import tradeApi from "services/tradeApiClient";
 import useSelectedExchange from "hooks/useSelectedExchange";
-// import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui-test";
+// import { Table, IconButton, TableButton, ButtonGroup, OptionsDotsIcon } from "zignaly-ui";
 import { useDispatch } from "react-redux";
 import { showErrorAlert } from "store/actions/ui";
 import styled, { css } from "styled-components";
