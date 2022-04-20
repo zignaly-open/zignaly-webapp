@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== "production") {
 
 module.exports = withBundleAnalyzer(
   withTM({
-    basePath: env.NEXT_PUBLIC_BASE_PATH,
+    // basePath: env.NEXT_PUBLIC_BASE_PATH,
     // assetPrefix: process.env.NODE_ENV === "production" ? "/ps2/" : "",
     typescript: {
       // todo: Ignore type error for now
