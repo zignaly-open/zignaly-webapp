@@ -6,7 +6,7 @@ import useUser from "lib/useUser";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { FormattedMessage } from "react-intl";
-import { Typography } from "zignaly-ui-test";
+import { Typography } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
 import OpenArrowIcon from "public/images/openArrow.svg";

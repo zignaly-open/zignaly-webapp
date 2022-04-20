@@ -20,7 +20,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
  * @param {PasswordInputPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const PasswordInput = ({ label, ...others }) => {
+const PasswordInput = React.forwardRef(({ label, ...others }, ref) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -36,10 +36,11 @@ const PasswordInput = ({ label, ...others }) => {
           </InputAdornment>
         }
         type={showPassword ? "text" : "password"}
+        ref={ref}
         {...others}
       />
     </FormControl>
   );
-};
+});
 
 export default PasswordInput;

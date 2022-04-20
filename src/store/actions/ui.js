@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { isObject } from "lodash";
 
 export const SHOW_LOADER = "SHOW_LOADER_ACTION";
@@ -9,6 +10,10 @@ export const ASK_2FA = "ASK_2FA";
 export const SHOW_CREATE_PROVIDER = "SHOW_CREATE_PROVIDER";
 export const SHOW_CREATE_TRADER = "SHOW_CREATE_TRADER";
 export const SHOW_GLOBAL_MODAL = "SHOW_GLOBAL_MODAL";
+
+/* New Modal System */
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
 
 /**
  * @typedef {import('../../store/store').AppThunk} AppThunk
@@ -147,5 +152,33 @@ export const showGlobalModal = (payload) => {
   return {
     type: SHOW_GLOBAL_MODAL,
     payload,
+  };
+};
+
+/**
+ * @function openModal:
+ * @description Dispatches the action of opening a modal
+ * @param id Unique identifier of the modal (show /types/modals)
+ * @param data Data that we are going to send to the modal, to be used by it.
+ * @returns {{payload: {data, id}, type: string}}
+ */
+export const openModal = (id, data = {}) => {
+  return {
+    type: OPEN_MODAL,
+    payload: {
+      id,
+      data,
+    }
+  };
+};
+
+/**
+ * @function closeModal:
+ * @description Close the current modal
+ * @returns {{type: string}}
+ */
+export const closeModal = () => {
+  return {
+    type: CLOSE_MODAL,
   };
 };

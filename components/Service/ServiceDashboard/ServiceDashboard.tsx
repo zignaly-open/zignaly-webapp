@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import ServicePositions from "./ServicePositions";
-import { Tab, TabPanel, Tabs } from "zignaly-ui-test";
+import { Tab, TabPanel, Tabs } from "zignaly-ui";
 import ServiceContracts from "./ServiceContracts";
 import ServiceOrders from "./ServiceOrders";
 

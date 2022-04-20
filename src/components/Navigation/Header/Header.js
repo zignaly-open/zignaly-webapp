@@ -25,6 +25,8 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
+import { openModal } from "../../../store/actions/ui";
+import { modalTypesId } from "../../../shared/types/ui";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -152,9 +154,18 @@ const Header = () => {
                         <FormattedMessage id="accounts.findtraders" />
                       </CustomButton>
                     ) : (
-                      <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
-                        <FormattedMessage id="accounts.invite" />
-                      </CustomButton>
+                      <>
+                        {/* <button onClick={() => dispatch(openModal(modalTypesId.ERROR_MODAL, {
+                          title: "Error message",
+                          description: "Test error messsage description"
+                        }))}>
+                          Test Modal
+                        </button>
+                        */}
+                        <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
+                          <FormattedMessage id="accounts.invite" />
+                        </CustomButton>
+                      </>
                     )}
                   </>
                 ) : (

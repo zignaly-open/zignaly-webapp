@@ -1243,7 +1243,6 @@ deposit.current: "Current Balance"
 deposit.inorder: "In order"
 deposit.loss: "Sending other coin or token to this address may result in the loss of your deposit."
 deposit.memo.copied: "MEMO/Tag copied."
-deposit.network: "Select Network"
 deposit.note.onlysend: "Only send {coin} to this address"
 deposit.processing: "Deposit processing time varies coin to coin and depends mostly on the network performance."
 deposit.selectcoin: "Select coin"
@@ -2022,3 +2021,15 @@ signals.desc: "Automate your trades be sending signals to Zignaly. Positions wil
 signals.desc2: "To create signals, use the url below with your secret key and desired parameters. Docs and help creating signals can be found here:"
 signal.help.how: "How to send signals"
 signal.help.params: "All signals parameters"
+
+deposit.title: "Deposit Crypto"
+deposit.reflect: "Deposits may take up to 3 hours to reflect in your balance."
+deposit.coin: "Coin"
+deposit.network: "Network"
+deposit.inOrders: "In Orders:"
+
+withdraw.title: "Withdraw Crypto"
+withdraw.desc: "Withdraw crypto to an external account. To move funds between Zignaly accounts, use a transfer instead."
+
+action.deposit: "Deposit"
+action.withdraw: "Withdraw"

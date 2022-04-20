@@ -540,6 +540,12 @@ const initialState = {
       createProvider: false,
       createTrader: false,
       globalModal: false,
+
+      // TODO: Migrate the old system of modals to the new one.
+      modal: {
+        id: null,
+        data: null,
+      }
     },
     alerts: {
       success: {

@@ -1,10 +1,11 @@
 import React, { useContext, useMemo } from "react";
-import { Table, DateLabel } from "zignaly-ui-test";
+import { Table, DateLabel } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import { useServiceOrders } from "../../../lib/useAPI";
 import useUser from "lib/useUser";
 import { ServiceContext } from "../ServiceContext";
+import Loader from "components/Loader/Loader";
 
 const ServiceOrders = () => {
   const { user, selectedExchange } = useUser();
@@ -62,7 +63,7 @@ const ServiceOrders = () => {
     [orders],
   );
 
-  return <>{orders && <Table columns={columns} data={data} />}</>;
+  return <>{orders ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default ServiceOrders;

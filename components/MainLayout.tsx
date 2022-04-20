@@ -5,8 +5,6 @@ import useUser from "lib/useUser";
 import Head from "next/head";
 import styled from "styled-components";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
-
 const inputGlobalStyles = (
   <GlobalStyles
     styles={(theme) => ({
@@ -34,7 +32,7 @@ export default function MainLayout({ children }) {
         {/* Preload fonts */}
         <link
           rel="preload"
-          href={`${basePath}"/fonts/AvenirNext/AvenirNextLTPro-Regular.otf"`}
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
           as="font"
           crossOrigin=""
         />

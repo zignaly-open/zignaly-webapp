@@ -4,6 +4,7 @@ import BTCIcon from "images/coins/btc.svg";
 import MATICIcon from "images/coins/matic.svg";
 import SOLIcon from "images/wallet/sol.svg";
 import TRXIcon from "images/wallet/trx.svg";
+import AVAXIcon from "images/coins/avax.svg";
 
 export const getChainIcon = (chain: string) => {
   switch (chain.toUpperCase()) {
@@ -23,6 +24,9 @@ export const getChainIcon = (chain: string) => {
       return SOLIcon;
     case "TRX":
       return TRXIcon;
+    case "AVAX":
+    case "AVAXC":
+      return AVAXIcon;
     default:
       return ETHIcon;
   }

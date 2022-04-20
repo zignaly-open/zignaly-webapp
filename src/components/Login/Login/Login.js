@@ -6,7 +6,7 @@ import OneDollar from "images/login/$1.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
-import ImageWithBasePath from "components/ImageWithBasePath";
+import ImageWithBasePath from "components/common/ImageWithBasePath";
 
 /**
  *

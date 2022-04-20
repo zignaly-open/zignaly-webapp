@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Loader as _Loader } from "zignaly-ui-test";
+import { Loader as _Loader } from "zignaly-ui";
 
 export const Loader = styled(_Loader)`
   display: flex;

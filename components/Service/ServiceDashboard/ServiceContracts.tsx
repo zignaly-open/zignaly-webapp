@@ -1,10 +1,11 @@
 import React, { useContext, useMemo } from "react";
-import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui-test";
+import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import { useContracts } from "../../../lib/useAPI";
 import useUser from "lib/useUser";
 import { ServiceContext } from "../ServiceContext";
+import Loader from "components/Loader/Loader";
 
 const ServiceContracts = () => {
   const { selectedExchange } = useUser();
@@ -73,7 +74,7 @@ const ServiceContracts = () => {
     [contracts],
   );
 
-  return <>{contracts && <Table columns={columns} data={data} />}</>;
+  return <>{contracts ? <Table columns={columns} data={data} /> : <Loader />}</>;
 };
 
 export default ServiceContracts;
