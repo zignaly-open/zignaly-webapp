@@ -20,11 +20,11 @@ const Investors = () => {
   );
 };
 
-export async function getServerSideProps(context) {
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   };
+// }
 
 // export const getServerSideProps = withIronSessionSsr(async function ({
 //   req,
