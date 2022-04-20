@@ -18,7 +18,7 @@ Object.keys(process.env).forEach((key) => {
 });
 // Don't use basePath in dev
 if (process.env.NODE_ENV !== "production") {
-  env.NEXT_PUBLIC_BASE_PATH = "/";
+  env.NEXT_PUBLIC_BASE_PATH = "";
 }
 
 module.exports = withBundleAnalyzer(
