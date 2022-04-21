@@ -50,9 +50,8 @@ const SWRAuthConfig = ({ children }) => {
           }
 
           if (error) {
-            // if (res.status === 401) {
-            if (json.error === 13) {
-              console.log("api session expired, redir to login");
+            if (error.error?.code === 13) {
+              console.log("api session expired, redirecting to login");
               dispatch(endTradeApiSession());
               redirectLogin(true);
             }
@@ -63,9 +62,9 @@ const SWRAuthConfig = ({ children }) => {
           return json;
           // res.ok ? res.json() : Promise.reject(res)
         },
-        onError: (err) => {
-          console.error(err);
-        },
+        // onError: (err) => {
+        //   console.error(err);
+        // },
       }}
     >
       {children}
