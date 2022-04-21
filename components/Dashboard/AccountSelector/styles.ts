@@ -19,12 +19,6 @@ export const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-
-  h1 {
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 36px;
-  }
 `;
 
 export const TypographyType = styled(Typography).attrs({ variant: "h4" })`
