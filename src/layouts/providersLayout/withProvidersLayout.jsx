@@ -60,9 +60,9 @@ const withProvidersLayout = (Component) => {
 
     const createButtonText = () => {
       if (isMobile) {
-        return `${isCopyTrading ? "copyt" : isProfitSharing ? "profit" : "signalp"}.become.mobile`;
+        return "profit.become.mobile";
       }
-      return `${isCopyTrading ? "copyt" : isProfitSharing ? "profit" : "signalp"}.become`;
+      return "profit.become";
     };
 
     const renderFiltersButton = isCopyTrading || isProfitSharing;
@@ -84,24 +84,22 @@ const withProvidersLayout = (Component) => {
           size="fullscreen"
           state={storeModal.createTrader}
         >
-          <CreateTraderForm isCopyTrading={isCopyTrading} />
+          <CreateTraderForm isCopyTrading={false} />
         </Modal>
         <Hidden xsDown>
-          <CustomButton
-            className="textPurple borderPurple becomeProviderButton"
-            onClick={() =>
-              dispatch(
-                isCopyTrading || isProfitSharing
-                  ? showCreateTrader(true)
-                  : showCreateProvider(true),
-              )
-            }
-          >
-            <Typography variant="body1">
-              <FormattedMessage id={createButtonText()} />
-            </Typography>
-            <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
-          </CustomButton>
+          {isProfitSharing ? (
+            <CustomButton
+              className="textPurple borderPurple becomeProviderButton"
+              onClick={() => dispatch(showCreateTrader(true))}
+            >
+              <Typography variant="body1">
+                <FormattedMessage id={createButtonText()} />
+              </Typography>
+              <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
+            </CustomButton>
+          ) : (
+            <div className="becomeProviderButton" />
+          )}
         </Hidden>
         <Box
           alignItems="center"

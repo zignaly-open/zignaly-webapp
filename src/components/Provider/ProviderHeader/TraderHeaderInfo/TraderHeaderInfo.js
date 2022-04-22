@@ -191,11 +191,11 @@ const TraderHeaderInfo = ({ provider }) => {
         </b>
       </Typography>
 
-      <Hidden smUp>
+      {/* <Hidden smUp>
         {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
           <PaymentButton provider={provider} />
         )}
-      </Hidden>
+      </Hidden> */}
       <Modal onClose={handleCopyModalClose} persist={false} size="small" state={copyModal}>
         <ConnectTraderForm
           onClose={handleCopyModalClose}
