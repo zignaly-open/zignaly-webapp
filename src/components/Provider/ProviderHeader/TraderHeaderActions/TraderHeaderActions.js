@@ -68,9 +68,9 @@ const TraderHeaderActions = ({ provider }) => {
         {!provider.profitSharing && provider.internalPaymentInfo && (
           <TrialPeriod provider={provider} />
         )}
-        {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
+        {/* {!provider.disable && !provider.profitSharing && provider.internalPaymentInfo && (
           <PaymentButton provider={provider} />
-        )}
+        )} */}
       </Hidden>
     </Box>
   );

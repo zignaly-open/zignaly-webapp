@@ -37,6 +37,7 @@ const ProvidersBrowse = ({
   const connectedOnly = type.startsWith("connected");
   const connectedTradersOnly = type === "connected_traders";
   const isCopyTrading = !["signal_providers", "connected_providers"].includes(type);
+  const isProfitSharing = type === "profit_sharing";
   const providersOptions = { type, connectedOnly, myServices };
   const [updatedAt, setUpdatedAt] = useState(null);
   const {
@@ -95,6 +96,7 @@ const ProvidersBrowse = ({
       )}
       <TimeFrameSelectRow
         isCopyTrading={isCopyTrading}
+        isProfitSharing={isProfitSharing}
         onChange={setTimeFrame}
         title={`${providers ? providers.length : 0} ${intl.formatMessage({
           id: connectedOnly
