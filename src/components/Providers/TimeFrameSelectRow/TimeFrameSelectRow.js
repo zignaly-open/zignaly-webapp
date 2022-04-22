@@ -1,12 +1,11 @@
 import React from "react";
-import { Box, Typography, Hidden, useMediaQuery } from "@material-ui/core";
+import { Box, Typography, Hidden } from "@material-ui/core";
 import TimeFrameSelect from "../../TimeFrameSelect";
 import "./TimeFrameSelectRow.scss";
 import CustomButton from "../../CustomButton";
 import { FormattedMessage } from "react-intl";
 import { showCreateProvider, showCreateTrader } from "../../../store/actions/ui";
 import { useDispatch } from "react-redux";
-import { useTheme } from "@material-ui/core/styles";
 import ServiceIcon from "../../../images/offerServiceIcon.svg";
 
 /**
@@ -15,6 +14,7 @@ import ServiceIcon from "../../../images/offerServiceIcon.svg";
  * @property {number} value Selected value.
  * @property {string} title Title to display next to the dropdown.
  * @property {boolean} isCopyTrading
+ * @property {boolean} isProfitSharing
  */
 
 /**
@@ -23,17 +23,8 @@ import ServiceIcon from "../../../images/offerServiceIcon.svg";
  * @param {TimeFrameSelectRowPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
+const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading, isProfitSharing }) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const createButtonText = () => {
-    if (isMobile) {
-      return `${isCopyTrading ? "copyt" : "signalp"}.become.mobile`;
-    }
-    return `${isCopyTrading ? "copyt" : "signalp"}.become`;
-  };
 
   return (
     <Box
@@ -54,17 +45,14 @@ const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading }) => {
           {title}
         </Typography>
         <Hidden smUp>
-          <CustomButton
-            className="textPurple"
-            onClick={() =>
-              dispatch(isCopyTrading ? showCreateTrader(true) : showCreateProvider(true))
-            }
-          >
-            <Typography variant="body1">
-              <FormattedMessage id={createButtonText()} />
-            </Typography>
-            <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
-          </CustomButton>
+          {isProfitSharing && (
+            <CustomButton className="textPurple" onClick={() => dispatch(showCreateTrader(true))}>
+              <Typography variant="body1">
+                <FormattedMessage id="profit.become.mobile" />
+              </Typography>
+              <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
+            </CustomButton>
+          )}
         </Hidden>
       </Box>
       {isCopyTrading && (
