@@ -48,6 +48,7 @@
     "dayjs": "^1.10.7",
     "dompurify": "^2.3.6",
     "dotenv-flow": "^3.2.0",
+    "ethers": "^5.6.4",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "moment": "^2.29.1",

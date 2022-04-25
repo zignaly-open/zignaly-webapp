@@ -2030,6 +2030,7 @@ deposit.inOrders: "In Orders:"
 
 withdraw.title: "Withdraw Crypto"
 withdraw.desc: "Withdraw crypto to an external account. To move funds between Zignaly accounts, use a transfer instead."
+withdraw.amountToWithdraw: "Amount to Withdraw"
 
 action.deposit: "Deposit"
 action.withdraw: "Withdraw"
