@@ -99,7 +99,7 @@ const DashboardCoins = () => {
         }))
     : undefined;
 
-  return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return data ? <Table columns={columns} data={data} /> : <Loader />;
 };
 
 export default DashboardCoins;

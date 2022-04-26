@@ -19,7 +19,6 @@ import "./legacy.scss";
 import "./styles.css";
 import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
-import SuperModal from "components/Modals/SuperModal";
 
 const WithReduxProvider = (Component) => (props) =>
   (
@@ -86,7 +85,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                     />
                   </Head>
                   <Component {...pageProps} />
-                  <SuperModal />
                 </Auth>
               </SWRAuthConfig>
             </ThemeProviderUI>

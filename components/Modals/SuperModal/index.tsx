@@ -1,10 +1,10 @@
 // Dependencies
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useSpring, config } from "react-spring";
 import { isFirefox } from "react-device-detect";
 
 // Hooks
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Types
 import { ModalTypesId } from "typings/modal";
@@ -19,10 +19,19 @@ import { Backdrop, Animation } from "./styles";
 // Selectors
 import { getCurrentModal } from "src/store/selectors/ui";
 import WithdrawModal from "../id/WithdrawModal";
+import Modal from "../Modal";
+import { closeModal } from "src/store/actions/ui";
 
 function SuperModal() {
   // Context
   const currentModal = useSelector(getCurrentModal);
+
+  const dispatch = useDispatch();
+  const open = Boolean(currentModal.id);
+
+  const handleClose = useCallback(() => {
+    dispatch(closeModal());
+  }, []);
 
   // Animation
   const [styles, api] = useSpring(() => ({
@@ -52,6 +61,8 @@ function SuperModal() {
           <WithdrawModal
             action={currentModal.data.action}
             initialCoin={currentModal.data.initialCoin}
+            onClose={handleClose}
+            open={open}
           />
         );
 
@@ -80,10 +91,12 @@ function SuperModal() {
     }
   }, [currentModal.id]);
 
+  return renderModal;
   return (
-    <Backdrop isFirefox={isFirefox} visible={!!currentModal.id}>
-      <Animation style={styles}>{renderModal}</Animation>
-    </Backdrop>
+    // <Modal onClose={} open={Boolean(currentModal.id)}>
+    { renderModal }
+    // <aa open={Boolean(currentModal.id)/>
+    // </Modal>
   );
 }
 

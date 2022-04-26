@@ -10,9 +10,10 @@ interface AssetSelectProps {
   assets: ExchangeAssetsDict;
   onSelectItem: any;
   value: any;
+  fullWidth?: boolean;
 }
 
-const AssetSelect = ({ assets, onSelectItem, value }: AssetSelectProps) => {
+const AssetSelect = ({ assets, onSelectItem, value, fullWidth }: AssetSelectProps) => {
   const intl = useIntl();
 
   const coinsOptions =
@@ -33,6 +34,7 @@ const AssetSelect = ({ assets, onSelectItem, value }: AssetSelectProps) => {
 
   return (
     <Select
+      fullWidth={fullWidth}
       options={coinsOptions}
       // initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
       onSelectItem={onSelectItem}

@@ -1,56 +1,63 @@
 // Dependencies
 import styled from "styled-components";
+import { IconButton, Typography } from "zignaly-ui";
 
-type ModalContainerTypeProps = {
-  theme: any,
-  width: string | number;
+const getWidth = (width: ModalContainerProps["width"]): number => {
+  switch (width) {
+    case "large":
+    default:
+      return 824;
+  }
+};
+
+type ModalContainerProps = {
+  width: "fullscreen" | "large" | "small" | number;
   padding?: string;
-}
-export const ModalContainer = styled.div<ModalContainerTypeProps>`
-  border-radius: 12px;
-  box-shadow: 0 12px 11px #0000000f;
+};
+export const ModalContainer = styled.div<ModalContainerProps>`
+  /* box-shadow: 0 12px 11px #0000000f; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-
-  color: #FBFBFD;
-  background: #0d3a52ff;
-  background: -moz-linear-gradient(-45deg, #0d3a52ff 0%, #101233ff 100%);
-  background: -webkit-linear-gradient(-45deg, #0d3a52ff 0%, #101233ff 100%);
-  background: linear-gradient(135deg, #0d3a52ff 0%, #101233ff 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0d3a52ff', endColorstr='#101233ff',GradientType=1);
+  align-items: flex-start;
+  background: #101225;
+  border: 1px solid #35334a;
+  border-radius: 16px;
 
   ${({ width, padding }) => `
-    width: ${width};
+    width: ${getWidth(width)}px;
     padding: ${padding ?? "3rem"};
   `};
-  user-select: none;
 `;
 
-export const Title = styled.h3`
-  text-align: center;
-  font-size: 16px;
-  color: #e1e4e7;
+export const Title = styled(Typography).attrs({ variant: "h1" })`
+  color: #c1c1c8;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 type BodyTypeProps = {
   textAlign?: string;
-}
+};
 export const Body = styled.div<BodyTypeProps>`
-  text-align: ${props => props.textAlign ?? "center"};
-  font-size: 14px;
-  color: #99a7bb;
+  text-align: ${(props) => props.textAlign ?? "start"};
+  color: #a9a9ba;
+  width: 100%;
 `;
 
-type ActionsTypeProps = {
-  columns: number | string;
-}
-export const Actions = styled.div<ActionsTypeProps>`
-  display: grid;
-  grid-template-columns: repeat(${props => props.columns}, minmax(0%, 100%));
-  grid-column-gap: 22px;
-  grid-row-gap: 22px;
-  margin-top: 3rem;
-  width: 100%;
+export const Actions = styled.div`
+  margin-top: 64px;
+  display: flex;
+  justify-content: flex-end;
+
+  button:not(:first-child) {
+    margin-left: 7px;
+  }
+`;
+
+export const CloseButton = styled(IconButton)`
+  img {
+    color: #65647e;
+  }
 `;
