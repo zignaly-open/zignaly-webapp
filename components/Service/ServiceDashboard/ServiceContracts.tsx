@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from "react";
-import { Table, TableButton, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
+import { Table, Button, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
 import { useContracts } from "../../../lib/useAPI";
@@ -66,7 +66,7 @@ const ServiceContracts = () => {
             margin: contract.margin,
             action: (
               <ButtonGroup>
-                <TableButton icon={CloseIcon} caption={"Close"} />
+                <Button variant="secondary" icon={CloseIcon} caption={"Close"} />
               </ButtonGroup>
             ),
           }))
