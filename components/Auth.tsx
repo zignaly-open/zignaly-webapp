@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useAPIFetch } from "lib/useAPI";
@@ -8,11 +8,11 @@ import useRedirection from "lib/useRedirection";
 
 function Auth({ children }) {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(true);
   const storeSession = useStoreSessionSelector();
   const token = storeSession.tradeApi.accessToken;
-  const initialSessionData = cache.get(keys.session);
-  const sessionValid = token && isSessionValid(initialSessionData);
+  const initialSessionData = useMemo(() => cache.get(keys.session), []);
+  const initSessionValid = token && isSessionValid(initialSessionData);
+  const [authorized, setAuthorized] = useState(initSessionValid);
   const { endSession } = useSession();
   const { redirectDashboard, redirectLogin } = useRedirection();
 
@@ -30,7 +30,7 @@ function Auth({ children }) {
   useEffect(() => {
     if (!isPublic) {
       // Private page
-      if (firstCheck.current && !sessionValid) {
+      if (firstCheck.current && !initSessionValid) {
         // Direct access a private page with an expired session. Don't render until we are redirected to login.
         setAuthorized(false);
         endSession(true);
@@ -39,12 +39,14 @@ function Auth({ children }) {
       // Public page
       setAuthorized(true);
 
-      if (firstCheck.current && sessionValid) {
-        // Direct access to login page with an active session. Redirect to dashboard.
-        redirectDashboard(false);
-      } else if (!sessionValid && router.pathname === "/") {
-        // Redirect / to login
-        redirectLogin(false);
+      if (firstCheck.current) {
+        if (initSessionValid) {
+          // Direct access to login page with an active session. Redirect to dashboard.
+          redirectDashboard(false);
+        } else if (!initSessionValid && router.pathname === "/") {
+          // Redirect / to login
+          redirectLogin(false);
+        }
       }
     }
 

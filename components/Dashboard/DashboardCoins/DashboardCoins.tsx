@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import { useIntl } from "react-intl";
-import { Table, IconButton, TableButton, ButtonGroup, PriceLabel } from "zignaly-ui";
+import { Table, Button, ButtonGroup, PriceLabel } from "zignaly-ui";
 import NumberFormat from "react-number-format";
 import { useExchangeAssets } from "lib/useAPI";
 import useUser from "lib/useUser";
@@ -74,7 +74,8 @@ const DashboardCoins = () => {
           ),
           action: (
             <ButtonGroup>
-              <TableButton
+              <Button
+                variant="secondary"
                 caption={intl.formatMessage({ id: "action.deposit" })}
                 onClick={() =>
                   dispatch(
@@ -84,7 +85,8 @@ const DashboardCoins = () => {
                   )
                 }
               />
-              <TableButton
+              <Button
+                variant="secondary"
                 caption={intl.formatMessage({ id: "action.withdraw" })}
                 onClick={() =>
                   dispatch(
