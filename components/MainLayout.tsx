@@ -18,7 +18,7 @@ const inputGlobalStyles = (
 
 const Container = styled.div`
   max-width: 1200px;
-  padding: 0 16px;
+  padding: 0 8px;
   margin: 0 auto;
 `;
 
