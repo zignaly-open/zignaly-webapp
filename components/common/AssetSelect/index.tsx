@@ -8,12 +8,12 @@ import * as styled from "./styles";
 
 interface AssetSelectProps {
   assets: ExchangeAssetsDict;
-  onSelectItem: any;
-  value: any;
+  onChange: any;
+  selectedAsset?: string;
   fullWidth?: boolean;
 }
 
-const AssetSelect = ({ assets, onSelectItem, value, fullWidth }: AssetSelectProps) => {
+const AssetSelect = ({ assets, onChange, selectedAsset, fullWidth }: AssetSelectProps) => {
   const intl = useIntl();
 
   const coinsOptions =
@@ -36,8 +36,8 @@ const AssetSelect = ({ assets, onSelectItem, value, fullWidth }: AssetSelectProp
     <Select
       fullWidth={fullWidth}
       options={coinsOptions}
-      // initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
-      onSelectItem={onSelectItem}
+      value={coinsOptions?.find((o) => o.value === selectedAsset)}
+      onChange={onChange}
       placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
       // label={<Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>}
       label={intl.formatMessage({ id: "deposit.coin" })}

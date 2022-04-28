@@ -96,39 +96,41 @@ function WithdrawModal({
             </styled.Desc>
             <AssetSelect
               assets={assets}
-              // initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
-              {...coinRHF}
-              onSelectItem={(item) => {
-                setSelectedCoin(item.value);
-                console.log(item.value);
-                coinRHF.onChange({
-                  target: {
-                    value: item.value,
-                    name: coinRHF.name,
-                  },
-                  type: "change",
-                });
-              }}
+              // {...coinRHF}
+              // onSelectItem={(item) => {
+              //   setSelectedCoin(item.value);
+              //   console.log(item.value);
+              //   coinRHF.onChange({
+              //     target: {
+              //       value: item.value,
+              //       name: coinRHF.name,
+              //     },
+              //     type: "change",
+              //   });
+              // }}
               fullWidth={true}
+              selectedAsset={selectedCoin}
+              onChange={(item) => setSelectedCoin(item.value)}
             />
             {selectedCoin && (
               <>
                 <NetworkSelect
-                  {...networkRHF}
-                  onSelectItem={(item) => {
-                    // setSelectedCoin(item.value);
-                    console.log(item.value);
-                    coinRHF.onChange({
-                      target: {
-                        value: item.value.network,
-                        name: networkRHF.name,
-                      },
-                      type: "change",
-                    });
-                  }}
-                  networks={assets[selectedCoin].networks}
-                  // onSelectItem={(item) => setSelectedNetwork(item.value)}
+                  // {...networkRHF}
+                  // onSelectItem={(item) => {
+                  //   // setSelectedCoin(item.value);
+                  //   console.log(item.value);
+                  //   coinRHF.onChange({
+                  //     target: {
+                  //       value: item.value.network,
+                  //       name: networkRHF.name,
+                  //     },
+                  //     type: "change",
+                  //   });
+                  // }}
                   fullWidth={true}
+                  selectedNetwork={selectedNetwork}
+                  networks={assets[selectedCoin].networks}
+                  onChange={(item) => setSelectedNetwork(item.value)}
                 />
                 <InputText {...register("test", {})} />
                 {selectedNetwork && (

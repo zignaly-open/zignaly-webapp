@@ -9,12 +9,12 @@ import { SelectIcon } from "../AssetSelect/styles";
 
 interface NetworkSelectProps {
   networks: CoinNetwork[];
-  onSelectItem: any;
-  value: any;
+  onChange: any;
+  selectedNetwork: any;
   fullWidth?: boolean;
 }
 
-const NetworkSelect = ({ networks, onSelectItem, value, fullWidth }: NetworkSelectProps) => {
+const NetworkSelect = ({ networks, onChange, selectedNetwork, fullWidth }: NetworkSelectProps) => {
   const intl = useIntl();
 
   const networkOptions = networks?.map((n) => {
@@ -30,9 +30,10 @@ const NetworkSelect = ({ networks, onSelectItem, value, fullWidth }: NetworkSele
     <Select
       fullWidth={fullWidth}
       options={networkOptions}
-      onSelectItem={onSelectItem}
+      onSelectItem={onChange}
       placeholder={intl.formatMessage({ id: "deposit.network" })}
       label={intl.formatMessage({ id: "deposit.network" })}
+      value={networkOptions?.find((o) => o.value === selectedNetwork)}
     />
   );
 };
