@@ -24,15 +24,19 @@ const ServiceNavigationBar = () => {
     <styled.Layout>
       <Select
         options={options}
-        initialSelectedIndex={options?.findIndex((o) => o.value === selectedService) + 1}
-        onSelectItem={handleChange}
+        onChange={handleChange}
         placeholder={intl.formatMessage({ id: "service.selectService" })}
+        value={options?.find((o) => o.value === selectedService)}
       />
       <Link href="/service">
-        <a className={router.pathname === "/service" ? "active" : ""}>Service Dashboard</a>
+        <a className={router.pathname === "/service" ? "active" : ""}>
+          <FormattedMessage id="service.dashboard" />
+        </a>
       </Link>
       <Link href="/investors">
-        <a className={router.pathname === "/investors" ? "active" : ""}>Investors</a>
+        <a className={router.pathname === "/investors" ? "active" : ""}>
+          <FormattedMessage id="service.investors" />
+        </a>
       </Link>
       <Link href="/signals">
         <a className={router.pathname === "/signals" ? "active" : ""}>

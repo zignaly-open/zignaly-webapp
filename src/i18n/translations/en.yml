@@ -2008,6 +2008,7 @@ services.closedPositions: "Closed Positions"
 service.exchangeOrders: "Exchange Orders"
 service.investors: "Investors"
 service.selectService: "Select service"
+service.dashboard: "Service Dashboard"
 
 dashboard.myCoins: "My Coins"
 dashboard.type: "Type:"
