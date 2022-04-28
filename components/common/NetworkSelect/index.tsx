@@ -30,7 +30,7 @@ const NetworkSelect = ({ networks, onChange, selectedNetwork, fullWidth }: Netwo
     <Select
       fullWidth={fullWidth}
       options={networkOptions}
-      onSelectItem={onChange}
+      onChange={onChange}
       placeholder={intl.formatMessage({ id: "deposit.network" })}
       label={intl.formatMessage({ id: "deposit.network" })}
       value={networkOptions?.find((o) => o.value === selectedNetwork)}

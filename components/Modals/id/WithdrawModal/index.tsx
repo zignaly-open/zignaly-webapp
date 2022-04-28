@@ -40,11 +40,13 @@ function WithdrawModal({
   const intl = useIntl();
   const [selectedCoin, setSelectedCoin] = useState(initialCoin);
   const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [confirmData, setConfirmData] = useState(null);
+
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
     reValidateMode: "onChange",
@@ -52,30 +54,40 @@ function WithdrawModal({
 
   useEffect(() => {
     // Reset selected network on coin change
-    // todo: doesn't work due to Select component controlled
     setSelectedNetwork(null);
-    setValue("network", "");
-    setValue("test", "");
   }, [selectedCoin]);
 
-  const onSubmit = (data) => console.log(data);
-  const dispatch = useDispatch();
+  const onSubmit = (data) => {
+    setConfirmData({ ...data });
+  };
 
-  // const amount = register("amount", {
+  const amount = register("amount", {
+    required: true,
+  });
+
+  // const coinRHF = register("coin", {
   //   required: true,
   // });
-
-  const coinRHF = register("coin", {
-    required: true,
-  });
-  const networkRHF = register("network", {
-    required: true,
-  });
+  // const networkRHF = register("network", {
+  //   required: true,
+  // });
 
   const close = useCallback(() => {
     // dispatch(closeModal());
     onClose();
   }, []);
+
+  // const confirm = useCallback(() => {}, []);
+  // if (confirmData) {
+  //   return (
+  //     <Modal
+  //       open={open}
+  //       width="large"
+  //       onClose={onClose}
+  //       title={<FormattedMessage id="withdraw.title" />}
+  //     ></Modal>
+  //   );
+  // }
 
   return (
     <Modal
@@ -132,23 +144,22 @@ function WithdrawModal({
                   networks={assets[selectedCoin].networks}
                   onChange={(item) => setSelectedNetwork(item.value)}
                 />
-                <InputText {...register("test", {})} />
                 {selectedNetwork && (
                   <>
                     <InputText
-                      // {...register("address", {
-                      //   required: true,
-                      //   pattern: {
-                      //     value: RegExp(selectedNetwork?.addressRegex),
-                      //     message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
-                      //   },
-                      // })}
+                      {...register("address", {
+                        required: true,
+                        pattern: {
+                          value: RegExp(selectedNetwork?.addressRegex),
+                          message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
+                        },
+                      })}
                       label={intl.formatMessage({ id: "withdraw.toAddress" })}
                       placeholder={intl.formatMessage({ id: "wallet.withdraw.address.paste" })}
                       error={errors.address?.message || Boolean(errors.address)}
                     />
                     <InputAmount
-                      // {...amount}
+                      {...amount}
                       label={intl.formatMessage({ id: "withdraw.amountToWithdraw" })}
                       error={Boolean(errors.amount)}
                       tokens={[
@@ -156,8 +167,7 @@ function WithdrawModal({
                           id: 1,
                           name: selectedCoin,
                           image: cloudinary({ folder: "coins-binance", id: selectedCoin }),
-                          balance: "10000000000000000000",
-                          balance0: ethers.utils
+                          balance: ethers.utils
                             .parseEther(assets[selectedCoin].balanceFree)
                             .toString(),
                         },
@@ -179,6 +189,7 @@ function WithdrawModal({
               caption={intl.formatMessage({ id: "wallet.withdraw.continue" })}
               type="submit"
               size="xlarge"
+              disabled={!isValid}
             />
           </Actions>
         </form>
