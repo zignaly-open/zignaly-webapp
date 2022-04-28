@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
-import { ThemeProvider as ThemeProviderUI } from "zignaly-ui";
+import { ThemeProvider as ThemeProviderUI, dark } from "zignaly-ui";
 import type { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
@@ -17,7 +17,6 @@ import Auth from "../components/Auth";
 import SWRAuthConfig from "components/SWRAuthConfig";
 import "./legacy.scss";
 import "./styles.css";
-import { ThemeOptions } from "@mui/material";
 import Head from "next/head";
 
 const WithReduxProvider = (Component) => (props) =>
@@ -33,8 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
   const darkTheme = !isLogin;
   const theme = useMemo(
-    // () => createTheme({ ...(dark as ThemeOptions), ...getTheme(darkTheme, isLogin) }),
-    () => createTheme(getTheme(darkTheme, isLogin)),
+    () => createTheme({ ...dark, ...getTheme(darkTheme, isLogin) }),
     [darkTheme, isLogin],
   );
   const [messages, setMessages] = useState(null);

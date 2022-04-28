@@ -52,14 +52,14 @@ function SuperModal() {
       case ModalTypesId.DEPOSIT_MODAL:
         return (
           <DepositModal
-            action={currentModal.data.action}
             initialCoin={currentModal.data.initialCoin}
+            open={open}
+            onClose={handleClose}
           />
         );
       case ModalTypesId.WITHDRAW_MODAL:
         return (
           <WithdrawModal
-            action={currentModal.data.action}
             initialCoin={currentModal.data.initialCoin}
             onClose={handleClose}
             open={open}
@@ -92,12 +92,6 @@ function SuperModal() {
   }, [currentModal.id]);
 
   return renderModal;
-  return (
-    // <Modal onClose={} open={Boolean(currentModal.id)}>
-    { renderModal }
-    // <aa open={Boolean(currentModal.id)/>
-    // </Modal>
-  );
 }
 
 export default SuperModal;

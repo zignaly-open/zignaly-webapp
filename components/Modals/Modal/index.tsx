@@ -2,21 +2,11 @@
 import React, { useEffect, useMemo } from "react";
 import { useSpring, config } from "react-spring";
 import { isFirefox } from "react-device-detect";
-
-// Hooks
-import { useSelector } from "react-redux";
-
-// Types
-import { ModalTypesId } from "typings/modal";
-
-// Modals
-import ErrorModal from "../id/ErrorModal";
-import DepositModal from "../id/DepositModal";
+import { CloseIcon, IconButton } from "zignaly-ui";
 
 // Styled Components
 import { Backdrop, Animation } from "./styles";
 import { Body, CloseButton, ModalContainer, Title } from "../id/styles";
-import { CloseIcon, IconButton } from "zignaly-ui";
 
 function Modal({ title, onClose, open, width, children }) {
   // Animation

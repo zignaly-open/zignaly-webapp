@@ -10,7 +10,7 @@ import { SelectIcon } from "../AssetSelect/styles";
 interface NetworkSelectProps {
   networks: CoinNetwork[];
   onChange: any;
-  selectedNetwork: any;
+  selectedNetwork: string;
   fullWidth?: boolean;
 }
 
@@ -33,7 +33,7 @@ const NetworkSelect = ({ networks, onChange, selectedNetwork, fullWidth }: Netwo
       onChange={onChange}
       placeholder={intl.formatMessage({ id: "deposit.network" })}
       label={intl.formatMessage({ id: "deposit.network" })}
-      value={networkOptions?.find((o) => o.value === selectedNetwork)}
+      value={networkOptions?.find((o) => o.value.network === selectedNetwork)}
     />
   );
 };

@@ -35,6 +35,11 @@ export const Title = styled(Typography).attrs({ variant: "h1" })`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 32px;
+`;
+
+export const Desc = styled(Typography)`
+  margin-bottom: 24px;
 `;
 
 type BodyTypeProps = {

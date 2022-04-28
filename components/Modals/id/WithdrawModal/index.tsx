@@ -4,7 +4,7 @@ import AssetSelect from "components/common/AssetSelect";
 import NetworkSelect from "components/common/NetworkSelect";
 
 // Styled Components
-import { ModalContainer, Title, Actions } from "../styles";
+import { ModalContainer, Title, Actions, Desc } from "../styles";
 
 // Assets
 import { FormattedMessage, useIntl } from "react-intl";
@@ -21,25 +21,20 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { closeModal } from "src/store/actions/ui";
 import Modal from "components/Modals/Modal";
+import { CoinNetwork } from "src/services/tradeApiClient.types";
 
 type DepositModalTypesProps = {
-  action?: any;
   initialCoin: string;
   open: boolean;
   onClose: () => void;
 };
 
-function WithdrawModal({
-  action = null,
-  initialCoin,
-  open,
-  onClose,
-}: DepositModalTypesProps): React.ReactElement {
+function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): React.ReactElement {
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, false);
   const intl = useIntl();
   const [selectedCoin, setSelectedCoin] = useState(initialCoin);
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<CoinNetwork>(null);
   const [confirmData, setConfirmData] = useState(null);
 
   const {
@@ -96,16 +91,12 @@ function WithdrawModal({
       onClose={onClose}
       title={<FormattedMessage id="withdraw.title" />}
     >
-      {/* <Title>
-        <FormattedMessage id="withdraw.title" />
-        <IconButton icon={CloseIcon} onClick={close} />
-      </Title> */}
+      <Desc variant="h3">
+        <FormattedMessage id="withdraw.desc" />
+      </Desc>
       {assets ? (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <styled.Body>
-            <styled.Desc variant="h3">
-              <FormattedMessage id="withdraw.desc" />
-            </styled.Desc>
             <AssetSelect
               assets={assets}
               // {...coinRHF}
@@ -140,7 +131,7 @@ function WithdrawModal({
                   //   });
                   // }}
                   fullWidth={true}
-                  selectedNetwork={selectedNetwork}
+                  selectedNetwork={selectedNetwork?.network}
                   networks={assets[selectedCoin].networks}
                   onChange={(item) => setSelectedNetwork(item.value)}
                 />

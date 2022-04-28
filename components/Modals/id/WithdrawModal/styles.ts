@@ -1,13 +1,8 @@
 // Dependencies
 import styled from "styled-components";
-import { Typography } from "zignaly-ui";
-import { Body as _Body } from "../styles";
+import { Body as ModalBody } from "../styles";
 
-export const Desc = styled(Typography)`
-  padding: 12px 0 16px;
-`;
-
-export const Body = styled(_Body)`
+export const Body = styled(ModalBody)`
   > div {
     margin-top: 24px;
   }
