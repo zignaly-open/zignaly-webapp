@@ -1,13 +1,9 @@
-import React, { useMemo } from "react";
-import { Box, Typography } from "@mui/material";
+import React from "react";
 import { useIntl } from "react-intl";
-import { Table, Button, ButtonGroup, PriceLabel } from "zignaly-ui";
-import NumberFormat from "react-number-format";
+import { Table, Button, ButtonGroup, PriceLabel, CoinLabel } from "zignaly-ui";
 import { useExchangeAssets } from "lib/useAPI";
 import useUser from "lib/useUser";
-import * as styled from "./styles";
 import Loader from "components/Loader/Loader";
-import CoinIcon from "components/common/CoinIcon";
 import { useDispatch } from "react-redux";
 import { openModal } from "src/store/actions/ui";
 import { ModalTypesId } from "typings/modal";
@@ -50,15 +46,7 @@ const DashboardCoins = () => {
         // todo: remove once sorting fixed
         .sort((a, b) => parseFloat(b[1].balanceTotalUSDT) - parseFloat(a[1].balanceTotalUSDT))
         .map(([coin, coinBalance]) => ({
-          coin: (
-            <styled.CoinCell>
-              <CoinIcon coin={coin} />
-              <Box display="flex" flexDirection="column" ml="12px" alignItems="flex-start">
-                <Typography style={{ lineHeight: "20px" }}>{coin}</Typography>
-                <styled.TypographySecondary>{coinBalance.name}</styled.TypographySecondary>
-              </Box>
-            </styled.CoinCell>
-          ),
+          coin: <CoinLabel coin={coin} name={coinBalance.name} />,
           totalBalance: <PriceLabel coin={coin} value={coinBalance.balanceTotal} />,
           availableBalance: <PriceLabel coin={coin} value={coinBalance.balanceFree} />,
           lockedBalance: <PriceLabel coin={coin} value={coinBalance.balanceLocked} />,
