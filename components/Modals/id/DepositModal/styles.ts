@@ -1,10 +1,8 @@
 // Dependencies
 import styled from "styled-components";
-import { Typography } from "zignaly-ui";
+import QRCodeLib from "qrcode.react";
 
-export const Desc = styled(Typography)`
-  color: #a9a9ba;
-`;
+import { Body as ModalBody } from "../styles";
 
 export const SelectCoinContainer = styled.div`
   display: flex;
@@ -13,4 +11,26 @@ export const SelectCoinContainer = styled.div`
 export const Balances = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 18px;
+  margin-left: 48px;
+
+  > span > span {
+    color: ${(props) => props.theme.neutral000};
+  }
+`;
+
+export const Body = styled(ModalBody)`
+  > div {
+    margin-top: 24px;
+  }
+`;
+
+export const QRCodeContainer = styled.div`
+  margin: 98px auto 0 !important;
+  display: flex;
+  background: ${({ theme }) => theme.neutral000};
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  align-items: center;
 `;

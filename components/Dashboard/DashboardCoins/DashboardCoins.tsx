@@ -59,19 +59,11 @@ const DashboardCoins = () => {
               </Box>
             </styled.CoinCell>
           ),
-          totalBalance: <PriceLabel token={coin} value={coinBalance.balanceTotal} />,
-          availableBalance: <PriceLabel token={coin} value={coinBalance.balanceFree} />,
-          lockedBalance: <PriceLabel token={coin} value={coinBalance.balanceLocked} />,
-          totalBTC: <PriceLabel token="BTC" value={coinBalance.balanceTotalBTC} />,
-          totalUSD: (
-            <NumberFormat
-              value={coinBalance.balanceTotalUSDT}
-              displayType="text"
-              thousandSeparator={true}
-              prefix="$"
-              decimalScale={2}
-            />
-          ),
+          totalBalance: <PriceLabel coin={coin} value={coinBalance.balanceTotal} />,
+          availableBalance: <PriceLabel coin={coin} value={coinBalance.balanceFree} />,
+          lockedBalance: <PriceLabel coin={coin} value={coinBalance.balanceLocked} />,
+          totalBTC: <PriceLabel coin="BTC" value={coinBalance.balanceTotalBTC} />,
+          totalUSD: <PriceLabel coin={"USD"} value={coinBalance.balanceTotalUSDT} fiat />,
           action: (
             <ButtonGroup>
               <Button
@@ -101,7 +93,7 @@ const DashboardCoins = () => {
         }))
     : undefined;
 
-  return <>{data ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return data ? <Table columns={columns} data={data} /> : <Loader />;
 };
 
 export default DashboardCoins;

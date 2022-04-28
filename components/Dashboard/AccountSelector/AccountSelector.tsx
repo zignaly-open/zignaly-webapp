@@ -35,9 +35,9 @@ const AccountSelector = () => {
           <Typography variant="h1">{internalName}</Typography>
           <styled.SelectorContainer>
             <styled.Selector
-              // initialSelectedIndex={exchangeAccounts.findIndex((e) => e.value === internalId) + 1}
+              value={exchangeAccounts.find((e) => e.value === internalId)}
               options={exchangeAccounts}
-              onSelectItem={handleExchangeAccountChange}
+              onChange={handleExchangeAccountChange}
               mode="collapsed"
             />
           </styled.SelectorContainer>

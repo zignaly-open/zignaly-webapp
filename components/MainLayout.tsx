@@ -4,6 +4,7 @@ import Header from "./Header/Header";
 import useUser from "lib/useUser";
 import Head from "next/head";
 import styled from "styled-components";
+import SuperModal from "components/Modals/SuperModal";
 
 const inputGlobalStyles = (
   <GlobalStyles
@@ -23,7 +24,7 @@ const Container = styled.div`
 `;
 
 export default function MainLayout({ children }) {
-  // Wait until we have the user data before rendering (localstorage)
+  // Wait until we have the user data before rendering (pre loaded from localstorage)
   const { user } = useUser();
 
   return (
@@ -39,6 +40,7 @@ export default function MainLayout({ children }) {
       </Head>
       {inputGlobalStyles}
       <Header />
+      <SuperModal />
       <Container>{user && children}</Container>
     </>
   );

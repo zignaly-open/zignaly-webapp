@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import QRCode from "qrcode.react";
 
 // Styled Components
-import { ModalContainer, Title, Body, Actions } from "../styles";
+import { Desc } from "../styles";
 
 // Assets
-import { Button, Select, Typography } from "zignaly-ui";
+import { Button, InputText, Select, Typography } from "zignaly-ui";
 import { closeModal } from "src/store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets, useExchangeDepositAddress } from "lib/useAPI";
@@ -19,22 +19,25 @@ import { TextField } from "@mui/material";
 
 import * as styled from "./styles";
 import NumberFormat from "react-number-format";
+import Modal from "components/Modals/Modal";
+import { CoinNetwork } from "src/services/tradeApiClient.types";
 
 type DepositModalTypesProps = {
-  action?: any;
+  open: boolean;
+  onClose: () => void;
   initialCoin: string;
 };
 
-function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): React.ReactElement {
+function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): React.ReactElement {
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, false);
   const intl = useIntl();
   const [selectedCoin, setSelectedCoin] = useState(initialCoin);
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<CoinNetwork>(null);
   const { data: depositAddress } = useExchangeDepositAddress(
     selectedExchange?.internalId,
     selectedCoin,
-    selectedNetwork,
+    selectedNetwork?.network,
   );
 
   useEffect(() => {
@@ -44,21 +47,23 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
   }, [selectedCoin]);
 
   return (
-    <ModalContainer width={"420px"}>
-      <Title>
-        <FormattedMessage id="deposit.title" />
-      </Title>
-      <Body>
+    <Modal
+      open={open}
+      width="large"
+      onClose={onClose}
+      title={<FormattedMessage id="deposit.title" />}
+    >
+      <Desc>
+        <FormattedMessage id="deposit.reflect" />
+      </Desc>
+      <styled.Body>
         {assets ? (
           <>
-            <styled.Desc variant="h3">
-              <FormattedMessage id="deposit.reflect" />
-            </styled.Desc>
             <styled.SelectCoinContainer>
               <AssetSelect
                 assets={assets}
-                // initialSelectedIndex={coinsOptions?.findIndex((o) => o.value === initialCoin) + 1}
-                onSelectItem={(item) => setSelectedCoin(item.value)}
+                onChange={(item) => setSelectedCoin(item.value)}
+                selectedAsset={selectedCoin}
               />
               {selectedCoin && (
                 <styled.Balances>
@@ -102,31 +107,23 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
               <>
                 <NetworkSelect
                   networks={assets[selectedCoin].networks}
-                  onSelectItem={(item) => setSelectedNetwork(item.value)}
+                  onChange={(item) => setSelectedNetwork(item.value)}
+                  selectedNetwork={selectedNetwork?.network}
+                  fullWidth={true}
                 />
                 {selectedNetwork &&
                   (depositAddress ? (
                     <>
-                      <TextField
-                        value={depositAddress.address}
-                        fullWidth
-                        multiline
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                      <QRCode size={200} value={depositAddress.address} />
+                      <InputText defaultValue={depositAddress.address} readOnly={true} />
+                      <styled.QRCodeContainer>
+                        <QRCode value={depositAddress.address} size={156} />
+                      </styled.QRCodeContainer>
                       {depositAddress.tag && (
                         <>
-                          <TextField
-                            value={depositAddress.tag}
-                            fullWidth
-                            multiline
-                            InputProps={{
-                              readOnly: true,
-                            }}
-                          />
-                          <QRCode size={200} value={depositAddress.tag} />
+                          <InputText defaultValue={depositAddress.tag} readOnly={true} />
+                          <styled.QRCodeContainer>
+                            <QRCode value={depositAddress.tag} size={156} />
+                          </styled.QRCodeContainer>
                         </>
                       )}
                     </>
@@ -139,8 +136,8 @@ function DepositModal({ action = null, initialCoin }: DepositModalTypesProps): R
         ) : (
           <Loader />
         )}
-      </Body>
-    </ModalContainer>
+      </styled.Body>
+    </Modal>
   );
 }
 
