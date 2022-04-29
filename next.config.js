@@ -47,7 +47,7 @@ module.exports = withBundleAnalyzer(
       if (process.env.NODE_ENV === "development") {
         // This part is needed when using zignaly-ui package locally with npm link, to avoid errors about
         // multiple versions of the same package running. (Invalid hook call)
-        config.resolve.alias["react"] = path.resolve("./node_modules/react");
+        config.resolve.alias.react = path.resolve("./node_modules/react");
         config.resolve.alias["react-dom"] = path.resolve("./node_modules/react-dom");
         config.resolve.alias["@mui/material"] = path.resolve("./node_modules/@mui/material");
         // config.resolve.alias["@emotion/styled"] = path.resolve("./node_modules/@emotion/styled");
@@ -72,28 +72,16 @@ module.exports = withBundleAnalyzer(
           type: "json",
           use: "yaml-loader",
         },
-        // {
-        //   test: /\.svg$/i,
-        //   type: "asset",
-        //   resourceQuery: /url/, // *.svg?url
-        // },
-        // {
-        //   test: /\.svg$/i,
-        //   issuer: /\.[jt]sx?$/,
-        //   resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
-        //   use: ["@svgr/webpack"],
-        // },
-        // {
-        //   test: /\.svg$/i,
-        //   type: "asset",
-        // },
         {
-          test: /\.svg$/,
+          test: /\.svg$/i,
+          type: "asset",
+          resourceQuery: /url/, // *.svg?url
+        },
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: { not: [/url/] },
           use: ["@svgr/webpack"],
-          // loader: "@svgr/webpack",
-          // options: {
-          //   exportType: "named",
-          // },
         },
       );
 
