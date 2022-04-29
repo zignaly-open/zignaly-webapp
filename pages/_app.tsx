@@ -19,6 +19,10 @@ import "./legacy.scss";
 import "./styles.css";
 import Head from "next/head";
 
+// todo: Replace these old components
+import ErrorAlert from "src/components/Alerts/ErrorAlert";
+import SuccessAlert from "src/components/Alerts/SuccessAlert";
+
 const WithReduxProvider = (Component) => (props) =>
   (
     <Provider store={store}>
@@ -82,6 +86,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                       crossOrigin=""
                     />
                   </Head>
+                  <ErrorAlert />
+                  <SuccessAlert />
                   <Component {...pageProps} />
                 </Auth>
               </SWRAuthConfig>

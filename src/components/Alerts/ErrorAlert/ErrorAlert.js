@@ -1,11 +1,10 @@
 import React from "react";
-import "./ErrorAlert.scss";
 import { Snackbar, Slide } from "@mui/material";
 import useStoreUIAlertsSelector from "../../../hooks/useStoreUIAlertsSelector";
 import { useDispatch } from "react-redux";
 import { hideErrorAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
-import { Alert, AlertTitle } from '@mui/material';
+import { Alert, AlertTitle } from "@mui/material";
 
 const ErrorAlert = () => {
   const storeAlerts = useStoreUIAlertsSelector();

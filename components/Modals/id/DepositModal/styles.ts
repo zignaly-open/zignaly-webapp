@@ -34,3 +34,10 @@ export const QRCodeContainer = styled.div`
   height: 200px;
   align-items: center;
 `;
+
+export const NotSure = styled.a`
+  margin-left: 17px;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+`;

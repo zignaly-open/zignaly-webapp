@@ -7,16 +7,15 @@ import QRCode from "qrcode.react";
 import { Desc } from "../styles";
 
 // Assets
-import { Button, InputText, Select, Typography } from "zignaly-ui";
-import { closeModal } from "src/store/actions/ui";
+import { ErrorMessage, IconButton, InputText, CopyIcon, Typography, TextButton } from "zignaly-ui";
+import { closeModal, showSuccessAlert } from "src/store/actions/ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets, useExchangeDepositAddress } from "lib/useAPI";
 import useUser from "lib/useUser";
 import Loader from "components/Loader/Loader";
 import AssetSelect from "components/common/AssetSelect";
 import NetworkSelect from "components/common/NetworkSelect";
-import { TextField } from "@mui/material";
-
+import { Box } from "@mui/material";
 import * as styled from "./styles";
 import NumberFormat from "react-number-format";
 import Modal from "components/Modals/Modal";
@@ -26,6 +25,18 @@ type DepositModalTypesProps = {
   open: boolean;
   onClose: () => void;
   initialCoin: string;
+};
+
+const CopyButton = ({ content, successMessage }: { content: string; successMessage: string }) => {
+  const dispatch = useDispatch();
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(content).then(() => {
+      dispatch(showSuccessAlert("Success", successMessage));
+    });
+  };
+
+  return <IconButton onClick={copyAddress} icon={<CopyIcon />} />;
 };
 
 function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): React.ReactElement {
@@ -42,7 +53,6 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
 
   useEffect(() => {
     // Reset selected network on coin change
-    // todo: doesn't work due to Select component controlled
     setSelectedNetwork(null);
   }, [selectedCoin]);
 
@@ -114,7 +124,35 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
                 {selectedNetwork &&
                   (depositAddress ? (
                     <>
-                      <InputText defaultValue={depositAddress.address} readOnly={true} />
+                      <InputText
+                        defaultValue={depositAddress.address}
+                        readOnly={true}
+                        rightSideElement={
+                          <CopyButton
+                            content={depositAddress.address}
+                            successMessage={intl.formatMessage({ id: "deposit.address.copied" })}
+                          />
+                        }
+                      />
+                      {selectedNetwork && (
+                        <Box display="flex" alignItems="center">
+                          <ErrorMessage
+                            text={intl.formatMessage(
+                              {
+                                id: "wallet.deposit.caution",
+                              },
+                              {
+                                coin: selectedCoin,
+                                network: selectedNetwork.name,
+                              },
+                            )}
+                          />
+                          <TextButton caption={<FormattedMessage id="wallet.deposit.notsure" />} />
+                          {/* <styled.NotSure href="https://help.zignaly.com" target="_blank">
+                            <FormattedMessage id="wallet.deposit.notsure" />
+                          </styled.NotSure> */}
+                        </Box>
+                      )}
                       <styled.QRCodeContainer>
                         <QRCode value={depositAddress.address} size={156} />
                       </styled.QRCodeContainer>
