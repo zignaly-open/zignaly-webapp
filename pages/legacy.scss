@@ -3,6 +3,8 @@
 @import "../src/styles/colors.scss";
 @import "../src/components/Forms/SignupForm/SignupForm.scss";
 @import "../src/components/Passwords/PasswordStrength/PasswordStrength.scss";
+@import "../src/components/Alerts/ErrorAlert/ErrorAlert.scss";
+@import "../src/components/Alerts/SuccessAlert/SuccessAlert.scss";
 
 .captchaTerms {
   h6 {
