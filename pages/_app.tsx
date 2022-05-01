@@ -79,10 +79,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <Head>
                     {/* Preload fonts */}
                     <link
-                      rel="preload"
-                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
                       as="font"
                       crossOrigin=""
+                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
+                      rel="preload"
                     />
                   </Head>
                   <Component {...pageProps} />

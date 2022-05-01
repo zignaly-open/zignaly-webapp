@@ -60,4 +60,8 @@
 
 body {
   /* font-family: "Avenir Next", "Helvetica Neue", "Helvetica", "Arial", sans-serif; */
+  background-image: url('/images/background-dark.png');
+  background-color: #07081a;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

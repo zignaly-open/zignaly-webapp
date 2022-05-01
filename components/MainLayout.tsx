@@ -31,10 +31,10 @@ export default function MainLayout({ children }) {
       <Head>
         {/* Preload fonts */}
         <link
-          rel="preload"
-          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
           as="font"
           crossOrigin=""
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
+          rel="preload"
         />
       </Head>
       {inputGlobalStyles}

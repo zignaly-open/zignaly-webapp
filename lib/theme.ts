@@ -1,4 +1,4 @@
-import { createTheme, PaletteMode, ThemeOptions } from "@mui/material";
+import { PaletteMode, ThemeOptions } from "@mui/material";
 import BackgroundImage from "../src/images/bg.jpg";
 
 export const colors = {

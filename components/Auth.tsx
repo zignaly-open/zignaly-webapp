@@ -22,6 +22,7 @@ function Auth({ children }) {
       setItemCache(keys.session, data);
     },
   });
+
   const isPublic =
     router.pathname === "/" ||
     router.pathname.match(/^\/login|\/signup|\/recover|\/disable2fa|\/changeEmail|\/deleteAccount/);
@@ -53,7 +54,7 @@ function Auth({ children }) {
     firstCheck.current = false;
   }, [isPublic]);
 
-  return authorized && children;
+  return authorized ? children : null;
 }
 
 export default Auth;

@@ -32,7 +32,8 @@
       "*": [
         "*",
         "src/*",
-      ]
+      ],
+      "shared": ["./shared/*"]
     },
     "moduleResolution": "node",
     "skipLibCheck": true,
