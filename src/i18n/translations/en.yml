@@ -2020,6 +2020,8 @@ exchange.type.futures: "Futures"
 
 signals.menu: "Signals"
 signals.trade: "Trade with signals"
+signals.syntax: "Signal Syntax Example:"
+signals.key: "Key:"
 signals.desc: "Automate your trades be sending signals to Zignaly. Positions will appear on the <a>positions page</a>."
 signals.desc2: "To create signals, use the url below with your secret key and desired parameters. Docs and help creating signals can be found here:"
 signal.help.how: "How to send signals"
