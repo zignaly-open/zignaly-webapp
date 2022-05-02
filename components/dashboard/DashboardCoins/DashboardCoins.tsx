@@ -1,8 +1,8 @@
 import React from "react";
 import { useIntl } from "react-intl";
 import { Table, Button, ButtonGroup, PriceLabel, CoinLabel } from "zignaly-ui";
-import { useExchangeAssets } from "lib/useAPI";
-import useUser from "lib/useUser";
+import { useExchangeAssets } from "lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import Loader from "components/Loader/Loader";
 import { useDispatch } from "react-redux";
 import { openModal } from "src/store/actions/ui";

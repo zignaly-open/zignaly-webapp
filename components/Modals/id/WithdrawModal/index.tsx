@@ -8,8 +8,8 @@ import { ModalContainer, Title, Actions, Desc } from "../styles";
 
 // Assets
 import { FormattedMessage, useIntl } from "react-intl";
-import { useExchangeAssets } from "lib/useAPI";
-import useUser from "lib/useUser";
+import { useExchangeAssets } from "lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import Loader from "components/Loader/Loader";
 import { TextField } from "@mui/material";
 

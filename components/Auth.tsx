@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
 import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
-import { useAPIFetch } from "lib/useAPI";
+import { useAPIFetch } from "lib/hooks/useAPI";
 import { isSessionValid, useSession } from "lib/session";
 import { cache, keys, setItemCache } from "lib/cacheAPI";
-import useRedirection from "lib/useRedirection";
+import useRedirection from "lib/hooks/useRedirection";
 
 function Auth({ children }) {
   const router = useRouter();

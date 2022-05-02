@@ -7,6 +7,7 @@ import { CloseIcon, IconButton } from "zignaly-ui";
 // Styled Components
 import { Backdrop, Animation } from "./styles";
 import { Body, CloseButton, ModalContainer, Title } from "../id/styles";
+import useEventListener from "lib/hooks/useEventListener";
 
 function Modal({ title, onClose, open, width, children }) {
   // Animation
@@ -14,6 +15,14 @@ function Modal({ title, onClose, open, width, children }) {
     opacity: 0,
     visibility: "hidden",
   }));
+
+  // const handleKeyDown = (event) => {
+  //   // Escape
+  //   if (event.keyCode === 27) {
+  //     onClose();
+  //   }
+  // };
+  // useEventListener("keydown", handleKeyDown);
 
   useEffect(() => {
     if (open) {

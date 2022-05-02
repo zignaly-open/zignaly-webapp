@@ -1,7 +1,7 @@
 import React from "react";
 import { GlobalStyles } from "@mui/material";
 import Header from "./Header/Header";
-import useUser from "lib/useUser";
+import useUser from "lib/hooks/useUser";
 import Head from "next/head";
 import styled from "styled-components";
 import SuperModal from "components/modals/SuperModal";

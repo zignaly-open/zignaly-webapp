@@ -5,7 +5,7 @@ import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { localStorageProvider } from "lib/cacheAPI";
-import useRedirection from "lib/useRedirection";
+import useRedirection from "lib/hooks/useRedirection";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useStoreSessionSelector();

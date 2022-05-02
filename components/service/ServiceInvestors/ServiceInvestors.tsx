@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useInvestors } from "../../../lib/useAPI";
+import { useInvestors } from "../../../lib/hooks/useAPI";
 import {
   PriceLabel,
   PercentageIndicator,

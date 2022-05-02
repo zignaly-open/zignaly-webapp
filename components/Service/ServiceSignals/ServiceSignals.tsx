@@ -1,8 +1,8 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import Loader from "components/Loader/Loader";
-import { useUserService } from "lib/useAPI";
-import useUser from "lib/useUser";
+import { useUserService } from "lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import Link from "next/link";
 import React, { useContext } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
