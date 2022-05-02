@@ -20,7 +20,7 @@ import { BigNumber, ethers } from "ethers";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { closeModal } from "src/store/actions/ui";
-import Modal from "components/Modals/Modal";
+import Modal from "components/modals/Modal";
 import { CoinNetwork } from "src/services/tradeApiClient.types";
 
 type DepositModalTypesProps = {

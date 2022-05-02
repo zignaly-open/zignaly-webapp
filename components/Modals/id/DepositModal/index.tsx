@@ -18,7 +18,7 @@ import NetworkSelect from "components/common/NetworkSelect";
 import { Box } from "@mui/material";
 import * as styled from "./styles";
 import NumberFormat from "react-number-format";
-import Modal from "components/Modals/Modal";
+import Modal from "components/modals/Modal";
 import { CoinNetwork } from "src/services/tradeApiClient.types";
 
 type DepositModalTypesProps = {

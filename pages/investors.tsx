@@ -3,8 +3,8 @@ import Head from "next/head";
 import { PRODUCT_NAME } from "../lib/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
-import ServiceInvestors from "../components/Service/ServiceInvestors/ServiceInvestors";
-import ServiceLayout from "../components/Service/ServiceLayout";
+import ServiceInvestors from "../components/service/ServiceInvestors/ServiceInvestors";
+import ServiceLayout from "../components/service/ServiceLayout";
 
 const Investors = () => {
   const intl = useIntl();
