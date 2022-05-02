@@ -4,7 +4,7 @@ import Header from "./Header/Header";
 import useUser from "lib/useUser";
 import Head from "next/head";
 import styled from "styled-components";
-import SuperModal from "components/Modals/SuperModal";
+import SuperModal from "components/modals/SuperModal";
 
 const inputGlobalStyles = (
   <GlobalStyles

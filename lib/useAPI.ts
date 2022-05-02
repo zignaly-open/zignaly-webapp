@@ -66,9 +66,47 @@ const useAPI = () => {
 };
 export default useAPI;
 
+/**
+ * =============
+ * User Data
+ * =============
+ */
+
 export const useSessionData = (options?: SWRConfiguration) => {
   return useAPIFetch<GetSessionRes>("/user/session", options);
 };
+
+/**
+ * =============
+ * User Exchange Data
+ * =============
+ */
+
+export const useExchangeAssets = (exchangeInternalId: string, reduced: boolean) => {
+  const path = exchangeInternalId
+    ? `/user/exchanges/${exchangeInternalId}/assets?${reduced ? "view=reduced" : ""}`
+    : null;
+  return useAPIFetch<ExchangeAssetsDict>(path);
+};
+
+export const useExchangeDepositAddress = (
+  exchangeInternalId: string,
+  coin: string,
+  network: string,
+) => {
+  const path = valid(exchangeInternalId, coin, network)
+    ? `/user/exchanges/${exchangeInternalId}/deposit_address/${coin}?${new URLSearchParams({
+        network,
+      })}`
+    : null;
+  return useAPIFetch<ExchangeDepositAddress>(path);
+};
+
+/**
+ * =============
+ * Service Data
+ * =============
+ */
 
 export const useServicePositions = (providerId: string) => {
   const path = `/user/providers/${providerId}/positions`;
@@ -78,13 +116,6 @@ export const useServicePositions = (providerId: string) => {
     ...res,
     data: positions as Position[],
   };
-};
-
-export const useExchangeAssets = (exchangeInternalId: string, reduced: boolean) => {
-  const path = exchangeInternalId
-    ? `/user/exchanges/${exchangeInternalId}/assets?${reduced ? "view=reduced" : ""}`
-    : null;
-  return useAPIFetch<ExchangeAssetsDict>(path);
 };
 
 export const useInvestors = (providerId: string) => {
@@ -102,25 +133,29 @@ export const useServiceOrders = (exchangeInternalId: string, providerId: string)
   return useAPIFetch<ExchangeOpenOrdersObject[]>(path);
 };
 
+/**
+ * Get services owned by an user
+ */
 export const useUserServices = (timeFrame: number = 7) => {
-  const path = `/providers/user_services/${timeFrame}`;
+  const path = `/providers/user_services/${timeFrame}?type=profit_sharing`;
   return useAPIFetch<ProviderEntity[]>(path);
 };
 
+/**
+ * Get services connected by an user
+ */
 export const useUserService = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/providers/${providerId}?${new URLSearchParams({ exchangeInternalId })}`;
   return useAPIFetch<DefaultProviderGetObject>(path);
 };
 
-export const useExchangeDepositAddress = (
-  exchangeInternalId: string,
-  coin: string,
-  network: string,
-) => {
-  const path = valid(exchangeInternalId, coin, network)
-    ? `/user/exchanges/${exchangeInternalId}/deposit_address/${coin}?${new URLSearchParams({
-        network,
-      })}`
+/**
+ * Get service assets balances
+ */
+export const useServiceAssets = (exchangeInternalId: string, providerId: string) => {
+  const path = valid(exchangeInternalId, providerId)
+    ? `/user/exchanges/${exchangeInternalId}/providers/${providerId}/assets`
     : null;
-  return useAPIFetch<ExchangeDepositAddress>(path);
+
+  return useAPIFetch<ExchangeAssetsDict>(path);
 };

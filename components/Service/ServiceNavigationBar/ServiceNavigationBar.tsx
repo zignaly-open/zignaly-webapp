@@ -38,6 +38,11 @@ const ServiceNavigationBar = () => {
           <FormattedMessage id="service.investors" />
         </a>
       </Link>
+      <Link href="/balances">
+        <a className={router.pathname === "/balances" ? "active" : ""}>
+          <FormattedMessage id="service.balances" />
+        </a>
+      </Link>
       <Link href="/signals">
         <a className={router.pathname === "/signals" ? "active" : ""}>
           <FormattedMessage id="signals.menu" />

@@ -1,10 +1,10 @@
 import React from "react";
 import Head from "next/head";
-import ServiceDashboard from "../components/Service/ServiceDashboard/ServiceDashboard";
+import ServiceDashboard from "../components/service/dashboard/ServiceDashboard";
 import { PRODUCT_NAME } from "../lib/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
-import ServiceLayout from "../components/Service/ServiceLayout";
+import ServiceLayout from "../components/service/ServiceLayout";
 
 type Props = {};
 

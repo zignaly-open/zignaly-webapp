@@ -2009,6 +2009,8 @@ service.exchangeOrders: "Exchange Orders"
 service.investors: "Investors"
 service.selectService: "Select service"
 service.dashboard: "Service Dashboard"
+service.balances: "Service Balances"
+service.myBalances: "My Balances"
 
 dashboard.myCoins: "My Coins"
 dashboard.type: "Type:"
