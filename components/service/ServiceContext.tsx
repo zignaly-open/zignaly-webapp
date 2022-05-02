@@ -1,5 +1,5 @@
-import { useUserServices } from "lib/useAPI";
-import useSelectedService from "lib/useSelectedService";
+import { useUserServices } from "lib/hooks/useAPI";
+import useSelectedService from "lib/hooks/useSelectedService";
 import React, { createContext } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";

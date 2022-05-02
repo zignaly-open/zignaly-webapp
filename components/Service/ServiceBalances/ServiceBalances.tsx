@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { useServiceAssets } from "lib/useAPI";
+import { useServiceAssets } from "lib/hooks/useAPI";
 import { PriceLabel, Table, CoinLabel } from "zignaly-ui";
 import Loader from "components/Loader/Loader";
-import useUser from "lib/useUser";
+import useUser from "lib/hooks/useUser";
 import { useIntl } from "react-intl";
 import { ServiceContext } from "../ServiceContext";
 

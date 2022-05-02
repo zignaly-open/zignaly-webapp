@@ -1,8 +1,9 @@
 // Dependencies
 import styled from "styled-components";
 import { IconButton, Typography } from "zignaly-ui";
+import { ModalProps } from "../Modal";
 
-const getWidth = (width: ModalContainerProps["width"]): number => {
+const getWidth = (width: ModalProps["width"]): number => {
   switch (width) {
     case "large":
     default:
@@ -11,7 +12,7 @@ const getWidth = (width: ModalContainerProps["width"]): number => {
 };
 
 type ModalContainerProps = {
-  width: "fullscreen" | "large" | "small" | number;
+  width: ModalProps["width"];
   padding?: string;
 };
 export const ModalContainer = styled.div<ModalContainerProps>`
@@ -62,7 +63,9 @@ export const Actions = styled.div`
 `;
 
 export const CloseButton = styled(IconButton)`
-  img {
+  svg {
     color: #65647e;
+    width: 32px;
+    height: 32px;
   }
 `;

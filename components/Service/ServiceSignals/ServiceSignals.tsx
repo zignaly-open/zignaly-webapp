@@ -1,20 +1,30 @@
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import Loader from "components/Loader/Loader";
-import { useUserService } from "lib/useAPI";
-import useUser from "lib/useUser";
+import { useUserService } from "lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { InputText, Typography, TextButton, OpenArrowIcon } from "zignaly-ui";
+import {
+  InputText,
+  Typography,
+  TextButton,
+  OpenArrowIcon,
+  IconButton,
+  EyeClosedIcon,
+  EyeOpenIcon,
+} from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
 import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "lib/constants";
+import CopyButton from "components/common/CopyButton";
 
 const SIGNAL_URL =
   "https://zignaly.com/api/signals.php?key=YOURSECRETKEY&type=entry&exchange=zignaly&pair=ethusdt&orderType=limit&positionSize=10&signalId=123&limitPrice=3420&takeProfitPercentage1=20&takeProfitAmountPercentage1=100&stopLossPercentage=-5";
 
 const ServiceSignals = () => {
+  const [showKey, setShowKey] = useState(true);
   const { selectedService } = useContext(ServiceContext);
   const { selectedExchange } = useUser();
   const { data } = useUserService(selectedExchange.internalId, selectedService.id);
@@ -56,8 +66,19 @@ const ServiceSignals = () => {
           <Box mt="60px" mb="48px">
             <InputText
               value={data.key}
+              type={showKey ? "text" : "password"}
               readOnly
               label={intl.formatMessage({ id: "signals.key" })}
+              rightSideElement={
+                <styled.SideButtons>
+                  <IconButton
+                    onClick={() => setShowKey(!showKey)}
+                    icon={showKey ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                    variant="flat"
+                  />
+                  <CopyButton content={data.key} />
+                </styled.SideButtons>
+              }
             />
           </Box>
           <InputText
@@ -65,6 +86,11 @@ const ServiceSignals = () => {
             readOnly
             multiline
             label={intl.formatMessage({ id: "signals.syntax" })}
+            rightSideElement={
+              <styled.SideButtons>
+                <CopyButton content={SIGNAL_URL} />
+              </styled.SideButtons>
+            }
           />
         </>
       ) : (

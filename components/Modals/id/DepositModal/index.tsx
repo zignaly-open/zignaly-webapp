@@ -6,12 +6,10 @@ import QRCode from "qrcode.react";
 // Styled Components
 import { Desc } from "../styles";
 
-// Assets
-import { ErrorMessage, IconButton, InputText, CopyIcon, Typography, TextButton } from "zignaly-ui";
-import { closeModal, showSuccessAlert } from "src/store/actions/ui";
+import { ErrorMessage, InputText, Typography, TextButton } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useExchangeAssets, useExchangeDepositAddress } from "lib/useAPI";
-import useUser from "lib/useUser";
+import { useExchangeAssets, useExchangeDepositAddress } from "lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import Loader from "components/Loader/Loader";
 import AssetSelect from "components/common/AssetSelect";
 import NetworkSelect from "components/common/NetworkSelect";
@@ -20,23 +18,12 @@ import * as styled from "./styles";
 import NumberFormat from "react-number-format";
 import Modal from "components/modals/Modal";
 import { CoinNetwork } from "src/services/tradeApiClient.types";
+import CopyButton from "components/common/CopyButton";
 
 type DepositModalTypesProps = {
   open: boolean;
   onClose: () => void;
   initialCoin: string;
-};
-
-const CopyButton = ({ content, successMessage }: { content: string; successMessage: string }) => {
-  const dispatch = useDispatch();
-
-  const copyAddress = () => {
-    navigator.clipboard.writeText(content).then(() => {
-      dispatch(showSuccessAlert("Success", successMessage));
-    });
-  };
-
-  return <IconButton onClick={copyAddress} icon={<CopyIcon />} />;
 };
 
 function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): React.ReactElement {

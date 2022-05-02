@@ -7,8 +7,8 @@ import { showErrorAlert, showSuccessAlert } from "../../../store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "components/Forms/ResetTwoFAForm";
 import useStoreSessionSelector from "hooks/useStoreSessionSelector";
-import useAPI from "../../../../lib/useAPI";
-import useRedirection from "../../../../lib/useRedirection";
+import useAPI from "../../../../lib/hooks/useAPI";
+import useRedirection from "../../../../lib/hooks/useRedirection";
 
 /**
  * @typedef {import('react').ChangeEvent} ChangeEvent

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import * as styled from "./styles";
 import { Select } from "zignaly-ui";
-import { useUserServices } from "lib/useAPI";
+import { useUserServices } from "lib/hooks/useAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
 import { setSelectedService } from "src/store/actions/settings";

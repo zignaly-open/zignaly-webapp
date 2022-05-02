@@ -2,8 +2,8 @@ import React, { useContext, useMemo } from "react";
 import { Table, Button, ButtonGroup, DateLabel, CloseIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
-import { useContracts } from "../../../lib/useAPI";
-import useUser from "lib/useUser";
+import { useContracts } from "../../../lib/hooks/useAPI";
+import useUser from "lib/hooks/useUser";
 import { ServiceContext } from "../ServiceContext";
 import Loader from "components/Loader/Loader";
 

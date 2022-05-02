@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useInvestors } from "../../../lib/useAPI";
+import { useInvestors } from "../../../lib/hooks/useAPI";
 import {
   PriceLabel,
   PercentageIndicator,
@@ -68,7 +68,7 @@ const ServiceInvestors = () => {
       successFee: "10%",
       feesInZig: <img src={CheckIcon} />,
       status: <ConnectionStateLabel stateId="connected" />,
-      action: <IconButton icon={OptionsDotsIcon} />,
+      action: <IconButton icon={OptionsDotsIcon} variant="secondary" />,
     },
   ];
 

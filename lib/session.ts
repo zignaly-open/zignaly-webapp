@@ -5,8 +5,8 @@ import { setSelectedExchange } from "src/store/actions/settings";
 import { analyticsTrigger } from "src/utils/analyticsJsApi";
 import gtmPushApi from "src/utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "src/utils/liveSessionApi";
-import useAPI from "./useAPI";
-import useRedirection from "./useRedirection";
+import useAPI from "./hooks/useAPI";
+import useRedirection from "./hooks/useRedirection";
 import { clearCache, keys, setItemCache } from "lib/cacheAPI";
 
 export const isSessionValid = (sessionData: GetSessionRes) =>

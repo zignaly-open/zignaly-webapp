@@ -15,7 +15,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "components/Captcha/CaptchaTerms";
 import VerifyEmailForm from "../VerifyEmailForm";
 // import Captcha from "../../Captcha";
-import useAPI from "../../../../lib/useAPI";
+import useAPI from "../../../../lib/hooks/useAPI";
 import { useSession } from "lib/session";
 
 /**

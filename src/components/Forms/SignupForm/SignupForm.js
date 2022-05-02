@@ -19,8 +19,8 @@ import { setSessionData, startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
-import useAPI from "../../../../lib/useAPI";
-import useRedirection from "../../../../lib/useRedirection";
+import useAPI from "../../../../lib/hooks/useAPI";
+import useRedirection from "../../../../lib/hooks/useRedirection";
 import { useSession } from "lib/session";
 
 const SignupForm = () => {
