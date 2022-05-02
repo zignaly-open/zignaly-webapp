@@ -2609,7 +2609,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Boolean} isAdmin
  * @property {Boolean} isClone
  * @property {Boolean} isCopyTrading
- * @property {Boolean} key
+ * @property {String} key
  * @property {Boolean} list
  * @property {Boolean} liquidated
  * @property {String} logoUrl

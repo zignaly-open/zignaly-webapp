@@ -1,15 +1,14 @@
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import Loader from "components/Loader/Loader";
 import { useUserService } from "lib/useAPI";
 import useUser from "lib/useUser";
 import Link from "next/link";
 import React, { useContext } from "react";
-import { FormattedMessage } from "react-intl";
-import { Typography } from "zignaly-ui";
+import { FormattedMessage, useIntl } from "react-intl";
+import { InputText, Typography, TextButton, OpenArrowIcon } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
-import OpenArrowIcon from "public/images/openArrow.svg";
 import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "lib/constants";
 
 const SIGNAL_URL =
@@ -19,6 +18,7 @@ const ServiceSignals = () => {
   const { selectedService } = useContext(ServiceContext);
   const { selectedExchange } = useUser();
   const { data } = useUserService(selectedExchange.internalId, selectedService.id);
+  const intl = useIntl();
 
   return (
     <styled.Layout>
@@ -39,36 +39,32 @@ const ServiceSignals = () => {
           <FormattedMessage id="signals.desc2" />
         </Typography>
       </div>
-      <Button
-        target="_blank"
-        href={URL_SIGNALS_SEND}
+      <TextButton
+        caption={<FormattedMessage id="signal.help.how" />}
         rightElement={<OpenArrowIcon />}
-        variant="text"
-      >
-        <FormattedMessage id="signal.help.how" />
-      </Button>
-      <Button target="_blank" href={URL_SIGNALS_PARAMS} endIcon={<OpenArrowIcon />} variant="text">
-        <FormattedMessage id="signal.help.params" />
-      </Button>
+        label={intl.formatMessage({ id: "signals.syntax" })}
+        href={URL_SIGNALS_SEND}
+      />
+      <TextButton
+        caption={<FormattedMessage id="signal.help.params" />}
+        rightElement={<OpenArrowIcon />}
+        label={intl.formatMessage({ id: "signals.syntax" })}
+        href={URL_SIGNALS_PARAMS}
+      />
       {data ? (
         <>
-          <Box mt="60px">
-            <TextField
+          <Box mt="60px" mb="48px">
+            <InputText
               value={data.key}
-              fullWidth
-              InputProps={{
-                readOnly: true,
-              }}
+              readOnly
+              label={intl.formatMessage({ id: "signals.key" })}
             />
           </Box>
-          <TextField
+          <InputText
             value={SIGNAL_URL}
-            fullWidth
+            readOnly
             multiline
-            InputProps={{
-              readOnly: true,
-            }}
-            style={{ marginTop: "48px" }}
+            label={intl.formatMessage({ id: "signals.syntax" })}
           />
         </>
       ) : (
