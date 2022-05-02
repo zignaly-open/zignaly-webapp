@@ -63,9 +63,10 @@ export const Actions = styled.div`
 `;
 
 export const CloseButton = styled(IconButton)`
+  button > div > div,
   svg {
     color: #65647e;
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
   }
 `;

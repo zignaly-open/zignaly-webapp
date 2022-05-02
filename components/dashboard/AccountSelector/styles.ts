@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { Typography, Select } from "zignaly-ui";
+import { props } from "cypress/types/bluebird";
+import styled, { css } from "styled-components";
+import { Typography, IconButton, TextButton } from "zignaly-ui";
 
 export const Layout = styled.div`
   height: 56px;
@@ -23,15 +24,28 @@ export const InfoBox = styled.div`
 
 export const TypographyType = styled(Typography).attrs({ variant: "h4" })`
   display: flex;
-
-  /* &:first-child {
-    color: #9ca3af;
-  } */
 `;
 
-export const Selector = styled(Select)`
+export const Selector = styled(IconButton)`
   margin-left: 18px;
-  position: absolute;
 `;
 
-export const SelectorContainer = styled.div``;
+export const AccountsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  button {
+  }
+`;
+
+export const AccountSelectButton = styled(TextButton)<{ selected: boolean }>`
+  > div {
+    justify-content: flex-start;
+    width: 100%;
+    padding: 10px 35px !important;
+    color: ${(props) =>
+      props.selected ? props.theme.highlighted : props.theme.neutral200} !important;
+  }
+`;
