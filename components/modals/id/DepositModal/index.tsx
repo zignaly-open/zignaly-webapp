@@ -27,18 +27,6 @@ type DepositModalTypesProps = {
   initialCoin: string;
 };
 
-const CopyButton = ({ content, successMessage }: { content: string; successMessage: string }) => {
-  const dispatch = useDispatch();
-
-  const copyAddress = () => {
-    navigator.clipboard.writeText(content).then(() => {
-      dispatch(showSuccessAlert("Success", successMessage));
-    });
-  };
-
-  return <IconButton onClick={copyAddress} icon={<CopyIcon />} />;
-};
-
 function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): React.ReactElement {
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, false);

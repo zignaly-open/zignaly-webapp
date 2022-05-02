@@ -13,6 +13,9 @@ const inputGlobalStyles = (
         background: `url(${theme.background.image.src}) no-repeat center center fixed`,
         backgroundSize: "cover",
       },
+      svg: {
+        fill: "currentcolor",
+      },
     })}
   />
 );

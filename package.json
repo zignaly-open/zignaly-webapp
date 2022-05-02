@@ -91,7 +91,7 @@
     "styled-components": "^5.3.5",
     "swr": "^1.2.2",
     "whatwg-fetch": "^3.6.2",
-    "zignaly-ui": "^0.0.35"
+    "zignaly-ui": "^0.0.36"
   },
   "resolutions": {
     "moment": "2.24.0",

@@ -13,6 +13,7 @@ import { Control } from "./styles";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
 import CoinIcon from "./CoinIcon";
+import CopyButton from "components/common/CopyButton";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -48,19 +49,6 @@ const TypographyToken = styled(Typography)`
   margin-left: 8px;
   font-size: 18px;
 `;
-
-export const CopyButton = ({ value, success }: { value: string; success: string }) => {
-  const copyToClipboard = useClipboard();
-
-  return (
-    <IconButton
-      aria-label="Copy"
-      onClick={() => copyToClipboard(value, success)}
-      size="large">
-      <FileCopyOutlined width={24} height={24} />
-    </IconButton>
-  );
-};
 
 export const NetworkCautionMessage = ({ network, coin }: { network: string; coin: string }) =>
   network && (
