@@ -68,7 +68,7 @@ const ServiceInvestors = () => {
       successFee: "10%",
       feesInZig: <img src={CheckIcon} />,
       status: <ConnectionStateLabel stateId="connected" />,
-      action: <IconButton icon={OptionsDotsIcon} />,
+      action: <IconButton icon={OptionsDotsIcon} variant="secondary" />,
     },
   ];
 
