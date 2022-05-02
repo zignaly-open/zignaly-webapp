@@ -106,16 +106,16 @@ const WalletWithdrawView = ({
     return (
       <WalletWithdrawConfirm
         address={withdrawData.address}
-        network={network}
-        memo={withdrawData.memo}
-        networkName={networkOptions.find((o) => o.value === network).label}
         amount={withdrawData.amount}
         coin={coinData}
-        zigCoin={coins?.ZIG}
+        memo={withdrawData.memo}
+        network={network}
+        networkName={networkOptions.find((o) => o.value === network).label}
+        onCancel={() => setWithdrawData(null)}
         onClose={onClose}
         onDone={onDone}
-        onCancel={() => setWithdrawData(null)}
         setPath={setPath}
+        zigCoin={coins?.ZIG}
       />
     );
   }
