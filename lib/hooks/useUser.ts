@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import useSWR from "swr";
-import { UserEntity } from "../src/services/tradeApiClient.types";
+import { UserEntity } from "../../src/services/tradeApiClient.types";
 import { keys, cache, setItemCache } from "lib/cacheAPI";
 
 const useUser = () => {

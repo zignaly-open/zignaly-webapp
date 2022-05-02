@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import ImageWithBasePath from "components/common/ImageWithBasePath";
 import useUser from "lib/hooks/useUser";
-import { Typography } from "zignaly-ui";
+import { Typography, OptionDotsIcon, TextButton, ArrowBottomIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
@@ -17,15 +17,29 @@ const AccountSelector = () => {
   } = useUser();
   const dispatch = useDispatch();
 
-  const exchangeAccounts = user.exchanges.map((e) => ({
-    caption: e.internalName,
-    value: e.internalId,
-    // leftElement:
-  }));
-
   const handleExchangeAccountChange = (e) => {
     dispatch(setSelectedExchange(e.value));
   };
+
+  const Accounts = useCallback(() => {
+    return (
+      <styled.AccountsContainer>
+        {user.exchanges.map((e) => (
+          <styled.AccountSelectButton
+            selected={internalId === e.internalId}
+            onClick={() => dispatch(setSelectedExchange(e.internalId))}
+            key={e.internalId}
+            caption={e.internalName}
+            leftElement={
+              <Box display="flex" alignItems="center" mr="15px">
+                <ImageWithBasePath src="/images/avatar.svg" width={26} height={26} layout="fixed" />
+              </Box>
+            }
+          />
+        ))}
+      </styled.AccountsContainer>
+    );
+  }, [user.exchanges, internalId]);
 
   return (
     <styled.Layout>
@@ -33,14 +47,15 @@ const AccountSelector = () => {
       <styled.InfoBox>
         <Box display="flex">
           <Typography variant="h1">{internalName}</Typography>
-          <styled.SelectorContainer>
-            <styled.Selector
-              value={exchangeAccounts.find((e) => e.value === internalId)}
-              options={exchangeAccounts}
-              onChange={handleExchangeAccountChange}
-              mode="collapsed"
-            />
-          </styled.SelectorContainer>
+          <styled.Selector
+            icon={<ArrowBottomIcon />}
+            variant="flat"
+            renderDropDown={<Accounts />}
+            dropDownOptions={{
+              alignment: "right",
+              position: "static",
+            }}
+          />
         </Box>
         <styled.TypographyType>
           <FormattedMessage id="dashboard.type" />
