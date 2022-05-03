@@ -58,7 +58,10 @@ const useAPI = () => {
 
   const getUserData = (token?: string): Promise<UserEntity> => {
     return fetcher(baseUrl + "/user", {
-      headers: { ...(token && { Authorization: `Bearer ${token}` }) },
+      headers: {
+        "Accept-version": 2,
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
     });
   };
 
@@ -118,7 +121,7 @@ export const useServicePositions = (providerId: string) => {
   };
 };
 
-export const useInvestors = (providerId: string) => {
+export const useServiceInvestors = (providerId: string) => {
   const path = `/providers/${providerId}/investors`;
   return useAPIFetch<InvestorsRes[]>(path);
 };
@@ -153,9 +156,8 @@ export const useUserService = (exchangeInternalId: string, providerId: string) =
  * Get service assets balances
  */
 export const useServiceAssets = (exchangeInternalId: string, providerId: string) => {
-  const path = valid(exchangeInternalId, providerId)
-    ? `/user/exchanges/${exchangeInternalId}/providers/${providerId}/assets`
-    : null;
-
+  const path =
+    valid(exchangeInternalId, providerId) &&
+    `/user/exchanges/${exchangeInternalId}/providers/${providerId}/assets`;
   return useAPIFetch<ExchangeAssetsDict>(path);
 };

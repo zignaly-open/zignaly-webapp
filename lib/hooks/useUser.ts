@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { UserEntity } from "../../src/services/tradeApiClient.types";
 import { keys, cache, setItemCache } from "lib/cacheAPI";
 
@@ -7,11 +7,16 @@ export const AVATARS_COUNT = 7;
 
 const useUser = () => {
   const initialData = cache.get(keys.user);
+  const options = {
+    headers: {
+      "Accept-version": 2,
+    },
+  };
   const {
     data: user,
     mutate,
     error,
-  } = useSWR<UserEntity>(keys.user, {
+  } = useSWR<UserEntity>([keys.user, options], {
     // Don't fetch updated data right away if the data has just been loaded in login (_validated)
     revalidateOnMount: initialData?._validated !== true,
     // revalidateIfStale: false,
