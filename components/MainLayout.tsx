@@ -16,6 +16,14 @@ const inputGlobalStyles = (
       svg: {
         fill: "currentcolor",
       },
+      a: {
+        color: theme.links,
+        textDecorationLine: "none",
+      },
+      h1: {
+        // todo: remove important once Typography selector has less specificity
+        color: `${theme.neutral100} !important`,
+      },
     })}
   />
 );
