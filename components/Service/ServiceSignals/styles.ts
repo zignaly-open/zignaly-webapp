@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const Layout = styled.div`
-  h2 {
-    text-transform: uppercase;
+  h1 {
     margin-bottom: 16px;
   }
 `;

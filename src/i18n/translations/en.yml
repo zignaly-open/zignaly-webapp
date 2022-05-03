@@ -2019,7 +2019,7 @@ exchange.type.spot: "Spot"
 exchange.type.futures: "Futures"
 
 signals.menu: "Signals"
-signals.trade: "Trade with signals"
+signals.trade: "Trade With Signals"
 signals.syntax: "Signal Syntax Example:"
 signals.key: "Key:"
 signals.desc: "Automate your trades be sending signals to Zignaly. Positions will appear on the <a>positions page</a>."

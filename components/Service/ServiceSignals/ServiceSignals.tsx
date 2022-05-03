@@ -1,4 +1,3 @@
-import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import Loader from "components/Loader/Loader";
 import { useUserService } from "lib/hooks/useAPI";
@@ -19,24 +18,26 @@ import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
 import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "lib/constants";
 import CopyButton from "components/common/CopyButton";
+import { useTheme } from "styled-components";
 
 const SIGNAL_URL =
   "https://zignaly.com/api/signals.php?key=YOURSECRETKEY&type=entry&exchange=zignaly&pair=ethusdt&orderType=limit&positionSize=10&signalId=123&limitPrice=3420&takeProfitPercentage1=20&takeProfitAmountPercentage1=100&stopLossPercentage=-5";
 
 const ServiceSignals = () => {
-  const [showKey, setShowKey] = useState(true);
+  const [showKey, setShowKey] = useState(false);
   const { selectedService } = useContext(ServiceContext);
   const { selectedExchange } = useUser();
   const { data } = useUserService(selectedExchange.internalId, selectedService.id);
   const intl = useIntl();
+  const theme = useTheme();
 
   return (
     <styled.Layout>
-      <Typography variant="h2">
+      <Typography variant="h1">
         <FormattedMessage id="signals.trade" />
       </Typography>
       <div>
-        <Typography>
+        <Typography color="neutral200">
           <FormattedMessage
             id="signals.desc"
             values={{
