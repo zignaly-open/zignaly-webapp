@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from "react";
 import ImageWithBasePath from "components/common/ImageWithBasePath";
-import useUser from "lib/hooks/useUser";
+import useUser, { AVATARS_COUNT } from "lib/hooks/useUser";
 import { Typography, OptionDotsIcon, TextButton, ArrowBottomIcon } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
@@ -14,17 +14,14 @@ const AccountSelector = () => {
   const {
     user,
     selectedExchange: { internalName, exchangeType, internalId },
+    avatar,
   } = useUser();
   const dispatch = useDispatch();
-
-  const handleExchangeAccountChange = (e) => {
-    dispatch(setSelectedExchange(e.value));
-  };
 
   const Accounts = useCallback(() => {
     return (
       <styled.AccountsContainer>
-        {user.exchanges.map((e) => (
+        {user.exchanges.map((e, i) => (
           <styled.AccountSelectButton
             selected={internalId === e.internalId}
             onClick={() => dispatch(setSelectedExchange(e.internalId))}
@@ -32,7 +29,14 @@ const AccountSelector = () => {
             caption={e.internalName}
             leftElement={
               <Box display="flex" alignItems="center" mr="15px">
-                <ImageWithBasePath src="/images/avatar.svg" width={26} height={26} layout="fixed" />
+                <ImageWithBasePath
+                  src={`/images/avatar-${
+                    user.exchanges.findIndex((_e) => e.internalId === _e.internalId) % AVATARS_COUNT
+                  }.svg`}
+                  width={26}
+                  height={26}
+                  layout="fixed"
+                />
               </Box>
             }
           />
@@ -43,7 +47,7 @@ const AccountSelector = () => {
 
   return (
     <styled.Layout>
-      <ImageWithBasePath src="/images/avatar.svg" width={68} height={68} />
+      <ImageWithBasePath src={avatar} width={68} height={68} />
       <styled.InfoBox>
         <Box display="flex">
           <Typography variant="h1">{internalName}</Typography>
