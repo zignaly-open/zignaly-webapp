@@ -2,7 +2,7 @@ const CURRENT_VERSION = 1;
 const CACHE_KEY = "app-cache";
 
 export const keys = {
-  session: `${process.env.NEXT_PUBLIC_TRADEAPI_URL}/session`,
+  session: `${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user/session`,
   user: `${process.env.NEXT_PUBLIC_TRADEAPI_URL}/user`,
 };
 
