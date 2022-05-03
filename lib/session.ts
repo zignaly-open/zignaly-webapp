@@ -8,6 +8,7 @@ import { endLiveSession, startLiveSession } from "src/utils/liveSessionApi";
 import useAPI from "./hooks/useAPI";
 import useRedirection from "./hooks/useRedirection";
 import { clearCache, keys, setItemCache } from "lib/cacheAPI";
+import { useSWRConfig } from "swr";
 
 export const isSessionValid = (sessionData: GetSessionRes) =>
   sessionData && sessionData.validUntil * 1000 > new Date().getTime();
@@ -48,6 +49,7 @@ export const useSession = () => {
   const { redirectDashboard, redirectLogin } = useRedirection();
   const { getUserData } = useAPI();
   const selectedExchangeId = useSelector((state: any) => state.settings.selectedExchangeId);
+  const { cache } = useSWRConfig();
 
   const startSession = async (token, type: "login" | "signup") => {
     dispatch(startTradeApiSession(token));
@@ -64,7 +66,12 @@ export const useSession = () => {
 
   const endSession = async (withReturnUrl: boolean) => {
     dispatch(endTradeApiSession());
+    // Clear local storage cache
     clearCache();
+    // Clear swr cache to avoid returning response belonging to previous user.
+    // As an improvement we could pass the token to useSWR([path, token]) to cache specific
+    // @ts-ignore
+    cache.clear();
     endLiveSession();
     redirectLogin(withReturnUrl);
   };

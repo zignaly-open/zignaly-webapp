@@ -6,12 +6,12 @@ import { keys, cache, setItemCache } from "lib/cacheAPI";
 export const AVATARS_COUNT = 7;
 
 const useUser = () => {
-  const initialData = cache.get(keys.user);
   const options = {
     headers: {
       "Accept-version": 2,
     },
   };
+  const initialData = cache.get(keys.user);
   const {
     data: user,
     mutate,
@@ -19,6 +19,8 @@ const useUser = () => {
   } = useSWR<UserEntity>([keys.user, options], {
     // Don't fetch updated data right away if the data has just been loaded in login (_validated)
     revalidateOnMount: initialData?._validated !== true,
+    // Manually set initialData since with custom header our caching key is not the same as swr
+    fallbackData: initialData,
     // revalidateIfStale: false,
     onSuccess(newUser) {
       setItemCache(keys.user, newUser);

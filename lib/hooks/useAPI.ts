@@ -24,7 +24,7 @@ const valid = (...args): boolean => {
 const baseUrl = process.env.NEXT_PUBLIC_TRADEAPI_URL;
 
 /**
- *  Call useSWR hook with custom options. Automatically set baseUrl and don't query if empty params are passed.
+ *  useSWR wrapper to automatically set baseUrl.
  */
 export const useAPIFetch = <Data = any, Error = any>(
   path: string,
