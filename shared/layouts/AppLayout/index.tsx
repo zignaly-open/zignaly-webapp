@@ -1,5 +1,5 @@
 // Dependencies
-import React from "react";
+import React, { useCallback } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import {
   Header,
   IconButton,
-  ZigsBalance,
-  BrandImage, Select,
+  BrandImage,
+  Button,
 } from "zignaly-ui";
 
 // Types
@@ -23,7 +23,7 @@ import {
   DropDownContainer,
   NavList,
   Networks,
-  Bold,
+  MenuSection,
 } from "./styles";
 
 // Hooks
@@ -33,10 +33,18 @@ import useUser from "lib/useUser";
 import navRoutes, { NavRoutesProps } from "../../config/navRoutes";
 import { socialNetworksLinks } from "./utils";
 
+// Hooks
+import { useSession } from "../../../lib/session";
+
 function AppLayout({children, title}: AppLayoutProps) {
   // Hooks
   const { user } = useUser();
   const router = useRouter();
+  const { endSession } = useSession();
+
+  const handleDisconnectAccount = useCallback(() => {
+    endSession(false);
+  }, []);
 
   return (
     <Layout>
@@ -74,15 +82,15 @@ function AppLayout({children, title}: AppLayoutProps) {
                 </NavList>
                 <NavList className={"last"}>
                   <NavLink href={"https://help.zignaly.com/hc/en-us"} target={"_blank"}>Help Docs</NavLink>
-                  <NavLink>
+                  {/* <NavLink disabled={true}>
                     <Bold>ZIG</Bold> $0.0514
-                  </NavLink>
+                  </NavLink>*/}
                 </NavList>
                 <Networks>
                   {socialNetworksLinks.map((socialNetwork, index) => {
                     const IconComponent = socialNetwork.icon;
                     return (
-                      <NavLink href={"https://twitter.com/zignaly"} key={`--social-network-nav-link-${index.toString()}`} target={"_blank"}>
+                      <NavLink href={socialNetwork.path} key={`--social-network-nav-link-${index.toString()}`} target={"_blank"}>
                         <IconComponent
                           height={"22px"}
                           width={"22px"}
@@ -97,7 +105,7 @@ function AppLayout({children, title}: AppLayoutProps) {
           />,
         ]}
         rightElements={[
-          <ZigsBalance balance={0} key={"balance"} />,
+          /* <ZigsBalance balance={0} key={"balance"} />,*/
           <IconButton
             dropDownOptions={{
               alignment: "right",
@@ -108,9 +116,12 @@ function AppLayout({children, title}: AppLayoutProps) {
             key={"user"}
             renderDropDown={(
               <DropDownContainer>
-                <NavList className={"last"}>
+                <NavList>
                   <NavLink>My Balances</NavLink>
-                  <NavLink>Settings</NavLink>
+                  {/* <NavLink>Settings</NavLink>*/}
+                </NavList>
+                <NavList className={"last"}>
+                  <Button caption={"Logout"} onClick={handleDisconnectAccount} />
                 </NavList>
               </DropDownContainer>
             )}

@@ -1,6 +1,5 @@
 import React from "react";
 import { GlobalStyles } from "@mui/material";
-import Header from "./Header/Header";
 import useUser from "lib/useUser";
 import Head from "next/head";
 import styled from "styled-components";
@@ -38,7 +37,6 @@ export default function MainLayout({ children }) {
         />
       </Head>
       {inputGlobalStyles}
-      <Header />
       <Container>{user && children}</Container>
     </>
   );

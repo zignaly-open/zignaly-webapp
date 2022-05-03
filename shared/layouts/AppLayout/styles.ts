@@ -2,7 +2,8 @@
 import styled from "styled-components";
 import { styledIf } from "../../utils/styled";
 
-export const Layout = styled.main``;
+export const Layout = styled.main`
+`;
 
 export const Container = styled.div`
   padding-top: 52px;
@@ -13,23 +14,28 @@ export const Navigation = styled.nav`
   gap: 22px;
 `;
 
-export const NavLink = styled.a<{active?: boolean}>`
+export const NavLink = styled.a<{active?: boolean, disabled?: boolean}>`
   color: #706f82;
   font-weight: 500;
   font-size: 14px;
   line-height: 28px;
   letter-spacing: 0.55px;
   text-decoration: none;
-  cursor: pointer;
   transition: 0.15s linear;
-
-  &:hover {
-    color: #fff;
-  }
 
   ${({active}) => (`
     ${styledIf(active, `
       color: #7682f7;
+    `, `
+
+      &:not([disabled]) {
+        cursor: pointer;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+
     `)}
   `)}
 `;
@@ -38,7 +44,7 @@ export const DropDownContainer = styled.div`
   padding: 22px;
 `;
 
-export const NavList = styled.nav`
+export const NavList = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -79,4 +85,12 @@ export const Networks = styled.div`
       color: #fff;
     }
   }
+`;
+
+export const MenuSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 12px;
+  border-top: 1px solid #fff;
 `;
