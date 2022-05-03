@@ -35,9 +35,8 @@ export const AccountsContainer = styled.div`
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 20px;
-
-  button {
-  }
+  overflow: scroll;
+  max-height: 352px;
 `;
 
 export const AccountSelectButton = styled(TextButton)<{ selected: boolean }>`

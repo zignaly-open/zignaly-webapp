@@ -1,13 +1,3 @@
-// export const versions = {
-//   session: 1,
-//   user: 1,
-// };
-
-// export const keys0 = {
-//   session: `session_${versions.session}`,
-//   user: `user_${versions.user}`,
-// };
-
 const CURRENT_VERSION = 1;
 const CACHE_KEY = "app-cache";
 
