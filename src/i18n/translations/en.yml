@@ -2027,6 +2027,14 @@ signals.desc2: "To create signals, use the url below with your secret key and de
 signal.help.how: "How to send signals"
 signal.help.params: "All signals parameters"
 
+investors.investment: "Investment"
+investors.pnl: "P & L"
+investors.pnlTotal: "P & L Total"
+investors.totalFees: "Total Fees Paid"
+investors.successFee: "Success Fee"
+investors.feesZIG: "Fees in ZIG"
+investors.status: "Status"
+
 deposit.title: "Deposit Crypto"
 deposit.reflect: "Deposits may take up to 3 hours to reflect in your balance."
 deposit.coin: "Coin"

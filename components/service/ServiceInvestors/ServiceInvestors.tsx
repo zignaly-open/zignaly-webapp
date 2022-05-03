@@ -1,56 +1,78 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useInvestors } from "../../../lib/hooks/useAPI";
+import React, { useContext } from "react";
 import {
   PriceLabel,
   PercentageIndicator,
   ConnectionStateLabel,
-  IconButton,
-  OptionsDotsIcon,
   Table,
   CheckIcon,
+  CloseIcon,
+  UserIcon,
+  Typography,
 } from "zignaly-ui";
 import Loader from "components/Loader/Loader";
+import { useServiceInvestors } from "lib/hooks/useAPI";
+import { ServiceContext } from "../ServiceContext";
+import { FormattedMessage, useIntl } from "react-intl";
+
+import * as styled from "./styles";
 
 const ServiceInvestors = () => {
+  const intl = useIntl();
+  const { selectedService } = useContext(ServiceContext);
+  const { data: investors, error } = useServiceInvestors(selectedService.id);
+
   const columns = [
     {
-      Header: "User ID",
+      Header: intl.formatMessage({ id: "col.users.userid" }),
       accessor: "userId",
     },
     {
-      Header: "Email",
+      Header: intl.formatMessage({ id: "col.users.email" }),
       accessor: "email",
     },
     {
-      Header: "Investment",
+      Header: intl.formatMessage({ id: "investors.investment" }),
       accessor: "investment",
     },
     {
-      Header: "P & L",
+      Header: intl.formatMessage({ id: "investors.pnl" }),
       accessor: "pnl",
     },
     {
-      Header: "P & L Total",
+      Header: intl.formatMessage({ id: "investors.pnlTotal" }),
       accessor: "pnlTotal",
     },
     {
-      Header: "Total Fees Paid",
+      Header: intl.formatMessage({ id: "investors.totalFees" }),
       accessor: "totalFeesPaid",
     },
     {
-      Header: "Success Fee",
+      Header: intl.formatMessage({ id: "investors.successFee" }),
       accessor: "successFee",
     },
     {
-      Header: "Fees in ZIG",
+      Header: intl.formatMessage({ id: "investors.feesZIG" }),
       accessor: "feesInZig",
     },
     {
-      Header: "Status",
+      Header: intl.formatMessage({ id: "investors.investment" }),
       accessor: "status",
     },
   ];
 
+  // const data = investors?.map((u) => ({
+  //   userId: u.userId,
+  //   email: u.email,
+  //   investment: <PriceLabel token={"USDT"} value={"1250"} />,
+  //   pnl: (
+  //     <PriceLabel token={"USDT"} value={"37.5"} bottomElement={<PercentageIndicator value={3} />} />
+  //   ),
+  //   pnlTotal: <PriceLabel token={"USDT"} value={"145"} />,
+  //   totalFeesPaid: <PriceLabel token={"USDT"} value={"218"} />,
+  //   successFee: `${u.successFee}%`,
+  //   feesInZig: u.feesInZig ? <CheckIcon /> : <CloseIcon />,
+  //   status: <ConnectionStateLabel stateId="connected" />,
+  // }));
   const data = [
     {
       userId: "5f886d29da8e9666b1684c9a",
@@ -68,11 +90,23 @@ const ServiceInvestors = () => {
       successFee: "10%",
       feesInZig: <img src={CheckIcon} />,
       status: <ConnectionStateLabel stateId="connected" />,
-      action: <IconButton icon={OptionsDotsIcon} variant="secondary" />,
     },
   ];
 
-  return data ? <Table columns={columns} data={data} /> : <Loader />;
+  return data ? (
+    <>
+      <styled.InvestorsBar>
+        <UserIcon />
+        <Typography variant="h3">
+          {data.length}&nbsp;
+          <FormattedMessage id="service.investors" />
+        </Typography>
+      </styled.InvestorsBar>
+      <Table columns={columns} data={data} />
+    </>
+  ) : (
+    <Loader />
+  );
 };
 
 export default ServiceInvestors;
