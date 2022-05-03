@@ -81,3 +81,6 @@ storybook-static
 # next.js
 /.next/
 /out/
+
+.idea
+.vscode
