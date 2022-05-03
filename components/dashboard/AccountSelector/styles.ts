@@ -24,6 +24,10 @@ export const InfoBox = styled.div`
 
 export const TypographyType = styled(Typography).attrs({ variant: "h4" })`
   display: flex;
+
+  span {
+    color: #9ca3af;
+  }
 `;
 
 export const Selector = styled(IconButton)`

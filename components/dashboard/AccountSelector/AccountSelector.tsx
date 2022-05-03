@@ -62,7 +62,7 @@ const AccountSelector = () => {
           />
         </Box>
         <styled.TypographyType>
-          <FormattedMessage id="dashboard.type" />
+          <FormattedMessage id="dashboard.type" tagName="span" />
           &nbsp;
           <FormattedMessage
             id={exchangeType === "futures" ? "exchange.type.futures" : "exchange.type.spot"}
