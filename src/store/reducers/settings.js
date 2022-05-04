@@ -82,10 +82,10 @@ const settings = createReducer(initialState.settings, {
 
     if (userAction === "add") {
       // Add column to displayed list
-      state.displayColumns[table].push(changedColumn);
+      state.hiddenColumns[table].push(changedColumn);
     } else {
       // Remove column to displayed list
-      state.displayColumns[table] = state.displayColumns[table].filter((c) => c !== changedColumn);
+      state.hiddenColumns[table] = state.displayColumns[table].filter((c) => c !== changedColumn);
     }
   },
 
