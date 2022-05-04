@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { Table, Button, ButtonGroup, PriceLabel, CoinLabel } from "zignaly-ui";
 import { useExchangeAssets } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import Loader from "components/Loader/Loader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "src/store/actions/ui";
 import { ModalTypesId } from "typings/modal";
+import { setDisplayColumn } from "src/store/actions/settings";
+
+const TABLE_NAME = "dashboardCoins";
 
 const DashboardCoins = () => {
   const intl = useIntl();
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, true);
   const dispatch = useDispatch();
+  const hiddenColumns = useSelector(
+    (state: any) => state.settings.hiddenColumns && state.settings.hiddenColumns[TABLE_NAME],
+  );
 
   const columns = [
     {
@@ -51,7 +57,7 @@ const DashboardCoins = () => {
           availableBalance: <PriceLabel coin={coin} value={coinBalance.balanceFree} />,
           lockedBalance: <PriceLabel coin={coin} value={coinBalance.balanceLocked} />,
           totalBTC: <PriceLabel coin="BTC" value={coinBalance.balanceTotalBTC} />,
-          totalUSD: <PriceLabel coin={"USD"} value={coinBalance.balanceTotalUSDT} fiat />,
+          totalUSD: <PriceLabel coin="USD" value={coinBalance.balanceTotalUSDT} fiat />,
           action: (
             <ButtonGroup>
               <Button
@@ -81,7 +87,20 @@ const DashboardCoins = () => {
         }))
     : undefined;
 
-  return data ? <Table columns={columns} data={data} /> : <Loader />;
+  const handleColumnHidden = (column, isHidden) => {
+    dispatch(setDisplayColumn({ column, isHidden, table: TABLE_NAME }));
+  };
+
+  return data ? (
+    <Table
+      columns={columns}
+      data={data}
+      defaultHiddenColumns={hiddenColumns}
+      onColumnHidden={handleColumnHidden}
+    />
+  ) : (
+    <Loader />
+  );
 };
 
 export default DashboardCoins;

@@ -126,6 +126,7 @@
  * @property {Object<string, boolean>} disableCacheModal
  * @property {Boolean} balanceBox
  * @property {DisplayColumns} displayColumns
+ * @property {DisplayColumns} hiddenColumns
  * @property {SortColumns} sortColumns
  * @property {ResponsiveTables} responsiveTables
  * @property {RowsPerPage} rowsPerPage
@@ -226,6 +227,7 @@ const initialState = {
       vaultInfo: false,
       vaultBenefits: false,
     },
+    hiddenColumn: {},
     displayColumns: {
       signalpAnalytics: [
         "percentageProfit",
@@ -545,7 +547,7 @@ const initialState = {
       modal: {
         id: null,
         data: null,
-      }
+      },
     },
     alerts: {
       success: {
