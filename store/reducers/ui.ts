@@ -7,8 +7,6 @@ import {
   SHOW_SUCCESS_ALERT,
   HIDE_SUCCESS_ALERT,
   ASK_2FA,
-  SHOW_CREATE_PROVIDER,
-  SHOW_CREATE_TRADER,
   OPEN_MODAL,
   CLOSE_MODAL,
 } from "../actions/ui";
@@ -17,14 +15,6 @@ const ui = (state = initialState.ui, action) => {
   const newState = assign({}, state);
 
   switch (action.type) {
-    case SHOW_CREATE_PROVIDER:
-      newState.modal = { ...newState.modal, createProvider: action.payload };
-      break;
-
-    case SHOW_CREATE_TRADER:
-      newState.modal = { ...newState.modal, createTrader: action.payload };
-      break;
-
     case SHOW_ERROR_ALERT:
       newState.alerts = {
         ...newState.alerts,
