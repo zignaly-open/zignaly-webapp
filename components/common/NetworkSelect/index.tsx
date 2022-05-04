@@ -2,7 +2,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { CoinNetwork } from "src/services/tradeApiClient.types";
 import { Select } from "zignaly-ui";
-import { getChainIcon } from "src/utils/chain";
+import { getChainIcon } from "utils/chain";
 
 // import * as styled from "./styles";
 import { SelectIcon } from "../AssetSelect/styles";

@@ -13,7 +13,7 @@ export interface ServiceContextType {
 export const ServiceContext = createContext<ServiceContextType | null>(null);
 
 const ServiceProvider = (props) => {
-  const selectedServiceId = useSelector((state: any) => state.settings.selectedService);
+  const selectedServiceId = useSelector((state: any) => state.settings.selectedServiceId);
   // const selectedServiceId = useSelectedService();
   const { data } = useUserServices();
   const selectedService = data?.find((s) => s.id === selectedServiceId);

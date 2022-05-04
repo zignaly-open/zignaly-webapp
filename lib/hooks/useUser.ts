@@ -29,7 +29,7 @@ const useUser = () => {
   // const loading = !user && !error ? true : false;
   const selectedExchangeId = useSelector((state: any) => state.settings.selectedExchangeId);
   const accountIndex = user?.exchanges.findIndex((e) => e.internalId === selectedExchangeId);
-  const avatar = `/images/avatar-${accountIndex % AVATARS_COUNT}.svg`;
+  const avatar = `/images/avatars/avatar-${accountIndex % AVATARS_COUNT}.svg`;
   const selectedExchange = user?.exchanges[accountIndex];
 
   return {

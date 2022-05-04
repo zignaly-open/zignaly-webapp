@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { UserEntity } from "src/services/tradeApiClient.types";
-import { endTradeApiSession, startTradeApiSession } from "src/store/actions/session";
-import { setSelectedExchange } from "src/store/actions/settings";
-import { analyticsTrigger } from "src/utils/analyticsJsApi";
-import gtmPushApi from "src/utils/gtmPushApi";
-import { endLiveSession, startLiveSession } from "src/utils/liveSessionApi";
+import { endTradeApiSession, startTradeApiSession } from "store/actions/session";
+import { setSelectedExchange } from "store/actions/settings";
+import { analyticsTrigger } from "legacy/utils/analyticsJsApi";
+import gtmPushApi from "legacy/utils/gtmPushApi";
+import { endLiveSession, startLiveSession } from "legacy/utils/liveSessionApi";
 import useAPI from "./hooks/useAPI";
 import useRedirection from "./hooks/useRedirection";
 import { clearCache, keys, setItemCache } from "lib/cacheAPI";

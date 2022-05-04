@@ -40,7 +40,6 @@
     "@reduxjs/toolkit": "^1.8.0",
     "@welldone-software/why-did-you-render": "^6.2.3",
     "analytics": "^0.7.16",
-    "chart.js": "^2.9.3",
     "countries-list": "^2.6.1",
     "country-flags-svg": "^1.1.1",
     "cross-env": "^7.0.3",

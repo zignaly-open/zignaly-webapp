@@ -9,7 +9,7 @@ import {
   UserIcon,
   Typography,
 } from "zignaly-ui";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 import { useServiceInvestors } from "lib/hooks/useAPI";
 import { ServiceContext } from "../ServiceContext";
 import { FormattedMessage, useIntl } from "react-intl";

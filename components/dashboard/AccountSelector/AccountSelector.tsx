@@ -5,7 +5,7 @@ import { Typography, OptionDotsIcon, TextButton, ArrowBottomIcon } from "zignaly
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { setSelectedExchange } from "src/store/actions/settings";
+import { setSelectedExchange } from "store/actions/settings";
 
 import * as styled from "./styles";
 
@@ -30,7 +30,7 @@ const AccountSelector = () => {
             leftElement={
               <Box display="flex" alignItems="center" mr="15px">
                 <ImageWithBasePath
-                  src={`/images/avatar-${
+                  src={`/images/avatars/avatar-${
                     user.exchanges.findIndex((_e) => e.internalId === _e.internalId) % AVATARS_COUNT
                   }.svg`}
                   width={26}

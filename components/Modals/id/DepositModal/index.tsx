@@ -10,7 +10,7 @@ import { ErrorMessage, InputText, Typography, TextButton } from "zignaly-ui";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets, useExchangeDepositAddress } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 import AssetSelect from "components/common/AssetSelect";
 import NetworkSelect from "components/common/NetworkSelect";
 import { Box } from "@mui/material";

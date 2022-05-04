@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import ServiceBalances from "components/service/ServiceBalances/ServiceBalances";
-import { PRODUCT_NAME } from "../lib/constants";
+import { PRODUCT_NAME } from "../utils/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
 import ServiceLayout from "../components/service/ServiceLayout";

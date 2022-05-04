@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import { PRODUCT_NAME } from "../lib/constants";
+import { PRODUCT_NAME } from "../utils/constants";
 import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
 import ServiceInvestors from "../components/service/ServiceInvestors/ServiceInvestors";
