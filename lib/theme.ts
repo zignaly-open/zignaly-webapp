@@ -1,5 +1,4 @@
 import { createTheme, PaletteMode, ThemeOptions } from "@mui/material";
-// import BackgroundImage from "/images/bg.jpg";
 
 export const colors = {
   black: "#191927",
@@ -142,7 +141,7 @@ const getTheme = (darkMode: boolean, login: boolean): ThemeOptions => ({
     },
   },
   background: {
-    image: "/images/bg.jpg",
+    image: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/bg.jpg`,
   },
 });
 
