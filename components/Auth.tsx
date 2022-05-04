@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/router";
-import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
 import { useAPIFetch } from "lib/hooks/useAPI";
 import { isSessionValid, useSession } from "lib/session";
 import { cache, keys, setItemCache } from "lib/cacheAPI";
 import useRedirection from "lib/hooks/useRedirection";
+import { useSelector } from "react-redux";
 
 function Auth({ children }) {
   const router = useRouter();
-  const storeSession = useStoreSessionSelector();
+  const storeSession = useSelector((state: any) => state.session);
   const token = storeSession.tradeApi.accessToken;
   const initialSessionData = useMemo(() => cache.get(keys.session), []);
   const initSessionValid = token && isSessionValid(initialSessionData);

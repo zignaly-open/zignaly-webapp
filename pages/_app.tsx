@@ -5,23 +5,22 @@ import type { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
 import getTheme from "../lib/theme";
 import { IntlProvider } from "react-intl";
-import ENMessages from "../src/i18n/translations/en.yml";
-import translations from "../src/i18n/translations";
+import translationsEN from "i18n/translations/en.yml";
+import translations from "i18n/translations";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import useStoreSettingsSelector from "../src/hooks/useStoreSettingsSelector";
-import { Provider } from "react-redux";
-import { store } from "../src/store/store.js";
+import { Provider, useSelector } from "react-redux";
+import { store } from "store/store";
 import { useRouter } from "next/router";
-import { getLanguageCodefromLocale } from "../src/i18n";
+import { getLanguageCodefromLocale } from "../i18n";
 import Auth from "../components/Auth";
 import SWRAuthConfig from "components/SWRAuthConfig";
-import "./legacy.scss";
-import "./styles.css";
 import Head from "next/head";
+import "./styles.css";
+import "../legacy/styles/legacy.scss";
 
 // todo: Replace these old components
-import ErrorAlert from "src/components/Alerts/ErrorAlert";
-import SuccessAlert from "src/components/Alerts/SuccessAlert";
+import ErrorAlert from "legacy/components/Alerts/ErrorAlert";
+import SuccessAlert from "legacy/components/Alerts/SuccessAlert";
 
 const WithReduxProvider = (Component) => (props) =>
   (
@@ -31,7 +30,7 @@ const WithReduxProvider = (Component) => (props) =>
   );
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { darkStyle, locale } = useStoreSettingsSelector();
+  const { darkStyle, locale } = useSelector((state: any) => state.settings);
   const router = useRouter();
   const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
   const darkTheme = !isLogin;
@@ -51,13 +50,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   // (missed in object keys) just stay in english
   useEffect(() => {
     getMessages(locale).then((selectedLanguageMessages) => {
-      const mergedMessages = Object.assign({}, ENMessages, selectedLanguageMessages);
+      const mergedMessages = Object.assign({}, translationsEN, selectedLanguageMessages);
       setMessages(mergedMessages);
     });
   }, [locale]);
 
   return (
-    <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || ENMessages}>
+    <IntlProvider locale={getLanguageCodefromLocale(locale)} messages={messages || translationsEN}>
       <GoogleReCaptchaProvider
         language="en"
         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}

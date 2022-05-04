@@ -6,12 +6,12 @@ import { Select } from "zignaly-ui";
 import { useUserServices } from "lib/hooks/useAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
-import { setSelectedService } from "src/store/actions/settings";
+import { setSelectedService } from "store/actions/settings";
 
 const ServiceNavigationBar = () => {
   const intl = useIntl();
   const router = useRouter();
-  const selectedService = useSelector((state: any) => state.settings.selectedService);
+  const selectedService = useSelector((state: any) => state.settings.selectedServiceId);
   const { data: services } = useUserServices();
   const options = services?.map((s) => ({ caption: s.name, value: s.id }));
   const dispatch = useDispatch();

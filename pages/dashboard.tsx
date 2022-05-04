@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Head from "next/head";
 import MainLayout from "components/MainLayout";
 import { useIntl } from "react-intl";
-import { PRODUCT_NAME } from "../lib/constants";
+import { PRODUCT_NAME } from "../utils/constants";
 import DashboardCoins from "components/dashboard/DashboardCoins/DashboardCoins";
 import { Tabs, Tab, TabPanel } from "zignaly-ui";
 import AccountSelector from "components/dashboard/AccountSelector/AccountSelector";

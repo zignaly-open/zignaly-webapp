@@ -6,7 +6,7 @@ import { useServicePositions } from "../../../lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import { useSelector } from "react-redux";
 import { ServiceContext } from "../ServiceContext";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 
 const renderProfit = (position: Position) => {
   return (

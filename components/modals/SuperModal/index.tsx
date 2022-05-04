@@ -1,7 +1,6 @@
 // Dependencies
 import React, { useCallback, useEffect, useMemo } from "react";
 import { useSpring, config } from "react-spring";
-import { isFirefox } from "react-device-detect";
 
 // Hooks
 import { useDispatch, useSelector } from "react-redux";
@@ -13,14 +12,10 @@ import { ModalTypesId } from "typings/modal";
 import ErrorModal from "../id/ErrorModal";
 import DepositModal from "../id/DepositModal";
 
-// Styled Components
-import { Backdrop, Animation } from "./styles";
-
 // Selectors
-import { getCurrentModal } from "src/store/selectors/ui";
+import { getCurrentModal } from "store/selectors/ui";
 import WithdrawModal from "../id/WithdrawModal";
-import Modal from "../Modal";
-import { closeModal } from "src/store/actions/ui";
+import { closeModal } from "store/actions/ui";
 
 function SuperModal() {
   // Context

@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 import { useUserService } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import Link from "next/link";
@@ -16,7 +16,7 @@ import {
 } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
-import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "lib/constants";
+import { URL_SIGNALS_PARAMS, URL_SIGNALS_SEND } from "utils/constants";
 import CopyButton from "components/common/CopyButton";
 import { useTheme } from "styled-components";
 

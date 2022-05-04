@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { showSuccessAlert } from "src/store/actions/ui";
+import { showSuccessAlert } from "store/actions/ui";
 import { CopyIcon, IconButton } from "zignaly-ui";
 
 const CopyButton = ({ content, successMessage }: { content: string; successMessage?: string }) => {

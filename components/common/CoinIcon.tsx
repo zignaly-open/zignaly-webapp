@@ -1,5 +1,5 @@
 import React from "react";
-import cloudinary from "lib/cloudinary";
+import cloudinary from "utils/cloudinary";
 import Image from "next/image";
 
 const CoinIcon = ({

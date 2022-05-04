@@ -3,11 +3,11 @@ import { useIntl } from "react-intl";
 import { Table, Button, ButtonGroup, PriceLabel, CoinLabel } from "zignaly-ui";
 import { useExchangeAssets } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "src/store/actions/ui";
 import { ModalTypesId } from "typings/modal";
-import { setDisplayColumn } from "src/store/actions/settings";
+import { openModal } from "store/actions/ui";
+import { setHiddenColumn } from "store/actions/settings";
 
 const TABLE_NAME = "dashboardCoins";
 
@@ -88,7 +88,7 @@ const DashboardCoins = () => {
     : undefined;
 
   const handleColumnHidden = (column, isHidden) => {
-    dispatch(setDisplayColumn({ column, isHidden, table: TABLE_NAME }));
+    dispatch(setHiddenColumn({ column, isHidden, table: TABLE_NAME }));
   };
 
   return data ? (

@@ -8,7 +8,7 @@ import { ModalContainer, Title, Body, Actions } from "../styles";
 // Assets
 import { WarningOutline } from "react-ionicons";
 import { Button } from "zignaly-ui";
-import { closeModal } from "src/store/actions/ui";
+import { closeModal } from "store/actions/ui";
 
 type ErrorModalTypesProps = {
   title: string;

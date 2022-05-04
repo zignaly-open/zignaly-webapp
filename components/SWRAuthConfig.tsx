@@ -1,14 +1,13 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import { endTradeApiSession } from "../src/store/actions/session";
-import useStoreSessionSelector from "../src/hooks/useStoreSessionSelector";
+import { endTradeApiSession } from "store/actions/session";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { localStorageProvider } from "lib/cacheAPI";
 import useRedirection from "lib/hooks/useRedirection";
 
 const SWRAuthConfig = ({ children }) => {
-  const storeSession = useStoreSessionSelector();
+  const storeSession = useSelector((state: any) => state.session);
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
   const router = useRouter();

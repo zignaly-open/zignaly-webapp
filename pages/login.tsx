@@ -1,10 +1,10 @@
 import React from "react";
 import { Container } from "@mui/material";
 import Head from "next/head";
-import Login from "../src/components/Login/Login";
-import LoginTabs from "../src/components/Login/LoginTabs";
-import LoginForm from "../src/components/Forms/LoginForm";
-import { PRODUCT_NAME } from "../lib/constants";
+import Login from "../legacy/components/Login/Login";
+import LoginTabs from "../legacy/components/Login/LoginTabs";
+import LoginForm from "../legacy/components/Forms/LoginForm";
+import { PRODUCT_NAME } from "../utils/constants";
 import { useIntl } from "react-intl";
 
 const LoginPage = () => {

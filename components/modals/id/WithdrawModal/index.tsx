@@ -6,20 +6,15 @@ import NetworkSelect from "components/common/NetworkSelect";
 // Styled Components
 import { ModalContainer, Title, Actions, Desc } from "../styles";
 
-// Assets
 import { FormattedMessage, useIntl } from "react-intl";
 import { useExchangeAssets } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
-import Loader from "components/Loader/Loader";
-import { TextField } from "@mui/material";
-
+import Loader from "components/common/Loader/Loader";
 import * as styled from "./styles";
-import { Button, CloseIcon, IconButton, InputAmount, InputText } from "zignaly-ui";
-import cloudinary from "lib/cloudinary";
-import { BigNumber, ethers } from "ethers";
+import { Button, InputAmount, InputText } from "zignaly-ui";
+import cloudinary from "utils/cloudinary";
+import { ethers } from "ethers";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { closeModal } from "src/store/actions/ui";
 import Modal from "components/modals/Modal";
 import { CoinNetwork } from "src/services/tradeApiClient.types";
 

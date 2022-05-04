@@ -5,7 +5,7 @@ import NumberFormat from "react-number-format";
 import { useContracts } from "../../../lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import { ServiceContext } from "../ServiceContext";
-import Loader from "components/Loader/Loader";
+import Loader from "components/common/Loader/Loader";
 
 const ServiceContracts = () => {
   const { selectedExchange } = useUser();

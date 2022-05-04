@@ -43,8 +43,7 @@
     "isolatedModules": true
   },
   "exclude": [
-    "node_modules",
-    "static/charting_library"
+    "node_modules"
   ],
   "typeRoots": [
     "./src/types",

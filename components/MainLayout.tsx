@@ -1,6 +1,6 @@
 import React from "react";
 import { GlobalStyles } from "@mui/material";
-import Header from "./Header/Header";
+import Header from "./common/Header/Header";
 import useUser from "lib/hooks/useUser";
 import Head from "next/head";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ const inputGlobalStyles = (
   <GlobalStyles
     styles={(theme) => ({
       body: {
-        backgroundImage: `url(${theme.background.image.src})`,
+        backgroundImage: `url(${theme.background.image})`,
         backgroundColor: "#101225",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "scroll",
