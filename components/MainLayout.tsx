@@ -10,7 +10,11 @@ const inputGlobalStyles = (
   <GlobalStyles
     styles={(theme) => ({
       body: {
-        background: `url(${theme.background.image.src}) no-repeat center center fixed`,
+        backgroundImage: `url(${theme.background.image.src})`,
+        backgroundColor: "#101225",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "scroll",
+        backgroundPosition: "top center",
         backgroundSize: "cover",
       },
       svg: {
@@ -31,7 +35,7 @@ const inputGlobalStyles = (
 const Container = styled.div`
   max-width: 1200px;
   padding: 0 8px;
-  margin: 0 auto;
+  margin: 0 auto 60px;
 `;
 
 export default function MainLayout({ children }) {
