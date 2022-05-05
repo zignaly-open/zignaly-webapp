@@ -72,7 +72,7 @@ const useAPI = () => {
     });
   };
 
-  return { fetcher, login, verify2FA, getSession, getUserData };
+  return { fetcher, login, verify2FA, getSession, getUserData, verifyKnownDevice, verifyCode };
 };
 export default useAPI;
 
