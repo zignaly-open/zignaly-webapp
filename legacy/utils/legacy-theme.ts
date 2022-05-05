@@ -21,7 +21,7 @@ export const colors = {
   lightWhite: "rgba(255, 255, 255, 0.94)",
 };
 
-const getLegacyTheme = (darkMode = "light"): ThemeOptions => ({
+const getLegacyTheme = (darkMode = false): ThemeOptions => ({
   palette: {
     mode: (darkMode ? "dark" : "light") as PaletteMode,
     ...(!darkMode

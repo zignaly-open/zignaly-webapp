@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 const CACHE_KEY = "app-cache";
 
 export const keys = {

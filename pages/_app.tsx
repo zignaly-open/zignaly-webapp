@@ -67,7 +67,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
             <ThemeProviderUI theme={theme}>
-              wf
               <CssBaseline />
               <SWRAuthConfig>
                 <Auth>
