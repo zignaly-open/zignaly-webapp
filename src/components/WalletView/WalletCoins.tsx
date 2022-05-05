@@ -114,9 +114,7 @@ const WalletCoins = ({
 
   const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
-    // Find coin network data or use the first one if network not found, for coins such as NEOFI
-    const networkData =
-      coinData?.networks.find((n) => n.network === network) || coinData?.networks[0];
+    const networkData = coinData?.networks.find((n) => n.network === network);
     const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
@@ -185,7 +183,11 @@ const WalletCoins = ({
     if (!walletBalance[coin] && coins && coins[coin]) {
       // Force coin in the deposit list
       walletBalance[coin] = {
-        dummy: {
+        [coins[coin].networks[0].network]: {
+          availableBalance: 0,
+          balance: 0,
+        },
+        total: {
           availableBalance: 0,
           balance: 0,
         },
