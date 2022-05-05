@@ -47,7 +47,7 @@ const TwoFAForm = ({ loginData, onComplete }) => {
   const dispatch = useDispatch();
   const storeSession = useSelector((state) => state.session);
   const token = loginData?.token || storeSession.tradeApi.accessToken;
-  const { verify2FA } = useAPI();
+  const { verify2FA, verifyCode, verifyKnownDevice } = useAPI();
   const { redirectDashboard } = useRedirection();
 
   /**
@@ -98,8 +98,8 @@ const TwoFAForm = ({ loginData, onComplete }) => {
       token,
     };
     const method = loginData.disabled
-      ? tradeApi.verifyCode({ reason: "enable_user", ...payload })
-      : tradeApi.verifyKnownDevice(payload);
+      ? verifyCode({ reason: "enable_user", ...payload })
+      : verifyKnownDevice(payload);
 
     method
       .then(() => {

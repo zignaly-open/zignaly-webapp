@@ -41,6 +41,22 @@ const useAPI = () => {
     });
   };
 
+  const verifyCode = (payload: VerifyCodeReq): Promise<{}> => {
+    const { token, reason, ...data } = payload;
+    return fetcher(baseUrl + "/user/verify_code/" + reason, {
+      body: data,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
+  const verifyKnownDevice = (payload: Verify2FAReq): Promise<{}> => {
+    const { token, ...data } = payload;
+    return fetcher(baseUrl + "/known_device/verify", {
+      body: data,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   const getSession = (token?: string): Promise<GetSessionRes> => {
     return fetcher(baseUrl + "/user/session", {
       headers: { ...(token && { Authorization: `Bearer ${token}` }) },

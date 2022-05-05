@@ -21,3 +21,7 @@ interface Verify2FAReq {
   code: string;
   token: string;
 }
+
+interface VerifyCodeReq extends Verify2FAReq {
+  reason: string;
+}
