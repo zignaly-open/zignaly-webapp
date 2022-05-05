@@ -53,7 +53,7 @@ function Auth({ children }) {
     firstCheck.current = false;
   }, [isPublic]);
 
-  return authorized ? children : null;
+  return authorized && !firstCheck.current ? children : null;
 }
 
 export default Auth;

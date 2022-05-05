@@ -17,16 +17,22 @@ import SWRAuthConfig from "components/SWRAuthConfig";
 import Head from "next/head";
 import "./styles.css";
 import "../legacy/styles/legacy.scss";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
 // todo: Replace these old components
 import ErrorAlert from "legacy/components/Alerts/ErrorAlert";
 import SuccessAlert from "legacy/components/Alerts/SuccessAlert";
 import getLegacyTheme from "legacy/utils/legacy-theme";
 
+let persistor = persistStore(store);
+
 const WithReduxProvider = (Component) => (props) =>
   (
     <Provider store={store}>
-      <Component {...props} />
+      <PersistGate loading={null} persistor={persistor}>
+        <Component {...props} />
+      </PersistGate>
     </Provider>
   );
 

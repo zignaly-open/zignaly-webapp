@@ -1,25 +1,20 @@
 import React from "react";
 import { SWRConfig } from "swr";
 import { endTradeApiSession } from "lib/store/actions/session";
-import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { localStorageProvider } from "lib/cacheAPI";
 import useRedirection from "lib/hooks/useRedirection";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useSelector((state: any) => state.session);
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
-  const router = useRouter();
   const { redirectLogin } = useRedirection();
 
   return (
     <SWRConfig
       value={{
-        provider: localStorageProvider,
         revalidateOnFocus: false,
         fetcher: async (url, customOptions) => {
-          console.log(url);
           const options = {
             method: customOptions?.body ? "POST" : "GET",
             ...customOptions,

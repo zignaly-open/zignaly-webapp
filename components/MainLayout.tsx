@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
       background-attachment: scroll;
       background-position: top center;
       background-size: cover;
+      color: ${theme.neutral200};
     }
     svg {
       fill: currentcolor;

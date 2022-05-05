@@ -66,6 +66,7 @@ const AccountSelector = () => {
           &nbsp;
           <FormattedMessage
             id={exchangeType === "futures" ? "exchange.type.futures" : "exchange.type.spot"}
+            tagName="span"
           />
         </styled.TypographyType>
       </styled.InfoBox>

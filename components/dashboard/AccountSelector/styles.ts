@@ -24,8 +24,12 @@ export const InfoBox = styled.div`
 export const TypographyType = styled(Typography).attrs({ variant: "h4" })`
   display: flex;
 
-  span {
-    color: #9ca3af;
+  span:nth-of-type(1) {
+    color: ${({ theme }) => theme.neutral300};
+  }
+
+  span:nth-of-type(2) {
+    color: ${({ theme }) => theme.neutral200};
   }
 `;
 
