@@ -113,7 +113,7 @@
     "lint": "next lint",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "jsfix": "eslint --fix \"**/*.{js,jsx,ts,tsx}\"",
-    "jslint": "env FORCE_COLOR=1 eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "jslint": "env FORCE_COLOR=1 eslint \"**/*.{js,jsx,ts,tsx}\"",
     "tscheck": "env FORCE_COLOR=1 tsc",
     "reset": "rm -rf .cache/ public/ types/",
     "serve": "gatsby serve --prefix-paths",
