@@ -17,9 +17,9 @@ const renderProfit = (position: Position) => {
         </span>
       ) : (
         <PriceLabel
+          bottomElement={<PercentageIndicator value={position.profitPercentage} />}
           coin="USDT"
           value={position.profit}
-          bottomElement={<PercentageIndicator value={position.profitPercentage} />}
         />
       )}
     </>
@@ -68,15 +68,15 @@ const ServicePositions = () => {
             .map((position) => ({
               openDate: <DateLabel date={new Date(position.openDate)} />,
               amount: (
-                <NumberFormat value={position.amount} displayType="text" thousandSeparator={true} />
+                <NumberFormat displayType="text" thousandSeparator={true} value={position.amount} />
               ),
               pair: position.pair,
               profit: renderProfit(position),
               buyPrice: (
                 <NumberFormat
-                  value={position.buyPrice}
                   displayType="text"
                   thousandSeparator={true}
+                  value={position.buyPrice}
                 />
               ),
               invested: <PriceLabel coin={position.quote} value={position.positionSizeQuote} />,

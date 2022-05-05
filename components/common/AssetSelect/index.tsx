@@ -34,12 +34,12 @@ const AssetSelect = ({ assets, onChange, selectedAsset, fullWidth }: AssetSelect
   return (
     <Select
       fullWidth={fullWidth}
-      options={coinsOptions}
-      value={coinsOptions?.find((o) => o.value === selectedAsset)}
+      label={intl.formatMessage({ id: "deposit.coin" })}
       onChange={onChange}
+      options={coinsOptions}
       placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
       // label={<Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>}
-      label={intl.formatMessage({ id: "deposit.coin" })}
+      value={coinsOptions?.find((o) => o.value === selectedAsset)}
     />
   );
 };

@@ -35,10 +35,9 @@ const initSelectedExchange = (user: User, selectedExchangeId: string) => {
     if (selectedExchange) {
       // Use last saved selected exchange
       return selectedExchangeId;
-    } else {
-      // If no exchange account saved, use the first one
-      return user.exchanges[0].internalId;
     }
+    // If no exchange account saved, use the first one
+    return user.exchanges[0].internalId;
   }
   return null;
 };

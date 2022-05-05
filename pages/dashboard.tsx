@@ -22,10 +22,10 @@ const Dashboard = () => {
         })} | ${PRODUCT_NAME}`}</title>
       </Head>
       <AccountSelector />
-      <Tabs value={value} onChange={handleChange}>
+      <Tabs onChange={handleChange} value={value}>
         <Tab label={intl.formatMessage({ id: "dashboard.myCoins" })} />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel index={0} value={value}>
         <DashboardCoins />
       </TabPanel>
     </MainLayout>

@@ -62,7 +62,7 @@ function Modal({ title, onClose, open, width, children }: ModalProps) {
   return (
     <Backdrop isFirefox={isFirefox} visible={open}>
       <Animation style={styles}>
-        <ModalContainer width={width} ref={modalRef}>
+        <ModalContainer ref={modalRef} width={width}>
           <Title>
             {title && title}
             <CloseButton icon={<CloseIcon />} onClick={onClose} variant="flat" />

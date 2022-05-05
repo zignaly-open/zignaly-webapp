@@ -15,6 +15,7 @@ export const localStorageProvider = () => {
   if (data.version >= CURRENT_VERSION) {
     cache = new Map(data.cache);
   }
+  // eslint-disable-next-line no-console
   console.log("loaded cache", cache);
 
   // Before unloading the app, we write back all the data into `localStorage`.
@@ -33,10 +34,10 @@ export const setItemCache = (key: string, value: any) => {
 
   // Update local storage with whitelisted entries
   const arrayToSave = Array.from(cache.entries()).reduce((result, entry) => {
-    const [key, value] = entry;
-    if (Object.values(keys).includes(key)) {
-      const { _validated: _, ...o } = value;
-      result.push([key, o]);
+    const [k, v] = entry;
+    if (Object.values(keys).includes(k)) {
+      const { _validated: _, ...o } = v;
+      result.push([k, o]);
     }
     return result;
   }, []);

@@ -80,15 +80,15 @@ const ServiceInvestors = () => {
       investment: <PriceLabel coin={"USDT"} value={"1250"} />,
       pnl: (
         <PriceLabel
+          bottomElement={<PercentageIndicator value={3} />}
           coin={"USDT"}
           value={"37.5"}
-          bottomElement={<PercentageIndicator value={3} />}
         />
       ),
       pnlTotal: <PriceLabel coin={"USDT"} value={"145"} />,
       totalFeesPaid: <PriceLabel coin={"USDT"} value={"218"} />,
       successFee: "10%",
-      feesInZig: <img src={CheckIcon} />,
+      feesInZig: <CheckIcon />,
       status: <ConnectionStateLabel stateId="connected" />,
     },
   ];

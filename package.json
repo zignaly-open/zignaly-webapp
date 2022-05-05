@@ -136,11 +136,6 @@
     "yaml-loader": "^0.8.0"
   },
   "scripts": {
-    "build-old": "npm install && npm run reset && NODE_OPTIONS=--max-old-space-size=8192 gatsby build --prefix-paths",
-    "build:package": "tar -C public -zcvf release.tar.gz ./",
-    "build:test": "STAGE=test GATSBY_NEWRELIC_ENV=test GATSBY_API_KEY=\"\" npm run build",
-    "build:staging": "STAGE=staging GATSBY_NEWRELIC_ENV=staging GATSBY_API_KEY=\"\" npm run build",
-    "build:prod": "STAGE=prod GATSBY_NEWRELIC_ENV=prod GATSBY_API_KEY=\"\" npm run build",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",

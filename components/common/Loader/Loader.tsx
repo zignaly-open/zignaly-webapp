@@ -3,7 +3,7 @@ import * as styled from "./styles";
 
 const Loader = () => {
   // @ts-ignore
-  return <styled.Loader type="three-dots" height="34px" width="34px" />;
+  return <styled.Loader height="34px" type="three-dots" width="34px" />;
 };
 
 export default Loader;

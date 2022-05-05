@@ -13,23 +13,23 @@ const ServiceDashboard = () => {
   };
   return (
     <>
-      <Tabs value={value} onChange={handleChange}>
+      <Tabs onChange={handleChange} value={value}>
         <Tab label={intl.formatMessage({ id: "services.openPositions" })} />
         <Tab label={intl.formatMessage({ id: "services.closedPositions" })} />
         <Tab label={intl.formatMessage({ id: "service.exchangeOrders" })} />
         <Tab label={intl.formatMessage({ id: "accounts.contracts" })} />
         <Tab label={intl.formatMessage({ id: "dashboard.positions.log" })} />
       </Tabs>
-      <TabPanel value={value} index={0}>
+      <TabPanel index={0} value={value}>
         <ServicePositions />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel index={1} value={value}>
         Todo Closed Positions
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel index={2} value={value}>
         <ServiceOrders />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel index={3} value={value}>
         <ServiceContracts />
       </TabPanel>
     </>

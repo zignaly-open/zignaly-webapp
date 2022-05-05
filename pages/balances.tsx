@@ -7,9 +7,7 @@ import { useIntl } from "react-intl";
 import ServiceLayout from "../components/service/ServiceLayout";
 import { Tabs, Tab, TabPanel } from "zignaly-ui";
 
-type Props = {};
-
-const Balances = ({}: Props) => {
+const Balances = () => {
   const intl = useIntl();
   const [value, setValue] = useState(0);
   const handleChange = (_, newValue) => {
@@ -22,10 +20,10 @@ const Balances = ({}: Props) => {
         <Head>
           <title>{`${intl.formatMessage({ id: "service.balances" })} | ${PRODUCT_NAME}`}</title>
         </Head>
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs onChange={handleChange} value={value}>
           <Tab label={intl.formatMessage({ id: "service.myBalances" })} />
         </Tabs>
-        <TabPanel value={value} index={0}>
+        <TabPanel index={0} value={value}>
           <ServiceBalances />
         </TabPanel>
       </ServiceLayout>

@@ -29,7 +29,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     // "plugin:@typescript-eslint/recommended",
-    "plugin:cypress/recommended",
+    // "plugin:cypress/recommended",
     "plugin:@next/next/recommended",
   ],
   rules: {
@@ -314,7 +314,6 @@ module.exports = {
         markers: ["/"],
       },
     ],
-    strict: 2,
     "use-isnan": 2,
     "valid-typeof": 2,
     "vars-on-top": 2,

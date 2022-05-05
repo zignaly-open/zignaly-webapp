@@ -134,8 +134,8 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
                             )}
                           />
                           <TextButton
-                            href="https://help.zignaly.com"
                             caption={<FormattedMessage id="wallet.deposit.notsure" />}
+                            href="https://help.zignaly.com"
                           />
                           {/* <styled.NotSure href="https://help.zignaly.com" target="_blank">
                             <FormattedMessage id="wallet.deposit.notsure" />
