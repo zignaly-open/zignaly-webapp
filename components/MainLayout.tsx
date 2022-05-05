@@ -9,24 +9,24 @@ import SuperModal from "components/modals/SuperModal";
 const GlobalStyle = createGlobalStyle`
   ${({ theme }) => css`
     body {
-        background-image: url(${theme.background.image});
-        background-color: "#101225";
-        background-repeat: "no-repeat";
-        background-attachment: "scroll";
-        background-position: "top center";
-        background-size: "cover";
-      }
-      svg: {
-        fill: "currentcolor",
-      }
-      a: {
-        color: ${theme.links},
-        text-decoration-line: "none",
-      }
-      h1: {
-        // todo: remove important once Typography selector has less specificity
-        color: ${theme.neutral100} !important
-      }
+      background-image: url(${theme.background.image});
+      background-color: #101225;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-position: top center;
+      background-size: cover;
+    }
+    svg {
+      fill: currentcolor;
+    }
+    a {
+      color: ${theme.links};
+      text-decoration-line: none;
+    }
+    h1 {
+      // todo: remove important once Typography selector has less specificity
+      color: ${theme.neutral100} !important;
+    }
   `}
 `;
 

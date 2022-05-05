@@ -15,7 +15,7 @@ const useUser = () => {
     data: user,
     mutate,
     error,
-  } = useSWR<User>([keys.user, options], {
+  } = useSWR<User>(keys.user, {
     // Don't fetch updated data right away if the data has just been loaded in login (_validated)
     revalidateOnMount: initialData?._validated !== true,
     // Manually set initialData since with custom header our caching key is not the same as swr

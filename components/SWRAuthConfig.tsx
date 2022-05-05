@@ -19,6 +19,7 @@ const SWRAuthConfig = ({ children }) => {
         provider: localStorageProvider,
         revalidateOnFocus: false,
         fetcher: async (url, customOptions) => {
+          console.log(url);
           const options = {
             method: customOptions?.body ? "POST" : "GET",
             ...customOptions,
