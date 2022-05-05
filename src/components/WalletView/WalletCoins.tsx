@@ -96,7 +96,7 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {(coinData?.allowDeposit || coinData?.name === "NEOFI") && (
+              {(coinData?.allowDeposit || ["NEOFI", "MHUNT"].includes(coinData?.name)) && (
                 <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
@@ -181,16 +181,25 @@ const WalletCoins = ({
     };
   };
 
-  const data = useMemo(() => {
-    if (walletBalance && !walletBalance.NEOFI && coins?.NEOFI) {
-      // Force NEOFI in the list
-      walletBalance.NEOFI = {
+  const addDummyCoin = (coin: string) => {
+    if (!walletBalance[coin] && coins && coins[coin]) {
+      // Force coin in the deposit list
+      walletBalance[coin] = {
         dummy: {
           availableBalance: 0,
           balance: 0,
         },
       };
     }
+  };
+
+  const data = useMemo(() => {
+    if (walletBalance) {
+      ["NEOFI", "MHUNT"].forEach((c) => {
+        addDummyCoin(c);
+      });
+    }
+
     return Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
       Object.entries(networkBalances).forEach(([key, networkBalance]) => {
         if (coin !== "ZIG" && key !== "total") {
