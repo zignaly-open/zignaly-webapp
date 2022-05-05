@@ -1,6 +1,5 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { CoinNetwork } from "src/services/tradeApiClient.types";
 import { Select } from "zignaly-ui";
 import { getChainIcon } from "utils/chain";
 
@@ -29,10 +28,10 @@ const NetworkSelect = ({ networks, onChange, selectedNetwork, fullWidth }: Netwo
   return (
     <Select
       fullWidth={fullWidth}
-      options={networkOptions}
-      onChange={onChange}
-      placeholder={intl.formatMessage({ id: "deposit.network" })}
       label={intl.formatMessage({ id: "deposit.network" })}
+      onChange={onChange}
+      options={networkOptions}
+      placeholder={intl.formatMessage({ id: "deposit.network" })}
       value={networkOptions?.find((o) => o.value.network === selectedNetwork)}
     />
   );

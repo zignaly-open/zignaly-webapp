@@ -1,76 +1,3 @@
-interface User {
-  userId: string;
-  firstName: string;
-  email: string;
-  "2FAEnable": boolean;
-  isTrader: { copy_trading: boolean; profit_sharing: boolean; signal_providers: boolean };
-  exchanges: ExchangeAccount[];
-  isAdmin: boolean;
-}
-
-interface ProviderOptions {
-  allowClones?: boolean;
-}
-
-interface Provider {
-  id: string;
-  name: string;
-  exchanges: string[];
-  exchangeType: string;
-  logoUrl: string;
-  isClone: boolean;
-  createdAt: string;
-  public: boolean;
-  returns: number;
-  floating: number;
-  website: string;
-  profitsShare?: number;
-  profitMode?: string;
-  profitSharing: boolean;
-  isCopyTrading: boolean;
-  exchangeInternalId: string;
-  exchangeInternalIds: string[];
-  followers: number;
-  strategy: string;
-  about: string;
-  team: any[];
-  social: any[];
-  copyTradingQuote: string;
-  quote: string;
-  allocatedBalance: number;
-  minAllocatedBalance: number;
-  maxAllocatedBalance: number;
-  maxDrawdown: number;
-  /** KYC passed */
-  verified: boolean;
-  userId: string;
-  isAdmin: boolean;
-  options: ProviderOptions;
-  privacy: "unlisted" | "listed_profile" | "listed_marketplace";
-  profitsSinceCopying?: number;
-  currentAllocated?: number;
-  providerLink: string;
-}
-
-interface TerminalProviderOption {
-  providerId: string;
-  providerName: string;
-  providerQuote: string | boolean;
-}
-
-interface ExchangeAccount {
-  activated: boolean;
-  exchangeId: string;
-  exchangeName: string;
-  exchangeType: "spot" | "futures";
-  internal: boolean;
-  internalId: string;
-  internalName: string;
-  name: string;
-  isBrokerAccount: boolean;
-  areKeysValid?: boolean;
-}
-
 interface MultiSideData {
   amount: number;
   price: string;
@@ -508,3 +435,13 @@ interface PositionOpen extends PositionBase {
 }
 
 type Position = PositionOpen & PositionClosed;
+
+interface ProviderOptions {
+  allowClones?: boolean;
+}
+
+interface TerminalProviderOption {
+  providerId: string;
+  providerName: string;
+  providerQuote: string | boolean;
+}

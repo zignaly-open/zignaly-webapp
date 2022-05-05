@@ -14,7 +14,7 @@ const CoinIcon = ({
   // const imageUrl = cloudinary({ folder: "coins-slug", id: slug.replace(/ /g, "").toLowerCase() });
   const imageUrl = cloudinary({ folder: "coins-binance", id: coin });
   // return <Image src={`./${coin}`} width={width} height={height} />;
-  return <Image src={imageUrl} width={width} height={height} layout="fixed" />;
+  return <Image height={height} layout="fixed" src={imageUrl} width={width} />;
 };
 
 export default CoinIcon;

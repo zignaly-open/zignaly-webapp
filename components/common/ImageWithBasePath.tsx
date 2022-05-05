@@ -1,7 +1,8 @@
 import React from "react";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
-const ImageWithBasePath: typeof Image = (props) => {
+const ImageWithBasePath: typeof Image = (props: ImageProps) => {
+  // @ts-ignore
   const url = props.src?.startsWith("/")
     ? `${process.env.NEXT_PUBLIC_BASE_PATH || ""}${props.src}`
     : props.src;

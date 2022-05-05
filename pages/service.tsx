@@ -6,9 +6,7 @@ import MainLayout from "../components/MainLayout";
 import { useIntl } from "react-intl";
 import ServiceLayout from "../components/service/ServiceLayout";
 
-type Props = {};
-
-const Index = ({}: Props) => {
+const Index = () => {
   const intl = useIntl();
   return (
     <MainLayout>

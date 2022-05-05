@@ -1,15 +1,11 @@
+// @ts-nocheck
 import ls from "@livesession/sdk";
 
 const liveSessionTrackID = "4c9e2f89.fe420345";
 
 /**
  *
- * @typedef {import("../../src0/services/tradeApiClient.types").UserEntity} UserEntity
- */
-
-/**
- *
- * @param {UserEntity} responseData User entity.
+ * @param {User} responseData User entity.
  * @returns {void} None.
  */
 export const startLiveSession = (responseData) => {

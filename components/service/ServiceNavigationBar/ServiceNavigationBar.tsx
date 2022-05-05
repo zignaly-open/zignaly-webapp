@@ -6,7 +6,7 @@ import { Select } from "zignaly-ui";
 import { useUserServices } from "lib/hooks/useAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
-import { setSelectedService } from "store/actions/settings";
+import { setSelectedService } from "lib/store/actions/settings";
 
 const ServiceNavigationBar = () => {
   const intl = useIntl();
@@ -23,8 +23,8 @@ const ServiceNavigationBar = () => {
   return (
     <styled.Layout>
       <Select
-        options={options}
         onChange={handleChange}
+        options={options}
         placeholder={intl.formatMessage({ id: "service.selectService" })}
         value={options?.find((o) => o.value === selectedService)}
       />

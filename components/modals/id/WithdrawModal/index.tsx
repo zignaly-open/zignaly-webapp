@@ -16,7 +16,6 @@ import cloudinary from "utils/cloudinary";
 import { ethers } from "ethers";
 import { useForm } from "react-hook-form";
 import Modal from "components/modals/Modal";
-import { CoinNetwork } from "src/services/tradeApiClient.types";
 
 type DepositModalTypesProps = {
   initialCoin: string;
@@ -35,7 +34,6 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
@@ -81,16 +79,16 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
 
   return (
     <Modal
-      open={open}
-      width="large"
       onClose={onClose}
+      open={open}
       title={<FormattedMessage id="withdraw.title" />}
+      width="large"
     >
       <Desc variant="h3">
         <FormattedMessage id="withdraw.desc" />
       </Desc>
       {assets ? (
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <styled.Body>
             <AssetSelect
               assets={assets}
@@ -107,8 +105,8 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
               //   });
               // }}
               fullWidth={true}
-              selectedAsset={selectedCoin}
               onChange={(item) => setSelectedCoin(item.value)}
+              selectedAsset={selectedCoin}
             />
             {selectedCoin && (
               <>
@@ -126,9 +124,9 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
                   //   });
                   // }}
                   fullWidth={true}
-                  selectedNetwork={selectedNetwork?.network}
                   networks={assets[selectedCoin].networks}
                   onChange={(item) => setSelectedNetwork(item.value)}
+                  selectedNetwork={selectedNetwork?.network}
                 />
                 {selectedNetwork && (
                   <>
@@ -140,14 +138,15 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
                           message: intl.formatMessage({ id: "wallet.withdraw.address.invalid" }),
                         },
                       })}
+                      error={errors.address?.message || Boolean(errors.address)}
                       label={intl.formatMessage({ id: "withdraw.toAddress" })}
                       placeholder={intl.formatMessage({ id: "wallet.withdraw.address.paste" })}
-                      error={errors.address?.message || Boolean(errors.address)}
                     />
                     <InputAmount
                       {...amount}
-                      label={intl.formatMessage({ id: "withdraw.amountToWithdraw" })}
+                      // @ts-ignore
                       error={Boolean(errors.amount)}
+                      label={intl.formatMessage({ id: "withdraw.amountToWithdraw" })}
                       tokens={[
                         {
                           id: 1,
@@ -167,15 +166,15 @@ function WithdrawModal({ initialCoin, open, onClose }: DepositModalTypesProps): 
           <Actions>
             <Button
               caption={intl.formatMessage({ id: "confirm.cancel" })}
+              onClick={close}
               size="xlarge"
               variant="secondary"
-              onClick={close}
             />
             <Button
               caption={intl.formatMessage({ id: "wallet.withdraw.continue" })}
-              type="submit"
-              size="xlarge"
               disabled={!isValid}
+              size="xlarge"
+              type="submit"
             />
           </Actions>
         </form>

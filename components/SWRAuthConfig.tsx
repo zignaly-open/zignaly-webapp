@@ -1,22 +1,18 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import { endTradeApiSession } from "store/actions/session";
-import { useRouter } from "next/router";
+import { endTradeApiSession } from "lib/store/actions/session";
 import { useDispatch, useSelector } from "react-redux";
-import { localStorageProvider } from "lib/cacheAPI";
 import useRedirection from "lib/hooks/useRedirection";
 
 const SWRAuthConfig = ({ children }) => {
   const storeSession = useSelector((state: any) => state.session);
   const token = storeSession.tradeApi.accessToken;
   const dispatch = useDispatch();
-  const router = useRouter();
   const { redirectLogin } = useRedirection();
 
   return (
     <SWRConfig
       value={{
-        provider: localStorageProvider,
         revalidateOnFocus: false,
         fetcher: async (url, customOptions) => {
           const options = {
@@ -50,6 +46,7 @@ const SWRAuthConfig = ({ children }) => {
 
           if (error) {
             if (error.error?.code === 13) {
+              // eslint-disable-next-line no-console
               console.log("api session expired, redirecting to login");
               dispatch(endTradeApiSession());
               redirectLogin(true);

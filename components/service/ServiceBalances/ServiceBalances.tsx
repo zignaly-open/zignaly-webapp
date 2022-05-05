@@ -49,7 +49,7 @@ const ServiceBalances = () => {
         availableBalance: <PriceLabel coin={coin} value={coinBalance.balanceFree} />,
         lockedBalance: <PriceLabel coin={coin} value={coinBalance.balanceLocked} />,
         totalBTC: <PriceLabel coin="BTC" value={coinBalance.balanceTotalBTC} />,
-        totalUSD: <PriceLabel coin="USD" value={coinBalance.balanceTotalUSDT} fiat />,
+        totalUSD: <PriceLabel coin="USD" fiat value={coinBalance.balanceTotalUSDT} />,
         action: null,
       }))
     : undefined;

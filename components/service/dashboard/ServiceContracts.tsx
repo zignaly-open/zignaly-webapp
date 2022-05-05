@@ -43,30 +43,30 @@ const ServiceContracts = () => {
       contracts
         ? contracts.map((contract) => ({
             date: <DateLabel date={new Date()} />,
-            position: contract.position,
+            position: contract.positionId,
             pair: contract.symbol,
             amount: (
-              <NumberFormat value={contract.amount} displayType="text" thousandSeparator={true} />
+              <NumberFormat displayType="text" thousandSeparator={true} value={contract.amount} />
             ),
             side: <FormattedMessage id={`position.side.${contract.side}`} />,
             entryPrice: (
               <NumberFormat
-                value={contract.entryprice}
                 displayType="text"
                 thousandSeparator={true}
+                value={contract.entryprice}
               />
             ),
             marketPrice: (
               <NumberFormat
-                value={contract.markprice}
                 displayType="text"
                 thousandSeparator={true}
+                value={contract.markprice}
               />
             ),
             margin: contract.margin,
             action: (
               <ButtonGroup>
-                <Button variant="secondary" icon={CloseIcon} caption={"Close"} />
+                <Button caption={"Close"} icon={CloseIcon} variant="secondary" />
               </ButtonGroup>
             ),
           }))
@@ -74,7 +74,7 @@ const ServiceContracts = () => {
     [contracts],
   );
 
-  return <>{contracts ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return contracts ? <Table columns={columns} data={data} /> : <Loader />;
 };
 
 export default ServiceContracts;

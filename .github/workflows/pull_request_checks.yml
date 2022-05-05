@@ -14,8 +14,6 @@ jobs:
           cache: "npm"
       - name: Dependencies
         run: npm i
-      - name: Check Style Lint
-        run: npm run stylelint
       - name: Check JS Lint
         run: npm run jslint
       - name: Check Types

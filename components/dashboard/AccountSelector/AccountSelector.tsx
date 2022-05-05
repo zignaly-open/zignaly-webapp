@@ -5,7 +5,7 @@ import { Typography, OptionDotsIcon, TextButton, ArrowBottomIcon } from "zignaly
 import { FormattedMessage, useIntl } from "react-intl";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { setSelectedExchange } from "store/actions/settings";
+import { setSelectedExchange } from "lib/store/actions/settings";
 
 import * as styled from "./styles";
 
@@ -23,22 +23,22 @@ const AccountSelector = () => {
       <styled.AccountsContainer>
         {user.exchanges.map((e, i) => (
           <styled.AccountSelectButton
-            selected={internalId === e.internalId}
-            onClick={() => dispatch(setSelectedExchange(e.internalId))}
-            key={e.internalId}
             caption={e.internalName}
+            key={e.internalId}
             leftElement={
-              <Box display="flex" alignItems="center" mr="15px">
+              <Box alignItems="center" display="flex" mr="15px">
                 <ImageWithBasePath
+                  height={26}
+                  layout="fixed"
                   src={`/images/avatars/avatar-${
                     user.exchanges.findIndex((_e) => e.internalId === _e.internalId) % AVATARS_COUNT
                   }.svg`}
                   width={26}
-                  height={26}
-                  layout="fixed"
                 />
               </Box>
             }
+            onClick={() => dispatch(setSelectedExchange(e.internalId))}
+            selected={internalId === e.internalId}
           />
         ))}
       </styled.AccountsContainer>
@@ -47,18 +47,18 @@ const AccountSelector = () => {
 
   return (
     <styled.Layout>
-      <ImageWithBasePath src={avatar} width={68} height={68} />
+      <ImageWithBasePath height={68} src={avatar} width={68} />
       <styled.InfoBox>
         <Box display="flex">
           <Typography variant="h1">{internalName}</Typography>
           <styled.Selector
-            icon={<ArrowBottomIcon />}
-            variant="flat"
-            renderDropDown={<Accounts />}
             dropDownOptions={{
               alignment: "right",
               position: "static",
             }}
+            icon={<ArrowBottomIcon />}
+            renderDropDown={<Accounts />}
+            variant="flat"
           />
         </Box>
         <styled.TypographyType>
@@ -66,6 +66,7 @@ const AccountSelector = () => {
           &nbsp;
           <FormattedMessage
             id={exchangeType === "futures" ? "exchange.type.futures" : "exchange.type.spot"}
+            tagName="span"
           />
         </styled.TypographyType>
       </styled.InfoBox>

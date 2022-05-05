@@ -52,10 +52,10 @@ const ServiceOrders = () => {
             orderId: order.orderId,
             pair: order.symbol,
             amount: (
-              <NumberFormat value={order.amount} displayType="text" thousandSeparator={true} />
+              <NumberFormat displayType="text" thousandSeparator={true} value={order.amount} />
             ),
             status: order.status,
-            price: <NumberFormat value={order.price} displayType="text" thousandSeparator={true} />,
+            price: <NumberFormat displayType="text" thousandSeparator={true} value={order.price} />,
             side: <FormattedMessage id={`position.side.${order.side}`} />,
             type: order.type,
           }))

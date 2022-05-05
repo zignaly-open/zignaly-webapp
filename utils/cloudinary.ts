@@ -1,5 +1,3 @@
-import { Cloudinary } from "@cloudinary/url-gen";
-
 interface CloudinaryOptions {
   folder: string;
   id: string;

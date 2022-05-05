@@ -1,13 +1,12 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { ExchangeAssetsDict } from "src/services/tradeApiClient.types";
 import { Select, Typography } from "zignaly-ui";
 import CoinIcon from "../CoinIcon";
 
 import * as styled from "./styles";
 
 interface AssetSelectProps {
-  assets: ExchangeAssetsDict;
+  assets: ExchangeAssets;
   onChange: any;
   selectedAsset?: string;
   fullWidth?: boolean;
@@ -35,12 +34,12 @@ const AssetSelect = ({ assets, onChange, selectedAsset, fullWidth }: AssetSelect
   return (
     <Select
       fullWidth={fullWidth}
-      options={coinsOptions}
-      value={coinsOptions?.find((o) => o.value === selectedAsset)}
+      label={intl.formatMessage({ id: "deposit.coin" })}
       onChange={onChange}
+      options={coinsOptions}
       placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
       // label={<Typography variant="h3">{intl.formatMessage({ id: "deposit.coin" })}</Typography>}
-      label={intl.formatMessage({ id: "deposit.coin" })}
+      value={coinsOptions?.find((o) => o.value === selectedAsset)}
     />
   );
 };

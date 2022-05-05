@@ -29,7 +29,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     // "plugin:@typescript-eslint/recommended",
-    "plugin:cypress/recommended",
+    // "plugin:cypress/recommended",
     "plugin:@next/next/recommended",
   ],
   rules: {
@@ -129,7 +129,7 @@ module.exports = {
     ],
     "comma-style": [2, "last"],
     complexity: 0,
-    "consistent-return": 1,
+    "consistent-return": 0,
     "consistent-this": 2,
     curly: [2, "multi-line"],
     "default-case": 2,
@@ -314,7 +314,6 @@ module.exports = {
         markers: ["/"],
       },
     ],
-    strict: 2,
     "use-isnan": 2,
     "valid-typeof": 2,
     "vars-on-top": 2,
@@ -338,5 +337,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ["**/*.d.ts", "src/stories/*", "src/tradingView/charting_library/*"],
+  ignorePatterns: ["legacy/*", "**/*.d.ts", "src/stories/*", "src/tradingView/charting_library/*"],
 };

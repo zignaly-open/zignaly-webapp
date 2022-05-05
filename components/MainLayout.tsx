@@ -3,34 +3,33 @@ import { GlobalStyles } from "@mui/material";
 import Header from "./common/Header/Header";
 import useUser from "lib/hooks/useUser";
 import Head from "next/head";
-import styled from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
 import SuperModal from "components/modals/SuperModal";
 
-const inputGlobalStyles = (
-  <GlobalStyles
-    styles={(theme) => ({
-      body: {
-        backgroundImage: `url(${theme.background.image})`,
-        backgroundColor: "#101225",
-        backgroundRepeat: "no-repeat",
-        backgroundAttachment: "scroll",
-        backgroundPosition: "top center",
-        backgroundSize: "cover",
-      },
-      svg: {
-        fill: "currentcolor",
-      },
-      a: {
-        color: theme.links,
-        textDecorationLine: "none",
-      },
-      h1: {
-        // todo: remove important once Typography selector has less specificity
-        color: `${theme.neutral100} !important`,
-      },
-    })}
-  />
-);
+const GlobalStyle = createGlobalStyle`
+  ${({ theme }) => css`
+    body {
+      background-image: url(${theme.background.image});
+      background-color: #101225;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+      background-position: top center;
+      background-size: cover;
+      color: ${theme.neutral200};
+    }
+    svg {
+      fill: currentcolor;
+    }
+    a {
+      color: ${theme.links};
+      text-decoration-line: none;
+    }
+    h1 {
+      // todo: remove important once Typography selector has less specificity
+      color: ${theme.neutral100} !important;
+    }
+  `}
+`;
 
 const Container = styled.div`
   max-width: 1200px;
@@ -47,13 +46,13 @@ export default function MainLayout({ children }) {
       <Head>
         {/* Preload fonts */}
         <link
-          rel="preload"
-          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
           as="font"
           crossOrigin=""
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/AvenirNext/AvenirNextLTPro-Regular.otf`}
+          rel="preload"
         />
       </Head>
-      {inputGlobalStyles}
+      <GlobalStyle />
       <Header />
       <SuperModal />
       <Container>{user && children}</Container>

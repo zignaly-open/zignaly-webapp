@@ -63,12 +63,12 @@ const ServiceInvestors = () => {
   // const data = investors?.map((u) => ({
   //   userId: u.userId,
   //   email: u.email,
-  //   investment: <PriceLabel token={"USDT"} value={"1250"} />,
+  //   investment: <PriceLabel coin={"USDT"} value={"1250"} />,
   //   pnl: (
-  //     <PriceLabel token={"USDT"} value={"37.5"} bottomElement={<PercentageIndicator value={3} />} />
+  //     <PriceLabel coin={"USDT"} value={"37.5"} bottomElement={<PercentageIndicator value={3} />} />
   //   ),
-  //   pnlTotal: <PriceLabel token={"USDT"} value={"145"} />,
-  //   totalFeesPaid: <PriceLabel token={"USDT"} value={"218"} />,
+  //   pnlTotal: <PriceLabel coin={"USDT"} value={"145"} />,
+  //   totalFeesPaid: <PriceLabel coin={"USDT"} value={"218"} />,
   //   successFee: `${u.successFee}%`,
   //   feesInZig: u.feesInZig ? <CheckIcon /> : <CloseIcon />,
   //   status: <ConnectionStateLabel stateId="connected" />,
@@ -77,18 +77,18 @@ const ServiceInvestors = () => {
     {
       userId: "5f886d29da8e9666b1684c9a",
       email: "tec**@zig**.com",
-      investment: <PriceLabel token={"USDT"} value={"1250"} />,
+      investment: <PriceLabel coin={"USDT"} value={"1250"} />,
       pnl: (
         <PriceLabel
-          token={"USDT"}
-          value={"37.5"}
           bottomElement={<PercentageIndicator value={3} />}
+          coin={"USDT"}
+          value={"37.5"}
         />
       ),
-      pnlTotal: <PriceLabel token={"USDT"} value={"145"} />,
-      totalFeesPaid: <PriceLabel token={"USDT"} value={"218"} />,
+      pnlTotal: <PriceLabel coin={"USDT"} value={"145"} />,
+      totalFeesPaid: <PriceLabel coin={"USDT"} value={"218"} />,
       successFee: "10%",
-      feesInZig: <img src={CheckIcon} />,
+      feesInZig: <CheckIcon />,
       status: <ConnectionStateLabel stateId="connected" />,
     },
   ];

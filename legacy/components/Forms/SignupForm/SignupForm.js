@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef } from "react";
 // import "./SignupForm.scss";
 import { Box, TextField, Checkbox } from "@mui/material";
@@ -12,12 +13,12 @@ import { emailRegex } from "legacy/utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import CaptchaTerms from "../..//Captcha/CaptchaTerms";
 // import Captcha from "../../Captcha";
-import { showErrorAlert } from "store/actions/ui";
+import { showErrorAlert } from "lib/store/actions/ui";
 // import tradeApi from "services/tradeApiClient";
-import { setSessionData, startTradeApiSession } from "store/actions/session";
+import { setSessionData, startTradeApiSession } from "lib/store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
-// import { setUserId } from "store/actions/user";
+// import { setUserId } from "lib/store/actions/user";
 import useAPI from "../../../../lib/hooks/useAPI";
 import useRedirection from "../../../../lib/hooks/useRedirection";
 import { useSession } from "lib/session";

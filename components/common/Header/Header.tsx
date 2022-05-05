@@ -15,12 +15,12 @@ const Header = () => {
   return (
     <styled.Layout>
       <Link href="/dashboard">
-        <a className={router.pathname == "/dashboard" ? "active" : ""}>Account Dashboard</a>
+        <a className={router.pathname === "/dashboard" ? "active" : ""}>Account Dashboard</a>
       </Link>
       <Link href="/service">
-        <a className={router.pathname == "/service" ? "active" : ""}>Services Dashboard</a>
+        <a className={router.pathname === "/service" ? "active" : ""}>Services Dashboard</a>
       </Link>
-      <a href="#" style={{ marginLeft: "auto" }} onClick={logout}>
+      <a href="#" onClick={logout} style={{ marginLeft: "auto" }}>
         Logout
       </a>
     </styled.Layout>

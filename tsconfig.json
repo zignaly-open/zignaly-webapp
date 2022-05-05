@@ -43,7 +43,8 @@
     "isolatedModules": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "legacy"
   ],
   "typeRoots": [
     "./src/types",
@@ -53,5 +54,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ]
+  ],
+  "files": [
+    "./node_modules/redux-persist/types/storage/index.d.ts"
+  ],
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { FormControl, OutlinedInput, InputAdornment } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
