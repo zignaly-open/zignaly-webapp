@@ -1,9 +1,10 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import ReactCodeInput from "react-verification-code-input";
 import { useDispatch, useSelector } from "react-redux";
 // import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "lib/store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import ResetTwoFAForm from "../../Forms/ResetTwoFAForm";
 import useAPI from "../../../../lib/hooks/useAPI";

@@ -1,9 +1,9 @@
+// @ts-nocheck
 import Analytics from "analytics";
 // @ts-ignore
 import segmentPlugin from "@analytics/segment";
 
 /**
- * @typedef {import("../../src0/services/tradeApiClient.types").UserEntity} UserEntity
  * @typedef {Object} AnalyticsJsApi
  * @property {GlobalAnalytics} analytics Analytics API push function.
  */

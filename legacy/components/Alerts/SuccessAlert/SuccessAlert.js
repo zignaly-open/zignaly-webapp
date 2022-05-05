@@ -1,7 +1,8 @@
+// @ts-nocheck
 import React from "react";
 import { Snackbar, Slide } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { hideSuccessAlert } from "../../../../store/actions/ui";
+import { hideSuccessAlert } from "../../../../lib/store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import { Alert, AlertTitle } from "@mui/material";
 

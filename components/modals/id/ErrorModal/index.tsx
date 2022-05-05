@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { ModalContainer, Title, Body, Actions } from "../styles";
 
 // Assets
-import { WarningOutline } from "react-ionicons";
+// import { WarningOutline } from "react-ionicons";
 import { Button } from "zignaly-ui";
-import { closeModal } from "store/actions/ui";
+import { closeModal } from "lib/store/actions/ui";
 
 type ErrorModalTypesProps = {
   title: string;
@@ -33,11 +33,11 @@ function ErrorModal({
   }, []);
 
   return (
-    <ModalContainer width={"420px"}>
-      <WarningOutline color={"#ffa837"} height={"46px"} width={"46px"} />
+    <ModalContainer width={420}>
+      {/* <WarningOutline color={"#ffa837"} height={"46px"} width={"46px"} /> */}
       <Title>{title}</Title>
       <Body>{description}</Body>
-      <Actions columns={1}>
+      <Actions>
         <Button caption="Ok" onClick={action ?? handleDefaultAction} />
       </Actions>
     </ModalContainer>

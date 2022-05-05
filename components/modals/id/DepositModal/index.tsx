@@ -17,7 +17,6 @@ import { Box } from "@mui/material";
 import * as styled from "./styles";
 import NumberFormat from "react-number-format";
 import Modal from "components/modals/Modal";
-import { CoinNetwork } from "src/services/tradeApiClient.types";
 import CopyButton from "components/common/CopyButton";
 
 type DepositModalTypesProps = {
@@ -45,10 +44,10 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
 
   return (
     <Modal
-      open={open}
-      width="large"
       onClose={onClose}
+      open={open}
       title={<FormattedMessage id="deposit.title" />}
+      width="large"
     >
       <Desc>
         <FormattedMessage id="deposit.reflect" />
@@ -67,33 +66,33 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
                   <Typography>
                     <FormattedMessage id="wallet.balance" />
                     <NumberFormat
-                      value={assets[selectedCoin].balanceTotal}
                       displayType="text"
                       prefix=" "
                       suffix=" "
                       thousandSeparator={true}
+                      value={assets[selectedCoin].balanceTotal}
                     />
                     {selectedCoin}
                   </Typography>
                   <Typography>
                     <FormattedMessage id="deposit.inOrders" />
                     <NumberFormat
-                      value={assets[selectedCoin].balanceLocked}
                       displayType="text"
                       prefix=" "
                       suffix=" "
                       thousandSeparator={true}
+                      value={assets[selectedCoin].balanceLocked}
                     />
                     {selectedCoin}
                   </Typography>
                   <Typography>
                     <FormattedMessage id="balance.avail" />
                     <NumberFormat
-                      value={assets[selectedCoin].balanceFree}
                       displayType="text"
                       prefix=" "
                       suffix=" "
                       thousandSeparator={true}
+                      value={assets[selectedCoin].balanceFree}
                     />
                     {selectedCoin}
                   </Typography>
@@ -103,10 +102,10 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
             {selectedCoin && (
               <>
                 <NetworkSelect
+                  fullWidth={true}
                   networks={assets[selectedCoin].networks}
                   onChange={(item) => setSelectedNetwork(item.value)}
                   selectedNetwork={selectedNetwork?.network}
-                  fullWidth={true}
                 />
                 {selectedNetwork &&
                   (depositAddress ? (
@@ -122,7 +121,7 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
                         }
                       />
                       {selectedNetwork && (
-                        <Box display="flex" alignItems="center">
+                        <Box alignItems="center" display="flex">
                           <ErrorMessage
                             text={intl.formatMessage(
                               {
@@ -134,20 +133,23 @@ function DepositModal({ open, onClose, initialCoin }: DepositModalTypesProps): R
                               },
                             )}
                           />
-                          <TextButton caption={<FormattedMessage id="wallet.deposit.notsure" />} />
+                          <TextButton
+                            href="https://help.zignaly.com"
+                            caption={<FormattedMessage id="wallet.deposit.notsure" />}
+                          />
                           {/* <styled.NotSure href="https://help.zignaly.com" target="_blank">
                             <FormattedMessage id="wallet.deposit.notsure" />
                           </styled.NotSure> */}
                         </Box>
                       )}
                       <styled.QRCodeContainer>
-                        <QRCode value={depositAddress.address} size={156} />
+                        <QRCode size={156} value={depositAddress.address} />
                       </styled.QRCodeContainer>
                       {depositAddress.tag && (
                         <>
                           <InputText defaultValue={depositAddress.tag} readOnly={true} />
                           <styled.QRCodeContainer>
-                            <QRCode value={depositAddress.tag} size={156} />
+                            <QRCode size={156} value={depositAddress.tag} />
                           </styled.QRCodeContainer>
                         </>
                       )}

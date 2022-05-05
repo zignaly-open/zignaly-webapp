@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { FormattedMessage } from "react-intl";

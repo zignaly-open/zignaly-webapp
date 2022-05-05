@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useRef } from "react";
 import { Box, TextField } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -8,7 +9,7 @@ import { useDispatch } from "react-redux";
 import PasswordInput from "../../Passwords/PasswordInput";
 import { FormattedMessage, useIntl } from "react-intl";
 import TwoFAForm from "../TwoFAForm";
-import { showErrorAlert } from "store/actions/ui";
+import { showErrorAlert } from "lib/store/actions/ui";
 import useHasMounted from "../../../hooks/useHasMounted";
 import { emailRegex } from "legacy/utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";

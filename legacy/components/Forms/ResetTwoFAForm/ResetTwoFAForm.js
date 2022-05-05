@@ -1,8 +1,9 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { Radio, RadioGroup, FormControlLabel, Box, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 // import tradeApi from "../../../services/tradeApiClient";
-import { showErrorAlert } from "store/actions/ui";
+import { showErrorAlert } from "lib/store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import CustomButton from "../../CustomButton";
 

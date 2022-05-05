@@ -21,6 +21,7 @@ function useEventListener(eventName, handler, element = window) {
       if (!isSupported) return;
 
       // Create event listener that calls handler function stored in ref
+      // @ts-ignore
       const eventListener = (event) => savedHandler.current(event);
 
       // Add event listener

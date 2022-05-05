@@ -17,7 +17,7 @@ const renderProfit = (position: Position) => {
         </span>
       ) : (
         <PriceLabel
-          token="USDT"
+          coin="USDT"
           value={position.profit}
           bottomElement={<PercentageIndicator value={position.profitPercentage} />}
         />
@@ -79,7 +79,7 @@ const ServicePositions = () => {
                   thousandSeparator={true}
                 />
               ),
-              invested: <PriceLabel token={position.quote} value={position.positionSizeQuote} />,
+              invested: <PriceLabel coin={position.quote} value={position.positionSizeQuote} />,
               side: (
                 <FormattedMessage
                   id={`${position.side === "SHORT" ? "fil.type.short" : "fil.type.long"}`}

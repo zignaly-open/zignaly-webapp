@@ -41,9 +41,8 @@ const ServiceSignals = () => {
           <FormattedMessage
             id="signals.desc"
             values={{
-              a: (chunks) => {
-                return <Link href="/signals">{chunks[0]}</Link>;
-              },
+              // @ts-ignore
+              a: (chunks) => <Link href="/signals">{chunks}</Link>,
             }}
           />
           <br />
@@ -52,46 +51,44 @@ const ServiceSignals = () => {
       </div>
       <TextButton
         caption={<FormattedMessage id="signal.help.how" />}
-        rightElement={<OpenArrowIcon />}
-        label={intl.formatMessage({ id: "signals.syntax" })}
         href={URL_SIGNALS_SEND}
+        rightElement={<OpenArrowIcon />}
       />
       <TextButton
         caption={<FormattedMessage id="signal.help.params" />}
-        rightElement={<OpenArrowIcon />}
-        label={intl.formatMessage({ id: "signals.syntax" })}
         href={URL_SIGNALS_PARAMS}
+        rightElement={<OpenArrowIcon />}
       />
       {data ? (
         <>
-          <Box mt="60px" mb="48px">
+          <Box mb="48px" mt="60px">
             <InputText
-              value={data.key}
-              type={showKey ? "text" : "password"}
-              readOnly
               label={intl.formatMessage({ id: "signals.key" })}
+              readOnly
               rightSideElement={
                 <styled.SideButtons>
                   <IconButton
-                    onClick={() => setShowKey(!showKey)}
                     icon={showKey ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                    onClick={() => setShowKey(!showKey)}
                     variant="flat"
                   />
                   <CopyButton content={data.key} />
                 </styled.SideButtons>
               }
+              type={showKey ? "text" : "password"}
+              value={data.key}
             />
           </Box>
           <InputText
-            value={SIGNAL_URL}
-            readOnly
-            multiline
             label={intl.formatMessage({ id: "signals.syntax" })}
+            multiline
+            readOnly
             rightSideElement={
               <styled.SideButtons>
                 <CopyButton content={SIGNAL_URL} />
               </styled.SideButtons>
             }
+            value={SIGNAL_URL}
           />
         </>
       ) : (

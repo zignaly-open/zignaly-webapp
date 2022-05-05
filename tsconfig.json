@@ -43,7 +43,8 @@
     "isolatedModules": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "legacy"
   ],
   "typeRoots": [
     "./src/types",

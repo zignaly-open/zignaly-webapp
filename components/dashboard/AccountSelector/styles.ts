@@ -1,4 +1,3 @@
-import { props } from "cypress/types/bluebird";
 import styled, { css } from "styled-components";
 import { Typography, IconButton, TextButton } from "zignaly-ui";
 

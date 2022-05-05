@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { UserEntity } from "src/services/tradeApiClient.types";
-import { endTradeApiSession, startTradeApiSession } from "store/actions/session";
-import { setSelectedExchange } from "store/actions/settings";
+import { endTradeApiSession, startTradeApiSession } from "lib/store/actions/session";
+import { setSelectedExchange } from "lib/store/actions/settings";
 import { analyticsTrigger } from "legacy/utils/analyticsJsApi";
 import gtmPushApi from "legacy/utils/gtmPushApi";
 import { endLiveSession, startLiveSession } from "legacy/utils/liveSessionApi";
@@ -30,7 +29,7 @@ const initExternalWidgets = (userData, eventType) => {
   }
 };
 
-const initSelectedExchange = (user: UserEntity, selectedExchangeId: string) => {
+const initSelectedExchange = (user: User, selectedExchangeId: string) => {
   if (user?.exchanges.length) {
     const selectedExchange = user.exchanges.find((e) => e.internalId === selectedExchangeId);
     if (selectedExchange) {

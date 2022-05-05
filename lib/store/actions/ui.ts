@@ -89,10 +89,6 @@ export const hideSuccessAlert = () => {
   };
 };
 
-/**
- * @param {boolean} payload Flag to indicate if we should ask for 2FA code.
- * @returns {AnyAction} return action object.
- */
 export const ask2FA = (payload) => {
   return {
     type: ASK_2FA,
@@ -100,7 +96,7 @@ export const ask2FA = (payload) => {
   };
 };
 
-export const openModal = (id, data = {}) => {
+export const openModal = (id: ModalType, data = {}) => {
   return {
     type: OPEN_MODAL,
     payload: {

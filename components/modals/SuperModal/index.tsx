@@ -5,17 +5,14 @@ import { useSpring, config } from "react-spring";
 // Hooks
 import { useDispatch, useSelector } from "react-redux";
 
-// Types
-import { ModalTypesId } from "typings/modal";
-
 // Modals
 import ErrorModal from "../id/ErrorModal";
 import DepositModal from "../id/DepositModal";
 
 // Selectors
-import { getCurrentModal } from "store/selectors/ui";
+import { getCurrentModal } from "lib/store/selectors/ui";
 import WithdrawModal from "../id/WithdrawModal";
-import { closeModal } from "store/actions/ui";
+import { closeModal } from "lib/store/actions/ui";
 
 function SuperModal() {
   // Context
@@ -36,7 +33,7 @@ function SuperModal() {
 
   const renderModal = useMemo(() => {
     switch (currentModal.id) {
-      case ModalTypesId.ERROR_MODAL:
+      case "ERROR_MODAL":
         return (
           <ErrorModal
             action={currentModal.data.action}
@@ -44,15 +41,15 @@ function SuperModal() {
             title={currentModal.data.title}
           />
         );
-      case ModalTypesId.DEPOSIT_MODAL:
+      case "DEPOSIT_MODAL":
         return (
           <DepositModal
             initialCoin={currentModal.data.initialCoin}
-            open={open}
             onClose={handleClose}
+            open={open}
           />
         );
-      case ModalTypesId.WITHDRAW_MODAL:
+      case "WITHDRAW_MODAL":
         return (
           <WithdrawModal
             initialCoin={currentModal.data.initialCoin}

@@ -43,7 +43,7 @@ const ServiceContracts = () => {
       contracts
         ? contracts.map((contract) => ({
             date: <DateLabel date={new Date()} />,
-            position: contract.position,
+            position: contract.positionId,
             pair: contract.symbol,
             amount: (
               <NumberFormat value={contract.amount} displayType="text" thousandSeparator={true} />
@@ -74,7 +74,7 @@ const ServiceContracts = () => {
     [contracts],
   );
 
-  return <>{contracts ? <Table columns={columns} data={data} /> : <Loader />}</>;
+  return contracts ? <Table columns={columns} data={data} /> : <Loader />;
 };
 
 export default ServiceContracts;

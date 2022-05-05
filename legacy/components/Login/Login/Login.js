@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Box, SvgIcon, Typography } from "@mui/material";
 import Trophy from "public/images/login/trophy.svg";

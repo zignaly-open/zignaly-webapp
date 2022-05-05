@@ -1,12 +1,3 @@
-import {
-  DefaultProviderGetObject,
-  ExchangeAssetsDict,
-  ExchangeContractsObject,
-  ExchangeDepositAddress,
-  ExchangeOpenOrdersObject,
-  ProviderEntity,
-  UserEntity,
-} from "services/tradeApiClient.types";
 import useSWR, { SWRConfiguration, SWRResponse, useSWRConfig } from "swr";
 
 /**
@@ -56,7 +47,7 @@ const useAPI = () => {
     });
   };
 
-  const getUserData = (token?: string): Promise<UserEntity> => {
+  const getUserData = (token?: string): Promise<User> => {
     return fetcher(baseUrl + "/user", {
       headers: {
         "Accept-version": 2,
@@ -89,7 +80,7 @@ export const useExchangeAssets = (exchangeInternalId: string, reduced: boolean) 
   const path = exchangeInternalId
     ? `/user/exchanges/${exchangeInternalId}/assets?${reduced ? "view=reduced" : ""}`
     : null;
-  return useAPIFetch<ExchangeAssetsDict>(path);
+  return useAPIFetch<ExchangeAssets>(path);
 };
 
 export const useExchangeDepositAddress = (
@@ -128,28 +119,28 @@ export const useServiceInvestors = (providerId: string) => {
 
 export const useContracts = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/contracts`;
-  return useAPIFetch<ExchangeContractsObject[]>(path);
+  return useAPIFetch<ExchangeContract[]>(path);
 };
 
 export const useServiceOrders = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/exchanges/${exchangeInternalId}/providers/${providerId}/orders/open`;
-  return useAPIFetch<ExchangeOpenOrdersObject[]>(path);
-};
-
-/**
- * Get services owned by an user
- */
-export const useUserServices = (timeFrame: number = 7) => {
-  const path = `/providers/user_services/${timeFrame}?type=profit_sharing`;
-  return useAPIFetch<ProviderEntity[]>(path);
+  return useAPIFetch<ExchangeOpenOrder[]>(path);
 };
 
 /**
  * Get services connected by an user
  */
+export const useUserServices = (timeFrame: number = 7) => {
+  const path = `/providers/user_services/${timeFrame}?type=profit_sharing`;
+  return useAPIFetch<Provider[]>(path);
+};
+
+/**
+ * Get services owned by an user
+ */
 export const useUserService = (exchangeInternalId: string, providerId: string) => {
   const path = `/user/providers/${providerId}?${new URLSearchParams({ exchangeInternalId })}`;
-  return useAPIFetch<DefaultProviderGetObject>(path);
+  return useAPIFetch<ProviderDetails>(path);
 };
 
 /**
@@ -159,5 +150,5 @@ export const useServiceAssets = (exchangeInternalId: string, providerId: string)
   const path =
     valid(exchangeInternalId, providerId) &&
     `/user/exchanges/${exchangeInternalId}/providers/${providerId}/assets`;
-  return useAPIFetch<ExchangeAssetsDict>(path);
+  return useAPIFetch<ExchangeAssets>(path);
 };

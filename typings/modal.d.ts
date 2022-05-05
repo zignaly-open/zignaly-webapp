@@ -1,0 +1,1 @@
+type ModalType = "ERROR_MODAL" | "DEPOSIT_MODAL" | "WITHDRAW_MODAL";

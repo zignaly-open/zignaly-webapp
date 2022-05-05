@@ -9,7 +9,7 @@ import translationsEN from "i18n/translations/en.yml";
 import translations from "i18n/translations";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { Provider, useSelector } from "react-redux";
-import { store } from "store/store";
+import { store } from "lib/store/store";
 import { useRouter } from "next/router";
 import { getLanguageCodefromLocale } from "../i18n";
 import Auth from "../components/Auth";
@@ -21,6 +21,7 @@ import "../legacy/styles/legacy.scss";
 // todo: Replace these old components
 import ErrorAlert from "legacy/components/Alerts/ErrorAlert";
 import SuccessAlert from "legacy/components/Alerts/SuccessAlert";
+import getLegacyTheme from "legacy/utils/legacy-theme";
 
 const WithReduxProvider = (Component) => (props) =>
   (
@@ -33,9 +34,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { darkStyle, locale } = useSelector((state: any) => state.settings);
   const router = useRouter();
   const isLogin = ["/", "/login", "/signup"].includes(router.pathname);
-  const darkTheme = !isLogin;
+  const darkTheme = !isLogin && darkStyle;
   const theme = useMemo(
-    () => createTheme({ ...dark, ...getTheme(darkTheme, isLogin) }),
+    () => createTheme({ ...dark, ...(isLogin ? getLegacyTheme() : getTheme(darkTheme)) }),
     [darkTheme, isLogin],
   );
   const [messages, setMessages] = useState(null);
@@ -60,29 +61,23 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GoogleReCaptchaProvider
         language="en"
         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
-        scriptProps={{
-          async: false, // optional, default to false,
-          defer: false, // optional, default to false
-          appendTo: "head", // optional, default to "head", can be "head" or "body",
-          nonce: undefined, // optional, default undefined
-        }}
         useEnterprise={false}
         useRecaptchaNet={true}
       >
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
             <ThemeProviderUI theme={theme}>
-              {/* <GlobalStyle /> */}
+              wf
               <CssBaseline />
               <SWRAuthConfig>
                 <Auth>
                   <Head>
                     {/* Preload fonts */}
                     <link
-                      rel="preload"
-                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
                       as="font"
                       crossOrigin=""
+                      href={`${process.env.NEXT_PUBLIC_BASE_PATH}/fonts/PlexSans/IBMPlexSans-Regular.ttf`}
+                      rel="preload"
                     />
                   </Head>
                   <ErrorAlert />

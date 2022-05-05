@@ -1,13 +1,12 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { ExchangeAssetsDict } from "src/services/tradeApiClient.types";
 import { Select, Typography } from "zignaly-ui";
 import CoinIcon from "../CoinIcon";
 
 import * as styled from "./styles";
 
 interface AssetSelectProps {
-  assets: ExchangeAssetsDict;
+  assets: ExchangeAssets;
   onChange: any;
   selectedAsset?: string;
   fullWidth?: boolean;

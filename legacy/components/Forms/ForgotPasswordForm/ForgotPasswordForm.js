@@ -1,10 +1,11 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
 // import tradeApi from "../../src/services/tradeApiClient";
 import { useDispatch } from "react-redux";
-import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
+import { showErrorAlert, showSuccessAlert } from "lib/store/actions/ui";
 import { FormattedMessage } from "react-intl";
 import { emailRegex } from "legacy/utils/validators";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";

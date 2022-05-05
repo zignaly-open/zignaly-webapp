@@ -1,6 +1,6 @@
 import React from "react";
 import { SWRConfig } from "swr";
-import { endTradeApiSession } from "store/actions/session";
+import { endTradeApiSession } from "lib/store/actions/session";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { localStorageProvider } from "lib/cacheAPI";
@@ -50,6 +50,7 @@ const SWRAuthConfig = ({ children }) => {
 
           if (error) {
             if (error.error?.code === 13) {
+              // eslint-disable-next-line no-console
               console.log("api session expired, redirecting to login");
               dispatch(endTradeApiSession());
               redirectLogin(true);

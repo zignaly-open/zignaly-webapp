@@ -1,6 +1,5 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { CoinNetwork } from "src/services/tradeApiClient.types";
 import { Select } from "zignaly-ui";
 import { getChainIcon } from "utils/chain";
 

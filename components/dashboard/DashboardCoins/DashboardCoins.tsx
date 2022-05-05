@@ -5,9 +5,8 @@ import { useExchangeAssets } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import Loader from "components/common/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { ModalTypesId } from "typings/modal";
-import { openModal } from "store/actions/ui";
-import { setHiddenColumn } from "store/actions/settings";
+import { openModal } from "lib/store/actions/ui";
+import { setHiddenColumn } from "lib/store/actions/settings";
 
 const TABLE_NAME = "dashboardCoins";
 
@@ -16,9 +15,7 @@ const DashboardCoins = () => {
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, true);
   const dispatch = useDispatch();
-  const hiddenColumns = useSelector(
-    (state: any) => state.settings.hiddenColumns && state.settings.hiddenColumns[TABLE_NAME],
-  );
+  const hiddenColumns = useSelector((state: any) => state.settings.hiddenColumns[TABLE_NAME]);
 
   const columns = [
     {
@@ -57,30 +54,30 @@ const DashboardCoins = () => {
           availableBalance: <PriceLabel coin={coin} value={coinBalance.balanceFree} />,
           lockedBalance: <PriceLabel coin={coin} value={coinBalance.balanceLocked} />,
           totalBTC: <PriceLabel coin="BTC" value={coinBalance.balanceTotalBTC} />,
-          totalUSD: <PriceLabel coin="USD" value={coinBalance.balanceTotalUSDT} fiat />,
+          totalUSD: <PriceLabel coin="USD" fiat value={coinBalance.balanceTotalUSDT} />,
           action: (
             <ButtonGroup>
               <Button
-                variant="secondary"
                 caption={intl.formatMessage({ id: "action.deposit" })}
                 onClick={() =>
                   dispatch(
-                    openModal(ModalTypesId.DEPOSIT_MODAL, {
+                    openModal("DEPOSIT_MODAL", {
                       initialCoin: coin,
                     }),
                   )
                 }
+                variant="secondary"
               />
               <Button
-                variant="secondary"
                 caption={intl.formatMessage({ id: "action.withdraw" })}
                 onClick={() =>
                   dispatch(
-                    openModal(ModalTypesId.WITHDRAW_MODAL, {
+                    openModal("WITHDRAW_MODAL", {
                       initialCoin: coin,
                     }),
                   )
                 }
+                variant="secondary"
               />
             </ButtonGroup>
           ),
