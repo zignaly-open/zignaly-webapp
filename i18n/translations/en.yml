@@ -2048,3 +2048,13 @@ withdraw.toAddress: "Withdraw to Address"
 
 action.deposit: "Deposit"
 action.withdraw: "Withdraw"
+
+management.manage: "Manage"
+management.totalFunds: "Total Funds in Service"
+management.tradingFunds: "Trading Funds"
+management.tradingFunds.desc: "Funds available for trading and used in positions"
+management.availableTrading: "Available for trading:"
+management.allocatedTrading: "Allocated for trading:"
+management.hardDisconnected: "Hard-disconnected Funds:"
+management.disconnectionFunds: "Disconnection Funds"
+management.disconnectionFunds.desc: "Funds available to return to investors who want to disconnect"

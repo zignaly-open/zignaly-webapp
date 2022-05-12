@@ -48,6 +48,11 @@ const ServiceNavigationBar = () => {
           <FormattedMessage id="signals.menu" />
         </a>
       </Link>
+      <Link href="/manage">
+        <a className={router.pathname === "/manage" ? "active" : ""}>
+          <FormattedMessage id="management.manage" />
+        </a>
+      </Link>
     </styled.Layout>
   );
 };
