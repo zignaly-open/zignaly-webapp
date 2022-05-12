@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PriceLabel } from "zignaly-ui";
+import { PriceLabel, Typography } from "zignaly-ui";
 
 export const Layout = styled.div`
   display: flex;
@@ -19,7 +19,12 @@ export const Box = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 24px;
+  padding: 24px 44px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 8px;
+  }
 `;
 
 export const BottomContainer = styled.div`
@@ -29,14 +34,19 @@ export const BottomContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const Funds = styled.div`
-  h3 {
+export const MainPriceLabel = styled(PriceLabel)`
+  > span {
     font-weight: 500;
     font-size: 26px !important;
     line-height: 40px !important;
     color: #f3f4f6;
     justify-content: center;
     margin-top: 16px;
+
+    > span:nth-of-type(1) {
+      font-weight: 500 !important;
+      font-size: 26px !important;
+    }
 
     > span:nth-of-type(2) {
       font-size: 15px;
@@ -45,12 +55,24 @@ export const Funds = styled.div`
   }
 `;
 
+export const TopConnector = styled.div`
+  border: 1px dashed ${({ theme }) => theme.neutral600};
+  height: 32px;
+`;
+
+export const TopHorizontalConnection = styled.div`
+  border: 2px dashed ${({ theme }) => theme.neutral600};
+  border-bottom: none;
+  height: 32px;
+  width: 740px;
+  border-radius: 5px;
+`;
+
 export const HorizontalConnection = styled.div`
   display: flex;
   align-self: center;
   border: 1px dashed ${({ theme }) => theme.neutral600};
-  position: absolute;
-  width: 100%;
+  flex: 1;
 `;
 
 export const MiddleContainer = styled.div`
@@ -59,4 +81,31 @@ export const MiddleContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+`;
+
+export const TransferButtonContainer = styled.div`
+  background: #000000;
+`;
+
+export const InlinePriceLabel = styled(PriceLabel)`
+  display: inline-block;
+`;
+
+export const LabelHardDisc = styled(Typography)`
+  margin: 34px 0 16px;
+`;
+
+export const TradingFunds = styled.div`
+  margin-top: 42px;
+  display: flex;
+  flex-direction: column;
+
+  > span:not(:first-of-type) {
+    margin-top: 12px;
+  }
+
+  span > span:nth-of-type(1) {
+    color: ${({ theme }) => theme.neutral100};
+    margin-left: 16px;
+  }
 `;

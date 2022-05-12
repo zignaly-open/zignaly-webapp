@@ -1,11 +1,14 @@
-import { Box } from "@mui/system";
-import Loader from "components/common/Loader/Loader";
-import { useUserService } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
-import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Typography, PriceLabel, Button } from "zignaly-ui";
+import {
+  Typography,
+  PriceLabel,
+  Button,
+  SliderProgress,
+  TextButton,
+  EditPenIcon,
+} from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import * as styled from "./styles";
 
@@ -21,10 +24,10 @@ const ServiceSignals = () => {
         <Typography variant="h2" color="neutral100">
           <FormattedMessage id="management.totalFunds" />
         </Typography>
-        <styled.Funds>
-          <PriceLabel value={100} coin="USDT" />
-        </styled.Funds>
+        <styled.MainPriceLabel value={100} coin="USDT" />
       </styled.Box>
+      <styled.TopConnector />
+      <styled.TopHorizontalConnection />
       <styled.BottomContainer>
         <styled.Box>
           <Typography variant="h2" color="neutral100">
@@ -33,14 +36,25 @@ const ServiceSignals = () => {
           <Typography>
             <FormattedMessage id="management.tradingFunds.desc" />
           </Typography>
-          <Typography>
-            <FormattedMessage id="management.availableTrading" />
-            <PriceLabel value={100} coin="USDT" />
-          </Typography>
+          <styled.TradingFunds>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.availableTrading" />
+              <styled.InlinePriceLabel value={100} coin="USDT" />
+            </Typography>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.allocatedTrading" />
+              <styled.InlinePriceLabel value={320} coin="USDT" />
+            </Typography>
+          </styled.TradingFunds>
+          <styled.LabelHardDisc>
+            <FormattedMessage id="management.hardDisconnected" />
+          </styled.LabelHardDisc>
+          <SliderProgress value={30} max={50} />
         </styled.Box>
         <styled.MiddleContainer>
           <styled.HorizontalConnection />
-          <Button variant="secondary" />
+          <Button variant="secondary" caption={intl.formatMessage({ id: "management.transfer" })} />
+          <styled.HorizontalConnection />
         </styled.MiddleContainer>
         <styled.Box>
           <Typography variant="h2" color="neutral100">
@@ -49,6 +63,30 @@ const ServiceSignals = () => {
           <Typography>
             <FormattedMessage id="management.disconnectionFunds.desc" />
           </Typography>
+          <styled.TradingFunds>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.availableDisconnection" />
+              <styled.InlinePriceLabel value={90} coin="USDT" />
+            </Typography>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.neededSnapshot" />
+              <styled.InlinePriceLabel value={3020} coin="USDT" />
+            </Typography>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.minBalance" />
+              <styled.InlinePriceLabel value={100} coin="USDT" />
+              <TextButton
+                leftElement={<EditPenIcon />}
+                caption={<FormattedMessage id="srv.edit" />}
+              />
+            </Typography>
+            <Typography color="neutral400" variant="body2">
+              <FormattedMessage id="management.heldHardDisc" />
+              <Typography variant="body2">
+                <FormattedMessage id="management.controlledZignaly" />
+              </Typography>
+            </Typography>
+          </styled.TradingFunds>
         </styled.Box>
       </styled.BottomContainer>
     </styled.Layout>
