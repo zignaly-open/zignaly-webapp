@@ -13,6 +13,7 @@ import DepositModal from "../id/DepositModal";
 import { getCurrentModal } from "lib/store/selectors/ui";
 import WithdrawModal from "../id/WithdrawModal";
 import { closeModal } from "lib/store/actions/ui";
+import TransferModal from "../id/TransferModal";
 
 function SuperModal() {
   // Context
@@ -57,6 +58,8 @@ function SuperModal() {
             open={open}
           />
         );
+      case "TRANSFER_MODAL":
+        return <TransferModal onClose={handleClose} open={open} />;
 
       default:
         return null;

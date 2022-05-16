@@ -1,6 +1,8 @@
 import useUser from "lib/hooks/useUser";
+import { openModal } from "lib/store/actions/ui";
 import React, { useContext, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useDispatch } from "react-redux";
 import {
   Typography,
   PriceLabel,
@@ -10,6 +12,7 @@ import {
   EditPenIcon,
 } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
+import MinBalanceModal from "./MinBalanceModal";
 import * as styled from "./styles";
 
 const ServiceSignals = () => {
@@ -17,9 +20,16 @@ const ServiceSignals = () => {
   const { selectedService } = useContext(ServiceContext);
   const { selectedExchange } = useUser();
   const intl = useIntl();
+  const [editMinBalance, showEditMinBalance] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <styled.Layout>
+      <MinBalanceModal
+        initialValue={100}
+        open={editMinBalance}
+        onClose={() => showEditMinBalance(false)}
+      />
       <styled.Box>
         <Typography variant="h2" color="neutral100">
           <FormattedMessage id="management.totalFunds" />
@@ -53,7 +63,13 @@ const ServiceSignals = () => {
         </styled.Box>
         <styled.MiddleContainer>
           <styled.HorizontalConnection />
-          <Button variant="secondary" caption={intl.formatMessage({ id: "management.transfer" })} />
+          <Button
+            variant="secondary"
+            caption={intl.formatMessage({ id: "management.transfer" })}
+            onClick={() => {
+              dispatch(openModal("TRANSFER_MODAL"));
+            }}
+          />
           <styled.HorizontalConnection />
         </styled.MiddleContainer>
         <styled.Box>
@@ -78,6 +94,7 @@ const ServiceSignals = () => {
               <TextButton
                 leftElement={<EditPenIcon />}
                 caption={<FormattedMessage id="srv.edit" />}
+                onClick={() => showEditMinBalance(true)}
               />
             </Typography>
             <Typography color="neutral400" variant="body2">

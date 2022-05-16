@@ -7,8 +7,9 @@ import { useClickAway } from "react-use";
 
 // Styled Components
 import { Backdrop, Animation } from "./styles";
-import { Body, CloseButton, ModalContainer, Title } from "../id/styles";
+import { Body, CloseButton, ModalContainer, Title, Actions } from "../id/styles";
 import useEventListener from "lib/hooks/useEventListener";
+export { Actions };
 
 export interface ModalProps {
   title?: any;
