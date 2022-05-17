@@ -96,7 +96,7 @@ const WalletCoins = ({
           const { coinData } = row.original;
           return (
             <AlignCenter>
-              {(coinData?.allowDeposit || ["NEOFI", "MHUNT"].includes(coinData?.name)) && (
+              {coinData?.allowDeposit && (
                 <Button className="textPurple" onClick={() => setPath(`deposit/${coinData.name}`)}>
                   <FormattedMessage id="accounts.deposit" />
                 </Button>
@@ -197,7 +197,7 @@ const WalletCoins = ({
 
   const data = useMemo(() => {
     if (walletBalance) {
-      ["NEOFI", "MHUNT"].forEach((c) => {
+      ["NEOFI", "MHUNT", "PDD"].forEach((c) => {
         addDummyCoin(c);
       });
     }
