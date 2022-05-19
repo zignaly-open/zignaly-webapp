@@ -10,12 +10,13 @@ import {
   SliderProgress,
   TextButton,
   EditPenIcon,
+  Toaster,
 } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import MinBalanceModal from "./MinBalanceModal";
 import * as styled from "./styles";
 
-const ServiceSignals = () => {
+const ServiceManagement = () => {
   const [showKey, setShowKey] = useState(false);
   const { selectedService } = useContext(ServiceContext);
   const { selectedExchange } = useUser();
@@ -25,6 +26,17 @@ const ServiceSignals = () => {
 
   return (
     <styled.Layout>
+      {/* <Toaster
+        variant="success"
+        caption={intl.formatMessage({ id: "management.transfer.success" })}
+      /> */}
+      {/* <Toaster
+        variant="error"
+        caption={intl.formatMessage(
+          { id: "management.hardDiconnectWarning" },
+          { perc: 40, maxPerc: 50 },
+        )}
+      /> */}
       <MinBalanceModal
         initialValue={100}
         open={editMinBalance}
@@ -110,4 +122,4 @@ const ServiceSignals = () => {
   );
 };
 
-export default ServiceSignals;
+export default ServiceManagement;

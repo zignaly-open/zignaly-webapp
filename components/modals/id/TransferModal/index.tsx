@@ -11,10 +11,11 @@ import { useExchangeAssets } from "lib/hooks/useAPI";
 import useUser from "lib/hooks/useUser";
 import Loader from "components/common/Loader/Loader";
 import * as styled from "./styles";
-import { Button, IconButton, InputAmount, SwapVertIcon } from "zignaly-ui";
+import { Button, IconButton, InputAmount, PriceLabel, SwapVertIcon, Typography } from "zignaly-ui";
 import { useForm } from "react-hook-form";
 import Modal from "components/modals/Modal";
 import { ethers } from "ethers";
+import NumberFormat from "react-number-format";
 
 type TransferModalProps = {
   open: boolean;
@@ -25,9 +26,9 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
   const { selectedExchange } = useUser();
   const { data: assets, error } = useExchangeAssets(selectedExchange?.internalId, false);
   const intl = useIntl();
-  const [selectedNetwork, setSelectedNetwork] = useState<CoinNetwork>(null);
-  const [confirmData, setConfirmData] = useState(null);
   const balance = ethers.utils.parseEther("100").toString();
+  const [fromTradingAccount, setFromTradingAccount] = useState(true);
+  const [amount, setAmount] = useState();
 
   const {
     register,
@@ -38,13 +39,8 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
     reValidateMode: "onChange",
   });
 
-  // useEffect(() => {
-  //   // Reset selected network on coin change
-  //   setSelectedNetwork(null);
-  // }, []);
-
   const onSubmit = (data) => {
-    setConfirmData({ ...data });
+    onClose();
   };
 
   return (
@@ -54,38 +50,67 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
       title={<FormattedMessage id="management.transferFunds" />}
       width="large"
     >
-      <Desc variant="h3">
+      <styled.Desc>
         <FormattedMessage id="management.transferFunds.desc" />
-      </Desc>
+      </styled.Desc>
       {assets ? (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <styled.Body>
             <InputAmount
-              label={intl.formatMessage({ id: "management.transfer.fromTradingAccount" })}
+              placeHolder={intl.formatMessage({ id: "col.amount" })}
+              fullWidth={true}
+              label={intl.formatMessage({
+                id: fromTradingAccount
+                  ? "management.transfer.fromTradingAccount"
+                  : "management.transfer.fromDiscAccount",
+              })}
               tokens={[
                 {
                   id: 1,
                   name: "USDT",
-                  // image: BTCIcon,
                   balance: balance.toString(),
                 },
               ]}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <IconButton
               size="large"
               icon={<SwapVertIcon />}
               variant="secondary"
-              onClick={() => {}}
+              onClick={() => {
+                setFromTradingAccount(!fromTradingAccount);
+              }}
             />
+            <styled.ToContainer>
+              <styled.ToOutline>
+                <Typography variant="h2">
+                  <FormattedMessage
+                    id={`management.transfer.${
+                      fromTradingAccount ? "toDiscAccount" : "toTradingAccount"
+                    }`}
+                  />
+                </Typography>
+                <styled.ToValue>
+                  {amount || "--"}
+                  <span>USDT</span>
+                </styled.ToValue>
+              </styled.ToOutline>
+              <Typography>
+                <FormattedMessage id="deposit.available" />
+                <styled.TypographyBalance variant="body2" color="neutral000">
+                  80 USDT
+                </styled.TypographyBalance>
+              </Typography>
+            </styled.ToContainer>
           </styled.Body>
-          <Actions>
+          <styled.Actions>
             <Button
-              caption={intl.formatMessage({ id: "wallet.withdraw.continue" })}
+              caption={intl.formatMessage({ id: "management.transfer.now" })}
               disabled={!isValid}
               size="xlarge"
               type="submit"
             />
-          </Actions>
+          </styled.Actions>
         </form>
       ) : (
         <Loader />
