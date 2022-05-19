@@ -57,7 +57,7 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <styled.Body>
             <InputAmount
-              placeHolder={intl.formatMessage({ id: "col.amount" })}
+              placeholder={intl.formatMessage({ id: "col.amount" })}
               fullWidth={true}
               label={intl.formatMessage({
                 id: fromTradingAccount
