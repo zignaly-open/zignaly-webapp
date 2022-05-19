@@ -11,6 +11,8 @@ import {
   TextButton,
   EditPenIcon,
   Toaster,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "zignaly-ui";
 import { ServiceContext } from "../ServiceContext";
 import MinBalanceModal from "./MinBalanceModal";
@@ -52,6 +54,7 @@ const ServiceManagement = () => {
       <styled.TopHorizontalConnection />
       <styled.BottomContainer>
         <styled.Box>
+          <styled.Circle />
           <Typography variant="h2" color="neutral100">
             <FormattedMessage id="management.tradingFunds" />
           </Typography>
@@ -74,6 +77,7 @@ const ServiceManagement = () => {
           <SliderProgress value={30} max={50} />
         </styled.Box>
         <styled.MiddleContainer>
+          <ArrowLeftIcon />
           <styled.HorizontalConnection />
           <Button
             variant="secondary"
@@ -83,8 +87,10 @@ const ServiceManagement = () => {
             }}
           />
           <styled.HorizontalConnection />
+          <ArrowRightIcon />
         </styled.MiddleContainer>
         <styled.Box>
+          <styled.Circle />
           <Typography variant="h2" color="neutral100">
             <FormattedMessage id="management.disconnectionFunds" />
           </Typography>

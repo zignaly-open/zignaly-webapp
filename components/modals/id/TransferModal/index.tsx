@@ -68,7 +68,7 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
                 {
                   id: 1,
                   name: "USDT",
-                  balance: balance.toString(),
+                  balance,
                 },
               ]}
               onChange={(e) => setAmount(e.target.value)}
@@ -80,6 +80,7 @@ function TransferModal({ open, onClose }: TransferModalProps): React.ReactElemen
               onClick={() => {
                 setFromTradingAccount(!fromTradingAccount);
               }}
+              type="button"
             />
             <styled.ToContainer>
               <styled.ToOutline>

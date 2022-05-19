@@ -9,6 +9,7 @@ export const Layout = styled.div`
 `;
 
 export const Box = styled.div`
+  position: relative;
   min-width: 446px;
   border-radius: 5px;
   background: ${({ theme }) => theme.neutral750};
@@ -81,6 +82,21 @@ export const MiddleContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
+
+  > svg {
+    color: ${({ theme }) => theme.neutral600};
+    width: 36px;
+    height: 36px;
+    position: absolute;
+
+    &:first-of-type {
+      left: -12px;
+    }
+
+    &:last-of-type {
+      right: -12px;
+    }
+  }
 `;
 
 export const TransferButtonContainer = styled.div`
@@ -108,4 +124,13 @@ export const TradingFunds = styled.div`
     color: ${({ theme }) => theme.neutral100};
     margin-left: 16px;
   }
+`;
+
+export const Circle = styled.div`
+  position: absolute;
+  top: -5px;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background: ${({ theme }) => theme.neutral600};
 `;
