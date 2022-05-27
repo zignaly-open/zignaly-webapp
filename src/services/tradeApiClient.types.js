@@ -323,6 +323,7 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @property {boolean} tradingFeeDiscount
  * @property {string} refCode
  * @property {'perpetual'|'oneTime'} refRewardType
+ * @property {string} intercomHash Hash for intercom identity verification
  */
 
 /**
