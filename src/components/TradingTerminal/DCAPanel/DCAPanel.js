@@ -625,7 +625,8 @@ const DCAPanel = (props) => {
               <FormattedMessage id="terminal.dca.increase" />
             </Typography>
           ) : null}
-          {activeDcaIncreaseIndexes.map((targetId) => displayDcaTarget(targetId))}
+          {/* Temporarily limit number of targets. Some positions have too many to be displayed fully */}
+          {activeDcaIncreaseIndexes.slice(0, 40).map((targetId) => displayDcaTarget(targetId))}
         </Box>
       )}
     </Box>
