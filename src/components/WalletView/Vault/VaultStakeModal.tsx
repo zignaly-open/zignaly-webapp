@@ -58,22 +58,13 @@ const VaultStakeModal = ({
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
   const balanceAmount = walletBalance[coin].total;
-  console.log(balanceAmount);
-  // const coinData = coins ? coins[coin] : null;
+  const [boostId, setBoostId] = useState(0);
 
-  const boosts = [
-    { value: 100, boost: 1 },
-    { value: 200, boost: 1.1 },
-    { value: 300, boost: 1.4 },
-    { value: 3000, boost: 2 },
-  ];
-  const boostable = true;
-  const unstakeEnabled = true;
-  const penalties = true;
-  const asideMinimum = 10000000;
-  const asideCoin = "ZIG";
-  const balanceAmountAside = walletBalance[asideCoin].total;
-  const enoughZIG = !asideMinimum || balanceAmountAside.availableBalance >= asideMinimum;
+  const balanceAmountAside = walletBalance[vaultProject.asideCoin].total;
+  const enoughZIG =
+    !vaultProject.asideMinimum ||
+    balanceAmountAside.availableBalance >=
+      (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
   const valid = enoughZIG;
 
   const getLabel = (boost: any) => (
@@ -83,19 +74,17 @@ const VaultStakeModal = ({
         displayType="text"
         thousandSeparator={true}
         decimalScale={2}
-        suffix={` ${asideCoin}`}
+        suffix={` ${vaultProject.asideCoin}`}
       />
       {boost.boost}x
     </BoostContainer>
   );
-  const boostMarks = boosts.map((b, index) => ({ value: index, label: getLabel(b) }));
+  const boostMarks = vaultProject.boosts.map((b, index) => ({ value: index, label: getLabel(b) }));
 
   const setBalanceMax = () => {
     setValue("amount", balanceAmount.availableBalance);
     trigger("amount");
   };
-
-  const [boostId, setBoostId] = useState(0);
 
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
@@ -119,7 +108,7 @@ const VaultStakeModal = ({
           minAmount={vaultProject.minBalance}
         />
         <br />
-        {boostable && (
+        {vaultProject.boostable && (
           <>
             <Typography variant="h3">
               <FormattedMessage id="vault.boost" />
@@ -131,7 +120,7 @@ const VaultStakeModal = ({
                 // min={0}
                 max={boostMarks[boostMarks.length - 1].value}
                 onChange={(_, value: number) => setBoostId(value)}
-                valueLabelFormat={() => `${boosts[boostId].boost}x`}
+                valueLabelFormat={() => `${vaultProject.boosts[boostId].percentage}x`}
                 // defaultValue={[1, 2]}
                 // onChangeCommitted={handleChange}
                 step={null}
@@ -141,7 +130,7 @@ const VaultStakeModal = ({
             </SliderContainer>
           </>
         )}
-        {asideMinimum > 0 && (
+        {vaultProject.asideMinimum > 0 && (
           <>
             <Typography>
               <FormattedMessage
@@ -150,11 +139,11 @@ const VaultStakeModal = ({
                   amount: (
                     <b>
                       <NumberFormat
-                        value={asideMinimum}
+                        value={vaultProject.asideMinimum}
                         displayType="text"
                         thousandSeparator={true}
                         decimalScale={2}
-                        suffix={` ${asideCoin}`}
+                        suffix={` ${vaultProject.asideCoin}`}
                       />
                     </b>
                   ),
@@ -182,10 +171,10 @@ const VaultStakeModal = ({
         )}
         <br />
         <Typography>
-          {!unstakeEnabled ? (
+          {!vaultProject.unstakeEnabled ? (
             <FormattedMessage id="vault.unstake.notPossible" />
           ) : (
-            penalties && (
+            vaultProject.penalties && (
               <FormattedMessage
                 id="vault.unstake.penalty"
                 values={{

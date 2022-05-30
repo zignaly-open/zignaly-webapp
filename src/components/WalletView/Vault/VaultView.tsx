@@ -236,10 +236,11 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
           <StyledVaultDepositButton>
-            {v.type !== "stake" && false ? (
+            {v.type !== "stake" ||
+            (walletBalance[v.coin]?.total.availableBalance ?? 0) < v.minBalance ? (
               <VaultDepositButton
                 vault={v}
-                balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
+                balance={walletBalance[v.coin]?.total.availableBalance || 0}
                 onClick={() => setDepositCoin(v.coin)}
                 depositEnabled={coins && coins[v.coin]?.allowDeposit}
               />
@@ -249,7 +250,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           </StyledVaultDepositButton>
         ),
       })),
-    [vaultOffers, tab],
+    [vaultOffers, tab, walletBalance, coins],
   );
 
   return (
@@ -291,7 +292,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       <InfoPanel id="vaultInfo" title="vault.title" message="vault.info" />
       <BenefitsInfo />
       <Box mt="28px">
-        {data ? (
+        {data && walletBalance && coins ? (
           <>
             <StyledTabs onChange={(e, v) => setTab(v)} value={tab} style={{ marginBottom: "16px" }}>
               <StyledTab label={<FormattedMessage id="vault.active" />} />
@@ -303,6 +304,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
                 type={tab === 0 ? "active" : "expired"}
                 onOfferClick={(coin) => setDepositCoin(coin)}
                 balance={walletBalance}
+                coins={coins}
               />
             ) : (
               <TableLayout>
