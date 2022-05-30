@@ -11,14 +11,20 @@ import { useForm } from "react-hook-form";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 
-const StyledSlider = styled(Slider)`
-  margin: 4px 12px 40px;
+const SliderContainer = styled.div`
+  margin: 4px 32px 36px;
 `;
 
 const TitleDesc = styled(Typography)`
   font-weight: 500;
   font-size: 32px;
   margin-bottom: 16px;
+`;
+
+const BoostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 interface VaultStakeModalProps {
@@ -54,27 +60,12 @@ const VaultStakeModal = ({
   const balanceAmount = walletBalance[coin].total;
   console.log(balanceAmount);
   // const coinData = coins ? coins[coin] : null;
-  const boostMarks = [
-    {
-      value: 100,
-      label: "100 ZIG",
-    },
-    {
-      value: 200,
-      label: "200 ZIG",
-    },
-    {
-      value: 500,
-      label: "500 ZIG",
-    },
-    {
-      value: 600,
-      label: "600 ZIG",
-    },
-    {
-      value: 2000,
-      label: "2000 ZIG",
-    },
+
+  const boosts = [
+    { value: 100, boost: 1 },
+    { value: 200, boost: 1.1 },
+    { value: 300, boost: 1.4 },
+    { value: 3000, boost: 2 },
   ];
   const boostable = true;
   const unstakeEnabled = true;
@@ -85,12 +76,26 @@ const VaultStakeModal = ({
   const enoughZIG = !asideMinimum || balanceAmountAside.availableBalance >= asideMinimum;
   const valid = enoughZIG;
 
+  const getLabel = (boost: any) => (
+    <BoostContainer>
+      <NumberFormat
+        value={boost.value}
+        displayType="text"
+        thousandSeparator={true}
+        decimalScale={2}
+        suffix={` ${asideCoin}`}
+      />
+      {boost.boost}x
+    </BoostContainer>
+  );
+  const boostMarks = boosts.map((b, index) => ({ value: index, label: getLabel(b) }));
+
   const setBalanceMax = () => {
     setValue("amount", balanceAmount.availableBalance);
     trigger("amount");
   };
 
-  const [asideAmount, setAsideAmount] = useState(boostMarks[0].value);
+  const [boostId, setBoostId] = useState(0);
 
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
@@ -118,20 +123,22 @@ const VaultStakeModal = ({
           <>
             <Typography variant="h3">
               <FormattedMessage id="vault.boost" />
-              &nbsp;{asideAmount / boostMarks[0].value}x
+              &nbsp;{boostId}x
             </Typography>
-            <StyledSlider
-              // className="privacySlider"
-              marks={boostMarks}
-              min={boostMarks[0].value}
-              max={boostMarks[boostMarks.length - 1].value}
-              onChange={(_, value: number) => setAsideAmount(value)}
-              // defaultValue={[1, 2]}
-              // onChangeCommitted={handleChange}
-              step={null}
-              value={asideAmount}
-              valueLabelDisplay="off"
-            />
+            <SliderContainer>
+              <Slider
+                marks={boostMarks}
+                // min={0}
+                max={boostMarks[boostMarks.length - 1].value}
+                onChange={(_, value: number) => setBoostId(value)}
+                valueLabelFormat={() => `${boosts[boostId].boost}x`}
+                // defaultValue={[1, 2]}
+                // onChangeCommitted={handleChange}
+                step={null}
+                value={boostId}
+                valueLabelDisplay="auto"
+              />
+            </SliderContainer>
           </>
         )}
         {asideMinimum > 0 && (
