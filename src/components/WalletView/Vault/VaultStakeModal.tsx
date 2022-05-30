@@ -33,6 +33,7 @@ interface VaultStakeModalProps {
   vaultProject: VaultOffer;
   coins: WalletCoins;
   onDepositMore: () => void;
+  onOpenOffer: () => void;
 }
 
 const VaultStakeModal = ({
@@ -41,6 +42,7 @@ const VaultStakeModal = ({
   vaultProject,
   coins,
   onDepositMore,
+  onOpenOffer,
 }: VaultStakeModalProps) => {
   const intl = useIntl();
   const { coin } = vaultProject;
@@ -174,12 +176,12 @@ const VaultStakeModal = ({
           {!vaultProject.unstakeEnabled ? (
             <FormattedMessage id="vault.unstake.notPossible" />
           ) : (
-            vaultProject.penalties && (
+            vaultProject.penalties?.length && (
               <FormattedMessage
                 id="vault.unstake.penalty"
                 values={{
                   a: (chunks: string) => (
-                    <a className="link" onClick={() => {}}>
+                    <a className="link" onClick={onOpenOffer}>
                       {chunks}
                     </a>
                   ),

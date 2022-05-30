@@ -280,6 +280,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           vaultProject={selectedStakeVault}
           coins={coins}
           onDepositMore={() => setDepositCoin(selectedStakeVault.coin)}
+          onOpenOffer={() => setSelectedVaultOffer(selectedStakeVault)}
         />
       )}
       <Title>
