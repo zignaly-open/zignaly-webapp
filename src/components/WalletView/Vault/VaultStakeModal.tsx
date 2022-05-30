@@ -67,16 +67,16 @@ const VaultStakeModal = ({
       (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
   const valid = enoughZIG;
 
-  const getLabel = (boost: any) => (
+  const getLabel = (boost: Boost) => (
     <BoostContainer>
       <NumberFormat
-        value={boost.value}
+        value={boost.minimum}
         displayType="text"
         thousandSeparator={true}
         decimalScale={2}
         suffix={` ${vaultProject.asideCoin}`}
       />
-      {boost.boost}x
+      {boost.percentage}x
     </BoostContainer>
   );
   const boostMarks = vaultProject.boosts.map((b, index) => ({ value: index, label: getLabel(b) }));
@@ -110,24 +110,24 @@ const VaultStakeModal = ({
         <br />
         {vaultProject.boostable && (
           <>
-            <Typography variant="h3">
-              <FormattedMessage id="vault.boost" />
-              &nbsp;{boostId}x
+            <Typography style={{ margin: "20px 0 22px" }}>
+              <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
             </Typography>
             <SliderContainer>
               <Slider
                 marks={boostMarks}
-                // min={0}
                 max={boostMarks[boostMarks.length - 1].value}
                 onChange={(_, value: number) => setBoostId(value)}
                 valueLabelFormat={() => `${vaultProject.boosts[boostId].percentage}x`}
-                // defaultValue={[1, 2]}
-                // onChangeCommitted={handleChange}
                 step={null}
                 value={boostId}
                 valueLabelDisplay="auto"
               />
             </SliderContainer>
+            <Typography variant="h3" style={{ marginBottom: "14px" }}>
+              <FormattedMessage id="vault.boost" />
+              &nbsp;{vaultProject.boosts[boostId].percentage}x
+            </Typography>
           </>
         )}
         {vaultProject.asideMinimum > 0 && (
@@ -155,7 +155,7 @@ const VaultStakeModal = ({
                 <FormattedMessage
                   id="vault.insufficientAmount"
                   values={{
-                    coin,
+                    coin: vaultProject.asideCoin,
                     a: (chunks: string) => (
                       <a className="link" onClick={onDepositMore}>
                         {chunks}
