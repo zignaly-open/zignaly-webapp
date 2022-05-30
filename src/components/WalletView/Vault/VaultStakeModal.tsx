@@ -54,34 +54,42 @@ const VaultStakeModal = ({
   const balanceAmount = walletBalance[coin].total;
   console.log(balanceAmount);
   // const coinData = coins ? coins[coin] : null;
+  const boostMarks = [
+    {
+      value: 100,
+      label: "100 ZIG",
+    },
+    {
+      value: 200,
+      label: "200 ZIG",
+    },
+    {
+      value: 500,
+      label: "500 ZIG",
+    },
+    {
+      value: 600,
+      label: "600 ZIG",
+    },
+    {
+      value: 2000,
+      label: "2000 ZIG",
+    },
+  ];
+  const boostable = true;
+  const unstakeEnabled = true;
+  const penalties = true;
+  const asideMinimum = 10000000;
+  const asideCoin = "ZIG";
+  const balanceAmountAside = walletBalance[asideCoin].total;
+  const enoughZIG = !asideMinimum || balanceAmountAside.availableBalance >= asideMinimum;
+  const valid = enoughZIG;
 
   const setBalanceMax = () => {
     setValue("amount", balanceAmount.availableBalance);
     trigger("amount");
   };
 
-  const boostMarks = [
-    {
-      value: 100,
-      label: 100,
-    },
-    {
-      value: 200,
-      label: 200,
-    },
-    {
-      value: 500,
-      label: 500,
-    },
-    {
-      value: 600,
-      label: 600,
-    },
-    {
-      value: 2000,
-      label: 2000,
-    },
-  ];
   const [asideAmount, setAsideAmount] = useState(boostMarks[0].value);
 
   return (
@@ -105,50 +113,88 @@ const VaultStakeModal = ({
           newDesign={true}
           minAmount={vaultProject.minBalance}
         />
-        {vaultProject.minBalance && (
+        <br />
+        {boostable && (
           <>
-            <br />
+            <Typography variant="h3">
+              <FormattedMessage id="vault.boost" />
+              &nbsp;{asideAmount / boostMarks[0].value}x
+            </Typography>
+            <StyledSlider
+              // className="privacySlider"
+              marks={boostMarks}
+              min={boostMarks[0].value}
+              max={boostMarks[boostMarks.length - 1].value}
+              onChange={(_, value: number) => setAsideAmount(value)}
+              // defaultValue={[1, 2]}
+              // onChangeCommitted={handleChange}
+              step={null}
+              value={asideAmount}
+              valueLabelDisplay="off"
+            />
+          </>
+        )}
+        {asideMinimum > 0 && (
+          <>
             <Typography>
               <FormattedMessage
                 id="vault.minAmount"
-                values={{ coin, amount: vaultProject.minBalance }}
+                values={{
+                  amount: (
+                    <b>
+                      <NumberFormat
+                        value={asideMinimum}
+                        displayType="text"
+                        thousandSeparator={true}
+                        decimalScale={2}
+                        suffix={` ${asideCoin}`}
+                      />
+                    </b>
+                  ),
+                }}
               />
             </Typography>
             <Typography>
+              {!enoughZIG ? (
+                <FormattedMessage
+                  id="vault.insufficientAmount"
+                  values={{
+                    coin,
+                    a: (chunks: string) => (
+                      <a className="link" onClick={onDepositMore}>
+                        {chunks}
+                      </a>
+                    ),
+                  }}
+                />
+              ) : (
+                <FormattedMessage id="vault.reduceBoost" />
+              )}
+            </Typography>
+          </>
+        )}
+        <br />
+        <Typography>
+          {!unstakeEnabled ? (
+            <FormattedMessage id="vault.unstake.notPossible" />
+          ) : (
+            penalties && (
               <FormattedMessage
-                id="vault.insufficientAmount"
+                id="vault.unstake.penalty"
                 values={{
-                  coin,
                   a: (chunks: string) => (
-                    <a className="link" onClick={onDepositMore}>
+                    <a className="link" onClick={() => {}}>
                       {chunks}
                     </a>
                   ),
                 }}
               />
-            </Typography>
-          </>
-        )}
-        <br />
-        <Typography variant="h3">
-          <FormattedMessage id="vault.boost" />
-          &nbsp;{asideAmount / boostMarks[0].value}x
+            )
+          )}
         </Typography>
-        <StyledSlider
-          // className="privacySlider"
-          marks={boostMarks}
-          min={boostMarks[0].value}
-          max={boostMarks[boostMarks.length - 1].value}
-          onChange={(_, value: number) => setAsideAmount(value)}
-          // defaultValue={[1, 2]}
-          // onChangeCommitted={handleChange}
-          step={null}
-          value={asideAmount}
-          valueLabelDisplay="off"
-        />
-        <Typography>
-          <FormattedMessage id="vault.reduceBoost" />
-        </Typography>
+        <Button variant="contained" disabled={!valid} style={{ margin: "18px auto 0" }}>
+          <FormattedMessage id="wallet.withdraw.continue" />
+        </Button>
       </Modal>
     </CustomModal>
   );
