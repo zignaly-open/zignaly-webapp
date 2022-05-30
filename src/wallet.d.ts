@@ -41,12 +41,22 @@ interface VaultOffer {
   endDate: string;
   apr: number;
   distributionPeriod: string;
-  // lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;
   coin: string;
   coinReward: string;
   stakingDays: number;
+  type: "basic" | "stake";
+  /*
+   * Additional properties for stake type
+   */
+  announcementDate?: string;
+  returnCoinsDate?: string;
+  asideCoin?: string;
+  asideMinimum?: number;
+  unstakeEnabled?: boolean;
+  stakeAmount?: number;
+  asideAmount?: number;
 }
 
 interface BalanceExchange {

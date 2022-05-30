@@ -1788,6 +1788,16 @@ vault.benefits.info2: |
 vault.active: "Active Vault Offers"
 vault.expired: "Expired Offers"
 vault.holders: "For {coin} holders"
+vault.amount: "Amount:"
+vault.stake: "Stake"
+vault.stake.desc: "Stake {coin} to get rewards!"
+vault.stakeExcl: "Stake!"
+vault.editStake: "Edit stake"
+vault.distributing: "Distributing"
+vault.minAmount: "To participate in this program you need to stake a minimum of {amount} {coin}. You cannot modify?"
+vault.insufficientAmount: "You don't have enough {coin}. <a>Deposit more.</a>"
+vault.boost: "Boost:"
+vault.reduceBoost: "Once staked it will not be possible to reduce your boost level."
 
 # WALLET
 wallet.addcoin: "Add coin"

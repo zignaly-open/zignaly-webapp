@@ -27,7 +27,9 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
 import VaultDepositButton from "./VaultDepositButton";
+import { VaultStakeButton } from "./VaultDepositButton";
 import { Terms } from "../styles";
+import VaultStakeModal from "./VaultStakeModal";
 
 const Coin = styled.span`
   color: #65647e;
@@ -78,6 +80,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
+  const [selectedStakeVault, setSelectedStakeVault] = useState<VaultOffer>(null);
   const [depositCoin, setDepositCoin] = useState<string>(null);
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
@@ -233,12 +236,16 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
           <StyledVaultDepositButton>
-            <VaultDepositButton
-              vault={v}
-              balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
-              onClick={() => setDepositCoin(v.coin)}
-              depositEnabled={coins && coins[v.coin]?.allowDeposit}
-            />
+            {v.type !== "stake" && false ? (
+              <VaultDepositButton
+                vault={v}
+                balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
+                onClick={() => setDepositCoin(v.coin)}
+                depositEnabled={coins && coins[v.coin]?.allowDeposit}
+              />
+            ) : (
+              <VaultStakeButton vaultProject={v} onClick={() => setSelectedStakeVault(v)} />
+            )}
           </StyledVaultDepositButton>
         ),
       })),
@@ -264,6 +271,15 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         >
           <WalletDepositView coins={coins} coin={depositCoin} />
         </Modal>
+      )}
+      {selectedStakeVault && (
+        <VaultStakeModal
+          onClose={() => setSelectedStakeVault(null)}
+          open={true}
+          vaultProject={selectedStakeVault}
+          coins={coins}
+          onDepositMore={() => setDepositCoin(selectedStakeVault.coin)}
+        />
       )}
       <Title>
         <ButtonMui href="#wallet" variant="outlined" color="grid.content" startIcon={<ArrowBack />}>
