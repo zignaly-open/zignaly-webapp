@@ -39,6 +39,7 @@ interface FormType {
 
 interface VaultStakeModalProps {
   onClose: () => void;
+  onSuccess: () => void;
   open: boolean;
   vaultProject: VaultOffer;
   coins: WalletCoins;
@@ -51,20 +52,18 @@ const VaultStakeModal = ({
   open,
   vaultProject,
   coins,
+  onSuccess,
   onDepositMore,
   onOpenOffer,
 }: VaultStakeModalProps) => {
-  const intl = useIntl();
   const { coin } = vaultProject;
   const {
     handleSubmit,
-    register,
     control,
     errors,
     formState: { isValid },
     setValue,
     trigger,
-    watch,
   } = useForm<FormType>({ mode: "onChange" });
 
   const coinData = coins ? coins[coin] : null;
@@ -99,7 +98,6 @@ const VaultStakeModal = ({
   };
 
   const onSubmit = (data: FormType) => {
-    console.log(data);
     setConfirmData(data);
   };
 
@@ -112,6 +110,7 @@ const VaultStakeModal = ({
         asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
         boost={selectedBoost?.percentage}
         onClose={onClose}
+        onSuccess={onSuccess}
         onCancel={() => setConfirmData(null)}
         open={true}
         coins={coins}

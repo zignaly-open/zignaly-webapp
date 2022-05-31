@@ -87,6 +87,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
+  const [updateAt, setUpdateAt] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -107,7 +108,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         setVaultOffers(response);
       });
     }
-  }, [isOpen, tab]);
+  }, [isOpen, tab, updateAt]);
 
   const columns = useMemo(
     () =>
@@ -277,6 +278,10 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       {selectedStakeVault && (
         <VaultStakeModal
           onClose={() => setSelectedStakeVault(null)}
+          onSuccess={() => {
+            setUpdateAt(new Date());
+            setSelectedStakeVault(null);
+          }}
           open={true}
           vaultProject={selectedStakeVault}
           coins={coins}
