@@ -190,6 +190,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const data = useMemo(
     () =>
       vaultOffers &&
+      walletBalance &&
       vaultOffers.map((v) => ({
         rewards: (
           <AlignCenter>
