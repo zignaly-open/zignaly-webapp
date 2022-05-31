@@ -27,7 +27,9 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
 import VaultDepositButton from "./VaultDepositButton";
+import { VaultStakeButton } from "./VaultDepositButton";
 import { Terms } from "../styles";
+import VaultStakeModal from "./VaultStakeModal";
 
 const Coin = styled.span`
   color: #65647e;
@@ -78,12 +80,14 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const intl = useIntl();
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [selectedVaultOffer, setSelectedVaultOffer] = useState<VaultOffer>(null);
+  const [selectedStakeVault, setSelectedStakeVault] = useState<VaultOffer>(null);
   const [depositCoin, setDepositCoin] = useState<string>(null);
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [tab, setTab] = useState(0);
+  const [updateAt, setUpdateAt] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -104,7 +108,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         setVaultOffers(response);
       });
     }
-  }, [isOpen, tab]);
+  }, [isOpen, tab, updateAt]);
 
   const columns = useMemo(
     () =>
@@ -187,6 +191,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
   const data = useMemo(
     () =>
       vaultOffers &&
+      walletBalance &&
       vaultOffers.map((v) => ({
         rewards: (
           <AlignCenter>
@@ -233,16 +238,21 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
           <StyledVaultDepositButton>
-            <VaultDepositButton
-              vault={v}
-              balance={(walletBalance && walletBalance[v.coin]?.total.availableBalance) || 0}
-              onClick={() => setDepositCoin(v.coin)}
-              depositEnabled={coins && coins[v.coin]?.allowDeposit}
-            />
+            {v.type !== "stake" ||
+            (walletBalance[v.coin]?.total.availableBalance ?? 0) < v.minBalance ? (
+              <VaultDepositButton
+                vault={v}
+                balance={walletBalance[v.coin]?.total.availableBalance || 0}
+                onClick={() => setDepositCoin(v.coin)}
+                depositEnabled={coins && coins[v.coin]?.allowDeposit}
+              />
+            ) : (
+              <VaultStakeButton vaultProject={v} onClick={() => setSelectedStakeVault(v)} />
+            )}
           </StyledVaultDepositButton>
         ),
       })),
-    [vaultOffers, tab],
+    [vaultOffers, tab, walletBalance, coins],
   );
 
   return (
@@ -265,6 +275,20 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           <WalletDepositView coins={coins} coin={depositCoin} />
         </Modal>
       )}
+      {selectedStakeVault && (
+        <VaultStakeModal
+          onClose={() => setSelectedStakeVault(null)}
+          onSuccess={() => {
+            setUpdateAt(new Date());
+            setSelectedStakeVault(null);
+          }}
+          open={true}
+          vaultProject={selectedStakeVault}
+          coins={coins}
+          onDepositMore={() => setDepositCoin(selectedStakeVault.coin)}
+          onOpenOffer={() => setSelectedVaultOffer(selectedStakeVault)}
+        />
+      )}
       <Title>
         <ButtonMui href="#wallet" variant="outlined" color="grid.content" startIcon={<ArrowBack />}>
           <FormattedMessage id="accounts.back" />
@@ -275,7 +299,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
       <InfoPanel id="vaultInfo" title="vault.title" message="vault.info" />
       <BenefitsInfo />
       <Box mt="28px">
-        {data ? (
+        {data && walletBalance && coins ? (
           <>
             <StyledTabs onChange={(e, v) => setTab(v)} value={tab} style={{ marginBottom: "16px" }}>
               <StyledTab label={<FormattedMessage id="vault.active" />} />
@@ -287,6 +311,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
                 type={tab === 0 ? "active" : "expired"}
                 onOfferClick={(coin) => setDepositCoin(coin)}
                 balance={walletBalance}
+                coins={coins}
               />
             ) : (
               <TableLayout>
