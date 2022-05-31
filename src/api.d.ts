@@ -275,6 +275,6 @@ interface GetSwapPriceRes {
 
 interface StakeReq {
   programId: number;
-  amount: string;
-  asideAmount: string;
+  amount: string | number;
+  asideAmount: string | number;
 }

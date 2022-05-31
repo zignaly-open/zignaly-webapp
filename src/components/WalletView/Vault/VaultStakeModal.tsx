@@ -71,7 +71,7 @@ const VaultStakeModal = ({
   const balanceAmount = walletBalance[coin].total;
   const [boostId, setBoostId] = useState(0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
-
+  const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
   const balanceAmountAside = walletBalance[vaultProject.asideCoin].total;
   const enoughZIG =
     !vaultProject.asideMinimum ||
@@ -101,23 +101,6 @@ const VaultStakeModal = ({
     setConfirmData(data);
   };
 
-  if (confirmData) {
-    const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
-    return (
-      <VaultStakeConfirmModal
-        amount={confirmData.amount}
-        program={vaultProject}
-        asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
-        boost={selectedBoost?.percentage}
-        onClose={onClose}
-        onSuccess={onSuccess}
-        onCancel={() => setConfirmData(null)}
-        open={true}
-        coins={coins}
-      />
-    );
-  }
-
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
@@ -128,6 +111,19 @@ const VaultStakeModal = ({
         <TitleDesc>
           <FormattedMessage id="vault.stake.desc" values={{ coin }} />
         </TitleDesc>
+        {confirmData && (
+          <VaultStakeConfirmModal
+            amount={confirmData.amount}
+            program={vaultProject}
+            asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
+            boost={selectedBoost?.percentage}
+            onClose={onClose}
+            onSuccess={onSuccess}
+            onCancel={() => setConfirmData(null)}
+            open={true}
+            coins={coins}
+          />
+        )}
         <Form onSubmit={handleSubmit(onSubmit)}>
           <AmountControl
             balance={balanceAmount}
