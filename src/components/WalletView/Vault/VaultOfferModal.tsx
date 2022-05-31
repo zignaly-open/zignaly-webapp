@@ -8,6 +8,7 @@ import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { formatDateUTC } from "utils/format";
+import { ArrowForward } from "@material-ui/icons";
 
 const ListItem = styled.li`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -32,16 +33,21 @@ const TitleDesc = styled(Typography)`
   margin-bottom: 16px;
 `;
 
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
   return (
-    <div>
+    <Row>
       <FormattedMessage id="wallet.staking.offer.unstakingDays" values={{ days: penalty.days }} />
-      &nbsp;
+      &nbsp; <ArrowForward /> &nbsp;
       <FormattedMessage
         id="wallet.staking.offer.unstakingPenalty"
         values={{ percentage: penalty.percentage }}
       />
-    </div>
+    </Row>
   );
 };
 
@@ -78,7 +84,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
 
   const BoostRow = useCallback(
     ({ boost }: { boost: Boost }) => (
-      <div>
+      <Row>
         <NumberFormat
           value={boost.minimum}
           displayType="text"
@@ -86,9 +92,11 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
           decimalScale={2}
           suffix={` ${asideCoin}`}
         />
-        :&nbsp;
+        &nbsp;
+        <ArrowForward />
+        &nbsp;
         {boost.percentage}x
-      </div>
+      </Row>
     ),
     [asideCoin],
   );
