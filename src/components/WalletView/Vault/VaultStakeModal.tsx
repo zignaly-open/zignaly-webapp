@@ -17,7 +17,7 @@ const StyledTextDesc = styled(TextDesc)`
 `;
 
 const SliderContainer = styled.div`
-  margin: 4px 32px 36px;
+  margin: 12px 32px 42px;
 `;
 
 const BoostContainer = styled.div`
@@ -204,10 +204,6 @@ const VaultStakeModal = ({
                   valueLabelDisplay="auto"
                 />
               </SliderContainer>
-              <Typography variant="h3" style={{ marginBottom: "14px" }}>
-                <FormattedMessage id="vault.boost" />
-                &nbsp;{vaultProject.boosts[boostId].percentage}x
-              </Typography>
             </>
           )}
           {vaultProject.asideMinimum > 0 && (
