@@ -1,7 +1,7 @@
 import { Box, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import React, { useContext, useState } from "react";
-import { Title, Modal } from "styles/styles";
+import { Title, Modal, TextDesc } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
@@ -12,14 +12,12 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 
-const SliderContainer = styled.div`
-  margin: 4px 32px 36px;
+const StyledTextDesc = styled(TextDesc)`
+  margin-bottom: 24px;
 `;
 
-const TitleDesc = styled(Typography)`
-  font-weight: 500;
-  font-size: 32px;
-  margin-bottom: 16px;
+const SliderContainer = styled.div`
+  margin: 12px 32px 42px;
 `;
 
 const BoostContainer = styled.div`
@@ -31,6 +29,23 @@ const BoostContainer = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+`;
+
+const SecondaryText = styled(Typography)`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+const BalanceLabel = styled(Typography)`
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 4px;
+`;
+
+const StakeTypography = styled(Typography)`
+  margin: 20px 0 22px;
+  font-weight: 600;
 `;
 
 interface FormType {
@@ -71,8 +86,10 @@ const VaultStakeModal = ({
   const balanceAmount = walletBalance[coin].total;
   const [boostId, setBoostId] = useState(0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
-
-  const balanceAmountAside = walletBalance[vaultProject.asideCoin].total;
+  const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
+  const balanceAmountAside = vaultProject.asideCoin
+    ? walletBalance[vaultProject.asideCoin].total
+    : null;
   const enoughZIG =
     !vaultProject.asideMinimum ||
     balanceAmountAside.availableBalance >=
@@ -101,23 +118,6 @@ const VaultStakeModal = ({
     setConfirmData(data);
   };
 
-  if (confirmData) {
-    const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
-    return (
-      <VaultStakeConfirmModal
-        amount={confirmData.amount}
-        program={vaultProject}
-        asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
-        boost={selectedBoost?.percentage}
-        onClose={onClose}
-        onSuccess={onSuccess}
-        onCancel={() => setConfirmData(null)}
-        open={true}
-        coins={coins}
-      />
-    );
-  }
-
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
@@ -125,9 +125,44 @@ const VaultStakeModal = ({
           <img src={PiggyIcon} width={40} height={40} />
           <FormattedMessage id="vault.stake" />
         </Title>
-        <TitleDesc>
-          <FormattedMessage id="vault.stake.desc" values={{ coin }} />
-        </TitleDesc>
+        <StyledTextDesc>
+          <FormattedMessage
+            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ""}`}
+            values={{
+              coin,
+              amount: (
+                <NumberFormat
+                  value={vaultProject.minBalance}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={coinData?.decimals}
+                />
+              ),
+              asideCoin: vaultProject.asideCoin,
+              asideAmount: (
+                <NumberFormat
+                  value={vaultProject.asideMinimum}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={2}
+                />
+              ),
+            }}
+          />
+        </StyledTextDesc>
+        {confirmData && (
+          <VaultStakeConfirmModal
+            amount={confirmData.amount}
+            program={vaultProject}
+            asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
+            boost={selectedBoost?.percentage}
+            onClose={onClose}
+            onSuccess={onSuccess}
+            onCancel={() => setConfirmData(null)}
+            open={true}
+            coins={coins}
+          />
+        )}
         <Form onSubmit={handleSubmit(onSubmit)}>
           <AmountControl
             balance={balanceAmount}
@@ -140,12 +175,26 @@ const VaultStakeModal = ({
             newDesign={true}
             minAmount={vaultProject.minBalance}
           />
+          <Box display="flex" mt="8px">
+            <SecondaryText>
+              <FormattedMessage id="wallet.staking.minBalance" />
+            </SecondaryText>
+            <BalanceLabel>
+              <NumberFormat
+                value={vaultProject.minBalance}
+                displayType="text"
+                thousandSeparator={true}
+                decimalScale={coinData?.decimals}
+              />
+              &nbsp;{coin}
+            </BalanceLabel>
+          </Box>
           <br />
           {vaultProject.boostable && (
             <>
-              <Typography style={{ margin: "20px 0 22px" }}>
+              <StakeTypography>
                 <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
-              </Typography>
+              </StakeTypography>
               <SliderContainer>
                 <Slider
                   marks={boostMarks}
@@ -157,10 +206,6 @@ const VaultStakeModal = ({
                   valueLabelDisplay="auto"
                 />
               </SliderContainer>
-              <Typography variant="h3" style={{ marginBottom: "14px" }}>
-                <FormattedMessage id="vault.boost" />
-                &nbsp;{vaultProject.boosts[boostId].percentage}x
-              </Typography>
             </>
           )}
           {vaultProject.asideMinimum > 0 && (

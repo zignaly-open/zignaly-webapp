@@ -2561,7 +2561,7 @@ class TradeApiClient {
    */
   async stake(payload) {
     const { programId, ...rest } = payload;
-    return this.doRequest(`/api/vault/${programId}/stake`, rest, "POST", 3);
+    return this.doRequest(`/vault/${programId}/stake`, rest, "POST", 3);
   }
 
   /**
@@ -2574,7 +2574,7 @@ class TradeApiClient {
    */
   async increaseStake(payload) {
     const { programId, ...rest } = payload;
-    return this.doRequest(`/api/vault/${programId}/stake/increase`, rest, "POST", 3);
+    return this.doRequest(`/vault/${programId}/stake/increase`, rest, "POST", 3);
   }
 
   /**

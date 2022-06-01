@@ -101,7 +101,7 @@ const VaultStakeConfirmModal = ({
                 ),
               }}
             />
-            {asideAmount && (
+            {Boolean(asideAmount) && (
               <>
                 &nbsp;+&nbsp;
                 <b>
