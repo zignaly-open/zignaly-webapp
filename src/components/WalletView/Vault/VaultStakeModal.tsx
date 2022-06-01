@@ -87,7 +87,9 @@ const VaultStakeModal = ({
   const [boostId, setBoostId] = useState(0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
-  const balanceAmountAside = walletBalance[vaultProject.asideCoin].total;
+  const balanceAmountAside = vaultProject.asideCoin
+    ? walletBalance[vaultProject.asideCoin].total
+    : null;
   const enoughZIG =
     !vaultProject.asideMinimum ||
     balanceAmountAside.availableBalance >=
