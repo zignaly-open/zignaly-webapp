@@ -1,7 +1,7 @@
 import { Box, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import React, { useContext, useState } from "react";
-import { Title, Modal } from "styles/styles";
+import { Title, Modal, TextDesc } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import styled, { css } from "styled-components";
@@ -12,14 +12,12 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 
-const SliderContainer = styled.div`
-  margin: 4px 32px 36px;
+const StyledTextDesc = styled(TextDesc)`
+  margin-bottom: 24px;
 `;
 
-const TitleDesc = styled(Typography)`
-  font-weight: 500;
-  font-size: 32px;
-  margin-bottom: 16px;
+const SliderContainer = styled.div`
+  margin: 4px 32px 36px;
 `;
 
 const BoostContainer = styled.div`
@@ -31,6 +29,23 @@ const BoostContainer = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+`;
+
+const SecondaryText = styled(Typography)`
+  color: ${(props) => props.theme.newTheme.secondaryText};
+  font-weight: 600;
+  font-size: 18px;
+`;
+
+const BalanceLabel = styled(Typography)`
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 4px;
+`;
+
+const StakeTypography = styled(Typography)`
+  margin: 20px 0 22px;
+  font-weight: 600;
 `;
 
 interface FormType {
@@ -108,9 +123,31 @@ const VaultStakeModal = ({
           <img src={PiggyIcon} width={40} height={40} />
           <FormattedMessage id="vault.stake" />
         </Title>
-        <TitleDesc>
-          <FormattedMessage id="vault.stake.desc" values={{ coin }} />
-        </TitleDesc>
+        <StyledTextDesc>
+          <FormattedMessage
+            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ""}`}
+            values={{
+              coin,
+              amount: (
+                <NumberFormat
+                  value={vaultProject.minBalance}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={coinData?.decimals}
+                />
+              ),
+              asideCoin: vaultProject.asideCoin,
+              asideAmount: (
+                <NumberFormat
+                  value={vaultProject.asideMinimum}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={2}
+                />
+              ),
+            }}
+          />
+        </StyledTextDesc>
         {confirmData && (
           <VaultStakeConfirmModal
             amount={confirmData.amount}
@@ -136,12 +173,26 @@ const VaultStakeModal = ({
             newDesign={true}
             minAmount={vaultProject.minBalance}
           />
+          <Box display="flex" mt="8px">
+            <SecondaryText>
+              <FormattedMessage id="wallet.staking.minBalance" />
+            </SecondaryText>
+            <BalanceLabel>
+              <NumberFormat
+                value={vaultProject.minBalance}
+                displayType="text"
+                thousandSeparator={true}
+                decimalScale={coinData?.decimals}
+              />
+              &nbsp;{coin}
+            </BalanceLabel>
+          </Box>
           <br />
           {vaultProject.boostable && (
             <>
-              <Typography style={{ margin: "20px 0 22px" }}>
+              <StakeTypography>
                 <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
-              </Typography>
+              </StakeTypography>
               <SliderContainer>
                 <Slider
                   marks={boostMarks}
