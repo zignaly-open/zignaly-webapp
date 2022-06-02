@@ -111,7 +111,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
         </Title>
         <TitleDesc>
           <FormattedMessage
-            id={`wallet.staking.offer.desc${type === "stake" && "Stake"}`}
+            id={`wallet.staking.offer.desc${type === "stake" ? "Stake" : ""}`}
             values={{ coin, reward: coinReward }}
           />
         </TitleDesc>
@@ -222,7 +222,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             <ItemValue>
               <FormattedMessage
-                id={`wallet.staking.offer.calculation${boostable && "Boost"}.val`}
+                id={`wallet.staking.offer.calculation${boostable ? "Boost" : ""}.val`}
                 values={{ days: stakingDays }}
               />
             </ItemValue>

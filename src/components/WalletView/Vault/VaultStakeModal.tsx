@@ -127,7 +127,7 @@ const VaultStakeModal = ({
         </Title>
         <StyledTextDesc>
           <FormattedMessage
-            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ""}`}
+            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ".min"}`}
             values={{
               coin,
               amount: (
