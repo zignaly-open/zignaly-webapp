@@ -1,6 +1,6 @@
 import { Box, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Title, Modal, TextDesc } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -80,10 +80,13 @@ const VaultStakeModal = ({
     handleSubmit,
     control,
     errors,
-    formState: { isValid },
+    formState: { isValid, isDirty },
     setValue,
     trigger,
-  } = useForm<FormType>({ mode: "onChange" });
+    watch,
+  } = useForm<FormType>({
+    mode: "onChange",
+  });
 
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
@@ -98,6 +101,7 @@ const VaultStakeModal = ({
     !vaultProject.asideMinimum ||
     balanceAmountAside.availableBalance >=
       (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
+  const isEdit = vaultProject.stakeAmount > 0;
 
   const getLabel = (boost: Boost) => (
     <BoostContainer>
@@ -122,37 +126,194 @@ const VaultStakeModal = ({
     setConfirmData(data);
   };
 
+  const Confirmation = useCallback(
+    () => (
+      <VaultStakeConfirmModal
+        amount={isEdit ? vaultProject.stakeAmount : confirmData.amount}
+        addAmount={isEdit ? confirmData.amount : null}
+        program={vaultProject}
+        asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
+        addAsideAmount={null}
+        boost={selectedBoost?.percentage}
+        onClose={onClose}
+        onSuccess={onSuccess}
+        onCancel={() => setConfirmData(null)}
+        open={true}
+        coins={coins}
+        isEdit={isEdit}
+      />
+    ),
+    [confirmData, selectedBoost, coins],
+  );
+
+  const MinStakingRequired = useCallback(
+    () =>
+      vaultProject.asideMinimum > 0 && (
+        <>
+          {!enoughZIG && (
+            <Typography color="error">
+              <FormattedMessage
+                id="vault.insufficientAmount"
+                values={{
+                  coin: vaultProject.asideCoin,
+                  a: (chunks: string) => (
+                    <a className="link" onClick={onDepositMore}>
+                      {chunks}
+                    </a>
+                  ),
+                }}
+              />
+            </Typography>
+          )}
+          <Typography>
+            <FormattedMessage
+              id={isEdit ? "vault.minAmountStaking" : "vault.minAmount"}
+              values={{
+                amount: (
+                  <b>
+                    <NumberFormat
+                      value={vaultProject.asideMinimum}
+                      displayType="text"
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      suffix={` ${vaultProject.asideCoin}`}
+                    />
+                  </b>
+                ),
+              }}
+            />
+          </Typography>
+        </>
+      ),
+    [enoughZIG],
+  );
+
+  const Submit = useCallback(
+    () => (
+      <Button
+        variant="contained"
+        disabled={!enoughZIG || !isValid}
+        style={{ margin: "18px auto 0" }}
+        type="submit"
+      >
+        <FormattedMessage id="wallet.withdraw.continue" />
+      </Button>
+    ),
+    [enoughZIG, isValid],
+  );
+
+  if (isEdit) {
+    return (
+      <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
+        <Modal>
+          <Title>
+            <img src={PiggyIcon} width={40} height={40} />
+            <FormattedMessage id="vault.stakeEdit" />
+          </Title>
+          <StyledTextDesc>
+            <FormattedMessage id="vault.stakeEdit.desc" />
+          </StyledTextDesc>
+          {confirmData && <Confirmation />}
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Box display="flex" mt="8px">
+              <SecondaryText>
+                <FormattedMessage id="wallet.staking.stakedAlready" />
+              </SecondaryText>
+              <BalanceLabel>
+                <NumberFormat
+                  value={vaultProject.stakeAmount}
+                  displayType="text"
+                  thousandSeparator={true}
+                  decimalScale={coinData?.decimals}
+                />
+                &nbsp;{coin}
+              </BalanceLabel>
+            </Box>
+            <AmountControl
+              balance={balanceAmount}
+              setBalanceMax={setBalanceMax}
+              decimals={coinData?.decimals}
+              errors={errors}
+              control={control}
+              coin={coin}
+              label="wallet.staking.stakeAmountAdd"
+              newDesign={true}
+            />
+            <br />
+            <MinStakingRequired />
+            <br />
+            <Typography>
+              {!vaultProject.unstakeEnabled && !isEdit ? (
+                <FormattedMessage id="vault.unstake.notPossible" />
+              ) : (
+                Boolean(vaultProject.penalties?.length) && (
+                  <FormattedMessage
+                    id="vault.unstake.penalty"
+                    values={{
+                      a: (chunks: string) => (
+                        <a className="link" onClick={onOpenOffer}>
+                          {chunks}
+                        </a>
+                      ),
+                    }}
+                  />
+                )
+              )}
+            </Typography>
+            {vaultProject.boostable && (
+              <Typography>
+                <FormattedMessage
+                  id="vault.reduceBoost"
+                  values={{ coin: vaultProject.asideCoin }}
+                />
+              </Typography>
+            )}
+            <Submit />
+          </Form>
+        </Modal>
+      </CustomModal>
+    );
+  }
+
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
         <Title>
           <img src={PiggyIcon} width={40} height={40} />
-          <FormattedMessage id="vault.stake" />
+          {isEdit ? (
+            <FormattedMessage id="vault.stakeEdit" />
+          ) : (
+            <FormattedMessage id="vault.stake" />
+          )}
         </Title>
         <StyledTextDesc>
-          <FormattedMessage
-            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ".min"}`}
-            values={{
-              coin,
-              amount: (
-                <NumberFormat
-                  value={vaultProject.minBalance}
-                  displayType="text"
-                  thousandSeparator={true}
-                  decimalScale={coinData?.decimals}
-                />
-              ),
-              asideCoin: vaultProject.asideCoin,
-              asideAmount: (
-                <NumberFormat
-                  value={vaultProject.asideMinimum}
-                  displayType="text"
-                  thousandSeparator={true}
-                  decimalScale={2}
-                />
-              ),
-            }}
-          />
+          {!isEdit ? (
+            <FormattedMessage
+              id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ".min"}`}
+              values={{
+                coin,
+                amount: (
+                  <NumberFormat
+                    value={vaultProject.minBalance}
+                    displayType="text"
+                    thousandSeparator={true}
+                    decimalScale={coinData?.decimals}
+                  />
+                ),
+                asideCoin: vaultProject.asideCoin,
+                asideAmount: (
+                  <NumberFormat
+                    value={vaultProject.asideMinimum}
+                    displayType="text"
+                    thousandSeparator={true}
+                    decimalScale={2}
+                  />
+                ),
+              }}
+            />
+          ) : (
+            <FormattedMessage id="vault.stakeEdit.desc" />
+          )}
         </StyledTextDesc>
         {confirmData && (
           <VaultStakeConfirmModal
@@ -165,6 +326,7 @@ const VaultStakeModal = ({
             onCancel={() => setConfirmData(null)}
             open={true}
             coins={coins}
+            isEdit={isEdit}
           />
         )}
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -211,49 +373,13 @@ const VaultStakeModal = ({
               </SliderContainer>
             </>
           )}
-          {vaultProject.asideMinimum > 0 && (
-            <>
-              {!enoughZIG && (
-                <Typography color="error">
-                  <FormattedMessage
-                    id="vault.insufficientAmount"
-                    values={{
-                      coin: vaultProject.asideCoin,
-                      a: (chunks: string) => (
-                        <a className="link" onClick={onDepositMore}>
-                          {chunks}
-                        </a>
-                      ),
-                    }}
-                  />
-                </Typography>
-              )}
-              <Typography>
-                <FormattedMessage
-                  id="vault.minAmount"
-                  values={{
-                    amount: (
-                      <b>
-                        <NumberFormat
-                          value={vaultProject.asideMinimum}
-                          displayType="text"
-                          thousandSeparator={true}
-                          decimalScale={2}
-                          suffix={` ${vaultProject.asideCoin}`}
-                        />
-                      </b>
-                    ),
-                  }}
-                />
-              </Typography>
-            </>
-          )}
+          <MinStakingRequired />
           <br />
           <Typography>
             {!vaultProject.unstakeEnabled ? (
               <FormattedMessage id="vault.unstake.notPossible" />
             ) : (
-              vaultProject.penalties?.length && (
+              Boolean(vaultProject.penalties?.length) && (
                 <FormattedMessage
                   id="vault.unstake.penalty"
                   values={{
@@ -272,14 +398,7 @@ const VaultStakeModal = ({
               <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
             </Typography>
           )}
-          <Button
-            variant="contained"
-            disabled={!enoughZIG || !isValid}
-            style={{ margin: "18px auto 0" }}
-            type="submit"
-          >
-            <FormattedMessage id="wallet.withdraw.continue" />
-          </Button>
+          <Submit />
         </Form>
       </Modal>
     </CustomModal>
