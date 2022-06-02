@@ -24,10 +24,13 @@ interface VaultStakeConfirmModalProps {
   onSuccess: () => void;
   open: boolean;
   amount: number | string;
+  addAmount: number | string; // For Edit
   asideAmount: number | string;
+  addAsideAmount: number | string; // For Edit
   program: VaultOffer;
   coins: WalletCoins;
   boost: number;
+  isEdit: boolean;
 }
 
 const VaultStakeConfirmModal = ({
@@ -36,10 +39,13 @@ const VaultStakeConfirmModal = ({
   onCancel,
   open,
   amount,
+  addAmount,
   asideAmount,
+  addAsideAmount,
   program,
   coins,
   boost,
+  isEdit,
 }: VaultStakeConfirmModalProps) => {
   const dispatch = useDispatch();
   const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
@@ -53,12 +59,13 @@ const VaultStakeConfirmModal = ({
 
   const submit = () => {
     setLoading(true);
-    tradeApi
-      .stake({
-        programId: program.id,
-        amount,
-        asideAmount,
-      })
+    const data = {
+      programId: program.id,
+      amount: isEdit ? addAmount : amount,
+      asideAmount: isEdit ? addAsideAmount : asideAmount,
+    };
+    const method = isEdit ? tradeApi.increaseStake(data) : tradeApi.stake(data);
+    method
       .then(() => {
         dispatch(showSuccessAlert("", "wallet.staking.success"));
         onSuccess();
@@ -86,21 +93,18 @@ const VaultStakeConfirmModal = ({
         <StakeValue>
           <>
             <FormattedMessage
-              id="wallet.staking.coin"
-              values={{
-                amount: (
-                  <b>
-                    <NumberFormat
-                      value={amount}
-                      displayType="text"
-                      thousandSeparator={true}
-                      decimalScale={coins[program.coin].decimals}
-                      suffix={` ${program.coin}`}
-                    />
-                  </b>
-                ),
-              }}
+              id={isEdit ? "wallet.staking.stakedAlready" : "wallet.staking.coin"}
             />
+            &nbsp;
+            <b>
+              <NumberFormat
+                value={amount}
+                displayType="text"
+                thousandSeparator={true}
+                decimalScale={coins[program.coin].decimals}
+                suffix={` ${program.coin}`}
+              />
+            </b>
             {Boolean(asideAmount) && (
               <>
                 &nbsp;+&nbsp;
@@ -117,6 +121,42 @@ const VaultStakeConfirmModal = ({
             )}
           </>
         </StakeValue>
+        {Boolean(addAmount) && (
+          <StakeValue>
+            <>
+              <FormattedMessage
+                id="wallet.staking.stakeAdd"
+                values={{
+                  amount: (
+                    <b>
+                      <NumberFormat
+                        value={addAmount}
+                        displayType="text"
+                        thousandSeparator={true}
+                        decimalScale={coins[program.coin].decimals}
+                        suffix={` ${program.coin}`}
+                      />
+                    </b>
+                  ),
+                }}
+              />
+              {Boolean(addAsideAmount) && (
+                <>
+                  &nbsp;+&nbsp;
+                  <b>
+                    <NumberFormat
+                      value={addAsideAmount}
+                      displayType="text"
+                      thousandSeparator={true}
+                      decimalScale={coins[program.asideCoin].decimals}
+                      suffix={` ${program.asideCoin}`}
+                    />
+                  </b>
+                </>
+              )}
+            </>
+          </StakeValue>
+        )}
         {boost && (
           <StakeValue>
             <FormattedMessage id="vault.boost" />
