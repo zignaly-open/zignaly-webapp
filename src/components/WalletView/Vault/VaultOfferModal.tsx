@@ -129,7 +129,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
               />
             </ItemValue>
           </ListItem>
-          {asideMinimum && (
+          {asideMinimum > 0 && (
             <ListItem>
               <ItemLabel>
                 <FormattedMessage id="wallet.staking.offer.minCoin" values={{ coin: asideCoin }} />
