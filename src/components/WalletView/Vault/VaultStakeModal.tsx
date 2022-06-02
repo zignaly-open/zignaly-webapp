@@ -264,7 +264,7 @@ const VaultStakeModal = ({
               )
             )}
           </Typography>
-          {enoughZIG && (
+          {vaultProject.boostable && (
             <Typography>
               <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
             </Typography>
