@@ -62,6 +62,7 @@ interface VaultOffer {
    */
   announcementDate?: string;
   returnCoinsDate?: string;
+  finishStakingDate?: string;
   asideCoin?: string;
   asideMinimum?: number;
   unstakeEnabled?: boolean;
