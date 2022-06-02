@@ -61,8 +61,8 @@ const VaultStakeConfirmModal = ({
     setLoading(true);
     const data = {
       programId: program.id,
-      amount,
-      asideAmount,
+      amount: isEdit ? addAmount : amount,
+      asideAmount: isEdit ? addAsideAmount : asideAmount,
     };
     const method = isEdit ? tradeApi.increaseStake(data) : tradeApi.stake(data);
     method
