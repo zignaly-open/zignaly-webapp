@@ -43,9 +43,9 @@ const VaultStakeConfirmModal = ({
 }: VaultStakeConfirmModalProps) => {
   const dispatch = useDispatch();
   const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
-    titleTranslationId: "zigpad.terms.title",
-    messageTranslationId: "zigpad.terms",
-    values: { program: program.id },
+    titleTranslationId: "vault.staking.terms.title",
+    messageTranslationId: "vault.staking.terms",
+    values: { coin: program.coin },
     visible: false,
   });
   const [termsChecked, setTermsChecked] = useState(false);
@@ -138,7 +138,7 @@ const VaultStakeConfirmModal = ({
           }
           label={
             <FormattedMessage
-              id="zigpad.pledge.terms"
+              id="vault.staking.terms.agree"
               values={{
                 a: (chunks: string) => (
                   <a
