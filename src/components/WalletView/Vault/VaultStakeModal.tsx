@@ -16,8 +16,12 @@ const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
 `;
 
-const SliderContainer = styled.div`
-  margin: 12px 32px 42px;
+const SliderContainer = styled.div<{ value: number }>`
+  margin: 0 32px 42px;
+
+  .MuiSlider-markLabelActive[data-index="${({ value }) => value}"] {
+    font-weight: 700;
+  }
 `;
 
 const BoostContainer = styled.div`
@@ -195,15 +199,14 @@ const VaultStakeModal = ({
               <StakeTypography>
                 <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
               </StakeTypography>
-              <SliderContainer>
+              <SliderContainer value={boostId}>
                 <Slider
                   marks={boostMarks}
                   max={boostMarks[boostMarks.length - 1].value}
                   onChange={(_, value: number) => setBoostId(value)}
-                  valueLabelFormat={() => `${vaultProject.boosts[boostId].percentage}x`}
                   step={null}
                   value={boostId}
-                  valueLabelDisplay="auto"
+                  valueLabelDisplay="off"
                 />
               </SliderContainer>
             </>
