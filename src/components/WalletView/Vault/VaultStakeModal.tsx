@@ -127,7 +127,7 @@ const VaultStakeModal = ({
         </Title>
         <StyledTextDesc>
           <FormattedMessage
-            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ""}`}
+            id={`vault.stake.desc${vaultProject.boostable ? ".boost" : ".min"}`}
             values={{
               coin,
               amount: (
@@ -210,6 +210,21 @@ const VaultStakeModal = ({
           )}
           {vaultProject.asideMinimum > 0 && (
             <>
+              {!enoughZIG && (
+                <Typography color="error">
+                  <FormattedMessage
+                    id="vault.insufficientAmount"
+                    values={{
+                      coin: vaultProject.asideCoin,
+                      a: (chunks: string) => (
+                        <a className="link" onClick={onDepositMore}>
+                          {chunks}
+                        </a>
+                      ),
+                    }}
+                  />
+                </Typography>
+              )}
               <Typography>
                 <FormattedMessage
                   id="vault.minAmount"
@@ -227,23 +242,6 @@ const VaultStakeModal = ({
                     ),
                   }}
                 />
-              </Typography>
-              <Typography>
-                {!enoughZIG ? (
-                  <FormattedMessage
-                    id="vault.insufficientAmount"
-                    values={{
-                      coin: vaultProject.asideCoin,
-                      a: (chunks: string) => (
-                        <a className="link" onClick={onDepositMore}>
-                          {chunks}
-                        </a>
-                      ),
-                    }}
-                  />
-                ) : (
-                  <FormattedMessage id="vault.reduceBoost" />
-                )}
               </Typography>
             </>
           )}
@@ -266,6 +264,11 @@ const VaultStakeModal = ({
               )
             )}
           </Typography>
+          {vaultProject.boostable && (
+            <Typography>
+              <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
+            </Typography>
+          )}
           <Button
             variant="contained"
             disabled={!enoughZIG || !isValid}

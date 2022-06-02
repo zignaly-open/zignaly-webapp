@@ -77,6 +77,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     asideCoin,
     boostable,
     returnCoinsDate,
+    finishStakingDate,
     boosts,
     unstakeEnabled,
     penalties,
@@ -110,12 +111,25 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
         </Title>
         <TitleDesc>
           <FormattedMessage
-            id={`wallet.staking.offer.desc${type === "stake" && "Stake"}`}
+            id={`wallet.staking.offer.desc${type === "stake" ? "Stake" : ""}`}
             values={{ coin, reward: coinReward }}
           />
         </TitleDesc>
         <ul>
-          {asideMinimum ? (
+          <ListItem>
+            <ItemLabel>
+              <FormattedMessage id="wallet.staking.offer.minDeposit" />
+            </ItemLabel>
+            <ItemValue>
+              <NumberFormat
+                displayType="text"
+                value={minBalance}
+                suffix={` ${coin}`}
+                thousandSeparator={true}
+              />
+            </ItemValue>
+          </ListItem>
+          {asideMinimum && (
             <ListItem>
               <ItemLabel>
                 <FormattedMessage id="wallet.staking.offer.minCoin" values={{ coin: asideCoin }} />
@@ -125,20 +139,6 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
                   displayType="text"
                   value={asideMinimum}
                   suffix={` ${asideCoin}`}
-                  thousandSeparator={true}
-                />
-              </ItemValue>
-            </ListItem>
-          ) : (
-            <ListItem>
-              <ItemLabel>
-                <FormattedMessage id="wallet.staking.offer.minDeposit" />
-              </ItemLabel>
-              <ItemValue>
-                <NumberFormat
-                  displayType="text"
-                  value={minBalance}
-                  suffix={` ${coin}`}
                   thousandSeparator={true}
                 />
               </ItemValue>
@@ -167,6 +167,12 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
             <ItemValue>{formatDateUTC(startDate)}</ItemValue>
+          </ListItem>
+          <ListItem>
+            <ItemLabel>
+              <FormattedMessage id="wallet.staking.offer.stakingEnds" />
+            </ItemLabel>
+            <ItemValue>{formatDateUTC(finishStakingDate)}</ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
@@ -216,7 +222,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             <ItemValue>
               <FormattedMessage
-                id={`wallet.staking.offer.calculation${boostable && "Boost"}.val`}
+                id={`wallet.staking.offer.calculation${boostable ? "Boost" : ""}.val`}
                 values={{ days: stakingDays }}
               />
             </ItemValue>
