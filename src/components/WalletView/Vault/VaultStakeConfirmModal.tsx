@@ -120,7 +120,7 @@ const VaultStakeConfirmModal = ({
             )}
           </>
         </StakeValue>
-        {Boolean(addAmount) && (
+        {(addAmount || addAsideAmount) && (
           <StakeValue>
             <>
               <FormattedMessage
@@ -141,7 +141,7 @@ const VaultStakeConfirmModal = ({
               />
               {Boolean(addAsideAmount) && (
                 <>
-                  &nbsp;+&nbsp;
+                  {Boolean(addAmount) && <>&nbsp;+&nbsp;</>}
                   <b>
                     <NumberFormat
                       value={addAsideAmount}
