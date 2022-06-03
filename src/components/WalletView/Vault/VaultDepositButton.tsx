@@ -86,14 +86,14 @@ interface VaultStakeButtonProps {
 }
 
 export const VaultStakeButton = ({ vaultProject, onClick }: VaultStakeButtonProps) => {
-  return dayjs().isBefore(vaultProject.distributionDate) ? (
+  return dayjs().isBefore(vaultProject.finishStakingDate) ? (
     <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
       <FormattedMessage id={vaultProject.stakeAmount ? "vault.editStake" : "vault.stakeExcl"} />
     </ButtonStyled>
-  ) : vaultProject.stakeAmount > 0 ? (
-    <ActivatedButton>
-      <FormattedMessage id="vault.activated" />
-    </ActivatedButton>
+  ) : dayjs().isBefore(vaultProject.distributionDate) ? (
+    <InactiveButton>
+      <FormattedMessage id="zigpad.waitingDistribution" />
+    </InactiveButton>
   ) : (
     <InactiveButton>
       <FormattedMessage id="vault.distributing" />
