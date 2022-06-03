@@ -68,7 +68,7 @@ const VaultMobile = ({ vaults, balance, coins, onOfferClick, type }: VaultMobile
             />
             <EarnText>
               <FormattedMessage
-                id="wallet.staking.earn"
+                id={v.type === "stake" ? "wallet.staking.earnStake" : "wallet.staking.earn"}
                 values={{ coin: v.coin, reward: v.coinReward, amount: v.minBalance }}
               />
             </EarnText>
