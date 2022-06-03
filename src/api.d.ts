@@ -272,3 +272,9 @@ interface GetSwapPriceRes {
   timeForMax: number;
   minAmount: number;
 }
+
+interface StakeReq {
+  programId: number;
+  amount: string | number;
+  asideAmount: string | number;
+}

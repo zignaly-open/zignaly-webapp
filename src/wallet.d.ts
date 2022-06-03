@@ -32,6 +32,16 @@ interface BalanceData {
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
 
+interface Boost {
+  minimum: number;
+  percentage: 0;
+}
+
+interface Penalty {
+  days: number;
+  percentage: 0;
+}
+
 interface VaultOffer {
   id: number;
   minBalance: number;
@@ -41,12 +51,26 @@ interface VaultOffer {
   endDate: string;
   apr: number;
   distributionPeriod: string;
-  // lockupDate: string;
   rewardsTotal: number;
   rewardsRemaining: number;
   coin: string;
   coinReward: string;
   stakingDays: number;
+  type: "basic" | "stake";
+  /*
+   * Additional properties for stake type
+   */
+  announcementDate?: string;
+  returnCoinsDate?: string;
+  finishStakingDate?: string;
+  asideCoin?: string;
+  asideMinimum?: number;
+  unstakeEnabled?: boolean;
+  stakeAmount?: number;
+  asideAmount?: number;
+  boostable: boolean;
+  boosts: Boost[];
+  penalties: Penalty[];
 }
 
 interface BalanceExchange {

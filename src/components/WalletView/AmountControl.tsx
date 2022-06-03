@@ -17,12 +17,12 @@ import { floatify } from "utils/format";
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
 `;
 
 const BalanceLabel = styled(Typography)`
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
   margin-left: 4px;
 `;
 
@@ -38,6 +38,7 @@ interface AmountControlProps {
   maxAmount?: number;
   newDesign?: boolean;
   lockedDesc?: string;
+  minAmmountErrMsg?: string;
 }
 
 const AmountControl = ({
@@ -52,6 +53,7 @@ const AmountControl = ({
   minAmount,
   maxAmount,
   lockedDesc,
+  minAmmountErrMsg,
 }: AmountControlProps) => {
   const intl = useIntl();
   const lockedBalance = balance.balance - balance.availableBalance;
@@ -79,7 +81,10 @@ const AmountControl = ({
             min: (value) =>
               minAmount
                 ? parseFloat(value) >= minAmount ||
-                  intl.formatMessage({ id: "convert.min" }, { amount: minAmount, coin })
+                  intl.formatMessage(
+                    { id: minAmmountErrMsg || "convert.min" },
+                    { amount: minAmount, coin },
+                  )
                 : parseFloat(value) > 0,
             max: (value) =>
               parseFloat(value) > balance.availableBalance

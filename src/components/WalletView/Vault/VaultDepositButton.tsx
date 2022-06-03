@@ -1,4 +1,5 @@
 import Button from "components/Button";
+import dayjs from "dayjs";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
@@ -78,6 +79,27 @@ const VaultDepositButton = ({
 };
 
 export default VaultDepositButton;
+
+interface VaultStakeButtonProps {
+  vaultProject: VaultOffer;
+  onClick: () => void;
+}
+
+export const VaultStakeButton = ({ vaultProject, onClick }: VaultStakeButtonProps) => {
+  return dayjs().isBefore(vaultProject.distributionDate) ? (
+    <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
+      <FormattedMessage id={vaultProject.stakeAmount ? "vault.editStake" : "vault.stakeExcl"} />
+    </ButtonStyled>
+  ) : vaultProject.stakeAmount > 0 ? (
+    <ActivatedButton>
+      <FormattedMessage id="vault.activated" />
+    </ActivatedButton>
+  ) : (
+    <InactiveButton>
+      <FormattedMessage id="vault.distributing" />
+    </InactiveButton>
+  );
+};
 
 interface PledgeButtonProps {
   onClick: () => void;

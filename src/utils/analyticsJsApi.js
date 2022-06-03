@@ -78,8 +78,18 @@ export const analyticsTrigger = (userData, eventType) => {
       });
     }
 
-    analytics.identify(userData.userId, {
-      email: userData.email,
-    });
+    analytics.identify(
+      userData.userId,
+      {
+        email: userData.email,
+      },
+      {
+        integrations: {
+          Intercom: {
+            user_hash: userData.intercomHash,
+          },
+        },
+      },
+    );
   }
 };
