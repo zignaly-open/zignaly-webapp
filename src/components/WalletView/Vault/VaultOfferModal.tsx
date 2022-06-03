@@ -171,25 +171,29 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
             <ItemValue>{formatDateUTC(startDate)}</ItemValue>
           </ListItem>
-          <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.stakingEnds" />
-            </ItemLabel>
-            <ItemValue>{formatDateUTC(finishStakingDate)}</ItemValue>
-          </ListItem>
-          <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.totalRewards" />
-            </ItemLabel>
-            <ItemValue>
-              <NumberFormat
-                displayType="text"
-                value={rewardsTotal}
-                suffix={` ${coinReward}`}
-                thousandSeparator={true}
-              />
-            </ItemValue>
-          </ListItem>
+          {type === "stake" && (
+            <>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="wallet.staking.offer.stakingEnds" />
+                </ItemLabel>
+                <ItemValue>{formatDateUTC(finishStakingDate)}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="wallet.staking.offer.totalRewards" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    displayType="text"
+                    value={rewardsTotal}
+                    suffix={` ${coinReward}`}
+                    thousandSeparator={true}
+                  />
+                </ItemValue>
+              </ListItem>
+            </>
+          )}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.rewardBegins" />
