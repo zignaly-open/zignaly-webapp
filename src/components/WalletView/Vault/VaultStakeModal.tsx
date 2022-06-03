@@ -420,8 +420,8 @@ const VaultStakeModal = ({
             )}
           </Typography>
           {vaultProject.boostable && (
-            <Typography>
-              <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
+            <Typography color="error">
+              <FormattedMessage id="vault.reduceBoost" />
             </Typography>
           )}
           <Submit />
