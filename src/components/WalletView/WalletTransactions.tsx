@@ -191,6 +191,14 @@ const WalletTransactions = ({ updateAt }: { updateAt: Date }) => {
       label: intl.formatMessage({ id: "wallet.type.zigpadtokensreward" }),
     },
     {
+      value: "STAKING_VAULT",
+      label: intl.formatMessage({ id: "wallet.type.stakingvault" }),
+    },
+    {
+      value: "STAKING_VAULT_RETURN",
+      label: intl.formatMessage({ id: "wallet.type.stakingvaultreturn" }),
+    },
+    {
       value: "buy_zig",
       label: intl.formatMessage({ id: "wallet.type.buyzig" }),
     },
