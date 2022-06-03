@@ -164,7 +164,11 @@ const WalletCoins = ({
           {offer && (
             <EarnButton onClick={() => setSelectedVaultOffer(offer)}>
               <FormattedMessage
-                id="wallet.staking.earn.short"
+                id={
+                  offer.type === "stake"
+                    ? "wallet.staking.earnStake.short"
+                    : "wallet.staking.earn.short"
+                }
                 values={{
                   coin: coinData.name,
                   reward: offer.coinReward,

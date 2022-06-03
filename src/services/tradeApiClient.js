@@ -2552,6 +2552,32 @@ class TradeApiClient {
   }
 
   /**
+   * Vault stake
+   *
+   * @param {StakeReq} payload Payload
+   * @returns {Promise<void>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async stake(payload) {
+    const { programId, ...rest } = payload;
+    return this.doRequest(`/vault/${programId}/stake`, rest, "POST", 3);
+  }
+
+  /**
+   * Vault increase stake
+   *
+   * @param {StakeReq} payload Payload
+   * @returns {Promise<void>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async increaseStake(payload) {
+    const { programId, ...rest } = payload;
+    return this.doRequest(`/vault/${programId}/stake/increase`, rest, "POST", 3);
+  }
+
+  /**
    * Get launchpad projects
    *
    * @param {{status: 'active'|'past'}} payload Payload

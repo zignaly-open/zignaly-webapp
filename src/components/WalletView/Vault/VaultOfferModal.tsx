@@ -1,15 +1,13 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
-import React from "react";
+import React, { useCallback } from "react";
 import { Title, Modal } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { formatDateUTC } from "utils/format";
-// const localizedFormat = require("dayjs/plugin/localizedFormat");
-// dayjs.extend(localizedFormat);
 
 const ListItem = styled.li`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -28,32 +26,24 @@ const ItemValue = styled.span`
   color: ${(props) => props.theme.palette.text.primary};
 `;
 
-const SecondaryText = styled.span`
-  color: ${(props) => props.theme.newTheme.secondaryText};
-  font-size: 14px;
-  font-style: italic;
-`;
-
-interface CompoundingTextProps {
-  compounding: boolean;
-}
-const CompoundingText = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-  color: ${(props) => props.theme.newTheme.red};
-
-  ${(props: CompoundingTextProps) =>
-    props.compounding &&
-    css`
-      color: ${props.theme.newTheme.green}};
-    `}
-`;
-
 const TitleDesc = styled(Typography)`
   font-weight: 500;
   font-size: 32px;
   margin-bottom: 16px;
 `;
+
+const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
+  return (
+    <div>
+      <FormattedMessage id="wallet.staking.offer.unstakingDays" values={{ days: penalty.days }} />
+      &nbsp;&rarr;&nbsp;
+      <FormattedMessage
+        id="wallet.staking.offer.unstakingPenalty"
+        values={{ percentage: penalty.percentage }}
+      />
+    </div>
+  );
+};
 
 interface VaultOfferModalProps {
   onClose: () => void;
@@ -76,7 +66,33 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
     distributionDate,
     endDate,
     stakingDays,
+    type,
+    asideMinimum,
+    asideCoin,
+    boostable,
+    returnCoinsDate,
+    finishStakingDate,
+    boosts,
+    unstakeEnabled,
+    penalties,
   } = vault;
+
+  const BoostRow = useCallback(
+    ({ boost }: { boost: Boost }) => (
+      <div>
+        <NumberFormat
+          value={boost.minimum}
+          displayType="text"
+          thousandSeparator={true}
+          decimalScale={2}
+          suffix={` ${asideCoin}`}
+        />
+        &nbsp;&rarr;&nbsp;
+        {boost.percentage}x
+      </div>
+    ),
+    [asideCoin],
+  );
 
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
@@ -86,20 +102,49 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
           <FormattedMessage id="wallet.staking.offer.title" />
         </Title>
         <TitleDesc>
-          <FormattedMessage id="wallet.staking.offer.desc" values={{ coin, reward: coinReward }} />
+          <FormattedMessage
+            id={`wallet.staking.offer.desc${type === "stake" ? "Stake" : ""}`}
+            values={{ coin, reward: coinReward }}
+          />
         </TitleDesc>
         <ul>
+          {type === "stake" && (
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="wallet.staking.offer.type" />
+              </ItemLabel>
+              <ItemValue>
+                <FormattedMessage
+                  id="wallet.staking.offer.typeLocked"
+                  values={{
+                    date: formatDay(returnCoinsDate),
+                  }}
+                />
+              </ItemValue>
+            </ListItem>
+          )}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.minDeposit" />
             </ItemLabel>
             <ItemValue>
-              <NumberFormat
-                displayType="text"
-                value={minBalance}
-                suffix={` ${coin}`}
-                thousandSeparator={true}
-              />
+              <>
+                <NumberFormat
+                  displayType="text"
+                  value={minBalance}
+                  suffix={` ${coin}`}
+                  thousandSeparator={true}
+                />
+                {asideMinimum > 0 && (
+                  <NumberFormat
+                    displayType="text"
+                    value={asideMinimum}
+                    prefix=" & "
+                    suffix={` ${asideCoin}`}
+                    thousandSeparator={true}
+                  />
+                )}
+              </>
             </ItemValue>
           </ListItem>
           <ListItem>
@@ -126,19 +171,29 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             {/* <ItemValue>{dayjs(vault.startDate).format("L LT")}</ItemValue> */}
             <ItemValue>{formatDateUTC(startDate)}</ItemValue>
           </ListItem>
-          <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.totalRewards" />
-            </ItemLabel>
-            <ItemValue>
-              <NumberFormat
-                displayType="text"
-                value={rewardsTotal}
-                suffix={` ${coinReward}`}
-                thousandSeparator={true}
-              />
-            </ItemValue>
-          </ListItem>
+          {type === "stake" && (
+            <>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="wallet.staking.offer.stakingEnds" />
+                </ItemLabel>
+                <ItemValue>{formatDateUTC(finishStakingDate)}</ItemValue>
+              </ListItem>
+              <ListItem>
+                <ItemLabel>
+                  <FormattedMessage id="wallet.staking.offer.totalRewards" />
+                </ItemLabel>
+                <ItemValue>
+                  <NumberFormat
+                    displayType="text"
+                    value={rewardsTotal}
+                    suffix={` ${coinReward}`}
+                    thousandSeparator={true}
+                  />
+                </ItemValue>
+              </ListItem>
+            </>
+          )}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.rewardBegins" />
@@ -150,9 +205,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.rewardEnds" />
             </ItemLabel>
-            <ItemValue>
-              <ItemValue>{formatDay(endDate)}</ItemValue>
-            </ItemValue>
+            <ItemValue>{formatDay(endDate)}</ItemValue>
           </ListItem>
           <ListItem>
             <ItemLabel>
@@ -168,33 +221,44 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             <ItemValue>
               <FormattedMessage
-                id="wallet.staking.offer.calculation.val"
+                id={`wallet.staking.offer.calculation${boostable ? "Boost" : ""}.val`}
                 values={{ days: stakingDays }}
               />
             </ItemValue>
           </ListItem>
-          {/* <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.firstAwarded" />
-            </ItemLabel>
-            <ItemValue>
-              <FormattedMessage id="wallet.staking.offer.firstAwarded.val" />
-            </ItemValue>
-          </ListItem> */}
-          {/* <ListItem>
-            <ItemLabel>
-              <FormattedMessage id="wallet.staking.offer.compounding" />
-            </ItemLabel>
-            <ItemValue>
-              <CompoundingText compounding={true}>
-                <FormattedMessage id="general.yes" />
-              </CompoundingText>
-              &nbsp;
-              <SecondaryText>
-                <FormattedMessage id="wallet.staking.offer.compounding.info" />
-              </SecondaryText>
-            </ItemValue>
-          </ListItem> */}
+          {boostable && (
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="wallet.staking.offer.boostOptions" />
+              </ItemLabel>
+              <ItemValue>
+                {boosts.map((boost, i) => (
+                  <BoostRow boost={boost} key={i} />
+                ))}
+              </ItemValue>
+            </ListItem>
+          )}
+          {type === "stake" && (
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="wallet.staking.offer.unstakingConditions" />
+              </ItemLabel>
+              <ItemValue>
+                {!unstakeEnabled ? (
+                  <FormattedMessage id="vault.unstake.notPossible" />
+                ) : unstakeEnabled && !penalties?.length ? (
+                  <FormattedMessage id="wallet.staking.offer.unstakingAllowed" />
+                ) : (
+                  <>
+                    <FormattedMessage id="wallet.staking.offer.unstakingAllowedFees" />
+                    {penalties.map((penalty, i) => (
+                      <PenaltyRow penalty={penalty} key={i} />
+                    ))}
+                  </>
+                )}
+              </ItemValue>
+            </ListItem>
+          )}
         </ul>
       </Modal>
     </CustomModal>

@@ -883,7 +883,7 @@ error.63: "O código do Telegram já está configurado para outra conta"
 error.64: "A quantidade dos alvos de Take Profit devem ser 100 entre todas os alvos."
 error.65: "O Telegram ID vinculado já está atribuído a outro usuário. Se você deseja vincular mais de um usuário ao mesmo ID de telegrama, você precisa melhorar sua membresia."
 error.66: "Este provedor não oferece configurações recomendadas."
-# Can we add a coma here? 
+# Can we add a coma here?
 # This provider was already connected once, you need to update it instead of using auto-connect.
 error.67: "Este provedor já estava conectado uma vez, você precisa atualizá-lo em vez de usar a conexão automática."
 error.68: "Nenhuma moeda selecionada"
@@ -1713,7 +1713,7 @@ wallet.balance: "Saldo:"
 wallet.buy: "¿Onde comprar ZIG?"
 wallet.buy.tooltip: "Você pode comprar o ZIG nesses exchanges:"
 wallet.fees.title: "Pagar taxas de sucesso com ZIG"
-wallet.fees.min: "Min {perc}%"
+wallet.fees.min: "min."
 wallet.fees.discount: "Desconto na taxa de sucesso:"
 wallet.fees.tooltip: "Pague as taxas de sucesso de qualquer serviço de Profit Sharing com ZIG e obtenha um desconto sobre o valor a pagar."
 wallet.fees.enabled: "¡Você está pagando taxas de sucesso com ZIG!"

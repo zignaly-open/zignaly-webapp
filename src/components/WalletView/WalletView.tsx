@@ -515,7 +515,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                       <CoinIcon coin={v.coinReward} width={20} height={20} />
                       <NeutralText>
                         <FormattedMessage
-                          id="wallet.staking.earn"
+                          id={
+                            v.type === "stake" ? "wallet.staking.earnStake" : "wallet.staking.earn"
+                          }
                           values={{
                             coin: v.coin,
                             reward: v.coinReward,

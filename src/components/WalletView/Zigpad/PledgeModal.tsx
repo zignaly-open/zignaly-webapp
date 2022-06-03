@@ -56,7 +56,9 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
   const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
     titleTranslationId: "zigpad.terms.title",
     messageTranslationId: "zigpad.terms",
-    values: { program: project.name },
+    values: {
+      program: project.name,
+    },
     visible: false,
   });
 
@@ -120,6 +122,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           minAmount={project.minAmount}
           maxAmount={project.maxAmount}
           lockedDesc="zigpad.locked"
+          showLockedBalance={true}
         />
         <FormControlLabel
           style={{
