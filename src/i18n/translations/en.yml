@@ -1814,7 +1814,7 @@ vault.minAmount: "To participate in this program you need to stake a minimum of 
 vault.insufficientAmount: "You don't have enough {coin}. <a>Deposit more.</a>"
 vault.boost: "Boost:"
 vault.boostStake: "Stake {coin} for more rewards:"
-vault.boostStake.cantReduce: "it is not possible to reduce your boost level."
+vault.boostStake.cantReduce: "It is not possible to reduce your boost level."
 vault.program: "Vault Staking Program"
 vault.reduceBoost: "Once Staked it will no be possible to reduce your boost level or the number of {coin}s staked."
 vault.unstake.notPossible: "Once staked, you will not be able to unstake or reduce the amount until the end of this program. However, you can add to the staking amount by editing later."
