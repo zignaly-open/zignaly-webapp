@@ -55,7 +55,7 @@ const AmountControl = ({
   maxAmount,
   lockedDesc,
   minAmmountErrMsg,
-  showLockedBalance = true,
+  showLockedBalance = false,
 }: AmountControlProps) => {
   const intl = useIntl();
   const lockedBalance = balance.balance - balance.availableBalance;
