@@ -17,12 +17,12 @@ import { floatify } from "utils/format";
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
 `;
 
 const BalanceLabel = styled(Typography)`
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
   margin-left: 4px;
 `;
 
