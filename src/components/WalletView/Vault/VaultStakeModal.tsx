@@ -110,7 +110,7 @@ const VaultStakeModal = ({
     !vaultProject.asideMinimum ||
     balanceAmountAside.availableBalance >=
       (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
-  const isEdit = false;
+  const isEdit = vaultProject.stakeAmount > 0;
 
   const getLabel = (boost: Boost) => (
     <BoostContainer>
