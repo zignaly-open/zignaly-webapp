@@ -17,6 +17,10 @@ const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
 `;
 
+const BoostPanel = styled.div`
+  margin-top: 14px;
+`;
+
 const SliderContainer = styled.div<{ value: number }>`
   margin: 0 32px 42px;
 
@@ -89,10 +93,9 @@ const VaultStakeModal = ({
     handleSubmit,
     control,
     errors,
-    formState: { isValid, isDirty },
+    formState: { isValid },
     setValue,
     trigger,
-    watch,
   } = useForm<FormType>({
     mode: "onChange",
   });
@@ -100,17 +103,28 @@ const VaultStakeModal = ({
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
   const balanceAmount = walletBalance[coin].total;
-  const [boostId, setBoostId] = useState(0);
+  const initialBoostId = vaultProject.boosts?.findIndex(
+    (b) => vaultProject.asideAmount >= b.minimum,
+  );
+  const [boostId, setBoostId] = useState(initialBoostId >= 0 ? initialBoostId : 0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
   const balanceAmountAside = vaultProject.asideCoin
     ? walletBalance[vaultProject.asideCoin].total
     : null;
-  const enoughZIG =
+  const enoughAsideCoin =
+    // No aside requirements
     !vaultProject.asideMinimum ||
+    // Compare available balance with aside amount required, substracting already staked amount
     balanceAmountAside.availableBalance >=
-      (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
+      (selectedBoost ? selectedBoost.minimum : vaultProject.asideMinimum) +
+        (vaultProject.asideAmount || 0);
+
+  // Edit
   const isEdit = vaultProject.stakeAmount > 0;
+  const boostTooLow = isEdit && boostId < initialBoostId;
+  const asideAmountAdd =
+    isEdit && selectedBoost ? vaultProject.asideAmount - selectedBoost.minimum : 0;
 
   const getLabel = (boost: Boost) => (
     <BoostContainer>
@@ -142,7 +156,7 @@ const VaultStakeModal = ({
         addAmount={isEdit ? confirmData.amount : null}
         program={vaultProject}
         asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
-        addAsideAmount={null}
+        addAsideAmount={isEdit ? asideAmountAdd : null}
         boost={selectedBoost?.percentage}
         onClose={onClose}
         onSuccess={onSuccess}
@@ -155,11 +169,38 @@ const VaultStakeModal = ({
     [confirmData, selectedBoost, coins],
   );
 
+  const BoostSlider = useCallback(
+    () =>
+      vaultProject.boostable && (
+        <BoostPanel>
+          <StakeTypography>
+            <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
+          </StakeTypography>
+          <SliderContainer value={boostId}>
+            <Slider
+              marks={boostMarks}
+              max={boostMarks[boostMarks.length - 1].value}
+              onChange={(_, value: number) => setBoostId(value)}
+              step={null}
+              value={boostId}
+              valueLabelDisplay="off"
+            />
+          </SliderContainer>
+          {boostTooLow && (
+            <Typography color="error">
+              <FormattedMessage id="vault.boostStake.cantReduce" />
+            </Typography>
+          )}
+        </BoostPanel>
+      ),
+    [boostTooLow, boostId, asideAmountAdd],
+  );
+
   const MinStakingRequired = useCallback(
     () =>
       vaultProject.asideMinimum > 0 && (
         <>
-          {!enoughZIG && (
+          {!enoughAsideCoin && (
             <Typography color="error">
               <FormattedMessage
                 id="vault.insufficientAmount"
@@ -196,7 +237,7 @@ const VaultStakeModal = ({
           )}
         </>
       ),
-    [enoughZIG],
+    [enoughAsideCoin],
   );
 
   const UnstakeWarning = useCallback(
@@ -236,14 +277,14 @@ const VaultStakeModal = ({
     () => (
       <Button
         variant="contained"
-        disabled={!enoughZIG || !isValid}
+        disabled={!enoughAsideCoin || boostTooLow || !isValid}
         style={{ margin: "18px auto 0" }}
         type="submit"
       >
         <FormattedMessage id="wallet.withdraw.continue" />
       </Button>
     ),
-    [enoughZIG, isValid],
+    [enoughAsideCoin, boostTooLow, isValid],
   );
 
   if (isEdit) {
@@ -298,8 +339,10 @@ const VaultStakeModal = ({
               coin={coin}
               label="wallet.staking.stakeAmountAdd"
               newDesign={true}
+              // Allow empty amount if the boost is modified
+              minAmount={initialBoostId >= 0 && boostId > initialBoostId ? null : 0}
             />
-            <br />
+            <BoostSlider />
             <MinStakingRequired />
             <UnstakeWarning />
             <Submit />
@@ -389,24 +432,7 @@ const VaultStakeModal = ({
               &nbsp;{coin}
             </BalanceLabelSmall>
           </Box>
-          {vaultProject.boostable && (
-            <>
-              <br />
-              <StakeTypography>
-                <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
-              </StakeTypography>
-              <SliderContainer value={boostId}>
-                <Slider
-                  marks={boostMarks}
-                  max={boostMarks[boostMarks.length - 1].value}
-                  onChange={(_, value: number) => setBoostId(value)}
-                  step={null}
-                  value={boostId}
-                  valueLabelDisplay="off"
-                />
-              </SliderContainer>
-            </>
-          )}
+          <BoostSlider />
           <MinStakingRequired />
           <UnstakeWarning />
           <Submit />

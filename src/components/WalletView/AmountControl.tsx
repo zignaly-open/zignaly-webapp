@@ -51,7 +51,7 @@ const AmountControl = ({
   coin,
   label = "withdraw.amount",
   newDesign = false,
-  minAmount,
+  minAmount = 0,
   maxAmount,
   lockedDesc,
   minAmmountErrMsg,
@@ -81,13 +81,13 @@ const AmountControl = ({
           // required: true,
           validate: {
             min: (value) =>
-              minAmount
+              minAmount !== null && minAmount !== undefined
                 ? parseFloat(value) >= minAmount ||
                   intl.formatMessage(
                     { id: minAmmountErrMsg || "convert.min" },
                     { amount: minAmount, coin },
                   )
-                : parseFloat(value) > 0,
+                : true,
             max: (value) =>
               parseFloat(value) > balance.availableBalance
                 ? intl.formatMessage({ id: "form.error.withdraw.max" })
