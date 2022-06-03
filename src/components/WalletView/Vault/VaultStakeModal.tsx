@@ -173,10 +173,12 @@ const VaultStakeModal = ({
 
   const onBoostChange = (_, value: number) => {
     setBoostId(value);
-    // Force revalidate the form since we allow empty amount now that boost has changed
-    setTimeout(() => {
-      trigger("amount");
-    });
+    if (isEdit) {
+      // In Edit: Force revalidate the form since we allow empty amount now that boost has changed
+      setTimeout(() => {
+        trigger("amount");
+      });
+    }
   };
 
   const BoostSlider = useCallback(
