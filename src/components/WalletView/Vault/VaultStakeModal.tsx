@@ -208,8 +208,9 @@ const VaultStakeModal = ({
 
   const MinStakingRequired = useCallback(
     () =>
-      vaultProject.asideMinimum > 0 && (
-        <>
+      vaultProject.asideMinimum > 0 &&
+      (!enoughAsideCoin || !isEdit) && (
+        <Section>
           {!enoughAsideCoin && (
             <Typography color="error">
               <FormattedMessage
@@ -245,7 +246,7 @@ const VaultStakeModal = ({
               />
             </Typography>
           )}
-        </>
+        </Section>
       ),
     [enoughAsideCoin],
   );
@@ -253,7 +254,7 @@ const VaultStakeModal = ({
   const UnstakeWarning = useCallback(
     () => (
       <Section>
-        {!vaultProject.unstakeEnabled && !isEdit ? (
+        {!vaultProject.unstakeEnabled ? (
           <Alert severity="error">
             <FormattedMessage id="vault.unstake.notPossible" />
           </Alert>
