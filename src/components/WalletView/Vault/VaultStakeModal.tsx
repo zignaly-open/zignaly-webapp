@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
+import { Alert } from "@material-ui/lab";
 
 const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
@@ -198,6 +199,39 @@ const VaultStakeModal = ({
     [enoughZIG],
   );
 
+  const UnstakeWarning = useCallback(
+    () => (
+      <Box marginTop="14px">
+        {!vaultProject.unstakeEnabled && !isEdit ? (
+          <Alert severity="error">
+            <FormattedMessage id="vault.unstake.notPossible" />
+          </Alert>
+        ) : (
+          Boolean(vaultProject.penalties?.length) && (
+            <Alert severity="error">
+              <FormattedMessage
+                id="vault.unstake.penalty"
+                values={{
+                  a: (chunks: string) => (
+                    <a className="link" onClick={onOpenOffer}>
+                      {chunks}
+                    </a>
+                  ),
+                }}
+              />
+            </Alert>
+          )
+        )}
+        {vaultProject.boostable && (
+          <Alert severity="error">
+            <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
+          </Alert>
+        )}
+      </Box>
+    ),
+    [],
+  );
+
   const Submit = useCallback(
     () => (
       <Button
@@ -267,33 +301,7 @@ const VaultStakeModal = ({
             />
             <br />
             <MinStakingRequired />
-            <br />
-            <Typography>
-              {!vaultProject.unstakeEnabled && !isEdit ? (
-                <FormattedMessage id="vault.unstake.notPossible" />
-              ) : (
-                Boolean(vaultProject.penalties?.length) && (
-                  <FormattedMessage
-                    id="vault.unstake.penalty"
-                    values={{
-                      a: (chunks: string) => (
-                        <a className="link" onClick={onOpenOffer}>
-                          {chunks}
-                        </a>
-                      ),
-                    }}
-                  />
-                )
-              )}
-            </Typography>
-            {vaultProject.boostable && (
-              <Typography>
-                <FormattedMessage
-                  id="vault.reduceBoost"
-                  values={{ coin: vaultProject.asideCoin }}
-                />
-              </Typography>
-            )}
+            <UnstakeWarning />
             <Submit />
           </Form>
         </Modal>
@@ -400,30 +408,7 @@ const VaultStakeModal = ({
             </>
           )}
           <MinStakingRequired />
-          <br />
-          <Typography>
-            {!vaultProject.unstakeEnabled ? (
-              <FormattedMessage id="vault.unstake.notPossible" />
-            ) : (
-              Boolean(vaultProject.penalties?.length) && (
-                <FormattedMessage
-                  id="vault.unstake.penalty"
-                  values={{
-                    a: (chunks: string) => (
-                      <a className="link" onClick={onOpenOffer}>
-                        {chunks}
-                      </a>
-                    ),
-                  }}
-                />
-              )
-            )}
-          </Typography>
-          {vaultProject.boostable && (
-            <Typography color="error">
-              <FormattedMessage id="vault.reduceBoost" />
-            </Typography>
-          )}
+          <UnstakeWarning />
           <Submit />
         </Form>
       </Modal>

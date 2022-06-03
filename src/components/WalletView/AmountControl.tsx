@@ -39,6 +39,7 @@ interface AmountControlProps {
   newDesign?: boolean;
   lockedDesc?: string;
   minAmmountErrMsg?: string;
+  showLockedBalance?: boolean;
 }
 
 const AmountControl = ({
@@ -54,6 +55,7 @@ const AmountControl = ({
   maxAmount,
   lockedDesc,
   minAmmountErrMsg,
+  showLockedBalance = true,
 }: AmountControlProps) => {
   const intl = useIntl();
   const lockedBalance = balance.balance - balance.availableBalance;
@@ -112,7 +114,7 @@ const AmountControl = ({
           &nbsp;{coin}
         </BalanceLabel>
       </Box>
-      {lockedBalance > 0 && (
+      {showLockedBalance && lockedBalance > 0 && (
         <>
           <Box display="flex">
             <SecondaryText>

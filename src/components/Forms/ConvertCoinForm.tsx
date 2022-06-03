@@ -191,6 +191,7 @@ const ConvertCoinForm = ({
             coin={base}
             minAmount={previewConversion?.min}
             decimals={8}
+            showLockedBalance={true}
           />
 
           <Box display="flex" alignItems="center" height="100px" justifyContent="center">

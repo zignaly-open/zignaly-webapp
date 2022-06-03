@@ -209,6 +209,7 @@ const WalletWithdrawView = ({
                     label="wallet.withdraw.amount"
                     newDesign={true}
                     minAmount={minAmount}
+                    showLockedBalance={true}
                   />
                 </Control>
 

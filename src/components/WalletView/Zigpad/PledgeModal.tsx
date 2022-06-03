@@ -122,6 +122,7 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
           minAmount={project.minAmount}
           maxAmount={project.maxAmount}
           lockedDesc="zigpad.locked"
+          showLockedBalance={true}
         />
         <FormControlLabel
           style={{
