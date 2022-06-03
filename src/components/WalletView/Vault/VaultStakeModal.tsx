@@ -158,7 +158,7 @@ const VaultStakeModal = ({
   const MinStakingRequired = useCallback(
     () =>
       vaultProject.asideMinimum > 0 && (
-        <>
+        <Box marginTop="14px">
           {!enoughZIG && (
             <Typography color="error">
               <FormattedMessage
@@ -194,7 +194,7 @@ const VaultStakeModal = ({
               />
             </Typography>
           )}
-        </>
+        </Box>
       ),
     [enoughZIG],
   );
@@ -299,7 +299,6 @@ const VaultStakeModal = ({
               label="wallet.staking.stakeAmountAdd"
               newDesign={true}
             />
-            <br />
             <MinStakingRequired />
             <UnstakeWarning />
             <Submit />
