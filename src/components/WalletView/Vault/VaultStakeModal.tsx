@@ -17,7 +17,7 @@ const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
 `;
 
-const BoostPanel = styled.div`
+const Section = styled.div`
   margin-top: 14px;
 `;
 
@@ -182,7 +182,7 @@ const VaultStakeModal = ({
   const BoostSlider = useCallback(
     () =>
       vaultProject.boostable && (
-        <BoostPanel>
+        <Section>
           <StakeTypography>
             <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
           </StakeTypography>
@@ -201,7 +201,7 @@ const VaultStakeModal = ({
               <FormattedMessage id="vault.boostStake.cantReduce" />
             </Typography>
           )}
-        </BoostPanel>
+        </Section>
       ),
     [boostTooLow, boostId, asideAmountAdd],
   );
@@ -252,7 +252,7 @@ const VaultStakeModal = ({
 
   const UnstakeWarning = useCallback(
     () => (
-      <Box marginTop="14px">
+      <Section>
         {!vaultProject.unstakeEnabled && !isEdit ? (
           <Alert severity="error">
             <FormattedMessage id="vault.unstake.notPossible" />
@@ -278,7 +278,7 @@ const VaultStakeModal = ({
             <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
           </Alert>
         )}
-      </Box>
+      </Section>
     ),
     [],
   );

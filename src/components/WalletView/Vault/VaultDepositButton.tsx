@@ -86,7 +86,7 @@ interface VaultStakeButtonProps {
 }
 
 export const VaultStakeButton = ({ vaultProject, onClick }: VaultStakeButtonProps) => {
-  return true ? (
+  return dayjs().isBefore(vaultProject.finishStakingDate) ? (
     <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
       <FormattedMessage id={vaultProject.stakeAmount ? "vault.editStake" : "vault.stakeExcl"} />
     </ButtonStyled>
