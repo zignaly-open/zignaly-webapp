@@ -41,10 +41,18 @@ const SecondaryText = styled(Typography)`
   font-size: 18px;
 `;
 
+const SecondaryTextSmall = styled(SecondaryText)`
+  font-size: 14px;
+`;
+
 const BalanceLabel = styled(Typography)`
   font-weight: 600;
   font-size: 18px;
   margin-left: 4px;
+`;
+
+const BalanceLabelSmall = styled(BalanceLabel)`
+  font-size: 14px;
 `;
 
 const StakeTypography = styled(Typography)`
@@ -360,10 +368,10 @@ const VaultStakeModal = ({
             minAmount={vaultProject.minBalance}
           />
           <Box display="flex" mt="8px">
-            <SecondaryText>
+            <SecondaryTextSmall>
               <FormattedMessage id="wallet.staking.minBalance" />
-            </SecondaryText>
-            <BalanceLabel>
+            </SecondaryTextSmall>
+            <BalanceLabelSmall>
               <NumberFormat
                 value={vaultProject.minBalance}
                 displayType="text"
@@ -371,7 +379,7 @@ const VaultStakeModal = ({
                 decimalScale={coinData?.decimals}
               />
               &nbsp;{coin}
-            </BalanceLabel>
+            </BalanceLabelSmall>
           </Box>
           {vaultProject.boostable && (
             <>
