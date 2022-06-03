@@ -124,7 +124,7 @@ const VaultStakeModal = ({
   const isEdit = vaultProject.stakeAmount > 0;
   const boostTooLow = isEdit && boostId < initialBoostId;
   const asideAmountAdd =
-    isEdit && selectedBoost ? vaultProject.asideAmount - selectedBoost.minimum : 0;
+    isEdit && selectedBoost ? Math.max(selectedBoost.minimum - vaultProject.asideAmount, 0) : 0;
 
   const getLabel = (boost: Boost) => (
     <BoostContainer>
@@ -155,7 +155,9 @@ const VaultStakeModal = ({
         amount={isEdit ? vaultProject.stakeAmount : confirmData.amount}
         addAmount={isEdit ? confirmData.amount : null}
         program={vaultProject}
-        asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
+        asideAmount={
+          selectedBoost?.minimum || isEdit ? vaultProject.asideAmount : vaultProject.asideMinimum
+        }
         addAsideAmount={isEdit ? asideAmountAdd : null}
         boost={selectedBoost?.percentage}
         onClose={onClose}
@@ -169,6 +171,14 @@ const VaultStakeModal = ({
     [confirmData, selectedBoost, coins],
   );
 
+  const onBoostChange = (_, value: number) => {
+    setBoostId(value);
+    // Force revalidate the form since we allow empty amount now that boost has changed
+    setTimeout(() => {
+      trigger("amount");
+    });
+  };
+
   const BoostSlider = useCallback(
     () =>
       vaultProject.boostable && (
@@ -180,7 +190,7 @@ const VaultStakeModal = ({
             <Slider
               marks={boostMarks}
               max={boostMarks[boostMarks.length - 1].value}
-              onChange={(_, value: number) => setBoostId(value)}
+              onChange={onBoostChange}
               step={null}
               value={boostId}
               valueLabelDisplay="off"
