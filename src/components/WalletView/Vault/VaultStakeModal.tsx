@@ -165,6 +165,26 @@ const VaultStakeModal = ({
               />
             </Typography>
           )}
+          {!isEdit && (
+            <Typography>
+              <FormattedMessage
+                id="vault.minAmount"
+                values={{
+                  amount: (
+                    <b>
+                      <NumberFormat
+                        value={vaultProject.asideMinimum}
+                        displayType="text"
+                        thousandSeparator={true}
+                        decimalScale={2}
+                        suffix={` ${vaultProject.asideCoin}`}
+                      />
+                    </b>
+                  ),
+                }}
+              />
+            </Typography>
+          )}
         </>
       ),
     [enoughZIG],
@@ -353,9 +373,9 @@ const VaultStakeModal = ({
               &nbsp;{coin}
             </BalanceLabel>
           </Box>
-          <br />
           {vaultProject.boostable && (
             <>
+              <br />
               <StakeTypography>
                 <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
               </StakeTypography>
@@ -372,24 +392,6 @@ const VaultStakeModal = ({
             </>
           )}
           <MinStakingRequired />
-          <Typography>
-            <FormattedMessage
-              id="vault.minAmount"
-              values={{
-                amount: (
-                  <b>
-                    <NumberFormat
-                      value={vaultProject.asideMinimum}
-                      displayType="text"
-                      thousandSeparator={true}
-                      decimalScale={2}
-                      suffix={` ${vaultProject.asideCoin}`}
-                    />
-                  </b>
-                ),
-              }}
-            />
-          </Typography>
           <br />
           <Typography>
             {!vaultProject.unstakeEnabled ? (
