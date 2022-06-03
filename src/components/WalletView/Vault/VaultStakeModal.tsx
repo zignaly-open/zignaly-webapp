@@ -202,7 +202,7 @@ const VaultStakeModal = ({
   const UnstakeWarning = useCallback(
     () => (
       <Box marginTop="14px">
-        {!vaultProject.unstakeEnabled && !isEdit ? (
+        {!vaultProject.unstakeEnabled ? (
           <Alert severity="error">
             <FormattedMessage id="vault.unstake.notPossible" />
           </Alert>
