@@ -1,14 +1,13 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import React, { useCallback } from "react";
 import { Title, Modal } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
 import { formatDateUTC } from "utils/format";
-import { ArrowForward } from "@material-ui/icons";
 
 const ListItem = styled.li`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -33,21 +32,16 @@ const TitleDesc = styled(Typography)`
   margin-bottom: 16px;
 `;
 
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
   return (
-    <Row>
+    <div>
       <FormattedMessage id="wallet.staking.offer.unstakingDays" values={{ days: penalty.days }} />
-      &nbsp; <ArrowForward /> &nbsp;
+      &nbsp;&rarr;&nbsp;
       <FormattedMessage
         id="wallet.staking.offer.unstakingPenalty"
         values={{ percentage: penalty.percentage }}
       />
-    </Row>
+    </div>
   );
 };
 
@@ -85,7 +79,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
 
   const BoostRow = useCallback(
     ({ boost }: { boost: Boost }) => (
-      <Row>
+      <div>
         <NumberFormat
           value={boost.minimum}
           displayType="text"
@@ -93,11 +87,9 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
           decimalScale={2}
           suffix={` ${asideCoin}`}
         />
-        &nbsp;
-        <ArrowForward />
-        &nbsp;
+        &nbsp;&rarr;&nbsp;
         {boost.percentage}x
-      </Row>
+      </div>
     ),
     [asideCoin],
   );
@@ -116,34 +108,45 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
           />
         </TitleDesc>
         <ul>
+          {type === "stake" && (
+            <ListItem>
+              <ItemLabel>
+                <FormattedMessage id="wallet.staking.offer.type" />
+              </ItemLabel>
+              <ItemValue>
+                <FormattedMessage
+                  id="wallet.staking.offer.typeLocked"
+                  values={{
+                    date: formatDay(returnCoinsDate),
+                  }}
+                />
+              </ItemValue>
+            </ListItem>
+          )}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.minDeposit" />
             </ItemLabel>
             <ItemValue>
-              <NumberFormat
-                displayType="text"
-                value={minBalance}
-                suffix={` ${coin}`}
-                thousandSeparator={true}
-              />
-            </ItemValue>
-          </ListItem>
-          {asideMinimum > 0 && (
-            <ListItem>
-              <ItemLabel>
-                <FormattedMessage id="wallet.staking.offer.minCoin" values={{ coin: asideCoin }} />
-              </ItemLabel>
-              <ItemValue>
+              <>
                 <NumberFormat
                   displayType="text"
-                  value={asideMinimum}
-                  suffix={` ${asideCoin}`}
+                  value={minBalance}
+                  suffix={` ${coin}`}
                   thousandSeparator={true}
                 />
-              </ItemValue>
-            </ListItem>
-          )}
+                {asideMinimum > 0 && (
+                  <NumberFormat
+                    displayType="text"
+                    value={asideMinimum}
+                    prefix=" & "
+                    suffix={` ${asideCoin}`}
+                    thousandSeparator={true}
+                  />
+                )}
+              </>
+            </ItemValue>
+          </ListItem>
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.maxDeposit" />
@@ -200,14 +203,6 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
             </ItemLabel>
             <ItemValue>{formatDay(endDate)}</ItemValue>
           </ListItem>
-          {type === "stake" && (
-            <ListItem>
-              <ItemLabel>
-                <FormattedMessage id="wallet.staking.offer.returnFunds" />
-              </ItemLabel>
-              <ItemValue>{formatDay(returnCoinsDate)}</ItemValue>
-            </ListItem>
-          )}
           <ListItem>
             <ItemLabel>
               <FormattedMessage id="wallet.staking.offer.awarded" />

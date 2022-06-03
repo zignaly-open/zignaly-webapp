@@ -210,7 +210,7 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
           <AlignCenter>
             <Typography style={{ fontWeight: 600 }}>
               <FormattedMessage
-                id="wallet.staking.earn"
+                id={v.type === "stake" ? "wallet.staking.earnStake" : "wallet.staking.earn"}
                 values={{
                   coin: v.coin,
                   reward: v.coinReward,
