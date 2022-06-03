@@ -1,14 +1,13 @@
 import { Box, Checkbox, FormControlLabel, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Title, Modal } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import Button from "components/Button";
 import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
-import { Controller } from "react-hook-form";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
 import { ConfirmDialog } from "components/Dialogs";
 import NumberFormat from "react-number-format";
@@ -24,9 +23,9 @@ interface VaultStakeConfirmModalProps {
   onSuccess: () => void;
   open: boolean;
   amount: number | string;
-  addAmount: number | string; // For Edit
+  addAmount?: number | string; // For Edit
   asideAmount: number | string;
-  addAsideAmount: number | string; // For Edit
+  addAsideAmount?: number | string; // For Edit
   program: VaultOffer;
   coins: WalletCoins;
   boost: number;

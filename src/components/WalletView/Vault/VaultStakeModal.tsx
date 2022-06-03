@@ -165,24 +165,6 @@ const VaultStakeModal = ({
               />
             </Typography>
           )}
-          <Typography>
-            <FormattedMessage
-              id={isEdit ? "vault.minAmountStaking" : "vault.minAmount"}
-              values={{
-                amount: (
-                  <b>
-                    <NumberFormat
-                      value={vaultProject.asideMinimum}
-                      displayType="text"
-                      thousandSeparator={true}
-                      decimalScale={2}
-                      suffix={` ${vaultProject.asideCoin}`}
-                    />
-                  </b>
-                ),
-              }}
-            />
-          </Typography>
         </>
       ),
     [enoughZIG],
@@ -220,13 +202,29 @@ const VaultStakeModal = ({
                 <FormattedMessage id="wallet.staking.stakedAlready" />
               </SecondaryText>
               <BalanceLabel>
-                <NumberFormat
-                  value={vaultProject.stakeAmount}
-                  displayType="text"
-                  thousandSeparator={true}
-                  decimalScale={coinData?.decimals}
-                />
-                &nbsp;{coin}
+                <>
+                  <NumberFormat
+                    value={vaultProject.stakeAmount}
+                    displayType="text"
+                    thousandSeparator={true}
+                    decimalScale={coinData?.decimals}
+                    suffix={` ${coin}`}
+                  />
+                  {Boolean(vaultProject.asideAmount) && (
+                    <>
+                      &nbsp;&amp;&nbsp;
+                      <b>
+                        <NumberFormat
+                          value={vaultProject.asideAmount}
+                          displayType="text"
+                          thousandSeparator={true}
+                          decimalScale={coins[vaultProject.asideCoin].decimals}
+                          suffix={` ${vaultProject.asideCoin}`}
+                        />
+                      </b>
+                    </>
+                  )}
+                </>
               </BalanceLabel>
             </Box>
             <AmountControl
@@ -374,6 +372,24 @@ const VaultStakeModal = ({
             </>
           )}
           <MinStakingRequired />
+          <Typography>
+            <FormattedMessage
+              id="vault.minAmount"
+              values={{
+                amount: (
+                  <b>
+                    <NumberFormat
+                      value={vaultProject.asideMinimum}
+                      displayType="text"
+                      thousandSeparator={true}
+                      decimalScale={2}
+                      suffix={` ${vaultProject.asideCoin}`}
+                    />
+                  </b>
+                ),
+              }}
+            />
+          </Typography>
           <br />
           <Typography>
             {!vaultProject.unstakeEnabled ? (
