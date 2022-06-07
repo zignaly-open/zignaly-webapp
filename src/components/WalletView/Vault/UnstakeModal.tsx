@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Slider, Typography } from "@material-ui/core";
+import { Box, FormControlLabel, Radio, RadioGroup, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import React, { useState } from "react";
 import { Title, Modal } from "styles/styles";
@@ -10,10 +10,29 @@ import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
 import { ConfirmDialog } from "components/Dialogs";
-import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import AmountControl from "../AmountControl";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+
+const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
+  return (
+    <>
+      <FormattedMessage id="wallet.staking.offer.unstakingDays" values={{ days: penalty.days }} />
+      &nbsp;&rarr;&nbsp;
+      <FormattedMessage
+        id="wallet.staking.offer.unstakingPenalty"
+        values={{ percentage: penalty.percentage }}
+      />
+    </>
+  );
+};
+
+export const Label = styled(Typography)`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 4px;
+`;
 
 interface UnstakeModalProps {
   onClose: () => void;
@@ -26,6 +45,7 @@ interface UnstakeModalProps {
 
 interface FormType {
   amount: string;
+  penalty: string;
 }
 
 const UnstakeModal = ({
@@ -96,27 +116,49 @@ const UnstakeModal = ({
         />
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <AmountControl
-            balance={program.stakeAmount}
-            balanceLabel="vault.staked"
-            setBalanceMax={setBalanceMax}
-            decimals={coinData?.decimals}
-            errors={errors}
-            control={control}
-            coin={program.coin}
-            label="vault.unstake.amount"
-            newDesign={true}
-          />
+          {program.unstakeEnabled ? (
+            <>
+              <AmountControl
+                balance={program.stakeAmount}
+                balanceLabel="vault.staked"
+                setBalanceMax={setBalanceMax}
+                decimals={coinData?.decimals}
+                errors={errors}
+                control={control}
+                coin={program.coin}
+                label="vault.unstake.amount"
+                newDesign={true}
+              />
+              {program.penalties?.length > 0 && (
+                <Box marginTop="36px">
+                  <Label>
+                    <FormattedMessage id="vault.unstake.chooseDuration" />
+                  </Label>
 
-          {/* <Slider
-            marks={[{ value: 0.25 }, { value: 0.5 }, { value: 0.75 }]}
-            onChange={(e, value) => console.log(value)}
-            step={0.05}
-            value={0}
-            min={0}
-            max={1}
-            valueLabelDisplay="off"
-          /> */}
+                  <Controller
+                    render={(data) => (
+                      <RadioGroup aria-labelledby="penalties-label" name="penalties">
+                        {program.penalties.map((p) => (
+                          <FormControlLabel
+                            key={p.percentage}
+                            value={p.days.toString()}
+                            control={<Radio />}
+                            label={<PenaltyRow penalty={p} />}
+                          />
+                        ))}
+                      </RadioGroup>
+                    )}
+                    name="penalty"
+                    control={control}
+                  />
+                </Box>
+              )}
+            </>
+          ) : (
+            <Typography>
+              <FormattedMessage id="vault.unstake.notPossible2" />
+            </Typography>
+          )}
           <Box display="flex" mt="8px">
             <Box
               display="flex"
@@ -128,9 +170,11 @@ const UnstakeModal = ({
               <Button variant="outlined" onClick={onCancel}>
                 <FormattedMessage id="accounts.back" />
               </Button>
-              <Button variant="contained" disabled={!isValid} loading={loading} type="submit">
-                <FormattedMessage id="vault.unstake" />
-              </Button>
+              {program.unstakeEnabled && (
+                <Button variant="contained" disabled={!isValid} loading={loading} type="submit">
+                  <FormattedMessage id="vault.unstake" />
+                </Button>
+              )}
             </Box>
           </Box>
         </form>

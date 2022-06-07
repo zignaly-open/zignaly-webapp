@@ -1820,7 +1820,9 @@ vault.program: "Vault Staking Program"
 vault.reduceBoost: "Once Staked it will no be possible to reduce your boost level or the number of {coin}s staked."
 vault.unstake: "Unstake"
 vault.unstake.amount: "Amount to Unstake"
+vault.unstake.chooseDuration: "Choose unstaking duration"
 vault.unstake.notPossible: "Once staked, you will not be able to unstake or reduce the amount until the end of this program. However, you can add to the staking amount by editing later."
+vault.unstake.notPossible2: "Unstaking is not possible, sorry."
 vault.unstake.penalty: "If you want to remove some staking funds later, you will have to pay a penalty. <a>Fee Details</a>"
 
 # WALLET

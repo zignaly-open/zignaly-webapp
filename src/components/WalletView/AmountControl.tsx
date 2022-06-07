@@ -53,7 +53,7 @@ const AmountControl = ({
   label = "withdraw.amount",
   balanceLabel = "deposit.available",
   newDesign = false,
-  minAmount = 0,
+  minAmount,
   maxAmount,
   lockedDesc,
   minAmmountErrMsg,
@@ -85,12 +85,16 @@ const AmountControl = ({
           // required: true,
           validate: {
             min: (value) =>
-              minAmount !== null && minAmount !== undefined
-                ? parseFloat(value) >= minAmount ||
-                  intl.formatMessage(
-                    { id: minAmmountErrMsg || "convert.min" },
-                    { amount: minAmount, coin },
-                  )
+              // If minAmount is explicitly passed as null, don't do anything
+              // If minAmount is not passed, check for positive value by default
+              minAmount !== null
+                ? minAmount
+                  ? parseFloat(value) >= minAmount ||
+                    intl.formatMessage(
+                      { id: minAmmountErrMsg || "convert.min" },
+                      { amount: minAmount, coin },
+                    )
+                  : parseFloat(value) > 0
                 : true,
             max: (value) =>
               typeof balance === "object" && parseFloat(value) > balance.availableBalance
