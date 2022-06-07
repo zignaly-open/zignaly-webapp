@@ -12,6 +12,7 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 import { Alert } from "@material-ui/lab";
+import UnstakeModal from "./UnstakeModal";
 
 const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
@@ -63,6 +64,17 @@ const BalanceLabelSmall = styled(BalanceLabel)`
 const StakeTypography = styled(Typography)`
   margin: 20px 0 22px;
   font-weight: 600;
+`;
+
+const Actions = styled.div`
+  display: flex;
+  margin-top: 18px;
+
+  // To make the first button aligned on the left with main one centered
+  &::after {
+    flex: 1;
+    content: "";
+  }
 `;
 
 interface FormType {
@@ -119,6 +131,7 @@ const VaultStakeModal = ({
     balanceAmountAside.availableBalance >=
       (selectedBoost ? selectedBoost.minimum : vaultProject.asideMinimum) +
         (vaultProject.asideAmount || 0);
+  const [showUnstake, setShowUnstake] = useState(false);
 
   // Edit
   const isEdit = vaultProject.stakeAmount > 0;
@@ -288,17 +301,43 @@ const VaultStakeModal = ({
 
   const Submit = useCallback(
     () => (
-      <Button
-        variant="contained"
-        disabled={!enoughAsideCoin || boostTooLow || !isValid}
-        style={{ margin: "18px auto 0" }}
-        type="submit"
-      >
-        <FormattedMessage id="wallet.withdraw.continue" />
-      </Button>
+      <Actions>
+        {isEdit && (
+          <Box flex={1}>
+            <Button
+              variant="text"
+              type="button"
+              color="secondary"
+              onClick={() => setShowUnstake(true)}
+            >
+              <FormattedMessage id="vault.unstake" />
+            </Button>
+          </Box>
+        )}
+        <Button
+          variant="contained"
+          disabled={!enoughAsideCoin || boostTooLow || !isValid}
+          type="submit"
+        >
+          <FormattedMessage id="wallet.withdraw.continue" />
+        </Button>
+      </Actions>
     ),
     [enoughAsideCoin, boostTooLow, isValid],
   );
+
+  if (showUnstake) {
+    return (
+      <UnstakeModal
+        open={true}
+        program={vaultProject}
+        onClose={onClose}
+        onSuccess={onSuccess}
+        onCancel={() => setShowUnstake(false)}
+        coins={coins}
+      />
+    );
+  }
 
   if (isEdit) {
     return (
