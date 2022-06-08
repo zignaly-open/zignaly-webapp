@@ -221,7 +221,7 @@ const VaultStakeModal = ({
     [boostTooLow, boostId, asideAmountAdd],
   );
 
-  const MinStakingRequired = useCallback(
+  const MinAsideStakingRequired = useCallback(
     () =>
       vaultProject.asideMinimum > 0 &&
       (!enoughAsideCoin || !isEdit) && (
@@ -395,7 +395,7 @@ const VaultStakeModal = ({
               minAmount={initialBoostId >= 0 && boostId > initialBoostId ? null : 0}
             />
             <BoostSlider />
-            <MinStakingRequired />
+            <MinAsideStakingRequired />
             <UnstakeWarning />
             <Submit />
           </Form>
@@ -485,7 +485,7 @@ const VaultStakeModal = ({
             </BalanceLabelSmall>
           </Box>
           <BoostSlider />
-          <MinStakingRequired />
+          <MinAsideStakingRequired />
           <UnstakeWarning />
           <Submit />
         </Form>
