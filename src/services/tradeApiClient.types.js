@@ -940,6 +940,7 @@ export function userEntityResponseTransform(response) {
     hasActivated: response.hasActivated,
     realExchangeConnected: response.realExchangeConnected,
     demoExchangeConnected: response.demoExchangeConnected,
+    intercomHash: response.intercomHash,
     isTrader: response.isTrader,
     exchanges: response.exchanges
       ? userExchangeConnectionResponseTransform(response.exchanges)
