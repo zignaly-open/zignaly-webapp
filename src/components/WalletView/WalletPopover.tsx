@@ -1,8 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import BSCIcon from "images/wallet/bsc.svg";
-import ETHIcon from "images/wallet/eth.svg";
-import { Box, Grid, Popover, Typography } from "@material-ui/core";
+import { Grid, Popover, Typography } from "@material-ui/core";
+import { getChainIcon } from "utils/chain";
 
 const StyledPopover = styled(Popover)`
   .MuiPopover-paper {
@@ -29,18 +28,7 @@ const Coin = styled.span`
 `;
 
 const NetworkIcon = ({ network }: { network: string }) => {
-  let icon;
-  switch (network.toLowerCase()) {
-    case "bsc":
-      icon = BSCIcon;
-      break;
-    case "eth":
-      icon = ETHIcon;
-      break;
-    default:
-      break;
-  }
-  return <img height={20} src={icon} style={{ marginRight: "10px" }} width={20} />;
+  return <img height={20} src={getChainIcon(network)} style={{ marginRight: "10px" }} width={20} />;
 };
 
 interface WalletPopoverProps {
