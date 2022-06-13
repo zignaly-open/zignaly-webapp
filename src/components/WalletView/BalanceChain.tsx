@@ -72,6 +72,8 @@ const BalanceChain = ({ walletBalance, coins }: BalanceChainProps) => {
         balance={walletBalance.ZIG}
         coin={coins.ZIG}
         handleClose={handleClose}
+        showNetworks={true}
+        showLocked={true}
       />
     </BalanceChainBox>
   );

@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
@@ -8,8 +8,9 @@ import styled, { css } from "styled-components";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
-import { Add } from "@material-ui/icons";
+import { Add, ChevronRight } from "@material-ui/icons";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import WalletPopover from "./WalletPopover";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -57,6 +58,11 @@ const CoinCell = styled.div`
   `)}
 `;
 
+const ChevronRightStyled = styled(ChevronRight)`
+  color: #65647e;
+  cursor: pointer;
+`;
+
 interface WalletCoinsProps {
   walletBalance: WalletBalance;
   coins: WalletCoins;
@@ -74,6 +80,15 @@ const WalletCoins = ({
 }: WalletCoinsProps) => {
   const intl = useIntl();
   const userData = useStoreUserData();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: React.MouseEvent<any>, coin: string) => {
+    setAnchorEl({ anchor: event.currentTarget, coin });
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const columns = useMemo(
     () => [
@@ -132,6 +147,19 @@ const WalletCoins = ({
                 />
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
+              {walletBalance &&
+                (walletBalance[coin].total.staked > 0 || walletBalance[coin].total.unstaking > 0) &&
+                coinData && (
+                  <>
+                    <ChevronRightStyled onClick={(e) => handleClick(e, coin)} />
+                    <WalletPopover
+                      anchorEl={anchorEl?.coin === coin ? anchorEl.anchor : null}
+                      balance={walletBalance[coin]}
+                      coin={coinData}
+                      handleClose={handleClose}
+                    />
+                  </>
+                )}
             </Box>
             <TypographySecondary>{networkData?.name}</TypographySecondary>
           </Box>
@@ -214,7 +242,7 @@ const WalletCoins = ({
       });
       return accData;
     }, []);
-  }, [walletBalance, coins, offers]);
+  }, [walletBalance, coins, offers, anchorEl]);
 
   if (!walletBalance) {
     return null;
