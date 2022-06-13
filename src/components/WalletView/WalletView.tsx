@@ -417,7 +417,8 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
               {coins &&
-                (walletBalance?.ZIG.total.staked > 0 || walletBalance?.ZIG.total.unstaking > 0) && (
+                (walletBalance?.ZIG?.total.staked > 0 ||
+                  walletBalance?.ZIG?.total.unstaking > 0) && (
                   <>
                     <ChevronRightStyled onClick={handleClick} />
                     <WalletPopover
