@@ -29,6 +29,8 @@ interface WalletAddress {
 interface BalanceData {
   balance: number;
   availableBalance: number;
+  staked: number;
+  unstaking: number;
 }
 type WalletBalance = Record<string, Record<string, BalanceData>>;
 

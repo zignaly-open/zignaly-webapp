@@ -1,7 +1,8 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import { Grid, Popover, Typography } from "@material-ui/core";
+import styled from "styled-components";
+import { Box, Grid, Popover, Typography } from "@material-ui/core";
 import { getChainIcon } from "utils/chain";
+import { FormattedMessage } from "react-intl";
 
 const StyledPopover = styled(Popover)`
   .MuiPopover-paper {
@@ -21,10 +22,26 @@ const Coin = styled.span`
   letter-spacing: 0.66px;
   text-transform: uppercase;
   color: #acb6ff;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
   margin-left: 4px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const Col = styled.div`
+  display: flex;
+  margin-right: 28px;
+`;
+
+const Divider = styled.span`
+  background: #413ba0;
+  width: 100%;
+  height: 1px;
+  align-self: center;
+  margin: 15px 10px;
 `;
 
 const NetworkIcon = ({ network }: { network: string }) => {
@@ -40,30 +57,77 @@ interface WalletPopoverProps {
 const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverProps) => {
   return (
     <StyledPopover anchorEl={anchorEl} onClose={handleClose} open={Boolean(anchorEl)}>
-      <Grid container direction="column" spacing={2}>
-        {Object.entries(balance).map(([key, amount]) => {
-          if (key !== "total") {
-            const network = coin.networks.find((n) => n.network === key);
-            if (network) {
-              return (
-                <Grid alignItems="center" container item key={key} xs={12}>
-                  <Grid container item wrap="nowrap" xs={6}>
-                    <NetworkIcon network={network.network} />
-                    <Typography>{network.network}</Typography>
-                  </Grid>
-                  <Grid container item xs={6}>
-                    <Typography align="center" style={{ flex: 1 }}>
-                      {amount.balance}
-                      <Coin>{coin.name}</Coin>
-                    </Typography>
-                  </Grid>
-                </Grid>
-              );
-            }
-          }
-          return null;
-        })}
-      </Grid>
+      {Object.entries(balance).map(
+        ([network, amount]) =>
+          network !== "total" && (
+            <Row>
+              <Col>
+                <NetworkIcon network={network} />
+                <Typography>{network}</Typography>
+              </Col>
+              <Col>
+                <Typography>
+                  {amount.balance}
+                  <Coin>{coin.name}</Coin>
+                </Typography>
+              </Col>
+            </Row>
+          ),
+      )}
+      <Divider />
+      <Row>
+        <Col>
+          <Typography>
+            <FormattedMessage id="balance.available" />
+          </Typography>
+        </Col>
+        <Col>
+          <Typography>
+            {balance.total.availableBalance}
+            <Coin>{coin.name}</Coin>
+          </Typography>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Typography>
+            <FormattedMessage id="balance.locked" />
+          </Typography>
+        </Col>
+        <Col>
+          <Typography>
+            {balance.total.balance - balance.total.availableBalance}
+            <Coin>{coin.name}</Coin>
+          </Typography>
+        </Col>
+      </Row>
+      <Divider />
+      <Row>
+        <Col>
+          <Typography>
+            <FormattedMessage id="balance.staked" />
+          </Typography>
+        </Col>
+        <Col>
+          <Typography>
+            {balance.total.staked}
+            <Coin>{coin.name}</Coin>
+          </Typography>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Typography>
+            <FormattedMessage id="balance.unstaking" />
+          </Typography>
+        </Col>
+        <Col>
+          <Typography>
+            {balance.total.unstaking}
+            <Coin>{coin.name}</Coin>
+          </Typography>
+        </Col>
+      </Row>
     </StyledPopover>
   );
 };

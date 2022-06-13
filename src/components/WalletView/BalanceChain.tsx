@@ -66,7 +66,7 @@ const BalanceChain = ({ walletBalance, coins }: BalanceChainProps) => {
           displayType="text"
         />
       </BalanceText>
-      <Zig>ZIG</Zig> {networks.length > 1 && <ChevronRightStyled onClick={handleClick} />}
+      <Zig>ZIG</Zig> {true && <ChevronRightStyled onClick={handleClick} />}
       <WalletPopover
         anchorEl={anchorEl}
         balance={walletBalance.ZIG}
