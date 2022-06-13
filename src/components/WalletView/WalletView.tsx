@@ -33,6 +33,7 @@ import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 import Button from "components/Button";
+import WalletPopover from "./WalletPopover";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -144,6 +145,7 @@ const VaultButton = styled(MuiButton)`
 const ChevronRightStyled = styled(ChevronRight)`
   color: #65647e;
   cursor: pointer;
+  margin-bottom: -4px;
 `;
 
 interface PanelItemProps {
@@ -269,7 +271,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
   const balanceZIG = walletBalance?.ZIG?.total.balance || 0;
-  const [tooltipOpen, setTooltipOpen] = useState(false);
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const [tradingFeeDiscount, setTradingFeeDiscount] = useState(userData.tradingFeeDiscount);
@@ -280,6 +281,16 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [totalSavings, setTotalSavings] = useState(null);
   const [buyZIG, showBuyZIG] = useState(false);
   const [updateAt, setUpdateAt] = useState(null);
+
+  // Balance Popover
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: React.MouseEvent<any>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     // Reload user data
@@ -405,6 +416,19 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             <TextMain data-test-id="total-balance">
               <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
+              {coins &&
+                (walletBalance?.ZIG.total.staked > 0 || walletBalance?.ZIG.total.unstaking > 0) && (
+                  <>
+                    <ChevronRightStyled onClick={handleClick} />
+                    <WalletPopover
+                      anchorEl={anchorEl}
+                      balance={walletBalance.ZIG}
+                      coin={coins.ZIG}
+                      handleClose={handleClose}
+                      showLocked={true}
+                    />
+                  </>
+                )}
             </TextMain>
             <RateText data-test-id="total-balance-usd">
               <NumberFormat

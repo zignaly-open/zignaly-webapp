@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Box, Grid, Popover, Typography } from "@material-ui/core";
 import { getChainIcon } from "utils/chain";
 import { FormattedMessage } from "react-intl";
+import NumberFormat from "react-number-format";
 
 const StyledPopover = styled(Popover)`
   .MuiPopover-paper {
@@ -48,86 +49,87 @@ const NetworkIcon = ({ network }: { network: string }) => {
   return <img height={20} src={getChainIcon(network)} style={{ marginRight: "10px" }} width={20} />;
 };
 
+interface BalanceRowProps {
+  network?: string;
+  label?: string;
+  amount: number;
+  coin: WalletCoin;
+}
+
+const BalanceRow = ({ network, label, amount, coin }: BalanceRowProps) => (
+  <Row>
+    <Col>
+      {network ? (
+        <>
+          <NetworkIcon network={network} />
+          <Typography>{network}</Typography>
+        </>
+      ) : (
+        <Typography>
+          <FormattedMessage id={label} />
+        </Typography>
+      )}
+    </Col>
+    <Col>
+      <Typography>
+        <NumberFormat
+          value={amount}
+          displayType="text"
+          thousandSeparator={true}
+          decimalScale={coin.name === "ZIG" ? 2 : coin.decimals}
+        />
+        <Coin>{coin.name}</Coin>
+      </Typography>
+    </Col>
+  </Row>
+);
+
 interface WalletPopoverProps {
   anchorEl: Element;
   handleClose: any;
   balance: Record<string, BalanceData>;
   coin: WalletCoin;
+  showNetworks?: boolean;
+  showLocked?: boolean;
 }
-const WalletPopover = ({ anchorEl, handleClose, balance, coin }: WalletPopoverProps) => {
+const WalletPopover = ({
+  anchorEl,
+  handleClose,
+  balance,
+  coin,
+  showNetworks,
+  showLocked,
+}: WalletPopoverProps) => {
   return (
     <StyledPopover anchorEl={anchorEl} onClose={handleClose} open={Boolean(anchorEl)}>
-      {Object.entries(balance).map(
-        ([network, amount]) =>
-          network !== "total" && (
-            <Row>
-              <Col>
-                <NetworkIcon network={network} />
-                <Typography>{network}</Typography>
-              </Col>
-              <Col>
-                <Typography>
-                  {amount.balance}
-                  <Coin>{coin.name}</Coin>
-                </Typography>
-              </Col>
-            </Row>
-          ),
+      {showNetworks && (
+        <>
+          {Object.entries(balance).map(
+            ([network, amount]) =>
+              network !== "total" && (
+                <BalanceRow network={network} amount={amount.balance} coin={coin} />
+              ),
+          )}
+          <Divider />
+        </>
       )}
-      <Divider />
-      <Row>
-        <Col>
-          <Typography>
-            <FormattedMessage id="balance.available" />
-          </Typography>
-        </Col>
-        <Col>
-          <Typography>
-            {balance.total.availableBalance}
-            <Coin>{coin.name}</Coin>
-          </Typography>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Typography>
-            <FormattedMessage id="balance.locked" />
-          </Typography>
-        </Col>
-        <Col>
-          <Typography>
-            {balance.total.balance - balance.total.availableBalance}
-            <Coin>{coin.name}</Coin>
-          </Typography>
-        </Col>
-      </Row>
-      <Divider />
-      <Row>
-        <Col>
-          <Typography>
-            <FormattedMessage id="balance.staked" />
-          </Typography>
-        </Col>
-        <Col>
-          <Typography>
-            {balance.total.staked}
-            <Coin>{coin.name}</Coin>
-          </Typography>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Typography>
-            <FormattedMessage id="balance.unstaking" />
-          </Typography>
-        </Col>
-        <Col>
-          <Typography>
-            {balance.total.unstaking}
-            <Coin>{coin.name}</Coin>
-          </Typography>
-        </Col>
-      </Row>
+      {showLocked && (
+        <>
+          <BalanceRow
+            label="balance.available"
+            amount={balance.total.availableBalance}
+            coin={coin}
+          />
+          <BalanceRow
+            label="balance.locked"
+            amount={balance.total.balance - balance.total.availableBalance}
+            coin={coin}
+          />
+          <Divider />
+        </>
+      )}
+      <BalanceRow label="balance.staked" amount={balance.total.staked} coin={coin} />
+      <BalanceRow label="balance.unstaking" amount={balance.total.unstaking} coin={coin} />
     </StyledPopover>
   );
 };
