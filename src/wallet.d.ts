@@ -29,6 +29,8 @@ interface WalletAddress {
 interface BalanceData {
   balance: number;
   availableBalance: number;
+  /** Locked balance (balance - availableBalance) */
+  locked: number;
   staked: number;
   unstaking: number;
 }

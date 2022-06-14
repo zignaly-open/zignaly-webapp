@@ -120,11 +120,7 @@ const WalletPopover = ({
             amount={balance.total.availableBalance}
             coin={coin}
           />
-          <BalanceRow
-            label="balance.locked"
-            amount={balance.total.balance - balance.total.availableBalance}
-            coin={coin}
-          />
+          <BalanceRow label="balance.locked" amount={balance.total.locked} coin={coin} />
           <Divider />
         </>
       )}
