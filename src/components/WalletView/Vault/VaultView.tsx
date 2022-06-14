@@ -27,7 +27,6 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
 import VaultButton from "./VaultDepositButton";
-import { VaultStakeButton } from "./VaultDepositButton";
 import { Terms } from "../styles";
 import VaultStakeModal from "./VaultStakeModal";
 

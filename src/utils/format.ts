@@ -153,7 +153,7 @@ export const formatDateTimeUTC = (date: string) =>
   dayjs.utc(date).format("MMMM DD, YYYY hh:mm A UTC");
 
 export const formatDateUTC = (date: string) =>
-  dayjs.utc(date, "YYYY-MM-DD").format("MMMM DD, YYYY  hh:mm A UTC");
+  dayjs.utc(date, "YYYY-MM-DD").format("MMMM DD, YYYY hh:mm A UTC");
 
 export const floatify = (number: number) => {
   return parseFloat(number.toFixed(10));
