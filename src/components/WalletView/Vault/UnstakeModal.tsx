@@ -9,10 +9,12 @@ import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
 import { showErrorAlert, showSuccessAlert } from "store/actions/ui";
 import { ConfirmDialogConfig } from "components/Dialogs/ConfirmDialog/ConfirmDialog";
-import { ConfirmDialog } from "components/Dialogs";
 import styled from "styled-components";
 import AmountControl from "../AmountControl";
 import { Controller, useForm } from "react-hook-form";
+import NumberFormat from "react-number-format";
+import { formatDateTimeUTC } from "utils/format";
+import dayjs from "dayjs";
 
 const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
   return (
@@ -45,7 +47,7 @@ interface UnstakeModalProps {
 
 interface FormType {
   amount: string;
-  penalty: string;
+  days: string;
 }
 
 const UnstakeModal = ({
@@ -63,6 +65,7 @@ const UnstakeModal = ({
     values: { coin: program.coin },
     visible: false,
   });
+  const [confirmData, setConfirmData] = useState<FormType>(null);
   const coinData = coins ? coins[program.coin] : null;
 
   const {
@@ -74,16 +77,24 @@ const UnstakeModal = ({
     trigger,
   } = useForm<FormType>({
     mode: "onChange",
+    defaultValues: {
+      days: "",
+    },
   });
 
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = ({ amount }: FormType) => {
+  const onSubmit = (data: FormType) => {
+    setConfirmData(data);
+  };
+
+  const unstake = () => {
     setLoading(true);
     tradeApi
       .decreaseStake({
         programId: program.id,
-        amount,
+        amount: confirmData.amount,
+        days: confirmData.days,
       })
       .then(() => {
         dispatch(showSuccessAlert("", "wallet.staking.success"));
@@ -102,6 +113,15 @@ const UnstakeModal = ({
     trigger("amount");
   };
 
+  const getPenalty = () =>
+    confirmData.days
+      ? program.penalties.find((p) => p.days.toString() === confirmData.days).percentage
+      : 0;
+
+  const getFinalAmount = () => {
+    return (parseFloat(confirmData.amount) * (100 - getPenalty())) / 100;
+  };
+
   return (
     <CustomModal onClose={onClose} newTheme={true} persist={false} size="medium" state={open}>
       <Modal>
@@ -109,57 +129,32 @@ const UnstakeModal = ({
           <img src={PiggyIcon} width={40} height={40} />
           <FormattedMessage id="vault.unstake" />
         </Title>
-        <ConfirmDialog
-          confirmConfig={confirmConfig}
-          showCancel={false}
-          setConfirmConfig={setConfirmConfig}
-        />
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {program.unstakeEnabled ? (
-            <>
-              <AmountControl
-                balance={program.stakeAmount}
-                balanceLabel="vault.staked"
-                setBalanceMax={setBalanceMax}
-                decimals={coinData?.decimals}
-                errors={errors}
-                control={control}
-                coin={program.coin}
-                label="vault.unstake.amount"
-                newDesign={true}
-              />
-              {program.penalties?.length > 0 && (
-                <Box marginTop="36px">
-                  <Label>
-                    <FormattedMessage id="vault.unstake.chooseDuration" />
-                  </Label>
-
-                  <Controller
-                    render={(data) => (
-                      <RadioGroup aria-labelledby="penalties-label" name="penalties">
-                        {program.penalties.map((p) => (
-                          <FormControlLabel
-                            key={p.percentage}
-                            value={p.days.toString()}
-                            control={<Radio />}
-                            label={<PenaltyRow penalty={p} />}
-                          />
-                        ))}
-                      </RadioGroup>
-                    )}
-                    name="penalty"
-                    control={control}
-                  />
-                </Box>
-              )}
-            </>
-          ) : (
+        {confirmData ? (
+          <>
+            {confirmData.days && (
+              <Typography>
+                <FormattedMessage id="vault.unstake.penalty" />
+                &nbsp;
+                {getPenalty()}%
+              </Typography>
+            )}
             <Typography>
-              <FormattedMessage id="vault.unstake.notPossible2" />
+              <FormattedMessage
+                id="vault.unstake.confirm"
+                values={{
+                  amount: (
+                    <NumberFormat
+                      value={getFinalAmount()}
+                      displayType="text"
+                      thousandSeparator={true}
+                      decimalScale={coinData?.decimals}
+                    />
+                  ),
+                  coin: coinData.name,
+                  date: formatDateTimeUTC(dayjs().add(parseInt(confirmData.days)).toString()),
+                }}
+              />
             </Typography>
-          )}
-          <Box display="flex" mt="8px">
             <Box
               display="flex"
               flexDirection="row"
@@ -167,17 +162,80 @@ const UnstakeModal = ({
               justifyContent="center"
               gridGap="12px"
             >
-              <Button variant="outlined" onClick={onCancel}>
+              <Button variant="outlined" onClick={() => setConfirmData(null)}>
                 <FormattedMessage id="accounts.back" />
               </Button>
-              {program.unstakeEnabled && (
-                <Button variant="contained" disabled={!isValid} loading={loading} type="submit">
-                  <FormattedMessage id="vault.unstake" />
-                </Button>
-              )}
+              <Button variant="contained" onClick={unstake} loading={loading}>
+                <FormattedMessage id="vault.unstake" />
+              </Button>
             </Box>
-          </Box>
-        </form>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {program.unstakeEnabled ? (
+              <>
+                <AmountControl
+                  balance={program.stakeAmount}
+                  balanceLabel="vault.staked"
+                  setBalanceMax={setBalanceMax}
+                  decimals={coinData?.decimals}
+                  errors={errors}
+                  control={control}
+                  coin={program.coin}
+                  label="vault.unstake.amount"
+                  newDesign={true}
+                />
+                {program.penalties?.length > 0 && (
+                  <Box marginTop="36px">
+                    <Label>
+                      <FormattedMessage id="vault.unstake.chooseDuration" />
+                    </Label>
+
+                    <Controller
+                      render={(data) => (
+                        <RadioGroup aria-labelledby="penalties-label" name="penalties" {...data}>
+                          {program.penalties.map((p) => (
+                            <FormControlLabel
+                              key={p.percentage}
+                              value={p.days.toString()}
+                              control={<Radio />}
+                              label={<PenaltyRow penalty={p} />}
+                            />
+                          ))}
+                        </RadioGroup>
+                      )}
+                      name="days"
+                      control={control}
+                      rules={{ required: true }}
+                    />
+                  </Box>
+                )}
+              </>
+            ) : (
+              <Typography>
+                <FormattedMessage id="vault.unstake.notPossible2" />
+              </Typography>
+            )}
+            <Box display="flex" mt="8px">
+              <Box
+                display="flex"
+                flexDirection="row"
+                mt="32px"
+                justifyContent="center"
+                gridGap="12px"
+              >
+                <Button variant="outlined" onClick={onCancel}>
+                  <FormattedMessage id="accounts.back" />
+                </Button>
+                {program.unstakeEnabled && (
+                  <Button variant="contained" disabled={!isValid} loading={loading} type="submit">
+                    <FormattedMessage id="vault.unstake" />
+                  </Button>
+                )}
+              </Box>
+            </Box>
+          </form>
+        )}
       </Modal>
     </CustomModal>
   );

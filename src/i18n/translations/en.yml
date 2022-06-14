@@ -1824,13 +1824,15 @@ vault.reduceBoost: "Once Staked it will no be possible to reduce your boost leve
 vault.unstake: "Unstake"
 vault.unstake.amount: "Amount to Unstake"
 vault.unstake.chooseDuration: "Choose unstaking duration"
+vault.unstake.confirm: "You will receive {amount} {coin} on {date}. Are you sure?"
+vault.unstake.date: "Completion Date"
 vault.unstake.notPossible: "Once staked, you will not be able to unstake or reduce the amount until the end of this program. However, you can add to the staking amount by editing later."
 vault.unstake.notPossible2: "Unstaking is not possible, sorry."
-vault.unstake.penalty: "If you want to remove some staking funds later, you will have to pay a penalty. <a>Fee Details</a>"
+vault.unstake.penalty: "Penalty:"
+vault.unstake.penaltyDetails: "If you want to remove some staking funds later, you will have to pay a penalty. <a>Fee Details</a>"
 vault.unstake.progress: "You have {count} withdrawal transfer(s) in progress."
 vault.unstake.progress.title: "Withdrawal transfers in progress"
 vault.unstake.progress.desc: "Here are the pending withdrawal transfers you have initialized:"
-vault.unstake.date: "Completion Date"
 
 # WALLET
 wallet.addcoin: "Add coin"

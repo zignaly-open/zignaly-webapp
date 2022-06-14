@@ -300,7 +300,7 @@ const VaultStakeModal = ({
           Boolean(vaultProject.penalties?.length) && (
             <Alert severity="error">
               <FormattedMessage
-                id="vault.unstake.penalty"
+                id="vault.unstake.penaltyDetails"
                 values={{
                   a: (chunks: string) => (
                     <a className="link" onClick={onOpenOffer}>
