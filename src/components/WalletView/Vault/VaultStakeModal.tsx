@@ -13,7 +13,7 @@ import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 import { Alert } from "@material-ui/lab";
 import UnstakeModal from "./UnstakeModal";
-import PendingWithdrawalModal from "./PendingWithdrawalModal";
+import PendingWithdrawalModal from "./PendingUnstakingModal";
 
 const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;

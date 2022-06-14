@@ -29,7 +29,7 @@ const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 48px;
 `;
 
-interface PendingWithdrawalModalProps {
+interface PendingUnstakingModalProps {
   onClose: () => void;
   onCancel: () => void;
   open: boolean;
@@ -37,13 +37,13 @@ interface PendingWithdrawalModalProps {
   coin: WalletCoin;
 }
 
-const PendingWithdrawalModal = ({
+const PendingUnstakingModal = ({
   onClose,
   onCancel,
   program,
   open,
   coin,
-}: PendingWithdrawalModalProps) => {
+}: PendingUnstakingModalProps) => {
   const intl = useIntl();
   const unstaking = [
     { amount: 100, date: dayjs().add(1, "d") },
@@ -106,4 +106,4 @@ const PendingWithdrawalModal = ({
   );
 };
 
-export default PendingWithdrawalModal;
+export default PendingUnstakingModal;
