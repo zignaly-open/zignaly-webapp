@@ -87,7 +87,7 @@ const BalanceRow = ({ network, label, amount, coin }: BalanceRowProps) => (
 interface WalletPopoverProps {
   anchorEl: Element;
   handleClose: any;
-  balance: Record<string, BalanceData>;
+  balance: BalanceData;
   coin: WalletCoin;
   showNetworks?: boolean;
   showLocked?: boolean;
@@ -115,17 +115,13 @@ const WalletPopover = ({
       )}
       {showLocked && (
         <>
-          <BalanceRow
-            label="balance.available"
-            amount={balance.total.availableBalance}
-            coin={coin}
-          />
-          <BalanceRow label="balance.locked" amount={balance.total.locked} coin={coin} />
+          <BalanceRow label="balance.available" amount={balance.availableBalance} coin={coin} />
+          <BalanceRow label="balance.locked" amount={balance.locked} coin={coin} />
           <Divider />
         </>
       )}
-      <BalanceRow label="balance.staked" amount={balance.total.staked} coin={coin} />
-      <BalanceRow label="balance.unstaking" amount={balance.total.unstaking} coin={coin} />
+      <BalanceRow label="balance.staked" amount={balance.staked} coin={coin} />
+      <BalanceRow label="balance.unstaking" amount={balance.unstaking} coin={coin} />
     </StyledPopover>
   );
 };

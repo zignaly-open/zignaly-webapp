@@ -60,8 +60,7 @@ const AmountControl = ({
   showLockedBalance = false,
 }: AmountControlProps) => {
   const intl = useIntl();
-  const lockedBalance =
-    typeof balance === "object" ? balance?.balance - balance?.availableBalance : 0;
+  const lockedBalance = typeof balance === "object" ? balance.locked : 0;
   const availableBalance = typeof balance === "object" ? balance.availableBalance : balance;
 
   return (

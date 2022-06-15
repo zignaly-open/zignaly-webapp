@@ -114,16 +114,14 @@ const VaultStakeModal = ({
 
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
-  const balanceAmount = walletBalance[coin].total;
+  const balanceAmount = walletBalance[coin];
   const initialBoostId = vaultProject.boosts?.findIndex(
     (b) => vaultProject.asideAmount >= b.minimum,
   );
   const [boostId, setBoostId] = useState(initialBoostId >= 0 ? initialBoostId : 0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
-  const balanceAmountAside = vaultProject.asideCoin
-    ? walletBalance[vaultProject.asideCoin].total
-    : null;
+  const balanceAmountAside = vaultProject.asideCoin ? walletBalance[vaultProject.asideCoin] : null;
   const enoughAsideCoin =
     // No aside requirements
     !vaultProject.asideMinimum ||

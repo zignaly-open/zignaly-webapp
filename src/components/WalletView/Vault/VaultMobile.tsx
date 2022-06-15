@@ -76,7 +76,7 @@ const VaultMobile = ({ vaults, balance, coins, onOfferClick, type }: VaultMobile
               <VaultDepositBox>
                 <VaultDepositButton
                   vault={v}
-                  balance={(balance && balance[v.coin]?.total.availableBalance) || 0}
+                  balance={(balance && balance[v.coin]?.availableBalance) || 0}
                   onClick={() => onOfferClick(v.coin)}
                   depositEnabled={coins && coins[v.coin]?.allowDeposit}
                 />

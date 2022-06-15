@@ -34,7 +34,7 @@ interface BalanceData {
   staked: number;
   unstaking: number;
 }
-type WalletBalance = Record<string, Record<string, BalanceData>>;
+type WalletBalance = Record<string, BalanceData>;
 
 interface Boost {
   minimum: number;
