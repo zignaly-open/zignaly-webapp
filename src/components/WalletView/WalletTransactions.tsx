@@ -328,7 +328,7 @@ const WalletTransactions = ({ updateAt }: { updateAt: Date }) => {
           <AlignCenter>
             {t.network && <img width={24} height={24} src={getChainIcon(t.network)} />}
             <TypographyToken>
-              {t.network || <FormattedMessage id="wallet.internalTransfer" />}
+              {t.networkName || <FormattedMessage id="wallet.internalTransfer" />}
             </TypographyToken>
           </AlignCenter>
         ),
