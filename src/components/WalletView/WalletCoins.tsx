@@ -127,7 +127,7 @@ const WalletCoins = ({
     [],
   );
 
-  const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
+  const makeData = (coin: string, balance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
     const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
@@ -139,26 +139,24 @@ const WalletCoins = ({
             <Box display="flex" alignItems="center">
               <TypographyAmount>
                 <NumberFormat
-                  value={networkBalance.balance}
+                  value={balance.balance}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={coinData?.decimals}
                 />
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
-              {walletBalance &&
-                (walletBalance[coin].staked > 0 || walletBalance[coin].unstaking > 0) &&
-                coinData && (
-                  <>
-                    <ChevronRightStyled onClick={(e) => handleClick(e, coin)} />
-                    <WalletPopover
-                      anchorEl={anchorEl?.coin === coin ? anchorEl.anchor : null}
-                      balance={walletBalance[coin]}
-                      coin={coinData}
-                      handleClose={handleClose}
-                    />
-                  </>
-                )}
+              {(balance.staked > 0 || balance.unstaking > 0) && coinData && (
+                <>
+                  <ChevronRightStyled onClick={(e) => handleClick(e, coin)} />
+                  <WalletPopover
+                    anchorEl={anchorEl?.coin === coin ? anchorEl.anchor : null}
+                    balance={walletBalance[coin]}
+                    coin={coinData}
+                    handleClose={handleClose}
+                  />
+                </>
+              )}
             </Box>
           </Box>
         </CoinCell>
@@ -170,7 +168,7 @@ const WalletCoins = ({
               <Typography style={{ fontWeight: 600 }}>
                 <NumberFormat
                   prefix="$"
-                  value={networkBalance.balance * coinData.usdPrice}
+                  value={balance.balance * coinData.usdPrice}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={2}
@@ -229,12 +227,10 @@ const WalletCoins = ({
       });
     }
 
-    return Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
-      Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-        if (coin !== "ZIG" && key !== "total") {
-          accData.push(makeData(coin, key, networkBalance));
-        }
-      });
+    return Object.entries(walletBalance || {}).reduce((accData, [coin, balance]) => {
+      if (coin !== "ZIG") {
+        accData.push(makeData(coin, balance));
+      }
       return accData;
     }, []);
   }, [walletBalance, coins, offers, anchorEl]);
