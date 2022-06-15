@@ -50,7 +50,13 @@ const PledgeModal = ({ project, onPledged }: PledgeModalProps) => {
     watch,
   } = useForm({ mode: "onChange" });
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
-  const balanceZIG = walletBalance?.ZIG?.total || { balance: 0, availableBalance: 0 };
+  const balanceZIG = walletBalance?.ZIG || {
+    balance: 0,
+    availableBalance: 0,
+    locked: 0,
+    staked: 0,
+    unstaking: 0,
+  };
   const amount = watch("amount");
   const [confirmAmount, setConfirmAmount] = useState(null);
   const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
