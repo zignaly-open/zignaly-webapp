@@ -7,6 +7,8 @@ import TRXIcon from "images/wallet/trx.svg";
 
 export const getChainIcon = (chain: string) => {
   switch (chain.toUpperCase()) {
+    case "ETH":
+      return ETHIcon;
     case "BSC":
     case "BEP20 (BSC)":
     case "BEP20 (BINANCE SMART CHAIN)":
@@ -24,6 +26,6 @@ export const getChainIcon = (chain: string) => {
     case "TRX":
       return TRXIcon;
     default:
-      return ETHIcon;
+      return null;
   }
 };
