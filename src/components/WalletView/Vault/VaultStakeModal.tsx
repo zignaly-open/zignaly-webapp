@@ -127,7 +127,7 @@ const VaultStakeModal = ({
     !vaultProject.asideMinimum ||
     // Compare available balance with aside amount required, substracting already staked amount
     balanceAmountAside.availableBalance >=
-      (selectedBoost ? selectedBoost.minimum : vaultProject.asideMinimum) +
+      (selectedBoost ? selectedBoost.minimum : vaultProject.asideMinimum) -
         (vaultProject.asideAmount || 0);
   const [showUnstake, setShowUnstake] = useState(false);
 
