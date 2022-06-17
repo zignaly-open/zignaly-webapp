@@ -447,3 +447,10 @@ table {
   }
   /* stylelint-enable property-no-vendor-prefix */
 }
+
+@include media("<=sm") {
+  .intercom-lightweight-app-launcher {
+    bottom: 60px !important;
+    right: 10px !important;
+  }
+}
