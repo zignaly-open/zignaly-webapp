@@ -563,7 +563,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
   const [projectDetails, setProjectDetails] = useState<LaunchpadProjectDetails>(null);
   const intl = useIntl();
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
-  const balanceZIG = walletBalance?.ZIG?.total?.availableBalance || 0;
+  const balanceZIG = walletBalance?.ZIG?.availableBalance || 0;
   const [depositZIG, showDepositZIG] = useState(false);
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [step, setStep] = useState(1);
@@ -626,7 +626,7 @@ const ProjectDetailsModal = ({ onClose, onPledged, open, projectId }: ProjectDet
         size="medium"
         state={depositZIG}
       >
-        <WalletDepositView coins={coins} onClose={() => showDepositZIG(false)} coin="ZIG" />
+        <WalletDepositView coins={coins} coin="ZIG" />
       </CustomModal>
       {buyZIG && (
         <BuyZIGModal

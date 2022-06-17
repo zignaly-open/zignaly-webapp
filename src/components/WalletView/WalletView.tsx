@@ -20,7 +20,6 @@ import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
 import WalletTransactions from "./WalletTransactions";
-import BalanceChain from "./BalanceChain";
 import NumberFormat from "react-number-format";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import { useDispatch } from "react-redux";
@@ -33,6 +32,7 @@ import VaultOfferModal from "./Vault/VaultOfferModal";
 import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 import Button from "components/Button";
+import WalletPopover from "./WalletPopover";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -144,6 +144,7 @@ const VaultButton = styled(MuiButton)`
 const ChevronRightStyled = styled(ChevronRight)`
   color: #65647e;
   cursor: pointer;
+  margin-bottom: -4px;
 `;
 
 interface PanelItemProps {
@@ -268,8 +269,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
-  const balanceZIG = walletBalance?.ZIG?.total.balance || 0;
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const balanceZIG = walletBalance?.ZIG?.balance || 0;
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const [tradingFeeDiscount, setTradingFeeDiscount] = useState(userData.tradingFeeDiscount);
@@ -280,6 +280,16 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [totalSavings, setTotalSavings] = useState(null);
   const [buyZIG, showBuyZIG] = useState(false);
   const [updateAt, setUpdateAt] = useState(null);
+
+  // Balance Popover
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: React.MouseEvent<any>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     // Reload user data
@@ -357,7 +367,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           <WalletWithdrawView
             setPath={setPath}
             coins={coins}
-            balance={walletBalance ? walletBalance[coinParam] || {} : null}
+            balance={walletBalance ? walletBalance[coinParam] : null}
             onClose={() => setPath("")}
             coin={coinParam}
             onDone={() => {
@@ -405,6 +415,21 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
             <TextMain data-test-id="total-balance">
               <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
+              {coins &&
+                (walletBalance?.ZIG?.locked > 0 ||
+                  walletBalance?.ZIG?.staked > 0 ||
+                  walletBalance?.ZIG?.unstaking > 0) && (
+                  <>
+                    <ChevronRightStyled onClick={handleClick} />
+                    <WalletPopover
+                      anchorEl={anchorEl}
+                      balance={walletBalance.ZIG}
+                      coin={coins.ZIG}
+                      handleClose={handleClose}
+                      showLocked={true}
+                    />
+                  </>
+                )}
             </TextMain>
             <RateText data-test-id="total-balance-usd">
               <NumberFormat
@@ -417,9 +442,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <Rate>@{rateZIG}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
-            <Box pt="6px">
-              <BalanceChain coins={coins} walletBalance={walletBalance} />
-            </Box>
             <Box display="flex" flexDirection="row" mt="12px">
               <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
                 <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "ZIG" }} />
