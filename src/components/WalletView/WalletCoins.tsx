@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Tooltip, Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { AlignCenter, isMobile } from "styles/styles";
 import { FormattedMessage, useIntl } from "react-intl";
 import NumberFormat from "react-number-format";
@@ -8,8 +8,9 @@ import styled, { css } from "styled-components";
 import CustomButton from "components/CustomButton";
 import CoinIcon from "./CoinIcon";
 import { Rate } from "./styles";
-import { Add } from "@material-ui/icons";
+import { Add, ChevronRight } from "@material-ui/icons";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import WalletPopover from "./WalletPopover";
 
 const TypographyAmount = styled(Typography)`
   font-weight: 600;
@@ -57,6 +58,11 @@ const CoinCell = styled.div`
   `)}
 `;
 
+const ChevronRightStyled = styled(ChevronRight)`
+  color: #65647e;
+  cursor: pointer;
+`;
+
 interface WalletCoinsProps {
   walletBalance: WalletBalance;
   coins: WalletCoins;
@@ -74,6 +80,15 @@ const WalletCoins = ({
 }: WalletCoinsProps) => {
   const intl = useIntl();
   const userData = useStoreUserData();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: React.MouseEvent<any>, coin: string) => {
+    setAnchorEl({ anchor: event.currentTarget, coin });
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const columns = useMemo(
     () => [
@@ -112,28 +127,37 @@ const WalletCoins = ({
     [],
   );
 
-  const makeData = (coin: string, network: string, networkBalance: BalanceData) => {
+  const makeData = (coin: string, balance: BalanceData) => {
     const coinData = coins ? coins[coin] : null;
-    const networkData = coinData?.networks.find((n) => n.network === network);
     const offer = coinData && offers?.find((o) => o.coin === coinData.name);
 
     return {
       coin: (
         <CoinCell>
           <CoinIcon coin={coin} />
-          <Box display="flex" flexDirection="column" ml="16px" alignItems="flex-start">
-            <Box display="flex" alignItems="center" mb="4px">
+          <Box display="flex" flexDirection="column" ml="16px" justifyContent="center">
+            <Box display="flex" alignItems="center">
               <TypographyAmount>
                 <NumberFormat
-                  value={networkBalance.balance}
+                  value={balance.balance}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={coinData?.decimals}
                 />
               </TypographyAmount>
               <TypographyToken>{coin}</TypographyToken>
+              {(balance.staked > 0 || balance.unstaking > 0) && coinData && (
+                <>
+                  <ChevronRightStyled onClick={(e) => handleClick(e, coin)} />
+                  <WalletPopover
+                    anchorEl={anchorEl?.coin === coin ? anchorEl.anchor : null}
+                    balance={walletBalance[coin]}
+                    coin={coinData}
+                    handleClose={handleClose}
+                  />
+                </>
+              )}
             </Box>
-            <TypographySecondary>{networkData?.name}</TypographySecondary>
           </Box>
         </CoinCell>
       ),
@@ -144,7 +168,7 @@ const WalletCoins = ({
               <Typography style={{ fontWeight: 600 }}>
                 <NumberFormat
                   prefix="$"
-                  value={networkBalance.balance * coinData.usdPrice}
+                  value={balance.balance * coinData.usdPrice}
                   displayType="text"
                   thousandSeparator={true}
                   decimalScale={2}
@@ -187,14 +211,11 @@ const WalletCoins = ({
     if (!walletBalance[coin] && coins && coins[coin]) {
       // Force coin in the deposit list
       walletBalance[coin] = {
-        [coins[coin].networks[0].network]: {
-          availableBalance: 0,
-          balance: 0,
-        },
-        total: {
-          availableBalance: 0,
-          balance: 0,
-        },
+        availableBalance: 0,
+        balance: 0,
+        locked: 0,
+        staked: 0,
+        unstaking: 0,
       };
     }
   };
@@ -206,15 +227,13 @@ const WalletCoins = ({
       });
     }
 
-    return Object.entries(walletBalance || {}).reduce((accData, [coin, networkBalances]) => {
-      Object.entries(networkBalances).forEach(([key, networkBalance]) => {
-        if (coin !== "ZIG" && key !== "total") {
-          accData.push(makeData(coin, key, networkBalance));
-        }
-      });
+    return Object.entries(walletBalance || {}).reduce((accData, [coin, balance]) => {
+      if (coin !== "ZIG") {
+        accData.push(makeData(coin, balance));
+      }
       return accData;
     }, []);
-  }, [walletBalance, coins, offers]);
+  }, [walletBalance, coins, offers, anchorEl]);
 
   if (!walletBalance) {
     return null;

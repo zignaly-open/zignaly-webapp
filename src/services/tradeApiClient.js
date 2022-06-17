@@ -2578,6 +2578,19 @@ class TradeApiClient {
   }
 
   /**
+   * Vault decrease stake
+   *
+   * @param {StakeReq} payload Payload
+   * @returns {Promise<void>} Result
+   *
+   * @memberof TradeApiClient
+   */
+  async decreaseStake(payload) {
+    const { programId, ...rest } = payload;
+    return this.doRequest(`/vault/${programId}/stake/decrease`, rest, "POST", 3);
+  }
+
+  /**
    * Get launchpad projects
    *
    * @param {{status: 'active'|'past'}} payload Payload

@@ -12,9 +12,14 @@ import PrivateAreaContext from "context/PrivateAreaContext";
 import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 import { Alert } from "@material-ui/lab";
+import UnstakeModal from "./UnstakeModal";
 
 const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
+`;
+
+const Section = styled.div`
+  margin-top: 14px;
 `;
 
 const SliderContainer = styled.div<{ value: number }>`
@@ -61,6 +66,17 @@ const StakeTypography = styled(Typography)`
   font-weight: 600;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  margin-top: 18px;
+
+  // To make the first button aligned on the left with main one centered
+  &::after {
+    flex: 1;
+    content: "";
+  }
+`;
+
 interface FormType {
   amount: string;
 }
@@ -89,28 +105,37 @@ const VaultStakeModal = ({
     handleSubmit,
     control,
     errors,
-    formState: { isValid, isDirty },
+    formState: { isValid },
     setValue,
     trigger,
-    watch,
   } = useForm<FormType>({
     mode: "onChange",
   });
 
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
-  const balanceAmount = walletBalance[coin].total;
-  const [boostId, setBoostId] = useState(0);
+  const balanceAmount = walletBalance[coin];
+  const initialBoostId = vaultProject.boosts?.findIndex(
+    (b) => vaultProject.asideAmount >= b.minimum,
+  );
+  const [boostId, setBoostId] = useState(initialBoostId >= 0 ? initialBoostId : 0);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
-  const balanceAmountAside = vaultProject.asideCoin
-    ? walletBalance[vaultProject.asideCoin].total
-    : null;
-  const enoughZIG =
+  const balanceAmountAside = vaultProject.asideCoin ? walletBalance[vaultProject.asideCoin] : null;
+  const enoughAsideCoin =
+    // No aside requirements
     !vaultProject.asideMinimum ||
+    // Compare available balance with aside amount required, substracting already staked amount
     balanceAmountAside.availableBalance >=
-      (boostId ? vaultProject.boosts[boostId].minimum : vaultProject.asideMinimum);
+      (selectedBoost ? selectedBoost.minimum : vaultProject.asideMinimum) -
+        (vaultProject.asideAmount || 0);
+  const [showUnstake, setShowUnstake] = useState(false);
+
+  // Edit
   const isEdit = vaultProject.stakeAmount > 0;
+  const boostTooLow = isEdit && boostId < initialBoostId;
+  const asideAmountAdd =
+    isEdit && selectedBoost ? Math.max(selectedBoost.minimum - vaultProject.asideAmount, 0) : 0;
 
   const getLabel = (boost: Boost) => (
     <BoostContainer>
@@ -141,8 +166,10 @@ const VaultStakeModal = ({
         amount={isEdit ? vaultProject.stakeAmount : confirmData.amount}
         addAmount={isEdit ? confirmData.amount : null}
         program={vaultProject}
-        asideAmount={selectedBoost?.minimum || vaultProject.asideMinimum}
-        addAsideAmount={null}
+        asideAmount={
+          selectedBoost?.minimum || isEdit ? vaultProject.asideAmount : vaultProject.asideMinimum
+        }
+        addAsideAmount={isEdit ? asideAmountAdd : null}
         boost={selectedBoost?.percentage}
         onClose={onClose}
         onSuccess={onSuccess}
@@ -155,11 +182,49 @@ const VaultStakeModal = ({
     [confirmData, selectedBoost, coins],
   );
 
-  const MinStakingRequired = useCallback(
+  const onBoostChange = (_, value: number) => {
+    setBoostId(value);
+    if (isEdit) {
+      // In Edit: Force revalidate the form since we allow empty amount now that boost has changed
+      setTimeout(() => {
+        trigger("amount");
+      });
+    }
+  };
+
+  const BoostSlider = useCallback(
     () =>
-      vaultProject.asideMinimum > 0 && (
-        <Box marginTop="14px">
-          {!enoughZIG && (
+      vaultProject.boostable && (
+        <Section>
+          <StakeTypography>
+            <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
+          </StakeTypography>
+          <SliderContainer value={boostId}>
+            <Slider
+              marks={boostMarks}
+              max={boostMarks[boostMarks.length - 1].value}
+              onChange={onBoostChange}
+              step={null}
+              value={boostId}
+              valueLabelDisplay="off"
+            />
+          </SliderContainer>
+          {boostTooLow && (
+            <Typography color="error">
+              <FormattedMessage id="vault.boostStake.cantReduce" />
+            </Typography>
+          )}
+        </Section>
+      ),
+    [boostTooLow, boostId, asideAmountAdd],
+  );
+
+  const MinAsideStakingRequired = useCallback(
+    () =>
+      vaultProject.asideMinimum > 0 &&
+      (!enoughAsideCoin || !isEdit) && (
+        <Section>
+          {!enoughAsideCoin && (
             <Typography color="error">
               <FormattedMessage
                 id="vault.insufficientAmount"
@@ -194,14 +259,14 @@ const VaultStakeModal = ({
               />
             </Typography>
           )}
-        </Box>
+        </Section>
       ),
-    [enoughZIG],
+    [enoughAsideCoin],
   );
 
   const UnstakeWarning = useCallback(
     () => (
-      <Box marginTop="14px">
+      <Section>
         {!vaultProject.unstakeEnabled ? (
           <Alert severity="error">
             <FormattedMessage id="vault.unstake.notPossible" />
@@ -227,24 +292,50 @@ const VaultStakeModal = ({
             <FormattedMessage id="vault.reduceBoost" values={{ coin: vaultProject.asideCoin }} />
           </Alert>
         )}
-      </Box>
+      </Section>
     ),
     [],
   );
 
   const Submit = useCallback(
     () => (
-      <Button
-        variant="contained"
-        disabled={!enoughZIG || !isValid}
-        style={{ margin: "18px auto 0" }}
-        type="submit"
-      >
-        <FormattedMessage id="wallet.withdraw.continue" />
-      </Button>
+      <Actions>
+        {isEdit && (
+          <Box flex={1}>
+            <Button
+              variant="text"
+              type="button"
+              color="secondary"
+              onClick={() => setShowUnstake(true)}
+            >
+              <FormattedMessage id="vault.unstake" />
+            </Button>
+          </Box>
+        )}
+        <Button
+          variant="contained"
+          disabled={!enoughAsideCoin || boostTooLow || !isValid}
+          type="submit"
+        >
+          <FormattedMessage id="wallet.withdraw.continue" />
+        </Button>
+      </Actions>
     ),
-    [enoughZIG, isValid],
+    [enoughAsideCoin, boostTooLow, isValid],
   );
+
+  if (showUnstake) {
+    return (
+      <UnstakeModal
+        open={true}
+        program={vaultProject}
+        onClose={onClose}
+        onSuccess={onSuccess}
+        onCancel={() => setShowUnstake(false)}
+        coins={coins}
+      />
+    );
+  }
 
   if (isEdit) {
     return (
@@ -298,8 +389,11 @@ const VaultStakeModal = ({
               coin={coin}
               label="wallet.staking.stakeAmountAdd"
               newDesign={true}
+              // Allow empty amount if the boost is modified
+              minAmount={initialBoostId >= 0 && boostId > initialBoostId ? null : 0}
             />
-            <MinStakingRequired />
+            <BoostSlider />
+            <MinAsideStakingRequired />
             <UnstakeWarning />
             <Submit />
           </Form>
@@ -388,25 +482,8 @@ const VaultStakeModal = ({
               &nbsp;{coin}
             </BalanceLabelSmall>
           </Box>
-          {vaultProject.boostable && (
-            <>
-              <br />
-              <StakeTypography>
-                <FormattedMessage id="vault.boostStake" values={{ coin: vaultProject.asideCoin }} />
-              </StakeTypography>
-              <SliderContainer value={boostId}>
-                <Slider
-                  marks={boostMarks}
-                  max={boostMarks[boostMarks.length - 1].value}
-                  onChange={(_, value: number) => setBoostId(value)}
-                  step={null}
-                  value={boostId}
-                  valueLabelDisplay="off"
-                />
-              </SliderContainer>
-            </>
-          )}
-          <MinStakingRequired />
+          <BoostSlider />
+          <MinAsideStakingRequired />
           <UnstakeWarning />
           <Submit />
         </Form>

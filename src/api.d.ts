@@ -27,6 +27,7 @@ interface TransactionsHistory {
   note: string;
   txUrl: string;
   network: string;
+  networkName: string;
   status: string;
   type: string;
   zigpadName: string;

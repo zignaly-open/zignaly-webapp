@@ -28,7 +28,7 @@ const FormControlStyled = styled(FormControl)`
 interface WalletDepositViewProps {
   coins: WalletCoins;
   coin: string;
-  balance: Record<string, BalanceData>;
+  balance: BalanceData;
   onClose: () => void;
   onDone: () => void;
   setPath: (path: string) => void;
@@ -53,7 +53,13 @@ const WalletWithdrawView = ({
   const [network, setNetwork] = useState("");
   const networkData = coinData?.networks.find((n) => n.network === network);
   const withdrawDisabled = false;
-  const balanceAmount = (balance && balance[network]) || { balance: 0, availableBalance: 0 };
+  const balanceAmount = balance || {
+    balance: 0,
+    availableBalance: 0,
+    locked: 0,
+    staked: 0,
+    unstaking: 0,
+  };
   // const [path, setPath] = useState("");
   const [withdrawData, setWithdrawData] = useState(null);
   const {

@@ -29,11 +29,12 @@ const BalanceLabel = styled(Typography)`
 interface AmountControlProps {
   errors: any;
   control: any;
-  balance: BalanceData;
+  balance?: BalanceData | number;
   decimals?: number;
   setBalanceMax: () => void;
   coin: string;
   label?: string;
+  balanceLabel?: string;
   minAmount?: number;
   maxAmount?: number;
   newDesign?: boolean;
@@ -50,6 +51,7 @@ const AmountControl = ({
   setBalanceMax,
   coin,
   label = "withdraw.amount",
+  balanceLabel = "deposit.available",
   newDesign = false,
   minAmount,
   maxAmount,
@@ -58,7 +60,8 @@ const AmountControl = ({
   showLockedBalance = false,
 }: AmountControlProps) => {
   const intl = useIntl();
-  const lockedBalance = balance.balance - balance.availableBalance;
+  const lockedBalance = typeof balance === "object" ? balance.locked : 0;
+  const availableBalance = typeof balance === "object" ? balance.availableBalance : balance;
 
   return (
     <FormControl error={Boolean(errors.amount)} fullWidth>
@@ -81,15 +84,19 @@ const AmountControl = ({
           // required: true,
           validate: {
             min: (value) =>
-              minAmount
-                ? parseFloat(value) >= minAmount ||
-                  intl.formatMessage(
-                    { id: minAmmountErrMsg || "convert.min" },
-                    { amount: minAmount, coin },
-                  )
-                : parseFloat(value) > 0,
+              // If minAmount is explicitly passed as null, don't do anything
+              // If minAmount is not passed, check for positive value by default
+              minAmount !== null
+                ? minAmount
+                  ? parseFloat(value) >= minAmount ||
+                    intl.formatMessage(
+                      { id: minAmmountErrMsg || "convert.min" },
+                      { amount: minAmount, coin },
+                    )
+                  : parseFloat(value) > 0
+                : true,
             max: (value) =>
-              parseFloat(value) > balance.availableBalance
+              typeof balance === "object" && parseFloat(value) > balance.availableBalance
                 ? intl.formatMessage({ id: "form.error.withdraw.max" })
                 : !maxAmount ||
                   parseFloat(value) <= maxAmount ||
@@ -100,20 +107,22 @@ const AmountControl = ({
         name="amount"
       />
       {errors.amount && <FormHelperText>{errors.amount.message}</FormHelperText>}
-      <Box display="flex" mt="16px">
-        <SecondaryText>
-          <FormattedMessage id="deposit.available" />
-        </SecondaryText>
-        <BalanceLabel>
-          <NumberFormat
-            value={balance.availableBalance}
-            displayType="text"
-            thousandSeparator={true}
-            decimalScale={decimals}
-          />
-          &nbsp;{coin}
-        </BalanceLabel>
-      </Box>
+      {balance && (
+        <Box display="flex" mt="16px">
+          <SecondaryText>
+            <FormattedMessage id={balanceLabel} />
+          </SecondaryText>
+          <BalanceLabel>
+            <NumberFormat
+              value={availableBalance}
+              displayType="text"
+              thousandSeparator={true}
+              decimalScale={decimals}
+            />
+            &nbsp;{coin}
+          </BalanceLabel>
+        </Box>
+      )}
       {showLockedBalance && lockedBalance > 0 && (
         <>
           <Box display="flex">
