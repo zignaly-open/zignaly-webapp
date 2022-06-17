@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import { SecondaryText } from "styles/styles";
-import { PledgeButton } from "../Vault/VaultDepositButton";
+import { PledgeButton } from "../Vault/VaultButton";
 import RewardsProgressCircle from "../Vault/RewardsProgressCircle";
 import { Coin, Panel } from "../Vault/VaultMobile";
 import { Terms } from "../styles";
