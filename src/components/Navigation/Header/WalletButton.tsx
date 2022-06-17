@@ -50,7 +50,7 @@ const WalletButton = () => {
         <TypographyBalance>
           {walletBalance ? (
             <NumberFormat
-              value={walletBalance.ZIG?.total.balance || 0}
+              value={walletBalance.ZIG?.balance || 0}
               thousandSeparator={true}
               displayType="text"
             />

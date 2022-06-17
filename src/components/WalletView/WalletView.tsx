@@ -20,7 +20,6 @@ import WalletDepositView from "./WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import { ChevronRight } from "@material-ui/icons";
 import WalletTransactions from "./WalletTransactions";
-import BalanceChain from "./BalanceChain";
 import NumberFormat from "react-number-format";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import { useDispatch } from "react-redux";
@@ -270,7 +269,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
   const [coins, setCoins] = useState<WalletCoins>(null);
   const [vaultOffers, setVaultOffers] = useState<VaultOffer[]>(null);
   const [launchpadProjects, setLaunchpadProjects] = useState<LaunchpadProject[]>(null);
-  const balanceZIG = walletBalance?.ZIG?.total.balance || 0;
+  const balanceZIG = walletBalance?.ZIG?.balance || 0;
   const userData = useStoreUserData();
   const [payFeeWithZig, setPayFeeWithZig] = useState(userData.payFeeWithZig);
   const [tradingFeeDiscount, setTradingFeeDiscount] = useState(userData.tradingFeeDiscount);
@@ -368,7 +367,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
           <WalletWithdrawView
             setPath={setPath}
             coins={coins}
-            balance={walletBalance ? walletBalance[coinParam] || {} : null}
+            balance={walletBalance ? walletBalance[coinParam] : null}
             onClose={() => setPath("")}
             coin={coinParam}
             onDone={() => {
@@ -417,8 +416,9 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <NumberFormat value={balanceZIG} thousandSeparator={true} displayType="text" />
               <ZigBig>ZIG</ZigBig>
               {coins &&
-                (walletBalance?.ZIG?.total.staked > 0 ||
-                  walletBalance?.ZIG?.total.unstaking > 0) && (
+                (walletBalance?.ZIG?.locked > 0 ||
+                  walletBalance?.ZIG?.staked > 0 ||
+                  walletBalance?.ZIG?.unstaking > 0) && (
                   <>
                     <ChevronRightStyled onClick={handleClick} />
                     <WalletPopover
@@ -442,9 +442,6 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               <Rate>@{rateZIG?.toFixed(8)}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
-            <Box pt="6px">
-              <BalanceChain coins={coins} walletBalance={walletBalance} />
-            </Box>
             <Box display="flex" flexDirection="row" mt="12px">
               <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
                 <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "ZIG" }} />
