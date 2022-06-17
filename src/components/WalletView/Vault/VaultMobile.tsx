@@ -4,7 +4,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
-import VaultButton from "./VaultDepositButton";
+import VaultButton from "./VaultButton";
 import styled from "styled-components";
 import { SecondaryText } from "styles/styles";
 import RewardsProgressCircle from "./RewardsProgressCircle";

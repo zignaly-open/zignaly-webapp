@@ -25,7 +25,7 @@ import NumberFormat from "react-number-format";
 import CoinIcon from "../CoinIcon";
 import dayjs from "dayjs";
 import { Rate, Terms } from "../styles";
-import { PledgeButton } from "../Vault/VaultDepositButton";
+import { PledgeButton } from "../Vault/VaultButton";
 import ProjectDetailsModal from "./ProjectDetailsModal";
 import ProjectsMobile from "./ProjectsMobile";
 import OpenArrowIcon from "images/launchpad/openArrow.inline.svg";
