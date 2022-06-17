@@ -26,8 +26,7 @@ import WalletDepositView from "../WalletDepositView";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import InfoPanel, { BenefitsInfo } from "./InfoPanel";
 import VaultMobile from "./VaultMobile";
-import VaultDepositButton from "./VaultDepositButton";
-import { VaultStakeButton } from "./VaultDepositButton";
+import VaultButton from "./VaultButton";
 import { Terms } from "../styles";
 import VaultStakeModal from "./VaultStakeModal";
 
@@ -238,17 +237,13 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
         endDate: <Value>{dayjs(v.endDate).format("MMM D, YYYY")}</Value>,
         actions: (
           <StyledVaultDepositButton>
-            {v.type !== "stake" ||
-            (!v.stakeAmount && (walletBalance[v.coin]?.availableBalance ?? 0) < v.minBalance) ? (
-              <VaultDepositButton
-                vault={v}
-                balance={walletBalance[v.coin]?.availableBalance || 0}
-                onClick={() => setDepositCoin(v.coin)}
-                depositEnabled={coins && coins[v.coin]?.allowDeposit}
-              />
-            ) : (
-              <VaultStakeButton vaultProject={v} onClick={() => setSelectedStakeVault(v)} />
-            )}
+            <VaultButton
+              vault={v}
+              balance={walletBalance[v.coin]?.availableBalance || 0}
+              onDeposit={() => setDepositCoin(v.coin)}
+              onStake={() => setSelectedStakeVault(v)}
+              depositEnabled={coins && coins[v.coin]?.allowDeposit}
+            />
           </StyledVaultDepositButton>
         ),
       })),
@@ -309,7 +304,8 @@ const VaultView = ({ isOpen }: { isOpen: boolean }) => {
               <VaultMobile
                 vaults={vaultOffers}
                 type={tab === 0 ? "active" : "expired"}
-                onOfferClick={(coin) => setDepositCoin(coin)}
+                onDeposit={(coin) => setDepositCoin(coin)}
+                onStake={(vaultProject) => setSelectedStakeVault(vaultProject)}
                 balance={walletBalance}
                 coins={coins}
               />

@@ -1,6 +1,6 @@
 import Button from "components/Button";
 import dayjs from "dayjs";
-import React from "react";
+import React, { useCallback } from "react";
 import { FormattedMessage } from "react-intl";
 import NumberFormat from "react-number-format";
 import styled, { css } from "styled-components";
@@ -49,28 +49,63 @@ const InactiveButton = styled(ActivatedButtonPledge)`
 `;
 
 interface VaultDepositButtonProps {
-  onClick: () => void;
+  onDeposit: () => void;
+  onStake: () => void;
   vault: VaultOffer;
   balance: number;
   depositEnabled: boolean;
 }
 
-const VaultDepositButton = ({
+const VaultButton = ({
   balance,
   vault,
   depositEnabled,
-  onClick,
+  onDeposit,
+  onStake,
 }: VaultDepositButtonProps) => {
-  return balance >= vault.minBalance ? (
+  const DepositButton = useCallback(
+    () => (
+      <ButtonStyled className="textPurple borderPurple" onClick={onDeposit}>
+        <FormattedMessage id="accounts.deposit" />
+        &nbsp;
+        <NumberFormat value={vault.minBalance} displayType="text" suffix={` ${vault.coin}`} />
+      </ButtonStyled>
+    ),
+    [],
+  );
+
+  const VaultStakeButton = useCallback(() => {
+    return dayjs().isBefore(vault.finishStakingDate) ? (
+      vault.stakeAmount || vault.unstaking?.length ? (
+        <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
+          <FormattedMessage id="vault.editStake" />
+        </ButtonStyled>
+      ) : balance >= vault.minBalance ? (
+        <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
+          <FormattedMessage id="vault.stakeExcl" />
+        </ButtonStyled>
+      ) : (
+        <DepositButton />
+      )
+    ) : dayjs().isBefore(vault.distributionDate) ? (
+      <InactiveButton>
+        <FormattedMessage id="zigpad.waitingDistribution" />
+      </InactiveButton>
+    ) : (
+      <InactiveButton>
+        <FormattedMessage id="vault.distributing" />
+      </InactiveButton>
+    );
+  }, []);
+
+  return vault.type === "stake" ? (
+    <VaultStakeButton />
+  ) : balance >= vault.minBalance ? (
     <ActivatedButton>
       <FormattedMessage id="vault.activated" />
     </ActivatedButton>
   ) : depositEnabled ? (
-    <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
-      <FormattedMessage id="accounts.deposit" />
-      &nbsp;
-      <NumberFormat value={vault.minBalance} displayType="text" suffix={` ${vault.coin}`} />
-    </ButtonStyled>
+    <DepositButton />
   ) : (
     <InactiveButton>
       <FormattedMessage id="vault.holders" values={{ coin: vault.coin }} />
@@ -78,28 +113,7 @@ const VaultDepositButton = ({
   );
 };
 
-export default VaultDepositButton;
-
-interface VaultStakeButtonProps {
-  vaultProject: VaultOffer;
-  onClick: () => void;
-}
-
-export const VaultStakeButton = ({ vaultProject, onClick }: VaultStakeButtonProps) => {
-  return dayjs().isBefore(vaultProject.finishStakingDate) ? (
-    <ButtonStyled className="textPurple borderPurple" onClick={onClick}>
-      <FormattedMessage id={vaultProject.stakeAmount ? "vault.editStake" : "vault.stakeExcl"} />
-    </ButtonStyled>
-  ) : dayjs().isBefore(vaultProject.distributionDate) ? (
-    <InactiveButton>
-      <FormattedMessage id="zigpad.waitingDistribution" />
-    </InactiveButton>
-  ) : (
-    <InactiveButton>
-      <FormattedMessage id="vault.distributing" />
-    </InactiveButton>
-  );
-};
+export default VaultButton;
 
 interface PledgeButtonProps {
   onClick: () => void;

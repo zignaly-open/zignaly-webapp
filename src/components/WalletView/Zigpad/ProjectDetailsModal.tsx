@@ -19,7 +19,7 @@ import { formatDateTimeUTC } from "utils/format";
 import SocialIcon from "./SocialIcon";
 import PledgeModal from "./PledgeModal";
 import tradeApi from "services/tradeApiClient";
-import { PledgeButton } from "../Vault/VaultDepositButton";
+import { PledgeButton } from "../Vault/VaultButton";
 import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 import PrivateAreaContext from "context/PrivateAreaContext";
 import WalletDepositView from "../WalletDepositView";
