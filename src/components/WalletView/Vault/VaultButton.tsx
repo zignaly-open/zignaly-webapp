@@ -75,22 +75,26 @@ const VaultButton = ({
   );
 
   const VaultStakeButton = useCallback(() => {
-    return balance >= vault.minBalance ? (
-      dayjs().isBefore(vault.finishStakingDate) ? (
+    return dayjs().isBefore(vault.finishStakingDate) ? (
+      vault.stakeAmount || vault.unstaking?.length ? (
         <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
-          <FormattedMessage id={vault.stakeAmount ? "vault.editStake" : "vault.stakeExcl"} />
+          <FormattedMessage id="vault.editStake" />
         </ButtonStyled>
-      ) : dayjs().isBefore(vault.distributionDate) ? (
-        <InactiveButton>
-          <FormattedMessage id="zigpad.waitingDistribution" />
-        </InactiveButton>
+      ) : balance >= vault.minBalance ? (
+        <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
+          <FormattedMessage id="vault.stakeExcl" />
+        </ButtonStyled>
       ) : (
-        <InactiveButton>
-          <FormattedMessage id="vault.distributing" />
-        </InactiveButton>
+        <DepositButton />
       )
+    ) : dayjs().isBefore(vault.distributionDate) ? (
+      <InactiveButton>
+        <FormattedMessage id="zigpad.waitingDistribution" />
+      </InactiveButton>
     ) : (
-      <DepositButton />
+      <InactiveButton>
+        <FormattedMessage id="vault.distributing" />
+      </InactiveButton>
     );
   }, []);
 
