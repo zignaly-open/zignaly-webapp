@@ -327,8 +327,8 @@ const VaultStakeModal = ({
   const Submit = useCallback(
     () => (
       <Actions>
-        {isEdit && vaultProject.unstakeEnabled && (
-          <Box flex={1}>
+        <Box flex={1}>
+          {isEdit && vaultProject.unstakeEnabled && (
             <Button
               variant="text"
               type="button"
@@ -337,8 +337,8 @@ const VaultStakeModal = ({
             >
               <FormattedMessage id="vault.unstake" />
             </Button>
-          </Box>
-        )}
+          )}
+        </Box>
         <Button
           variant="contained"
           disabled={!enoughAsideCoin || boostTooLow || !isValid}
