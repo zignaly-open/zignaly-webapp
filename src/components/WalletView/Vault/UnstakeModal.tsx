@@ -172,7 +172,7 @@ const UnstakeModal = ({
           </>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
-            {program.unstakeEnabled ? (
+            {program.unstakeEnabled && (
               <>
                 <AmountControl
                   balance={program.stakeAmount}
@@ -211,10 +211,6 @@ const UnstakeModal = ({
                   </Box>
                 )}
               </>
-            ) : (
-              <Typography>
-                <FormattedMessage id="vault.unstake.notPossible2" />
-              </Typography>
             )}
             <Box display="flex" mt="8px">
               <Box
