@@ -46,6 +46,14 @@ interface Penalty {
   percentage: 0;
 }
 
+interface Unstaking {
+  days: number;
+  receiveDate: string;
+  amount: number;
+  fullAmount: number;
+  penalty: number;
+}
+
 interface VaultOffer {
   id: number;
   minBalance: number;
@@ -75,6 +83,7 @@ interface VaultOffer {
   boostable: boolean;
   boosts: Boost[];
   penalties: Penalty[];
+  unstaking: Unstaking[];
 }
 
 interface BalanceExchange {

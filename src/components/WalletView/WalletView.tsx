@@ -439,7 +439,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                 prefix="$"
                 decimalScale={2}
               />
-              <Rate>@{rateZIG}/ZIG</Rate>
+              <Rate>@{rateZIG?.toFixed(8)}/ZIG</Rate>
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
             <Box display="flex" flexDirection="row" mt="12px">

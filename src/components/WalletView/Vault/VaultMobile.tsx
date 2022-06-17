@@ -4,7 +4,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { formatPrice } from "utils/formatters";
 import CoinIcon from "../CoinIcon";
-import VaultDepositButton from "./VaultDepositButton";
+import VaultButton from "./VaultDepositButton";
 import styled from "styled-components";
 import { SecondaryText } from "styles/styles";
 import RewardsProgressCircle from "./RewardsProgressCircle";
@@ -51,12 +51,13 @@ const VaultDepositBox = styled.div`
 interface VaultMobileProps {
   vaults: VaultOffer[];
   balance: WalletBalance;
-  onOfferClick: (coin: string) => void;
+  onDeposit: (coin: string) => void;
+  onStake: (vaultProject: VaultOffer) => void;
   type: string;
   coins: WalletCoins;
 }
 
-const VaultMobile = ({ vaults, balance, coins, onOfferClick, type }: VaultMobileProps) => {
+const VaultMobile = ({ vaults, balance, coins, onDeposit, onStake, type }: VaultMobileProps) => {
   return (
     <Box>
       {vaults.map((v) => (
@@ -74,10 +75,11 @@ const VaultMobile = ({ vaults, balance, coins, onOfferClick, type }: VaultMobile
             </EarnText>
             {type === "active" && (
               <VaultDepositBox>
-                <VaultDepositButton
+                <VaultButton
                   vault={v}
                   balance={(balance && balance[v.coin]?.availableBalance) || 0}
-                  onClick={() => onOfferClick(v.coin)}
+                  onDeposit={() => onDeposit(v.coin)}
+                  onStake={() => onStake(v)}
                   depositEnabled={coins && coins[v.coin]?.allowDeposit}
                 />
               </VaultDepositBox>
