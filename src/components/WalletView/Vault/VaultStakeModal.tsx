@@ -13,7 +13,7 @@ import Button from "components/Button";
 import VaultStakeConfirmModal from "./VaultStakeConfirmModal";
 import { Alert } from "@material-ui/lab";
 import UnstakeModal from "./UnstakeModal";
-import PendingWithdrawalModal from "./PendingUnstakingModal";
+import PendingUnstakingModal from "./PendingUnstakingModal";
 
 const StyledTextDesc = styled(TextDesc)`
   margin-bottom: 24px;
@@ -172,14 +172,18 @@ const VaultStakeModal = ({
   };
 
   const PendingWithdrawals = useCallback(
-    () => (
-      <WithdrawalsAlert severity="warning">
-        <FormattedMessage id="vault.unstake.progress" values={{ count: 1 }} />
-        <a className="link" onClick={() => setShowPendingWithdrawal(true)}>
-          <FormattedMessage id="action.view" />
-        </a>
-      </WithdrawalsAlert>
-    ),
+    () =>
+      vaultProject.unstaking?.length > 0 && (
+        <WithdrawalsAlert severity="warning">
+          <FormattedMessage
+            id="vault.unstake.progress"
+            values={{ count: vaultProject.unstaking.length }}
+          />
+          <a className="link" onClick={() => setShowPendingWithdrawal(true)}>
+            <FormattedMessage id="action.view" />
+          </a>
+        </WithdrawalsAlert>
+      ),
     [],
   );
 
@@ -362,7 +366,7 @@ const VaultStakeModal = ({
 
   if (showPendingWithdrawal) {
     return (
-      <PendingWithdrawalModal
+      <PendingUnstakingModal
         coin={coinData}
         onCancel={() => setShowPendingWithdrawal(false)}
         onClose={onClose}

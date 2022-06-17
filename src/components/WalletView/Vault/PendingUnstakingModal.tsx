@@ -45,10 +45,6 @@ const PendingUnstakingModal = ({
   coin,
 }: PendingUnstakingModalProps) => {
   const intl = useIntl();
-  const unstaking = [
-    { amount: 100, date: dayjs().add(1, "d") },
-    { amount: 7000, date: dayjs().add(2, "d") },
-  ];
 
   const columns = useMemo(
     () => [
@@ -66,11 +62,11 @@ const PendingUnstakingModal = ({
 
   const data = useMemo(
     () =>
-      unstaking.map((data) => ({
+      program.unstaking.map((u) => ({
         amount: (
           <Value>
             <NumberFormat
-              value={data.amount}
+              value={u.amount}
               displayType="text"
               thousandSeparator={true}
               decimalScale={coin.decimals}
@@ -78,7 +74,7 @@ const PendingUnstakingModal = ({
             />
           </Value>
         ),
-        date: <Value>{formatDateTimeUTC(data.date)}</Value>,
+        date: <Value>{formatDateTimeUTC(u.receiveDate)}</Value>,
       })),
     [],
   );
