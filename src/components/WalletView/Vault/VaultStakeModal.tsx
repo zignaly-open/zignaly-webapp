@@ -327,7 +327,7 @@ const VaultStakeModal = ({
   const Submit = useCallback(
     () => (
       <Actions>
-        {isEdit && (
+        {isEdit && vaultProject.unstakeEnabled && (
           <Box flex={1}>
             <Button
               variant="text"
