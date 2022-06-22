@@ -151,7 +151,7 @@ const UnstakeModal = ({
                     />
                   ),
                   coin: coinData.name,
-                  date: formatDateTimeUTC(dayjs().add(parseInt(confirmData.days)).toString()),
+                  date: formatDateTimeUTC(dayjs().add(parseInt(confirmData.days), "d").toString()),
                 }}
               />
             </Typography>
