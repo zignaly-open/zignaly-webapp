@@ -1,10 +1,3 @@
-// import en from "./en.yml";
-// import cs from "./cs.yml";
-// import vn from "./vn.yml";
-// import de from "./de.yml";
-// import pl from "./pl.yml";
-// import es from "./es.yml";
-
 /**
  * @type {Object<string, any>} translations
  */
@@ -18,6 +11,8 @@ const translations = {
   tr: () => import("./tr.yml"),
   fr: () => import("./fr.yml"),
   pt: () => import("./pt.yml"),
+  ru: () => import("./ru.yml"),
+  uk: () => import("./uk.yml"),
 };
 
 export default translations;

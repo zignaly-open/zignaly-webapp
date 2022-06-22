@@ -199,6 +199,10 @@ const WalletTransactions = ({ updateAt }: { updateAt: Date }) => {
       label: intl.formatMessage({ id: "wallet.type.stakingvaultreturn" }),
     },
     {
+      value: "UNSTAKING_VAULT",
+      label: intl.formatMessage({ id: "wallet.type.unstakingvault" }),
+    },
+    {
       value: "buy_zig",
       label: intl.formatMessage({ id: "wallet.type.buyzig" }),
     },

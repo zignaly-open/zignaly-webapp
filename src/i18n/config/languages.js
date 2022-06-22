@@ -70,6 +70,18 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     countryCode: "cz",
     languageCode: "cs",
   });
+  LocalizationLanguages.push({
+    locale: "ru",
+    label: "Русский",
+    countryCode: "ru",
+    languageCode: "ru",
+  });
+  LocalizationLanguages.push({
+    locale: "uk",
+    label: "украї́нська",
+    countryCode: "uk",
+    languageCode: "uk",
+  });
 }
 
 module.exports = LocalizationLanguages;
