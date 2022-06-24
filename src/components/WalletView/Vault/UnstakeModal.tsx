@@ -13,7 +13,7 @@ import styled from "styled-components";
 import AmountControl from "../AmountControl";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import { formatDateTimeUTC } from "utils/format";
+import { floatify, formatDateTimeUTC } from "utils/format";
 import dayjs from "dayjs";
 
 const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
@@ -119,7 +119,7 @@ const UnstakeModal = ({
       : 0;
 
   const getFinalAmount = () => {
-    return (parseFloat(confirmData.amount) * (100 - getPenalty())) / 100;
+    return floatify((parseFloat(confirmData.amount) * (100 - getPenalty())) / 100);
   };
 
   return (
@@ -140,20 +140,49 @@ const UnstakeModal = ({
             )}
             <Typography>
               <FormattedMessage
-                id="vault.unstake.confirm"
+                id={
+                  parseFloat(confirmData?.days) > 0
+                    ? "vault.unstake.confirmWithDate"
+                    : "vault.unstake.confirm"
+                }
                 values={{
                   amount: (
-                    <NumberFormat
-                      value={getFinalAmount()}
-                      displayType="text"
-                      thousandSeparator={true}
-                      decimalScale={coinData?.decimals}
-                    />
+                    <>
+                      <b>
+                        <NumberFormat
+                          value={getFinalAmount()}
+                          displayType="text"
+                          thousandSeparator={true}
+                          decimalScale={coinData.decimals}
+                          suffix={` ${coinData.name}`}
+                        />
+                      </b>
+                      {program.asideAmount > 0 &&
+                        program.stakeAmount === parseFloat(confirmData.amount) && (
+                          <>
+                            &nbsp;+&nbsp;
+                            <b>
+                              <NumberFormat
+                                value={program.asideAmount}
+                                displayType="text"
+                                thousandSeparator={true}
+                                decimalScale={coins[program.asideCoin].decimals}
+                                suffix={` ${program.asideCoin}`}
+                              />
+                            </b>
+                          </>
+                        )}
+                    </>
                   ),
-                  coin: coinData.name,
-                  date: formatDateTimeUTC(dayjs().add(parseInt(confirmData.days), "d").toString()),
+                  date: (
+                    <b>
+                      {formatDateTimeUTC(dayjs().add(parseInt(confirmData.days), "d").toString())}
+                    </b>
+                  ),
                 }}
               />
+              &nbsp;
+              <FormattedMessage id="vault.unstake.sure" />
             </Typography>
             <Box
               display="flex"
