@@ -214,6 +214,7 @@ const UnstakeModal = ({
                   balance={program.stakeAmount}
                   balanceLabel="vault.staked"
                   setBalanceMax={setBalanceMax}
+                  maxAmount={program.stakeAmount}
                   decimals={coinData?.decimals}
                   errors={errors}
                   control={control}
