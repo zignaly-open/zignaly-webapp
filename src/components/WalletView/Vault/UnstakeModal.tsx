@@ -3,7 +3,7 @@ import CustomModal from "components/Modal";
 import React, { useState } from "react";
 import { Title, Modal } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import Button from "components/Button";
 import tradeApi from "services/tradeApiClient";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { floatify, formatDateTimeUTC } from "utils/format";
 import dayjs from "dayjs";
+import { BalanceLabelSmall, SecondaryTextSmall } from "./VaultStakeModal";
 
 const PenaltyRow = ({ penalty }: { penalty: Penalty }) => {
   return (
@@ -59,14 +60,9 @@ const UnstakeModal = ({
   open,
 }: UnstakeModalProps) => {
   const dispatch = useDispatch();
-  const [confirmConfig, setConfirmConfig] = useState<ConfirmDialogConfig>({
-    titleTranslationId: "vault.staking.terms.title",
-    messageTranslationId: "vault.staking.terms",
-    values: { coin: program.coin },
-    visible: false,
-  });
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const coinData = coins ? coins[program.coin] : null;
+  const intl = useIntl();
 
   const {
     handleSubmit,
@@ -75,6 +71,7 @@ const UnstakeModal = ({
     formState: { isValid },
     setValue,
     trigger,
+    setError,
   } = useForm<FormType>({
     mode: "onChange",
     defaultValues: {
@@ -85,6 +82,16 @@ const UnstakeModal = ({
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (data: FormType) => {
+    const remainingAmount = program.stakeAmount - parseFloat(data.amount);
+    if (remainingAmount > 0 && remainingAmount < program.minBalance) {
+      // User unstake not all, and remaining is under min balance
+      setError("amount", {
+        type: "notMatch",
+        message: intl.formatMessage({ id: "form.error.unstake.minAmount" }),
+      });
+      return;
+    }
+
     setConfirmData(data);
   };
 
@@ -214,6 +221,20 @@ const UnstakeModal = ({
                   label="vault.unstake.amount"
                   newDesign={true}
                 />
+                <Box display="flex" mt="8px">
+                  <SecondaryTextSmall>
+                    <FormattedMessage id="wallet.staking.minBalance" />
+                  </SecondaryTextSmall>
+                  <BalanceLabelSmall>
+                    <NumberFormat
+                      value={program.minBalance}
+                      displayType="text"
+                      thousandSeparator={true}
+                      decimalScale={coinData?.decimals}
+                    />
+                    &nbsp;{program.coin}
+                  </BalanceLabelSmall>
+                </Box>
                 {program.penalties?.length > 0 && (
                   <Box marginTop="36px">
                     <Label>

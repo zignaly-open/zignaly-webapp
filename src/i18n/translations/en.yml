@@ -1689,6 +1689,7 @@ form.error.withdraw.min: "Please enter an amount above the minimum withdrawal am
 form.error.withdraw.max: "You do not have this amount available in your account."
 form.error.number.decimals: "Please enter numbers with no more than {maxDecimals} decimal places."
 form.error.url: "URL is not valid"
+form.error.unstake.minAmount: "Remaining staking amount is too low."
 
 # GENERAL
 general.yes: "Yes"

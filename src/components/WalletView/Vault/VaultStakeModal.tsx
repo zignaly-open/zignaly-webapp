@@ -48,7 +48,7 @@ const SecondaryText = styled(Typography)`
   font-size: 18px;
 `;
 
-const SecondaryTextSmall = styled(SecondaryText)`
+export const SecondaryTextSmall = styled(SecondaryText)`
   font-size: 14px;
 `;
 
@@ -58,7 +58,7 @@ const BalanceLabel = styled(Typography)`
   margin-left: 4px;
 `;
 
-const BalanceLabelSmall = styled(BalanceLabel)`
+export const BalanceLabelSmall = styled(BalanceLabel)`
   font-size: 14px;
 `;
 
