@@ -79,11 +79,12 @@ const Actions = styled.div`
 `;
 
 const WithdrawalsAlert = styled(Alert)`
+  margin-bottom: 12px;
+
   .MuiAlert-message {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
   }
 `;
 
