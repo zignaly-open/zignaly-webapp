@@ -279,3 +279,9 @@ interface StakeReq {
   amount: string | number;
   asideAmount: string | number;
 }
+
+interface UnstakeReq {
+  programId: number;
+  amount: string | number;
+  days: string | number;
+}

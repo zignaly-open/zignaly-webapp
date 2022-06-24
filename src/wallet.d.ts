@@ -52,6 +52,7 @@ interface Unstaking {
   amount: number;
   fullAmount: number;
   penalty: number;
+  coin: string;
 }
 
 interface VaultOffer {
