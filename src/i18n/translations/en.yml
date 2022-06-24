@@ -1689,6 +1689,7 @@ form.error.withdraw.min: "Please enter an amount above the minimum withdrawal am
 form.error.withdraw.max: "You do not have this amount available in your account."
 form.error.number.decimals: "Please enter numbers with no more than {maxDecimals} decimal places."
 form.error.url: "URL is not valid"
+form.error.unstake.minAmount: "Remaining staking amount is too low."
 
 # GENERAL
 general.yes: "Yes"
@@ -1824,7 +1825,10 @@ vault.reduceBoost: "Once Staked it will no be possible to reduce your boost leve
 vault.unstake: "Unstake"
 vault.unstake.amount: "Amount to Unstake"
 vault.unstake.chooseDuration: "Choose unstaking duration"
-vault.unstake.confirm: "You will receive {amount} {coin} on {date}. Are you sure?"
+vault.unstake.confirm: "You will receive {amount}."
+vault.unstake.confirmWithDate: "You will receive {amount} on {date}."
+vault.unstake.sure: "Are you sure?"
+vault.unstake.receive: "You will receive:"
 vault.unstake.date: "Completion Date"
 vault.unstake.notPossible: "Once staked, you will not be able to unstake or reduce the amount until the end of this program. However, you can add to the staking amount by editing later."
 vault.unstake.penalty: "Penalty:"
