@@ -744,7 +744,6 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
  * @typedef {Object} UpdatePasswordPayload
  * @property {string} password
  * @property {string} newPassword
- * @property {string} repeatPassword
  */
 
 /**
