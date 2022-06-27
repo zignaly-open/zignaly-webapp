@@ -139,11 +139,14 @@ const UnstakeModal = ({
         {confirmData ? (
           <>
             {confirmData.days && (
-              <Typography>
-                <FormattedMessage id="vault.unstake.penalty" />
-                &nbsp;
-                {getPenalty()}%
-              </Typography>
+              <>
+                <Typography>
+                  <FormattedMessage id="vault.unstake.penalty" />
+                  &nbsp;
+                  {getPenalty()}%
+                </Typography>
+                <br />
+              </>
             )}
             <Typography>
               <FormattedMessage
@@ -188,9 +191,13 @@ const UnstakeModal = ({
                   ),
                 }}
               />
-              &nbsp;
-              <FormattedMessage id="vault.unstake.sure" />
             </Typography>
+            <br />
+            {!(parseFloat(confirmData?.days) > 0) && (
+              <Typography>
+                <FormattedMessage id="vault.unstake.timeWarning" />
+              </Typography>
+            )}
             <Box
               display="flex"
               flexDirection="row"

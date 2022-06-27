@@ -145,12 +145,8 @@ export const POSITION_ENTRY_TYPE_MULTI = "multi";
 
 /**
  * @typedef {Object} UserRegisterPayload
- * @property {string} firstName
  * @property {string} email
  * @property {string} password
- * @property {Boolean} terms
- * @property {Boolean} subscribe
- * @property {Boolean} array
  * @property {string} ref
  * @property {String} locale selected locale string
  * @property {string} gRecaptchaResponse
