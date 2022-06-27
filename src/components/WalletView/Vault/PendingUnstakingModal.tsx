@@ -69,7 +69,7 @@ const PendingUnstakingModal = ({
               displayType="text"
               thousandSeparator={true}
               decimalScale={coin.decimals}
-              suffix={` ${program.coin}`}
+              suffix={` ${u.coin}`}
             />
           </Value>
         ),
