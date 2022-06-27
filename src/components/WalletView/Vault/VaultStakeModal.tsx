@@ -1,6 +1,6 @@
 import { Box, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Title, Modal, TextDesc } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -126,10 +126,15 @@ const VaultStakeModal = ({
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
   const balanceAmount = walletBalance[coin];
-  const initialBoostId = vaultProject.boosts?.findIndex(
-    (b) => vaultProject.asideAmount >= b.minimum,
-  );
-  const [boostId, setBoostId] = useState(initialBoostId >= 0 ? initialBoostId : 0);
+  const initialBoostId = useMemo(() => {
+    for (let i = vaultProject.boosts?.length; i--; i > 0) {
+      if (vaultProject.asideAmount >= vaultProject.boosts[i].minimum) {
+        return i;
+      }
+    }
+    return 0;
+  }, []);
+  const [boostId, setBoostId] = useState(initialBoostId);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
   const balanceAmountAside = vaultProject.asideCoin ? walletBalance[vaultProject.asideCoin] : null;
