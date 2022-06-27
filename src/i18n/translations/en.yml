@@ -1799,8 +1799,9 @@ vault.benefits.info: |
   • Earn passive income on idle assets
   • Daily rewards & daily compounding
 vault.benefits.info2: |
+  • Variety of programs with or without lockup periods
   • Rewards starts automatically, no promo codes needed
-  • Your funds are always available for withdrawal
+  • Multiple coins and boost options
 vault.active: "Active Vault Offers"
 vault.expired: "Expired Offers"
 vault.holders: "For {coin} holders"
