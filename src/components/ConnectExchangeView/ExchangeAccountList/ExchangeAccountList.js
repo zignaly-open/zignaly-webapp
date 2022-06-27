@@ -44,10 +44,11 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
   const [filteredUserExchanges, setFilteredUserExchanges] = useState([]);
 
   useEffect(() => {
-    setFilteredUserExchanges(exchangeConnections
-      .filter((item) => item.paperTrading || item.isTestnet ? demo : !demo)
-      .filter((item) => item.internalName.toLowerCase().search(searchFilter.toLowerCase()) !== -1)
-      .sort((item) => item.internalId === selectedExchange.internalId ? -1 : 0)
+    setFilteredUserExchanges(
+      exchangeConnections
+        .filter((item) => (item.paperTrading || item.isTestnet ? demo : !demo))
+        .filter((item) => item.internalName.toLowerCase().search(searchFilter.toLowerCase()) !== -1)
+        .sort((item) => (item.internalId === selectedExchange.internalId ? -1 : 0)),
     );
   }, [selectedExchange, searchFilter, demo]);
 
@@ -106,18 +107,6 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
                 </CustomButton>
                 <Box className="exchangeSubtitle">
                   <FormattedMessage id="accounts.powered" />
-                </Box>
-              </Box>
-              <Box display="flex" flexDirection="column">
-                <CustomButton
-                  className="body2 textPurple borderPurple exchangeButton"
-                  onClick={() => navigateToPath("connectAccount")}
-                >
-                  <FormattedMessage id="accounts.connect.existing" />
-                </CustomButton>
-                <Box className="exchangeSubtitle">
-                  {/* <FormattedMessage id="accounts.exchanges" /> */}
-                  {getExchangeNamesCombined(exchanges, "or")}
                 </Box>
               </Box>
             </Box>
