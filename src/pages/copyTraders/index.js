@@ -12,7 +12,7 @@ import { getProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponent/RouteComponent";
-import BrowsePage from "./browse";
+import { navigate } from "gatsby";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
 
@@ -43,21 +43,24 @@ const CopyTraders = (props) => {
   const dispatch = useDispatch();
 
   const loadProvider = () => {
-    if (providerId && providerId.length === 24) {
-      dispatch(unsetProvider());
-      const payload = {
-        providerId: providerId,
-        exchangeInternalId: selectedExchange.internalId,
-      };
-      dispatch(getProvider(payload, true));
+    if (providerId) {
+      if (providerId && providerId.length === 24) {
+        dispatch(unsetProvider());
+        const payload = {
+          providerId: providerId,
+          exchangeInternalId: selectedExchange.internalId,
+        };
+        dispatch(getProvider(payload, true));
+      }
+    } else {
+      navigate("/profitSharing", { replace: true });
     }
   };
 
   useEffect(loadProvider, [providerId]);
 
   if (!providerId) {
-    // Render Browse page
-    return <BrowsePage {...props} />;
+    return null;
   }
 
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
