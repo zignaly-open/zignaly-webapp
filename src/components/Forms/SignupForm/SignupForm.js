@@ -44,7 +44,6 @@ const SignupForm = () => {
    *
    * @typedef {Object} DataObject
    * @property {String} password
-   * @property {String} repeatPassword
    * @property {String} email
    * @property {string} [gRecaptchaResponse] Captcha token fallback
    */

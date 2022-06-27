@@ -30,7 +30,6 @@ const UpdatePassword = () => {
    * @typedef {Object} FormData
    * @property {string} currentPassword
    * @property {string} password
-   * @property {string} repeatPassword
    */
 
   /**
@@ -40,11 +39,10 @@ const UpdatePassword = () => {
    * @returns {void}
    */
   const submitPassword = (data) => {
-    const { currentPassword: password, password: newPassword, repeatPassword } = data;
+    const { currentPassword: password, password: newPassword } = data;
     const payload = {
       password,
       newPassword,
-      repeatPassword,
     };
 
     setLoading(true);

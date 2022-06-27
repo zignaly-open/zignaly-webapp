@@ -91,31 +91,6 @@ const Passwords = ({ formMethods, edit }) => {
         />
         {errors && errors.password && <span className="errorText">{errors.password.message}</span>}
       </Box>
-      <Box
-        alignItems="start"
-        className={"inputBox"}
-        display="flex"
-        flexDirection="column"
-        justifyContent="start"
-      >
-        <PasswordInput
-          error={!!errors.repeatPassword}
-          inputRef={register({
-            required: true,
-            validate: (value) => {
-              if (value === getValues().password) {
-                return true;
-              }
-              return intl.formatMessage({ id: "form.error.password.match" });
-            },
-          })}
-          label={<FormattedMessage id={"security.repeat" + (edit ? ".new" : "")} />}
-          name="repeatPassword"
-        />
-        {errors && errors.repeatPassword && (
-          <span className="errorText">{errors.repeatPassword.message}</span>
-        )}
-      </Box>
     </>
   );
 };
