@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 import dayjs from "dayjs";
-import { formatDateUTC } from "utils/format";
+import { formatDateTimeUTC, formatDateUTC } from "utils/format";
 
 const ListItem = styled.li`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -177,7 +177,7 @@ const VaultOfferModal = ({ onClose, open, vault }: VaultOfferModalProps) => {
                 <ItemLabel>
                   <FormattedMessage id="wallet.staking.offer.stakingEnds" />
                 </ItemLabel>
-                <ItemValue>{formatDateUTC(finishStakingDate)}</ItemValue>
+                <ItemValue>{formatDateTimeUTC(finishStakingDate)}</ItemValue>
               </ListItem>
               <ListItem>
                 <ItemLabel>

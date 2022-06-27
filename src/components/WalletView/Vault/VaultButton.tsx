@@ -100,6 +100,10 @@ const VaultButton = ({
 
   return vault.type === "stake" ? (
     <VaultStakeButton />
+  ) : dayjs().isAfter(vault.finishStakingDate) ? (
+    <InactiveButton>
+      <FormattedMessage id="vault.distributing" />
+    </InactiveButton>
   ) : balance >= vault.minBalance ? (
     <ActivatedButton>
       <FormattedMessage id="vault.activated" />
