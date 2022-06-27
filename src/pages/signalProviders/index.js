@@ -13,7 +13,7 @@ import { getProvider, unsetProvider } from "../../store/actions/views";
 import { withPrefix } from "gatsby";
 import ProviderLayout from "../../layouts/ProviderLayout";
 import { ProviderRoute as SignalProviderRoute } from "../../components/RouteComponent/RouteComponent";
-import BrowsePage from "./browse";
+import { navigate } from "gatsby";
 import tradeApi from "../../services/tradeApiClient";
 import { showErrorAlert } from "store/actions/ui";
 import useProviderContext from "hooks/useProviderContext";
@@ -71,8 +71,12 @@ const SignalProviders = (props) => {
       };
       dispatch(getProvider(payload, true));
     };
-    if (providerId && providerId.length === 24) {
-      loadProvider();
+    if (providerId) {
+      if (providerId.length === 24) {
+        loadProvider();
+      }
+    } else {
+      navigate("/profitSharing", { replace: true });
     }
 
     return () => {
@@ -117,8 +121,7 @@ const SignalProviders = (props) => {
   ]);
 
   if (!providerId) {
-    // Render Browse page
-    return <BrowsePage {...props} />;
+    return null;
   }
 
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
