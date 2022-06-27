@@ -70,12 +70,12 @@ interface VaultOffer {
   coinReward: string;
   stakingDays: number;
   type: "basic" | "stake";
+  finishStakingDate?: string;
   /*
    * Additional properties for stake type
    */
   announcementDate?: string;
   returnCoinsDate?: string;
-  finishStakingDate?: string;
   asideCoin?: string;
   asideMinimum?: number;
   unstakeEnabled?: boolean;
