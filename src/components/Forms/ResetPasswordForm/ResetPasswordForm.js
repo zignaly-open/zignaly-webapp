@@ -37,9 +37,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 const ResetPasswordForm = ({ code, setExpired }) => {
   const [anchorEl, setAnchorEl] = useState(undefined);
   const [loading, setLoading] = useState(false);
-  const [passwordDoNotMatch, setPasswordDoNotMatch] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [strength, setStrength] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { errors, handleSubmit, register, clearErrors, setError } = useForm();
@@ -54,7 +52,6 @@ const ResetPasswordForm = ({ code, setExpired }) => {
    */
 
   const handlePasswordChange = (event) => {
-    setPasswordDoNotMatch(false);
     const targetElement = /** @type {HTMLInputElement} */ (event.target);
     let howStrong = validatePassword(targetElement.value);
     setStrength(howStrong);
@@ -66,31 +63,8 @@ const ResetPasswordForm = ({ code, setExpired }) => {
   };
 
   /**
-   * Main password change state handling.
-   *
-   * @param {React.ChangeEvent} event Observed event.
-   * @return {void}
-   */
-
-  const handleRepeatPasswordChange = (event) => {
-    setPasswordDoNotMatch(false);
-    const targetElement = /** @type {HTMLInputElement} */ (event.target);
-    let howStrong = validatePassword(targetElement.value);
-    setStrength(howStrong);
-    if (howStrong >= 4) {
-      clearErrors("repeatPassword");
-    } else {
-      setError("repeatPassword", {
-        type: "notStrong",
-        message: "The repeat password is very weak.",
-      });
-    }
-  };
-
-  /**
    * @typedef {Object} DataObject
    * @property {String} password
-   * @property {String} repeatPassword
    * @property {string} [gRecaptchaResponse] Captcha token fallback
    */
 
@@ -101,47 +75,42 @@ const ResetPasswordForm = ({ code, setExpired }) => {
    * @returns {Promise<void>} Promise
    */
   const onSubmit = async (data) => {
-    if (data.password === data.repeatPassword) {
-      setPasswordDoNotMatch(false);
-      setLoading(true);
-      let gRecaptchaResponse = data.gRecaptchaResponse || "";
-      let c = 2;
-      if (process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
-        gRecaptchaResponse = await executeRecaptcha("resetPassword");
-        c = 3;
-      }
-      const payload = {
-        token: code,
-        password: data.password,
-        gRecaptchaResponse,
-        c,
-      };
-      tradeApi
-        .forgotPasswordStep3(payload)
-        .then(() => {
-          dispatch(
-            showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step3.body"),
-          );
-          navigate("/login");
-        })
-        .catch((e) => {
-          // if (e.code === 76) {
-          //   // Use old captcha as fallback
-          //   captchaFallback.current = (/** @type {string} */ captcha) =>
-          //     onSubmit({ ...data, gRecaptchaResponse: captcha });
-          // } else
-          if (e.code === 48) {
-            setExpired(false);
-          } else {
-            dispatch(showErrorAlert(e));
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setPasswordDoNotMatch(true);
+    setLoading(true);
+    let gRecaptchaResponse = data.gRecaptchaResponse || "";
+    let c = 2;
+    if (process.env.NODE_ENV === "production" && !gRecaptchaResponse) {
+      gRecaptchaResponse = await executeRecaptcha("resetPassword");
+      c = 3;
     }
+    const payload = {
+      token: code,
+      password: data.password,
+      gRecaptchaResponse,
+      c,
+    };
+    tradeApi
+      .forgotPasswordStep3(payload)
+      .then(() => {
+        dispatch(
+          showSuccessAlert("alert.forgotpassword.step1.title", "alert.forgotpassword.step3.body"),
+        );
+        navigate("/login");
+      })
+      .catch((e) => {
+        // if (e.code === 76) {
+        //   // Use old captcha as fallback
+        //   captchaFallback.current = (/** @type {string} */ captcha) =>
+        //     onSubmit({ ...data, gRecaptchaResponse: captcha });
+        // } else
+        if (e.code === 48) {
+          setExpired(false);
+        } else {
+          dispatch(showErrorAlert(e));
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   /**
@@ -199,33 +168,6 @@ const ResetPasswordForm = ({ code, setExpired }) => {
               type={showPassword ? "text" : "password"}
             />
           </FormControl>
-        </Box>
-
-        <Box
-          alignItems="start"
-          className="inputBox"
-          display="flex"
-          flexDirection="column"
-          justifyContent="start"
-        >
-          <label className="customLabel">Repeat Password</label>
-          <FormControl className="customInput" variant="outlined">
-            <OutlinedInput
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowRepeatPassword(!showRepeatPassword)}>
-                    {showRepeatPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              error={!!errors.repeatPassword}
-              inputRef={register({ required: true })}
-              name="repeatPassword"
-              onChange={handleRepeatPasswordChange}
-              type={showRepeatPassword ? "text" : "password"}
-            />
-          </FormControl>
-          {passwordDoNotMatch && <span className="errorText">Passwords do not match</span>}
         </Box>
 
         <Box className="inputBox">
