@@ -1491,7 +1491,7 @@ security.2fa.reset.support: "2FA'yı devre dışı bırakmak için lütfen deste
 security.2fa.title: "2 Faktörlü Kimlik Doğrulama"
 security.2fa.unavailable: "Güvenlik doğrulaması mevcut değil?"
 profile.changeemailtext: "E-postanızı değiştirmek için burayı tıklayın!"
-status.102: 'API anahtarlarınız doğru izinlere sahip değil, lütfen "emir iptal" ("order cancel") yerine "emir"i ("order") seçin'
+status.102: "API anahtarlarınız doğru izinlere sahip değil, lütfen \"emir iptal\" (\"order cancel\") yerine \"emir\"i (\"order\") seçin"
 status.103: "Bu pazar için mevcut bir kontrat var, lütfen yeni bir tane açmadan önce onu gözden geçirin"
 status.104: "Yapılandırmanızda pozisyon tarafına (UZUN|KISA) izin verilmiyor"
 status.105: "Emir tipi kuralları gereği iptal edildi"
@@ -1515,14 +1515,14 @@ profitsharing.profitsmode: "Kârınızla ne yapmak istersiniz?"
 profitsharing.confirm: "Lütfen onaylayın"
 profitsharing.investing: "Yatırım yapıyorsunuz"
 profitsharing.profitswillbe: "Kârınız"
-profitsharing.confirmtransfer: 'Onaylamak için "transfer" yazın'
+profitsharing.confirmtransfer: "Onaylamak için \"transfer\" yazın"
 profitsharing.reinvested: "Yeniden yatırım yapıldı"
 profitsharing.withdrawn: "Çekilen"
 profitsharing.wrongexchange: "Hatalı Borsa"
-# I added "confirm" to be more localized. These kinds of sentences are used in Turkiye for official purposes. Now it is like this:
+# I added "confirm" to be more localized. These kinds of sentences are used in Turkiye for official purposes. Now it is like this: 
 # I understand and confirm that my whole balance is now...
 profitsharing.ack1: "Bakiyemin tamamının {quote} artık marjinin bir parçası olduğunu ve risk altında olduğunu anlıyor ve onaylıyorum."
-# I added "confirm" to be more localized. These kinds of sentences are used in Turkiye for official purposes. Now it is like this:
+# I added "confirm" to be more localized. These kinds of sentences are used in Turkiye for official purposes. Now it is like this: 
 # I understand and confirm that my funds will be transferred...
 profitsharing.ack2: "Paramın Trader'ın havuzuna aktarılacağını ve artık mevcut bakiyemde görünmeyeceğini anlıyor ve onaylıyorum."
 profitsharing.ack3: "Bağlantıyı keserken, sadece trader'ın tüm açık pozisyonları kapattıktan sonra yatırımımı geri çekebileceğimi anlıyor ve onaylıyorum."
@@ -1538,7 +1538,7 @@ login.hero.record: "Geçmiş performans"
 login.hero.record.desc: "Profit Sharing sistemiyle kullanıcılar 1 Milyon doların üzerinde kazandı"
 login.hero.fees: "Ücretler"
 login.hero.fees.desc: "Aylık ücret yok, sadece kâr elde ettiğinizde ödeyin "
-login.hero.min: '"En az" sınırı yok'
+login.hero.min: "\"En az\" sınırı yok"
 login.hero.min.desc: "1$ veya daha da düşük miktarla Profit Sharing deneyin"
 login.press: "Basında Zignaly"
 login.readmore: "Daha fazlasını okuyun"
@@ -1940,7 +1940,7 @@ zigpad.benefits.info: |
   • Favori blok zincirinizde yapın
   • Potansiyeli yüksek projelerden henüz başlangıç aşamasında yararlanın.
 zigpad.benefits.info2: |
-  • Kalite filtresi yüksek projeler.
+  • Kalite filtresi yüksek projeler. 
   • Masraf yok.
   • Tamamen şeffaf süreç.
 zigpad.faq: "SSS"
@@ -1985,7 +1985,7 @@ vault.boostStake.cantReduce: "Takviye seviyenizi düşürmeniz mümkün değildi
 vault.program: "Vault Staking Programı"
 vault.reduceBoost: "Stake ettikten sonra, takviye seviyenizi veya stake edilen {coin} miktarınızı azaltamazsınız."
 vault.unstake.notPossible: "Stake ettikten sonra, programın sonuna kadar miktarı geri alamaz veya  azaltamazsınız. Sadece daha sonra düzenleyerek stake miktarına ekleme yapabilirsiniz."
-vault.unstake.penaltyDetails: "Stake ettiğiniz miktarı kilit süresinden önce çekmek isterseniz, ceza ödemeniz gerekecektir. <a>Ücret Ayrıntıları</a>"
+vault.unstake.penalty: "Stake ettiğiniz miktarı kilit süresinden önce çekmek isterseniz, ceza ödemeniz gerekecektir. <a>Ücret Ayrıntıları</a>"
 wallet.staking.earnStake: "{amount} {coin} üzerindeki stake'lerde {reward} kazanın"
 wallet.staking.earnStake.short: "{coin} stake ederek <span>{reward} kazanın</span>"
 wallet.staking.offer.descStake: "{coin} yatırın ve {reward} kazanın"
@@ -2007,3 +2007,22 @@ wallet.staking.stakeAmountAdd: "Stake'e eklenecek miktar:"
 wallet.staking.stakeAdd: "Stake'e eklenecek: {amount}"
 wallet.type.stakingvault: "Staking Vault"
 wallet.type.stakingvaultreturn: "Staking Vault Dönüşü"
+signup.termsAgreement: ""
+balance.locked: ""
+balance.staked: ""
+balance.unstaking: ""
+form.error.unstake.minAmount: ""
+vault.staked: ""
+vault.unstake: ""
+vault.unstake.amount: ""
+vault.unstake.chooseDuration: ""
+vault.unstake.confirm: ""
+vault.unstake.timeWarning: ""
+vault.unstake.confirmWithDate: ""
+vault.unstake.date: ""
+vault.unstake.penaltyDetails: ""
+vault.unstake.progress: ""
+vault.unstake.progress.title: ""
+vault.unstake.progress.desc: ""
+wallet.type.unstakingvault: ""
+wallet.internalTransfer: ""
