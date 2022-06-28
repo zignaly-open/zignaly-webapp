@@ -64,24 +64,6 @@ const MobileAppbar = () => {
         }
         return DashboardBlack;
 
-      case "copyTraders":
-        if (storeSettings.darkStyle) {
-          return CopyWhite;
-        }
-        if (url.includes(link)) {
-          return CopyWhite;
-        }
-        return CopyBlack;
-
-      case "signalProviders":
-        if (storeSettings.darkStyle) {
-          return SignalWhite;
-        }
-        if (url.includes(link)) {
-          return SignalWhite;
-        }
-        return SignalBlack;
-
       case "tradingTerminal":
         if (storeSettings.darkStyle) {
           return TerminalWhite;
@@ -127,20 +109,6 @@ const MobileAppbar = () => {
           to="/profitSharing"
         >
           <img alt="zignaly" className="icon profitSharing" src={getIcon("profitSharing")} />
-        </Link>
-        <Link
-          className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
-          partiallyActive={true}
-          to="/copyTraders"
-        >
-          <img alt="zignaly" className="icon" src={getIcon("copyTraders")} />
-        </Link>
-        <Link
-          className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
-          partiallyActive={true}
-          to="/signalProviders"
-        >
-          <img alt="zignaly" className="icon" src={getIcon("signalProviders")} />
         </Link>
         <Link
           className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}

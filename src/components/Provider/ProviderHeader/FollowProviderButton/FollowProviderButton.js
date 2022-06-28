@@ -109,32 +109,29 @@ const FollowProviderButton = ({ provider }) => {
       <Modal onClose={handleConnectModalClose} size="small" state={connectModal}>
         <ConnectExchange onClose={handleConnectModalClose} />
       </Modal>
-      {provider.disable ? (
-        <CustomButton className="submitButton" loading={loader} onClick={followProvider}>
-          <FormattedMessage id="srv.followprovider" />
-        </CustomButton>
-      ) : !followingFrom || provider.exchangeInternalId === selectedExchange.internalId ? (
-        <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
-          <FormattedMessage id="srv.stopfollowing" />
-        </CustomButton>
-      ) : (
-        <Box
-          alignItems="center"
-          className="actionHelpBox"
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-start"
-        >
-          <Typography variant="h4">
-            <FormattedMessage id="copyt.followingfrom" />
-          </Typography>
-          <Tooltip placement="top" title={followingFrom.internalName}>
-            <Box>
-              <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
-            </Box>
-          </Tooltip>
-        </Box>
-      )}
+      {!provider.disable &&
+        (!followingFrom || provider.exchangeInternalId === selectedExchange.internalId ? (
+          <CustomButton className="loadMoreButton" loading={loader} onClick={stopFollowing}>
+            <FormattedMessage id="srv.stopfollowing" />
+          </CustomButton>
+        ) : (
+          <Box
+            alignItems="center"
+            className="actionHelpBox"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-start"
+          >
+            <Typography variant="h4">
+              <FormattedMessage id="copyt.followingfrom" />
+            </Typography>
+            <Tooltip placement="top" title={followingFrom.internalName}>
+              <Box>
+                <ExchangeIcon exchange={followingFrom.name.toLowerCase()} size="mediumLarge" />
+              </Box>
+            </Tooltip>
+          </Box>
+        ))}
     </Box>
   );
 };
