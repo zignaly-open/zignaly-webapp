@@ -1,6 +1,6 @@
 import { Box, Slider, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Title, Modal, TextDesc } from "styles/styles";
 import PiggyIcon from "images/wallet/piggy.svg";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -48,7 +48,7 @@ const SecondaryText = styled(Typography)`
   font-size: 18px;
 `;
 
-const SecondaryTextSmall = styled(SecondaryText)`
+export const SecondaryTextSmall = styled(SecondaryText)`
   font-size: 14px;
 `;
 
@@ -58,7 +58,7 @@ const BalanceLabel = styled(Typography)`
   margin-left: 4px;
 `;
 
-const BalanceLabelSmall = styled(BalanceLabel)`
+export const BalanceLabelSmall = styled(BalanceLabel)`
   font-size: 14px;
 `;
 
@@ -79,11 +79,12 @@ const Actions = styled.div`
 `;
 
 const WithdrawalsAlert = styled(Alert)`
+  margin-bottom: 12px;
+
   .MuiAlert-message {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 12px;
   }
 `;
 
@@ -125,10 +126,15 @@ const VaultStakeModal = ({
   const coinData = coins ? coins[coin] : null;
   const { walletBalance } = useContext(PrivateAreaContext);
   const balanceAmount = walletBalance[coin];
-  const initialBoostId = vaultProject.boosts?.findIndex(
-    (b) => vaultProject.asideAmount >= b.minimum,
-  );
-  const [boostId, setBoostId] = useState(initialBoostId >= 0 ? initialBoostId : 0);
+  const initialBoostId = useMemo(() => {
+    for (let i = vaultProject.boosts?.length; i--; i > 0) {
+      if (vaultProject.asideAmount >= vaultProject.boosts[i].minimum) {
+        return i;
+      }
+    }
+    return 0;
+  }, []);
+  const [boostId, setBoostId] = useState(initialBoostId);
   const [confirmData, setConfirmData] = useState<FormType>(null);
   const selectedBoost = vaultProject.boosts ? vaultProject.boosts[boostId] : null;
   const balanceAmountAside = vaultProject.asideCoin ? walletBalance[vaultProject.asideCoin] : null;

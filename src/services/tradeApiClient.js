@@ -2580,7 +2580,7 @@ class TradeApiClient {
   /**
    * Vault decrease stake
    *
-   * @param {StakeReq} payload Payload
+   * @param {UnstakeReq} payload Payload
    * @returns {Promise<void>} Result
    *
    * @memberof TradeApiClient

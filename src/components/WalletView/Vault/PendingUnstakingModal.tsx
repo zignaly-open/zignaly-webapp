@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, Radio, RadioGroup, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import React, { useMemo, useState } from "react";
 import { Title, Modal, TextDesc } from "styles/styles";
@@ -7,7 +7,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import Button from "components/Button";
 import NumberFormat from "react-number-format";
 import { formatDateTimeUTC } from "utils/format";
-import dayjs from "dayjs";
 import styled from "styled-components";
 import Table, { TableLayout } from "../Table";
 
@@ -70,7 +69,7 @@ const PendingUnstakingModal = ({
               displayType="text"
               thousandSeparator={true}
               decimalScale={coin.decimals}
-              suffix={` ${program.coin}`}
+              suffix={` ${u.coin}`}
             />
           </Value>
         ),

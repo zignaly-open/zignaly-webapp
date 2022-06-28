@@ -1689,6 +1689,7 @@ form.error.withdraw.min: "Please enter an amount above the minimum withdrawal am
 form.error.withdraw.max: "You do not have this amount available in your account."
 form.error.number.decimals: "Please enter numbers with no more than {maxDecimals} decimal places."
 form.error.url: "URL is not valid"
+form.error.unstake.minAmount: "Remaining staking amount is too low."
 
 # GENERAL
 general.yes: "Yes"
@@ -1788,19 +1789,19 @@ vault.startsEnds: "Starts/Ends"
 vault.terms: "Terms"
 vault.title: "ZIG Vault"
 vault.info: |
-  The Zignaly Vault is a reliable, safe way to stake your idle crypto assets and earn high interest with no lockup period.
+  The Zignaly Vault is a reliable, safe way to stake your idle crypto assets and earn high interest.
   Start the rewards program to offer its users yet another way to earn passive income on their idle assets as well as brining even
   more value to its native ZIG coin. Zignaly offers rewards on its native ZIG coin as well as exciting offers from its partnerships.
-  To get started, make a qualifiying deposit and you will automatically start receiving rewards!
+  To get started, make a qualifying deposit and stake your funds to start receiving rewards!
 vault.benefits: "Benefits"
 vault.benefits.info: |
   • Earn high interest with competitive rates
   • Earn passive income on idle assets
   • Daily rewards & daily compounding
 vault.benefits.info2: |
-  • No fees or lockup period
+  • Variety of programs with or without lockup periods
   • Rewards starts automatically, no promo codes needed
-  • Your funds are always available for withdrawal
+  • Multiple coins and boost options
 vault.active: "Active Vault Offers"
 vault.expired: "Expired Offers"
 vault.holders: "For {coin} holders"
@@ -1824,7 +1825,9 @@ vault.reduceBoost: "Once Staked it will no be possible to reduce your boost leve
 vault.unstake: "Unstake"
 vault.unstake.amount: "Amount to Unstake"
 vault.unstake.chooseDuration: "Choose unstaking duration"
-vault.unstake.confirm: "You will receive {amount} {coin} on {date}. Are you sure?"
+vault.unstake.confirm: "You will receive {amount}."
+vault.unstake.timeWarning: "Unstaked balance can take a couple of minutes until is reflected in your wallet balance."
+vault.unstake.confirmWithDate: "You will receive {amount} on {date}."
 vault.unstake.date: "Completion Date"
 vault.unstake.notPossible: "Once staked, you will not be able to unstake or reduce the amount until the end of this program. However, you can add to the staking amount by editing later."
 vault.unstake.penalty: "Penalty:"
@@ -1915,6 +1918,7 @@ wallet.type.zigpadreturn: "ZIGPad Return"
 wallet.type.zigpadtokensreward: "IDO Tokens Distribution"
 wallet.type.stakingvault: "Staking Vault"
 wallet.type.stakingvaultreturn: "Staking Vault Return"
+wallet.type.unstakingvault: "Unstake"
 wallet.type.buyzig: "Buy ZIG"
 wallet.from: "From:"
 wallet.to: "To:"
