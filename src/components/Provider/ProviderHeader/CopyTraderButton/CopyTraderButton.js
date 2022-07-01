@@ -136,49 +136,59 @@ const CopyTraderButton = ({ provider }) => {
         setConfirmConfig={setConfirmConfig}
       />
       <>
-        {!disconnecting
-          ? !disabled &&
-            (!profitSharing && !sameSelectedExchange ? (
-              <Box
-                alignItems="center"
-                className="actionHelpBox"
-                display="flex"
-                flexDirection="row"
-                justifyContent="flex-start"
-              >
-                <Typography variant="h4">
-                  <FormattedMessage id="copyt.followingfrom" />
-                </Typography>
-                <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
-                  <Box>
-                    <ExchangeIcon
-                      exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
-                      size="mediumLarge"
-                    />
-                  </Box>
-                </Tooltip>
-              </Box>
-            ) : (
-              <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
-                <FormattedMessage id="copyt.stopcopyingtrader" />
+        {!disconnecting ? (
+          disabled ? (
+            !provider.liquidated &&
+            (isNil(provider.maxAllocatedBalance) ||
+              provider.performance.totalBalance < provider.maxAllocatedBalance) &&
+            profitSharing && (
+              <CustomButton className="submitButton" onClick={startCopying}>
+                <FormattedMessage id="copyt.copythistrader" />
               </CustomButton>
-            ))
-          : !disabled && (
-              <Tooltip
-                placement="right"
-                title={<FormattedMessage id="copyt.canceldisconnecting.tooltip" />}
-              >
+            )
+          ) : !profitSharing && !sameSelectedExchange ? (
+            <Box
+              alignItems="center"
+              className="actionHelpBox"
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-start"
+            >
+              <Typography variant="h4">
+                <FormattedMessage id="copyt.followingfrom" />
+              </Typography>
+              <Tooltip placement="top" title={followingFrom ? followingFrom.internalName : ""}>
                 <Box>
-                  <CustomButton
-                    className="loadMoreButton"
-                    loading={cancelDisconnectLoader}
-                    onClick={confirmCancel}
-                  >
-                    <FormattedMessage id="copyt.canceldisconnecting" />
-                  </CustomButton>
+                  <ExchangeIcon
+                    exchange={followingFrom ? followingFrom.name.toLowerCase() : ""}
+                    size="mediumLarge"
+                  />
                 </Box>
               </Tooltip>
-            )}
+            </Box>
+          ) : (
+            <CustomButton className="loadMoreButton" onClick={() => showStopCopyingModal(true)}>
+              <FormattedMessage id="copyt.stopcopyingtrader" />
+            </CustomButton>
+          )
+        ) : (
+          !disabled && (
+            <Tooltip
+              placement="right"
+              title={<FormattedMessage id="copyt.canceldisconnecting.tooltip" />}
+            >
+              <Box>
+                <CustomButton
+                  className="loadMoreButton"
+                  loading={cancelDisconnectLoader}
+                  onClick={confirmCancel}
+                >
+                  <FormattedMessage id="copyt.canceldisconnecting" />
+                </CustomButton>
+              </Box>
+            </Tooltip>
+          )
+        )}
       </>
       <Modal
         onClose={handleStopCopyingModalClose}
