@@ -1702,7 +1702,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async forgotPasswordStep1(payload) {
-    return this.doRequest("/user/request_action/forgotten_password", payload, "POST", 2);
+    return this.doRequest("/user/request_action/forgotten_password", payload, "POST", 2, null);
   }
 
   /**
