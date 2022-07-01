@@ -75,30 +75,30 @@ const VaultButton = ({
   );
 
   const VaultStakeButton = useCallback(() => {
-    return dayjs().isBefore(vault.finishStakingDate) ? (
-      vault.stakeAmount || vault.unstaking?.length ? (
-        <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
-          <FormattedMessage id="vault.editStake" />
-        </ButtonStyled>
-      ) : balance >= vault.minBalance ? (
-        <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
-          <FormattedMessage id="vault.stakeExcl" />
-        </ButtonStyled>
-      ) : (
-        <DepositButton />
-      )
-    ) : dayjs().isBefore(vault.distributionDate) ? (
-      <InactiveButton>
-        <FormattedMessage id="zigpad.waitingDistribution" />
-      </InactiveButton>
+    return vault.stakeAmount || vault.unstaking?.length ? (
+      <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
+        <FormattedMessage id="vault.editStake" />
+      </ButtonStyled>
+    ) : balance >= vault.minBalance ? (
+      <ButtonStyled className="textPurple borderPurple" onClick={onStake}>
+        <FormattedMessage id="vault.stakeExcl" />
+      </ButtonStyled>
     ) : (
-      <InactiveButton>
-        <FormattedMessage id="vault.distributing" />
-      </InactiveButton>
+      <DepositButton />
     );
   }, []);
 
-  return vault.type === "stake" ? (
+  return dayjs().isAfter(vault.finishStakingDate) ? (
+    <InactiveButton>
+      <FormattedMessage
+        id={
+          dayjs().isBefore(vault.distributionDate)
+            ? "zigpad.waitingDistribution"
+            : "vault.distributing"
+        }
+      />
+    </InactiveButton>
+  ) : vault.type === "stake" ? (
     <VaultStakeButton />
   ) : balance >= vault.minBalance ? (
     <ActivatedButton>

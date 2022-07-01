@@ -68,24 +68,6 @@ const Sidebar = () => {
         }
         return DashboardBlack;
 
-      case "copyTraders":
-        if (storeSettings.darkStyle) {
-          return CopyWhite;
-        }
-        if (url.includes(link)) {
-          return CopyWhite;
-        }
-        return CopyBlack;
-
-      case "signalProviders":
-        if (storeSettings.darkStyle) {
-          return SignalWhite;
-        }
-        if (url.includes(link)) {
-          return SignalWhite;
-        }
-        return SignalBlack;
-
       case "tradingTerminal":
         if (storeSettings.darkStyle) {
           return TerminalWhite;
@@ -138,26 +120,6 @@ const Sidebar = () => {
         <img alt="zignaly" className={"icon"} src={getIcon("profitSharing")} />
         <Typography variant="h6">
           <FormattedMessage id="menu.profitSharing" />
-        </Typography>
-      </Link>
-      <Link
-        className={"sideBarLink " + (active("copyTraders") ? "active" : "")}
-        partiallyActive={true}
-        to={"/copyTraders"}
-      >
-        <img alt="zignaly" className={"icon"} src={getIcon("copyTraders")} />
-        <Typography variant="h6">
-          <FormattedMessage id="menu.copytraders" />
-        </Typography>
-      </Link>
-      <Link
-        className={"sideBarLink " + (active("signalProviders") ? "active" : "")}
-        partiallyActive={true}
-        to={"/signalProviders"}
-      >
-        <img alt="zignaly" className={"icon"} src={getIcon("signalProviders")} />
-        <Typography variant="h6">
-          <FormattedMessage id="menu.signalproviders" />
         </Typography>
       </Link>
       <Link
