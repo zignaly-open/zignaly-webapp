@@ -14,8 +14,6 @@ window.zESettings = {
   },
 };
 
-window.userpilotSettings = { token: "55mi72q1" };
-
 const zenedeskDetection = setInterval(() => {
   if (typeof window !== "undefined" && window.zE) {
     window.zE("webWidget", "hide");

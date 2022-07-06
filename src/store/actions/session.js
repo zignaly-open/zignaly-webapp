@@ -4,7 +4,6 @@ import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
-import { endLiveSession, startLiveSession } from "../../utils/liveSessionApi";
 import { analyticsTrigger } from "utils/analyticsJsApi";
 import { toggleBalanceBox } from "./settings";
 
@@ -54,7 +53,6 @@ export const endTradeApiSession = () => {
       const action = {
         type: END_TRADE_API_SESSION,
       };
-      endLiveSession();
       dispatch(action);
       dispatch(unsetUser());
       dispatch(unsetProvider());
@@ -105,10 +103,6 @@ export const initExternalWidgets = (userData, eventType) => {
   }
 
   analyticsTrigger(userData, eventType);
-
-  if (eventType === "signup") {
-    startLiveSession(userData);
-  }
 };
 
 /**
