@@ -8,24 +8,23 @@ import { isString, isEmpty } from "lodash";
 
 export const validatePassword = (password) => {
   let strength = 0;
-  let specialRegex = /[ `!@#$%^&*()_+\-=[\]{};':"|,.<>/?~\\]/;
+  let specialRegex = /[`!@#$%^&*()_+\-=[\]{};':"|,.<>/?~\\]/;
   if (password) {
     if (password.length >= 3) {
       strength += 1;
-      for (let i = 0; i < password.length; i++) {
-        if (password[i] === password[i].toUpperCase()) {
-          strength += 1;
-          break;
-        }
+      // At least one letter
+      if (/[a-zA-Z]/.test(password)) {
+        strength += 1;
       }
-      let str = String(password);
-      for (let i = 0; i < str.length; i++) {
-        let char = parseInt(str.charAt(i));
+      // At least one number
+      for (let i = 0; i < password.length; i++) {
+        let char = parseInt(password.charAt(i));
         if (!isNaN(char)) {
           strength += 1;
           break;
         }
       }
+      // At least one symbol, and 8 chars
       if (specialRegex.test(password) && password.length >= 8) {
         strength += 1;
       }
@@ -95,4 +94,5 @@ export const validateURL = (value) =>
     ),
   );
 
-export const emailRegex = /^[a-zA-Z0-9.!#$%&\\'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+export const emailRegex =
+  /^[a-zA-Z0-9.!#$%&\\'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
