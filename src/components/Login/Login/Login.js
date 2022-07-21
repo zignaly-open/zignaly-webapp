@@ -8,6 +8,7 @@ import OneDollar from "images/login/$1.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 /**
  *
@@ -24,59 +25,23 @@ import { FormattedMessage } from "react-intl";
 const Login = ({ children }) => {
   return (
     <Box className="loginPage">
-      <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
+      <Box className="headerBox" display="flex" flexDirection="row" justifyContent="center">
         <a href="https://www.zignaly.com">
           <img alt="Zignaly" className="logo" src={Logo} />
         </a>
-        <Box className="languageBox">
-          <LanguageSwitcherDropdown />
-        </Box>
       </Box>
-      <Box className="heroBox" display="flex" flexDirection="row" justifyContent="space-between">
-        <Box className="heroSide">
-          <Typography variant="h1">
-            <FormattedMessage
-              id="login.hero"
-              values={{ strong: (/** @type {string} **/ chunks) => <strong>{chunks}</strong> }}
-            />
-          </Typography>
-          <div className="sect">
-            <img src={Trophy} />
-            <div className="sectDescBox">
-              <Typography className="sectHeader">
-                <FormattedMessage id="login.hero.record" />
-              </Typography>
-              <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.record.desc" />
-              </Typography>
-            </div>
-          </div>
-          <div className="sect">
-            <img src={Coins} />
-            <div className="sectDescBox">
-              <Typography className="sectHeader">
-                <FormattedMessage id="login.hero.fees" />
-              </Typography>
-              <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.fees.desc" />
-              </Typography>
-            </div>
-          </div>
-          <div className="sect">
-            <img src={OneDollar} />
-            <div className="sectDescBox">
-              <Typography className="sectHeader">
-                <FormattedMessage id="login.hero.min" />
-              </Typography>
-              <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.min.desc" />
-              </Typography>
-            </div>
-          </div>
-        </Box>
-        {children}
-      </Box>
-      <Press />
+      <br />
+      <br />
+      <Alert severity="info" title="Maintenance">
+        <span style={{ fontSize: "20px" }}>
+          Hello,
+          <br />
+          We are performing a maintenance. We expect to be done by 1pm UTC, but it could be sooner,
+          so don't hesitate to check this up in 30min.
+          <br />
+          Thanks.
+        </span>
+      </Alert>
     </Box>
   );
 };
