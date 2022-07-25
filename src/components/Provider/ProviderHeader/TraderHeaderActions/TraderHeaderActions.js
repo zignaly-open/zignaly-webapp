@@ -49,17 +49,25 @@ const TraderHeaderActions = ({ provider }) => {
       </Box>
       {provider.isCopyTrading ? (
         <>
-          <CopyTraderButton provider={provider} />
-          {provider.liquidated ? (
-            <Typography className="red" variant="h4">
-              <FormattedMessage id="srv.liquidated" />
+          {provider.migrated ? (
+            <Typography variant="h4">
+              <FormattedMessage id="srv.migrated" />
             </Typography>
-          ) : isNumber(provider.maxAllocatedBalance) &&
-            provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
-            <Typography className="red" variant="h4">
-              <FormattedMessage id="srv.maxAllocationReached" />
-            </Typography>
-          ) : null}
+          ) : (
+            <>
+              <CopyTraderButton provider={provider} />
+              {provider.liquidated ? (
+                <Typography className="red" variant="h4">
+                  <FormattedMessage id="srv.liquidated" />
+                </Typography>
+              ) : isNumber(provider.maxAllocatedBalance) &&
+                provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
+                <Typography className="red" variant="h4">
+                  <FormattedMessage id="srv.maxAllocationReached" />
+                </Typography>
+              ) : null}
+            </>
+          )}
         </>
       ) : (
         <FollowProviderButton provider={provider} />
