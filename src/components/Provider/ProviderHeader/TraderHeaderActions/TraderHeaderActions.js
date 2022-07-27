@@ -2,13 +2,20 @@ import React from "react";
 import "./TraderHeaderActions.scss";
 import { Box, Typography, Hidden } from "@material-ui/core";
 import CopyTraderButton from "../CopyTraderButton";
-import PaymentButton from "../PaymentButton";
 import TrialPeriod from "./TrialPeriod";
 import CloneEdit from "../CloneEdit";
 import ProviderLogo from "../ProviderLogo";
 import FollowProviderButton from "../FollowProviderButton";
 import { FormattedMessage } from "react-intl";
 import { isNumber } from "lodash";
+import styled from "styled-components";
+
+const Migrated = styled(Typography)`
+  color: var(--purple);
+  border: 2px solid var(--purple);
+  border-radius: 2px;
+  padding: 5px 15px;
+`;
 
 /**
  * @typedef {Object} DefaultProps
@@ -49,17 +56,25 @@ const TraderHeaderActions = ({ provider }) => {
       </Box>
       {provider.isCopyTrading ? (
         <>
-          <CopyTraderButton provider={provider} />
-          {provider.liquidated ? (
-            <Typography className="red" variant="h4">
-              <FormattedMessage id="srv.liquidated" />
-            </Typography>
-          ) : isNumber(provider.maxAllocatedBalance) &&
-            provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
-            <Typography className="red" variant="h4">
-              <FormattedMessage id="srv.maxAllocationReached" />
-            </Typography>
-          ) : null}
+          {provider.migrated ? (
+            <Migrated variant="h4">
+              <FormattedMessage id="srv.migrated" />
+            </Migrated>
+          ) : (
+            <>
+              <CopyTraderButton provider={provider} />
+              {provider.liquidated ? (
+                <Typography className="red" variant="h4">
+                  <FormattedMessage id="srv.liquidated" />
+                </Typography>
+              ) : isNumber(provider.maxAllocatedBalance) &&
+                provider.performance.totalBalance >= provider.maxAllocatedBalance ? (
+                <Typography className="red" variant="h4">
+                  <FormattedMessage id="srv.maxAllocationReached" />
+                </Typography>
+              ) : null}
+            </>
+          )}
         </>
       ) : (
         <FollowProviderButton provider={provider} />

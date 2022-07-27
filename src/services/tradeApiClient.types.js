@@ -2680,6 +2680,7 @@ function createConnectedProviderUserInfoEntity(response) {
  * @property {Array<DefaultProviderExchangeIDsObject>} exchangeInternalIds
  * @property {string} userId
  * @property {boolean} acceptZigFee
+ * @property {boolean} migrated Migrated to PS2
  */
 
 /**
