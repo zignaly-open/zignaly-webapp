@@ -44,7 +44,6 @@
     "dayjs": "^1.10.7",
     "dompurify": "^2.3.3",
     "gatsby": "^4.2.0",
-    "gatsby-plugin-force-trailing-slashes": "^1.0.6",
     "gatsby-plugin-google-tagmanager": "^4.0.0",
     "gatsby-plugin-layout": "^3.0.0",
     "gatsby-plugin-manifest": "^4.2.0",
