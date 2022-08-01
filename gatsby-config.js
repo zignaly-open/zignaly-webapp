@@ -67,5 +67,6 @@ module.exports = {
         },
       },
     },
+    "gatsby-plugin-force-trailing-slashes",
   ],
 };
