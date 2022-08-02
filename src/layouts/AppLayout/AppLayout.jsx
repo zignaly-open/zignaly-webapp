@@ -23,7 +23,6 @@ import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { Helmet } from "react-helmet";
-import userPilotApi from "utils/userPilotApi";
 
 /**
  *
