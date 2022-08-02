@@ -93,9 +93,11 @@ const AppLayout = (props) => {
     triggerTz(window.location, prevLocation.current, storeUserData);
     analyticsPageView(storeUserData.userId);
     // Force userpilot call due to no trailing slashes
-    // @ts-ignore
-    window.userpilot?.reload();
-    console.log(window.userpilot);
+    setTimeout(() => {
+      // @ts-ignore
+      window.userpilot?.reload();
+      console.log(window.userpilot);
+    }, 1000);
     // Save prev location
     prevLocation.current = window.location.href;
   }, [href]);
