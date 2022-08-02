@@ -23,7 +23,6 @@ import ENMessages from "../../i18n/translations/en.yml";
 import { getLanguageCodefromLocale } from "i18n";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { Helmet } from "react-helmet";
-import userPilotApi from "utils/userPilotApi";
 
 /**
  *
@@ -95,10 +94,8 @@ const AppLayout = (props) => {
     analyticsPageView(storeUserData.userId);
     // Force userpilot call due to no trailing slashes
     // @ts-ignore
-    setTimeout(() => {
-      console.log(userPilotApi.userpilot);
-      userPilotApi.userpilot?.reload();
-    }, 1000);
+    window.userpilot?.reload();
+    console.log(window.userpilot);
     // Save prev location
     prevLocation.current = window.location.href;
   }, [href]);
