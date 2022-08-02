@@ -92,11 +92,14 @@ const AppLayout = (props) => {
   useEffect(() => {
     triggerTz(window.location, prevLocation.current, storeUserData);
     analyticsPageView(storeUserData.userId);
-    // Force userpilot call due to no trailing slashes
-    // @ts-ignore
-    window.userpilot?.reload({ url: window.location.href });
     // Save prev location
     prevLocation.current = window.location.href;
+
+    // Force userpilot call due to no trailing slashes
+    setTimeout(() => {
+      // @ts-ignore
+      window.userpilot?.reload();
+    }, 1000);
   }, [href]);
 
   const lang = getLanguageCodefromLocale(locale);
