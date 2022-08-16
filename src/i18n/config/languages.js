@@ -60,6 +60,12 @@ const LocalizationLanguages = [
     countryCode: "tr",
     languageCode: "tr",
   },
+  {
+    locale: "ru",
+    label: "Русский",
+    countryCode: "ru",
+    languageCode: "ru",
+  },
 ];
 
 if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
@@ -69,12 +75,6 @@ if (process.env.GATSBY_ENABLE_TEST_TRANSLATIONS.toLowerCase() === "true") {
     label: "Čeština",
     countryCode: "cz",
     languageCode: "cs",
-  });
-  LocalizationLanguages.push({
-    locale: "ru",
-    label: "Русский",
-    countryCode: "ru",
-    languageCode: "ru",
   });
   LocalizationLanguages.push({
     locale: "uk",
