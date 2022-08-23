@@ -73,7 +73,7 @@ const Deposit = () => {
           <Typography variant="body1">
             <FormattedMessage id="deposit.buy.how" />
           </Typography>
-          <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank">
+          <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank" id="buy-crypto">
             <Typography className="bold" variant="body1">
               <FormattedMessage id="deposit.buy.creditcard" />
             </Typography>
@@ -111,6 +111,7 @@ const Deposit = () => {
                     label="deposit.choosecoin"
                     onChange={setSelectedAsset}
                     selectedCoin={selectedAssetName}
+                    id="select-coin"
                   />
                   {selectedAsset && (
                     <Box className="tipBox">
@@ -146,7 +147,13 @@ const Deposit = () => {
                           <Typography className="address bold" variant="body1">
                             {depositAddress.address}
                           </Typography>
-                          <img alt="copy" className="copy" onClick={copyAddress} src={CopyIcon} />
+                          <img
+                            alt="copy"
+                            className="copy"
+                            onClick={copyAddress}
+                            src={CopyIcon}
+                            id="copy-address-icon"
+                          />
                         </>
                       ) : (
                         <CircularProgress disableShrink size={21} />
@@ -170,6 +177,7 @@ const Deposit = () => {
                         className="bgPurple"
                         disabled={!depositAddress}
                         onClick={copyAddress}
+                        id="copy-address"
                       >
                         <Typography className="bold" variant="body1">
                           <FormattedMessage id="deposit.address.copy" />

@@ -45,7 +45,7 @@ const WalletButton = () => {
 
   return (
     <Box display="flex" alignItems="center">
-      <Button href="#wallet">
+      <Button href="#wallet" id="zig-wallet">
         <WalletIcon />
         <TypographyBalance>
           {walletBalance ? (

@@ -135,7 +135,6 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        {/* <HeaderBalance /> */}
         {exchangeConnections.length ? (
           <>
             {balanceReady && (
@@ -152,13 +151,17 @@ const Header = () => {
                         <FormattedMessage id="accounts.findtraders" />
                       </CustomButton>
                     ) : (
-                      <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
+                      <CustomButton
+                        className="textPurple"
+                        onClick={() => showInviteModal(true)}
+                        id="invite-cta"
+                      >
                         <FormattedMessage id="accounts.invite" />
                       </CustomButton>
                     )}
                   </>
                 ) : (
-                  <CustomButton className="textPurple" href="#exchangeAccounts">
+                  <CustomButton className="textPurple" href="#exchangeAccounts" id="add-funds-cta">
                     <FormattedMessage id="accounts.addfunds" />
                   </CustomButton>
                 )}

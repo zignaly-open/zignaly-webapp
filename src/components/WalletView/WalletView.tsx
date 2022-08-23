@@ -443,10 +443,14 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
             <Box display="flex" flexDirection="row" mt="12px">
-              <StyledButton variant="contained" onClick={() => showBuyZIG(true)}>
+              <StyledButton variant="contained" onClick={() => showBuyZIG(true)} id="buy-zig">
                 <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "ZIG" }} />
               </StyledButton>
-              <StyledButton variant="contained" onClick={() => setPath("deposit/ZIG")}>
+              <StyledButton
+                variant="contained"
+                onClick={() => setPath("deposit/ZIG")}
+                id="deposit-zig"
+              >
                 <FormattedMessage id="accounts.deposit" />
               </StyledButton>
               <StyledButton variant="outlined" onClick={() => setPath("withdraw/ZIG")}>
@@ -559,7 +563,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#vault">
+              <VaultButton endIcon={<ChevronRight />} href="#vault" id="vault">
                 <FormattedMessage
                   id="wallet.vaults.offers"
                   values={{ count: vaultOffers.length }}
@@ -588,7 +592,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#zigpad">
+              <VaultButton endIcon={<ChevronRight />} href="#zigpad" id="zigpad">
                 <FormattedMessage
                   id="zigpad.projects"
                   values={{ count: launchpadProjects.length }}

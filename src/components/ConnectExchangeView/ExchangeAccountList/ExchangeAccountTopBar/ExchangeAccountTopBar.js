@@ -100,6 +100,7 @@ const ExchangeAccountTopBar = ({ account }) => {
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("deposit", account)}
+              id="deposit"
             >
               {isMobile ? (
                 <CustomToolip title={<FormattedMessage id="accounts.deposit" />}>

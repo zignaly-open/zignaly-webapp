@@ -342,6 +342,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
           disabled={balanceLoading || !isValid}
           loading={loading}
           type="submit"
+          id={step === 1 ? "copy-next" : "copy-transfer"}
         >
           {step === 1 && provider.disable ? (
             <FormattedMessage id="action.next" />

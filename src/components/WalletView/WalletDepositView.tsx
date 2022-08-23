@@ -144,6 +144,7 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           <FormattedMessage id="deposit.network" />
         </Label>
         <Select
+          id="select-network-zig"
           values={networkOptions}
           fullWidth
           value={network}

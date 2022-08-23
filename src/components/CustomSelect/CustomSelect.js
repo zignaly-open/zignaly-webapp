@@ -54,6 +54,7 @@ import ConditionalWrapper from "../ConditionalWrapper";
  * @property {boolean} [disabled] Disabled.
  * @property {string} [placeholder] Placeholder.
  * @property {string} [className] Placeholder.
+ * @property {string} [id]
  */
 
 /**
@@ -116,6 +117,7 @@ const CustomSelect = (props) => {
     labelPlacement,
     disabled = false,
     placeholder,
+    id,
   } = props;
 
   /**
@@ -151,6 +153,7 @@ const CustomSelect = (props) => {
       <FormControl className="callout customSelectControl" variant="outlined">
         {!search ? (
           <Select
+            id={id}
             className="select"
             classes={{
               root: "callout1",
@@ -182,6 +185,7 @@ const CustomSelect = (props) => {
           </Select>
         ) : (
           <Autocomplete
+            id={id}
             className={props.className || ""}
             classes={{
               inputRoot: "searchInputRoot callout1",
