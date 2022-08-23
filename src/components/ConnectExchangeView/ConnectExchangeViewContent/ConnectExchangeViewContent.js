@@ -9,6 +9,7 @@ import ModalPathContext from "../ModalPathContext";
 import ExchangeOrders from "../ExchangeOrders";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
+import { getURLPath } from "hooks/useModalPath";
 
 /**
  * @typedef {Object} DefaultProps
@@ -22,9 +23,10 @@ import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
  */
 const ConnectExchangeViewContent = ({ searchFilter = "" }) => {
   const {
-    pathParams: { currentPath, selectedAccount },
+    pathParams: { selectedAccount },
     resetToPath,
   } = useContext(ModalPathContext);
+  const currentPath = getURLPath();
 
   let canProceed = false;
   if (["deposit", "withdraw", "convert"].includes(currentPath)) {

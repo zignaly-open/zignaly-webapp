@@ -6,7 +6,7 @@ import React from "react";
 
 /**
  * @typedef {Object} ModalPathParams
- * @property {string} currentPath
+ * @property {string} [currentPath]
  * @property {string} [previousPath]
  * @property {string} [title]
  * @property {string|React.ReactElement} [tempMessage]

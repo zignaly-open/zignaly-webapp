@@ -4,6 +4,7 @@ import { SubNavModalHeader } from "../../../SubNavHeader";
 import "./BalanceManagement.scss";
 import ModalPathContext from "../../ModalPathContext";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
+import { getURLPath } from "hooks/useModalPath";
 
 /**
  * @typedef {Object} BalanceManagementPropTypes
@@ -31,10 +32,12 @@ const BalanceManagement = ({ children }) => {
     {
       id: "deposit",
       title: "accounts.deposit",
+      href: "#exchangeAccounts/deposit",
     },
     {
       id: "withdraw",
       title: "accounts.withdraw",
+      href: "#exchangeAccounts/withdraw",
     },
   ];
 
@@ -42,6 +45,7 @@ const BalanceManagement = ({ children }) => {
     tabs.push({
       id: "transfer",
       title: "accounts.transfer",
+      href: "#exchangeAccounts/transfer",
     });
   }
 
@@ -49,29 +53,13 @@ const BalanceManagement = ({ children }) => {
     tabs.push({
       id: "convert",
       title: "accounts.convert",
+      href: "#exchangeAccounts/convert",
     });
   }
 
-  /**
-   * Navigation callback
-   * @param {string} id tab id
-   * @returns {void}
-   */
-  const handleTabChange = (id) => {
-    // Only update current path while keeping previous path
-    setPathParams({
-      ...pathParams,
-      currentPath: id,
-    });
-  };
-
   return (
     <Box className="balanceManagement">
-      <SubNavModalHeader
-        currentPath={pathParams.currentPath}
-        links={tabs}
-        onClick={handleTabChange}
-      />
+      <SubNavModalHeader currentPath={getURLPath()} links={tabs} />
       {children}
     </Box>
   );
