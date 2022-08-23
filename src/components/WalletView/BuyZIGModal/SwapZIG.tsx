@@ -169,7 +169,13 @@ const SwapZIG = ({
           defaultValue={false}
           name="internalId"
           render={({ onChange, value }) => (
-            <Select values={exchangeOptions} fullWidth value={value} handleChange={onChange} />
+            <Select
+              id="select-account-zig"
+              values={exchangeOptions}
+              fullWidth
+              value={value}
+              handleChange={onChange}
+            />
           )}
           rules={{
             required: true,
