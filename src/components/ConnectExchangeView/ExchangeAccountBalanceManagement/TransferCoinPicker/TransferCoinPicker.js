@@ -15,6 +15,7 @@ import { formatFloat } from "../../../../utils/format";
  * @property {Array<string>} coins Coins list.
  * @property {ExchangeAsset} asset Selected asset.
  * @property {string} selectedCoin Selected coin name.
+ * @property {string} [id]
  */
 
 /**
@@ -23,7 +24,7 @@ import { formatFloat } from "../../../../utils/format";
  * @param {TransferCoinPickerTablePropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => {
+const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin, id }) => {
   const intl = useIntl();
 
   return (
@@ -36,6 +37,7 @@ const TransferCoinPicker = ({ label, onChange, coins, asset, selectedCoin }) => 
         placeholder={intl.formatMessage({ id: "deposit.selectcoin" })}
         search={true}
         value={selectedCoin}
+        id={id}
       />
       {asset && (
         <Box className="balanceBox">

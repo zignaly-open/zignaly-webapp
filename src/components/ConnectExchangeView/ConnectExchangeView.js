@@ -8,6 +8,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import useModalPath from "../../hooks/useModalPath";
 import FAQ from "../FAQ";
 import { debounce } from "lodash";
+import useSelectedExchange from "hooks/useSelectedExchange";
 
 /**
  * @typedef {Object} DefaultProps
@@ -25,7 +26,10 @@ const ConnectExchangeView = ({ onClose, onSearch }) => {
   const methods = useForm({
     mode: "onBlur",
   });
-  const modalPath = useModalPath();
+  const currentHash = typeof window !== "undefined" ? window.location.hash?.slice(1) : "";
+  const initialPath = currentHash.split("/")[1];
+  const selectedExchange = useSelectedExchange();
+  const modalPath = useModalPath(initialPath, selectedExchange);
 
   const [search, setSearch] = useState("");
 

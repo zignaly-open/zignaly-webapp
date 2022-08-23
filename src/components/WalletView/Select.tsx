@@ -81,9 +81,10 @@ interface ISelect {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fullWidth?: boolean;
   variant?: "default" | "rainbow";
+  id?: string;
 }
 
-const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) => {
+const Select = ({ values, value, handleChange, fullWidth, variant, id }: ISelect) => {
   return (
     <FormControl variant="filled" hiddenLabel={true} fullWidth={fullWidth}>
       <StyledSelect
@@ -92,6 +93,7 @@ const Select = ({ values, value, handleChange, fullWidth, variant }: ISelect) =>
         onChange={handleChange}
         fullWidth={fullWidth}
         customVariant={variant}
+        id={id}
       >
         {values.map((v) => (
           <MenuItem

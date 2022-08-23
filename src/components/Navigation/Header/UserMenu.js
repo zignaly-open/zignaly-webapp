@@ -62,6 +62,7 @@ const UserMenu = ({ onClose }) => {
           navigateReach("#exchangeAccounts");
           onClose();
         }}
+        id="accounts-menu"
       >
         <img alt="zignaly" className="iconPurple" src={MyExchange} />
         <span className="item">
@@ -83,7 +84,7 @@ const UserMenu = ({ onClose }) => {
           <FormattedMessage id="menu.settings" />
         </span>
       </MenuItem>
-      <MenuItem className="userMenuItem" onClick={showInvite}>
+      <MenuItem className="userMenuItem" onClick={showInvite} id="invite-menu">
         <RecordVoiceOver className="iconPurple" />
         <span className="item">
           <FormattedMessage id="accounts.invite" />
