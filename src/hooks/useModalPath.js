@@ -9,18 +9,21 @@ import { useState, useRef } from "react";
 /**
  * Handle the state management for the modal path data that is shared via context.
  *
+ * @param {string} [initialPath]
+ * @param {ExchangeConnectionEntity} [initialSelectedAccount]
+ *
  * @returns {ModalPath} Modal path state object.
  */
-const useModalPath = () => {
+const useModalPath = (initialPath, initialSelectedAccount) => {
   /**
    * @type {ModalPathParams}
    */
   const initialState = {
-    currentPath: "realAccounts",
-    previousPath: "",
+    currentPath: initialPath || "realAccounts",
+    previousPath: initialPath ? "realAccounts" : "",
     title: "",
     tempMessage: "",
-    selectedAccount: null,
+    selectedAccount: initialSelectedAccount,
   };
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);

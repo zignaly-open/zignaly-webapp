@@ -11,9 +11,7 @@ import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import LazyLoad from "react-lazyload";
-import useExchangeList from "../../../hooks/useExchangeList";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { getExchangeNamesCombined } from "../../../utils/helpers";
 
 /**
  * @typedef {Object} DefaultProps
@@ -34,7 +32,6 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
   } = useContext(ModalPathContext);
 
   const exchangeConnections = useStoreUserExchangeConnections();
-  const { exchanges } = useExchangeList();
   const userExchanges = exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
