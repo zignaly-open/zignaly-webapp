@@ -17,6 +17,7 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { ConfirmDialog } from "../../../Dialogs";
 import SuccessBox from "./SuccessBox";
 import { isNil } from "lodash";
+import { useTz } from "services/tz";
 
 /**
  * @typedef {Object} DefaultProps
@@ -29,6 +30,7 @@ import { isNil } from "lodash";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
+  const track = useTz();
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -70,6 +72,7 @@ const CopyTraderButton = ({ provider }) => {
 
   const startCopying = () => {
     if (exchangeConnections.length) {
+      track("copy-this-trader");
       showCopyModal(true);
     } else {
       showConnectModal(true);

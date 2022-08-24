@@ -29,7 +29,6 @@ import { useStoreUserData } from "hooks/useStoreUserSelector";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountTopBar = ({ account }) => {
-  console.log(account);
   const selectedExchange = useSelectedExchange();
   const { navigateToPath } = useContext(ModalPathContext);
   const theme = useTheme();

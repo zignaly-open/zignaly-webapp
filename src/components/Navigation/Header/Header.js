@@ -25,6 +25,7 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
+import { useTz } from "services/tz";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -32,6 +33,7 @@ import WalletButton from "./WalletButton";
  */
 
 const Header = () => {
+  const track = useTz();
   const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -153,8 +155,10 @@ const Header = () => {
                     ) : (
                       <CustomButton
                         className="textPurple"
-                        onClick={() => showInviteModal(true)}
-                        id="invite-cta"
+                        onClick={() => {
+                          track("invite-cta");
+                          showInviteModal(true);
+                        }}
                       >
                         <FormattedMessage id="accounts.invite" />
                       </CustomButton>

@@ -1,18 +1,18 @@
-/**
- * @typedef {Object} tzData
- * @property {string} action
- * @property {string} [urlReferer]
- * @property {string} [urlDestination]
- * @property {string} [userId]
- * @property {string} [tzid]
- */
+type tzData = {
+  action: string;
+  urlReferer?: string;
+  urlDestination?: string;
+  userId?: string;
+  tzid?: string;
+};
+
+import { useStoreUserData } from "hooks/useStoreUserSelector.js";
+import { UserEntity } from "./tradeApiClient.types";
 
 /**
  * Send tz action.
- * @param {tzData} data data
- * @returns {Promise<*>} response
  */
-const sendTz = (data) => {
+const sendTz = (data: tzData) => {
   const options = {
     method: "POST",
     body: JSON.stringify(data),
@@ -26,20 +26,14 @@ const sendTz = (data) => {
 
 /**
  * Trigger internal tracking event.
- * @param {Location} location New location
- * @param {String} prevLocation Previous location href
- * @param {import("./tradeApiClient.types.js").UserEntity} userData
- * @returns {Promise<void>} Promise
  */
-export const triggerTz = async (location, prevLocation, userData) => {
-  // Root page will be redirected
-  if (location.pathname === "/") return;
+export const triggerTz = async (location: string, userData: UserEntity, prevLocation?: string) => {
   if (userData.isAdmin || process.env.GATSBY_ENABLE_TRACKING !== "true") return;
 
   const data = {
     action: "sData",
     urlReferer: prevLocation || document.referrer,
-    urlDestination: location.href,
+    urlDestination: location,
     userId: userData.userId,
     tid: localStorage.getItem("tid"),
   };
@@ -61,4 +55,13 @@ export const triggerTz = async (location, prevLocation, userData) => {
   } else {
     sendTz(data);
   }
+};
+
+export const useTz = () => {
+  const storeUserData = useStoreUserData();
+  return (id: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.append("ctaId", id);
+    triggerTz(url.toString(), storeUserData);
+  };
 };

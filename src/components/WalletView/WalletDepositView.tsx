@@ -13,6 +13,7 @@ import { Control } from "./styles";
 import Select from "./Select";
 import { getChainIcon } from "utils/chain";
 import CoinIcon from "./CoinIcon";
+import { useTz } from "services/tz";
 
 const StyledErrorOutlined = styled(ErrorOutlineOutlined)`
   margin-right: 7px;
@@ -85,6 +86,7 @@ interface WalletDepositViewProps {
 }
 
 const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
+  const track = useTz();
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData
@@ -148,7 +150,10 @@ const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
           values={networkOptions}
           fullWidth
           value={network}
-          handleChange={(e) => setNetwork(e.target.value)}
+          handleChange={(e) => {
+            track("select-network-zig");
+            setNetwork(e.target.value);
+          }}
         />
       </Control>
       {address?.memo && (

@@ -33,6 +33,7 @@ import ProjectDetailsModal from "./Zigpad/ProjectDetailsModal";
 import BuyZIGModal from "./BuyZIGModal/BuyZIGModal";
 import Button from "components/Button";
 import WalletPopover from "./WalletPopover";
+import { useTz } from "services/tz";
 
 const CategIconStyled = styled.img`
   margin: 31px 14px 0 0;
@@ -261,6 +262,7 @@ const LaunchpadBox = styled(Box)`
 `;
 
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
+  const track = useTz();
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const pathParams = path.split("/");
@@ -443,12 +445,22 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
               {/* <ArrowIcon width={32} height={32} src={WalletIcon} /> */}
             </RateText>
             <Box display="flex" flexDirection="row" mt="12px">
-              <StyledButton variant="contained" onClick={() => showBuyZIG(true)} id="buy-zig">
+              <StyledButton
+                variant="contained"
+                onClick={() => {
+                  track("buy-zig");
+                  showBuyZIG(true);
+                }}
+                id="buy-zig"
+              >
                 <FormattedMessage id="wallet.zig.buyCoin" values={{ coin: "ZIG" }} />
               </StyledButton>
               <StyledButton
                 variant="contained"
-                onClick={() => setPath("deposit/ZIG")}
+                onClick={() => {
+                  track("deposit-zig");
+                  setPath("deposit/ZIG");
+                }}
                 id="deposit-zig"
               >
                 <FormattedMessage id="accounts.deposit" />
