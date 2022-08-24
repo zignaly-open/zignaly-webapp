@@ -1,4 +1,10 @@
+import { navigate } from "@reach/router";
 import { useState, useRef } from "react";
+
+export const getURLPath = () => {
+  const currentHash = typeof window !== "undefined" ? window.location.hash?.slice(1) : "";
+  return currentHash.split("/")[1] || "/";
+};
 
 /**
  * @typedef {import("../components/ConnectExchangeView/ModalPathContext").ModalPath} ModalPath
@@ -9,21 +15,29 @@ import { useState, useRef } from "react";
 /**
  * Handle the state management for the modal path data that is shared via context.
  *
+ * @param {Boolean} [initialBack]
+ * @param {ExchangeConnectionEntity} [initialSelectedAccount]
+ *
  * @returns {ModalPath} Modal path state object.
  */
-const useModalPath = () => {
+const useModalPath = (initialBack, initialSelectedAccount) => {
+  const modalPath = "#exchangeAccounts";
+
   /**
    * @type {ModalPathParams}
    */
   const initialState = {
-    currentPath: "realAccounts",
-    previousPath: "",
+    previousPath: initialBack ? "/" : "",
     title: "",
     tempMessage: "",
-    selectedAccount: null,
+    selectedAccount: initialSelectedAccount,
   };
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);
+
+  const doNavigate = (path) => {
+    navigate(`${modalPath}${path && path !== "/" ? "/" + path : ""}`);
+  };
 
   /**
    * @param {string} path Path to navigate to.
@@ -32,10 +46,10 @@ const useModalPath = () => {
    */
   const navigateToPath = (path, selectedAccount) => {
     setPathParams({
-      currentPath: path,
-      previousPath: pathParams.currentPath,
+      previousPath: getURLPath(),
       selectedAccount,
     });
+    doNavigate(path);
   };
 
   /**
@@ -44,9 +58,8 @@ const useModalPath = () => {
    * @returns {void}
    */
   const resetToPath = (path) => {
-    setPathParams({
-      currentPath: path,
-    });
+    setPathParams({});
+    doNavigate(path);
   };
 
   /**

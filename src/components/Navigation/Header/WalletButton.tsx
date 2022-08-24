@@ -6,6 +6,7 @@ import { Box, Tooltip, Typography } from "@material-ui/core";
 import ZigCoinIcon from "images/wallet/zignaly-coin.svg";
 import { isMobile } from "styles/styles";
 import NumberFormat from "react-number-format";
+import { useTz } from "services/tz";
 
 const Button = styled(CustomButton)`
   min-width: 80px;
@@ -42,6 +43,7 @@ const WalletIcon = styled.img.attrs((props) => ({
 
 const WalletButton = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
+  const track = useTz();
 
   return (
     <Box display="flex" alignItems="center">

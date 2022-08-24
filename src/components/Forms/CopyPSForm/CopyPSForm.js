@@ -23,6 +23,7 @@ import { formatNumber } from "utils/formatters";
 import NumberInput from "../NumberInput";
 import { isNil } from "lodash";
 import { Help } from "@material-ui/icons";
+import { useTz } from "services/tz";
 
 /**
  * @typedef {Object} DefaultProps
@@ -62,6 +63,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     "allocatedBalance",
     !provider.disable ? provider.allocatedBalance : "",
   );
+  const track = useTz();
 
   // Update validation when we receive quote balance
   useEffect(() => {
@@ -342,6 +344,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
           disabled={balanceLoading || !isValid}
           loading={loading}
           type="submit"
+          onClick={() => track(step === 1 ? "copy-next" : "copy-transfer")}
         >
           {step === 1 && provider.disable ? (
             <FormattedMessage id="action.next" />

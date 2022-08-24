@@ -25,6 +25,7 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
+import { useTz } from "services/tz";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -32,6 +33,7 @@ import WalletButton from "./WalletButton";
  */
 
 const Header = () => {
+  const track = useTz();
   const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -135,7 +137,6 @@ const Header = () => {
         flexDirection="row"
         justifyContent="flex-end"
       >
-        {/* <HeaderBalance /> */}
         {exchangeConnections.length ? (
           <>
             {balanceReady && (
@@ -152,13 +153,26 @@ const Header = () => {
                         <FormattedMessage id="accounts.findtraders" />
                       </CustomButton>
                     ) : (
-                      <CustomButton className="textPurple" onClick={() => showInviteModal(true)}>
+                      <CustomButton
+                        className="textPurple"
+                        onClick={() => {
+                          track("invite-cta");
+                          showInviteModal(true);
+                        }}
+                      >
                         <FormattedMessage id="accounts.invite" />
                       </CustomButton>
                     )}
                   </>
                 ) : (
-                  <CustomButton className="textPurple" href="#exchangeAccounts">
+                  <CustomButton
+                    className="textPurple"
+                    onClick={() => {
+                      track("add-funds-cta");
+                    }}
+                    href="#exchangeAccounts"
+                    id="add-funds-cta"
+                  >
                     <FormattedMessage id="accounts.addfunds" />
                   </CustomButton>
                 )}

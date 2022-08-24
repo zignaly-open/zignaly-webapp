@@ -28,6 +28,7 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
     resetToPath,
     setPathParams,
     formRef,
+    navigateToPath,
   } = useContext(ModalPathContext);
   const methods = useFormContext();
   const exchangeConnections = useStoreUserExchangeConnections();
@@ -48,11 +49,11 @@ const ConnectExchangeViewHead = ({ onClose, onSearch }) => {
       let params = {
         isLoading: false,
         ...(res && {
-          currentPath: previousPath,
           previousPath: null,
         }),
       };
       setPathParams((state) => ({ ...state, ...params }));
+      navigateToPath(previousPath);
     })();
   };
 

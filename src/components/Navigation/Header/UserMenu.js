@@ -17,6 +17,7 @@ import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import InviteModal from "./InviteModal";
 import { RecordVoiceOver } from "@material-ui/icons";
 import PrivateAreaContext from "context/PrivateAreaContext";
+import { useTz } from "services/tz";
 
 /**
  *
@@ -33,6 +34,7 @@ const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
   const exchangeConnections = useStoreUserExchangeConnections();
   const { showInviteModal } = useContext(PrivateAreaContext);
+  const track = useTz();
 
   const logout = () => {
     navigateLogin();
@@ -50,6 +52,7 @@ const UserMenu = ({ onClose }) => {
   };
 
   const showInvite = () => {
+    track("invite-menu");
     showInviteModal(true);
     onClose();
   };

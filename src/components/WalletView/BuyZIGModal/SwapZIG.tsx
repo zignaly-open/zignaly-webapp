@@ -25,6 +25,7 @@ import useInterval from "hooks/useInterval";
 import SwapZIGConfirm from "./SwapZIGConfirm";
 import ExchangesTooltip from "../ExchangesTooltip";
 import dayjs from "dayjs";
+import { useTz } from "services/tz";
 
 const SecondaryText = styled(Typography)`
   color: ${(props) => props.theme.newTheme.secondaryText};
@@ -53,6 +54,7 @@ const SwapZIG = ({
   onDepositMore,
   onDone,
 }: SwapZIGProps) => {
+  const track = useTz();
   const {
     control,
     formState: { isValid },
@@ -169,7 +171,15 @@ const SwapZIG = ({
           defaultValue={false}
           name="internalId"
           render={({ onChange, value }) => (
-            <Select values={exchangeOptions} fullWidth value={value} handleChange={onChange} />
+            <Select
+              values={exchangeOptions}
+              fullWidth
+              value={value}
+              handleChange={(val) => {
+                track("select-account-zig");
+                onChange(val);
+              }}
+            />
           )}
           rules={{
             required: true,

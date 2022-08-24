@@ -33,7 +33,9 @@ import CustomButton from "../../../CustomButton";
 const ConfirmDeleteDialog = ({ onClose, open }) => {
   const {
     pathParams: { selectedAccount, previousPath },
+    setTempMessage,
     setPathParams,
+    navigateToPath,
   } = useContext(ModalPathContext);
   const storeSettings = useStoreSettingsSelector();
   const storeExchanegeConnections = useStoreUserExchangeConnections();
@@ -57,10 +59,8 @@ const ConfirmDeleteDialog = ({ onClose, open }) => {
             setSelectedExchange(newSelectedExchange ? newSelectedExchange.internalId : null),
           );
         }
-        setPathParams({
-          tempMessage: <FormattedMessage id={"accounts.deleted"} />,
-          currentPath: previousPath,
-        });
+        navigateToPath(previousPath);
+        setTempMessage(<FormattedMessage id={"accounts.deleted"} />);
         onClose();
         dispatch(getUserData());
       })

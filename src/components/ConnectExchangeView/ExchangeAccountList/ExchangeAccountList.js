@@ -11,9 +11,8 @@ import ModalPathContext from "../ModalPathContext";
 import { SubNavModalHeader } from "../../SubNavHeader";
 import ExchangeAccountTopBar from "./ExchangeAccountTopBar";
 import LazyLoad from "react-lazyload";
-import useExchangeList from "../../../hooks/useExchangeList";
 import useSelectedExchange from "hooks/useSelectedExchange";
-import { getExchangeNamesCombined } from "../../../utils/helpers";
+import { getURLPath } from "hooks/useModalPath";
 
 /**
  * @typedef {Object} DefaultProps
@@ -27,14 +26,9 @@ import { getExchangeNamesCombined } from "../../../utils/helpers";
  * @returns {JSX.Element} Component JSX.
  */
 const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
-  const {
-    pathParams: { currentPath },
-    navigateToPath,
-    resetToPath,
-  } = useContext(ModalPathContext);
+  const { navigateToPath, resetToPath } = useContext(ModalPathContext);
 
   const exchangeConnections = useStoreUserExchangeConnections();
-  const { exchanges } = useExchangeList();
   const userExchanges = exchangeConnections.filter((e) =>
     e.paperTrading || e.isTestnet ? demo : !demo,
   );
@@ -78,7 +72,7 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
 
   return (
     <Box className="exchangeAccountList">
-      <SubNavModalHeader currentPath={currentPath} links={tabs} onClick={handleTabChange} />
+      <SubNavModalHeader currentPath={getURLPath()} links={tabs} onClick={handleTabChange} />
 
       {!userExchanges.length ? (
         !demo ? (
@@ -87,7 +81,7 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
           <NoDemoAccount />
         )
       ) : (
-        <Box className={`exchangeAccountContainer ${currentPath}`}>
+        <Box className="exchangeAccountContainer">
           {filteredUserExchanges.map((account) => (
             <Box className="exchangeAccountInfo" key={account.internalId}>
               <LazyLoad height={400} overflow={true} scrollContainer=".modal">

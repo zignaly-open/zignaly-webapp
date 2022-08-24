@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ExchangeAccountList from "../ExchangeAccountList";
 import ExchangeAccountSettings from "../ExchangeAccountSettings";
 import Deposit from "../ExchangeAccountBalanceManagement/Deposit";
@@ -9,6 +9,7 @@ import ModalPathContext from "../ModalPathContext";
 import ExchangeOrders from "../ExchangeOrders";
 import Convert from "../ExchangeAccountBalanceManagement/Convert";
 import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
+import { getURLPath } from "hooks/useModalPath";
 
 /**
  * @typedef {Object} DefaultProps
@@ -21,17 +22,46 @@ import Transfer from "../ExchangeAccountBalanceManagement/Transfer";
  * @returns {JSX.Element} Component JSX.
  */
 const ConnectExchangeViewContent = ({ searchFilter = "" }) => {
-  const { pathParams } = useContext(ModalPathContext);
+  const {
+    pathParams: { selectedAccount },
+    resetToPath,
+  } = useContext(ModalPathContext);
+  const currentPath = getURLPath();
 
-  const path = pathParams.currentPath;
-  switch (path) {
+  let canProceed = false;
+  if (["deposit", "withdraw", "convert"].includes(currentPath)) {
+    if (selectedAccount?.isBrokerAccount) {
+      canProceed = true;
+    }
+  } else if (currentPath === "convert" && selectedAccount?.exchangeType.toLowerCase() === "spot") {
+    canProceed = true;
+  } else if (["settings"].includes(currentPath) && selectedAccount) {
+    canProceed = true;
+  } else {
+    // Default root path
+    canProceed = true;
+  }
+
+  useEffect(() => {
+    if (selectedAccount && !canProceed) {
+      resetToPath();
+    }
+  }, [selectedAccount]);
+
+  if (!canProceed) {
+    return null;
+  }
+
+  switch (currentPath) {
     case "realAccounts":
     case "demoAccounts":
     default:
-      return <ExchangeAccountList demo={path === "demoAccounts"} searchFilter={searchFilter} />;
+      return (
+        <ExchangeAccountList demo={currentPath === "demoAccounts"} searchFilter={searchFilter} />
+      );
     case "createAccount":
     case "createDemoAccount":
-      return <ExchangeAccountAdd demo={path === "createDemoAccount"} />;
+      return <ExchangeAccountAdd demo={currentPath === "createDemoAccount"} />;
     case "connectAccount":
       return <ExchangeAccountConnect />;
     case "settings":
