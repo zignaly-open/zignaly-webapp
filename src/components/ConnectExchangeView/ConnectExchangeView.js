@@ -29,7 +29,7 @@ const ConnectExchangeView = ({ onClose, onSearch }) => {
   const currentHash = typeof window !== "undefined" ? window.location.hash?.slice(1) : "";
   const initialPath = currentHash.split("/")[1];
   const selectedExchange = useSelectedExchange();
-  const modalPath = useModalPath(initialPath, selectedExchange);
+  const modalPath = useModalPath(Boolean(initialPath), selectedExchange);
 
   const [search, setSearch] = useState("");
 

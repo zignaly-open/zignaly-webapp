@@ -15,19 +15,19 @@ export const getURLPath = () => {
 /**
  * Handle the state management for the modal path data that is shared via context.
  *
- * @param {string} [initialPath]
+ * @param {Boolean} [initialBack]
  * @param {ExchangeConnectionEntity} [initialSelectedAccount]
  *
  * @returns {ModalPath} Modal path state object.
  */
-const useModalPath = (initialPath, initialSelectedAccount) => {
+const useModalPath = (initialBack, initialSelectedAccount) => {
   const modalPath = "#exchangeAccounts";
-  // const rootPath = "#exchangeAccounts";
+
   /**
    * @type {ModalPathParams}
    */
   const initialState = {
-    previousPath: initialPath ? "realAccounts" : "",
+    previousPath: initialBack ? "/" : "",
     title: "",
     tempMessage: "",
     selectedAccount: initialSelectedAccount,
@@ -35,18 +35,21 @@ const useModalPath = (initialPath, initialSelectedAccount) => {
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);
 
+  const doNavigate = (path) => {
+    navigate(`${modalPath}${path && path !== "/" ? "/" + path : ""}`);
+  };
+
   /**
    * @param {string} path Path to navigate to.
    * @param {ExchangeConnectionEntity} selectedAccount Selected account used in sub paths
    * @returns {void}
    */
   const navigateToPath = (path, selectedAccount) => {
-    console.log(getURLPath());
     setPathParams({
       previousPath: getURLPath(),
       selectedAccount,
     });
-    navigate(`${modalPath}${path ? "/" + path : ""}`);
+    doNavigate(path);
   };
 
   /**
@@ -56,7 +59,7 @@ const useModalPath = (initialPath, initialSelectedAccount) => {
    */
   const resetToPath = (path) => {
     setPathParams({});
-    navigate(`${modalPath}${path ? "/" + path : ""}`);
+    doNavigate(path);
   };
 
   /**
