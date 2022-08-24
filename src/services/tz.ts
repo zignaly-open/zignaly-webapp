@@ -6,7 +6,9 @@ type tzData = {
   tzid?: string;
 };
 
+import ModalPathContext from "components/ConnectExchangeView/ModalPathContext";
 import { useStoreUserData } from "hooks/useStoreUserSelector.js";
+import { useContext } from "react";
 import { UserEntity } from "./tradeApiClient.types";
 
 /**
@@ -57,11 +59,23 @@ export const triggerTz = async (location: string, userData: UserEntity, prevLoca
   }
 };
 
+/**
+ * Track click event
+ */
 export const useTz = () => {
   const storeUserData = useStoreUserData();
+  const { pathParams } = useContext(ModalPathContext);
+
   return (id: string) => {
     const url = new URL(window.location.href);
+
+    // Add button id as query parameter
     url.searchParams.append("ctaId", id);
+
+    // Add exchange account id (for exchange accounts modal)
+    if (pathParams?.selectedAccount) {
+      url.searchParams.append("exchangeAccountId", pathParams.selectedAccount.internalId);
+    }
     triggerTz(url.toString(), storeUserData);
   };
 };
