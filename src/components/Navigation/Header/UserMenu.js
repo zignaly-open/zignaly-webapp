@@ -17,6 +17,7 @@ import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import InviteModal from "./InviteModal";
 import { RecordVoiceOver } from "@material-ui/icons";
 import PrivateAreaContext from "context/PrivateAreaContext";
+import { useTz } from "services/tz";
 
 /**
  *
@@ -33,6 +34,7 @@ const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
   const exchangeConnections = useStoreUserExchangeConnections();
   const { showInviteModal } = useContext(PrivateAreaContext);
+  const track = useTz();
 
   const logout = () => {
     navigateLogin();
@@ -50,6 +52,7 @@ const UserMenu = ({ onClose }) => {
   };
 
   const showInvite = () => {
+    track("invite-menu");
     showInviteModal(true);
     onClose();
   };
@@ -62,7 +65,6 @@ const UserMenu = ({ onClose }) => {
           navigateReach("#exchangeAccounts");
           onClose();
         }}
-        id="accounts-menu"
       >
         <img alt="zignaly" className="iconPurple" src={MyExchange} />
         <span className="item">
@@ -84,7 +86,7 @@ const UserMenu = ({ onClose }) => {
           <FormattedMessage id="menu.settings" />
         </span>
       </MenuItem>
-      <MenuItem className="userMenuItem" onClick={showInvite} id="invite-menu">
+      <MenuItem className="userMenuItem" onClick={showInvite}>
         <RecordVoiceOver className="iconPurple" />
         <span className="item">
           <FormattedMessage id="accounts.invite" />

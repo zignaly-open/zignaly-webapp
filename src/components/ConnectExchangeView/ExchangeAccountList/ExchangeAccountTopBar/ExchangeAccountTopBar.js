@@ -76,11 +76,7 @@ const ExchangeAccountTopBar = ({ account }) => {
       </Box>
       <Box alignItems="center" className="actionsBox" display="flex" flexDirection="row">
         {!account.paperTrading && (
-          <CustomButton
-            className="textDefault"
-            onClick={() => navigateToPath("orders", account)}
-            href="#exchangeAccounts/orders"
-          >
+          <CustomButton className="textDefault" onClick={() => navigateToPath("orders", account)}>
             {isMobile ? (
               <CustomToolip title={<FormattedMessage id="accounts.orders" />}>
                 <Layers />
@@ -90,11 +86,7 @@ const ExchangeAccountTopBar = ({ account }) => {
             )}
           </CustomButton>
         )}
-        <CustomButton
-          className="textDefault"
-          onClick={() => navigateToPath("settings", account)}
-          href="#exchangeAccounts/settings"
-        >
+        <CustomButton className="textDefault" onClick={() => navigateToPath("settings", account)}>
           {isMobile ? (
             <CustomToolip title={<FormattedMessage id="accounts.settings" />}>
               <Settings />
@@ -109,7 +101,6 @@ const ExchangeAccountTopBar = ({ account }) => {
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("deposit", account)}
               id="deposit"
-              href="#exchangeAccounts/deposit"
             >
               {isMobile ? (
                 <CustomToolip title={<FormattedMessage id="accounts.deposit" />}>
@@ -122,7 +113,6 @@ const ExchangeAccountTopBar = ({ account }) => {
             <CustomButton
               className={isMobile ? "textDefault" : "textPurple"}
               onClick={() => navigateToPath("withdraw", account)}
-              href="#exchangeAccounts/withdraw"
             >
               {isMobile ? (
                 <CustomToolip title={<FormattedMessage id="accounts.withdraw" />}>
@@ -136,7 +126,6 @@ const ExchangeAccountTopBar = ({ account }) => {
               <CustomButton
                 className={isMobile ? "textDefault" : "textPurple"}
                 onClick={() => navigateToPath("transfer", account)}
-                href="#exchangeAccounts/transfer"
               >
                 {isMobile ? (
                   <CustomToolip title={<FormattedMessage id="accounts.transfer" />}>
@@ -151,7 +140,6 @@ const ExchangeAccountTopBar = ({ account }) => {
               <CustomButton
                 className={isMobile ? "textDefault" : "textPurple"}
                 onClick={() => navigateToPath("convert", account)}
-                href="#exchangeAccounts/convert"
               >
                 {isMobile ? (
                   <CustomToolip title={<FormattedMessage id="accounts.convert" />}>

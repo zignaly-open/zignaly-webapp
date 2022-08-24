@@ -32,6 +32,7 @@ const ExchangeAccountAdd = ({ demo }) => {
   const {
     pathParams: { previousPath },
     setPathParams,
+    navigateToPath,
     setTitle,
     formRef,
     setTempMessage,
@@ -179,11 +180,11 @@ const ExchangeAccountAdd = ({ demo }) => {
     let params = {
       isLoading: false,
       ...(res && {
-        currentPath: previousPath,
         previousPath: null,
       }),
     };
     setPathParams((state) => ({ ...state, ...params }));
+    navigateToPath(previousPath);
   };
 
   return (

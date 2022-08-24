@@ -22,6 +22,7 @@ import TipBox from "../TipBox";
 import Modal from "../../../Modal";
 import DepositQRCodes from "./DepositQRCodes";
 import { Alert } from "@material-ui/lab";
+import { useTz } from "services/tz";
 
 const Deposit = () => {
   const {
@@ -29,6 +30,7 @@ const Deposit = () => {
     setPathParams,
   } = useContext(ModalPathContext);
   const copyToClipboard = useClipboard();
+  const track = useTz();
 
   // Initialize exchange internal id if/when account is activated
   const internalId = selectedAccount.activated ? selectedAccount.internalId : "";
@@ -73,7 +75,14 @@ const Deposit = () => {
           <Typography variant="body1">
             <FormattedMessage id="deposit.buy.how" />
           </Typography>
-          <CustomButton className="bgPurple" href={buyCryptoURL} target="_blank" id="buy-crypto">
+          <CustomButton
+            className="bgPurple"
+            href={buyCryptoURL}
+            target="_blank"
+            onClick={() => {
+              track("buy-crypto");
+            }}
+          >
             <Typography className="bold" variant="body1">
               <FormattedMessage id="deposit.buy.creditcard" />
             </Typography>
@@ -109,7 +118,10 @@ const Deposit = () => {
                     asset={selectedAsset}
                     coins={assetsList}
                     label="deposit.choosecoin"
-                    onChange={setSelectedAsset}
+                    onChange={(val) => {
+                      track("select-coin");
+                      setSelectedAsset(val);
+                    }}
                     selectedCoin={selectedAssetName}
                     id="select-coin"
                   />
@@ -150,7 +162,10 @@ const Deposit = () => {
                           <img
                             alt="copy"
                             className="copy"
-                            onClick={copyAddress}
+                            onClick={() => {
+                              track("copy-address-icon");
+                              copyAddress();
+                            }}
                             src={CopyIcon}
                             id="copy-address-icon"
                           />
@@ -176,7 +191,10 @@ const Deposit = () => {
                       <CustomButton
                         className="bgPurple"
                         disabled={!depositAddress}
-                        onClick={copyAddress}
+                        onClick={() => {
+                          track("copy-address");
+                          copyAddress();
+                        }}
                         id="copy-address"
                       >
                         <Typography className="bold" variant="body1">
