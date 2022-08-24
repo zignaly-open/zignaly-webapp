@@ -9,6 +9,7 @@ import GlobalModal from "../../components/GlobalModal";
 import ConnectExchangeView from "../../components/ConnectExchangeView";
 import SettingsView from "../../components/SettingsView";
 import WalletView from "../../components/WalletView";
+import WalletMaintenance from "../../components/WalletView/WalletMaintenance";
 import { useDispatch } from "react-redux";
 import { refreshSessionData } from "../../store/actions/session";
 import { minToMillisec } from "../../utils/timeConvert";
@@ -74,7 +75,7 @@ const PrivateAreaLayout = (props) => {
       <InviteModal isOpen={inviteModal} onClose={() => showInviteModal(false)} />
       <GlobalModal content={ConnectExchangeView} hash="exchangeAccounts" />
       <GlobalModal content={SettingsView} hash="settings" />
-      <GlobalModal content={WalletView} hash="wallet" newTheme={true} showCloseIcon={true} />
+      <GlobalModal content={WalletMaintenance} hash="wallet" newTheme={true} showCloseIcon={true} />
       <GlobalModal
         onClose={onVaultClose}
         content={VaultsView}
