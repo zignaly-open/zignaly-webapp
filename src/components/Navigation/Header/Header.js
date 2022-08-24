@@ -165,7 +165,14 @@ const Header = () => {
                     )}
                   </>
                 ) : (
-                  <CustomButton className="textPurple" href="#exchangeAccounts" id="add-funds-cta">
+                  <CustomButton
+                    className="textPurple"
+                    onClick={() => {
+                      track("add-funds-cta");
+                    }}
+                    href="#exchangeAccounts"
+                    id="add-funds-cta"
+                  >
                     <FormattedMessage id="accounts.addfunds" />
                   </CustomButton>
                 )}

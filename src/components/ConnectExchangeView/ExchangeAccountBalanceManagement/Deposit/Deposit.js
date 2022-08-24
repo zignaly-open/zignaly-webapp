@@ -118,7 +118,10 @@ const Deposit = () => {
                     asset={selectedAsset}
                     coins={assetsList}
                     label="deposit.choosecoin"
-                    onChange={setSelectedAsset}
+                    onChange={(val) => {
+                      track("select-coin");
+                      setSelectedAsset(val);
+                    }}
                     selectedCoin={selectedAssetName}
                     id="select-coin"
                   />
@@ -159,7 +162,10 @@ const Deposit = () => {
                           <img
                             alt="copy"
                             className="copy"
-                            onClick={copyAddress}
+                            onClick={() => {
+                              track("copy-address-icon");
+                              copyAddress();
+                            }}
                             src={CopyIcon}
                             id="copy-address-icon"
                           />
@@ -185,7 +191,10 @@ const Deposit = () => {
                       <CustomButton
                         className="bgPurple"
                         disabled={!depositAddress}
-                        onClick={copyAddress}
+                        onClick={() => {
+                          track("copy-address");
+                          copyAddress();
+                        }}
                         id="copy-address"
                       >
                         <Typography className="bold" variant="body1">

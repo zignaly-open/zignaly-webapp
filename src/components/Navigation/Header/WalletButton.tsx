@@ -47,12 +47,7 @@ const WalletButton = () => {
 
   return (
     <Box display="flex" alignItems="center">
-      <Button
-        href="#wallet"
-        onClick={() => {
-          track("zig-wallet");
-        }}
-      >
+      <Button href="#wallet">
         <WalletIcon />
         <TypographyBalance>
           {walletBalance ? (
