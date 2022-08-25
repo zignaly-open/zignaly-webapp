@@ -6,7 +6,10 @@ import { useTz } from "services/tz";
  * Get url path, supporting ctaId query string inside hash, and handling sub path such as exchangeAccounts/deposit
  */
 export const getURLPath = () => {
-  const hash = window.location.href.split("#")[1]?.split("?")[0]?.split("/")[1];
+  const hash =
+    typeof window !== "undefined"
+      ? window.location.href.split("#")[1]?.split("?")[0]?.split("/")[1]
+      : "";
   return hash || "/";
 };
 
