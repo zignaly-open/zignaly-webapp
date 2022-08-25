@@ -27,6 +27,7 @@ const ConnectExchangeViewContent = ({ searchFilter = "" }) => {
     resetToPath,
   } = useContext(ModalPathContext);
   const currentPath = getURLPath();
+  console.log("currentPath", currentPath);
 
   let canProceed = false;
   if (["deposit", "withdraw", "convert"].includes(currentPath)) {
