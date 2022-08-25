@@ -90,7 +90,10 @@ const AppLayout = (props) => {
 
   const href = typeof window !== "undefined" ? window.location.href : "";
   useEffect(() => {
-    triggerTz(window.location, prevLocation.current, storeUserData);
+    // Root page will be redirected
+    if (window.location.pathname !== "/") {
+      triggerTz(window.location.href, storeUserData, prevLocation.current);
+    }
     analyticsPageView(storeUserData.userId);
     // Save prev location
     prevLocation.current = window.location.href;

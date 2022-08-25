@@ -59,13 +59,14 @@ const SubNavHeader = ({ links, rightComponent }) => (
  * @typedef {Object} ModalNavigationLink Modal navigation link object.
  * @property {string} id Path ID.
  * @property {string} title Link title.
+ * @property {string} [href]
  */
 
 /** *
  * @typedef {Object} SubNavModalHeaderTypes
  * @property {Array<ModalNavigationLink>} links Array of path id/title.
  * @property {string} currentPath Current path
- * @property {function(string): *} onClick onClick callback
+ * @property {function(string): *} [onClick] onClick callback
  */
 
 /**
@@ -87,7 +88,8 @@ export const SubNavModalHeader = ({ links, currentPath, onClick }) => {
         <Link
           className={`dashboardLink ${currentPath === item.id ? "active" : null}`}
           key={index}
-          onClick={() => onClick(item.id)}
+          onClick={() => onClick && onClick(item.id)}
+          href={item.href}
         >
           <FormattedMessage id={item.title} />
         </Link>
