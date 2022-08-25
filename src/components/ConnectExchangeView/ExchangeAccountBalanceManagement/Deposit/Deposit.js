@@ -30,7 +30,7 @@ const Deposit = () => {
     setPathParams,
   } = useContext(ModalPathContext);
   const copyToClipboard = useClipboard();
-  const { track } = useTz();
+  const track = useTz();
 
   // Initialize exchange internal id if/when account is activated
   const internalId = selectedAccount.activated ? selectedAccount.internalId : "";

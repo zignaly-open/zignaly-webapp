@@ -34,7 +34,7 @@ const UserMenu = ({ onClose }) => {
   const [languageSelector, showLanguageSelector] = useState(false);
   const exchangeConnections = useStoreUserExchangeConnections();
   const { showInviteModal } = useContext(PrivateAreaContext);
-  const { track } = useTz();
+  const track = useTz();
 
   const logout = () => {
     navigateLogin();

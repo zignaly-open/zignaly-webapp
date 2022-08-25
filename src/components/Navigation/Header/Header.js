@@ -33,7 +33,7 @@ import { useTz } from "services/tz";
  */
 
 const Header = () => {
-  const { track } = useTz();
+  const track = useTz();
   const selectedExchange = useSelectedExchange();
   const storeSettings = useStoreSettingsSelector();
   const exchangeConnections = useStoreUserExchangeConnections();

@@ -54,7 +54,7 @@ const SwapZIG = ({
   onDepositMore,
   onDone,
 }: SwapZIGProps) => {
-  const { track } = useTz();
+  const track = useTz();
   const {
     control,
     formState: { isValid },
