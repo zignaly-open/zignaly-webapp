@@ -1,9 +1,13 @@
 import { navigate } from "@reach/router";
 import { useState, useRef } from "react";
+import { useTz } from "services/tz";
 
+/**
+ * Get url path, supporting ctaId query string inside hash, and handling sub path such as exchangeAccounts/deposit
+ */
 export const getURLPath = () => {
-  const currentHash = typeof window !== "undefined" ? window.location.hash?.slice(1) : "";
-  return currentHash.split("/")[1] || "/";
+  const hash = window.location.href.split("#")[1]?.split("?")[0]?.split("/")[1];
+  return hash || "/";
 };
 
 /**
@@ -20,23 +24,28 @@ export const getURLPath = () => {
  *
  * @returns {ModalPath} Modal path state object.
  */
-const useModalPath = (initialBack, initialSelectedAccount) => {
+const useModalPath = (initialSelectedAccount) => {
   const modalPath = "#exchangeAccounts";
 
   /**
    * @type {ModalPathParams}
    */
   const initialState = {
-    previousPath: initialBack ? "/" : "",
+    // If we start with a sub path, allow navigating back to root page
+    previousPath: getURLPath() ? "/" : "",
     title: "",
     tempMessage: "",
     selectedAccount: initialSelectedAccount,
   };
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);
+  const { composeHash } = useTz();
 
   const doNavigate = (path) => {
-    navigate(`${modalPath}${path && path !== "/" ? "/" + path : ""}`);
+    const newPath = path && path !== "/" ? "/" + path : "";
+    const hash = `${modalPath}${newPath}`;
+    const ctaId = path && path !== "/" ? path : "";
+    navigate(composeHash(hash, ctaId));
   };
 
   /**

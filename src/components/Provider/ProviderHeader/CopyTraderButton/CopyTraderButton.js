@@ -30,7 +30,7 @@ import { useTz } from "services/tz";
  * @returns {JSX.Element} Component JSX.
  */
 const CopyTraderButton = ({ provider }) => {
-  const track = useTz();
+  const { track } = useTz();
   const selectedExchange = useSelectedExchange();
   const dispatch = useDispatch();
   const exchangeConnections = useStoreUserExchangeConnections();
