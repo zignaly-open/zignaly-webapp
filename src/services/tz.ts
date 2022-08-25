@@ -66,16 +66,30 @@ export const useTz = () => {
   const storeUserData = useStoreUserData();
   const { pathParams } = useContext(ModalPathContext);
 
-  return (id: string) => {
-    const url = new URL(window.location.href);
-
+  const composeHash = (originalHash: string, ctaId: string) => {
+    let hash = originalHash;
     // Add button id as query parameter
-    url.searchParams.append("ctaId", id);
+    if (ctaId) {
+      hash += `?ctaId=${ctaId}`;
+    }
 
     // Add exchange account id (for exchange accounts modal)
     if (pathParams?.selectedAccount) {
-      url.searchParams.append("exchangeAccountId", pathParams.selectedAccount.internalId);
+      hash += "&exchAccountId=" + pathParams.selectedAccount.internalId;
     }
+    return hash;
+  };
+
+  const track = (id: string) => {
+    const urlString = window.location.href;
+    const url = new URL(urlString);
+    const hash = window.location.href.split("#")[1]?.split("?")[0];
+    url.hash = composeHash(hash, id);
     triggerTz(url.toString(), storeUserData);
+  };
+
+  return {
+    track,
+    composeHash,
   };
 };

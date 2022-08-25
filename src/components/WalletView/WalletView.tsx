@@ -262,7 +262,7 @@ const LaunchpadBox = styled(Box)`
 `;
 
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
-  const track = useTz();
+  const { track } = useTz();
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const pathParams = path.split("/");
@@ -575,7 +575,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#vault" id="vault">
+              <VaultButton endIcon={<ChevronRight />} href="#vault?ctaId=vault" id="vault">
                 <FormattedMessage
                   id="wallet.vaults.offers"
                   values={{ count: vaultOffers.length }}
@@ -604,7 +604,7 @@ const WalletView = ({ isOpen }: { isOpen: boolean }) => {
                   <VaultDivider />
                 </Box>
               ))}
-              <VaultButton endIcon={<ChevronRight />} href="#zigpad" id="zigpad">
+              <VaultButton endIcon={<ChevronRight />} href="#zigpad?ctaId=zigpad" id="zigpad">
                 <FormattedMessage
                   id="zigpad.projects"
                   values={{ count: launchpadProjects.length }}

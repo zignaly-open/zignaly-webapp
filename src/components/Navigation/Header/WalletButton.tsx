@@ -43,11 +43,10 @@ const WalletIcon = styled.img.attrs((props) => ({
 
 const WalletButton = () => {
   const { walletBalance } = useContext(PrivateAreaContext);
-  const track = useTz();
 
   return (
     <Box display="flex" alignItems="center">
-      <Button href="#wallet">
+      <Button href="#wallet?ctaId=zig-wallet">
         <WalletIcon />
         <TypographyBalance>
           {walletBalance ? (
