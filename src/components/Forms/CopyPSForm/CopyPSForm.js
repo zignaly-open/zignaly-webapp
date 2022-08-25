@@ -63,7 +63,7 @@ const CopyPSForm = ({ provider, onClose, onSuccess }) => {
     "allocatedBalance",
     !provider.disable ? provider.allocatedBalance : "",
   );
-  const { track } = useTz();
+  const track = useTz();
 
   // Update validation when we receive quote balance
   useEffect(() => {

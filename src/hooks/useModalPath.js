@@ -1,6 +1,6 @@
 import { navigate } from "@reach/router";
 import { useState, useRef } from "react";
-import { useTz } from "services/tz";
+import { composeHash } from "services/tz";
 
 /**
  * Get url path, supporting ctaId query string inside hash, and handling sub path such as exchangeAccounts/deposit
@@ -42,13 +42,12 @@ const useModalPath = (initialSelectedAccount) => {
   };
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);
-  const { composeHash } = useTz();
 
-  const doNavigate = (path) => {
+  const doNavigate = (path, accountInternalId) => {
     const newPath = path && path !== "/" ? "/" + path : "";
     const hash = `${modalPath}${newPath}`;
     const ctaId = path && path !== "/" ? path : "";
-    navigate(composeHash(hash, ctaId));
+    navigate(composeHash(hash, ctaId, accountInternalId));
   };
 
   /**
@@ -61,7 +60,7 @@ const useModalPath = (initialSelectedAccount) => {
       previousPath: getURLPath(),
       selectedAccount,
     });
-    doNavigate(path);
+    doNavigate(path, selectedAccount.internalId);
   };
 
   /**

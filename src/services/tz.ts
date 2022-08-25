@@ -59,6 +59,18 @@ export const triggerTz = async (location: string, userData: UserEntity, prevLoca
   }
 };
 
+export const composeHash = (originalHash: string, ctaId: string, accountInternalId: string) => {
+  let hash = originalHash;
+  if (ctaId) {
+    hash += `?ctaId=${ctaId}`;
+  }
+
+  if (accountInternalId) {
+    hash += "&accId=" + accountInternalId;
+  }
+  return hash;
+};
+
 /**
  * Track click event
  */
@@ -66,30 +78,11 @@ export const useTz = () => {
   const storeUserData = useStoreUserData();
   const { pathParams } = useContext(ModalPathContext);
 
-  const composeHash = (originalHash: string, ctaId: string) => {
-    let hash = originalHash;
-    // Add button id as query parameter
-    if (ctaId) {
-      hash += `?ctaId=${ctaId}`;
-    }
-
-    // Add exchange account id (for exchange accounts modal)
-    if (pathParams?.selectedAccount) {
-      hash += "&exchAccountId=" + pathParams.selectedAccount.internalId;
-    }
-    return hash;
-  };
-
-  const track = (id: string) => {
+  return (ctaId: string, accountInternalId?: string) => {
     const urlString = window.location.href;
     const url = new URL(urlString);
     const hash = window.location.href.split("#")[1]?.split("?")[0];
-    url.hash = composeHash(hash, id);
+    url.hash = composeHash(hash, ctaId, accountInternalId);
     triggerTz(url.toString(), storeUserData);
-  };
-
-  return {
-    track,
-    composeHash,
   };
 };
