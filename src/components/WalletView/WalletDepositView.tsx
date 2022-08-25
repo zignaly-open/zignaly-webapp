@@ -86,7 +86,7 @@ interface WalletDepositViewProps {
 }
 
 const WalletDepositView = ({ coins, coin }: WalletDepositViewProps) => {
-  const { track } = useTz();
+  const track = useTz();
   const [selectedCoin, setSelectedCoin] = useState(coin || "ZIG");
   const coinData = coins ? coins[selectedCoin] : null;
   const networkOptions = coinData

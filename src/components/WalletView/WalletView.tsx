@@ -262,7 +262,7 @@ const LaunchpadBox = styled(Box)`
 `;
 
 const WalletView = ({ isOpen }: { isOpen: boolean }) => {
-  const { track } = useTz();
+  const track = useTz();
   const { walletBalance, setWalletBalance } = useContext(PrivateAreaContext);
   const [path, setPath] = useState("");
   const pathParams = path.split("/");
