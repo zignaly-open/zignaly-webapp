@@ -52,7 +52,7 @@ const useModalPath = (initialSelectedAccount) => {
 
   /**
    * @param {string} path Path to navigate to.
-   * @param {ExchangeConnectionEntity} selectedAccount Selected account used in sub paths
+   * @param {ExchangeConnectionEntity} [selectedAccount] Selected account used in sub paths
    * @returns {void}
    */
   const navigateToPath = (path, selectedAccount) => {
