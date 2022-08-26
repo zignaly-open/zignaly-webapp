@@ -60,7 +60,7 @@ const useModalPath = (initialSelectedAccount) => {
       previousPath: getURLPath(),
       selectedAccount,
     });
-    doNavigate(path, selectedAccount.internalId);
+    doNavigate(path, selectedAccount?.internalId);
   };
 
   /**
