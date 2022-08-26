@@ -76,7 +76,7 @@ const ExchangeAccountData = ({ account }) => {
                             id="accounts.deposit.make"
                             values={{
                               depositLink: (
-                                <a onClick={() => navigateToPath("deposit", account)}>
+                                <a onClick={() => navigateToPath("deposit", account, true)}>
                                   {intl.formatMessage({ id: "accounts.deposit" }).toLowerCase()}
                                 </a>
                               ),

@@ -43,24 +43,39 @@ const useModalPath = (initialSelectedAccount) => {
   const [pathParams, setPathParams] = useState(initialState);
   const formRef = useRef(null);
 
-  const doNavigate = (path, accountInternalId) => {
+  /**
+   * @param {string} path Path to navigate to.
+   * @param {string} [accountInternalId] Selected account
+   * @param {boolean|string} [ctaId] Add ctaId param to url
+   * @returns {void}
+   */
+  const doNavigate = (path, accountInternalId, ctaId) => {
     const newPath = path && path !== "/" ? "/" + path : "";
     const hash = `${modalPath}${newPath}`;
-    const ctaId = path && path !== "/" ? path : "";
-    navigate(composeHash(hash, ctaId, accountInternalId));
+    let ctaIdParam;
+    if (ctaId === true) {
+      if (path && path !== "/") {
+        // Use path as ctaId
+        ctaIdParam = path;
+      }
+    } else if (ctaId) {
+      ctaIdParam = ctaId;
+    }
+    navigate(composeHash(hash, ctaIdParam, accountInternalId));
   };
 
   /**
    * @param {string} path Path to navigate to.
-   * @param {ExchangeConnectionEntity} selectedAccount Selected account used in sub paths
+   * @param {ExchangeConnectionEntity} [selectedAccount] Selected account used in sub paths
+   * @param {boolean|string} [ctaId] Add ctaId param to url. Set as true to use path id.
    * @returns {void}
    */
-  const navigateToPath = (path, selectedAccount) => {
+  const navigateToPath = (path, selectedAccount, ctaId) => {
     setPathParams({
       previousPath: getURLPath(),
       selectedAccount,
     });
-    doNavigate(path, selectedAccount.internalId);
+    doNavigate(path, selectedAccount?.internalId, ctaId);
   };
 
   /**

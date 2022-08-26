@@ -63,10 +63,10 @@ export const composeHash = (originalHash: string, ctaId: string, accountInternal
   let hash = originalHash;
   if (ctaId) {
     hash += `?ctaId=${ctaId}`;
-  }
 
-  if (accountInternalId) {
-    hash += "&accId=" + accountInternalId;
+    if (accountInternalId) {
+      hash += "&accId=" + accountInternalId;
+    }
   }
   return hash;
 };
