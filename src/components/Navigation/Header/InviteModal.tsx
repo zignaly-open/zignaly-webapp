@@ -46,7 +46,6 @@ const InviteModal = ({ onClose, isOpen }: InviteModalProps) => {
                 className="copy"
                 onClick={() => {
                   copyToClipboard(link, "accounts.invite.link.copied");
-                  track("copy-referral");
                 }}
                 src={CopyIcon}
                 width={24}
