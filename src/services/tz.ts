@@ -6,7 +6,6 @@ type tzData = {
   tzid?: string;
 };
 
-import ModalPathContext from "components/ConnectExchangeView/ModalPathContext";
 import { useStoreUserData } from "hooks/useStoreUserSelector.js";
 import { useContext } from "react";
 import { UserEntity } from "./tradeApiClient.types";
@@ -76,7 +75,6 @@ export const composeHash = (originalHash: string, ctaId: string, accountInternal
  */
 export const useTz = () => {
   const storeUserData = useStoreUserData();
-  const { pathParams } = useContext(ModalPathContext);
 
   return (ctaId: string, accountInternalId?: string) => {
     const urlString = window.location.href;
