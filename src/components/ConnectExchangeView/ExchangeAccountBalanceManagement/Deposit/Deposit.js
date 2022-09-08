@@ -142,7 +142,10 @@ const Deposit = () => {
                     <NetworksToggleGroup
                       networks={selectedAsset.networks.map((n) => n.name)}
                       selectedNetwork={selectedNetwork && selectedNetwork.name}
-                      setSelectedNetwork={setSelectedNetwork}
+                      setSelectedNetwork={(value) => {
+                        setSelectedNetwork(value);
+                        track("select-network");
+                      }}
                     />
                     <Typography className="addressLabel" variant="body1">
                       {selectedAssetName} <FormattedMessage id="deposit.address" />
