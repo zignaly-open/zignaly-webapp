@@ -122,7 +122,7 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
           <Typography>
             <FormattedMessage id="copyt.activate.desc" />
           </Typography>
-          <CustomButton className="submitButton" href="#exchangeAccounts">
+          <CustomButton className="submitButton" href="#exchangeAccounts?ctaId=copy-deposit">
             <FormattedMessage id="accounts.deposit" />
           </CustomButton>
         </Box>
