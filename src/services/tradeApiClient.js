@@ -2418,7 +2418,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async verifyUser() {
-    return this.doRequest("/user/verify", null, "POST");
+    return this.doRequest("/user/kyc/enable", null, "POST");
   }
 
   /**
@@ -2429,7 +2429,7 @@ class TradeApiClient {
    * @memberof TradeApiClient
    */
   async unverifyUser() {
-    return this.doRequest("/user/unverify", null, "POST");
+    return this.doRequest("/user/kyc/disable", null, "POST");
   }
 
   /**
