@@ -700,7 +700,7 @@ srv.edit.list.2.tooltip: "CH-Have provided contact information (email, Twitter, 
 srv.edit.list.3.tooltip: "CH-Applied a Logo + Description section completed."
 srv.edit.list.4.tooltip: "CH-Maximum drawdown information is mandatory on the description. Once the value is applied it can only be reduced."
 srv.edit.list.5.tooltip: "CH-2FA is mandatory."
-srv.edit.list.6.tooltip: "CH-KYC verification approved (please send email to verify@zignaly.com)."
+srv.edit.list.6.tooltip: "CH-KYC verification approved (please <a>contact support</a>)"
 srv.edit.upload: "CH-Upload"
 srv.edit.delete: "CH-Delete"
 srv.edit.countries: "CH-Select Countries"

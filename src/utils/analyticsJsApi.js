@@ -37,6 +37,9 @@ const analyticsJsApi = () => {
       plugins: [
         segmentPlugin({
           writeKey: "0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA",
+          // v2 is better?
+          customScriptSrc:
+            "https://segment-cdn.zignaly.com/analytics.js/v1/0HvrNP6DRGdxvlOoKFzUwAXyKobYH3oA/analytics.min.js",
         }),
       ],
     });

@@ -1,14 +1,12 @@
-import { Box, FormControlLabel, Grid, OutlinedInput, Switch, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import { Box, OutlinedInput, Typography } from "@material-ui/core";
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import useClipboard from "hooks/useClipboard";
 import styled, { css } from "styled-components";
 import CopyIcon from "images/exchangeAccount/copy.svg";
 import { useStoreUserData } from "hooks/useStoreUserSelector";
 import Modal from "components/Modal";
-import { useDispatch } from "react-redux";
-import { getUserData } from "store/actions/user";
-import tradeApi from "services/tradeApiClient";
+import { useTz } from "services/tz";
 
 const CopyButton = styled.img`
   cursor: pointer;
@@ -22,6 +20,7 @@ const InviteModal = ({ onClose, isOpen }: InviteModalProps) => {
   const copyToClipboard = useClipboard();
   const userData = useStoreUserData();
   const link = "https://zignaly.com/app/signup/?invite=" + userData.refCode;
+  const track = useTz();
 
   return (
     <Modal onClose={onClose} persist={false} size="medium" state={isOpen}>
@@ -38,11 +37,16 @@ const InviteModal = ({ onClose, isOpen }: InviteModalProps) => {
             readOnly
             value={link}
             style={{ maxWidth: "520px" }}
+            onClick={() => {
+              track("copy-referral");
+            }}
             endAdornment={
               <CopyButton
                 alt="copy"
                 className="copy"
-                onClick={() => copyToClipboard(link, "accounts.invite.link.copied")}
+                onClick={() => {
+                  copyToClipboard(link, "accounts.invite.link.copied");
+                }}
                 src={CopyIcon}
                 width={24}
                 height={24}

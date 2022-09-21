@@ -1606,7 +1606,7 @@ copyt.management.totalallocated.withmax: "Total alloué / Max"
 copyt.copy.error.max: "Le solde maximum alloué pour le service est de {max} {quote}"
 srv.otherServices: "Autres services"
 srv.edit.list.5.tooltip: "2FA est obligatoire."
-srv.edit.list.6.tooltip: "Vérification KYC approuvée (veuillez envoyer un e-mail à verify@zignany.com)."
+srv.edit.list.6.tooltip: "Vérification KYC approuvée (veuillez <a>contacter le support</a>)."
 srv.edit.visibility: "Visibilité"
 srv.edit.visibility.definitive: "Avertissement : Une fois répertorié dans le profil, votre service ne peut pas être supprimé de la liste."
 srv.edit.visibility.unlisted: "Non répertorié"
@@ -1687,12 +1687,12 @@ vault.startsEnds: ""
 vault.terms: ""
 vault.title: ""
 vault.info: |
-  
+
 vault.benefits: ""
 vault.benefits.info: |
-  
+
 vault.benefits.info2: |
-  
+
 # WALLET
 wallet.addcoin: ""
 # WALLET

@@ -201,7 +201,21 @@ const PrivacySlider = ({
                   <FormattedMessage id="srv.edit.list.5.tooltip" />
                 </li>
                 <li>
-                  <FormattedMessage id="srv.edit.list.6.tooltip" />
+                  <FormattedMessage
+                    id="srv.edit.list.6.tooltip"
+                    values={{
+                      a: (chunk) => (
+                        <a
+                          target="_blank"
+                          className="link"
+                          rel="noreferrer"
+                          href="https://help.zignaly.com/en/articles/6203524-contact-our-support-team"
+                        >
+                          {chunk}
+                        </a>
+                      ),
+                    }}
+                  />
                 </li>
               </ul>
             </Box>
