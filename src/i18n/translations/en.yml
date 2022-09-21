@@ -704,7 +704,7 @@ srv.edit.list.2.tooltip: "Have provided contact information (email, Twitter, Fac
 srv.edit.list.3.tooltip: "Applied a Logo + Description section completed."
 srv.edit.list.4.tooltip: "Maximum drawdown information is mandatory on the description. Once the value is applied it can only be reduced."
 srv.edit.list.5.tooltip: "2FA is mandatory."
-srv.edit.list.6.tooltip: "KYC verification approved (please send email to verify@zignaly.com)."
+srv.edit.list.6.tooltip: "KYC verification approved (please <a>contact support</a>)"
 srv.edit.upload: "Upload"
 srv.edit.delete: "Delete"
 srv.edit.countries: "Select Countries"
