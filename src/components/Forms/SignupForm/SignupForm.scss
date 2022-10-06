@@ -1,9 +1,10 @@
 .signupForm {
-  padding: 48px 110px;
+  padding: 25px 110px;
 
   .inputBox {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     width: 264px;
+    margin-top: 20px;
 
     &.checkbox {
       width: 300px;
@@ -86,5 +87,14 @@
         color: $red;
       }
     }
+  }
+
+  .headerText {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    text-align: left;
+
   }
 }

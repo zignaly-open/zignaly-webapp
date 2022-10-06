@@ -102,7 +102,7 @@ const SignupForm = () => {
       <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
         {/* <Captcha onSuccess={captchaFallback.current} /> */}
         <Modal
-          onClose={() => {}}
+          onClose={() => { }}
           persist={true}
           showCloseIcon={false}
           size="small"
@@ -117,6 +117,18 @@ const SignupForm = () => {
           flexDirection="column"
           justifyContent="center"
         >
+          <Box className="headerText">
+            <Typography className="headerText">
+              <FormattedMessage
+                id="signup.header.text1"
+              />
+            </Typography>
+            <Typography className="headerText">
+              <FormattedMessage
+                id="signup.header.text2"
+              />
+            </Typography>
+          </Box>
           <Box
             alignItems="start"
             className="inputBox"
@@ -143,48 +155,45 @@ const SignupForm = () => {
               variant="outlined"
             />
             {errors.email && <span className="errorText">{errors.email.message}</span>}
-          </Box>
-
-          <Passwords edit={false} formMethods={formMethods} />
-
-          <Box marginBottom={3}>
-            <Typography style={{ fontSize: "13px" }}>
-              <FormattedMessage
-                id="signup.termsAgreement"
-                values={{
-                  terms: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/terms"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <b>
-                        <FormattedMessage id="signup.terms" />
-                      </b>
-                    </a>
-                  ),
-                  privacy: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/privacy"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <b>
-                        <FormattedMessage id="signup.privacy" />
-                      </b>
-                    </a>
-                  ),
-                }}
-              />
-            </Typography>
-          </Box>
-
-          <Box className="inputBox buttonBox">
-            <CustomButton className={"full submitButton"} loading={loading} type="submit">
-              <FormattedMessage id="action.signup" />
-            </CustomButton>
+            <Passwords edit={false} formMethods={formMethods} />
+            <Box marginBottom={3}>
+              <Typography className="termsText" style={{ fontSize: "13px" }}>
+                <FormattedMessage
+                  id="signup.termsAgreement"
+                  values={{
+                    terms: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/terms"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <b>
+                          <FormattedMessage id="signup.terms" />
+                        </b>
+                      </a>
+                    ),
+                    privacy: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/privacy"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <b>
+                          <FormattedMessage id="signup.privacy" />
+                        </b>
+                      </a>
+                    ),
+                  }}
+                />
+              </Typography>
+            </Box>
+            <Box className="inputBox buttonBox">
+              <CustomButton className={"full submitButton"} loading={loading} type="submit">
+                <FormattedMessage id="action.signup" />
+              </CustomButton>
+            </Box>
           </Box>
         </Box>
       </form>
