@@ -19,6 +19,7 @@ import { startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
+import Padlock from "images/login/padlock.svg"
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -136,10 +137,8 @@ const SignupForm = () => {
             flexDirection="column"
             justifyContent="start"
           >
-            <label className="customLabel">
-              <FormattedMessage id="security.email" />
-            </label>
             <TextField
+            placeholder="Email"
               className="customInput"
               error={!!errors.email}
               fullWidth
@@ -197,6 +196,32 @@ const SignupForm = () => {
           </Box>
         </Box>
       </form>
+      <Box className="padlockTextContainer">
+        <img src={Padlock} />
+        <Typography className="padlockText">
+          <FormattedMessage
+            id="signup.padlock.message"
+          />
+        </Typography>
+      </Box>
+      <Typography className="termsText" style={{ fontSize: "13px" }}>
+        <FormattedMessage
+          id="signup.text.already.account"
+          values={{
+            login: (
+              <a
+                className="link"
+                href="/login"
+                rel="noopener noreferrer"
+              >
+                <b>
+                  <FormattedMessage id="login.title" />
+                </b>
+              </a>
+            ),
+          }}
+        />
+      </Typography>
       <CaptchaTerms />
     </>
   );

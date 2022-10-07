@@ -16,3 +16,21 @@
     }
   }
 }
+.loginTabs {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  min-height: 450px;
+  overflow-y: visible;
+  position: relative;
+  width: 485px;
+  z-index: 100;
+}
+
+@include media("<=sm") {
+  .loginTabs {
+    border-radius: 0;
+    width: 100%;
+  }
+}
+

@@ -19,7 +19,6 @@ const LoginTabs = ({ children }) => {
   return (
     <Box className="loginTabs">
       <LoginLinks />
-
       <Box className="section">{children}</Box>
     </Box>
   );
