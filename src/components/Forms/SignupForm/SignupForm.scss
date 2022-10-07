@@ -1,10 +1,10 @@
 .signupForm {
-  padding: 25px 110px;
+  padding: 30px 110px;
 
   .inputBox {
     margin-bottom: 30px;
     width: 264px;
-    margin-top: 20px;
+    margin-top: 15px;
 
     &.checkbox {
       width: 300px;
@@ -23,6 +23,11 @@
     }
   }
 
+  .termsText {
+    margin-bottom: -20px;
+    margin-top: 30px;
+  }
+
   .customLabel {
     color: $lighterBlack;
   }
@@ -35,7 +40,7 @@
       line-height: 24px;
       letter-spacing: 0.550000011920929px;
       color: $black;
-      opacity: 3;
+      opacity: 8;
     }
 
     input {
@@ -59,6 +64,10 @@
         border-color: $lightGrey;
       }
     }
+  }
+
+  .emailInput {
+    margin-top: 25px;
   }
 
   .captchaBox {
@@ -113,6 +122,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: -40px;
+  margin-bottom: 32px;
 }
 
 .padlockText {
@@ -122,4 +133,15 @@
   letter-spacing: 0.550000011920929px;
   margin-left: 3px;
 
+}
+
+.secureIcons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.iconsSecure {
+  padding-right: 10px;
+  margin-top: 115px;
 }

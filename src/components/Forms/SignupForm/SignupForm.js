@@ -20,6 +20,9 @@ import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import Padlock from "images/login/padlock.svg"
+import SafuIcon from "images/login/SafuIcon.svg"
+import SslIcon from "images/login/SslIcon.svg"
+import Link from "../../LocalizedLink";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -138,8 +141,8 @@ const SignupForm = () => {
             justifyContent="start"
           >
             <TextField
-            placeholder="Email"
-              className="customInput"
+              placeholder="Email Address"
+              className="customInput emailInput "
               error={!!errors.email}
               fullWidth
               inputRef={register({
@@ -209,21 +212,22 @@ const SignupForm = () => {
           id="signup.text.already.account"
           values={{
             login: (
-              <a
-                className="link"
-                href="/login"
-                rel="noopener noreferrer"
-              >
+              <Link to={"/login"} className="link">
                 <b>
                   <FormattedMessage id="login.title" />
                 </b>
-              </a>
+              </Link>
             ),
           }}
         />
       </Typography>
       <CaptchaTerms />
+      <Box className="secureIcons">
+        <img src={SslIcon} className="iconsSecure" />
+        <img src={SafuIcon} className="iconsSecure" />
+      </Box>
     </>
+
   );
 };
 
