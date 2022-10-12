@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./SignupForm.scss";
-import { Box, TextField, Checkbox, Typography } from "@material-ui/core";
+import { Box, TextField, Checkbox, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import Passwords from "../../Passwords";
@@ -19,9 +19,9 @@ import { startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
-import Padlock from "images/login/padlock.svg"
 import SafuIcon from "images/login/SafuIcon.svg"
 import SslIcon from "images/login/SslIcon.svg"
+import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
 
 const SignupForm = () => {
@@ -140,7 +140,12 @@ const SignupForm = () => {
             flexDirection="column"
             justifyContent="start"
           >
-            <TextField
+            <OutlinedInput
+              startAdornment={
+                <InputAdornment position="start">
+                  <MailOutlined />
+                </InputAdornment>
+              }
               placeholder="Email Address"
               className="customInput emailInput "
               error={!!errors.email}
@@ -154,7 +159,6 @@ const SignupForm = () => {
               })}
               name="email"
               type="email"
-              variant="outlined"
             />
             {errors.email && <span className="errorText">{errors.email.message}</span>}
             <Passwords edit={false} formMethods={formMethods} />
@@ -200,7 +204,7 @@ const SignupForm = () => {
         </Box>
       </form>
       <Box className="padlockTextContainer">
-        <img src={Padlock} />
+        <LockSharp />
         <Typography className="padlockText">
           <FormattedMessage
             id="signup.padlock.message"

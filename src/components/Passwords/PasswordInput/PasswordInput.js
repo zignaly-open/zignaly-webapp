@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormControl, OutlinedInput, InputAdornment } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-
+import PassIcon from "images/login/passIcon.svg"
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
  */
@@ -28,6 +28,11 @@ const PasswordInput = ({ label, ...others }) => {
       <label className="customLabel">{label}</label>
       <OutlinedInput
         className="customInput"
+        startAdornment={
+          <InputAdornment position="start">
+            <img src={PassIcon} />
+          </InputAdornment>
+        }
         endAdornment={
           <InputAdornment position="end">
             <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
