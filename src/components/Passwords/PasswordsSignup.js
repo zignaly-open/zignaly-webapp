@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Box, Popper, useMediaQuery } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import PasswordStrength from "./PasswordStrength";
-import PasswordInput from "./PasswordInput";
+import PasswordInputSignup from "./PasswordInputSignup";
 import { validatePassword } from "../../utils/validators";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -23,7 +23,7 @@ import { FormattedMessage, useIntl } from "react-intl";
  * @param {PasswordsPropTypes} props Component properties.
  * @returns {JSX.Element} Component JSX.
  */
-const Passwords = ({ formMethods, edit }) => {
+const PasswordsSignup = ({ formMethods, edit }) => {
   const [isPasswordStrengthOpen, openPasswordStrength] = useState(false);
   const anchorEl = useRef(null);
   const [strength, setStrength] = useState(0);
@@ -73,7 +73,7 @@ const Passwords = ({ formMethods, edit }) => {
         flexDirection="column"
         justifyContent="start"
       >
-        <PasswordInput
+        <PasswordInputSignup
           label={""}
           placeholder="Password"
           error={!!errors.password}
@@ -97,4 +97,4 @@ const Passwords = ({ formMethods, edit }) => {
   );
 };
 
-export default Passwords;
+export default PasswordsSignup;

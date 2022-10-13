@@ -26,7 +26,7 @@
   }
 
   .heroSide {
-    margin-right: 75px;
+    margin-right: 35px;
   }
 
   .sect {
@@ -46,14 +46,23 @@
 
     .sectHeader {
       color: $purple;
+      font-size: 24px;
       font-weight: 600;
+      line-height: 28px;
+      letter-spacing: 0.550000011920929px;
+      text-align: left;
     }
 
     .sectTitle {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 31px;
-      margin-top: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 30px;
+      letter-spacing: 0.550000011920929px;
+      text-align: left;
+    }
+    .underline {
+      text-decoration: underline;
+      display: inline;
     }
   }
 }

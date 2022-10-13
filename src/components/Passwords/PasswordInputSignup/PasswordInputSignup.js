@@ -20,7 +20,7 @@ import PassIcon from "images/login/passIcon.svg"
  * @param {PasswordInputPropsExtended} props Component props.
  * @returns {JSX.Element} Component JSX.
  */
-const PasswordInput = ({ label, ...others }) => {
+const PasswordInputSignup = ({ label, ...others }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -28,6 +28,11 @@ const PasswordInput = ({ label, ...others }) => {
       <label className="customLabel">{label}</label>
       <OutlinedInput
         className="customInput"
+        startAdornment={
+          <InputAdornment position="start">
+            <img src={PassIcon} />
+          </InputAdornment>
+        }
         endAdornment={
           <InputAdornment position="end">
             <span className="pointer" onClick={() => setShowPassword(!showPassword)}>
@@ -42,4 +47,4 @@ const PasswordInput = ({ label, ...others }) => {
   );
 };
 
-export default PasswordInput;
+export default PasswordInputSignup;

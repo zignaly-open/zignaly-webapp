@@ -24,22 +24,7 @@ import { FormattedMessage } from "react-intl";
 const PressQuote = ({ quote }) => {
   return (
     <Box className="pressQuote">
-      <span className="date">{quote.date.format("MMMM D, YYYY")}</span>
-      <span className="quoteIcon">“</span>
-      <div className="content">{quote.quote}</div>
-      <Box
-        alignItems="center"
-        className="quoteFooter"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        width={1}
-      >
-        <a className="readMore" href={quote.url} rel="noreferrer" target="_blank">
-          <FormattedMessage id="login.readmore" />
-        </a>
-        <img src={quote.logo} />
-      </Box>
+      <img src={quote.logo} />
     </Box>
   );
 };

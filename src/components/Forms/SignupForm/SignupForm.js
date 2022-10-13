@@ -3,7 +3,7 @@ import "./SignupForm.scss";
 import { Box, TextField, Checkbox, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import Passwords from "../../Passwords";
+import PasswordsSignup from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -125,11 +125,13 @@ const SignupForm = () => {
             <Typography className="headerText">
               <FormattedMessage
                 id="signup.header.text1"
-              />
-            </Typography>
-            <Typography className="headerText">
-              <FormattedMessage
-                id="signup.header.text2"
+                values={{
+                  TwoMins: (
+                    <p className="underline">
+                      <FormattedMessage id="signup.header.TwoMins" />
+                    </p>
+                  ),
+                }}
               />
             </Typography>
           </Box>
@@ -161,7 +163,7 @@ const SignupForm = () => {
               type="email"
             />
             {errors.email && <span className="errorText">{errors.email.message}</span>}
-            <Passwords edit={false} formMethods={formMethods} />
+            <PasswordsSignup edit={false} formMethods={formMethods} />
             <Box marginBottom={3}>
               <Typography className="termsText" style={{ fontSize: "13px" }}>
                 <FormattedMessage

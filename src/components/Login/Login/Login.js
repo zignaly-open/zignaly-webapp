@@ -2,9 +2,9 @@ import React from "react";
 import "./Login.scss";
 import { Box, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNB.svg";
-import Trophy from "images/login/trophy.svg";
-import Coins from "images/login/coins.svg";
-import OneDollar from "images/login/$1.svg";
+import User from "images/login/user.svg";
+import Like from "images/login/like.svg";
+import Money from "images/login/money.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
@@ -41,35 +41,43 @@ const Login = ({ children }) => {
             />
           </Typography>
           <div className="sect">
-            <img src={Trophy} />
+            <img src={User} />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.record" />
               </Typography>
               <Typography className="sectTitle">
+                <p className="underline">
+                  <FormattedMessage id="login.hero.record.desc2" />
+                </p>
                 <FormattedMessage id="login.hero.record.desc" />
               </Typography>
             </div>
           </div>
           <div className="sect">
-            <img src={Coins} />
+            <img src={Like} />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.fees" />
               </Typography>
-              <Typography className="sectTitle">
-                <FormattedMessage id="login.hero.fees.desc" />
-              </Typography>
+              <p className="underline">
+                <Typography className="sectTitle">
+                  <FormattedMessage id="login.hero.fees.desc" />
+                </Typography>
+              </p>
             </div>
           </div>
           <div className="sect">
-            <img src={OneDollar} />
+            <img src={Money} />
             <div className="sectDescBox">
               <Typography className="sectHeader">
                 <FormattedMessage id="login.hero.min" />
               </Typography>
               <Typography className="sectTitle">
                 <FormattedMessage id="login.hero.min.desc" />
+                <p className="underline">
+                  <FormattedMessage id="login.hero.min.desc2" />
+                </p>
               </Typography>
             </div>
           </div>
