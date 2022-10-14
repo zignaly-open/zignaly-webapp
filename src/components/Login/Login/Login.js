@@ -4,6 +4,7 @@ import { Box, Typography } from "@material-ui/core";
 import Logo from "images/logo/logoNB.svg";
 import User from "images/login/user.svg";
 import Like from "images/login/like.svg";
+import Broker from "images/login/broker.svg";
 import Money from "images/login/money.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
@@ -40,6 +41,7 @@ const Login = ({ children }) => {
               values={{ strong: (/** @type {string} **/ chunks) => <strong>{chunks}</strong> }}
             />
           </Typography>
+          <img src={Broker} />
           <div className="sect">
             <img src={User} />
             <div className="sectDescBox">
