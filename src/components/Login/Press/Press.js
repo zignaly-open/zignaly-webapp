@@ -33,7 +33,6 @@ const Press = () => {
         <img src={ChartBg} />
         <div className="slide" />
       </div>
-
       <Typography variant="h2">
         <img src={ShieldIcon} />
         <FormattedMessage id="login.press" />

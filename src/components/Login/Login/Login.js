@@ -41,7 +41,10 @@ const Login = ({ children }) => {
               values={{ strong: (/** @type {string} **/ chunks) => <strong>{chunks}</strong> }}
             />
           </Typography>
-          <img src={Broker} />
+          <div className="brokerSection">
+            <img src={Broker} />
+          </div>
+
           <div className="sect">
             <img src={User} />
             <div className="sectDescBox">

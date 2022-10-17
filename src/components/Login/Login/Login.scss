@@ -7,7 +7,7 @@
   h1 {
     font-size: 40px;
     letter-spacing: normal;
-    padding-bottom: 40px;
+    padding-bottom: 38px;
     text-transform: none;
 
     strong {
@@ -69,6 +69,18 @@
       width: 85%;
     }
   }
+
+  .brokerSection {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
 }
 
 @include media(">sm", "<=md") {
@@ -87,6 +99,10 @@
   .loginPage {
     .loginTabs {
       order: 1;
+    }
+
+    h1 {
+      padding-top: 30px;
     }
 
     .heroSide {

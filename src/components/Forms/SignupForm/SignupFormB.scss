@@ -144,8 +144,17 @@
   display: flex;
   justify-content: center;
   margin-top: 80px;
+  
 
   img {
     padding-right: 10px;
   }
+}
+
+@include media("<=sm") {
+  .secureIcons {
+    margin-top: 80px;
+    
+  }
+
 }
