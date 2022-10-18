@@ -74,8 +74,6 @@ const Passwords = ({ formMethods, edit }) => {
         justifyContent="start"
       >
         <PasswordInput
-          label={""}
-          placeholder={intl.formatMessage({ id: "security.password" })}
           error={!!errors.password}
           inputRef={(e) => {
             register(e, {
@@ -85,6 +83,7 @@ const Passwords = ({ formMethods, edit }) => {
             });
             anchorEl.current = e;
           }}
+          label={<FormattedMessage id={"security.password" + (edit ? ".new" : "")} />}
           name="password"
           onBlur={() => openPasswordStrength(false)}
           onChange={handlePasswordChange}

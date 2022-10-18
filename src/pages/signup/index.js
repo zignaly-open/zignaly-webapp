@@ -4,13 +4,18 @@ import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import SignupForm from "../../components/Forms/SignupForm";
+import SignupFormB from "../../components/Forms/SignupForm/SignupFormB";
 import useRedirectUponSessionValid from "../../hooks/useRedirectUponSessionValid";
 import Login from "../../components/Login/Login";
 import useHasMounted from "hooks/useHasMounted";
+import useABTest from "hooks/useABTest";
+import LoginOld from "components/Login/LoginOld";
 
 const SignupPage = () => {
   const intl = useIntl();
   useRedirectUponSessionValid("/profitSharing");
+
+  const showNew = useABTest();
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
@@ -27,9 +32,15 @@ const SignupPage = () => {
           })} | ${intl.formatMessage({ id: "product" })}`}
         </title>
       </Helmet>
-      <Login>
+      {showNew || showNew === null ? (
+        <Login>
+          <SignupFormB />
+        </Login>
+      ) : (
+        <LoginOld>
           <SignupForm />
-      </Login>
+        </LoginOld>
+      )}
     </>
   );
 };
