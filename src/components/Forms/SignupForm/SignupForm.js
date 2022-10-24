@@ -190,8 +190,10 @@ const SignupForm = () => {
               </CustomButton>
             </Box>
           </Box>
+          <Box className="captchaContainer">
+            <CaptchaTerms />
+          </Box>
         </form>
-        <CaptchaTerms />
       </Box>
     </>
   );

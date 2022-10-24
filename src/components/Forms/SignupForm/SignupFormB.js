@@ -176,7 +176,7 @@ const SignupForm = () => {
               <Box marginBottom={3}>
                 <Typography className="termsText" style={{ fontSize: "13px" }}>
                   <FormattedMessage
-                    id="signup.termsAgreement"
+                    id="signup.termsAgreement2"
                     values={{
                       terms: (
                         <a
