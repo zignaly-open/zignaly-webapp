@@ -134,13 +134,7 @@ const SignupForm = () => {
               <Typography className="headerText">
                 <FormattedMessage
                   id="signup.header.text1"
-                  values={{
-                    TwoMins: (
-                      <p className="underline">
-                        <FormattedMessage id="signup.header.TwoMins" />
-                      </p>
-                    ),
-                  }}
+                  values={{ u: (/** @type {string} **/ chunks) => <u>{chunks}</u> }}
                 />
               </Typography>
             </Box>
