@@ -1,11 +1,11 @@
-.loginTabs {
+.loginTabsOld {
   background: $white;
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
   height: 530px;
   overflow-y: visible;
   position: relative;
-  width: 400px;
+  width: 485px;
   z-index: 100;
 
   .section {
@@ -18,10 +18,6 @@
     position: absolute;
     text-align: center;
     width: 100%;
-  }
-
-  .termsText {
-    text-align: center;
   }
 }
 

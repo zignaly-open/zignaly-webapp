@@ -1,10 +1,10 @@
 .press {
-  margin-top: 8px;
+  margin-top: -100px;
 
   .chart {
-    left: 0;
     margin-top: -20%;
     position: absolute;
+    left: 0;
     width: 100%;
 
     img {
@@ -33,19 +33,38 @@
   }
 
   h2 {
-    font-size: 32px;
-    font-weight: bold;
-    line-height: 42px;
-    padding-top: 200px;
-    position: relative;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.55px;
+    text-align: center;
+    padding-top: 180px;
     text-align: center;
     z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #191927;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.55px;
+    text-align: center;
+    margin-top: 15px;
+    color: #797989;
+    margin-left: 15px;
+
+
   }
 
   .quotes {
-    height: 385px;
-    margin: 72px -8px;
-
     .pressQuote {
       z-index: 2;
     }

@@ -1,9 +1,10 @@
-.signupFormOld {
-  padding: 48px 110px;
+.signupForm {
+  padding: 35px 70px;
 
   .inputBox {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     width: 264px;
+    margin-top: 15px;
 
     &.checkbox {
       width: 300px;
@@ -22,11 +23,25 @@
     }
   }
 
+  .termsText {
+    margin-bottom: -20px;
+  }
+
   .customLabel {
     color: $lighterBlack;
   }
 
   .customInput {
+
+    input::placeholder {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      letter-spacing: 0.55px;
+      color: $black;
+      opacity: 8;
+    }
+
     input {
       color: $lighterBlack;
     }
@@ -48,6 +63,10 @@
         border-color: $lightGrey;
       }
     }
+  }
+
+  .emailInput {
+    margin-top: 25px;
   }
 
   .captchaBox {
@@ -87,7 +106,55 @@
       }
     }
   }
+
+  .headerText {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    text-align: left;
+
+  }
+
+  .underline {
+    text-decoration: underline;
+    display: inline;
+  }
 }
-.loginTabs {
-  width: 484px;
+
+.padlockTextContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -40px;
+  margin-bottom: 32px;
+}
+
+.padlockText {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.55px;
+  margin-left: 3px;
+
+}
+
+.secureIcons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+  
+
+  img {
+    padding-right: 10px;
+  }
+}
+
+@include media("<=sm") {
+  .secureIcons {
+    margin-top: 80px;
+    
+  }
+
 }
