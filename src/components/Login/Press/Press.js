@@ -6,8 +6,8 @@ import ChartBg from "images/login/chartBg.svg";
 import Yahoo from "images/login/press/yahoo.svg";
 import Forbes from "images/login/press/forbes.svg";
 import Bitcoin from "images/login/press/bitcoin.svg";
-import Nasdaq from "images/login/press/nasdaq.svg"
-import ShieldIcon from "images/login/press/shield.svg"
+import Nasdaq from "images/login/press/nasdaq.svg";
+import ShieldIcon from "images/login/press/shield.svg";
 import dayjs from "dayjs";
 import PressQuote from "./PressQuote";
 
@@ -35,10 +35,10 @@ const Press = () => {
       </div>
       <Typography variant="h2">
         <img src={ShieldIcon} />
-        <FormattedMessage id="login.press" />
+        <FormattedMessage id="login2.press" />
       </Typography>
       <Typography variant="h3">
-        <FormattedMessage id="login.press2" />
+        <FormattedMessage id="login2.press2" />
       </Typography>
       <Box
         className="quotes"

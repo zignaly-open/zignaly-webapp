@@ -20,6 +20,7 @@ import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import LoginLinks from "../../Login/LoginLinks/LoginLinks";
+import useABTest from "hooks/useABTest";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
+  const newPageAB = useABTest();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -71,6 +73,7 @@ const SignupForm = () => {
       locale,
       gRecaptchaResponse,
       c,
+      newPageAB,
     };
 
     tradeApi
@@ -102,93 +105,95 @@ const SignupForm = () => {
     <>
       <Box className="loginTabs">
         <LoginLinks />
-      <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
-        {/* <Captcha onSuccess={captchaFallback.current} /> */}
-        <Modal
-          onClose={() => {}}
-          persist={true}
-          showCloseIcon={false}
-          size="small"
-          state={Boolean(loginResponse)}
-        >
-          <VerifyEmailForm onComplete={onVerified} token={loginResponse?.token} />
-        </Modal>
-        <Box
-          alignItems="center"
-          className="signupForm"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-        >
+        <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
+          {/* <Captcha onSuccess={captchaFallback.current} /> */}
+          <Modal
+            onClose={() => {}}
+            persist={true}
+            showCloseIcon={false}
+            size="small"
+            state={Boolean(loginResponse)}
+          >
+            <VerifyEmailForm onComplete={onVerified} token={loginResponse?.token} />
+          </Modal>
           <Box
-            alignItems="start"
-            className="inputBox"
+            alignItems="center"
+            className="signupFormOld"
             display="flex"
             flexDirection="column"
-            justifyContent="start"
+            justifyContent="center"
           >
-            <label className="customLabel">
-              <FormattedMessage id="security.email" />
-            </label>
-            <TextField
-              className="customInput"
-              error={!!errors.email}
-              fullWidth
-              inputRef={register({
-                required: intl.formatMessage({ id: "security.email.error.empty" }),
-                pattern: {
-                  value: emailRegex,
-                  message: intl.formatMessage({ id: "security.email.error.invalid" }),
-                },
-              })}
-              name="email"
-              type="email"
-              variant="outlined"
-            />
-            {errors.email && <span className="errorText">{errors.email.message}</span>}
-          </Box>
-          <Passwords edit={false} formMethods={formMethods} />
-          <Box marginBottom={3}>
-            <Typography className="termsText" style={{ fontSize: "13px" }}>
-              <FormattedMessage
-                id="signup.termsAgreement"
-                values={{
-                  terms: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/terms"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <b>
-                        <FormattedMessage id="signup.terms" />
-                      </b>
-                    </a>
-                  ),
-                  privacy: (
-                    <a
-                      className="link"
-                      href="https://zignaly.com/legal/privacy"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <b>
-                        <FormattedMessage id="signup.privacy" />
-                      </b>
-                    </a>
-                  ),
-                }}
+            <Box
+              alignItems="start"
+              className="inputBox"
+              display="flex"
+              flexDirection="column"
+              justifyContent="start"
+            >
+              <label className="customLabel">
+                <FormattedMessage id="security.email" />
+              </label>
+              <TextField
+                className="customInput"
+                error={!!errors.email}
+                fullWidth
+                inputRef={register({
+                  required: intl.formatMessage({ id: "security.email.error.empty" }),
+                  pattern: {
+                    value: emailRegex,
+                    message: intl.formatMessage({ id: "security.email.error.invalid" }),
+                  },
+                })}
+                name="email"
+                type="email"
+                variant="outlined"
               />
-            </Typography>
+              {errors.email && <span className="errorText">{errors.email.message}</span>}
+            </Box>
+            <Passwords edit={false} formMethods={formMethods} />
+            <Box marginBottom={3}>
+              <Typography className="termsText" style={{ fontSize: "13px" }}>
+                <FormattedMessage
+                  id="signup.termsAgreement"
+                  values={{
+                    terms: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/terms"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <b>
+                          <FormattedMessage id="signup.terms" />
+                        </b>
+                      </a>
+                    ),
+                    privacy: (
+                      <a
+                        className="link"
+                        href="https://zignaly.com/legal/privacy"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <b>
+                          <FormattedMessage id="signup.privacy" />
+                        </b>
+                      </a>
+                    ),
+                  }}
+                />
+              </Typography>
+            </Box>
+            <Box className="inputBox buttonBox">
+              <CustomButton className={"full submitButton"} loading={loading} type="submit">
+                <FormattedMessage id="action.signup" />
+              </CustomButton>
+            </Box>
           </Box>
-          <Box className="inputBox buttonBox">
-            <CustomButton className={"full submitButton"} loading={loading} type="submit">
-              <FormattedMessage id="action.signup" />
-            </CustomButton>
+          <Box className="captchaContainer">
+            <CaptchaTerms />
           </Box>
-        </Box>
-      </form>
-      <CaptchaTerms />
+        </form>
       </Box>
     </>
   );

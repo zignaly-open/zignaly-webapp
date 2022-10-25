@@ -1,0 +1,51 @@
+.pressOld {
+  margin-top: 8px;
+
+  .chart {
+    left: 0;
+    margin-top: -20%;
+    position: absolute;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .slide {
+    animation: slider ease-in 4s;
+    background-color: $paleGrey;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  @keyframes slider {
+    from {
+      width: 100%;
+    }
+
+    to {
+      width: 0;
+    }
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 42px;
+    padding-top: 200px;
+    position: relative;
+    text-align: center;
+    z-index: 3;
+  }
+
+  .quotes {
+    height: 385px;
+    margin: 72px -8px;
+    z-index: 2;
+    position: relative;
+  }
+}

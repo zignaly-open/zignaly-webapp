@@ -1,5 +1,5 @@
-.signupForm {
-  padding: 35px 70px;
+.signupFormOld {
+  padding: 48px 110px;
 
   .inputBox {
     margin-bottom: 40px;
@@ -19,11 +19,6 @@
 
     &.noMargin {
       margin-bottom: 10px;
-    }
-
-    .termsText {
-      margin-bottom: -20px;
-      margin-top: 20px;
     }
   }
 
@@ -92,4 +87,7 @@
       }
     }
   }
+}
+.loginTabs {
+  width: 484px;
 }
