@@ -51,11 +51,10 @@
       line-height: 28px;
       letter-spacing: 0.55px;
       text-align: left;
-
     }
 
     .sectTitle {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       line-height: 30px;
       letter-spacing: 0.55px;
@@ -73,12 +72,11 @@
   .brokerSection {
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
 
     img {
-      width: 100%;
+      width: 91%;
       height: auto;
+      left: 0;
     }
   }
 }

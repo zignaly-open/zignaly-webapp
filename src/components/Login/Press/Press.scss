@@ -1,5 +1,5 @@
 .press {
-  margin-top: -100px;
+  margin-top: -200px;
 
   .chart {
     margin-top: -20%;
@@ -13,8 +13,6 @@
   }
 
   .slide {
-    animation: slider ease-in 4s;
-    background-color: $paleGrey;
     height: 100%;
     position: absolute;
     right: 0;
