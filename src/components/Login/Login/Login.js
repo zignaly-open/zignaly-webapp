@@ -37,7 +37,7 @@ const Login = ({ children }) => {
         <Box className="heroSide">
           <Typography variant="h1">
             <FormattedMessage
-              id="login.hero"
+              id="login2.hero"
               values={{ strong: (/** @type {string} **/ chunks) => <strong>{chunks}</strong> }}
             />
           </Typography>
