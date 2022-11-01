@@ -25,7 +25,7 @@ import CustomButton from "components/CustomButton";
 import { Link } from "gatsby";
 import useSelectedExchange from "hooks/useSelectedExchange";
 import WalletButton from "./WalletButton";
-import { useTz } from "services/tz";
+import { composeHash, useTz } from "services/tz";
 
 /**
  * @typedef {import('../../../store/initialState').DefaultState} DefaultState
@@ -167,11 +167,11 @@ const Header = () => {
                 ) : (
                   <CustomButton
                     className="textPurple"
-                    onClick={() => {
-                      track("add-funds-cta");
-                    }}
-                    href="#exchangeAccounts"
-                    id="add-funds-cta"
+                    href={composeHash(
+                      "#exchangeAccounts/deposit",
+                      "add-funds-cta",
+                      selectedExchange.internalId,
+                    )}
                   >
                     <FormattedMessage id="accounts.addfunds" />
                   </CustomButton>
