@@ -9,6 +9,8 @@ import Money from "images/login/money.svg";
 import LanguageSwitcherDropdown from "../LanguageSwitcherDropdown";
 import Press from "../Press";
 import { FormattedMessage } from "react-intl";
+import SafuIcon from "images/login/SafuIcon.svg";
+import SslIcon from "images/login/SslIcon.svg";
 
 /**
  *
@@ -87,7 +89,19 @@ const Login = ({ children }) => {
             </div>
           </div>
         </Box>
-        {children}
+        <Box>
+          {children}
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            style={{ gap: "10px" }}
+            mt="10px"
+          >
+            <img src={SslIcon} className="iconsSecure" />
+            <img src={SafuIcon} className="iconsSecure" />
+          </Box>
+        </Box>
       </Box>
       <Press />
     </Box>

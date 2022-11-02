@@ -1,13 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./SignupFormB.scss";
-import {
-  Box,
-  TextField,
-  Checkbox,
-  Typography,
-  OutlinedInput,
-  InputAdornment,
-} from "@material-ui/core";
+import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
 import PasswordsSignup from "../../Passwords/PasswordsSignup";
@@ -26,8 +19,6 @@ import { startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
-import SafuIcon from "images/login/SafuIcon.svg";
-import SslIcon from "images/login/SslIcon.svg";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
 import useABTest from "hooks/useABTest";
@@ -168,9 +159,11 @@ const SignupForm = () => {
                 type="email"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
-              <PasswordsSignup edit={false} formMethods={formMethods} />
-              <Box marginBottom={3}>
-                <Typography className="termsText" style={{ fontSize: "13px" }}>
+              <Box mt="24px">
+                <PasswordsSignup edit={false} formMethods={formMethods} />
+              </Box>
+              <Box mt="49px" mb="8px" textAlign="center">
+                <Typography style={{ fontSize: "11px" }}>
                   <FormattedMessage
                     id="signup.termsAgreement2"
                     values={{
@@ -202,39 +195,35 @@ const SignupForm = () => {
                   />
                 </Typography>
               </Box>
-              <Box className="inputBox buttonBox">
+              <Box className="buttonBox">
                 <CustomButton className={"full submitButton"} loading={loading} type="submit">
                   <FormattedMessage id="action.signup" />
                 </CustomButton>
               </Box>
             </Box>
+            <Box className="padlockTextContainer">
+              <LockSharp />
+              <Typography className="padlockText">
+                <FormattedMessage id="signup.padlock.message" />
+              </Typography>
+            </Box>
+            <Typography style={{ fontSize: "13px" }}>
+              <FormattedMessage
+                id="signup.text.already.account"
+                values={{
+                  login: (
+                    <Link to={"/login"} className="link">
+                      <b>
+                        <FormattedMessage id="login.title" />
+                      </b>
+                    </Link>
+                  ),
+                }}
+              />
+            </Typography>
+            <CaptchaTerms />
           </Box>
         </form>
-        <Box className="padlockTextContainer">
-          <LockSharp />
-          <Typography className="padlockText">
-            <FormattedMessage id="signup.padlock.message" />
-          </Typography>
-        </Box>
-        <Typography className="termsText" style={{ fontSize: "13px" }}>
-          <FormattedMessage
-            id="signup.text.already.account"
-            values={{
-              login: (
-                <Link to={"/login"} className="link">
-                  <b>
-                    <FormattedMessage id="login.title" />
-                  </b>
-                </Link>
-              ),
-            }}
-          />
-        </Typography>
-        <CaptchaTerms />
-        <Box className="secureIcons">
-          <img src={SslIcon} className="iconsSecure" />
-          <img src={SafuIcon} className="iconsSecure" />
-        </Box>
       </Box>
     </>
   );

@@ -66,33 +66,24 @@ const PasswordsSignup = ({ formMethods, edit }) => {
       >
         <PasswordStrength onClose={() => openPasswordStrength(false)} strength={strength} />
       </Popper>
-      <Box
-        alignItems="start"
-        className="inputBox"
-        display="flex"
-        flexDirection="column"
-        justifyContent="start"
-      >
-        <PasswordInputSignup
-          label={""}
-          placeholder="Password"
-          error={!!errors.password}
-          inputRef={(e) => {
-            register(e, {
-              required: intl.formatMessage({ id: "form.error.password" }),
-              validate: () =>
-                strength >= 4 || intl.formatMessage({ id: "form.error.password.weak" }),
-            });
-            anchorEl.current = e;
-          }}
-          /*           label={<FormattedMessage id={"security.password" + (edit ? ".new" : "")} />} */
-          name="password"
-          onBlur={() => openPasswordStrength(false)}
-          onChange={handlePasswordChange}
-          onFocus={() => openPasswordStrength(true)}
-        />
-        {errors && errors.password && <span className="errorText">{errors.password.message}</span>}
-      </Box>
+      <PasswordInputSignup
+        label={""}
+        placeholder="Password"
+        error={!!errors.password}
+        inputRef={(e) => {
+          register(e, {
+            required: intl.formatMessage({ id: "form.error.password" }),
+            validate: () => strength >= 4 || intl.formatMessage({ id: "form.error.password.weak" }),
+          });
+          anchorEl.current = e;
+        }}
+        /*           label={<FormattedMessage id={"security.password" + (edit ? ".new" : "")} />} */
+        name="password"
+        onBlur={() => openPasswordStrength(false)}
+        onChange={handlePasswordChange}
+        onFocus={() => openPasswordStrength(true)}
+      />
+      {errors && errors.password && <span className="errorText">{errors.password.message}</span>}
     </>
   );
 };
