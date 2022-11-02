@@ -63,7 +63,7 @@
 }
 
 @include media(">sm", "<=md") {
-  .loginPage {
+  .loginPageOld {
     .heroSide {
       margin-right: 22px;
     }
@@ -75,7 +75,7 @@
 }
 
 @include media("<=sm") {
-  .loginPage {
+  .loginPageOld {
     .loginTabs {
       order: 1;
     }

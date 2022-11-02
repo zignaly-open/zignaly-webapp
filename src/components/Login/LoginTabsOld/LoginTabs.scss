@@ -2,7 +2,7 @@
   background: $white;
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 $boxShadowColor;
-  height: 530px;
+  min-height: 450px;
   overflow-y: visible;
   position: relative;
   width: 485px;
@@ -22,7 +22,7 @@
 }
 
 @include media("<=sm") {
-  .loginTabs {
+  .loginTabsOld {
     border-radius: 0;
     width: 100%;
   }

@@ -103,7 +103,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <Box className="loginTabs">
+      <Box className="loginTabsOld">
         <LoginLinks />
         <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* <Captcha onSuccess={captchaFallback.current} /> */}
