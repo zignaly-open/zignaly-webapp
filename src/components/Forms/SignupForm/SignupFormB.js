@@ -30,7 +30,7 @@ import SafuIcon from "images/login/SafuIcon.svg";
 import SslIcon from "images/login/SslIcon.svg";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
-import LoginLinks from "../../Login/LoginLinks/LoginLinks";
+import useABTest from "hooks/useABTest";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -46,6 +46,7 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
+  const newPageAB = useABTest();
 
   if (!hasMounted) {
     // Don't render form statically
@@ -82,6 +83,7 @@ const SignupForm = () => {
       locale,
       gRecaptchaResponse,
       c,
+      newPageAB,
     };
 
     tradeApi
