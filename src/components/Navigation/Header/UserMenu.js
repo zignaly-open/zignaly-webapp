@@ -62,7 +62,7 @@ const UserMenu = ({ onClose }) => {
       <MenuItem
         className="userMenuItem"
         onClick={() => {
-          navigateReach("#exchangeAccounts?ctaId=acounts-menu");
+          navigateReach("#exchangeAccounts?ctaId=accounts-menu");
           onClose();
         }}
       >

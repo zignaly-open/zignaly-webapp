@@ -17,8 +17,9 @@ import LoginLinks from "../LoginLinks";
  */
 const LoginTabs = ({ children }) => {
   return (
-    <Box className="loginTabs">
+    <Box className="loginTabsOld">
       <LoginLinks />
+
       <Box className="section">{children}</Box>
     </Box>
   );

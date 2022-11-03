@@ -90,10 +90,10 @@ const CopyTraderEditProfileForm = ({ provider }) => {
   const intl = useIntl();
 
   const [verifyModalConfig, setVerifyModalConfig] = useState({
-    titleTranslationId: provider.verified ? "Unverify User" : "Verify User",
+    titleTranslationId: provider.verified ? "Unmark User" : "Mark User",
     messageTranslationId: provider.verified
-      ? "Unmark this user as verified?"
-      : "Mark this user as verified?",
+      ? "Unmark this user as KYC passed?"
+      : "Mark this user as KYC passed?",
     visible: false,
   });
 
@@ -990,7 +990,7 @@ const CopyTraderEditProfileForm = ({ provider }) => {
                 loading={verifying}
                 onClick={() => setVerifyModalConfig((c) => ({ ...c, visible: true }))}
               >
-                {provider.verified ? "Unverify User" : "Verify User"}
+                {provider.verified ? "Unmark user as KYC Passed" : "Mark user as KYC Passed"}
               </CustomButton>
             )}
 
