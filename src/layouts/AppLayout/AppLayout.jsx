@@ -92,7 +92,10 @@ const AppLayout = (props) => {
   useEffect(() => {
     // Root page will be redirected
     if (window.location.pathname !== "/") {
-      triggerTz(window.location.href, storeUserData, prevLocation.current);
+      // Don't send tz for signup page without version that is going to be added
+      if (window.location.pathname !== "/signup" || href.includes("#v=")) {
+        triggerTz(window.location.href, storeUserData, prevLocation.current);
+      }
     }
     analyticsPageView(storeUserData.userId);
     // Save prev location

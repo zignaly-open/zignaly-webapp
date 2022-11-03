@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./signup.scss";
 import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
@@ -16,6 +16,9 @@ const SignupPage = () => {
   useRedirectUponSessionValid("/profitSharing");
 
   const showNew = useABTest();
+  useEffect(() => {
+    window.location.hash = `v=${showNew ? 2 : 1}`;
+  }, []);
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
