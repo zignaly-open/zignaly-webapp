@@ -9,6 +9,7 @@ import { useStoreUserExchangeConnections } from "hooks/useStoreUserSelector";
 import CopyTraderForm from "components/Forms/CopyTraderForm";
 import CopyPSForm from "components/Forms/CopyPSForm";
 import CustomButton from "components/CustomButton";
+import { composeHash } from "services/tz";
 
 /**
  * @typedef {Object} DefaultProps
@@ -122,7 +123,14 @@ const ConnectTraderForm = ({ provider, onClose, onSuccess }) => {
           <Typography>
             <FormattedMessage id="copyt.activate.desc" />
           </Typography>
-          <CustomButton className="submitButton" href="#exchangeAccounts?ctaId=copy-deposit">
+          <CustomButton
+            className="submitButton"
+            href={composeHash(
+              "#exchangeAccounts/deposit",
+              "copy-deposit",
+              selectedExchange.internalId,
+            )}
+          >
             <FormattedMessage id="accounts.deposit" />
           </CustomButton>
         </Box>

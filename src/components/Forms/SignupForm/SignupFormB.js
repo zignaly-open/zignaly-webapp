@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import "./SignupForm.scss";
-import { Box, TextField, Checkbox, Typography } from "@material-ui/core";
+import "./SignupFormB.scss";
+import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm, Controller } from "react-hook-form";
-import Passwords from "../../Passwords";
+import PasswordsSignup from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -19,7 +19,8 @@ import { startTradeApiSession } from "store/actions/session";
 import Modal from "../../Modal";
 import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
-import LoginLinks from "../../Login/LoginLinks/LoginLinks";
+import { MailOutlined, LockSharp } from "@material-ui/icons";
+import Link from "../../LocalizedLink";
 import useABTest from "hooks/useABTest";
 
 const SignupForm = () => {
@@ -103,8 +104,7 @@ const SignupForm = () => {
 
   return (
     <>
-      <Box className="loginTabsOld">
-        <LoginLinks />
+      <Box className="loginTabs">
         <form method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* <Captcha onSuccess={captchaFallback.current} /> */}
           <Modal
@@ -118,11 +118,19 @@ const SignupForm = () => {
           </Modal>
           <Box
             alignItems="center"
-            className="signupFormOld"
+            className="signupForm"
             display="flex"
             flexDirection="column"
             justifyContent="center"
           >
+            <Box className="headerText">
+              <Typography className="headerText">
+                <FormattedMessage
+                  id="signup.header.text1"
+                  values={{ u: (/** @type {string} **/ chunks) => <u>{chunks}</u> }}
+                />
+              </Typography>
+            </Box>
             <Box
               alignItems="start"
               className="inputBox"
@@ -130,11 +138,14 @@ const SignupForm = () => {
               flexDirection="column"
               justifyContent="start"
             >
-              <label className="customLabel">
-                <FormattedMessage id="security.email" />
-              </label>
-              <TextField
-                className="customInput"
+              <OutlinedInput
+                startAdornment={
+                  <InputAdornment position="start">
+                    <MailOutlined />
+                  </InputAdornment>
+                }
+                placeholder="Email Address"
+                className="customInput emailInput "
                 error={!!errors.email}
                 fullWidth
                 inputRef={register({
@@ -146,51 +157,70 @@ const SignupForm = () => {
                 })}
                 name="email"
                 type="email"
-                variant="outlined"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
+              <Box mt="24px">
+                <PasswordsSignup edit={false} formMethods={formMethods} />
+              </Box>
+              <Box mt="49px" mb="8px" textAlign="center">
+                <Typography style={{ fontSize: "11px" }}>
+                  <FormattedMessage
+                    id="signup.termsAgreement2"
+                    values={{
+                      terms: (
+                        <a
+                          className="link"
+                          href="https://zignaly.com/legal/terms"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <b>
+                            <FormattedMessage id="signup.terms" />
+                          </b>
+                        </a>
+                      ),
+                      privacy: (
+                        <a
+                          className="link"
+                          href="https://zignaly.com/legal/privacy"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <b>
+                            <FormattedMessage id="signup.privacy" />
+                          </b>
+                        </a>
+                      ),
+                    }}
+                  />
+                </Typography>
+              </Box>
+              <Box className="buttonBox">
+                <CustomButton className={"full submitButton"} loading={loading} type="submit">
+                  <FormattedMessage id="action.signup" />
+                </CustomButton>
+              </Box>
             </Box>
-            <Passwords edit={false} formMethods={formMethods} />
-            <Box marginBottom={3}>
-              <Typography className="termsText" style={{ fontSize: "13px" }}>
-                <FormattedMessage
-                  id="signup.termsAgreement"
-                  values={{
-                    terms: (
-                      <a
-                        className="link"
-                        href="https://zignaly.com/legal/terms"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <b>
-                          <FormattedMessage id="signup.terms" />
-                        </b>
-                      </a>
-                    ),
-                    privacy: (
-                      <a
-                        className="link"
-                        href="https://zignaly.com/legal/privacy"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <b>
-                          <FormattedMessage id="signup.privacy" />
-                        </b>
-                      </a>
-                    ),
-                  }}
-                />
+            <Box className="padlockTextContainer">
+              <LockSharp />
+              <Typography className="padlockText">
+                <FormattedMessage id="signup.padlock.message" />
               </Typography>
             </Box>
-            <Box className="inputBox buttonBox">
-              <CustomButton className={"full submitButton"} loading={loading} type="submit">
-                <FormattedMessage id="action.signup" />
-              </CustomButton>
-            </Box>
-          </Box>
-          <Box className="captchaContainer">
+            <Typography style={{ fontSize: "13px" }}>
+              <FormattedMessage
+                id="signup.text.already.account"
+                values={{
+                  login: (
+                    <Link to={"/login"} className="link">
+                      <b>
+                        <FormattedMessage id="login.title" />
+                      </b>
+                    </Link>
+                  ),
+                }}
+              />
+            </Typography>
             <CaptchaTerms />
           </Box>
         </form>

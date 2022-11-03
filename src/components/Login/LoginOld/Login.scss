@@ -1,13 +1,17 @@
-.loginPage {
+.loginPageOld {
   background-color: $paleGrey;
   margin: 42px auto;
   max-width: 1077px;
   padding: 0 8px;
 
+  .loginForm {
+    padding: 48px 110px;
+  }
+
   h1 {
     font-size: 40px;
     letter-spacing: normal;
-    padding-bottom: 38px;
+    padding-bottom: 40px;
     text-transform: none;
 
     strong {
@@ -26,7 +30,7 @@
   }
 
   .heroSide {
-    margin-right: 35px;
+    margin-right: 75px;
   }
 
   .sect {
@@ -46,43 +50,20 @@
 
     .sectHeader {
       color: $purple;
-      font-size: 26px;
       font-weight: 600;
-      line-height: 28px;
-      letter-spacing: 0.55px;
-      text-align: left;
     }
 
     .sectTitle {
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 30px;
-      letter-spacing: 0.55px;
-      text-align: left;
-    }
-
-    .underline {
-      text-decoration: underline;
-      display: inline;
-      margin-top: -5px;
-      width: 85%;
-    }
-  }
-
-  .brokerSection {
-    width: 100%;
-    display: flex;
-
-    img {
-      width: 91%;
-      height: auto;
-      left: 0;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 31px;
+      margin-top: 24px;
     }
   }
 }
 
 @include media(">sm", "<=md") {
-  .loginPage {
+  .loginPageOld {
     .heroSide {
       margin-right: 22px;
     }
@@ -94,13 +75,9 @@
 }
 
 @include media("<=sm") {
-  .loginPage {
+  .loginPageOld {
     .loginTabs {
       order: 1;
-    }
-
-    h1 {
-      padding-top: 30px;
     }
 
     .heroSide {
@@ -117,13 +94,13 @@
       margin-right: 0;
     }
 
-    .pressQuote {
-      margin-top: 0px;
-    }
+    .press {
+      h2 {
+        padding-top: 75px;
+      }
 
-    .brokerSection {
-      img {
-        width: 100%;
+      .quotes {
+        margin-top: 38px;
       }
     }
   }

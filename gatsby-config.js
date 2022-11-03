@@ -1,3 +1,5 @@
+const path = require("path");
+
 const appStage = process.env.STAGE || "dev";
 require("dotenv").config({
   path: `.env.${appStage}`,
@@ -22,7 +24,7 @@ module.exports = {
     {
       resolve: "gatsby-plugin-sass",
       options: {
-        additionalData: `@import "${__dirname}/src/styles/index";`,
+        additionalData: `@import "${path.resolve(__dirname, "/src/styles/index")}";`,
       },
     },
     "gatsby-plugin-react-helmet",
