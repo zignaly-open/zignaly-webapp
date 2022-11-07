@@ -17,8 +17,10 @@ const SignupPage = () => {
 
   const showNew = useABTest();
   useEffect(() => {
-    window.location.hash = `v=${showNew ? 2 : 1}`;
-  }, []);
+    if (showNew !== null) {
+      window.location.hash = `v=${showNew ? 2 : 1}`;
+    }
+  }, [showNew]);
 
   const hasMounted = useHasMounted();
   if (!hasMounted) {
