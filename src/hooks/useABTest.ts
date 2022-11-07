@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { setTestAB } from "store/actions/settings";
 import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
@@ -15,21 +15,25 @@ const useAPTest = () => {
   let storeShowNew = storeSettings.testAB.login;
 
   // Load version if set in url
-  let urlShowNew = null as boolean;
-  const versionMatch = typeof window === "object" ? window.location.hash?.match(/#v=(\d)/) : null;
-  if (versionMatch?.length && versionMatch[1] !== undefined) {
-    urlShowNew = versionMatch[1] === "2";
-  }
+  const hash = window?.location.hash;
 
-  useEffect(() => {
-    if (storeShowNew === null || urlShowNew !== storeShowNew) {
+  const res = useMemo(() => {
+    let urlShowNew = null as boolean;
+    const versionMatch = hash?.match(/#v=(\d)/);
+    if (versionMatch?.length && versionMatch[1] !== undefined) {
+      urlShowNew = versionMatch[1] === "2";
+    }
+
+    if (storeShowNew === null || (urlShowNew !== null && urlShowNew !== storeShowNew)) {
       // If A/B flag wasn't set yet, set it randomly unless already specified in url
       const enable = urlShowNew !== null ? urlShowNew : Math.random() < 0.5;
       dispatch(setTestAB({ page: "login", enable }));
+      return enable;
     }
-  }, [storeShowNew, urlShowNew]);
+    return storeShowNew;
+  }, []);
 
-  return storeShowNew;
+  return res;
 };
 
 export default useAPTest;

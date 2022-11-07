@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./signup.scss";
 import LoginTabs from "../../components/Login/LoginTabs";
 import { Helmet } from "react-helmet";
@@ -17,7 +17,9 @@ const SignupPage = () => {
 
   const showNew = useABTest();
   useEffect(() => {
-    window.location.hash = `v=${showNew ? 2 : 1}`;
+    if (showNew !== null) {
+      window.location.hash = `v=${showNew ? 2 : 1}`;
+    }
   }, []);
 
   const hasMounted = useHasMounted();
