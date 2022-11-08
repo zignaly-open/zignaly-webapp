@@ -15,7 +15,7 @@ const useAPTest = () => {
   let storeShowNew = storeSettings.testAB.login;
 
   // Load version if set in url
-  const hash = window?.location.hash;
+  const hash = typeof window === "object" ? window.location.hash : null;
 
   const res = useMemo(() => {
     let urlShowNew = null as boolean;
