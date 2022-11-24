@@ -21,6 +21,7 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import LoginLinks from "../../Login/LoginLinks/LoginLinks";
 import useABTest from "hooks/useABTest";
+import mailcheck from "mailcheck";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -142,6 +143,19 @@ const SignupForm = () => {
                   pattern: {
                     value: emailRegex,
                     message: intl.formatMessage({ id: "security.email.error.invalid" }),
+                  },
+                  validate: async (value) => {
+                    const suggested = await new Promise((resolve) => {
+                      mailcheck.run({
+                        email: value,
+                        suggested: (suggestion) => resolve(suggestion.full),
+                        empty: () => resolve(true),
+                      });
+                    });
+                    if (typeof suggested === "string") {
+                      return intl.formatMessage({ id: "signup.email.didyoumean" }, { suggested });
+                    }
+                    return true;
                   },
                 })}
                 name="email"

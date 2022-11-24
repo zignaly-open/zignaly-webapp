@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./SignupFormB.scss";
 import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import PasswordsSignup from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
@@ -22,13 +22,14 @@ import { setUserId } from "store/actions/user";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
 import useABTest from "hooks/useABTest";
+import mailcheck from "mailcheck";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
   const [ref] = useState("");
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearErrors, control } = formMethods;
+  const { errors, handleSubmit, register } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
@@ -153,6 +154,19 @@ const SignupForm = () => {
                   pattern: {
                     value: emailRegex,
                     message: intl.formatMessage({ id: "security.email.error.invalid" }),
+                  },
+                  validate: async (value) => {
+                    const suggested = await new Promise((resolve) => {
+                      mailcheck.run({
+                        email: value,
+                        suggested: (suggestion) => resolve(suggestion.full),
+                        empty: () => resolve(true),
+                      });
+                    });
+                    if (typeof suggested === "string") {
+                      return intl.formatMessage({ id: "signup.email.didyoumean" }, { suggested });
+                    }
+                    return true;
                   },
                 })}
                 name="email"
