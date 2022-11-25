@@ -21,14 +21,14 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import LoginLinks from "../../Login/LoginLinks/LoginLinks";
 import useABTest from "hooks/useABTest";
-import mailcheck from "mailcheck";
+import Mailcheck from "react-mailcheck";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
   const [ref] = useState("");
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearErrors, control } = formMethods;
+  const { errors, handleSubmit, register, watch } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
@@ -38,6 +38,7 @@ const SignupForm = () => {
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
   const newPageAB = useABTest();
+  const email = watch("email");
 
   if (!hasMounted) {
     // Don't render form statically
@@ -144,25 +145,24 @@ const SignupForm = () => {
                     value: emailRegex,
                     message: intl.formatMessage({ id: "security.email.error.invalid" }),
                   },
-                  validate: async (value) => {
-                    const suggested = await new Promise((resolve) => {
-                      mailcheck.run({
-                        email: value,
-                        suggested: (suggestion) => resolve(suggestion.full),
-                        empty: () => resolve(true),
-                      });
-                    });
-                    if (typeof suggested === "string") {
-                      return intl.formatMessage({ id: "signup.email.didyoumean" }, { suggested });
-                    }
-                    return true;
-                  },
                 })}
                 name="email"
                 type="email"
                 variant="outlined"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
+              <Mailcheck email={email}>
+                {(suggested) =>
+                  suggested && (
+                    <span className="errorText">
+                      <FormattedMessage
+                        id="signup.email.didyoumean"
+                        values={{ suggested: suggested.full }}
+                      />
+                    </span>
+                  )
+                }
+              </Mailcheck>
             </Box>
             <Passwords edit={false} formMethods={formMethods} />
             <Box marginBottom={3}>
