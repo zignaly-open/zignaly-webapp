@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./SignupForm.scss";
 import { Box, TextField, Checkbox, Typography } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
@@ -22,6 +22,7 @@ import { setUserId } from "store/actions/user";
 import LoginLinks from "../../Login/LoginLinks/LoginLinks";
 import useABTest from "hooks/useABTest";
 import Mailcheck from "react-mailcheck";
+import Cookies from "js-cookie";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -38,9 +39,13 @@ const SignupForm = () => {
   const [loginResponse, setLoginResponse] = useState(null);
   const newPageAB = useABTest();
   const email = watch("email");
-  const ref = new URLSearchParams(
-    typeof window !== "undefined" ? window.location.search : null,
-  ).get("invite");
+
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("invite");
+    if (ref) {
+      Cookies.set("ref", ref);
+    }
+  }, []);
 
   if (!hasMounted) {
     // Don't render form statically
@@ -72,7 +77,7 @@ const SignupForm = () => {
       projectId: projectId,
       email: data.email,
       password: data.password,
-      ref,
+      ref: Cookies.get("ref"),
       array: true,
       locale,
       gRecaptchaResponse,
