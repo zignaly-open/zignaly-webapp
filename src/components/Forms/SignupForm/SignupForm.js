@@ -26,7 +26,6 @@ import Mailcheck from "react-mailcheck";
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
-  const [ref] = useState("");
   const formMethods = useForm();
   const { errors, handleSubmit, register, watch } = formMethods;
   const dispatch = useDispatch();
@@ -39,6 +38,9 @@ const SignupForm = () => {
   const [loginResponse, setLoginResponse] = useState(null);
   const newPageAB = useABTest();
   const email = watch("email");
+  const ref = new URLSearchParams(
+    typeof window !== "undefined" ? window.location.search : null,
+  ).get("invite");
 
   if (!hasMounted) {
     // Don't render form statically
@@ -70,7 +72,7 @@ const SignupForm = () => {
       projectId: projectId,
       email: data.email,
       password: data.password,
-      ref: ref,
+      ref,
       array: true,
       locale,
       gRecaptchaResponse,
