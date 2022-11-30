@@ -13,11 +13,14 @@ import { useDispatch } from "react-redux";
 import "./ExchangeAccountSettings.scss";
 import { useFormContext } from "react-hook-form";
 import useExchangeList from "../../../hooks/useExchangeList";
-import { Typography } from "@material-ui/core";
+import { InputAdornment, Typography } from "@material-ui/core";
 import { showErrorAlert } from "../../../store/actions/ui";
 import { Box, CircularProgress } from "@material-ui/core";
 import ExchangeIcon from "../../ExchangeIcon";
 import { getUserData } from "../../../store/actions/user";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import useClipboard from "hooks/useClipboard";
+import { Copy } from "react-feather";
 
 /**
  * @typedef {import("@material-ui/core").OutlinedInputProps} OutlinedInputProps
@@ -49,6 +52,8 @@ const ExchangeAccountSettings = () => {
     : null;
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showSignalKey, setShowSignalKey] = useState(false);
+  const copyToClipboard = useClipboard();
 
   useEffect(() => {
     setTitle(
@@ -108,11 +113,11 @@ const ExchangeAccountSettings = () => {
       internalId: selectedAccount.internalId,
       internalName,
       globalMaxPositions: data.globalMaxPositions || false,
-      globalMinVolume: data.globalMinVolume || false,
+      // globalMinVolume: data.globalMinVolume || false,
       globalPositionsPerMarket: data.globalPositionsPerMarket || false,
-      globalBlacklist: data.globalBlacklist || false,
-      globalWhitelist: data.globalWhitelist || false,
-      globalDelisting: data.globalDelisting || false,
+      // globalBlacklist: data.globalBlacklist || false,
+      // globalWhitelist: data.globalWhitelist || false,
+      // globalDelisting: data.globalDelisting || false,
       ...(key && { key }),
       ...(secret && { secret }),
       ...(password && { password }),
@@ -140,9 +145,6 @@ const ExchangeAccountSettings = () => {
         return false;
       });
   };
-
-  const authFieldsModified =
-    accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields[f]));
 
   return (
     <form className="exchangeAccountSettings" method="post">
@@ -183,27 +185,35 @@ const ExchangeAccountSettings = () => {
               label="accounts.exchange.name"
               name="internalName"
             />
-            {!selectedAccount.paperTrading &&
-              accountExchange &&
-              accountExchange.requiredAuthFields.map((field) => (
-                <CustomInput
-                  autoComplete="new-password"
-                  inputRef={register({
-                    required: authFieldsModified
-                      ? intl.formatMessage({ id: `form.error.${field}` })
-                      : false,
-                  })}
-                  key={field}
-                  label={`accounts.exchange.${field}`}
-                  name={field}
-                  placeholder={
-                    selectedAccount.areKeysValid ? "***************************************" : ""
-                  }
-                  type="password"
-                />
-              ))}
+            {selectedAccount.signalsKey && (
+              <CustomInput
+                label="accounts.exchange.signalKey"
+                readOnly
+                type={showSignalKey ? "text" : "password"}
+                value={selectedAccount.signalsKey}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <span
+                      className="pointer"
+                      onClick={() => {
+                        copyToClipboard(
+                          selectedAccount.signalsKey,
+                          "accounts.exchange.signalKey.copied",
+                        );
+                      }}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <Copy />
+                    </span>
+                    <span className="pointer" onClick={() => setShowSignalKey(!showSignalKey)}>
+                      {!showSignalKey ? <Visibility /> : <VisibilityOff />}
+                    </span>
+                  </InputAdornment>
+                }
+              />
+            )}
             <Typography className="positionSettingsTitle" variant="h3">
-              <FormattedMessage id="accounts.exchange.positionsettings.title" />
+              <FormattedMessage id="accounts.exchange.signalsettings.title" />
             </Typography>
             <CustomSwitchInput
               defaultValue={selectedAccount.globalMaxPositions}
@@ -215,7 +225,7 @@ const ExchangeAccountSettings = () => {
               tooltip="accounts.options.maxconcurrent.help"
               type="number"
             />
-            <CustomSwitchInput
+            {/* <CustomSwitchInput
               defaultValue={selectedAccount.globalMinVolume}
               inputRef={register({
                 required: intl.formatMessage({ id: "form.error.value" }),
@@ -225,7 +235,7 @@ const ExchangeAccountSettings = () => {
               tooltip="accounts.options.minvolume.help"
               type="number"
               unit="BTC"
-            />
+            /> */}
             <CustomSwitchInput
               defaultValue={selectedAccount.globalPositionsPerMarket}
               inputRef={register({
@@ -236,7 +246,7 @@ const ExchangeAccountSettings = () => {
               tooltip="accounts.options.limitpositions.help"
               type="number"
             />
-            <CustomSwitchInput
+            {/* <CustomSwitchInput
               defaultValue={selectedAccount.globalBlacklist}
               inputRef={register({
                 required: intl.formatMessage({ id: "form.error.value" }),
@@ -245,8 +255,8 @@ const ExchangeAccountSettings = () => {
               name="globalBlacklist"
               tooltip="accounts.options.blacklist.help"
               type="textarea"
-            />
-            <CustomSwitchInput
+            /> */}
+            {/* <CustomSwitchInput
               defaultValue={selectedAccount.globalWhitelist}
               inputRef={register({
                 required: intl.formatMessage({ id: "form.error.value" }),
@@ -255,14 +265,14 @@ const ExchangeAccountSettings = () => {
               name="globalWhitelist"
               tooltip="accounts.options.whitelist.help"
               type="textarea"
-            />
+            /> */}
 
-            <CustomSwitch
+            {/* <CustomSwitch
               defaultValue={selectedAccount.globalDelisting}
               label="accounts.options.delisted"
               name="globalDelisting"
               tooltip="accounts.options.delisted.help"
-            />
+            /> */}
 
             <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
               <Typography className="bold" variant="body1">
