@@ -40,9 +40,9 @@ const SignupForm = () => {
   const newPageAB = useABTest();
 
   useEffect(() => {
-    const refCode = new URLSearchParams(window.location.search).get("invite");
-    if (refCode) {
-      Cookies.set("refCode", refCode);
+    const ref = new URLSearchParams(window.location.search).get("invite");
+    if (ref) {
+      Cookies.set("ref", ref);
     }
   }, []);
 
@@ -76,7 +76,7 @@ const SignupForm = () => {
       projectId: projectId,
       email: data.email,
       password: data.password,
-      refCode: Cookies.get("refCode"),
+      ref: Cookies.get("ref"),
       array: true,
       locale,
       gRecaptchaResponse,
