@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import "./SignupFormB.scss";
 import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import PasswordsSignup from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
@@ -22,13 +22,14 @@ import { setUserId } from "store/actions/user";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
 import useABTest from "hooks/useABTest";
+import Mailcheck from "react-mailcheck";
+import Cookies from "js-cookie";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
-  const [ref] = useState("");
   const formMethods = useForm();
-  const { errors, handleSubmit, register, clearErrors, control } = formMethods;
+  const { errors, handleSubmit, register, watch } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
   const intl = useIntl();
@@ -38,6 +39,14 @@ const SignupForm = () => {
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
   const newPageAB = useABTest();
+  const email = watch("email");
+
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("invite");
+    if (ref) {
+      Cookies.set("ref", ref);
+    }
+  }, []);
 
   if (!hasMounted) {
     // Don't render form statically
@@ -69,7 +78,7 @@ const SignupForm = () => {
       projectId: projectId,
       email: data.email,
       password: data.password,
-      ref: ref,
+      ref: Cookies.get("ref"),
       array: true,
       locale,
       gRecaptchaResponse,
@@ -159,6 +168,18 @@ const SignupForm = () => {
                 type="email"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
+              <Mailcheck email={email}>
+                {(suggested) =>
+                  suggested && (
+                    <span className="errorText">
+                      <FormattedMessage
+                        id="signup.email.didyoumean"
+                        values={{ suggested: suggested.full }}
+                      />
+                    </span>
+                  )
+                }
+              </Mailcheck>
               <Box mt="24px">
                 <PasswordsSignup edit={false} formMethods={formMethods} />
               </Box>

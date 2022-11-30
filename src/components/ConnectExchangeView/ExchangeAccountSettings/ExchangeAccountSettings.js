@@ -47,9 +47,10 @@ const ExchangeAccountSettings = () => {
     formState: { dirtyFields },
   } = useFormContext();
   const { exchanges } = useExchangeList();
-  const accountExchange = exchanges
-    ? exchanges.find((e) => e.id === selectedAccount.exchangeId)
-    : null;
+  const accountExchange =
+    selectedAccount && exchanges
+      ? exchanges.find((e) => e.id === selectedAccount.exchangeId)
+      : null;
   const [confirmDeleteDialog, setConfirmDeleteDialog] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showSignalKey, setShowSignalKey] = useState(false);
@@ -145,6 +146,14 @@ const ExchangeAccountSettings = () => {
         return false;
       });
   };
+
+  const authFieldsModified =
+    accountExchange && Boolean(accountExchange.requiredAuthFields.find((f) => dirtyFields[f]));
+
+  if (!selectedAccount) {
+    // Form being closed
+    return null;
+  }
 
   return (
     <form className="exchangeAccountSettings" method="post">
