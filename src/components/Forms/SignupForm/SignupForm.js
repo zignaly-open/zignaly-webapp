@@ -21,7 +21,6 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import LoginLinks from "../../Login/LoginLinks/LoginLinks";
 import useABTest from "hooks/useABTest";
-import Mailcheck from "react-mailcheck";
 import Cookies from "js-cookie";
 
 const SignupForm = () => {
@@ -38,7 +37,6 @@ const SignupForm = () => {
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
   const newPageAB = useABTest();
-  const email = watch("email");
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
@@ -158,18 +156,6 @@ const SignupForm = () => {
                 variant="outlined"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
-              <Mailcheck email={email}>
-                {(suggested) =>
-                  suggested && (
-                    <span className="errorText">
-                      <FormattedMessage
-                        id="signup.email.didyoumean"
-                        values={{ suggested: suggested.full }}
-                      />
-                    </span>
-                  )
-                }
-              </Mailcheck>
             </Box>
             <Passwords edit={false} formMethods={formMethods} />
             <Box marginBottom={3}>
