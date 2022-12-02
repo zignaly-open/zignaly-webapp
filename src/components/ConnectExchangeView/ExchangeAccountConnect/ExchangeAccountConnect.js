@@ -226,6 +226,10 @@ const ExchangeAccountConnect = () => {
                 autoComplete="new-password"
                 inputRef={register({
                   required: intl.formatMessage({ id: `form.error.${field}` }),
+                  pattern: {
+                    value: /^[A-Za-z0-9]{64,}$/,
+                    message: "Invalid format",
+                  },
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}
@@ -238,6 +242,10 @@ const ExchangeAccountConnect = () => {
               autoComplete="new-password"
               inputRef={register({
                 required: true,
+                pattern: {
+                  value: /^[A-Za-z0-9]{13,}$/,
+                  message: "Invalid format",
+                },
               })}
               label="accounts.exchange.zignalyApiCode"
               name="zignalyApiCode"
