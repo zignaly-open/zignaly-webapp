@@ -267,20 +267,6 @@ const ExchangeAccountConnect = () => {
               flexDirection="row"
               justifyContent="space-between"
             >
-              <Box
-                alignItems="center"
-                className="summary"
-                display="flex"
-                flexDirection="row"
-                onClick={() => setTipsExpanded(!tipsExpanded)}
-              >
-                <Typography>
-                  <FormattedMessage id="accounts.exchange.api.tip" />
-                </Typography>
-
-                {tipsExpanded ? <ChevronUp /> : <ChevronDown />}
-              </Box>
-
               {step === 2 && (
                 <Hidden xsDown>
                   <CustomButton
