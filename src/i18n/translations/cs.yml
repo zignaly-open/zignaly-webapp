@@ -1822,13 +1822,13 @@ vault.info: |
   To get started, make a qualifying deposit and stake your funds to start receiving rewards!
 vault.benefits: "CH-Benefits"
 vault.benefits.info: |
-  • Earn high interest with competitive rates
-  • Earn passive income on idle assets
-  • Daily rewards & daily compounding
+  • CH-Earn high interest with competitive rates
+  • CH-Earn passive income on idle assets
+  • CH-Daily rewards & daily compounding
 vault.benefits.info2: |
-  • Variety of programs with or without lockup periods
-  • Rewards starts automatically, no promo codes needed
-  • Multiple coins and boost options
+  • CH-No fees or lockup period
+  • CH-Rewards starts automatically, no promo codes needed
+  • CH-Your funds are always available for withdrawal
 vault.active: "CH-Active Vault Offers"
 vault.expired: "CH-Expired Offers"
 vault.holders: "CH-For {coin} holders"
