@@ -3,7 +3,7 @@ import "./SignupForm.scss";
 import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
-import Passwords from "../../Passwords/PasswordsSignup";
+import PasswordsSignup from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -36,6 +36,7 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
+  const email = watch("email");
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
@@ -163,45 +164,47 @@ const SignupForm = () => {
                 type="email"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
-            </Box>
-            <Passwords edit={false} formMethods={formMethods} />
-            <Box marginBottom={3}>
-              <Typography className="termsText" style={{ fontSize: "13px" }}>
-                <FormattedMessage
-                  id="signup.termsAgreement"
-                  values={{
-                    terms: (
-                      <a
-                        className="link"
-                        href="https://zignaly.com/legal/terms"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <b>
-                          <FormattedMessage id="signup.terms" />
-                        </b>
-                      </a>
-                    ),
-                    privacy: (
-                      <a
-                        className="link"
-                        href="https://zignaly.com/legal/privacy"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <b>
-                          <FormattedMessage id="signup.privacy" />
-                        </b>
-                      </a>
-                    ),
-                  }}
-                />
-              </Typography>
-            </Box>
-            <Box className="inputBox buttonBox">
-              <CustomButton className={"full submitButton"} loading={loading} type="submit">
-                <FormattedMessage id="action.signup" />
-              </CustomButton>
+              <Box mt="24px">
+                <PasswordsSignup edit={false} formMethods={formMethods} />
+              </Box>
+              <Box mt="49px" mb="8px" textAlign="center">
+                <Typography style={{ fontSize: "11px" }}>
+                  <FormattedMessage
+                    id="signup.termsAgreement2"
+                    values={{
+                      terms: (
+                        <a
+                          className="link"
+                          href="https://zignaly.com/legal/terms"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <b>
+                            <FormattedMessage id="signup.terms" />
+                          </b>
+                        </a>
+                      ),
+                      privacy: (
+                        <a
+                          className="link"
+                          href="https://zignaly.com/legal/privacy"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <b>
+                            <FormattedMessage id="signup.privacy" />
+                          </b>
+                        </a>
+                      ),
+                    }}
+                  />
+                </Typography>
+              </Box>
+              <Box className="buttonBox">
+                <CustomButton className={"full submitButton"} loading={loading} type="submit">
+                  <FormattedMessage id="action.signup" />
+                </CustomButton>
+              </Box>
             </Box>
             <Box className="padlockTextContainer">
               <LockSharp />
