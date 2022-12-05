@@ -21,7 +21,6 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
-import useABTest from "hooks/useABTest";
 import Mailcheck from "react-mailcheck";
 import Cookies from "js-cookie";
 
@@ -38,7 +37,6 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
-  const newPageAB = useABTest();
   const email = watch("email");
 
   useEffect(() => {
@@ -83,7 +81,6 @@ const SignupForm = () => {
       locale,
       gRecaptchaResponse,
       c,
-      newPageAB,
     };
 
     tradeApi
