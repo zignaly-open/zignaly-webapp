@@ -3,7 +3,7 @@ import "./SignupForm.scss";
 import { Box, Typography, OutlinedInput, InputAdornment } from "@material-ui/core";
 import CustomButton from "../../CustomButton/CustomButton";
 import { useForm } from "react-hook-form";
-import PasswordsSignup from "../../Passwords/PasswordsSignup";
+import Passwords from "../../Passwords/PasswordsSignup";
 import { projectId } from "../../../utils/defaultConfigs";
 import { useDispatch } from "react-redux";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -36,7 +36,6 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
-  const email = watch("email");
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
