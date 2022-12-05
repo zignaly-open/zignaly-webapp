@@ -1,17 +1,10 @@
-.signupFormOld {
-  padding: 48px 68px;
+.signupForm {
+  padding: 35px 41px;
 
   .inputBox {
-    margin-bottom: 40px;
+    margin-bottom: 27px;
     width: 264px;
-
-    &.checkbox {
-      width: 300px;
-
-      .termsText {
-        color: $lighterBlack;
-      }
-    }
+    margin-top: 15px;
 
     &.buttonBox {
       margin-bottom: 10px;
@@ -27,6 +20,15 @@
   }
 
   .customInput {
+    input::placeholder {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      letter-spacing: 0.55px;
+      color: $black;
+      opacity: 8;
+    }
+
     input {
       color: $lighterBlack;
     }
@@ -48,6 +50,10 @@
         border-color: $lightGrey;
       }
     }
+  }
+
+  .emailInput {
+    margin-top: 25px;
   }
 
   .captchaBox {
@@ -86,5 +92,34 @@
         color: $red;
       }
     }
+  }
+
+  .headerText {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 31px;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+
+  .underline {
+    text-decoration: underline;
+    display: inline;
+  }
+
+  .padlockTextContainer {
+    margin-left: -95px;
+    margin-right: -95px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .padlockText {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.55px;
+    margin-left: 3px;
   }
 }
