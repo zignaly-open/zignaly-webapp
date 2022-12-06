@@ -103,14 +103,6 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
                   <FormattedMessage id="accounts.powered" />
                 </Box>
               </Box>
-              <Box display="flex" flexDirection="column">
-                <CustomButton
-                  className="body2 textPurple borderPurple exchangeButton"
-                  onClick={() => navigateToPath("connectAccount")}
-                >
-                  <FormattedMessage id="accounts.connect.exchange" />
-                </CustomButton>
-              </Box>
             </Box>
           ) : (
             <Box className="exchangeButtons" display="flex" justifyContent="flex-start">

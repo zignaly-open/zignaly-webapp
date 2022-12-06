@@ -1,0 +1,29 @@
+.loginTabsOld {
+  background: $white;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px 0 $boxShadowColor;
+  min-height: 450px;
+  overflow-y: visible;
+  position: relative;
+  width: 400px;
+  z-index: 100;
+
+  .section {
+    min-height: 450px;
+  }
+
+  .captchaTerms {
+    bottom: 12px;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@include media("<=sm") {
+  .loginTabsOld {
+    border-radius: 0;
+    width: 100%;
+  }
+}
