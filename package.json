@@ -72,6 +72,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^5.21.2",
     "react-lazyload": "^3.2.0",
+    "react-mailcheck": "^1.2.0",
     "react-markdown": "^5.0.3",
     "react-mde": "^11.5.0",
     "react-number-format": "^4.8.0",
