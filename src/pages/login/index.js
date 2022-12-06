@@ -6,6 +6,8 @@ import LoginForm from "../../components/Forms/LoginForm";
 import Login from "../../components/Login/Login";
 import useRedirectUponSessionValid from "hooks/useRedirectUponSessionValid";
 import useHasMounted from "hooks/useHasMounted";
+import LoginOld from "components/Login/LoginOld";
+import LoginTabsOld from "components/Login/LoginTabsOld";
 
 const LoginPage = () => {
   const intl = useIntl();

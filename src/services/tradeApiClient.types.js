@@ -1762,7 +1762,6 @@ export function userExchangeConnectionResponseTransform(response) {
  * @property {boolean} globalDelisting
  * @property {boolean} balanceSynced
  * @property {boolean} activated Flag to mark zignaly subaccount as activated
- * @property {string} [signalsKey] Key to send signal to ps2 service
  */
 
 /**

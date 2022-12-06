@@ -21,13 +21,12 @@ import VerifyEmailForm from "../VerifyEmailForm";
 import { setUserId } from "store/actions/user";
 import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
-import Mailcheck from "react-mailcheck";
 import Cookies from "js-cookie";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
-  const formMethods = useForm({ mode: "onBlur" });
+  const formMethods = useForm();
   const { errors, handleSubmit, register, watch } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
@@ -37,7 +36,7 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
-  const [email, setEmail] = useState("");
+  const email = watch("email");
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
@@ -161,25 +160,10 @@ const SignupForm = () => {
                     message: intl.formatMessage({ id: "security.email.error.invalid" }),
                   },
                 })}
-                onBlur={(e) => {
-                  setEmail(e.target.value);
-                }}
                 name="email"
                 type="email"
               />
               {errors.email && <span className="errorText">{errors.email.message}</span>}
-              <Mailcheck email={email}>
-                {(suggested) =>
-                  suggested && (
-                    <span className="errorText">
-                      <FormattedMessage
-                        id="signup.email.didyoumean"
-                        values={{ suggested: suggested.full }}
-                      />
-                    </span>
-                  )
-                }
-              </Mailcheck>
               <Box mt="24px">
                 <PasswordsSignup edit={false} formMethods={formMethods} />
               </Box>

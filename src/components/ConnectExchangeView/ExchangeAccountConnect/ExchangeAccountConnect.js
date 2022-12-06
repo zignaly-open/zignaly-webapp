@@ -9,6 +9,7 @@ import ModalPathContext from "../ModalPathContext";
 import { useDispatch } from "react-redux";
 import { CustomInput } from "../ExchangeAccountForm";
 import { showErrorAlert } from "../../../store/actions/ui";
+import ExchangeIcon from "../../ExchangeIcon";
 import CustomButton from "../../CustomButton";
 import { ChevronDown, ChevronUp } from "react-feather";
 import ToggleButtonsExchangeType from "../ToggleButtonsExchangeType";
@@ -52,7 +53,7 @@ const ExchangeAccountConnect = () => {
   }, []);
 
   let { exchanges, exchangesLoading } = useExchangeList();
-  const [exchangeName] = useState("binance");
+  const [exchangeName, setExchangeName] = useState("");
   const [step, setStep] = useState(1);
   const [tipsExpanded, setTipsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,7 +75,6 @@ const ExchangeAccountConnect = () => {
    * @property {String} key
    * @property {String} secret
    * @property {String} password
-   * @property {String} zignalyApiCode
    * @property {String} exchangeType
    * @property {Boolean} testNet
    */
@@ -86,7 +86,7 @@ const ExchangeAccountConnect = () => {
    * @returns {void}
    */
   const submitForm = (data) => {
-    const { key, secret, password, zignalyApiCode } = data;
+    const { key, secret, password } = data;
     const payload = {
       exchangeId: selectedExchange.id,
       internalName,
@@ -94,7 +94,6 @@ const ExchangeAccountConnect = () => {
       key,
       secret,
       ...(password && { password }),
-      zignalyApiCode,
       mainAccount: false,
       isPaperTrading: false,
       testNet: false,
@@ -111,10 +110,13 @@ const ExchangeAccountConnect = () => {
       })
       .catch((e) => {
         if (e.code === 72) {
-          setError("zignalyApiCode", {
-            type: "manual",
-            message: intl.formatMessage({ id: "form.error.key.invalid" }),
-          });
+          setError(
+            selectedExchange.requiredAuthFields[selectedExchange.requiredAuthFields.length - 1],
+            {
+              type: "manual",
+              message: intl.formatMessage({ id: "form.error.key.invalid" }),
+            },
+          );
         } else {
           dispatch(showErrorAlert(e));
         }
@@ -181,14 +183,16 @@ const ExchangeAccountConnect = () => {
         )}
         {!exchangesLoading && (
           <>
-            {/* <Typography className="body1 bold" variant="h3">
+            <Typography className="body1 bold" variant="h3">
               <FormattedMessage id="accounts.exchange.choose" />
-            </Typography> */}
-            {/* <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
-              <Box className="iconBox selected">
-                <ExchangeIcon exchange="binance" onClick={() => setExchangeName("binance")} />
-              </Box>
-            </Box> */}
+            </Typography>
+            <Box alignItems="center" className="exchangeIconBox" display="flex" flexDirection="row">
+              {exchanges.map((e) => (
+                <Box className={`iconBox ${exchangeName === e.name ? "selected" : ""}`} key={e.id}>
+                  <ExchangeIcon exchange={e.name} onClick={() => setExchangeName(e.name)} />
+                </Box>
+              ))}
+            </Box>
             <div className="name">
               <CustomInput
                 inputRef={register({
@@ -226,10 +230,6 @@ const ExchangeAccountConnect = () => {
                 autoComplete="new-password"
                 inputRef={register({
                   required: intl.formatMessage({ id: `form.error.${field}` }),
-                  pattern: {
-                    value: /^[A-Za-z0-9]{64,}$/,
-                    message: "Invalid format",
-                  },
                 })}
                 key={field}
                 label={`accounts.exchange.${field}`}
@@ -237,20 +237,6 @@ const ExchangeAccountConnect = () => {
                 type="password"
               />
             ))}
-
-            <CustomInput
-              autoComplete="new-password"
-              inputRef={register({
-                required: true,
-                pattern: {
-                  value: /^[A-Za-z0-9]{13,}$/,
-                  message: "Invalid format",
-                },
-              })}
-              label="accounts.exchange.zignalyApiCode"
-              name="zignalyApiCode"
-              type="password"
-            />
 
             {exchangeName.toLowerCase() === "bitmex" && (
               <Alert className="alert" severity="info">
@@ -267,6 +253,20 @@ const ExchangeAccountConnect = () => {
               flexDirection="row"
               justifyContent="space-between"
             >
+              <Box
+                alignItems="center"
+                className="summary"
+                display="flex"
+                flexDirection="row"
+                onClick={() => setTipsExpanded(!tipsExpanded)}
+              >
+                <Typography>
+                  <FormattedMessage id="accounts.exchange.api.tip" />
+                </Typography>
+
+                {tipsExpanded ? <ChevronUp /> : <ChevronDown />}
+              </Box>
+
               {step === 2 && (
                 <Hidden xsDown>
                   <CustomButton
