@@ -27,7 +27,7 @@ import Cookies from "js-cookie";
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { locale } = useStoreSettingsSelector();
-  const formMethods = useForm();
+  const formMethods = useForm({ mode: "onBlur" });
   const { errors, handleSubmit, register, watch } = formMethods;
   const dispatch = useDispatch();
   const hasMounted = useHasMounted();
@@ -37,7 +37,7 @@ const SignupForm = () => {
   const isCheckly =
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
-  const email = watch("email");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
@@ -161,6 +161,9 @@ const SignupForm = () => {
                     message: intl.formatMessage({ id: "security.email.error.invalid" }),
                   },
                 })}
+                onBlur={(e) => {
+                  setEmail(e.target.value);
+                }}
                 name="email"
                 type="email"
               />
