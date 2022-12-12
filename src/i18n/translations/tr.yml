@@ -1952,7 +1952,7 @@ login2.hero.record.desc2: Doğrulanmış
 login2.hero.fees: 'Aylık ücret yok'
 login2.hero.fees.desc: 'Yalnızca kâr ettiğinizde ödeme yapın'
 login2.hero.min: '"En az" sınırı yok'
-login2.hero.min.desc: 'Ortalama yatırım tahsisi 200$''dır, '
+login2.hero.min.desc: 'Ortalama yatırım tahsisi 100$''dır, '
 login2.hero.min.desc2: 'ama 1 dolardan başlayabilirsiniz'
 login2.press: 'Dünya çapında 430.000''den fazla kullanıcı güven duyuyor.'
 login2.press2: 'En Büyük Finansal Satış Noktaları, şunlar dahil olmak üzere Zignaly''i öne çıkardı:'
