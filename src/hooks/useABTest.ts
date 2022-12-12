@@ -7,7 +7,7 @@ import useStoreSettingsSelector from "hooks/useStoreSettingsSelector";
  * Load/initialize A/B test flag
  * @returns {boolean} Flag
  */
-const useAPTest = () => {
+const useABTest = () => {
   const dispatch = useDispatch();
   const storeSettings = useStoreSettingsSelector();
 
@@ -36,4 +36,4 @@ const useAPTest = () => {
   return res;
 };
 
-export default useAPTest;
+export default useABTest;
