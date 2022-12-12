@@ -11,6 +11,7 @@ import Press from "../Press";
 import { FormattedMessage } from "react-intl";
 import SafuIcon from "images/login/SafuIcon.svg";
 import SslIcon from "images/login/SslIcon.svg";
+import useABTest from "hooks/useABTest";
 
 /**
  *
@@ -25,6 +26,8 @@ import SslIcon from "images/login/SslIcon.svg";
  * @returns {JSX.Element} JSX component.
  */
 const Login = ({ children }) => {
+  const newPageAB = useABTest();
+
   return (
     <Box className="loginPage">
       <Box className="headerBox" display="flex" flexDirection="row" justifyContent="space-between">
@@ -81,7 +84,10 @@ const Login = ({ children }) => {
                 <FormattedMessage id="login2.hero.min" />
               </Typography>
               <Typography className="sectTitle">
-                <FormattedMessage id="login2.hero.min.desc" />
+                <FormattedMessage
+                  id="login2.hero.min.desc"
+                  values={{ amount: newPageAB ? 200 : 100 }}
+                />
                 <p className="underline">
                   <FormattedMessage id="login2.hero.min.desc2" />
                 </p>

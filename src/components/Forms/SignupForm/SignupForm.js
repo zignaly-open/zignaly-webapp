@@ -23,6 +23,7 @@ import { MailOutlined, LockSharp } from "@material-ui/icons";
 import Link from "../../LocalizedLink";
 import Mailcheck from "react-mailcheck";
 import Cookies from "js-cookie";
+import useABTest from "hooks/useABTest";
 
 const SignupForm = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +39,7 @@ const SignupForm = () => {
     typeof window !== "undefined" && window.navigator.userAgent.toLowerCase().includes("checkly");
   const [loginResponse, setLoginResponse] = useState(null);
   const [email, setEmail] = useState("");
+  const newPageAB = useABTest();
 
   useEffect(() => {
     const ref = new URLSearchParams(window.location.search).get("invite");
@@ -81,6 +83,7 @@ const SignupForm = () => {
       locale,
       gRecaptchaResponse,
       c,
+      newPageAB,
     };
 
     tradeApi
