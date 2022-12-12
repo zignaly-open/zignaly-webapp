@@ -86,7 +86,7 @@ const Login = ({ children }) => {
               <Typography className="sectTitle">
                 <FormattedMessage
                   id="login2.hero.min.desc"
-                  values={{ amount: newPageAB ? 200 : 100 }}
+                  values={{ amount: newPageAB ? 100 : 200 }}
                 />
                 <p className="underline">
                   <FormattedMessage id="login2.hero.min.desc2" />
