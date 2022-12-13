@@ -1950,7 +1950,7 @@ login2.hero.record.desc2: Verificado
 login2.hero.fees: 'Sin cuota mensual'
 login2.hero.fees.desc: 'Paga solo cuando obtengas beneficios'
 login2.hero.min: 'Sin inversión mínima'
-login2.hero.min.desc: 'La inversión media es de $100,'
+login2.hero.min.desc: 'La inversión media es de ${amount},'
 login2.hero.min.desc2: 'pero puedes empezar desde $1'
 login2.press: 'Con la confianza de más de 430.000 usuarios en todo el mundo'
 login2.press2: 'Los mayores outlest financieros han destacado Zignaly, incluyendo:'
