@@ -96,3 +96,15 @@ export const analyticsTrigger = (userData, eventType) => {
     );
   }
 };
+
+export const trackConversion = () => {
+  if (process.env.GATSBY_ENABLE_TRACKING !== "true") return;
+
+  const img = document.createElement("img");
+  img.src =
+    "https://cnv.event.prod.bidr.io/log/cnv?tag_id=88&buzz_key=askpermission&value=&segment_key=askpermission-142&account_id=2&order=&ord=" +
+    Math.random();
+  img.height = 0;
+  img.width = 0;
+  document.body.append(img);
+};
