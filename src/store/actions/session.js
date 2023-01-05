@@ -4,7 +4,7 @@ import { showErrorAlert } from "./ui";
 import { assign } from "lodash";
 import tradeApi from "../../services/tradeApiClient";
 import gtmPushApi from "../../utils/gtmPushApi";
-import { analyticsTrigger } from "utils/analyticsJsApi";
+import { analyticsTrigger, trackConversion } from "utils/analyticsJsApi";
 import { toggleBalanceBox } from "./settings";
 
 export const START_TRADE_API_SESSION = "START_TRADE_API_SESSION";
@@ -103,6 +103,10 @@ export const initExternalWidgets = (userData, eventType) => {
   }
 
   analyticsTrigger(userData, eventType);
+
+  if (eventType === "signup") {
+    trackConversion();
+  }
 };
 
 /**
