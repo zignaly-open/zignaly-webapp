@@ -47,7 +47,7 @@ const ExchangeAccountConnect = () => {
   } = useContext(ModalPathContext);
 
   useEffect(() => {
-    setTitle(<FormattedMessage id="accounts.connect" />);
+    setTitle(<FormattedMessage id="accounts.connectps2" />);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
