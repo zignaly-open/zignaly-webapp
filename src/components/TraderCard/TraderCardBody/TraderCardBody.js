@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TraderCardBody.scss";
-import { Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import LineChart from "../../Graphs/GradientLineChart";
 import UserSummary from "../UserSummary";
 import CustomButton from "../../CustomButton";
@@ -69,6 +69,7 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
     CTorPS,
     liquidated,
     globalReturn,
+    migrated,
   } = provider;
 
   /**
@@ -353,23 +354,35 @@ const TraderCard = ({ provider, showSummary, timeFrame, reloadProviders }) => {
             </div>
 
             <div className="actions">
-              {!disconnecting && canDisable && (
-                <CustomToolip title={getCopyButtonTooltip()}>
-                  <div>
-                    <CustomButton
-                      className="textPurple"
-                      disabled={!profitSharing && isCopyingWithAnotherAccount}
-                      loading={loading}
-                      onClick={handleProviderDisconnect}
-                    >
-                      <FormattedMessage id={CTorPS ? "trader.stop" : "provider.stop"} />
-                    </CustomButton>
-                  </div>
-                </CustomToolip>
+              {migrated ? (
+                <CustomButton
+                  className="textPurple"
+                  href={`https://app.zignaly.com/profit-sharing/${provider.id}`}
+                  target="_blank"
+                >
+                  <FormattedMessage id="srv.migrated" />
+                </CustomButton>
+              ) : (
+                <>
+                  {!disconnecting && canDisable && (
+                    <CustomToolip title={getCopyButtonTooltip()}>
+                      <div>
+                        <CustomButton
+                          className="textPurple"
+                          disabled={!profitSharing && isCopyingWithAnotherAccount}
+                          loading={loading}
+                          onClick={handleProviderDisconnect}
+                        >
+                          <FormattedMessage id={CTorPS ? "trader.stop" : "provider.stop"} />
+                        </CustomButton>
+                      </div>
+                    </CustomToolip>
+                  )}
+                  <CustomButton className="textPurple" onClick={redirectToProfile}>
+                    <FormattedMessage id={CTorPS ? "trader.view" : "provider.view"} />
+                  </CustomButton>
+                </>
               )}
-              <CustomButton className="textPurple" onClick={redirectToProfile}>
-                <FormattedMessage id={CTorPS ? "trader.view" : "provider.view"} />
-              </CustomButton>
             </div>
           </div>
         </div>
