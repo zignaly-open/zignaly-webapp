@@ -9,6 +9,8 @@ import FollowProviderButton from "../FollowProviderButton";
 import { FormattedMessage } from "react-intl";
 import { isNumber } from "lodash";
 import styled from "styled-components";
+import CustomButton from "components/CustomButton";
+import { Launch } from "@material-ui/icons";
 
 const Migrated = styled(Typography)`
   color: var(--purple);
@@ -57,9 +59,22 @@ const TraderHeaderActions = ({ provider }) => {
       {provider.isCopyTrading ? (
         <>
           {provider.migrated ? (
-            <Migrated variant="h4">
-              <FormattedMessage id="srv.migrated" />
-            </Migrated>
+            <CustomButton
+              className="textPurple borderPurple"
+              href={`https://app.zignaly.com/profit-sharing/${provider.id}`}
+              target="_blank"
+            >
+              <Box
+                px={1}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ gap: "8px" }}
+              >
+                <FormattedMessage id="srv.migrated" />
+                <Launch />
+              </Box>
+            </CustomButton>
           ) : (
             <>
               <CopyTraderButton provider={provider} />

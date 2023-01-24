@@ -108,7 +108,7 @@ const ExchangeAccountList = ({ demo, searchFilter = "" }) => {
                   className="body2 textPurple borderPurple exchangeButton"
                   onClick={() => navigateToPath("connectAccount")}
                 >
-                  <FormattedMessage id="accounts.connect.exchange" />
+                  <FormattedMessage id="accounts.connectps2" />
                 </CustomButton>
               </Box>
             </Box>

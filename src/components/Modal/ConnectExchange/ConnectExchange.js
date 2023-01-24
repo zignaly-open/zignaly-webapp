@@ -28,7 +28,7 @@ const ConnectExchange = ({ onClose }) => {
   return (
     <Box alignItems="center" className="connectExchangeModal" display="flex" flexDirection="column">
       <Typography variant="h3">
-        <FormattedMessage id="accounts.connect" />
+        <FormattedMessage id="accounts.connectps2" />
       </Typography>
       <Typography variant="body1">
         <FormattedMessage
