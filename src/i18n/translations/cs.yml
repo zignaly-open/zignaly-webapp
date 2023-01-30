@@ -2096,3 +2096,6 @@ zigpad.benefits.info2: |
   • CH-Completely transparent process.
 zigpad.faq: "CH-FAQs"
 zigpad.locked: "CH-Zig Coins related to the Referral program [Locked] cannot be used to Pledge on the ZIGPad. You can use them for Trading Fee Rebates or Success Fees in Profit Sharing."
+
+accounts.exchange.customnamekey: "Custom name for this API key"
+accounts.connect.service: "Connect Service"
