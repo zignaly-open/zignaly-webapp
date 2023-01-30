@@ -194,7 +194,7 @@ const ExchangeAccountConnect = () => {
                 inputRef={register({
                   required: intl.formatMessage({ id: "form.error.name" }),
                 })}
-                label="accounts.exchange.customname"
+                label="accounts.exchange.customnamekey"
                 name="internalName"
               />
             </div>
@@ -295,7 +295,7 @@ const ExchangeAccountConnect = () => {
                   loading={loading}
                   type="submit"
                 >
-                  <FormattedMessage id="accounts.connect.button" />
+                  <FormattedMessage id="accounts.connect.service" />
                 </CustomButton>
               </Hidden>
             )}
@@ -309,7 +309,7 @@ const ExchangeAccountConnect = () => {
               <FormattedMessage id="accounts.connect.ready" />
             </Typography>
             <CustomButton className="bgPurple bold" loading={loading} type="submit">
-              <FormattedMessage id="accounts.connect.button" />
+              <FormattedMessage id="accounts.connect.service" />
             </CustomButton>
           </>
         )}
