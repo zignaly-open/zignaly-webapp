@@ -58,49 +58,11 @@ const withProvidersLayout = (Component) => {
       setShowSort(!showSort);
     };
 
-    const createButtonText = () => {
-      if (isMobile) {
-        return "profit.become.mobile";
-      }
-      return "profit.become";
-    };
-
     const renderFiltersButton = isCopyTrading || isProfitSharing;
     const renderRightComponent = !props.path.includes("/my");
 
     const filters = renderRightComponent ? (
       <>
-        <Modal
-          onClose={() => dispatch(showCreateProvider(false))}
-          persist={false}
-          size="medium"
-          state={storeModal.createProvider}
-        >
-          <CreateProviderForm />
-        </Modal>
-        <Modal
-          onClose={() => dispatch(showCreateTrader(false))}
-          persist={false}
-          size="fullscreen"
-          state={storeModal.createTrader}
-        >
-          <CreateTraderForm isCopyTrading={false} />
-        </Modal>
-        <Hidden xsDown>
-          {isProfitSharing ? (
-            <CustomButton
-              className="textPurple borderPurple becomeProviderButton"
-              onClick={() => dispatch(showCreateTrader(true))}
-            >
-              <Typography variant="body1">
-                <FormattedMessage id={createButtonText()} />
-              </Typography>
-              <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
-            </CustomButton>
-          ) : (
-            <div className="becomeProviderButton" />
-          )}
-        </Hidden>
         <Box
           alignItems="center"
           bgcolor="grid.content"

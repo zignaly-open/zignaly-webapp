@@ -44,16 +44,6 @@ const TimeFrameSelectRow = ({ title, onChange, value, isCopyTrading, isProfitSha
         <Typography className="providersCount" variant="h3">
           {title}
         </Typography>
-        <Hidden smUp>
-          {isProfitSharing && (
-            <CustomButton className="textPurple" onClick={() => dispatch(showCreateTrader(true))}>
-              <Typography variant="body1">
-                <FormattedMessage id="profit.become.mobile" />
-              </Typography>
-              <img alt="service-icon" className="buttonIcon" src={ServiceIcon} />
-            </CustomButton>
-          )}
-        </Hidden>
       </Box>
       {isCopyTrading && (
         <Box
