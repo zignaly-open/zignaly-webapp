@@ -184,6 +184,7 @@ const TwoFAForm = ({ loginData, onComplete }) => {
                   className="inputBox"
                   fields={6}
                   loading={verifyingDevice}
+                  disabled={verifyingDevice}
                   onComplete={submitKnownDeviceCode}
                 />
                 <Box alignItems="center" className="linkBox" display="flex">
