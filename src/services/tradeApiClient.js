@@ -381,6 +381,7 @@ class TradeApiClient {
       headers: {
         "Content-Type": "application/json",
         "X-API-KEY": process.env.GATSBY_API_KEY || "",
+        "x-source": "trading",
         ...(authToken && { Authorization: "Bearer " + authToken }),
       },
     };
