@@ -12,6 +12,9 @@ import { showErrorAlert, showSuccessAlert } from "../../../../store/actions/ui";
 import { navigateLogin } from "services/navigation";
 import { endTradeApiSession } from "store/actions/session";
 import "./UpdatePassword.scss";
+import { useStoreUserData } from "hooks/useStoreUserSelector";
+import TwoFAForm from "components/Forms/TwoFAForm";
+import CustomModal from "components/Modal";
 
 /**
  * Provides a component to update password.
@@ -25,11 +28,15 @@ const UpdatePassword = () => {
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const intl = useIntl();
+  const userData = useStoreUserData();
+  const [twoFAModal, showTwoFAModal] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   /**
    * @typedef {Object} FormData
    * @property {string} currentPassword
    * @property {string} password
+   * @property {string} [code]
    */
 
   /**
@@ -39,10 +46,11 @@ const UpdatePassword = () => {
    * @returns {void}
    */
   const submitPassword = (data) => {
-    const { currentPassword: password, password: newPassword } = data;
+    const { currentPassword: password, password: newPassword, code } = data;
     const payload = {
       password,
       newPassword,
+      code,
     };
 
     setLoading(true);
@@ -71,52 +79,77 @@ const UpdatePassword = () => {
       });
   };
 
-  return (
-    <form className="updatePassword" method="post" onSubmit={handleSubmit(submitPassword)}>
-      <Box className="inputBox" display="flex" flexDirection="column" width={1}>
-        <Box className="passwordBox" display="flex" width={1}>
-          <PasswordInput
-            disabled={!editing}
-            error={!!errors.currentPassword}
-            inputRef={register({ required: true })}
-            label={<FormattedMessage id={"security.password.current"} />}
-            name="currentPassword"
-            placeholder={!editing ? "•••••••••" : ""}
-          />
+  /**
+   * Function to submit form.
+   *
+   * @param {FormData} data Form data.
+   * @returns {void}
+   */
+  const submit = (data) => {
+    if (userData.ask2FA) {
+      setFormData(data);
+      showTwoFAModal(true);
+    } else {
+      submitPassword(data);
+    }
+  };
 
-          {!editing && (
-            <img
-              aria-labelledby="Edit password"
-              className="iconPurple"
-              onClick={() => setEditing(true)}
-              src={EditIcon}
-              title="Edit"
+  return (
+    <>
+      <CustomModal
+        onClose={() => showTwoFAModal(false)}
+        persist={false}
+        size="small"
+        state={twoFAModal}
+      >
+        <TwoFAForm onComplete={(code) => submitPassword({ ...formData, code })} />
+      </CustomModal>
+      <form className="updatePassword" method="post" onSubmit={handleSubmit(submit)}>
+        <Box className="inputBox" display="flex" flexDirection="column" width={1}>
+          <Box className="passwordBox" display="flex" width={1}>
+            <PasswordInput
+              disabled={!editing}
+              error={!!errors.currentPassword}
+              inputRef={register({ required: true })}
+              label={<FormattedMessage id={"security.password.current"} />}
+              name="currentPassword"
+              placeholder={!editing ? "•••••••••" : ""}
             />
+
+            {!editing && (
+              <img
+                aria-labelledby="Edit password"
+                className="iconPurple"
+                onClick={() => setEditing(true)}
+                src={EditIcon}
+                title="Edit"
+              />
+            )}
+          </Box>
+          {errors && errors.currentPassword && (
+            <span className="errorText">{errors.currentPassword.message}</span>
+          )}
+          {!editing && (
+            <Box pt="17px">
+              <Typography className="bold" variant="subtitle2">
+                <FormattedMessage id="security.note" />
+              </Typography>
+              <Typography className="callout1">
+                <FormattedMessage id="security.passwordnote" />
+              </Typography>
+            </Box>
           )}
         </Box>
-        {errors && errors.currentPassword && (
-          <span className="errorText">{errors.currentPassword.message}</span>
+        {editing && (
+          <>
+            <Passwords edit={true} formMethods={formMethods} />
+            <CustomButton className="bgPurple bold" loading={loading} type="submit">
+              <FormattedMessage id="security.submit" />
+            </CustomButton>
+          </>
         )}
-        {!editing && (
-          <Box pt="17px">
-            <Typography className="bold" variant="subtitle2">
-              <FormattedMessage id="security.note" />
-            </Typography>
-            <Typography className="callout1">
-              <FormattedMessage id="security.passwordnote" />
-            </Typography>
-          </Box>
-        )}
-      </Box>
-      {editing && (
-        <>
-          <Passwords edit={true} formMethods={formMethods} />
-          <CustomButton className="bgPurple bold" loading={loading} type="submit">
-            <FormattedMessage id="security.submit" />
-          </CustomButton>
-        </>
-      )}
-    </form>
+      </form>
+    </>
   );
 };
 
