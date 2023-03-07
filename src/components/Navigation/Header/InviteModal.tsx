@@ -19,7 +19,7 @@ interface InviteModalProps {
 const InviteModal = ({ onClose, isOpen }: InviteModalProps) => {
   const copyToClipboard = useClipboard();
   const userData = useStoreUserData();
-  const link = "https://zignaly.com/app/signup/?invite=" + userData.refCode;
+  const link = "https://app.zignaly.com/signup?invite=" + userData.refCode;
   const track = useTz();
 
   return (
