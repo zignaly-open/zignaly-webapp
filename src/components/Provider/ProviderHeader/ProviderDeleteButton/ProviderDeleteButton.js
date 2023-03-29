@@ -37,7 +37,7 @@ const ProviderDeleteButton = ({ provider, disabled }) => {
   const [confirmConfig, setConfirmConfig] = useState(initConfirmConfig);
 
   const redirect = () => {
-    navigate("/profitSharing");
+    navigate("/dashboard");
   };
 
   const deleteProvider = async () => {

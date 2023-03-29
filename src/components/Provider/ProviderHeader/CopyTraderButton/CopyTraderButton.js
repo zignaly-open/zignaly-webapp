@@ -144,11 +144,8 @@ const CopyTraderButton = ({ provider }) => {
             !provider.liquidated &&
             (isNil(provider.maxAllocatedBalance) ||
               provider.performance.totalBalance < provider.maxAllocatedBalance) &&
-            profitSharing && (
-              <CustomButton className="submitButton" onClick={startCopying} id="copy-this-trader">
-                <FormattedMessage id="copyt.copythistrader" />
-              </CustomButton>
-            )
+            profitSharing &&
+            null
           ) : !profitSharing && !sameSelectedExchange ? (
             <Box
               alignItems="center"

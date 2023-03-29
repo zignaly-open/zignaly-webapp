@@ -283,11 +283,13 @@ const ExchangeAccountSettings = () => {
               tooltip="accounts.options.delisted.help"
             /> */}
 
-            <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
-              <Typography className="bold" variant="body1">
-                <FormattedMessage id="accounts.delete.exchange" />
-              </Typography>
-            </CustomButton>
+            {accountExchange?.name.toLowerCase() !== "zignaly" && (
+              <CustomButton className="deleteButton" onClick={() => setConfirmDeleteDialog(true)}>
+                <Typography className="bold" variant="body1">
+                  <FormattedMessage id="accounts.delete.exchange" />
+                </Typography>
+              </CustomButton>
+            )}
           </ExchangeAccountForm>
         </>
       )}

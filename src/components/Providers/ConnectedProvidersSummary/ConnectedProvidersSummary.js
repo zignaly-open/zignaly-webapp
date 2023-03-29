@@ -37,11 +37,6 @@ const ConnectedProvidersSummary = ({ providers }) => {
         {providers.map((p) => (
           <TraderMiniCard key={p.id} provider={p} />
         ))}
-        <CustomButton className="textPurple">
-          <Link to="/profitSharing">
-            <FormattedMessage id="accounts.browse" />
-          </Link>
-        </CustomButton>
       </Box>
     </Box>
   );
