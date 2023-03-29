@@ -1,10 +1,10 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { useIntl } from "react-intl";
-import withProvidersLayout from "../../../layouts/providersLayout";
 import { Helmet } from "react-helmet";
 import ProvidersBrowse from "../../../components/Providers/ProvidersBrowse";
 import "./myProfitSharing.scss";
+import withDashboardLayout from "layouts/dashboardLayout";
 
 /**
  * Provides a list to browse copy traders.
@@ -30,4 +30,4 @@ const MyProfitSharing = () => {
   );
 };
 
-export default withProvidersLayout(MyProfitSharing);
+export default withDashboardLayout(MyProfitSharing);
