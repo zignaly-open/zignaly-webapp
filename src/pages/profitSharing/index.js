@@ -56,9 +56,11 @@ const ProfitSharing = (props) => {
 
   useEffect(loadProvider, [providerId, selectedExchange.internalId]);
 
-  if (!providerId) {
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (!providerId) {
+      navigate("/dashboard");
+    }
+  }, [providerId]);
 
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
 
