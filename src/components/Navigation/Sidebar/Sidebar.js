@@ -113,16 +113,6 @@ const Sidebar = () => {
         </Typography>
       </Link>
       <Link
-        className={"sideBarLink profitSharing " + (active("profitSharing") ? "active" : "")}
-        partiallyActive={true}
-        to={"/profitSharing"}
-      >
-        <img alt="zignaly" className={"icon"} src={getIcon("profitSharing")} />
-        <Typography variant="h6">
-          <FormattedMessage id="menu.profitSharing" />
-        </Typography>
-      </Link>
-      <Link
         className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}
         partiallyActive={true}
         to={"/tradingTerminal"}

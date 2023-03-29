@@ -11,7 +11,7 @@ import useABTest from "hooks/useABTest";
 
 const SignupPage = () => {
   const intl = useIntl();
-  useRedirectUponSessionValid("/profitSharing");
+  useRedirectUponSessionValid("/dashboard");
 
   const showNew = useABTest();
   useEffect(() => {

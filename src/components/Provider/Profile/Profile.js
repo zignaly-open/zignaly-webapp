@@ -106,19 +106,15 @@ const Profile = ({ provider }) => {
         <Box bgcolor="grid.content" className="whoWeAreBox">
           <WhoWeAre provider={provider} />
         </Box>
-        {provider.isCopyTrading ? (
-          <Box bgcolor="grid.content" className="performanceBox">
-            <Performance provider={provider} />
-          </Box>
-        ) : (
-          !provider.disable &&
-          provider.exchangeInternalId === selectedExchange.internalId &&
-          checkAvailableOptions() && (
-            <Box bgcolor="grid.content" className="optionsBox">
-              <Options provider={provider} />
-            </Box>
-          )
-        )}
+        {provider.isCopyTrading
+          ? null
+          : !provider.disable &&
+            provider.exchangeInternalId === selectedExchange.internalId &&
+            checkAvailableOptions() && (
+              <Box bgcolor="grid.content" className="optionsBox">
+                <Options provider={provider} />
+              </Box>
+            )}
       </div>
       {!provider.profitSharing &&
         !provider.disable &&
