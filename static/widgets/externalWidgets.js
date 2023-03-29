@@ -82,4 +82,4 @@ script5.setAttribute("data-use-array-params", "true");
 script5.setAttribute("data-in-app-org-id", "5b1f596d-a830-4bb9-8ef3-81a4bb65f8e7");
 script5.setAttribute("data-use-in-app", "true");
 script5.src = "https://assets.customer.io/assets/track.js";
-document.getElementsByTagName("head")[0].appendChild(meta1);
+document.getElementsByTagName("head")[0].appendChild(script5);
