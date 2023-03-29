@@ -73,3 +73,13 @@ document.getElementsByTagName("head")[0].appendChild(script4);
 // script5.id = "analyticsJS";
 // script5.async = true;
 // document.getElementsByTagName("head")[0].appendChild(script5);
+
+var _cio = _cio || [];
+let script5 = document.createElement("script");
+script5.id = "cio-tracker";
+script5.setAttribute("data-site-id", "e2599a7a80f3cf2fdbb5");
+script5.setAttribute("data-use-array-params", "true");
+script5.setAttribute("data-in-app-org-id", "5b1f596d-a830-4bb9-8ef3-81a4bb65f8e7");
+script5.setAttribute("data-use-in-app", "true");
+script5.src = "https://assets.customer.io/assets/track.js";
+document.getElementsByTagName("head")[0].appendChild(meta1);
