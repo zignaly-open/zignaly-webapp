@@ -96,6 +96,7 @@ export const analyticsTrigger = (userData, eventType) => {
     );
 
     _cio?.identify({ email: userData.email, id: userData.userId, name: userData.firstName });
+    console.log(_cio?.identify);
   }
 };
 
