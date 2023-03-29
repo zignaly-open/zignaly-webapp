@@ -104,7 +104,9 @@ const ProvidersBrowse = ({
               ? "dashboard.traders.copying"
               : "dashboard.providers.following"
             : isCopyTrading
-            ? "copyt.traders"
+            ? myServices
+              ? "srv.services"
+              : "copyt.traders"
             : "fil.providers",
         })}`}
         value={timeFrame}
