@@ -15,6 +15,7 @@ import { ProviderRoute as CopyTraderRoute } from "../../components/RouteComponen
 import BrowsePage from "./browse";
 import useStoreViewsSelector from "../../hooks/useStoreViewsSelector";
 import useSelectedExchange from "hooks/useSelectedExchange";
+import { navigate } from "gatsby";
 
 /**
  *
@@ -55,10 +56,11 @@ const ProfitSharing = (props) => {
 
   useEffect(loadProvider, [providerId, selectedExchange.internalId]);
 
-  if (!providerId) {
-    // Render Browse page
-    return <BrowsePage {...props} />;
-  }
+  useEffect(() => {
+    if (!providerId) {
+      navigate("/dashboard");
+    }
+  }, [providerId]);
 
   const allowAdminRoutes = provider.isAdmin && !provider.isClone;
 

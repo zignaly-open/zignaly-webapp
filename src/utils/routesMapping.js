@@ -50,6 +50,10 @@ export const routesMapping = (path) => {
             id: "dashboard.traders",
             to: "/dashboard/connectedTraders",
           },
+          {
+            id: "srv.myservices",
+            to: "/dashboard/my",
+          },
         ],
       };
     case "copyTraders":
@@ -253,10 +257,6 @@ export const createProfitSharingRoutes = (providerId, provider) => {
         {
           id: "srv.profile",
           to: `/profitSharing/${provider.id}`,
-        },
-        {
-          id: "srv.analytics",
-          to: `/profitSharing/${provider.id}/analytics`,
         },
         {
           id: "srv.positions",
