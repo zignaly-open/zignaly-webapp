@@ -112,16 +112,6 @@ const Sidebar = () => {
           <FormattedMessage id="menu.dashboard" />
         </Typography>
       </Link>
-      <Link
-        className={"sideBarLink " + (active("tradingTerminal") ? "active" : "")}
-        partiallyActive={true}
-        to={"/tradingTerminal"}
-      >
-        <img alt="zignaly" className={"icon"} src={getIcon("tradingTerminal")} />
-        <Typography variant="h6">
-          <FormattedMessage id="menu.tradingterminal" />
-        </Typography>
-      </Link>
       <ThemeSwitcher full={hover} />
     </Box>
   );
