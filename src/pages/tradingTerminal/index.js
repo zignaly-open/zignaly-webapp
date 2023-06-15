@@ -11,7 +11,7 @@ const TradingTerminal = () => {
   const intl = useIntl();
   return (
     <Box className="tradingTerminalPage">
-      <Helmet>
+      {/* <Helmet>
         <title>{`${intl.formatMessage({
           id: "menu.tradingterminal",
         })} | ${intl.formatMessage({ id: "product" })}`}</title>
@@ -22,7 +22,7 @@ const TradingTerminal = () => {
           <FormattedMessage id="terminal.title" />
         </Typography>
       </Box>
-      <TradingView />
+      <TradingView /> */}
     </Box>
   );
 };
