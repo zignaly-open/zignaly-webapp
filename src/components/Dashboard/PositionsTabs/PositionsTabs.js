@@ -31,14 +31,14 @@ const PositionsTabs = ({ isProfile }) => {
    */
   const mapIndexToCollectionType = (tabIndex) => {
     switch (tabIndex) {
-      case 1:
+      case 0:
         return "closed";
 
-      case 2:
+      case 1:
         return "log";
 
       default:
-        return "open";
+        return "closed";
     }
   };
 
@@ -52,10 +52,10 @@ const PositionsTabs = ({ isProfile }) => {
   const mapCollectionTypeToIndex = (collectionType) => {
     switch (collectionType) {
       case "closed":
-        return 1;
+        return 0;
 
       case "log":
-        return 2;
+        return 1;
 
       default:
         return 0;
@@ -66,6 +66,7 @@ const PositionsTabs = ({ isProfile }) => {
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
 
   const [tabValue, setTabValue] = useState(mapCollectionTypeToIndex(currentHash));
+  console.log(tabValue);
   const updateActiveTab = () => {
     const newTabValue = mapCollectionTypeToIndex(currentHash);
     if (tabValue !== newTabValue) {
@@ -82,11 +83,8 @@ const PositionsTabs = ({ isProfile }) => {
    */
   const mapProfileIndexToCollectionType = (value) => {
     switch (value) {
-      case 1:
-        return "profileClosed";
-
       default:
-        return "profileOpen";
+        return "profileClosed";
     }
   };
 
@@ -104,12 +102,6 @@ const PositionsTabs = ({ isProfile }) => {
   };
 
   const tabsList = [
-    {
-      display: true,
-      label: `${intl.formatMessage({ id: "dashboard.positions.open" })} ${
-        tabValue === 0 ? `(${openCount})` : ""
-      }`,
-    },
     {
       display: true,
       label: `${intl.formatMessage({ id: "dashboard.positions.closed" })} ${
