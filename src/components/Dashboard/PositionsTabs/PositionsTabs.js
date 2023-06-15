@@ -66,7 +66,6 @@ const PositionsTabs = ({ isProfile }) => {
     typeof window !== "undefined" && window.location.hash ? window.location.hash.substr(1) : "";
 
   const [tabValue, setTabValue] = useState(mapCollectionTypeToIndex(currentHash));
-  console.log(tabValue);
   const updateActiveTab = () => {
     const newTabValue = mapCollectionTypeToIndex(currentHash);
     if (tabValue !== newTabValue) {
