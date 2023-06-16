@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./PrivateAreaLayout.scss";
-import { Box, Hidden } from "@material-ui/core";
+import { Box, Hidden, useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import Header from "../../components/Navigation/Header";
 import MobileHeader from "../../components/Navigation/MobileHeader";
 import MobileAppbar from "../../components/Navigation/MobileAppbar";
@@ -22,6 +23,8 @@ import tradeApi from "services/tradeApiClient";
 import InviteModal from "components/Navigation/Header/InviteModal";
 import VaultsView from "components/WalletView/Vault/VaultView";
 import Zigpad from "components/WalletView/Zigpad/Zigpad";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import { FormattedMessage } from "react-intl";
 
 /**
  * @typedef {Object} PrivateAreaLayoutProps
@@ -58,6 +61,8 @@ const PrivateAreaLayout = (props) => {
   useInterval(updateSession, minToMillisec(60), true);
 
   const { confirmConfig, setConfirmConfig, executeRefresh, postponeRefresh } = useAppUpdatesCheck();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onVaultClose = () => {
     window.history.back();
@@ -85,6 +90,26 @@ const PrivateAreaLayout = (props) => {
       <GlobalModal content={Zigpad} hash="zigpad" newTheme={true} showCloseIcon={true} />
       {/* <GlobalModal content={WalletDepositView} hash="deposit" /> */}
       <Box bgcolor="background.default" className={"app"}>
+        <Box m={isMobile ? "5px 28px 2px" : "10px 56px 3px"}>
+          <Alert severity="info" style={{ whiteSpace: "pre-line" }}>
+            {/* <AlertTitle>Success</AlertTitle> */}
+            <FormattedMessage
+              id={"discontinued"}
+              values={{
+                newLink: (
+                  <a href="https://app.zignaly.com" target="_blank">
+                    app.zignaly.com
+                  </a>
+                ),
+                oldLink: (
+                  <a href="https://app.zignaly.com" target="_blank">
+                    trading.zignaly.com
+                  </a>
+                ),
+              }}
+            />
+          </Alert>
+        </Box>
         <Hidden xsDown>
           <Header />
         </Hidden>
