@@ -2099,3 +2099,7 @@ zigpad.benefits.info2: |
   • Completely transparent process.
 zigpad.faq: "FAQs"
 zigpad.locked: "Zig Coins related to the Referral program [Locked] cannot be used to Pledge on the ZIGPad. You can use them for Trading Fee Rebates or Success Fees in Profit Sharing."
+
+discontinued: |
+  To enhance our focus and dedicate all resources to our core product, Profit-Sharing, we have discontinued trading services on the trading terminal. For more details, visit {newLink}.
+  Additionally, starting from July 1st, access to {oldLink} will be discontinued. We strongly recommend downloading and backing up any necessary information or data before this date, as we will be unable to assist with data recovery requests afterwards.
