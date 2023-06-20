@@ -102,7 +102,7 @@ const PrivateAreaLayout = (props) => {
                   </a>
                 ),
                 oldLink: (
-                  <a href="https://app.zignaly.com" target="_blank">
+                  <a href="https://trading.zignaly.com" target="_blank">
                     trading.zignaly.com
                   </a>
                 ),
